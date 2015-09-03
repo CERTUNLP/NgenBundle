@@ -1,0 +1,34 @@
+# This file is part of the Ngen - CSIRT Incident Report System.
+# 
+# (c) CERT UNLP <support@cert.unlp.edu.ar>
+# 
+# This source file is subject to the GPL v3.0 license that is bundled
+# with this source code in the file LICENSE.
+
+#_welcome:
+#    path:      /
+#    defaults:  { _controller: CertUnlpNgenBundle:Default:home }
+
+cert_ngen_user:
+    resource: "@CertUnlpNgenBundle/Controller/"
+    type:     annotation
+    prefix:   /user
+    
+cert_ngen_incident:
+    resource: "@CertUnlpNgenBundle/Controller/IncidentFrontendController.php"
+    type:     annotation
+    prefix:   /incidents
+    
+cert_ngen_api:
+    type: rest
+    prefix: /api
+    resource: "@CertUnlpNgenBundle/Resources/config/routing_api.yml"
+
+cert_ngen_network:
+    resource: "@CertUnlpNgenBundle/Controller/NetworkFrontendController.php"
+    type:     annotation
+    prefix:   /networks
+
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /incidents/api/doc

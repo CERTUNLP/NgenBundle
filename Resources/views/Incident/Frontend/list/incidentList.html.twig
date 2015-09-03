@@ -1,0 +1,31 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+
+<div class="panel panel-default panel-primary panel-margin">
+    <div class="panel-heading">
+        <strong>Reported incidents</strong>
+    </div>
+    <table class="table table-bordered">
+        <tr>
+            <th>{{ knp_pagination_sortable(pagination, 'Status', 's.name') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Host address', 'i.hostAddress') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Type', 't.name') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Feed', 'f.name') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Date', 'i.date') }}</th>
+            <th>Action</th>
+        </tr>
+        {% for incident in incidents %}
+            {% include 'CertUnlpNgenBundle:Incident:Frontend/list/incidentListRow.html.twig' with {'incident': incident} %}
+        {% endfor %}
+
+    </table>
+</div>
+<div class="pagination-centered">
+    {{ knp_pagination_render(pagination, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}
+</div>

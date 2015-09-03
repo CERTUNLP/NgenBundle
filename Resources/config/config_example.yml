@@ -1,0 +1,60 @@
+# This file is part of the Ngen - CSIRT Incident Report System.
+# 
+# (c) CERT UNLP <support@cert.unlp.edu.ar>
+# 
+# This source file is subject to the GPL v3.0 license that is bundled
+# with this source code in the file LICENSE.
+
+cert_ngen:
+    team:
+        mail:
+            
+    indcidents:
+        class: CertUnlp\NgenBundle\Entity\Incident
+        
+        handler: 
+            class: CertUnlp\NgenBundle\Services\IncidentHandler
+        reporter:
+            class: CertUnlp\NgenBundle\Entity\User
+        evidence:
+            path: %kernel.root_dir%/Resources/incident/evidence
+            prefix:        
+        reports:
+            markdown:
+                path: %kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/views/Incident/Report/Markdown
+            twig:
+                path: %kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/views/Incident/Report/Twig
+        mailer:
+            class: CertUnlp\NgenBundle\Services\IncidentMailer
+            transport: 
+            host:      
+            sender_address: 
+            username:
+            password:
+
+    networks:
+        class: CertUnlp\NgenBundle\Entity\Network
+        handler:
+            class: CertUnlp\NgenBundle\Services\NetworkHandler
+        validator:
+            class: CertUnlp\NgenBundle\Validator\Constraints\ValidNetworkValidator
+        default_network:
+            
+    feeds:
+        path: %kernel.root_dir%/Resources/feed
+        shadowserver:
+            class: CertUnlp\NgenBundle\Services\ShadowServer\ShadowServerAnalyzer
+            client:
+                class: CertUnlp\NgenBundle\Services\ShadowServer\ShadowServerClient
+                url: https://dl.shadowserver.org/reports/index.php
+                user: 
+                password:
+            reports:
+                path:
+    seeds:
+        redmine:
+            class: CertUnlp\NgenBundle\Services\IncidentRedmine
+            url:
+            key:
+
+               

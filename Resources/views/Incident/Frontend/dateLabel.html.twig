@@ -1,0 +1,24 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+
+{% if lastTimeDetected %}
+    {% set date = incident.lastTimeDetected%}
+{% else %}
+    {% set date = incident.date%}
+{% endif %}  
+
+{% if incident.openDays(lastTimeDetected) >= 3 and incident.openDays(lastTimeDetected) <=6 %}
+    {% set trclass = "warning"%}
+{% elseif incident.openDays(lastTimeDetected) >6 %}
+    {% set trclass = "danger"%}
+{% else %}
+    {% set trclass = "success"%}
+{% endif %}  
+
+{{date |date('Y-m-d')}} <span class="label label-{{trclass}}">{{incident.openDays(lastTimeDetected)~" days" }}</span>{% if lastTimeDetected %}<span class="label label-warning">ltd</span>{% endif %}

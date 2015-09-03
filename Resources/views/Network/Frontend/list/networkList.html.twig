@@ -1,0 +1,30 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+
+<div class="panel panel-default panel-primary panel-margin">
+    <div class="panel-heading">
+        <strong>Networks</strong>
+    </div>
+    <table class="table table-bordered">
+        <tr>
+            <th>{{ knp_pagination_sortable(pagination, 'Ip/Mask', 'n.ip') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Academic unit', 'au.name') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Admin', 'na.name') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'active', 'n.isActive') }}</th>
+            <th>Action</th>
+        </tr>
+        {% for network in networks %}
+            {% include 'CertUnlpNgenBundle:Network:Frontend/list/networkListRow.html.twig' with {'network': network} %}
+        {% endfor %}
+
+    </table>
+</div>
+<div class="pagination-centered">
+    {{ knp_pagination_render(pagination, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}
+</div>

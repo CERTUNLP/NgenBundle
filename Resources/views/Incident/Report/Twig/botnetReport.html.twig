@@ -1,0 +1,88 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:Incident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+Nos comunicamos con Ud. para informarle que se detectó que el host {{incident.hostAddress}} se encuentra infectado con un malware el cual participa en la formación de una Botnet.
+
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Problemas derivados</p>
+
+Encontrándose infectado el equipo, existen diversas consecuencias entre las que podemos listas:
+
+<ul>
+<li>Consumo excesivo del ancho de banda por parte del host.</li>
+<li>Compromiso de otros equipos.</li>
+<li>Compromiso de información propia de los usuarios.</li>
+<li>etc</li>
+</ul>
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">Cómo verificar el problema</p>
+
+Se puede realizar una verificación del problema a través del análisis del tráfico existente en la red o sobre el host afectado, utilizando herramientas como 
+
+<div class = "destacated">
+
+<pre><code>tcpdump
+</code></pre>
+
+</div>
+
+o 
+
+<div class = "destacated">
+
+<pre><code>wireshark
+</code></pre>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recomendations_content %}
+
+
+<p class="lead">Recomendaciones</p>
+
+Se recomienda el filtrado del tráfico hasta que el problema se vea resultó.
+
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">Mas información</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><a href="http://www.linuxjournal.com/magazine/detecting-botnets">http://www.linuxjournal.com/magazine/detecting-botnets</a></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

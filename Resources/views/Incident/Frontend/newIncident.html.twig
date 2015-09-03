@@ -1,0 +1,17 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+
+{% extends 'CertUnlpNgenBundle:Incident:Frontend/frontend.html.twig' %}
+{% block body %}
+    <h1>Create incident form</h1>
+    {%  if (form is not null) %}
+        {{ form_errors(form, { 'global_errors': true }) }}
+        {{ form(form, {'attr': {'id': 'incident_add_update_form'},'method': method | default('post'),'style': 'horizontal', 'col_size': 'sm' }) }}
+    {% endif %}
+{% endblock %}

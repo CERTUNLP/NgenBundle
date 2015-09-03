@@ -1,0 +1,84 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:Incident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+Lo contactamos porque hemos sido informados que el host con {{incident.hostAddress}} contiene
+una instalación de Memcached accesible desde Internet.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Problemas derivados</p>
+
+Debido a que este servicio no provee autenticación, cualquier entidad que acceda a la instancia de Memcache, tendrá control total sobre los objetos almacenados, con lo que se podría:
+
+<ul>
+<li>Acceder a la información almacenada</li>
+<li>Realizar el defacement del servidor WEB</li>
+<li>Realizar una denegación de servicio sobre el servidor</li>
+</ul>
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">Cómo verificar el problema</p>
+
+Para comprobar que el servicio está abierto, utilice el comando <code>telnet</code> del siguiente modo:
+
+<div class = "destacated">
+
+<pre><code>telnet {{incident.hostAddress}} 11211
+stats items
+</code></pre>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recomendations_content %}
+
+
+<p class="lead">Recomendaciones</p>
+
+Se recomienda alguna de las siguientes:
+
+<ul>
+<li>Establecer reglas de firewall para denegar las consultas desde hosts/redes no autorizadas. </li>
+</ul>
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">Mas información</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li>[memcached.org] (memcached.org)</li>
+<li>[http://infiltrate.tumblr.com/post/38565427/hacking-memcache] (http://infiltrate.tumblr.com/post/38565427/hacking-memcache)</li>
+<li>[http://es.wikipedia.org/wiki/Defacement] (http://es.wikipedia.org/wiki/Defacement)</li>
+</ul>
+
+</div>
+
+
+{% endblock %}

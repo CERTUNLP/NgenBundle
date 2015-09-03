@@ -1,0 +1,227 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+
+{% extends 'CertUnlpNgenBundle:Incident:Frontend/frontend.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-2 col-md-6 col-md-offset-0">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Incident Information</h3>
+                </div>
+                <div class="panel-body table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td class="">
+                                Sistem Id
+                            </td>
+                            <td class="">
+                                {{incident.id}}
+                            </td>
+                        </tr>
+                        {%if incident.redmineIssueId%}
+                            <tr>
+                                <td class="">
+                                    Redmine Id
+                                </td>
+                                <td class="">
+                                    {{incident.redmineIssueId}}
+                                </td>
+                            </tr>
+                        {%endif%}
+                        <tr>
+                            <td class="">
+                                Host Address
+                            </td>
+                            <td class="">
+                                {{incident.hostAddress}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                State
+                            </td>
+                            <td class="">
+                                {%include "CertUnlpNgenBundle:Incident:Frontend/stateLabel.html.twig" with {'incdent': incident}%}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                Closed
+                            </td>
+                            <td class="">
+                                {{incident.isClosed ? 'Yes':'No'}}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="">
+                                Type
+                            </td>
+                            <td class="">
+                                {{incident.type}}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="">
+                                Feed
+                            </td>
+                            <td class="">
+                                {{incident.feed}}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="">
+                                Date
+                            </td>
+                            <td class="">
+                                {%include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incdent': incident,'lastTimeDetected': false}%}
+                            </td>
+                        </tr>
+                        {%if incident.lastTimeDetected%}
+                            <tr>
+                                <td class="">
+                                    Last Time Detected
+                                </td>
+                                <td class="">
+                                    {%include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incdent': incident, 'lastTimeDetected':true}%}
+                                </td>
+                            </tr>
+                        {%endif%}
+
+                        <tr>
+                            <td class="">
+                                Created at 
+                            </td>
+                            <td class="">
+                                {{incident.createdAt|date('Y-m-d')}}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="">
+                                Last Update
+                            </td>
+                            <td class="">
+                                {{incident.lastTimeDetected|date('Y-m-d')}}
+                            </td>
+                        </tr>
+                        {%if incident.evidenceFilePath%}
+
+                            <tr>
+                                <td class="">
+                                    Evidence File
+                                </td>
+                                <td class="">
+                                    {{incident.evidenceFilePath}}
+                                </td>
+                            </tr>
+                        {%endif%}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5 col-sm-offset-2 col-md-6 col-md-offset-0">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Network info</h3>
+                </div>
+                <div class="panel-body table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td class="">
+                                IP/mask
+                            </td>
+                            <td class="">
+                                {{incident.network}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                Active
+                            </td>
+                            <td class="">
+                                {{incident.network.isActive ? 'Yes':'No'}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                Academic Unit
+                            </td>
+                            <td class="">
+                                {{incident.network.academicUnit}}
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                Network Admin
+                            </td>
+                            <td class="">
+                                {{incident.network.networkAdmin}}
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                            </td>
+                            <td class="">
+                                {{incident.network.networkAdmin.email}}
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5 col-sm-offset-2 col-md-6 col-md-offset-0">
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Reporter info</h3>
+                </div>
+                <div class="panel-body table-responsive">
+
+                    <table class="table table-bordered">
+                        <tr>
+                            <td class="">
+                                Name
+                            </td>
+                            <td class="">
+                                {{incident.reporter}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                Email
+                            </td>
+                            <td class="">
+                                {{incident.reporter.email}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Comments</h3>
+            </div>
+            <div class="panel-body">
+                {{ render(controller('CertUnlpNgenBundle:IncidentFrontend:incidentComments', {'incident': incident, 'request': app.request})) }}
+            </div>
+        </div>
+    </div>
+
+    {#</div>#}
+{% endblock %}

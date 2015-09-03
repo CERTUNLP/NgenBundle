@@ -1,0 +1,65 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:Incident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} dispone del servicio NETBIOS abierto desde Internet.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Problemas derivados</p>
+
+El host bajo su administración podría ser usado para:
+
+<ul>
+<li>Ataques de amplificación que causen denegación de servicio (DOS, DDOS)</li>
+<li>Recopilar información compartida en dicho host</li>
+<li>Realizar ataques de fuerza bruta en caso que el servicio solicite contraseña</li>
+<li>Distribución de malware</li>
+<li>Almacenar información robada</li>
+</ul>
+
+{% endblock %}
+
+
+{% block recomendations_content %}
+
+
+<p class="lead">Recomendaciones</p>
+
+Se recomienda:
+
+<ul>
+<li>No correr el servicio sobre TCP/IP.</li>
+<li>Establecer reglas en el firewall para denegar las consultas desde redes no autorizadas. </li>
+</ul>
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">Mas información</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">https://www.us-cert.gov/ncas/alerts/TA14-017A</a></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

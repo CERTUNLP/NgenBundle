@@ -1,0 +1,59 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:Incident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} tiene el servicio Intelligent Platform Management Interface (IPMI) accesible desde Internet.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Problemas derivados</p>
+
+El host bajo su administración podría llegar a ser usado para controlar el dispositivo remotamente. IPMI provee acceso a bajo nivel al dispositivo, pudiendo permitir reiniciar el sistema, instalar un nuevo sistema operativo, acceder a información alojada en el sistema, etc.
+
+
+{% endblock %}
+
+
+{% block recomendations_content %}
+
+
+<p class="lead">Recomendaciones</p>
+
+Se recomienda:
+
+<ul>
+<li>Establecer filtros de acceso (reglas de firewall) para exponer el servicio solo a las IPs del administrador.</li>
+<li>En caso de no utilizarlo, es recomendable deshabilitar el servicio.</li>
+</ul>
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">Mas información</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li>[US-CERT alert TA13-207A] (https://www.us-cert.gov/ncas/alerts/TA13-207A)</li>
+<li>[Dan Farmer on IPMI security issues] (http://fish2.com/ipmi/)</li>
+</ul>
+
+</div>
+
+
+{% endblock %}
