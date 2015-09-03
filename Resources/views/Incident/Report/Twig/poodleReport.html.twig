@@ -1,0 +1,76 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:Incident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} es
+vulnerable a POODLE.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Problemas derivados</p>
+
+POODLE es una falla en SSLv3 que permite a un atacante recuperar
+información cifrada, ocasionando de esta forma pérdida de confidencialidad.
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">Cómo verificar el problema</p>
+
+Acceda a la siguiente página para verificar que los servicios que usted
+provee en el host son vulnerables a POODLE:
+
+
+<div class = "destacated">
+
+<ul>
+<li><a href="https://www.poodlescan.com/">https://www.poodlescan.com/</a></li>
+</ul>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recomendations_content %}
+
+
+<p class="lead">Recomendaciones</p>
+
+Se recomienda dejar de utilizar las librerías SSLv2 y SSLv3. Como reemplazo
+puede utilizar TLS.
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">Mas información</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><a href="http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-3566">http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-3566</a></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

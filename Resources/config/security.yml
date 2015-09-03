@@ -1,0 +1,54 @@
+# This file is part of the Ngen - CSIRT Incident Report System.
+# 
+# (c) CERT UNLP <support@cert.unlp.edu.ar>
+# 
+# This source file is subject to the GPL v3.0 license that is bundled
+# with this source code in the file LICENSE.
+
+security:
+    firewalls:
+        secured_area:
+            pattern:    ^/api
+            anonymous: ~
+            stateless:  true
+            simple_preauth:
+                authenticator: cert_unlp.ngen.api.auth.apikey_authenticator        
+        frontend:
+            pattern:        ^/*
+            provider:       users
+            anonymous:      ~
+            form_login:
+                login_path: cert_unlp_ngen_user_login
+                check_path: cert_unlp_ngen_user_login_check
+            logout:
+                path:       cert_unlp_ngen_user_logout
+                target: /incidents
+            remember_me:
+                key:        4aca1f11eea0be14028201ecc5579fb210c90bd3
+                lifetime:   604800  # 604.800 = 3.600 * 24 * 7 = 1 semana
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+    
+    access_control:
+        - { path: ^/user/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/*, roles: ROLE_USER }
+        - { path: ^/incidents/*, roles: ROLE_USER }
+        - { path: ^/networks/*, roles: ROLE_USER }
+        - { path: ^/api/*, roles: ROLE_API }
+        
+    encoders:
+        CertUnlp\NgenBundle\Entity\User:    { algorithm: sha512, iterations: 10 }
+#        Symfony\Component\Security\Core\User\User: plaintext
+
+    providers:
+        cert_unlp.ngen.api.auth.apikey_user_provider:
+            id: cert_unlp.ngen.api.auth.apikey_user_provider
+        users:
+            entity: { class: CertUnlp\NgenBundle\Entity\User, property: username }
+            
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]    
+
+    
