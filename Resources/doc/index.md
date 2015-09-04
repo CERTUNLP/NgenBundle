@@ -6,7 +6,7 @@ CERT UNLP Ngen Bundle
 
 
 
-### Add the routing resource to your appkernel
+### Add the routing resource to your app/AppKernel.php
     new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
     new FOS\RestBundle\FOSRestBundle(),
     new FOS\CommentBundle\FOSCommentBundle(),
@@ -14,18 +14,21 @@ CERT UNLP Ngen Bundle
     new JMS\SerializerBundle\JMSSerializerBundle($this),
     new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
     new CertUnlp\NgenBundle\CertUnlpNgenBundle(),
-    new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
+    new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(), //swiftmailer should be here for the conriguration load
     new Ddeboer\DataImportBundle\DdeboerDataImportBundle(),
     new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
     new Knp\Bundle\MenuBundle\KnpMenuBundle(),
     new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
     new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
     new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle()
-### Add the routing resource to your app
+### Add the routing resource to your app/config/routing.yml
     cert_unlp_ngen:
         resource: "@CertUnlpNgenBundle/Resources/config/routing.yml"     
 
-### Import the configuration
+### Import the configuration to app/config/config.yml
+    
+    #if you import the security.yml of NgenBundle you must remove the security.yml of symfony.
+    #Either, you can mix both security.yml
     imports:
         - { resource: @CertUnlpNgenBundle/Resources/config/security.yml }
         - { resource: @CertUnlpNgenBundle/Resources/config/config.yml }
@@ -37,7 +40,7 @@ CERT UNLP Ngen Bundle
         mailer:
            transport: smtp
            host:      
-               #sender_address: # optional cert_unlp.ngen.team.mail by default
+           #sender_address: #optional, cert_unlp.ngen.team.mail will be used by default
            username:  
            password: 
     feeds:
