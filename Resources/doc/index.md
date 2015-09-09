@@ -34,33 +34,28 @@ CERT UNLP Ngen Bundle
         - { resource: @CertUnlpNgenBundle/Resources/config/config.yml }
 
     cert_unlp_ngen:
-    team:
-        mail: #mail of the cert
-    incidents:    
-        mailer:
-           transport: smtp
-           host:      
-           #sender_address: #optional, cert_unlp.ngen.team.mail will be used by default
-           username:  
-           password: 
-    feeds:
-        shadowserver:
-            client:
-                user: 
-                password:
+        team:
+            mail: #mail of the cert
+        incidents:    
+            mailer:
+               transport: smtp
+               host:      
+               #sender_address: #optional, cert_unlp.ngen.team.mail will be used by default
+               username:  
+               password: 
 
 ### deploy
     php app/console d:d:c --no-interaction
-    php app/console d:s:cx --no-interaction
+    php app/console d:s:c --no-interaction
     php app/console d:f:l --no-interaction
 ### deploy
     rm -rf app/logs/* app/cache/*;
-    setfacl -R -m u:jenkins:rwx -m u:www-data:rwx  app/cache app/logs;
-    setfacl -dR -m u:jenkins:rwx -m u:www-data:rwx  app/cache app/logs;
+    setfacl -R -m u:<user>:rwx -m u:www-data:rwx  app/cache app/logs;
+    setfacl -dR -m u:<user>:rwx -m u:www-data:rwx  app/cache app/logs;
     composer install --optimize-autoloader
     php app/console cache:clear --env=prod --no-debug
     php app/console assetic:dump --env=prod --no-debug
     php app/console assets:install --symlink 
-    php -r apc_clear_cache();apc_clear_cache('user');apc_clear_cache('opcode');
+    php -r "apc_clear_cache(); apc_clear_cache('user');apc_clear_cache('opcode');";
     php app/console braincrafted:bootstrap:install
     php app/console braincrafted:bootstrap:generate
