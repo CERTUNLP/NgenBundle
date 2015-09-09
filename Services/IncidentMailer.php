@@ -29,7 +29,7 @@ class IncidentMailer implements IncidentMailerInterface {
         $this->cert_email = $cert_email;
         $this->templating = $templating;
         $this->upload_directory = $upload_directory;
-        $this->reports_path = '@incidents_reports';
+        $this->reports_path = 'CertUnlpNgenBundle:Incident:Report/Twig';
         $this->commentManager = $commentManager;
     }
 
