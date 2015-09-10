@@ -20,11 +20,13 @@ class UserChangePasswordType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('oldPassword', 'password');
         $builder->add('newPassword', 'repeated', array(
-            'type' => 'password',
-            'invalid_message' => 'The password fields must match.',
-            'required' => true,
-            'first_options' => array('label' => 'Password'),
-            'second_options' => array('label' => 'Repeat Password'),
+                    'type' => 'password',
+                    'invalid_message' => 'The password fields must match.',
+                    'required' => true,
+                    'first_options' => array('label' => 'Password'),
+                    'second_options' => array('label' => 'Repeat Password')))
+                ->add('save', 'submit', array('attr' =>
+                    array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => "slide-down"),
         ));
     }
 

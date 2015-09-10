@@ -1,0 +1,21 @@
+<ul class="nav navbar-top-links navbar-right">
+    <!-- /.dropdown -->
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+            {{ icon('user fa-fw') }}{{ icon('caret-down') }}        
+        </a>
+        </a>
+        <ul class="dropdown-menu dropdown-user">
+            <li>
+                <a href="{{path('cert_unlp_ngen_user_password_change')}}">{{ icon('key fa-fw') }} Change password</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a href="{{path('cert_unlp_ngen_user_logout')}}">{{ icon('sign-out fa-fw') }} Logout</a>
+            </li>
+        </ul>
+        <!-- /.dropdown-user -->
+    </li>
+    <!-- /.dropdown -->
+</ul>
+<!-- /.navbar-top-links -->

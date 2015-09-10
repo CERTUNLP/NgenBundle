@@ -6,22 +6,19 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
-
 {% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
-{% block title %}Networks{% endblock %}
+
 {% block content_header %}
-    <h1 class="page-header">{{icon('share-alt fa-fw')}} Networks</h1>
+    <h1 class="page-header">{{icon('exclamation-circle fa-fw')}} Incidents</h1>
 {% endblock %}
+
 {% block content_body %}
-
-    {% include 'CertUnlpNgenBundle:Network:Frontend/list/networkList.html.twig' with {'networks': pagination} %}
-
+    {% include 'CertUnlpNgenBundle:Incident:Frontend/list/incidentList.html.twig' with {'incident': incidents} %}
 {% endblock %}
-
 
 {% block javascripts %}
     {{ parent() }}
     <script>
-        var network = new Network("{{path("api_1_get")}}/", "{{app.user.apiKey}}");
+        var incident = new Incident("{{path("api_1_get")}}/", "{{app.user.apiKey}}");
     </script>
 {% endblock %}

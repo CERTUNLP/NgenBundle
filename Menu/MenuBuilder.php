@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 
 class MenuBuilder extends ContainerAware {
 
-    public function mainMenu(FactoryInterface $factory, array $options) {
+    public function sideBarMenu(FactoryInterface $factory, array $options) {
         $menu = $factory->createItem('root');
 
 //        $menu->addChild('Hme', array('route' => 'cert_unlp_ngen_incident_frontend_home'));
@@ -29,14 +29,17 @@ class MenuBuilder extends ContainerAware {
 //            'routeParameters' => array('id' => $blog->getId())
 //        ));
         // you can also add sub level's to your menu's as follows
-        $menu->addChild('Incidents');
+//        $menu->addChild('Incidents');
 
-        $menu['Incidents']->addChild('Add incident', array('route' => 'cert_unlp_ngen_incident_new_incident'));
+        $menu->addChild('Dashboard', array('route' => 'cert_unlp_ngen_incident_frontend_home'));
+        $menu->addChild('Incidents', array('route' => 'cert_unlp_ngen_incident_frontend_home'));
+        $menu->addChild('Networks', array('route' => 'cert_unlp_ngen_network_frontend_home'));
+        $menu->addChild('', array('route' => ''));
 
-        $menu->addChild('Account');
-        $menu['Account']->addChild('Logout', array('route' => 'cert_unlp_ngen_user_logout'));
-        $menu['Account']->addChild('Change password', array('route' => 'cert_unlp_ngen_user_password_change'));
-        // ... add more children
+//        $menu->addChild('Account');
+//        $menu['Account']->addChild('Logout', array('route' => 'cert_unlp_ngen_user_logout'));
+//        $menu['Account']->addChild('Change password', array('route' => 'cert_unlp_ngen_user_password_change'));
+//        // ... add more children
 
         return $menu;
     }
@@ -64,9 +67,12 @@ class MenuBuilder extends ContainerAware {
     public function rightNavbarMenu(FactoryInterface $factory, array $options) {
         $menu = $factory->createItem('root');
 
-        $menu->addChild('Account');
+        $menu->addChild('Account', ['name' => ""]);
         $menu['Account']->addChild('Change password', array('route' => 'cert_unlp_ngen_user_password_change'));
         $menu['Account']->addChild('Logout', array('route' => 'cert_unlp_ngen_user_logout'));
+        $menu['Account']->setChildrenAttribute('class', 'dropdown-user');
+        $menu['Account']->setLabelAttribute('class', ' fa fa-user');
+        $menu['Account']->setAttribute('text', '');
         // ... add more children
 
         return $menu;

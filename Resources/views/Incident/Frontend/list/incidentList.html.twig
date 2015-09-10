@@ -6,25 +6,33 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
-
-<div class="panel panel-default panel-primary panel-margin">
+<div class="panel panel-default">
     <div class="panel-heading">
-        <strong>Reported incidents</strong>
+        <strong>{{icon('exclamation-circle fa-fw')}} Incidents</strong>
+        <div class="pull-right">
+            <div class="btn-group">
+                <a class="btn btn-default btn-xs" href="{{path('cert_unlp_ngen_incident_new_incident')}}">
+                    {{icon('plus-circle fa-fw')}}add incident
+                </a>
+            </div>
+        </div>
     </div>
-    <table class="table table-bordered">
-        <tr>
-            <th>{{ knp_pagination_sortable(pagination, 'Status', 's.name') }}</th>
-            <th>{{ knp_pagination_sortable(pagination, 'Host address', 'i.hostAddress') }}</th>
-            <th>{{ knp_pagination_sortable(pagination, 'Type', 't.name') }}</th>
-            <th>{{ knp_pagination_sortable(pagination, 'Feed', 'f.name') }}</th>
-            <th>{{ knp_pagination_sortable(pagination, 'Date', 'i.date') }}</th>
-            <th>Action</th>
-        </tr>
+<table class="table table-striped table-bordered table-hover dataTable no-footer">
+    <tr role="row">
+        <th>{{ knp_pagination_sortable(pagination, 'Status', 's.name') }}</th>
+        <th>{{ knp_pagination_sortable(pagination, 'Host address', 'i.hostAddress') }}</th>
+        <th>{{ knp_pagination_sortable(pagination, 'Type', 't.name') }}</th>
+        <th>{{ knp_pagination_sortable(pagination, 'Feed', 'f.name') }}</th>
+        <th>{{ knp_pagination_sortable(pagination, 'Date', 'i.date') }}</th>
+        <th>Action</th>
+    </tr>
+    <tbody>
         {% for incident in incidents %}
             {% include 'CertUnlpNgenBundle:Incident:Frontend/list/incidentListRow.html.twig' with {'incident': incident} %}
         {% endfor %}
+    </tbody>
 
-    </table>
+</table>
 </div>
 <div class="pagination-centered">
     {{ knp_pagination_render(pagination, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}

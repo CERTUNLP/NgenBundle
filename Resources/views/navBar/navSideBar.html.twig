@@ -1,0 +1,35 @@
+<div class="navbar-default sidebar" role="navigation">
+    <div class="sidebar-nav navbar-collapse" aria-expanded="false" style="height: 1px;">
+
+        <ul class="nav in" id="side-menu">
+            <li class="sidebar-search">
+                <form method='post' action="{{path('cert_unlp_ngen_incident_search_incident')}}" role="search">
+                    <div class="input-group custom-search-form">
+                        <input type="text" name="term" class="form-control" value="{{term | default('')}}" placeholder="Search...">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default">
+                                {{ icon('search') }}
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </li>
+            {#<li>
+                <a href="{{path('cert_unlp_ngen_incident_frontend_home')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+            </li>#}
+            <li>
+                <a href="{{path('cert_unlp_ngen_incident_frontend_home')}}" {% if app.request.get('_route') == 'cert_unlp_ngen_incident_frontend_home' %} class="active" {% endif %}>
+                    {{icon('exclamation-circle fa-fw')}} Incidents</a>
+            </li>
+            <li>
+                <a href="{{path('cert_unlp_ngen_network_frontend_home')}}" {% if app.request.get('_route') == 'cert_unlp_ngen_network_frontend_home' %} class="active" {% endif %}>
+                    {{icon('share-alt fa-fw')}} Networks
+                </a>
+            </li>
+            <li>
+                <a href="#">{{icon('users fa-fw')}} Users</a>
+            </li>
+        </ul>
+    </div>
+    <!-- /.sidebar-collapse -->
+</div>

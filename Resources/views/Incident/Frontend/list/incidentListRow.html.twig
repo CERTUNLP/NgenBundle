@@ -7,26 +7,25 @@
  with this source code in the file LICENSE.
 #}
 
-<tr data-id="{{incident.id}}">
-    <td id="state_label_holder" class="col-md-1">
+<tr data-id="{{incident.id}}" role="row">
+    <td id="state_label_holder" >
         <div class="label-holder">
-            {%include "CertUnlpNgenBundle:Incident:Frontend/stateLabel.html.twig" with {'incdent': incident}%}
+            {%include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incdent': incident}%}
         </div>
     </td>
-    <td class="col-md-1">
+    <td >
         {{incident.hostAddress}}
     </td>
-    <td class="col-md-1">
+    <td >
         {{incident.type}}
     </td>
-    <td class="col-md-1">
+    <td >
         {{incident.feed}}
     </td>
-    <td class="col-md-1">
+    <td >
         {%include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incdent': incident,'lastTimeDetected':incident.lastTimeDetected}%}
     </td>
-    <td class="col-sm-1">
-
+    <td >
         <div class="btn-group inline pull-left dropdown incident-action-dropdown">
             <a   class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_detail_incident',{'hostAddress': incident.hostAddress,'date':incident.date.format('Y-m-d'),'type':incident.type.slug})}}">
                 Details
@@ -59,5 +58,5 @@
                 </li>
             </ul>
         </div>
-
+    </td>
 </tr>
