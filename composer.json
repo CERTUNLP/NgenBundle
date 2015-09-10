@@ -40,7 +40,8 @@
         "ddeboer/data-import": "~0.18.0",
         "ddeboer/data-import-bundle": "~0.1.0",
         "stfalcon/tinymce-bundle": "~0.3.8",
-        "friendsofsymfony/comment-bundle": "~2.0"
+        "friendsofsymfony/comment-bundle": "~2.0",
+        "fortawesome/font-awesome": "^4.4"
     },
     "require-dev": {
         "symfony/assetic-bundle": "~2.3",

@@ -12,49 +12,49 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>CertUnlp | {% block title %}{% endblock %}</title>
+        <title>Ngen | {% block title %}{% endblock %}</title>
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
-        <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen">
-        <link rel="stylesheet" href="{{ asset('bundles/certunlpngen/css/style.css') }}" media="screen" />
+        {#        <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen">#}
+        {#        <link rel="stylesheet" href="{{ asset('bundles/certunlpngen/css/style.css') }}" media="screen" />#}
+        {% block stylesheets %}        
+            {% stylesheets
+        'css/bootstrap.css'
+        '@CertUnlpNgenBundle/Resources/public/css/plugins/metisMenu/metisMenu.min.css'
+        '@CertUnlpNgenBundle/Resources/public/css/sb-admin-2.css'
+        '@CertUnlpNgenBundle/Resources/public/css/style.css'
+        '@CertUnlpNgenBundle/Resources/public/css/ladda-themeless.min.css'
+        output='css/*.css' filter='cssrewrite' %}
+            <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
+            {% endstylesheets %}
+        {% endblock %}
         {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
-    {% block stylesheets %}{% endblock %}
-{% block rss %}{% endblock %}
-{% block javascripts_head %}{% endblock %}
-</head>
-
-<body id="{% block id '' %}">
-    <div class="container">
-        <div id="notifications" class="notifications">
-            {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="notifications" class="notifications">
+                {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
+            </div>
+            {% block body %}
+            {% endblock %}
         </div>
-
-
-        <div class="page-header">
-            {% include 'CertUnlpNgenBundle::navBar.html.twig' %}
-        </div>
-
-
-    {% block body %}{% endblock %}
-
-    <footer>
-
-        <!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
-        {#        <script src="{{ asset('js/jquery.js') }}"></script>#}
-        <!-- Include all JavaScripts, compiled by Assetic -->
-        {#        <script src="{{ asset('js/bootstrap.js') }}"></script>#}
-        {% javascripts 
-            'js/jquery.js'
-            'js/bootstrap.js'
-            '@CertUnlpNgenBundle/Resources/public/js/lib/spin.min.js'
-            '@CertUnlpNgenBundle/Resources/public/js/lib/*'
-            '@CertUnlpNgenBundle/Resources/public/js/*'%}
-        <script src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-        <script>
-            var cert_unlp = new CertUnlp();
-        </script>
-    {% block javascripts_footer %}{% endblock %}
-</footer>
-</div>
-</body>
+        <footer>
+            {% block javascripts %}
+                {% javascripts
+                    'js/jquery.js'
+                    'js/bootstrap.js'
+                    '@CertUnlpNgenBundle/Resources/public/js/plugins/metisMenu/metisMenu.min.js'
+                    '@CertUnlpNgenBundle/Resources/public/js/lib/sb-admin-2.js'
+                    '@CertUnlpNgenBundle/Resources/public/js/lib/spin.min.js'
+                    '@CertUnlpNgenBundle/Resources/public/js/lib/*'
+                    '@CertUnlpNgenBundle/Resources/public/js/*'
+                %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+                {% endjavascripts %}
+                <script>
+                    var cert_unlp = new CertUnlp();
+                </script>
+            {% endblock %}
+        </footer>
+    </body>
 </html>

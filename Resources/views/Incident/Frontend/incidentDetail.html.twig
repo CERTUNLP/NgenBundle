@@ -7,10 +7,13 @@
  with this source code in the file LICENSE.
 #}
 
-{% extends 'CertUnlpNgenBundle:Incident:Frontend/frontend.html.twig' %}
-{% block body %}
+{% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
+{% block content_header %}
+    <h1 class="page-header">Incident [ID: {{incident.id}}][{{incident.type}}]{%include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incdent': incident}%}</h1>
+{% endblock %}
+{% block content_body %}
     <div class="row">
-        <div class="col-sm-6 col-sm-offset-2 col-md-6 col-md-offset-0">
+        <div class="col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title">Incident Information</h3>
@@ -129,7 +132,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-5 col-sm-offset-2 col-md-6 col-md-offset-0">
+        <div class="col-lg-6">
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <h3 class="panel-title">Network info</h3>
@@ -182,7 +185,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-5 col-sm-offset-2 col-md-6 col-md-offset-0">
+        <div class="col-lg-6">
 
             <div class="panel panel-info">
                 <div class="panel-heading">
@@ -212,16 +215,16 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="panel panel-info">
-            <div class="panel-heading">
-                <h3 class="panel-title">Comments</h3>
-            </div>
-            <div class="panel-body">
-                {{ render(controller('CertUnlpNgenBundle:IncidentFrontend:incidentComments', {'incident': incident, 'request': app.request})) }}
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Comments</h3>
+                </div>
+                <div class="panel-body">
+                    {{ render(controller('CertUnlpNgenBundle:IncidentFrontend:incidentComments', {'incident': incident, 'request': app.request})) }}
+                </div>
             </div>
         </div>
     </div>
-
-    {#</div>#}
 {% endblock %}

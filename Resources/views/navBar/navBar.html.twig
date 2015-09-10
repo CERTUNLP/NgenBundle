@@ -7,12 +7,23 @@
  with this source code in the file LICENSE.
 #}
 
-<nav class="navbar navbar-default" role="navigation">
-    <!-- Brand and toggle get grouped for better mobile display -->
+<!-- Brand and toggle get grouped for better mobile display -->
+
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
         <a class="navbar-brand" href="{{path('cert_unlp_ngen_incident_frontend_home')}}">Ngen</a>
     </div>
-    {% if app.user %}
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </button>
+    {% include 'CertUnlpNgenBundle:navBar:navRight.html.twig' %}
+    {% include 'CertUnlpNgenBundle:navBar:navSideBar.html.twig' %}
+    <!-- /.navbar-static-side -->
+    {#        </nav>#}
+    {#{% if app.user %}
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             {{ knp_menu_render('CertUnlpNgenBundle:MenuBuilder:leftNavbarMenu', { 'style': 'navbar' }) }}
@@ -22,7 +33,8 @@
                 </div>
                 <button type="submit" class="btn btn-default">Submit</button>
             </form>
+                
             {{ knp_menu_render('CertUnlpNgenBundle:MenuBuilder:rightNavbarMenu', { 'style': 'navbar-right' }) }}
         </div><!-- /.navbar-collapse -->
-    {% endif %}
+    {% endif %}#}
 </nav>

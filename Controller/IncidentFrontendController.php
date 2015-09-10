@@ -22,7 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class IncidentFrontendController extends Controller {
 
     /**
-     * @Template("CertUnlpNgenBundle:Incident:Frontend/frontend.html.twig")
+     * @Template("CertUnlpNgenBundle:Incident:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_incident_frontend_home")
      */
     public function homeAction(Request $request) {
@@ -49,7 +49,7 @@ class IncidentFrontendController extends Controller {
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:Incident:Frontend/newIncident.html.twig")
+     * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_incident_new_incident")
      */
     public function newIncidentAction(Request $request) {
@@ -67,7 +67,7 @@ class IncidentFrontendController extends Controller {
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:Incident:Frontend/detailIncident.html.twig")
+     * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentDetail.html.twig")
      * @Route("{hostAddress}/{date}/{type}/detail", name="cert_unlp_ngen_incident_detail_incident")
      * @ParamConverter("incident", class="CertUnlpNgenBundle:Incident", options={"repository_method" = "findByHostDateType"})
 
@@ -77,7 +77,7 @@ class IncidentFrontendController extends Controller {
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:Incident:Frontend/frontend.html.twig")
+     * @Template("CertUnlpNgenBundle:Incident:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_incident_search_incident")
      */
     public function searchIncidentAction(Request $request) {

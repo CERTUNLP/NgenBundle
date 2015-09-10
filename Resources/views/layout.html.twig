@@ -1,0 +1,13 @@
+{% extends 'CertUnlpNgenBundle::base.html.twig' %}
+{% block body %}
+    {% block navigation_block %}
+            {% include 'CertUnlpNgenBundle:navBar:navBar.html.twig' %}
+    {% endblock %}
+
+    {% block page_wrapper %}
+        <div id="page-wrapper">
+            {% block content %}
+            {% endblock %}
+        </div>
+    {% endblock %}
+{% endblock %}

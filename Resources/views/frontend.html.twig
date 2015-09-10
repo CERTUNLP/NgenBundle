@@ -7,31 +7,40 @@
  with this source code in the file LICENSE.
 #}
 
-{% extends 'CertUnlpNgenBundle::base.html.twig' %}
+{% extends 'CertUnlpNgenBundle::layout.html.twig' %}
 {% block title %}Incidents{% endblock %}
-{% block body %}
 
-    {% include 'CertUnlpNgenBundle:Incident:Frontend/list/incidentList.html.twig' with {'incidents': pagination} %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            {% block content_header %}
+                <h1 class="page-header">Incidents</h1>
+            {% endblock %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            {% block content_body %}
+            {% endblock %}
+        </div>
+    </div>
+
 
 {% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/certunlpngen/css/ladda-themeless.min.css') }}" media="screen" />
 {% endblock %}
 
-{% block javascripts_footer %}
+{% block javascripts %}
+    {{ parent() }}
+
     {% javascripts
     '@CertUnlpNgenBundle/Resources/public/js/api/*'
     '@CertUnlpNgenBundle/Resources/public/js/*'
     %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
-    {% javascripts '@FOSCommentBundle/Resources/assets/js/comments.js' %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-    <script>
-        var incident = new Incident("{{path("api_1_get")}}/", "{{app.user.apiKey}}");
-    </script>
-    {{ tinymce_init() }}
 {% endblock %}

@@ -7,6 +7,9 @@
 
 security:
     firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
         secured_area:
             pattern:    ^/api
             anonymous: ~
@@ -26,9 +29,7 @@ security:
             remember_me:
                 key:        4aca1f11eea0be14028201ecc5579fb210c90bd3
                 lifetime:   604800  # 604.800 = 3.600 * 24 * 7 = 1 semana
-        dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+
     
     access_control:
         - { path: ^/user/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }

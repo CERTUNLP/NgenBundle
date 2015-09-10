@@ -132,9 +132,6 @@ a.fos_comment_thread_feed {
     cursor: pointer;
 }
 
-.glyphicon {
-    font-size: 17px;
-}
 
 .footer {
     margin-top: 30px;
@@ -144,20 +141,20 @@ a.fos_comment_thread_feed {
     margin-top: 20px;
 }
 
-.glyphicon.alert-success{
+.fa.alert-success{
     background-color: transparent;
 }
-.glyphicon.alert-danger{
+.fa.alert-danger{
     background-color: transparent;
 }
-.glyphicon.alert-info{
+.fa.alert-info{
     background-color: transparent;
 }
-.glyphicon.alert-warning{
+.fa.alert-warning{
     background-color: transparent;
 }
 
-.glyphicon-refresh-animate {
+.fa-refresh-animate {
     -animation: spin .7s infinite linear;
     -webkit-animation: spin2 .7s infinite linear;
 }

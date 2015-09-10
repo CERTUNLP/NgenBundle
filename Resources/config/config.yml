@@ -4,7 +4,17 @@
 # 
 # This source file is subject to the GPL v3.0 license that is bundled
 # with this source code in the file LICENSE.
-
+assetic:
+    filters:
+        less:
+            node: /usr/bin/node
+            node_paths: [/usr/lib/node_modules]
+            apply_to: "\.less$"
+        cssrewrite: ~
+    bundles:
+        - CertUnlpNgenBundle
+        - FOSCommentBundle
+        
 swiftmailer:
     mailers:
         cert_unlp.ngen.incident.mailer:
@@ -46,6 +56,8 @@ fos_rest:
         rules:
             - { path: ^/api/v1/incidents, priorities: [json, html, xml ], fallback_format: ~, prefer_extension: true }
             - { path: ^/api/v1/threads, priorities: [html,json], fallback_format: json }
+            - { path: ^/css, priorities: [css], fallback_format: false, prefer_extension: true }
+            - { path: ^/js, priorities: [js], fallback_format: false, prefer_extension: true }
             - { path: ^/, priorities: [json, html, xml ], fallback_format: ~, prefer_extension: true }
 
     exception:
@@ -64,22 +76,14 @@ fos_rest:
 nelmio_api_doc:
     name: Page API
                             
-assetic:
-    filters:
-        less:
-            node: /usr/bin/node
-            node_paths: [/usr/lib/node_modules]
-            apply_to: "\.less$"
-        cssrewrite: ~
-    bundles:
-        - CertUnlpNgenBundle
-        - FOSCommentBundle
+
 
 braincrafted_bootstrap:
     assets_dir: %kernel.root_dir%/../vendor/twbs/bootstrap
     jquery_path: %kernel.root_dir%/../vendor/components/jquery/jquery.min.js
     less_filter: less
     fonts_dir: %kernel.root_dir%/../web/fonts
+    icon_prefix: fa
     auto_configure:
         assetic: true
         twig: true

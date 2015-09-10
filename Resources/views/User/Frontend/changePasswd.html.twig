@@ -7,17 +7,14 @@
  with this source code in the file LICENSE.
 #}
 
-{% extends 'CertUnlpNgenBundle::base.html.twig' %}
+{% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
 
-{% block title %}User Login{% endblock %}
-{% block id 'login' %}
-
-    {% block body %}
-        <form action="{{ path('cert_unlp_ngen_user_password_change') }}" method="post" {{form_enctype(form) }}>
-            {{ form_errors(form) }}
-            <h2 class="form-signin-heading">Password change</h2>
-            {{ form_row(form.oldPassword) }}
-            {{ form_row(form.newPassword) }}
-            <input class="btn btn-lg btn-primary btn-block" type="submit" name="login" value="{{ "Sign in" | trans }}" />
-        </form>
-    {% endblock %}
+{% block content_header %}
+    <h1 class="page-header">{{icon('key fa-fw')}}Change password</h1>
+{% endblock %}
+{% block content_body %}
+    {%  if (form is not null) %}
+        {{ form_errors(form, { 'global_errors': true }) }}
+        {{ form(form, {'attr': {'id': 'network_add_update_form'},'method': method | default('post'),'style': 'horizontal', 'col_size': 'sm' }) }}
+    {% endif %}
+{% endblock %}
