@@ -1,7 +1,55 @@
 {% extends 'CertUnlpNgenBundle::base.html.twig' %}
 {% block body %}
     {% block navigation_block %}
-            {% include 'CertUnlpNgenBundle:navBar:navBar.html.twig' %}
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{path('cert_unlp_ngen_incident_frontend_home')}}">Ngen</a>
+            </div> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            {% include 'CertUnlpNgenBundle:navBar:navRight.html.twig' %}
+            {% block navigation_sidebar %}
+                <div class="navbar-default sidebar" role="navigation">
+                    <div class="sidebar-nav navbar-collapse" aria-expanded="false" style="height: 1px;">
+
+                        <ul class="nav in" id="side-menu">
+                            <li class="sidebar-search">
+                                <form method='post' action="{% block sideBar_search_path %}{{path('cert_unlp_ngen_incident_search_incident')}}{% endblock %}" role="search">
+                                    <div class="input-group custom-search-form">
+                                        <input type="text" name="term" class="form-control" value="{{term | default('')}}" placeholder="Search...">
+                                        <span class="input-group-btn">
+                                            <button type="submit" class="btn btn-default">
+                                                {{ icon('search') }}
+                                            </button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </li>
+                            {#<li>
+                                <a href="{{path('cert_unlp_ngen_incident_frontend_home')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            </li>#}
+                            <li>
+                                <a href="{{path('cert_unlp_ngen_incident_frontend_home')}}" {% if app.request.get('_route') == 'cert_unlp_ngen_incident_frontend_home' %} class="active" {% endif %}>
+                                    {{icon('exclamation-circle fa-fw')}} Incidents</a>
+                            </li>
+                            <li>
+                                <a href="{{path('cert_unlp_ngen_incident_frontend_home')}}" {% if app.request.get('_route') == 'cert_unlp_ngen_incident_frontend_home' %} class="active" {% endif %}>
+                                    {{icon('share-alt fa-fw')}} Networks
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">{{icon('users fa-fw')}} Users</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.sidebar-collapse -->
+                </div>
+            {% endblock %}
+        </nav>
     {% endblock %}
 
     {% block page_wrapper %}
