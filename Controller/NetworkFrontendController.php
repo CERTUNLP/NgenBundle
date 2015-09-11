@@ -27,11 +27,6 @@ class NetworkFrontendController extends Controller {
      * @Route("/", name="cert_unlp_ngen_network_frontend_home")
      */
     public function homeAction(Request $request) {
-        $networks = $this->getDoctrine()
-                ->getRepository('CertUnlpNgenBundle:Network')
-                ->findBy(array(), array('ip' => 'desc'));
-//        $flash = $this->get('braincrafted_bootstrap.flash');
-//        $flash->danger('This is an alert flash message.');
         $em = $this->get('doctrine.orm.entity_manager');
         $dql = "SELECT n,au,na "
                 . "FROM CertUnlpNgenBundle:Network n join n.academicUnit au join n.networkAdmin na";
@@ -39,11 +34,11 @@ class NetworkFrontendController extends Controller {
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
-                $query, $request->query->get('page', 1), 10
+                $query, $request->query->get('page', 1), 7
                 , array('defaultSortFieldName' => 'n.ip', 'defaultSortDirection' => 'asc')
         );
 
-        return array('networks' => $networks, 'pagination' => $pagination);
+        return array('networks' => $pagination);
     }
 
     /**
