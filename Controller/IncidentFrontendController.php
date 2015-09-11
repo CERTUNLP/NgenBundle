@@ -77,14 +77,14 @@ class IncidentFrontendController extends Controller {
     public function searchIncidentAction(Request $request) {
         $finder = $this->container->get('fos_elastica.finder.incidents.incident');
 
-        $results = $finder->find($request->get('term'), 999999999);
+        $results = $finder->find($request->get('term'));
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
-                $results, $request->query->get('page', 1), 10
+                $results, $request->query->get('page', 1), 7
                 , array('defaultSortFieldName' => 'i.createdAt', 'defaultSortDirection' => 'desc')
         );
-        return array('incidents' => $results, 'pagination' => $pagination, 'term' => $request->get('term'));
+        return array('incidents' => $results, 'incidents' => $pagination, 'term' => $request->get('term'));
     }
 
     /**
