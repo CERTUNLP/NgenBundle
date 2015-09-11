@@ -26,26 +26,20 @@ class IncidentFrontendController extends Controller {
      * @Route("/", name="cert_unlp_ngen_incident_frontend_home")
      */
     public function homeAction(Request $request) {
-//        var_dump($this->container->getParameterBag()
-//                );die;
-        $incidents = $this->getDoctrine()
-                ->getRepository('CertUnlpNgenBundle:Incident')
-                ->findBy(array(), array('date' => 'desc'));
-//        $flash = $this->get('braincrafted_bootstrap.flash');
-//        $flash->danger('This is an alert flash message.');
+
         $em = $this->get('doctrine.orm.entity_manager');
         $dql = "SELECT i,s,f,t "
-                . "FROM CertUnlpNgenBundle:Incident i join i.state s left join i.feed f join i.type t "
+                . "FROM CertUnlpNgenBundle:Incident i join i.state s inner join i.feed f join i.type t "
                 . "WHERE s.slug = 'open' and i.isClosed = false";
         $query = $em->createQuery($dql);
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
-                $query, $request->query->get('page', 1), 10
+                $query, $request->query->get('page', 1), 7
                 , array('defaultSortFieldName' => 'i.createdAt', 'defaultSortDirection' => 'desc')
         );
 
-        return array('incidents' => $incidents, 'pagination' => $pagination);
+        return array('incidents' => $pagination);
     }
 
     /**
