@@ -1,5 +1,5 @@
 {# 
- This file is part of the Ngen - CSIRT Incident Report System.
+ This file is part of the Ngen - CSIRT Network Report System.
  
  (c) CERT UNLP <support@cert.unlp.edu.ar>
  
@@ -12,6 +12,9 @@
 {% block content_header %}
     <h1 class="page-header">{{icon('share-alt fa-fw')}} Networks</h1>
 {% endblock %}
+
+{% block sideBar_search_path %}{{path('cert_unlp_ngen_network_search_network')}}{% endblock %}
+
 {% block content_body %}
 
     {% include 'CertUnlpNgenBundle:Network:Frontend/list/networkList.html.twig' with {'networks': networks} %}

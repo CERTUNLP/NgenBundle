@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Ngen - CSIRT Incident Report System.
+ * This file is part of the Ngen - CSIRT Network Report System.
  *
  * (c) CERT UNLP <support@cert.unlp.edu.ar>
  *
@@ -63,6 +63,23 @@ class NetworkFrontendController extends Controller {
      */
     public function datailNetworkAction(Network $network) {
         return array('network' => $network);
+    }
+
+    /**
+     * @Template("CertUnlpNgenBundle:Network:Frontend/home.html.twig")
+     * @Route("search", name="cert_unlp_ngen_network_search_network")
+     */
+    public function searchNetworkAction(Request $request) {
+        $finder = $this->container->get('fos_elastica.finder.networks.network');
+
+        $results = $finder->find($request->get('term'));
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+                $results, $request->query->get('page', 1), 7
+                , array('defaultSortFieldName' => 'i.createdAt', 'defaultSortDirection' => 'desc')
+        );
+        return array('networks' => $results, 'networks' => $pagination, 'term' => $request->get('term'));
     }
 
 }

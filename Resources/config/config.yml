@@ -189,7 +189,44 @@ fos_elastica:
                             update: true
                             delete: true
                         finder: ~
-
+        networks:
+            types:
+                network:
+                    mappings:
+                        id: ~
+                        ip: ~
+                        ipMask: ~
+                        createdAt: 
+                            type: date
+                        updatedAt: 
+                            type: date
+                        isActive:
+                            type: boolean
+                        networkAdmin:
+                            type: "object"
+                            properties:
+                                slug: ~
+                                email: ~
+                                name: ~
+                                isActive:
+                                    type: boolean
+                        academicUnit:
+                            type: "object"
+                            properties:
+                                slug: ~
+                                name: ~
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\Network
+                        provider: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
+                        finder: ~
 fos_comment:
     db_driver: orm
     class:
