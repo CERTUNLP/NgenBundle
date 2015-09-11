@@ -19,10 +19,8 @@ use Symfony\Component\Validator\Constraints\Ip as IpConstraint;
  */
 class Ip extends IpConstraint {
 
-    public $message = 'The host addres "%string%" does not belong to any network!';
-
     public function validatedBy() {
-        return 'valid.network.validator';
+        return 'ip.validator';
     }
 
 }
