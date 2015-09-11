@@ -55,7 +55,6 @@ class Network implements NetworkInterface {
     /**
      * @var string
      * @NetworkAssert\Ip
-     * @NetworkAssert\ValidNetwork
      * @ORM\Column(name="ip", type="string", length=40)
      */
     private $ip;

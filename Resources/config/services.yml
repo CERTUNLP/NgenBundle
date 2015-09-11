@@ -75,6 +75,11 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: valid.network.validator }
             
+    cert_unlp.ngen.network.ip.validator:
+        class: CertUnlp\NgenBundle\Validator\Constraints\IpValidator
+        tags:
+            - { name: validator.constraint_validator, alias: ip.validator }
+            
     cert_unlp.ngen.network.handler:
         class:        "%cert_unlp.ngen.network.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.network.class%","@form.factory", "@security.context","%cert_unlp.ngen.network.default_network%"]
