@@ -7,11 +7,14 @@
  with this source code in the file LICENSE.
 #}
 {% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
-{% block sideBar_search_path %}{{path('cert_unlp_ngen_incident_search_incident')}}{% endblock %}
+
+{% block title %}Networks{% endblock %}
 
 {% block content_header %}
     <h1 class="page-header">{{icon('exclamation-circle fa-fw')}} Incidents</h1>
 {% endblock %}
+
+{% block sideBar_search_path %}{{path('cert_unlp_ngen_incident_search_incident')}}{% endblock %}
 
 {% block content_body %}
     {% include 'CertUnlpNgenBundle:Incident:Frontend/list/incidentList.html.twig' with {'incident': incidents} %}

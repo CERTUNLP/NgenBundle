@@ -18,7 +18,7 @@
     {% endif %}
 {% endblock %}
 
-{% block javascripts_footer %}
+{% block javascripts %}
     {{ parent() }}
     <script>
         var network = new Network("{{path("api_1_get")}}/", "{{app.user.apiKey}}");
