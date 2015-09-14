@@ -23,8 +23,12 @@ swiftmailer:
             sender_address: "%cert_unlp.ngen.incident.mailer.sender_address%"
             username:  "%cert_unlp.ngen.incident.mailer.username%"
             password:  "%cert_unlp.ngen.incident.mailer.password%"
+            
 doctrine:
     orm:
+        auto_mapping: true
+        query_cache_driver:    apc
+        metadata_cache_driver: apc
         entity_listener_resolver: cert_unlp.ngen.doctrine.entity_listener_resolver
         resolve_target_entities:
             CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\Incident 
