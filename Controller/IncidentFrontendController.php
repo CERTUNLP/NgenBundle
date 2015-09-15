@@ -31,7 +31,7 @@ class IncidentFrontendController extends Controller {
         $dql = "SELECT i,s,f,t "
                 . "FROM CertUnlpNgenBundle:Incident i join i.state s inner join i.feed f join i.type t "
 //                . "WHERE s.slug = 'open' and i.isClosed = false"
-                ;
+        ;
         $query = $em->createQuery($dql);
 
         $paginator = $this->get('knp_paginator');
@@ -78,14 +78,14 @@ class IncidentFrontendController extends Controller {
     public function searchIncidentAction(Request $request) {
         $finder = $this->container->get('fos_elastica.finder.incidents.incident');
 
-        $results = $finder->find($request->get('term'));
-
+        $results = $finder->find($request->get('term'), 1000);
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
                 $results, $request->query->get('page', 1), 7
                 , array('defaultSortFieldName' => 'i.createdAt', 'defaultSortDirection' => 'desc')
         );
-        return array('incidents' => $results, 'incidents' => $pagination, 'term' => $request->get('term'));
+        $pagination->setParam('term', $request->get('term'));
+        return array('incidents' => $pagination, 'term' => $request->get('term'));
     }
 
     /**
