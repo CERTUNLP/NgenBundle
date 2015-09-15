@@ -79,7 +79,10 @@ class NetworkFrontendController extends Controller {
                 $results, $request->query->get('page', 1), 7
                 , array('defaultSortFieldName' => 'i.createdAt', 'defaultSortDirection' => 'desc')
         );
-        return array('networks' => $results, 'networks' => $pagination, 'term' => $request->get('term'));
+        
+        $pagination->setParam('term', $request->get('term'));
+
+        return array('networks' => $pagination, 'term' => $request->get('term'));
     }
 
 }
