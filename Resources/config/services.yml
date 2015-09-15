@@ -52,7 +52,7 @@ services:
         
     cert_unlp.ngen.incident.delegator:
         class:        "%cert_unlp.ngen.incident.delegator.class%"
-        arguments:    [["@cert_unlp.ngen.incident.evidence.manager","@cert_unlp.ngen.incident.mailer","@cert_unlp.ngen.seed.redmine"]]
+        arguments:    [["@cert_unlp.ngen.incident.evidence.manager","@cert_unlp.ngen.incident.mailer"]]
     
     cert_unlp.ngen.incident.converter:
         class: CertUnlp\NgenBundle\Services\Converter\IncidentConverter
