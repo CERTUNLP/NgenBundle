@@ -52,7 +52,7 @@ class IncidentFrontendController extends Controller {
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:Incident:Frontend/newIncident.html.twig")
+     * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentForm.html.twig")
      * @Route("{hostAddress}/{date}/{type}/edit", name="cert_unlp_ngen_incident_edit_incident")
      * @ParamConverter("incident", class="CertUnlpNgenBundle:Incident", options={"repository_method" = "findByHostDateType"})
 
