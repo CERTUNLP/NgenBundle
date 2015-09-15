@@ -60,10 +60,9 @@ fos_rest:
         rules:
             - { path: ^/api/v1/incidents, priorities: [json, html, xml ], fallback_format: ~, prefer_extension: true }
             - { path: ^/api/v1/threads, priorities: [html,json], fallback_format: json }
-            - { path: ^/css, priorities: [css], fallback_format: false, prefer_extension: true }
-            - { path: ^/js, priorities: [js], fallback_format: false, prefer_extension: true }
-            - { path: ^/, priorities: [json, html, xml ], fallback_format: ~, prefer_extension: true }
-
+#            - { path: ^/css, priorities: [css], fallback_format: false, prefer_extension: true }
+#            - { path: ^/js, priorities: [js], fallback_format: false, prefer_extension: true }
+            - { path: '^/', stop: true }
     exception:
         codes:
             'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404

@@ -30,7 +30,8 @@ class IncidentFrontendController extends Controller {
         $em = $this->get('doctrine.orm.entity_manager');
         $dql = "SELECT i,s,f,t "
                 . "FROM CertUnlpNgenBundle:Incident i join i.state s inner join i.feed f join i.type t "
-                . "WHERE s.slug = 'open' and i.isClosed = false";
+//                . "WHERE s.slug = 'open' and i.isClosed = false"
+                ;
         $query = $em->createQuery($dql);
 
         $paginator = $this->get('knp_paginator');

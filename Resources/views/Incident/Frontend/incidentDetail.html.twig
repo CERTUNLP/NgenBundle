@@ -9,7 +9,7 @@
 
 {% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
 {% block content_header %}
-    <h1 class="page-header">Incident [ID: {{incident.id}}][{{incident.type}}]{%include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incdent': incident}%}</h1>
+    <h1 class="page-header">Incident [ID: {{incident.id}}][{{incident.type}}]{%include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': incident}%}</h1>
 {% endblock %}
 {% block content_body %}
     <div class="row">
@@ -51,7 +51,7 @@
                                 State
                             </td>
                             <td class="">
-                                {%include "CertUnlpNgenBundle:Incident:Frontend/stateLabel.html.twig" with {'incdent': incident}%}
+                                {%include "CertUnlpNgenBundle:Incident:Frontend/stateLabel.html.twig" with {'incident': incident}%}
                             </td>
                         </tr>
                         <tr>
@@ -86,7 +86,7 @@
                                 Date
                             </td>
                             <td class="">
-                                {%include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incdent': incident,'lastTimeDetected': false}%}
+                                {%include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incident': incident,'lastTimeDetected': false}%}
                             </td>
                         </tr>
                         {%if incident.lastTimeDetected%}
@@ -95,7 +95,7 @@
                                     Last Time Detected
                                 </td>
                                 <td class="">
-                                    {%include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incdent': incident, 'lastTimeDetected':true}%}
+                                    {%include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incident': incident, 'lastTimeDetected':true}%}
                                 </td>
                             </tr>
                         {%endif%}
