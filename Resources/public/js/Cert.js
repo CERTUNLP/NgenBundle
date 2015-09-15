@@ -11,7 +11,7 @@ var Notify = Class.extend({
         }, 5000);
     },
     getNotificationTemplate: function (text, type) {
-        var alert = $('<div class="alert alert-' + type + ' alert-dismissible"><button type="button" class="close" data-dismiss="alert">×</button>' + text + '<div>');
+        var alert = $('<div class="alert alert-' + type + ' alert-dismissible"><button type="button" class="close" data-dismiss="alert">×</button>' + text + '</div>');
         alert.alert();
         window.setTimeout(function () {
             alert.fadeTo(500, 0).slideUp(500, function () {
