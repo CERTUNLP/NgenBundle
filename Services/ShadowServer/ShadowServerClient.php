@@ -33,6 +33,9 @@ class ShadowServerClient implements ContainerAwareInterface {
     public function __construct($reports_url, $shadow_server_user, $shadow_server_password, $download_directory, $shadow_server_report_type_factory, ContainerInterface $container) {
 
         $this->download_directory = $download_directory . "/shadowserver/reports/";
+        if (!mkdir($this->download_directory, 0777, true)) {
+            die('Failed to create folders...');
+        }
         $this->reports_url = $reports_url;
         $this->scraper = new Scraper();
         $this->scraper->getClient()->setDefaultOption('config/curl/' . CURLOPT_TIMEOUT, 0);

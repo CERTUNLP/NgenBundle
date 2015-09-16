@@ -50,8 +50,9 @@ CERT UNLP Ngen Bundle
     php app/console d:f:l --no-interaction
 ### deploy
     rm -rf app/logs/* app/cache/*;
-    setfacl -R -m u:<user>:rwx -m u:www-data:rwx  app/cache app/logs;
-    setfacl -dR -m u:<user>:rwx -m u:www-data:rwx  app/cache app/logs;
+
+    setfacl -R -m u:<user>:rwx -m u:www-data:rwx  app/cache app/logs  app/Resources/feed/ app/Resources/incident/;
+    setfacl -dR -m u:<user>:rwx -m u:www-data:rwx  app/cache app/logs  app/Resources/feed/ app/Resources/incident/;
     composer install --optimize-autoloader
     php app/console cache:clear --env=prod --no-debug
     php app/console assetic:dump --env=prod --no-debug
