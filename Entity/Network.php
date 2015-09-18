@@ -17,6 +17,7 @@ use CertUnlp\NgenBundle\Model\IncidentInterface;
 use CertUnlp\NgenBundle\Validator\Constraints as NetworkAssert;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Network
@@ -26,6 +27,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(
  *     fields={"ip", "ipMask","isActive"},
  *     message="This network was already added!")
+ * @JMS\ExclusionPolicy("all")
  */
 class Network implements NetworkInterface {
 
@@ -42,6 +44,7 @@ class Network implements NetworkInterface {
      * @var string
      *
      * @ORM\Column(name="ip_mask", type="string", length=40)
+     * @JMS\Expose
      */
     private $ipMask;
 
@@ -56,6 +59,7 @@ class Network implements NetworkInterface {
      * @var string
      * @NetworkAssert\Ip
      * @ORM\Column(name="ip", type="string", length=40)
+     * @JMS\Expose
      */
     private $ip;
 
@@ -68,11 +72,13 @@ class Network implements NetworkInterface {
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\NetworkAdmin", inversedBy="networks",cascade={"persist"}) 
+     * @JMS\Expose
      */
     private $networkAdmin;
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\AcademicUnit", inversedBy="networks",cascade={"persist"}) 
+     * @JMS\Expose
      */
     private $academicUnit;
 
@@ -83,6 +89,7 @@ class Network implements NetworkInterface {
      * @var boolean
      *
      * @ORM\Column(name="is_active", type="boolean")
+     * @JMS\Expose
      */
     private $isActive = true;
 
@@ -90,6 +97,8 @@ class Network implements NetworkInterface {
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
 
@@ -97,6 +106,8 @@ class Network implements NetworkInterface {
      * @var \DateTime
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
 

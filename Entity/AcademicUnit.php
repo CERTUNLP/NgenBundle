@@ -13,12 +13,14 @@ namespace CertUnlp\NgenBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * AcademicUnit
  *
  * @ORM\Table()
  * @ORM\Entity
+ * @JMS\ExclusionPolicy("all")
  */
 class AcademicUnit {
 
@@ -35,6 +37,7 @@ class AcademicUnit {
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=50)
+     * @JMS\Expose
      */
     private $name;
 
@@ -43,6 +46,7 @@ class AcademicUnit {
      * 
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
+     * @JMS\Expose
      * */
     private $slug;
 

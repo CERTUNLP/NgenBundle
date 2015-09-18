@@ -20,6 +20,7 @@ use CertUnlp\NgenBundle\Model\IncidentInterface;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\File;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Incident
@@ -28,6 +29,8 @@ use Symfony\Component\HttpFoundation\File\File;
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Entity\IncidentRepository")
  * @ORM\HasLifecycleCallbacks
  * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Listener\IncidentListener" })
+ * @JMS\ExclusionPolicy("all")
+ * 
  */
 class Incident implements IncidentInterface {
 
@@ -37,6 +40,7 @@ class Incident implements IncidentInterface {
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Expose
      */
     private $id;
 
@@ -46,6 +50,7 @@ class Incident implements IncidentInterface {
      * @ORM\Column(name="host_address", type="string", length=20)
      * @NetworkAssert\Ip
      * @NetworkAssert\ValidNetwork
+     * @JMS\Expose
      */
     private $hostAddress;
 
@@ -53,6 +58,8 @@ class Incident implements IncidentInterface {
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="date")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $date;
 
@@ -60,6 +67,8 @@ class Incident implements IncidentInterface {
      * @var \DateTime
      *
      * @ORM\Column(name="last_time_detected", type="datetime",nullable=true)
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $lastTimeDetected;
 
@@ -67,6 +76,8 @@ class Incident implements IncidentInterface {
      * @var \DateTime
      *
      * @ORM\Column(name="renotification_date", type="datetime",nullable=true)
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $renotificationDate;
 
@@ -75,6 +86,7 @@ class Incident implements IncidentInterface {
      * 
      * @Gedmo\Slug(fields={"hostAddress"},separator="_")     
      * @ORM\Column(name="slug", type="string", length=100,nullable=true,unique=true)
+     * @JMS\Expose
      * */
     private $slug;
 
@@ -82,6 +94,8 @@ class Incident implements IncidentInterface {
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
 
@@ -89,50 +103,72 @@ class Incident implements IncidentInterface {
      * @var \DateTime
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
 
-    /** @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Model\NetworkInterface", inversedBy="incidents") */
+    /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Model\NetworkInterface", inversedBy="incidents") 
+     * @JMS\Expose
+     * @JMS\Type("CertUnlp\NgenBundle\Entity\Network")     
+     */
     private $network;
 
-    /** @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\NetworkAdmin", inversedBy="incidents") */
+    /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\NetworkAdmin", inversedBy="incidents")    
+     * @JMS\Expose
+     * @JMS\Type("CertUnlp\NgenBundle\Entity\NetworkAdmin")
+     */
     private $networkAdmin;
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\AcademicUnit", inversedBy="incidents") 
+     * @JMS\Expose
+     * @JMS\Type("CertUnlp\NgenBundle\Entity\AcademicUnit")
      */
     private $academicUnit;
 
-    /** @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Model\ReporterInterface", inversedBy="incidents") */
+    /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Model\ReporterInterface", inversedBy="incidents") 
+     */
     private $reporter;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="is_closed", type="boolean")
+     * @JMS\Expose
+     * @JMS\Type("boolean")
      */
     private $isClosed = false;
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentType")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
+     * @JMS\Type("CertUnlp\NgenBundle\Entity\IncidentType")
+     * @JMS\Expose
      */
     private $type;
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentFeed") 
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
+     * @JMS\Type("CertUnlp\NgenBundle\Entity\IncidentType")
+     * @JMS\Expose
      */
     private $feed;
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentState") 
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
+     * @JMS\Type("CertUnlp\NgenBundle\Entity\IncidentType")
+     * @JMS\Expose
      */
     private $state;
 
     /**
-     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentCommentThread",mappedBy="incident", fetch="EXTRA_LAZY") 
+     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentCommentThread",mappedBy="incident", fetch="EXTRA_LAZY")
      */
     private $comment_thread;
 
