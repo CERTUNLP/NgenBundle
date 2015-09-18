@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\View\View;
-use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Symfony\Component\Form\FormTypeInterface;
@@ -34,7 +33,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class IncidentController extends FOSRestController {
 
     /**
-     * List all pages.
+     * List all incidents.
      *
      * @ApiDoc(
      *   resource = true,
@@ -55,7 +54,7 @@ class IncidentController extends FOSRestController {
     }
 
     /**
-     * List all pages.
+     * List all incidents.
      *
      * @ApiDoc(
      *   resource = true,
@@ -64,12 +63,8 @@ class IncidentController extends FOSRestController {
      *   }
      * )
      *
-     * @Annotations\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing pages.")
-     * @Annotations\QueryParam(name="limit", requirements="\d+", default="5", description="How many pages to return.")
-     *
-     * @Annotations\View(
-     *  templateVar="incidents"
-     * )
+     * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incidents.")
+     * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many incidents to return.")
      *
      * @param Request               $request      the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
@@ -81,31 +76,29 @@ class IncidentController extends FOSRestController {
         $offset = null == $offset ? 0 : $offset;
         $limit = $paramFetcher->get('limit');
 
-        return $this->container->get('cert_unlp.ngen.incident.handler')->all($limit, $offset);
+        return $this->container->get('cert_unlp.ngen.incident.handler')->all([], [], $limit, $offset);
     }
 
     /**
-     * Get single Page.
+     * Get single Incident.
      *
      * @ApiDoc(
      *   resource = true,
-     *   description = "Gets a Page for a given id",
+     *   description = "Gets a Incident for a given id",
      *   output = "CertUnlp\NgenBundle\Entity\Incident",
      *   statusCodes = {
      *     200 = "Returned when successful",
-     *     404 = "Returned when the page is not found"
+     *     404 = "Returned when the incident is not found"
      *   }
      * )
      *
-     * @Annotations\View(templateVar="incident")
-     *
-     * @param int     $id      the page id
+     * @param int     $id      the incident id
      *
      * @return array
      *
      * @throws NotFoundHttpException when page not exist
      * @Fos\Get("/incidents/{hostAddress}/{date}/{type}")
-     *
+     * 
      * @ParamConverter("incident", class="CertUnlpNgenBundle:Incident", options={"repository_method" = "findByHostDateType"})
      */
     public function getIncidentAction(Incident $incident) {
@@ -113,46 +106,18 @@ class IncidentController extends FOSRestController {
     }
 
     /**
-     * Presents the form to use to create a new page.
+     * Create a Incident from the submitted data.
      *
      * @ApiDoc(
      *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
-     * )
-     *
-     * @Annotations\View(
-     *  templateVar = "form"
-     * )
-     *
-     * @return FormTypeInterface
-     */
-    public function newIncidentAction() {
-        return $this->createForm(new IncidentType());
-    }
-
-    /**
-     * Create a Page from the submitted data.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Creates a new page from the submitted data.",
+     *   description = "Creates a new incident from the submitted data.",
      *   input = "CertUnlp\NgenBundle\Form\IncidentType",
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     400 = "Returned when the form has errors"
      *   }
      * )
-     *
-     * @Annotations\QueryParam(name="bulk", requirements="\d+", nullable=true, description="Indicates that this is a bulk post with various incidents.")
      * 
-     * @Annotations\View(
-     *  template = "CertUnlpNgenBundle:Incident:newIncident.html.twig",
-     *  statusCode = Codes::HTTP_BAD_REQUEST,
-     *  templateVar = "form"
-     * )
-     *
      * @param Request $request the request object
      *
      * @return FormTypeInterface|View
@@ -197,7 +162,7 @@ class IncidentController extends FOSRestController {
     }
 
     /**
-     * Update existing page from the submitted data or create a new page at a specific location.
+     * Update existing incident from the submitted data or create a new incident at a specific location.
      *
      * @ApiDoc(
      *   resource = true,
@@ -208,17 +173,17 @@ class IncidentController extends FOSRestController {
      *   }
      * )
      *
-     * @Annotations\View(
+     * @FOS\View(
      *  template = "CertUnlpNgenBundle:Incident:editIncident.html.twig",
      *  templateVar = "form"
      * )
      *
      * @param Request $request the request object
-     * @param int     $id      the page id
+     * @param int     $id      the incident id
      *
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when page not exist
+     * @throws NotFoundHttpException when incident not exist
      * @FOS\Patch("/incidents/{hostAddress}/{date}/{type}/update")
      *
      * @ParamConverter("incident", class="CertUnlpNgenBundle:Incident", options={"repository_method" = "findByHostDateType"})
@@ -246,7 +211,7 @@ class IncidentController extends FOSRestController {
     }
 
     /**
-     * Update existing page from the submitted data or create a new page at a specific location.
+     * Update existing incident from the submitted data or create a new incident at a specific location.
      *
      * @ApiDoc(
      *   resource = true,
@@ -258,7 +223,7 @@ class IncidentController extends FOSRestController {
      *   }
      * )
      *
-     * @Annotations\View(
+     * @FOS\View(
      *  template = "CertUnlpNgenBundle:Incident:editIncident.html.twig",
      * statusCode = Codes::HTTP_BAD_REQUEST,
 
@@ -270,24 +235,24 @@ class IncidentController extends FOSRestController {
      *
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when page not exist
+     * @throws NotFoundHttpException when incident not exist
      */
     public function putIncidentAction(Request $request, $id) {
         try {
-            if (!($page = $this->container->get('cert_unlp.ngen.incident.handler')->get($id))) {
+            if (!($incident = $this->container->get('cert_unlp.ngen.incident.handler')->get($id))) {
                 $statusCode = Codes::HTTP_CREATED;
-                $page = $this->container->get('cert_unlp.ngen.incident.handler')->post(
+                $incident = $this->container->get('cert_unlp.ngen.incident.handler')->post(
                         $request->request->all()
                 );
             } else {
                 $statusCode = Codes::HTTP_NO_CONTENT;
-                $page = $this->container->get('cert_unlp.ngen.incident.handler')->put(
-                        $page, $request->request->all()
+                $incident = $this->container->get('cert_unlp.ngen.incident.handler')->put(
+                        $incident, $request->request->all()
                 );
             }
 
             $routeOptions = array(
-                'incident' => $page->getId(),
+                'incident' => $incident->getId(),
                 '_format' => $request->get('_format')
             );
 
@@ -299,7 +264,7 @@ class IncidentController extends FOSRestController {
     }
 
     /**
-     * Update existing page from the submitted data or create a new page at a specific location.
+     * Update existing incident from the submitted data or create a new incident at a specific location.
      *
      * @ApiDoc(
      *   resource = true,
@@ -310,16 +275,16 @@ class IncidentController extends FOSRestController {
      *   }
      * )
      *
-     * @Annotations\View(
+     * @FOS\View(
      *  statusCode = Codes::HTTP_BAD_REQUEST,
      * )
      *
      * @param Request $request the request object
-     * @param int     $id      the page id
+     * @param int     $id      the incident id
      *
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when page not exist
+     * @throws NotFoundHttpException when incident not exist
      * 
      */
     public function patchIncidentStateAction(Request $request, Incident $incident, \CertUnlp\NgenBundle\Entity\IncidentState $state) {
@@ -341,7 +306,7 @@ class IncidentController extends FOSRestController {
     }
 
     /**
-     * Update existing page from the submitted data or create a new page at a specific location.
+     * Update existing incident from the submitted data or create a new incident at a specific location.
      *
      * @ApiDoc(
      *   resource = true,
@@ -352,17 +317,17 @@ class IncidentController extends FOSRestController {
      *   }
      * )
      *
-     * @Annotations\View(
+     * @FOS\View(
      *  template = "CertUnlpNgenBundle:Incident:editIncident.html.twig",
      *  templateVar = "form"
      * )
      *
      * @param Request $request the request object
-     * @param int     $incident      the page id
+     * @param int     $incident      the incident id
      *
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when page not exist
+     * @throws NotFoundHttpException when incident not exist
      */
     public function deleteIncidentAction(Request $request, Incident $incident) {
         try {

@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use CertUnlp\NgenBundle\Model\ReporterInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * User
@@ -22,6 +23,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Entity\UserRepository")
  * @ORM\HasLifecycleCallbacks
+ * @JMS\ExclusionPolicy("all")
  */
 class User implements UserInterface, ReporterInterface {
 
@@ -38,6 +40,7 @@ class User implements UserInterface, ReporterInterface {
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=50)
+     * @JMS\Expose
      */
     private $name;
 

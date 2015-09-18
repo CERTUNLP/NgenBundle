@@ -45,6 +45,10 @@ sensio_framework_extra:
 
 fos_rest:
     param_fetcher_listener: true
+    allowed_methods_listener: true
+#    access_denied_listener:
+#        json: true
+    body_listener: true
     view:
         view_response_listener: 'force'
         formats:
@@ -53,13 +57,15 @@ fos_rest:
             html: true
         templating_formats:
             html: true
+        
     routing_loader:
         default_format: json
-        include_format: true
+#        include_format: true
     format_listener:
         rules:
-            - { path: ^/api/v1/incidents, priorities: [json, html, xml ], fallback_format: ~, prefer_extension: true }
-            - { path: ^/api/v1/threads, priorities: [html,json], fallback_format: json }
+#             - { path: ^/, priorities: [ html, json, xml ], fallback_format: json, prefer_extension: false }
+            - { path: ^/api/v1/incidents, priorities: [json,html ], fallback_format: ~ }
+#            - { path: ^/api/v1/threads, priorities: [html,json], fallback_format: json }
 #            - { path: ^/css, priorities: [css], fallback_format: false, prefer_extension: true }
 #            - { path: ^/js, priorities: [js], fallback_format: false, prefer_extension: true }
             - { path: '^/', stop: true }
@@ -69,10 +75,6 @@ fos_rest:
             'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
         messages:
             'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
-    allowed_methods_listener: true
-    access_denied_listener:
-        json: true
-    body_listener: true
     disable_csrf_role: ROLE_API
 
 

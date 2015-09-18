@@ -14,12 +14,14 @@ namespace CertUnlp\NgenBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 //use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * IncidentType
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Entity\IncidentTypeRepository")
+ * @JMS\ExclusionPolicy("all")
  */
 class IncidentType {
 //    /**
@@ -35,6 +37,7 @@ class IncidentType {
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100)
+     * @JMS\Expose
      */
     private $name;
 
@@ -43,7 +46,8 @@ class IncidentType {
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
-     * */
+     * @JMS\Expose 
+     */
     private $slug;
 
 //    /**
