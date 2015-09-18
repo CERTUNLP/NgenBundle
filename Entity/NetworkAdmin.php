@@ -13,12 +13,14 @@ namespace CertUnlp\NgenBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * NetworkAdmin
  *
  * @ORM\Table()
  * @ORM\Entity
+ * @JMS\ExclusionPolicy("all")
  */
 class NetworkAdmin {
 
@@ -35,6 +37,7 @@ class NetworkAdmin {
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100)
+     * @JMS\Expose()
      */
     private $name;
 
@@ -50,6 +53,7 @@ class NetworkAdmin {
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=150)
+     * @JMS\Expose()
      */
     private $email;
 
@@ -63,6 +67,7 @@ class NetworkAdmin {
      * @var boolean
      *
      * @ORM\Column(name="is_active", type="boolean")
+     * @JMS\Expose()
      */
     private $isActive = true;
 
