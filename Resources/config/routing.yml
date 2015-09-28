@@ -10,7 +10,7 @@
 #    defaults:  { _controller: CertUnlpNgenBundle:Default:home }
 
 cert_ngen_user:
-    resource: "@CertUnlpNgenBundle/Controller/"
+    resource: "@CertUnlpNgenBundle/Controller/UserFrontendController.php"
     type:     annotation
     prefix:   /user
     

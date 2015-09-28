@@ -153,12 +153,12 @@ class IncidentListener implements ContainerAwareInterface {
     }
 
     public function networkUpdate($incident, $event) {
-        if (!$incident->isClosed()) {
+//        if (!$incident->isClosed()) {
             $entityManager = $event->getEntityManager();
             $network_handler = $this->container->get('cert_unlp.ngen.network.handler');
             $network = $incident->getNetwork();
             $newNetwork = $network_handler->getByHostAddress($incident->getHostAddress());
-            if ($network != null) {
+            if ($network != null && !$incident->isClosed()) {
                 if (!$network->equals($newNetwork)) {
                     $incident->setNetwork($newNetwork);
                 }
@@ -166,7 +166,7 @@ class IncidentListener implements ContainerAwareInterface {
                 $incident->setNetwork($newNetwork);
                 $incident->setNetworkAdmin($newNetwork->getNetworkAdmin());
             }
-        }
+//        }
     }
 
     public function stateUpdate($incident, $event) {
