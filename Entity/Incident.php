@@ -51,6 +51,7 @@ class Incident implements IncidentInterface {
      * @NetworkAssert\Ip
      * @NetworkAssert\ValidNetwork
      * @JMS\Expose
+     * @JMS\Groups({"api"})
      */
     private $hostAddress;
 
@@ -60,6 +61,7 @@ class Incident implements IncidentInterface {
      * @ORM\Column(name="date", type="date")
      * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
      */
     private $date;
 
@@ -69,6 +71,7 @@ class Incident implements IncidentInterface {
      * @ORM\Column(name="last_time_detected", type="datetime",nullable=true)
      * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
      */
     private $lastTimeDetected;
 
@@ -78,6 +81,7 @@ class Incident implements IncidentInterface {
      * @ORM\Column(name="renotification_date", type="datetime",nullable=true)
      * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
      */
     private $renotificationDate;
 
@@ -87,6 +91,7 @@ class Incident implements IncidentInterface {
      * @Gedmo\Slug(fields={"hostAddress"},separator="_")     
      * @ORM\Column(name="slug", type="string", length=100,nullable=true,unique=true)
      * @JMS\Expose
+     * @JMS\Groups({"api"})
      * */
     private $slug;
 
@@ -96,6 +101,7 @@ class Incident implements IncidentInterface {
      * @ORM\Column(name="created_at", type="datetime")
      * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
      */
     private $createdAt;
 
@@ -105,27 +111,27 @@ class Incident implements IncidentInterface {
      * @ORM\Column(name="updated_at", type="datetime")
      * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
      */
     private $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Model\NetworkInterface", inversedBy="incidents") 
      * @JMS\Expose
-     * @JMS\Type("CertUnlp\NgenBundle\Entity\Network")     
      */
     private $network;
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\NetworkAdmin", inversedBy="incidents")    
      * @JMS\Expose
-     * @JMS\Type("CertUnlp\NgenBundle\Entity\NetworkAdmin")
+     * @JMS\Groups({"api"})
      */
     private $networkAdmin;
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\AcademicUnit", inversedBy="incidents") 
      * @JMS\Expose
-     * @JMS\Type("CertUnlp\NgenBundle\Entity\AcademicUnit")
+     * @JMS\Groups({"api"})
      */
     private $academicUnit;
 
@@ -146,24 +152,24 @@ class Incident implements IncidentInterface {
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentType")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
-     * @JMS\Type("CertUnlp\NgenBundle\Entity\IncidentType")
      * @JMS\Expose
+     * @JMS\Groups({"api"})
      */
     private $type;
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentFeed") 
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
-     * @JMS\Type("CertUnlp\NgenBundle\Entity\IncidentType")
      * @JMS\Expose
+     * @JMS\Groups({"api"})
      */
     private $feed;
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentState") 
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
-     * @JMS\Type("CertUnlp\NgenBundle\Entity\IncidentType")
      * @JMS\Expose
+     * @JMS\Groups({"api"})
      */
     private $state;
 

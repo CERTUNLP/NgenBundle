@@ -30,6 +30,7 @@ class IncidentFeeds extends AbstractFixture implements OrderedFixtureInterface {
     public function load(ObjectManager $manager) {
         $incident_feed_types = array(
             array('name' => "Bro"),
+            array('name' => "Constituency"),
             array('name' => "Shadowserver"),
             array('name' => "Netflow"),
             array('name' => "External report"),
