@@ -28,7 +28,7 @@ class IncidentReportController extends FOSRestController {
      *
      * @ApiDoc(
      *   resource = true,
-     *   description = "Prints a mail template for the given incident.",
+     *   description = "Prints a mail html template for the given incident.",
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     404 = "Returned when the incident is not found"
@@ -43,7 +43,7 @@ class IncidentReportController extends FOSRestController {
      */
     public function getIncidentReportMailAction(Incident $incident) {
 
-        return new Response($this->get('cert_unlp.incident.mailer')->send_report($incident, null, true), Codes::HTTP_OK);
+        return new Response($this->get('cert_unlp.ngen.incident.mailer')->send_report($incident, null, true), Codes::HTTP_OK);
     }
 
     /**
@@ -51,22 +51,22 @@ class IncidentReportController extends FOSRestController {
      *
      * @ApiDoc(
      *   resource = true,
-     *   description = "Prints a mail template for the given incident.",
+     *   description = "Prints a mail twig template for the given incident type.",
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     404 = "Returned when the incident is not found"
      *   }
      * )
      *
-     * @Annotations\View()
+     * @Annotations\View("CertUnlpNgenBundle:IncidentReport:incidentReportHtml.html.twig")
      *
      * @param int     $id      the incident id
      *
      * @return array
      */
     public function getIncidentReportHtmlAction(IncidentType $incidentType) {
-        $view = $this->view(array('state' => $incidentType->getSlug()), Codes::HTTP_OK)->setTemplate("CertUnlpNgenBundle:IncidentReport:incidentReportHtml.html.twig");
-        return $this->handleView($view);
+
+        return array('state' => $incidentType->getSlug());
     }
 
 }

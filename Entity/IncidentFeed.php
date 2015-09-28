@@ -13,6 +13,7 @@ namespace CertUnlp\NgenBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Description of IncidentClosingType
@@ -20,6 +21,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @author dam
  * @ORM\Table()
  * @ORM\Entity
+ * @JMS\ExclusionPolicy("all")
  */
 class IncidentFeed {
 //    /**
@@ -43,6 +45,8 @@ class IncidentFeed {
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
+     * @JMS\Expose
+     * @JMS\Groups({"api_input"})
      * */
     private $slug;
 

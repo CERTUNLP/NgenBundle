@@ -54,20 +54,18 @@ fos_rest:
         formats:
             xml:  true
             json: true
-            html: true
-        templating_formats:
-            html: true
+#            html: true
+#        templating_formats:
+#            html: true
         
     routing_loader:
         default_format: json
 #        include_format: true
     format_listener:
         rules:
-#             - { path: ^/, priorities: [ html, json, xml ], fallback_format: json, prefer_extension: false }
-            - { path: ^/api/v1/incidents, priorities: [json,html ], fallback_format: ~ }
+            - { path: ^/api/v1/incidents/(.*)/report/html, priorities: [html], fallback_format: ~ ,prefer_extension: true}
+            - { path: ^/api/v1/, priorities: [json, xml], fallback_format: ~ ,prefer_extension: true}
 #            - { path: ^/api/v1/threads, priorities: [html,json], fallback_format: json }
-#            - { path: ^/css, priorities: [css], fallback_format: false, prefer_extension: true }
-#            - { path: ^/js, priorities: [js], fallback_format: false, prefer_extension: true }
             - { path: '^/', stop: true }
     exception:
         codes:

@@ -55,7 +55,7 @@ class IncidentHandler {
      *
      * @return array
      */
-    public function all($params = array(),$order = array(), $limit = null, $offset = null) {
+    public function all($params = array(), $order = array(), $limit = null, $offset = null) {
         return $this->repository->findBy($params, $order, $limit, $offset);
     }
 
@@ -81,7 +81,7 @@ class IncidentHandler {
      * @return IncidentInterface
      */
     public function put($incident, array $parameters) {
-        return $this->processForm($incident, $parameters, 'PUT');
+        return $this->processForm($incident, $parameters, 'PUT',false);
     }
 
     /**

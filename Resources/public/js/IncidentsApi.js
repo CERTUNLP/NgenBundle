@@ -66,7 +66,7 @@ var IncidentsApi = Class.extend({
         this.doRequest(request, callback);
     },
     updateIncident: function (incidentId, data, callback) {
-        var request = this.api.incidents.create(incidentId+"/update", data, {apikey: this.apiKey});
+        var request = this.api.incidents.create(incidentId, data, {apikey: this.apiKey});
         this.doRequest(request, callback);
     }
 });
