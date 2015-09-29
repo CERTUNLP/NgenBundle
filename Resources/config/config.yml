@@ -64,6 +64,7 @@ fos_rest:
     format_listener:
         rules:
             - { path: ^/api/v1/incidents/(.*)/report/html, priorities: [html], fallback_format: ~ ,prefer_extension: true}
+            - { path: ^/api/v1/threads, priorities: [html,json], fallback_format: json }
             - { path: ^/api/v1/, priorities: [json, xml], fallback_format: ~ ,prefer_extension: true}
 #            - { path: ^/api/v1/threads, priorities: [html,json], fallback_format: json }
             - { path: '^/', stop: true }
