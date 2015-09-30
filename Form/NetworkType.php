@@ -15,6 +15,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class NetworkType extends AbstractType {
 
@@ -25,15 +27,27 @@ class NetworkType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
 
         $builder
-                ->add('ip', null)
-                ->add('ipMask', null)
-                ->add('networkAdmin', null, array('required' => true, 'empty_value' => 'Choose an admin', 'attr' => array('help_text' => 'This will be the network admin'),
+                ->add('ip', null, array(
+                    'attr' => array('placeholder' => 'e.g 192.168.1.1/16'),
+                    'label' => 'Ip/Mask',
+                    'description' => "The network ip and mask",
+                ))
+                ->add('networkAdmin', null, array(
+                    'required' => true,
+                    'empty_value' => 'Choose an admin',
+                    'attr' => array('help_text' => 'This will be the network admin'),
+                    'description' => "The administrator responsible for the network",
                     'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('na')
                         ->where('na.isActive = TRUE')
                         ->orderBy('na.name', 'ASC');
-            }))
-                ->add('academicUnit', null, array('required' => true, 'empty_value' => 'Choose a unit', 'attr' => array('help_text' => 'The unit to which the network belongs'),
+            }
+                ))
+                ->add('academicUnit', null, array(
+                    'required' => true,
+                    'empty_value' => 'Choose a unit',
+                    'attr' => array('help_text' => 'The unit to which the network belongs'),
+                    'description' => "The unit responsible, that owns the network",
                     'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('au')
                         ->orderBy('au.name', 'ASC');
@@ -51,6 +65,17 @@ class NetworkType extends AbstractType {
         $builder->add('save', 'submit', array('attr' =>
             array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => "slide-down"),
         ));
+
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            $network = $event->getData();
+            $form = $event->getForm();
+            // check if the Product object is "new"
+            // If no data is passed to the form, the data is "null".
+            // This should be considered a new "Product"
+            if ($network) {
+                $form->get('ip')->setData($network->getIpAndMask());
+            }
+        });
     }
 
     /**

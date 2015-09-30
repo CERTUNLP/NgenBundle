@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
 use CertUnlp\NgenBundle\Validator\Constraints as NetworkAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMS;
@@ -44,6 +45,10 @@ class Network implements NetworkInterface {
      * @var string
      *
      * @ORM\Column(name="ip_mask", type="string", length=40)
+     * @Assert\Range(
+     *      min = 1,
+     *      max = 32,
+     * )
      * @JMS\Expose
      */
     private $ipMask;

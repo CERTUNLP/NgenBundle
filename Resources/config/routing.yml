@@ -19,11 +19,16 @@ cert_ngen_incident:
     type:     annotation
     prefix:   /incidents
     
+fos_comment_api:
+    type: rest
+    resource: "@FOSCommentBundle/Resources/config/routing.yml"
+    defaults: { _format: html }
+
 cert_ngen_api:
     type: rest
     prefix: /api
     resource: "@CertUnlpNgenBundle/Resources/config/routing_api.yml"
-
+    
 cert_ngen_network:
     resource: "@CertUnlpNgenBundle/Controller/NetworkFrontendController.php"
     type:     annotation
