@@ -22,6 +22,7 @@ fos_comment_api:
     prefix: /v1
     resource: "@FOSCommentBundle/Resources/config/routing.yml"
     defaults: { _format: html }
+    name_prefix:  api_1_
 
 cert_ngen_network_api:
     type: rest

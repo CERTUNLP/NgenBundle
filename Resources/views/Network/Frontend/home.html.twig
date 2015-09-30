@@ -6,23 +6,8 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
-{% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
-
-{% block title %}Networks{% endblock %}
-
-{% block content_header %}
-    <h1 class="page-header">{{icon('share-alt fa-fw')}} Networks</h1>
-{% endblock %}
-
-{% block sideBar_search_path %}{{path('cert_unlp_ngen_network_search_network')}}{% endblock %}
+{% extends 'CertUnlpNgenBundle::Network/Frontend/frontend.html.twig' %}
 
 {% block content_body %}
     {% include 'CertUnlpNgenBundle:Network:Frontend/list/networkList.html.twig' with {'networks': networks} %}
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    <script>
-        var network = new Network("{{path("api_1_get")}}/", "{{app.user.apiKey}}");
-    </script>
 {% endblock %}

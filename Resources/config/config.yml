@@ -64,9 +64,7 @@ fos_rest:
     format_listener:
         rules:
             - { path: ^/api/v1/incidents/(.*)/report/html, priorities: [html], fallback_format: ~ ,prefer_extension: true}
-            - { path: ^/api/v1/threads, priorities: [html,json], fallback_format: json }
             - { path: ^/api/v1/, priorities: [json, xml], fallback_format: ~ ,prefer_extension: true}
-#            - { path: ^/api/v1/threads, priorities: [html,json], fallback_format: json }
             - { path: '^/', stop: true }
     exception:
         codes:
@@ -237,6 +235,23 @@ fos_comment:
         model:
             comment: CertUnlp\NgenBundle\Entity\IncidentComment
             thread: CertUnlp\NgenBundle\Entity\IncidentCommentThread
+    acl: true
+    service:
+        acl:
+            thread:  fos_comment.acl.thread.roles
+            comment: fos_comment.acl.comment.roles
+            vote:    fos_comment.acl.vote.roles
+        manager:
+            thread:  fos_comment.manager.thread.acl
+            comment: fos_comment.manager.comment.acl
+            vote:    fos_comment.manager.vote.acl
+    acl_roles:
+        comment:
+            create: ROLE_USER
+            view: ROLE_USER
+        thread:
+            create: ROLE_USER
+            view: ROLE_USER
 
 stfalcon_tinymce:
         theme:

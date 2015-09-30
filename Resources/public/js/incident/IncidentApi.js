@@ -14,7 +14,7 @@ $.fn.serializeObject = function ()
     });
     return o;
 };
-var IncidentsApi = Class.extend({
+var IncidentApi = Class.extend({
     init: function (apiUrl, apiKey) {
         this.apiKey = apiKey;
         this.apiUrl = apiUrl;
