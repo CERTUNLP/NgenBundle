@@ -71,8 +71,8 @@ class NetworkHandler {
      *
      * @return array
      */
-    public function all($params = array(), $limit = null, $offset = null) {
-        return $this->repository->findBy($params, null, $limit, $offset);
+    public function all($params = array(), $order = array(), $limit = null, $offset = null) {
+        return $this->repository->findBy($params, $order, $limit, $offset);
     }
 
     /**

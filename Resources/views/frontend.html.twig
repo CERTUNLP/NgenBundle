@@ -32,14 +32,3 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/certunlpngen/css/ladda-themeless.min.css') }}" media="screen" />
 {% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-
-    {% javascripts
-    '@CertUnlpNgenBundle/Resources/public/js/api/*'
-    '@CertUnlpNgenBundle/Resources/public/js/*'
-    %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %}

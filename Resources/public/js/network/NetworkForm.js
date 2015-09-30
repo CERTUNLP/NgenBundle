@@ -8,7 +8,7 @@ var NetworkForm = Class.extend({
         return $('#network_add_update_form :submit');
     },
     setNetworkId: function () {
-        this.networkId = $('#ip').val()+"/"+$('#ipMask').val();
+        this.networkId = $('#ip').val();
     },
     getNetworkId: function () {
         return  this.networkId;
@@ -45,6 +45,18 @@ var NetworkForm = Class.extend({
                     } else {
                         $('#' + k).closest('div[class="form-group has-error"]').removeClass('has-error');
                         $('#' + k).siblings('ul').remove();
+                    }
+                });
+                $.each(jqXHR.responseJSON.errors.errors, function (k, v) {
+                    errorsText = "";
+                    if (v.length > 0) {
+                        ul = $('<ul class="help-block" ></ul>');
+                        ul.append($('<li>' + v + '</li>'));
+                        $('#ip').after(ul);
+                        $('#ip').closest('div[class="form-group"]').addClass('has-error');
+                    } else {
+                        $('#ip').closest('div[class="form-group has-error"]').removeClass('has-error');
+                        $('#ip').siblings('ul').remove();
                     }
                 });
             }

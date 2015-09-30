@@ -1,7 +1,7 @@
 var Incident = Class.extend({
     init: function (apiUrl, apiKey) {
         this.eventTarget = null;
-        this.api = new IncidentsApi(apiUrl, apiKey);
+        this.api = new IncidentApi(apiUrl, apiKey);
         this.form = new IncidentForm();
         $("#incident_action_dropdown").delegate("a.state-label", "click", this.dropDownChangeLinks);
         $(".incident-action-dropdown").delegate("a.state-label", "click", $.proxy(this.changeState, this));

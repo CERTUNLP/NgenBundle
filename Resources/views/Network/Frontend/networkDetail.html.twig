@@ -7,7 +7,7 @@
  with this source code in the file LICENSE.
 #}
 
-{% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
+{% extends 'CertUnlpNgenBundle::Network/Frontend/frontend.html.twig' %}
 {% block content_header %}
     <h1 class="page-header"> {{network}}             {%include "CertUnlpNgenBundle:Network:Frontend/list/stateLabel.html.twig" with {'network': network}%}
     </h1>

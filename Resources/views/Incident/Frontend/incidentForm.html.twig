@@ -7,7 +7,7 @@
  with this source code in the file LICENSE.
 #}
 
-{% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
+{% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
 
 {% block content_header %}
     <h1 class="page-header">{{icon('plus-circle fa-fw')}}Add incident</h1>
@@ -22,11 +22,5 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script>
-        var incident = new Incident("{{path("api_1_get")}}/", "{{app.user.apiKey}}");
-    </script>
-    {% javascripts '@FOSCommentBundle/Resources/assets/js/comments.js' %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
     {{ tinymce_init() }}
 {% endblock %}

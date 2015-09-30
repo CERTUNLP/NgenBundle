@@ -81,7 +81,7 @@ class IncidentHandler {
      * @return IncidentInterface
      */
     public function put($incident, array $parameters) {
-        return $this->processForm($incident, $parameters, 'PUT',false);
+        return $this->processForm($incident, $parameters, 'PUT', false);
     }
 
     /**

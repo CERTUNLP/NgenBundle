@@ -7,7 +7,7 @@
  with this source code in the file LICENSE.
 #}
 
-{% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
+{% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
 {% block content_header %}
     <h1 class="page-header">Incident [ID: {{incident.id}}][{{incident.type}}]{%include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': incident}%}</h1>
 {% endblock %}
@@ -227,4 +227,12 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts '@FOSCommentBundle/Resources/assets/js/comments.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
