@@ -16,6 +16,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class FeedCommand extends ContainerAwareCommand {
 
@@ -29,6 +30,15 @@ class FeedCommand extends ContainerAwareCommand {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
+        if (!$this->getContainer()->getParameter('cert_unlp.ngen.feed.shadowserver.enabled')) {
+            $output->writeln('[shadowserver]:Shadowserver Feed is not enabled.');
+            $output->writeln('[shadowserver]:Please check your configuration.');
+            return;
+        }
+        $token = new UsernamePasswordToken('command', null, 'main', ['ROLE_USER']);
+// give it to the security context
+        $this->getContainer()->get('security.context')->setToken($token);
+
         $output->writeln('[shadowserver]: Starting analyzer.');
         $output->writeln('[shadowserver]: Analyzing.');
         $this->getContainer()->get('cert_unlp.ngen.feed.shadowserver')->analyze($input->getOption('days-ago'), $input->getOption('username'), $input->getOption('analyze-cache'));

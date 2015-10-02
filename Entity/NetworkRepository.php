@@ -35,8 +35,11 @@ class NetworkRepository extends EntityRepository {
         $qb->setParameter('address', $address);
 
         $results = $qb->getQuery()->getResult();
-
-        return $results[0];
+        
+        if (count($results)) {
+            return $results[0];
+        }
+        return $results;
     }
 
 }
