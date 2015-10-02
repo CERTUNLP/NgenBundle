@@ -57,6 +57,7 @@ class CertUnlpNgenExtension extends Extension {
         $container->setParameter('cert_unlp.ngen.seed.redmine.key', $config['seeds']['redmine']['key']);
 
         $container->setParameter('cert_unlp.ngen.feed.path', $config['feeds']['path']);
+        $container->setParameter('cert_unlp.ngen.feed.shadowserver.enabled', $config['feeds']['shadowserver']['enabled']);
         $container->setParameter('cert_unlp.ngen.feed.shadowserver.class', $config['feeds']['shadowserver']['class']);
         $container->setParameter('cert_unlp.ngen.feed.shadowserver.client.class', $config['feeds']['shadowserver']['client']['class']);
         $container->setParameter('cert_unlp.ngen.feed.shadowserver.client.url', $config['feeds']['shadowserver']['client']['url']);
