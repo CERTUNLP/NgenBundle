@@ -1,5 +1,5 @@
 ### [problem]
-Le contactamos porque se nos informó que el *host* con IP {IP} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio SNMP (UDP 161).
+Le contactamos porque se nos informó que el *host* con IP {{IP}} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio SNMP (UDP 161).
 ### [/problem]
 
 
