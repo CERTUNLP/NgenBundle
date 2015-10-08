@@ -1,7 +1,5 @@
 ### [problem]
-Le contactamos porque se nos ha informado que el *host* con IP {{IP}} brinda
-el servicio de NTP de manera insegura. En particular, el servicio estaría
-respondiendo habilitado a conexiones externas y sin autenticación.
+Le contactamos porque se nos ha informado que el *host* con IP {{IP}} tendría habilitada la respuesta a conexiones externas y sin control de acceso.
 ### [/problem]
 ### [derivated_problem_content]
 

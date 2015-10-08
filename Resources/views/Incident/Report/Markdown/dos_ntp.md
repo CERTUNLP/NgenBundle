@@ -1,5 +1,5 @@
 ### [problem]
-Le contactamos porque se nos informó que el *host* con IP {IP} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio NTP (UDP 123).
+Le contactamos porque se nos informó que el *host* con IP {{IP}} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio NTP (UDP 123).
 ### [/problem]
 
 ### [verification_content]
@@ -8,8 +8,8 @@ Le contactamos porque se nos informó que el *host* con IP {IP} está siendo uti
 Probablemente su servidor responde a comandos del tipo ***NTP readvar***  y/o a comandos ***NTP monlist***.
 Para testear manualmente si el servicio responde a este tipo de consultas puede utilizar los respectivos comandos:
 ### [destacated]
-    ntpq -c readvar [{IP}]
-    ntpdc -n -c monlist [{IP}]
+    ntpq -c readvar [{{IP}}]
+    ntpdc -n -c monlist [{{IP}}]
 ### [/destacated]
 ### [/verification_content]
 

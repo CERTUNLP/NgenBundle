@@ -1,6 +1,6 @@
 
 ### [problem]
-Le contactamos porque se nos informó que el *host* con IP {IP} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio **chargen**.
+Le contactamos porque se nos informó que el *host* con IP {{IP}} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio **chargen**.
 ### [/problem]
 
 
@@ -9,7 +9,7 @@ Le contactamos porque se nos informó que el *host* con IP {IP} está siendo uti
 El problema puede ser verificado mediante el monitoreo de red que permita observar trafico UDP hacia y desde el puerto 19.
 Alternativamente puede verificarlo conectándose manualmente a dicho servicio mediante el comando:
 ### [destacated]
-    ncat -u {IP} 19
+    ncat -u {{IP}} 19
 ### [/destacated]
 ### [/verification_content]
 
