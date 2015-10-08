@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:Incident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Le contactamos porque se nos informó que el <em>host</em> con IP {IP} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio <strong>chargen</strong>.
+Le contactamos porque se nos informó que el <em>host</em> con IP {{incident.hostAddress}} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio <strong>chargen</strong>.
 
 {% endblock %}
 
@@ -24,7 +24,7 @@ Alternativamente puede verificarlo conectándose manualmente a dicho servicio me
 
 <div class = "destacated">
 
-<pre><code>ncat -u {IP} 19
+<pre><code>ncat -u {{incident.hostAddress}} 19
 </code></pre>
 
 </div>

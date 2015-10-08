@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:Incident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Le contactamos porque se nos informó que el <em>host</em> con IP {IP} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio NTP (UDP 123).
+Le contactamos porque se nos informó que el <em>host</em> con IP {{incident.hostAddress}} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio NTP (UDP 123).
 
 {% endblock %}
 
@@ -24,8 +24,8 @@ Para testear manualmente si el servicio responde a este tipo de consultas puede 
 
 <div class = "destacated">
 
-<pre><code>ntpq -c readvar [{IP}]
-ntpdc -n -c monlist [{IP}]
+<pre><code>ntpq -c readvar [{{incident.hostAddress}}]
+ntpdc -n -c monlist [{{incident.hostAddress}}]
 </code></pre>
 
 </div>
