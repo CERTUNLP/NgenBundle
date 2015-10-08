@@ -42,6 +42,7 @@ class IncidentTypes extends AbstractFixture implements OrderedFixtureInterface {
             array('name' => "Open NTP monitor", 'subject' => "Host %s con DNS abierto"),
             array('name' => "Open NTP version", 'subject' => "Host %s con DNS abierto"),
             array('name' => "Open SNMP", 'subject' => "Host %s con servicio SNMP abierto"),
+            array('name' => "Open MongoDB", 'subject' => "Host %s con servicio MongoDB abierto"),
             array('name' => "Phishing", 'subject' => "Host %s realizando ataques de phishing"),
             array('name' => "Poodle", 'subject' => "Host %s enviando SPAM"),
             array('name' => "Scan", 'subject' => "Host %s realizando scans"),
