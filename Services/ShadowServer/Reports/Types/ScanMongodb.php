@@ -17,5 +17,9 @@ namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types;
  * @author dam
  */
 class ScanMongodb extends ShadowServerReport {
-    //put your code here
+
+    public function getType() {
+        return "open_mongodb";
+    }
+
 }
