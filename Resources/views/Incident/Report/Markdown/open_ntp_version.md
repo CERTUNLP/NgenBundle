@@ -21,7 +21,7 @@ permitiría realizar ataques a terceros de tipo:
 Para testear manualmente si el servicio es vulnerable a esta falla puede
 utilizar el comando:
 ### [destacated]
-    ntpq -c readvar [{{IP}}]
+    ntpq -c readvar {{IP}}
 ### [/destacated]
 
 ### [/verification_content]

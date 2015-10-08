@@ -22,7 +22,7 @@ permitiría realizar ataques a terceros de tipo:
 Para testear manualmente si el servicio es vulnerable a esta falla, puede
 utilizar el comando:
 ### [destacated]
-    ntpdc -n -c monlist [{{IP}}]
+    ntpdc -n -c monlist {{IP}}
 ### [/destacated]
 
 ### [/verification_content]
