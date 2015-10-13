@@ -1,7 +1,5 @@
 ### [problem]
-Lo contactamos porque hemos sido informados que el **host/servidor** {{IP}} brinda servicios de Portmapper de manera insegura. 
-En particular, la configuración de dicho servicio 
-[responde consultas recursivas](https://www.us-cert.gov/ncas/alerts/TA13-088A) realizadas desde fuera de la red de la UNLP.
+Lo contactamos porque hemos sido informados que el **host/servidor** {{IP}} brinda servicios de Portmapper de manera insegura.
 ### [/problem]
 
 ### [derivated_problem_content]
