@@ -35,7 +35,9 @@ Y para probar la existencia del servicio NFS mal configurado puede utilizar el c
 
 ### Recomendaciones
 
-Se recomienda desactivar el servicio Portmapper.
+* Se recomienda desactivar el servicio Portmapper.
+
+* En caso que exista, se recomienda desactivar el servicio de NFS o configurarlo debidamente.
 
 ### [/recomendations_content]
 
