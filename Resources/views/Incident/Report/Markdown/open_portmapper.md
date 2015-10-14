@@ -1,5 +1,5 @@
 ### [problem]
-Lo contactamos porque hemos sido informados que el **host/servidor** {{IP}} brinda servicios de Portmapper de manera insegura.
+Lo contactamos porque hemos sido informados que el **host/servidor** {{IP}} brinda servicios de Portmapper accesibles desde Internet.
 ### [/problem]
 
 ### [derivated_problem_content]
@@ -12,7 +12,7 @@ permitiría realizar ataques a terceros de tipo:
 * DoS (Denegación de servicio)
 * DDoS (Denegación de servicio distribuida)
 
-Adicionalmente, el servidor podría exponer otros servicios mal configurados como suele ser el caso de NFS y ser también usados en denegaciónes de servicio.
+Adicionalmente, el servidor podría exponer otros servicios mal configurados como puede ser carpetas compartidas NFS.
 
 ### [/derivated_problem_content]
 
@@ -23,7 +23,7 @@ Utilizando el comando:
 ### [destacated]
     rpcinfo -T udp -p {{IP}}
 ### [/destacated]
-Y para probar la existencia del servicio NFS mal configurado puede utilizar el comando:
+Y ver carpetas compartidas NFS utilizando el comando:
 ### [destacated]
     showmount -e {{IP}}
 ### [/destacated]
@@ -35,7 +35,7 @@ Y para probar la existencia del servicio NFS mal configurado puede utilizar el c
 
 * Se recomienda desactivar el servicio Portmapper.
 
-* En caso que exista, se recomienda desactivar el servicio de NFS o configurarlo debidamente.
+* En caso de usar carpetas compartidas NFS evaluar la necesidad. Desactivar, configurar o filtrar adecuadamente.
 
 ### [/recomendations_content]
 
