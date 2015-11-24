@@ -1,12 +1,12 @@
 ### [problem]
-Lo contactamos porque hemos sido informados que el **host/servidor** {{IP}} brinda servicios de Portmapper accesibles desde Internet.
+Lo contactamos porque hemos sido informados que el **host/servidor** {{IP}} brinda el servicio portmap accesible desde Internet.
 ### [/problem]
 
 ### [derivated_problem_content]
 ### Problemas derivados
 
 El *host* bajo su administración podría llegar a ser usado en ataques de
-[amplificación](https://www.us-cert.gov/ncas/alerts/TA14-017A). Esto
+[amplificación](https://www.us-cert.gov/ncas/alerts/TA14-017A). Esto 
 permitiría realizar ataques a terceros de tipo:
 
 * DoS (Denegación de servicio)
@@ -33,7 +33,7 @@ Y ver carpetas compartidas NFS utilizando el comando:
 
 ### Recomendaciones
 
-* Se recomienda desactivar el servicio Portmapper.
+* Se recomienda desactivar o filtrar el servicio Portmap para que sólo sea accesible desde las redes que usted necesite.
 
 * En caso de usar carpetas compartidas NFS evaluar la necesidad. Desactivar, configurar o filtrar adecuadamente.
 
