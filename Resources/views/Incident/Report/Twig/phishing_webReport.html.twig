@@ -1,0 +1,66 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:Incident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+Nos notificaron que el servidor {{incident.hostAddress}} está alojando un sitio web utilizado para ataques de Phishing.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Problemas derivados</p>
+
+Este problema puede provocar que su servidor sea introducido en listas públicas de servidores comprometidos pudiendo los navegadores disparar alertas de seguridad a los usuarios cuando accedan a cualquier página web alojada en dicho servidor.
+
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">Cómo verificar el problema</p>
+
+Verificar la información enviada en el contenido adjunto.
+
+
+{% endblock %}
+
+
+{% block recomendations_content %}
+
+
+<p class="lead">Recomendaciones</p>
+
+Se recomienda dar de baja el contenido WEB utilizado para el ataque de phishing y solicitar a CERTUNLP un análisis forense del servidor para 
+determinar la modalidad utilizada por el atacante y el nivel de compromiso del servidor.
+
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">Mas información</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><a href="https://support.google.com/chrome/answer/99020?hl=es-419">https://support.google.com/chrome/answer/99020?hl=es-419</a></li>
+</ul>
+
+</div>
+
+
+{% endblock %}
