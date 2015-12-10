@@ -20,7 +20,7 @@
         }
     },
     "require": {
-        "symfony/symfony": "3.0.*",
+        "symfony/symfony": "2.7.*",
         "symfony/swiftmailer-bundle": "~2.3",
         "doctrine/doctrine-fixtures-bundle": "~2.2",
         "twig/extensions": "~1.2",
