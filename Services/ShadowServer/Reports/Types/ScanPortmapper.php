@@ -18,4 +18,8 @@ namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types;
  */
 class ScanPortmapper extends ShadowServerReport {
 
+    public function getType() {
+        return "open_portmap";
+    }
+
 }

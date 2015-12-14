@@ -1,0 +1,36 @@
+{# 
+ This file is part of the Ngen - CSIRT Network Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
+
+{% block title %}Network admins{% endblock %}
+
+{% block content_header %}
+    <h1 class="page-header">{{icon('users fa-fw')}} Network Admins</h1>
+{% endblock %}
+
+{% block sideBar_search_path %}{{path('cert_unlp_ngen_network_search_network_admin')}}{% endblock %}
+
+{% block content_body %}
+    {% include 'CertUnlpNgenBundle:NetworkAdmin:Frontend/list/networkAdminList.html.twig' with {'networkAdmins': networkAdmins  } %}
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {#{% javascripts
+    '@CertUnlpNgenBundle/Resources/public/js/networkAdmin/*'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+        var incident = new NetworkAdmin("{{path("api_1_get")}}/", "{{app.user.apiKey}}");
+    </script>#}
+{% endblock %}

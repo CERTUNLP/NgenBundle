@@ -1,17 +1,23 @@
-var NetworkForm = Class.extend({
-    init: function (apiUrl, apiKey, form_id) {
-        this.form_id = '#' + form_id;
-        this.form = $(this.form_id);
+/* 
+ * This file is part of the Ngen - CSIRT Incident Report System.
+ * 
+ * (c) CERT UNLP <support@cert.unlp.edu.ar>
+ * 
+ * This source file is subject to the GPL v3.0 license that is bundled
+ * with this source code in the file LICENSE.
+ */
+var Form = Class.extend({
+    init: function () {
+        this.setForm();
         this.form.submit($.proxy(this.request, this));
-        this.setIncidentId();
-        $("#sendReport").on("change", $.proxy(this.editReportDisable, this));
-        $("#type").on("change", $.proxy(this.editReportChangeText, this));
-        $("#editReport").on("click", $.proxy(this.editReport, this));
+        this.config();
+    },
+    setForm: function () {
+        this.form = $('#' + this.getFormId());
     },
     getSubmitButton: function () {
-        return $(this.form_id + ' :submit');
+        return $('#' + this.getFormId() + ' :submit');
     },
-
     getFormData: function () {
         return new FormData(this.form[0]);
     },
@@ -29,7 +35,7 @@ var NetworkForm = Class.extend({
             });
             $.publish('/cert_unlp/notify/error', [ul.html()]);
         } else {
-            $.publish('/cert_unlp/notify/error', ['The incident has errors. Please check the form.']);
+            $.publish('/cert_unlp/notify/error', ['The ' + this.getObjectBrief() + ' has errors. Please check the form.']);
             if (jqXHR.responseJSON.errors) {
                 $.each(jqXHR.responseJSON.errors.children, function (k, v) {
                     errorsText = "";
@@ -46,6 +52,7 @@ var NetworkForm = Class.extend({
                         $('#' + k).siblings('ul').remove();
                     }
                 });
+                this.handleExtraErrors(jqXHR);
             }
         }
     },
@@ -59,7 +66,7 @@ var NetworkForm = Class.extend({
         if (jqXHR.status > '300') {
             this.handleErrors(jqXHR);
         } else {
-            $.publish('/cert_unlp/notify/success', ['The incident was added properly']);
+            $.publish('/cert_unlp/notify/success', ['The ' + this.getObjectBrief() + ' was added properly']);
             this.clearErrors();
             this.getSubmitButton().removeClass('btn-danger').addClass('btn-success');
         }
@@ -72,9 +79,9 @@ var NetworkForm = Class.extend({
     },
     doRequest: function (event) {
         if (this.form.attr('method') == 'post' && !$('input[name="_method"]').val()) {
-            $.publish('/cert_unlp/incident/new', [this.getFormData(), $.proxy(this.postRequest, this)]);
+            $.publish('/cert_unlp/' + this.getObjectBrief() + '/new', [this.getFormData(), $.proxy(this.postRequest, this)]);
         } else {
-            $.publish('/cert_unlp/incident/update', [this.getIncidentId(), this.getFormData(), $.proxy(this.postRequest, this)]);
+            $.publish('/cert_unlp/' + this.getObjectBrief() + '/update', [this.getObjectId(), this.getFormData(), $.proxy(this.postRequest, this)]);
         }
     }
 });

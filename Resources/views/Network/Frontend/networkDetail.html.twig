@@ -68,7 +68,10 @@
                                     Incidents
                                 </td>
                                 <td class="">
-                                    {{network.incidents.count}}
+                                    <a target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~network.ip~'"'~ "&&" ~'"'~network.ipMask~'"'})}}">
+                                        <span>{{label_info(network.incidents.count)}} </span>
+                                        <span>search</span>
+                                    </a>
                                 </td>
                             </tr>
                         </table>
@@ -97,7 +100,12 @@
                                     Incidents
                                 </td>
                                 <td class="">
-                                    {{network.academicUnit.incidents.count}}
+                                    <a  target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~network.academicUnit.name~'"'})}}">
+                                        <span>{{label_info(network.academicUnit.incidents.count)}} </span>
+                                        <span>search</span>
+                                    </a>
+                                </td>
+
                                 </td>
                             </tr>
                         </table>
@@ -138,7 +146,10 @@
                                     Incidents
                                 </td>
                                 <td class="">
-                                    {{network.networkAdmin.incidents.count}}
+                                    <a target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~network.networkAdmin.name~'"'~ "&&" ~'"'~network.networkAdmin.email~'"'})}}">
+                                        <span>{{label_info(network.networkAdmin.incidents.count)}} </span>
+                                        <span>search</span>
+                                    </a>
                                 </td>
                             </tr>
                         </table>
