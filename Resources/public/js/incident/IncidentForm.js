@@ -1,20 +1,31 @@
-var IncidentForm = Class.extend({
-    init: function (apiUrl, apiKey) {
-        this.form = $('#incident_add_update_form');
-        this.form.submit($.proxy(this.request, this));
+/* 
+ * This file is part of the Ngen - CSIRT Incident Report System.
+ * 
+ * (c) CERT UNLP <support@cert.unlp.edu.ar>
+ * 
+ * This source file is subject to the GPL v3.0 license that is bundled
+ * with this source code in the file LICENSE.
+ */
+var IncidentForm = Form.extend({
+    config: function (params) {
         this.setIncidentId();
         $("#sendReport").on("change", $.proxy(this.editReportDisable, this));
         $("#type").on("change", $.proxy(this.editReportChangeText, this));
         $("#editReport").on("click", $.proxy(this.editReport, this));
     },
-    getSubmitButton: function () {
-        return $('#incident_add_update_form :submit');
-    },
     setIncidentId: function () {
         this.incidentId = $('#hostAddress').val() + "/" + $('#date').val() + "/" + $('#type').val();
     },
-    getIncidentId: function () {
+    getFormId: function () {
+        return 'incident_add_update_form';
+    },
+    getObjectBrief: function () {
+        return 'incident';
+    },
+    getObjectId: function () {
         return  this.incidentId;
+    },
+    handleExtraErrors: function () {
     },
     editReportDisable: function (event) {
         $("#editReport").prop("disabled", !event.target.checked);
@@ -52,71 +63,71 @@ var IncidentForm = Class.extend({
             }
         }
     },
-    getFormData: function () {
-        return new FormData(this.form[0]);
-    },
-    preRequest: function () {
-        event.preventDefault();
-        tinymce.triggerSave();
-        this.laddaButton = Ladda.create(this.getSubmitButton().get(0));
-        this.laddaButton.start();
-    },
-    handleErrors: function (jqXHR) {
-        this.getSubmitButton().addClass('btn-danger');
-        if (jqXHR.responseJSON.length > 1) {
-            ul = $('<ul></ul>')
-            $.each(jqXHR.responseJSON, function (n, error) {
-                ul.append($('<li>' + error.message + '</li>'));
-            });
-            $.publish('/cert_unlp/notify/error', [ul.html()]);
-        } else {
-            $.publish('/cert_unlp/notify/error', ['The incident has errors. Please check the form.']);
-            if (jqXHR.responseJSON.errors) {
-                $.each(jqXHR.responseJSON.errors.children, function (k, v) {
-                    errorsText = "";
-                    if ((v.errors) && (v.errors.length > 0)) {
-                        ul = $('<ul class="help-block" ></ul>');
-                        $.each(v.errors, function (n, errorText) {
-                            ul.append($('<li>' + errorText + '</li>'));
-                        });
-                        $('#' + k).siblings('ul').remove();
-                        $('#' + k).after(ul);
-                        $('#' + k).closest('div[class="form-group"]').addClass('has-error');
-                    } else {
-                        $('#' + k).closest('div[class="form-group has-error"]').removeClass('has-error');
-                        $('#' + k).siblings('ul').remove();
-                    }
-                });
-            }
-        }
-    },
-    clearErrors: function () {
-        this.form.children().children().each(function (index) {
-            $(this).closest('div[class="form-group has-error"]').removeClass('has-error');
-            $(this).children().children('ul').remove();
-        });
-    },
-    postRequest: function (response, jqXHR) {
-        if (jqXHR.status > '300') {
-            this.handleErrors(jqXHR);
-        } else {
-            $.publish('/cert_unlp/notify/success', ['The incident was added properly']);
-            this.clearErrors();
-            this.getSubmitButton().removeClass('btn-danger').addClass('btn-success');
-        }
-        this.laddaButton.stop();
-    },
-    request: function () {
-        this.preRequest();
-        this.doRequest();
-//        this.postRequest();
-    },
-    doRequest: function (event) {
-        if (this.form.attr('method') == 'post' && !$('input[name="_method"]').val()) {
-            $.publish('/cert_unlp/incident/new', [this.getFormData(), $.proxy(this.postRequest, this)]);
-        } else {
-            $.publish('/cert_unlp/incident/update', [this.getIncidentId(), this.getFormData(), $.proxy(this.postRequest, this)]);
-        }
-    }
+//    getFormData: function () {
+//        return new FormData(this.form[0]);
+//    },
+//    preRequest: function () {
+//        event.preventDefault();
+//        tinymce.triggerSave();
+//        this.laddaButton = Ladda.create(this.getSubmitButton().get(0));
+//        this.laddaButton.start();
+//    },
+//    handleErrors: function (jqXHR) {
+//        this.getSubmitButton().addClass('btn-danger');
+//        if (jqXHR.responseJSON.length > 1) {
+//            ul = $('<ul></ul>')
+//            $.each(jqXHR.responseJSON, function (n, error) {
+//                ul.append($('<li>' + error.message + '</li>'));
+//            });
+//            $.publish('/cert_unlp/notify/error', [ul.html()]);
+//        } else {
+//            $.publish('/cert_unlp/notify/error', ['The incident has errors. Please check the form.']);
+//            if (jqXHR.responseJSON.errors) {
+//                $.each(jqXHR.responseJSON.errors.children, function (k, v) {
+//                    errorsText = "";
+//                    if ((v.errors) && (v.errors.length > 0)) {
+//                        ul = $('<ul class="help-block" ></ul>');
+//                        $.each(v.errors, function (n, errorText) {
+//                            ul.append($('<li>' + errorText + '</li>'));
+//                        });
+//                        $('#' + k).siblings('ul').remove();
+//                        $('#' + k).after(ul);
+//                        $('#' + k).closest('div[class="form-group"]').addClass('has-error');
+//                    } else {
+//                        $('#' + k).closest('div[class="form-group has-error"]').removeClass('has-error');
+//                        $('#' + k).siblings('ul').remove();
+//                    }
+//                });
+//            }
+//        }
+//    },
+//    clearErrors: function () {
+//        this.form.children().children().each(function (index) {
+//            $(this).closest('div[class="form-group has-error"]').removeClass('has-error');
+//            $(this).children().children('ul').remove();
+//        });
+//    },
+//    postRequest: function (response, jqXHR) {
+//        if (jqXHR.status > '300') {
+//            this.handleErrors(jqXHR);
+//        } else {
+//            $.publish('/cert_unlp/notify/success', ['The incident was added properly']);
+//            this.clearErrors();
+//            this.getSubmitButton().removeClass('btn-danger').addClass('btn-success');
+//        }
+//        this.laddaButton.stop();
+//    },
+//    request: function () {
+//        this.preRequest();
+//        this.doRequest();
+////        this.postRequest();
+//    },
+//    doRequest: function (event) {
+//        if (this.form.attr('method') == 'post' && !$('input[name="_method"]').val()) {
+//            $.publish('/cert_unlp/incident/new', [this.getFormData(), $.proxy(this.postRequest, this)]);
+//        } else {
+//            $.publish('/cert_unlp/incident/update', [this.getIncidentId(), this.getFormData(), $.proxy(this.postRequest, this)]);
+//        }
+//    }
 });
 

@@ -29,10 +29,16 @@ cert_ngen_api:
     prefix: /api
     resource: "@CertUnlpNgenBundle/Resources/config/routing_api.yml"
     
+cert_ngen_network_admin:
+    resource: "@CertUnlpNgenBundle/Controller/NetworkAdminFrontendController.php"
+    type:     annotation
+    prefix:   /networks/admins
+    
 cert_ngen_network:
     resource: "@CertUnlpNgenBundle/Controller/NetworkFrontendController.php"
     type:     annotation
     prefix:   /networks
+    
 
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
