@@ -40,10 +40,11 @@
         "ddeboer/data-import-bundle": "~0.1.0",
         "stfalcon/tinymce-bundle": "~0.3.8",
         "friendsofsymfony/comment-bundle": "~2.0",
-        "fortawesome/font-awesome": "^4.4"
+        "fortawesome/font-awesome": "^4.4",
+        "symfony/assetic-bundle": "^2.7"
     },
     "require-dev": {
-        "symfony/assetic-bundle": "~2.3",
+        "symfony/assetic-bundle": "^2.7",
         "symfony/browser-kit": "~2.3",
         "symfony/css-selector": "~2.3"
     },
