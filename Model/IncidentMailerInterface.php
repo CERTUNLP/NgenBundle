@@ -19,5 +19,5 @@ use CertUnlp\NgenBundle\Model\IncidentInterface;
  */
 interface IncidentMailerInterface {
 
-    public function send_report(IncidentInterface $incident);
+    public function send_report(IncidentInterface $incident,$body = null, $echo = null,  $is_new_incident = FALSE);
 }
