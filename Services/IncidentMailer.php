@@ -24,13 +24,14 @@ class IncidentMailer implements IncidentMailerInterface {
     private $cert_email;
     private $templating;
 
-    public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, CommentManagerInterface $commentManager) {
+    public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, CommentManagerInterface $commentManager, $environment) {
         $this->mailer = $mailer;
         $this->cert_email = $cert_email;
         $this->templating = $templating;
         $this->upload_directory = $upload_directory;
         $this->reports_path = 'CertUnlpNgenBundle:Incident:Report/Twig';
         $this->commentManager = $commentManager;
+        $this->environment = ($environment == 'dev') ? '[dev]' : '';
     }
 
     public function getBody(IncidentInterface $incident, $type = 'html') {
@@ -45,13 +46,13 @@ class IncidentMailer implements IncidentMailerInterface {
         return $this->templating->render($template, $parameters);
     }
 
-    public function send_report(IncidentInterface $incident, $body = null, $echo = null) {
+    public function send_report(IncidentInterface $incident, $body = null, $echo = null,  $is_new_incident= FAlSE) {
         if (!$echo) {
-            if ($incident->getSendReport()) {
+            if ($incident->getSendReport() || $is_new_incident) {
                 $html = $this->getBody($incident);
                 $text = strip_tags($this->getBody($incident, 'txt'));
                 $message = \Swift_Message::newInstance()
-                        ->setSubject(sprintf('[CERTunlp] Incidente de tipo "%s" en el host %s [ID:%s]', $incident->getType()->getName(), $incident->getHostAddress(), $incident->getId()))
+                        ->setSubject(sprintf($this->environment . '[CERTunlp] Incidente de tipo "%s" en el host %s [ID:%s]', $incident->getType()->getName(), $incident->getHostAddress(), $incident->getId()))
                         ->setFrom($this->cert_email)
                         ->setCc($this->cert_email)
                         ->setTo($incident->getNetworkAdmin()->getEmail())
@@ -97,7 +98,7 @@ class IncidentMailer implements IncidentMailerInterface {
     }
 
     public function postPersistDelegation($incident) {
-        $this->send_report($incident);
+        $this->send_report($incident,null,null,TRUE);
     }
 
     public function prePersistDelegation($incident) {
