@@ -38,7 +38,7 @@ services:
       
     cert_unlp.ngen.incident.mailer:
         class:        "%cert_unlp.ngen.incident.mailer.class%"
-        arguments:    ["@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","@templating","%cert_unlp.ngen.team.mail%","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment"]
+        arguments:    ["@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","@templating","%cert_unlp.ngen.team.mail%","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%"]
         tags:
             -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
             
@@ -93,8 +93,8 @@ services:
     acme.twig.incident_report_extension:
         class: CertUnlp\NgenBundle\Twig\IncidentReportExtension
         tags:
-            - { name: twig.extension }    
-        
+            - { name: twig.extension }       
+     
     twig.stringloader:
         class: Twig_Loader_String
         tags:
