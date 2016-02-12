@@ -12,7 +12,7 @@
 namespace CertUnlp\NgenBundle\Entity\Listener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Event\PreFlushEventArgs;
+//use Doctrine\ORM\Event\PreFlushEventArgs;
 use CertUnlp\NgenBundle\Entity\Incident;
 use Doctrine\ORM\Mapping as ORM;
 use CertUnlp\NgenBundle\Services\Delegator\Delegator;
@@ -51,12 +51,13 @@ class IncidentListener implements ContainerAwareInterface {
     /** @ORM\PreUpdate */
     public function preUpdateHandler(Incident $incident, PreUpdateEventArgs $event) {
         $this->incidentPostPersistUpdate($incident, $event);
+        $this->delegator->preUpdateDelegation($incident);
     }
 
-    /** @ORM\PreFlush */
-    public function preFlushHandler(IncidentInterface $incident, PreFlushEventArgs $event) {
-        $this->delegator->preFlushDelegation($incident);
-    }
+//    
+//    public function preFlushHandler(IncidentInterface $incident, PreFlushEventArgs $event) {
+//        $this->delegator->preFlushDelegation($incident);
+//    }
 
     public function onConvertToIncident(ConvertToIncidentEvent $event) {
         $convertible = $event->getConvertible();

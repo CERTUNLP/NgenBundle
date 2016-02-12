@@ -31,6 +31,7 @@ class CertUnlpNgenExtension extends Extension {
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('cert_unlp.ngen.team.mail', $config['team']['mail']);
+        $container->setParameter('cert_unlp.ngen.resources.path', '%kernel.root_dir%/Resources/');
 
         $container->setParameter('cert_unlp.ngen.incident.class', $config['incidents']['class']);
         $container->setParameter('cert_unlp.ngen.incident.evidence.path', $config['incidents']['evidence']['path']);
