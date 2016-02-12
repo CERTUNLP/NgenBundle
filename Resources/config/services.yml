@@ -83,7 +83,10 @@ services:
     cert_unlp.ngen.network.handler:
         class:        "%cert_unlp.ngen.network.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.network.class%","@form.factory", "@security.context","%cert_unlp.ngen.network.default_network%"]
-          
+    
+    cert_unlp.ngen.rdap_client:
+        class:        CertUnlp\NgenBundle\Services\RdapClient 
+        arguments: ["%cert_unlp.ngen.resources.path%"]
         
     fos_comment.form_type.comment.default:
         class: CertUnlp\NgenBundle\Form\IncidentCommentType
