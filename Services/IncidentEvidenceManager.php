@@ -70,8 +70,9 @@ class IncidentEvidenceManager {
             }
         }
 
-        $incident->getEvidenceFile()->move($uploadDir, $incident->getEvidenceFilePath());
-
+        if ($incident->getEvidenceFile()) {
+            $incident->getEvidenceFile()->move($uploadDir, $incident->getEvidenceFilePath());
+        }
         // check if we have an old image
 //        if ($incident->getEvidenceFileTemp()) {
 //            // delete the old image
