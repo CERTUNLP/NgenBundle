@@ -32,7 +32,7 @@ class Users extends AbstractFixture implements OrderedFixtureInterface, Containe
 
     public function load(ObjectManager $manager) {
 
-        $names = array('admin', 'mailbot', 'cbarbaro');
+        $names = array('admin');
 
         foreach ($names as $name) {
             $user = new User();

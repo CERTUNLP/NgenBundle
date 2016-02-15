@@ -164,6 +164,11 @@ class IncidentHandler {
             } else {
                 $incidentDB->setSendReport($incident->getSendReport());
             }
+
+            if ($incident->getEvidenceFile()) {
+                $incidentDB->setEvidenceFile($incident->getEvidenceFile());
+            }
+
             $incident = $incidentDB;
             $incident->setLastTimeDetected(new \DateTime('now'));
         }
