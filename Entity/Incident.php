@@ -509,10 +509,18 @@ class Incident implements IncidentInterface {
      * @return string 
      */
     public function getEvidenceFilePath($fullPath = false) {
-        if ($fullPath) {
-            return $this->getEvidenceSubDirectory() . "/" . $this . '.' . $this->evidence_file_path;
+
+        if ($this->evidence_file_path) {
+
+            if ($fullPath) {
+                $pre_path = $this->getEvidenceSubDirectory() . "/";
+            } else {
+                $pre_path = "";
+            }
+
+            return $pre_path . $this . $this->evidence_file_path;
         }
-        return $this->evidence_file_path ? $this . '.' . $this->evidence_file_path : $this->evidence_file_path;
+        return null;
     }
 
     /**
