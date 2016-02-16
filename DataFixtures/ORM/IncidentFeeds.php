@@ -34,6 +34,7 @@ class IncidentFeeds extends AbstractFixture implements OrderedFixtureInterface {
             array('name' => "Shadowserver"),
             array('name' => "Netflow"),
             array('name' => "External report"),
+            array('name' => "Team Cymru"),
         );
         foreach ($incident_feed_types as $incident_feed_type) {
             $newIncidentType = new IncidentFeed();
