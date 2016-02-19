@@ -32,7 +32,7 @@ class UserRepository extends EntityRepository {
         shuffle($users);
 
         foreach ($users as $user) {
-            if (!in_array($user->getUsername(), array('nmacia', 'elanfranco', 'pvenosa','mailbot','bro'))) {
+            if (!in_array($user->getUsername(), array('nmacia', 'elanfranco', 'pvenosa', 'mailbot', 'bro', 'scanner'))) {
                 return $user;
             }
         }
