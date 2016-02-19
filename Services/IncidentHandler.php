@@ -159,7 +159,7 @@ class IncidentHandler {
         $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'hostAddress' => $incident->getHostAddress(), 'type' => $incident->getType()]);
         if ($incidentDB && $method == 'POST') {
 
-            if ($incidentDB->getFeed()->getSlug() == "shadowserver") {
+            if ($incident->getFeed()->getSlug() == "shadowserver") {
                 $incidentDB->setSendReport(false);
             } else {
                 $incidentDB->setSendReport($incident->getSendReport());
