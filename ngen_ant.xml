@@ -203,7 +203,6 @@
             <arg value="${env.WORKSPACE}/app/cache" />
             <arg value="${env.WORKSPACE}/app/logs" />
             <arg value="${env.WORKSPACE}/app/Resources/" />
-            <arg value="${env.WORKSPACE}/app/Resources/.NicInfo" />
             <arg value="${env.WORKSPACE}/app/Resources/incident/evidence" />
             <arg value="${env.WORKSPACE}/app/Resources/feed/shadowserver/reports" />
         </exec>
@@ -219,7 +218,6 @@
             <arg value="${env.WORKSPACE}/app/cache" />
             <arg value="${env.WORKSPACE}/app/logs" />
             <arg value="${env.WORKSPACE}/app/Resources/" />
-            <arg value="${env.WORKSPACE}/app/Resources/.NicInfo" />
             <arg value="${env.WORKSPACE}/app/Resources/incident/evidence" />
             <arg value="${env.WORKSPACE}/app/Resources/feed/shadowserver/reports" />
         </exec>
