@@ -260,6 +260,3 @@ stfalcon_tinymce:
                 force_br_newlines: false
                 force_p_newlines: false
                 forced_root_block: ''
-
-doctrine_migrations:
-    dir_name: "%kernel.root_dir%/../src/CertUnlp/NgenBundle/DoctrineMigrations"
