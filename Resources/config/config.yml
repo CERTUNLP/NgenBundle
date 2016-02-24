@@ -120,7 +120,6 @@ fos_elastica:
                             type: date
                         isClosed:
                             type: boolean
-                        redmine_issue_id: ~
                         evidence_file_path: ~
                         network:
                             type: "object"
@@ -261,6 +260,6 @@ stfalcon_tinymce:
                 force_br_newlines: false
                 force_p_newlines: false
                 forced_root_block: ''
-#framework:
-#  templating:
-#    assets_base_urls: { http: ["http://incidentes.cert.unlp.edu.ar/"], ssl: ["https://incidentes.cert.unlp.edu.ar/"] }
+
+doctrine_migrations:
+    dir_name: "%kernel.root_dir%/../src/CertUnlp/NgenBundle/DoctrineMigrations"

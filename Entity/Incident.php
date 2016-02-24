@@ -177,20 +177,7 @@ class Incident implements IncidentInterface {
      * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentCommentThread",mappedBy="incident", fetch="EXTRA_LAZY")
      */
     private $comment_thread;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="redmine_issue_id", type="integer",nullable=true)
-     */
-    private $redmine_issue_id;
-
-    /**
-     * @var Issue
-     *
-     */
-    private $redmine_issue;
-
+    
     /**
      * @Assert\File(maxSize = "500k")
      */
@@ -412,48 +399,6 @@ class Incident implements IncidentInterface {
         return $this->reporter;
     }
 
-    /**
-     * Set redmine_issue_id
-     *
-     * @param integer $redmineIssueId
-     * @return Incident
-     */
-    public function setRedmineIssueId($redmineIssueId) {
-        $this->redmine_issue_id = $redmineIssueId;
-
-        return $this;
-    }
-
-    /**
-     * Get redmine_issue_id
-     *
-     * @return integer 
-     */
-    public function getRedmineIssueId() {
-        return $this->redmine_issue_id;
-    }
-
-    /**
-     * Set redmine_issue
-     *
-     * @param integer $redmineIssue
-     * @return Incident
-     */
-    public function setRedmineIssue($redmineIssue) {
-        $this->redmine_issue = $redmineIssue;
-        $this->setRedmineIssueId($redmineIssue->id);
-
-        return $this;
-    }
-
-    /**
-     * Get redmine_issue
-     *
-     * @return Issue 
-     */
-    public function getRedmineIssue() {
-        return $this->redmine_issue;
-    }
 
     public function close() {
         $this->setIsClosed(true);
