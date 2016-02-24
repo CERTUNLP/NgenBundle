@@ -7,7 +7,7 @@
     <property name="builddir" value="${workspace}/app/build" />
 
     <target name="build"
-          depends="prepare,vendors,cache, assetic, assets, remove_symfony_cache, mkdir_shadowserver_reports, mkdir_evidence, folder_permissions_r, folder_permissions_dr, apc_clear_cache, braincrafted, lint,phploc,pdepend,phpcpd,phpmd-ci,phpcs-ci,phpdoc,phpunit,phpcb"/>
+          depends="prepare,vendors,cache, assetic, assets, remove_symfony_cache, mkdir_shadowserver_reports, mkdir_evidence, folder_permissions_r, folder_permissions_dr, apc_clear_cache, braincrafted,migrations, lint,phploc,pdepend,phpcpd,phpmd-ci,phpcs-ci,phpdoc,phpunit,phpcb"/>
 
     <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
 
@@ -235,6 +235,13 @@
         <exec executable="php" failonerror="true">
             <arg value='${env.WORKSPACE}/app/console' />
             <arg value="braincrafted:bootstrap:install" />
+        </exec>
+    </target>
+    
+    <target name="migrations" description="doctrine migrations">
+        <exec executable="php" failonerror="true">
+            <arg value='${env.WORKSPACE}/app/console' />
+            <arg value="doctrine:migrations:migrate" />
         </exec>
     </target>
 
