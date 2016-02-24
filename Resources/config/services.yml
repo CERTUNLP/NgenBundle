@@ -42,9 +42,9 @@ services:
         tags:
             -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
             
-    cert_unlp.ngen.seed.redmine:
-        class:        "%cert_unlp.ngen.seed.redmine.class%"
-        arguments:    ["%cert_unlp.ngen.seed.redmine.url%","%cert_unlp.ngen.seed.redmine.key%","%cert_unlp.ngen.incident.evidence.path%","@service_container"]   
+#    cert_unlp.ngen.seed.redmine:
+#        class:        "%cert_unlp.ngen.seed.redmine.class%"
+#        arguments:    ["%cert_unlp.ngen.seed.redmine.url%","%cert_unlp.ngen.seed.redmine.key%","%cert_unlp.ngen.incident.evidence.path%","@service_container"]   
     
     cert_unlp.ngen.incident.evidence.manager:
         class:        CertUnlp\NgenBundle\Services\IncidentEvidenceManager
