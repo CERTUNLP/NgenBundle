@@ -3,7 +3,6 @@ Lo contactamos porque hemos sido informados que el host/servidor {{IP}} tiene
 vulnerabilidades de SQL Injection.
 ### [/problem]
 
-
 ### [derivated_problem_content]
 ### Problemas derivados
 El *host* bajo su administración podría llegar a estar brindando información sensible, comprometiendo sistemas que corren él.
