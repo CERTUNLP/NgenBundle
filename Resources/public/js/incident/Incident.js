@@ -6,7 +6,7 @@
  * This source file is subject to the GPL v3.0 license that is bundled
  * with this source code in the file LICENSE.
  */
-var Incident = Class.extend({
+var InternalIncident = Class.extend({
     init: function (apiUrl, apiKey) {
         this.eventTarget = null;
         this.api = new IncidentApi(apiUrl, apiKey);
@@ -49,7 +49,7 @@ var Incident = Class.extend({
         if (jqXHR.status > '300') {
             $.publish('/cert_unlp/notify/error', ["The state was not changed. An error occurred."]);
         } else {
-            $.publish('/cert_unlp/notify/success', ["Incident status has been changed successfully"]);
+            $.publish('/cert_unlp/notify/success', ["InternalIncident status has been changed successfully"]);
             this.stateLabelChange();
             this.dropDownChangeLinks();
         }

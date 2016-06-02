@@ -76,11 +76,11 @@ class IncidentController extends FOSRestController {
         $offset = null == $offset ? 0 : $offset;
         $limit = $paramFetcher->get('limit');
 
-        return $this->container->get('cert_unlp.ngen.incident.handler')->all([], [], $limit, $offset);
+        return $this->container->get('cert_unlp.ngen.incident.internal.handler')->all([], [], $limit, $offset);
     }
 
     /**
-     * Get single Incident.
+     * Get single InternalIncident.
      *
      * @ApiDoc(
      *   resource = true,
@@ -103,12 +103,12 @@ class IncidentController extends FOSRestController {
     }
 
     /**
-     * Create a Incident from the submitted data.
+     * Create a InternalIncident from the submitted data.
      *
      * @ApiDoc(
      *   resource = true,
      *   description = "Creates a new incident from the submitted data.",
-     *   input = "CertUnlp\NgenBundle\Form\IncidentType",
+     *   input = "CertUnlp\NgenBundle\Form\InternalIncidentType",
      *   statusCodes = {
      *     201 = "Returned when successful",
      *     400 = "Returned when the form has errors"
@@ -121,7 +121,6 @@ class IncidentController extends FOSRestController {
      */
     public function postIncidentAction(Request $request) {
         //TODO: refactoring aca o algo, poqnomegusta
-
         try {
             $incident_data = array_merge($request->request->all(), $request->files->all());
 
@@ -130,7 +129,7 @@ class IncidentController extends FOSRestController {
 
                 foreach ($hostAddresses as $hostAddress) {
                     $incident_data['hostAddress'] = $hostAddress;
-                    $this->get('cert_unlp.ngen.incident.handler')->post($incident_data);
+                    $this->get('cert_unlp.ngen.incident.internal.handler')->post($incident_data);
                 }
                 $routeOptions = array(
                     '_format' => $request->get('_format')
@@ -139,7 +138,7 @@ class IncidentController extends FOSRestController {
                 return $this->routeRedirectView('api_1_get_incidents', $routeOptions, Codes::HTTP_CREATED);
             } else {
 
-                $newIncident = $this->get('cert_unlp.ngen.incident.handler')->post($incident_data);
+                $newIncident = $this->get('cert_unlp.ngen.incident.internal.handler')->post($incident_data);
 
                 $routeOptions = array(
                     'hostAddress' => $newIncident->getHostAddress(),
@@ -161,9 +160,9 @@ class IncidentController extends FOSRestController {
 //     *
 //     * @ApiDoc(
 //     *   resource = true,
-//     *   input = "CertUnlp\NgenBundle\Form\IncidentType",
+//     *   input = "CertUnlp\NgenBundle\Form\InternalIncidentType",
 //     *   statusCodes = {
-//     *     201 = "Returned when the Incident is created",
+//     *     201 = "Returned when the IncidentInterface is created",
 //     *     204 = "Returned when successful",
 //     *     400 = "Returned when the form has errors"
 //     *   }
@@ -178,14 +177,14 @@ class IncidentController extends FOSRestController {
 //     */
 //    public function putIncidentAction(Request $request) {
 //        try {
-//            if (!($incident = $this->container->get('cert_unlp.ngen.incident.handler')->get($id))) {
+//            if (!($incident = $this->container->get('cert_unlp.ngen.incident.internal.handler')->get($id))) {
 //                $statusCode = Codes::HTTP_CREATED;
-//                $incident = $this->container->get('cert_unlp.ngen.incident.handler')->post(
+//                $incident = $this->container->get('cert_unlp.ngen.incident.internal.handler')->post(
 //                        $request->request->all()
 //                );
 //            } else {
 //            $statusCode = Codes::HTTP_NO_CONTENT;
-//            $incident = $this->container->get('cert_unlp.ngen.incident.handler')->put(
+//            $incident = $this->container->get('cert_unlp.ngen.incident.internal.handler')->put(
 //                    $incident, $request->request->all()
 //            );
 //            }
@@ -224,7 +223,7 @@ class IncidentController extends FOSRestController {
      *
      * @throws NotFoundHttpException when incident not exist
      */
-    public function patchIncidentStateAction(Request $request, Incident $incident, \CertUnlp\NgenBundle\Entity\IncidentState $state) {
+    public function patchIncidentStateAction(Request $request, Incident $incident, IncidentState $state) {
 
         return $this->patchIncidentState($request, $incident, $state);
     }
@@ -255,15 +254,14 @@ class IncidentController extends FOSRestController {
      * @FOS\QueryParam(name="type",strict=true ,requirements="blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|open_ssdp|phishing|poodle|scan|shellshock|spam", description="The incident type")
      * @FOS\QueryParam(name="hostAddress",strict=true ,requirements="[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", description="The host IP.")
      */
-    public function patchIncidentStateWithParamsAction(Request $request, Incident $incident, \CertUnlp\NgenBundle\Entity\IncidentState $state) {
-
+    public function patchIncidentStateWithParamsAction(Request $request, Incident $incident, IncidentState $state) {
         return $this->patchIncidentState($request, $incident, $state);
     }
 
     public function patchIncidentState(Request $request, Incident $incident, IncidentState $state) {
 
         try {
-            $incident = $this->container->get('cert_unlp.ngen.incident.handler')->changeState(
+            $incident = $this->container->get('cert_unlp.ngen.incident.internal.handler')->changeState(
                     $incident, $state);
             $routeOptions = array(
                 'hostAddress' => $incident->getHostAddress(),
@@ -279,7 +277,7 @@ class IncidentController extends FOSRestController {
     }
 
     /**
-     * Get single Incident.
+     * Get single .
      *
      * @ApiDoc(
      *   resource = true,
@@ -311,7 +309,7 @@ class IncidentController extends FOSRestController {
      *
      * @ApiDoc(
      *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\IncidentType",
+     *   input = "CertUnlp\NgenBundle\Form\InternalIncidentType",
      *   statusCodes = {
      *     204 = "Returned when successful",
      *     400 = "Returned when the form has errors"
@@ -326,7 +324,7 @@ class IncidentController extends FOSRestController {
      *
      * @throws NotFoundHttpException when incident not exist
      */
-    public function patchIncidentAction(Request $request, Incident $incident) {
+    public function patchIncidentAction(Request $request, $incident) {
         return $this->patchIncident($request, $incident);
     }
 
@@ -335,7 +333,7 @@ class IncidentController extends FOSRestController {
      *
      * @ApiDoc(
      *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\IncidentType",
+     *   input = "CertUnlp\NgenBundle\Form\InternalIncidentType",
      *   statusCodes = {
      *     204 = "Returned when successful",
      *     400 = "Returned when the form has errors"
@@ -351,20 +349,21 @@ class IncidentController extends FOSRestController {
      * @throws NotFoundHttpException when incident not exist
      * @FOS\Patch("/incidents/{hostAddress}/{date}/{type}")
      *
-     * @ParamConverter("incident", class="CertUnlpNgenBundle:Incident", options={"repository_method" = "findByHostDateType"})
+     * @ParamConverter("incident", class="CertUnlpNgenBundle:InternalIncident", options={"repository_method" = "findByHostDateType"})
      * @FOS\QueryParam(name="date",strict=true ,requirements="yyyy-MM-dd", description="If no date is selected, the date will be today.")
      * @FOS\QueryParam(name="type",strict=true ,requirements="blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|open_ssdp|phishing|poodle|scan|shellshock|spam", description="The incident type")
      * @FOS\QueryParam(name="hostAddress",strict=true ,requirements="[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", description="The host IP.")
      */
     public function patchIncidentWithParamsAction(Request $request, Incident $incident) {
+
         return $this->patchIncident($request, $incident);
     }
 
-    public function patchIncident(Request $request, Incident $incident) {
+    public function patchIncident(Request $request, $incident) {
         try {
             $parameters = $request->request->all();
             unset($parameters['_method']);
-            $incident = $this->container->get('cert_unlp.ngen.incident.handler')->patch(
+            $incident = $this->container->get('cert_unlp.ngen.incident.internal.handler')->patch(
                     $incident, $parameters
             );
 
@@ -387,7 +386,7 @@ class IncidentController extends FOSRestController {
 //     *
 //     * @ApiDoc(
 //     *   resource = true,
-//     *   input = "CertUnlp\NgenBundle\Form\IncidentType",
+//     *   input = "CertUnlp\NgenBundle\Form\InternalIncidentType",
 //     *   statusCodes = {
 //     *     204 = "Returned when successful",
 //     *     400 = "Returned when the form has errors"
@@ -406,11 +405,11 @@ class IncidentController extends FOSRestController {
 //     *
 //     * @throws NotFoundHttpException when incident not exist
 //     */
-//    public function deleteIncidentAction(Request $request, Incident $incident) {
+//    public function deleteIncidentAction(Request $request, IncidentInterface $incident) {
 //        try {
 //
 //            $statusCode = Codes::HTTP_NO_CONTENT;
-//            $incident = $this->container->get('cert_unlp.ngen.incident.handler')->delete(
+//            $incident = $this->container->get('cert_unlp.ngen.incident.internal.handler')->delete(
 //                    $incident, $request->request->all()
 //            );
 //
@@ -428,7 +427,7 @@ class IncidentController extends FOSRestController {
 //    /**
 //     * @Route("/", name="/api/ajax/request", options=")
 //     */
-//    public function apiRequestAction(Request $request, Incident $incident) {
+//    public function apiRequestAction(Request $request, IncidentInterface $incident) {
 //        
 //    }
 }

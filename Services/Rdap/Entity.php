@@ -19,15 +19,18 @@ class Entity {
 
     public function __construct($entity_object) {
         $this->object = $entity_object;
-        $this->entities = [];
-//        var_dump("$$$$$$$$$$$$$$$$$", $entity->entities);
-//        var_dump("$$$$$$$",$this);die;
-//        die;
         if (isset($this->object->entities)) {
             foreach ($this->object->entities as $entity) {
+
                 $this->entities[] = new Entity($entity);
             }
+        } else {
+            $this->entities = [];
         }
+    }
+
+    public function __toString() {
+        return $this->object->handle . "(" . $this->getRolesAsString() . ")";
     }
 
     public function getVcard() {
@@ -40,6 +43,17 @@ class Entity {
         if (isset($this->object->roles)) {
             return $this->object->roles;
         }
+        return [];
+    }
+
+    public function getRolesAsString() {
+        $string = "";
+        if (isset($this->object->roles)) {
+            foreach ($this->object->roles as $role) {
+                $string .= "$role ";
+            }
+        }
+        return $string;
     }
 
     public function getHandle() {
@@ -73,9 +87,23 @@ class Entity {
         return $this->getVcardElement('tel');
     }
 
-    public function getEntities() {
-        
-        return $this->entities;
+    public function getEntities($callback = null) {
+        $entities = [];
+        if ($callback) {
+            $entities[] = $callback($this);
+        } else {
+            $entities[] = $this;
+        }
+        foreach ($this->entities as $entity) {
+            if ($callback) {
+                $entities[] = $callback($entity);
+            } else {
+                $entities[] = $entity;
+            }
+
+            $entities += $entity->getEntities($callback);
+        }
+        return $entities;
     }
 
 }

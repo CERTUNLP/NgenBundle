@@ -52,7 +52,7 @@ class IncidentType {
 
 //    /**
 //     *  @var \Doctrine\Common\Collections\Collection
-//     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident",mappedBy="type", cascade={"persist","remove"}, fetch="EAGER")) 
+//     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="type", cascade={"persist","remove"}, fetch="EAGER")) 
 //     */
 //    private $incidents;
 

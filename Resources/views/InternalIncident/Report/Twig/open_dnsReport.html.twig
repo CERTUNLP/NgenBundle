@@ -1,0 +1,93 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+Lo contactamos porque hemos sido informados que el <strong>host/servidor</strong> {{incident.hostAddress}} brinda servicios de DNS de manera insegura. 
+En particular, la configuración de dicho servicio 
+<a href="https://www.us-cert.gov/ncas/alerts/TA13-088A">responde consultas recursivas</a> realizadas desde fuera de la red de la UNLP.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Problemas derivados</p>
+
+El <em>host</em> bajo su administración podría llegar a ser usado en ataques de
+<a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplificación</a>. Esto
+permitiría realizar ataques a terceros de tipo:
+
+<ul>
+<li>DoS (Denegación de servicio)</li>
+<li>DDoS (Denegación de servicio distribuida)</li>
+</ul>
+
+Adicionalmente, el servidor podría verse expuesto a ataques de
+envenenamiento de caché de DNS o <strong>Pharming</strong>.
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">Cómo verificar el problema</p>
+
+Utilizando el comando:
+
+<div class = "destacated">
+
+<pre><code>dig +short test.openresolver.com TXT @{{incident.hostAddress}}
+</code></pre>
+
+</div>
+
+o vía web a través de la siguiente página:
+
+<div class = "destacated">
+
+<pre><code>http://openresolver.com/?ip={{incident.hostAddress}}
+</code></pre>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recomendations_content %}
+
+
+<p class="lead">Recomendaciones</p>
+
+Se recomienda desactivar la respuesta recursiva a consultas que no
+provienen de redes bajo su administración.
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">Mas información</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><a href="https://www.us-cert.gov/ncas/alerts/TA13-088A">https://www.us-cert.gov/ncas/alerts/TA13-088A</a></li>
+<li><a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">https://www.us-cert.gov/ncas/alerts/TA14-017A</a></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

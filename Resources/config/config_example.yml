@@ -10,7 +10,10 @@ cert_ngen:
         mail:
             
     indcidents:
-        class: CertUnlp\NgenBundle\Entity\Incident
+        internal:
+            class: CertUnlp\NgenBundle\Entity\InternalIncident
+        external:
+            class: CertUnlp\NgenBundle\Entity\ExternalIncident
         
         handler: 
             class: CertUnlp\NgenBundle\Services\IncidentHandler
@@ -21,9 +24,9 @@ cert_ngen:
             prefix:        
         reports:
             markdown:
-                path: %kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/views/Incident/Report/Markdown
+                path: %kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/views/InternalIncident/Report/Markdown
             twig:
-                path: %kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/views/Incident/Report/Twig
+                path: %kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/views/InternalIncident/Report/Twig
         mailer:
             class: CertUnlp\NgenBundle\Services\IncidentMailer
             transport: 

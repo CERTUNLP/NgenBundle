@@ -27,11 +27,12 @@ swiftmailer:
 doctrine:
     orm:
         auto_mapping: true
-        query_cache_driver:    apc
-        metadata_cache_driver: apc
+#        query_cache_driver:    apc
+#        metadata_cache_driver: apc
         entity_listener_resolver: cert_unlp.ngen.doctrine.entity_listener_resolver
         resolve_target_entities:
-            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\Incident 
+            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\InternalIncident 
+            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\ExternalIncident 
             CertUnlp\NgenBundle\Model\ReporterInterface: CertUnlp\NgenBundle\Entity\User 
             CertUnlp\NgenBundle\Model\NetworkInterface: CertUnlp\NgenBundle\Entity\Network 
         dql:
@@ -183,7 +184,7 @@ fos_elastica:
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Incident
+                        model: CertUnlp\NgenBundle\Entity\InternalIncident
                         provider: ~
                         listener:
                             insert: true

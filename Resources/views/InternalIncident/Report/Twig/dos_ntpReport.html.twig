@@ -1,0 +1,87 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+Le contactamos porque se nos informó que el <em>host</em> con IP {{incident.hostAddress}} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio NTP (UDP 123).
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">Cómo verificar el problema</p>
+
+Probablemente su servidor responde a comandos del tipo <strong><em>NTP readvar</em></strong>  y/o a comandos <strong><em>NTP monlist</em></strong>.
+Para testear manualmente si el servicio responde a este tipo de consultas puede utilizar los respectivos comandos:
+
+<div class = "destacated">
+
+<pre><code>ntpq -c readvar [{{incident.hostAddress}}]
+ntpdc -n -c monlist [{{incident.hostAddress}}]
+</code></pre>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recomendations_content %}
+
+
+<p class="lead">Recomendaciones</p>
+
+Para el problema <strong><em>NTP readvar</em></strong>, se recomienda:
+
+<div class = "destacated">
+
+<a href="http://www.team-cymru.org/ReadingRoom/Templates/secure-ntp-template.html">Deshabilitar</a>
+las consultas <code>NTP readvar</code>.
+
+</div>
+
+Para el problema <strong><em>NTP monlist</em></strong>, se recomienda:
+
+<div class = "destacated">
+
+Las versiones de <code>ntpd</code> anteriores a la 4.2.7 son vulnerables por
+defecto. Por lo tanto, lo más simple es actualizar a la última versión.
+
+En caso de que actualizar no sea una opción, como alternativa se puede
+optar por deshabilitar la funcionalidad <code>monlist</code>.
+
+<a href="http://www.purdue.edu/securepurdue/news/2014/advisory--ntp-amplification-attacks.cfm">Más</a>
+<a href="http://www.team-cymru.org/ReadingRoom/Templates/secure-ntp-template.html">información</a>
+sobre cómo deshabilitar <code>monlist</code>.
+
+
+</div>
+
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">Mas información</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">https://www.us-cert.gov/ncas/alerts/TA14-017A</a></li>
+</ul>
+
+</div>
+
+
+{% endblock %}
