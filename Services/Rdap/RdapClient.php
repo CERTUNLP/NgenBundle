@@ -35,7 +35,7 @@ class RdapClient {
 
             return $this->response;
         } catch (Exception $exc) {
-            return null;
+            return $exc;
         }
     }
 

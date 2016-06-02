@@ -10,36 +10,36 @@
 #    defaults:  { _controller: CertUnlpNgenBundle:Default:home }
 
 cert_ngen_user:
-    resource: "@CertUnlpNgenBundle/Controller/UserFrontendController.php"
+    resource: '@CertUnlpNgenBundle/Controller/UserFrontendController.php'
     type:     annotation
     prefix:   /user
     
 cert_ngen_incident:
-    resource: "@CertUnlpNgenBundle/Controller/IncidentFrontendController.php"
+    resource: '@CertUnlpNgenBundle/Controller/IncidentFrontendController.php'
     type:     annotation
     prefix:   /incidents
     
 fos_comment_api:
     type: rest
-    resource: "@FOSCommentBundle/Resources/config/routing.yml"
+    resource: '@FOSCommentBundle/Resources/config/routing.yml'
     defaults: { _format: html }
 
 cert_ngen_api:
     type: rest
     prefix: /api
-    resource: "@CertUnlpNgenBundle/Resources/config/routing_api.yml"
+    resource: '@CertUnlpNgenBundle/Resources/config/routing_api.yml'
     
 cert_ngen_network_admin:
-    resource: "@CertUnlpNgenBundle/Controller/NetworkAdminFrontendController.php"
+    resource: '@CertUnlpNgenBundle/Controller/NetworkAdminFrontendController.php'
     type:     annotation
     prefix:   /networks/admins
     
 cert_ngen_network:
-    resource: "@CertUnlpNgenBundle/Controller/NetworkFrontendController.php"
+    resource: '@CertUnlpNgenBundle/Controller/NetworkFrontendController.php'
     type:     annotation
     prefix:   /networks
     
 
 NelmioApiDocBundle:
-    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    resource: '@NelmioApiDocBundle/Resources/config/routing.yml'
     prefix:   /incidents/api/doc

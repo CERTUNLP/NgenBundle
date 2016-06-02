@@ -9,6 +9,7 @@
 namespace CertUnlp\NgenBundle\Services\Rdap;
 
 use CertUnlp\NgenBundle\Services\Rdap\Entity;
+use RecursiveArrayIterator;
 
 /**
  * Description of Entities
@@ -17,9 +18,10 @@ use CertUnlp\NgenBundle\Services\Rdap\Entity;
  */
 class Entities {
 
-    public function __construct($entities) {
+    public function __construct($entities = []) {
         $this->entities = [];
         foreach ($entities as $entity) {
+
             $this->entities[] = new Entity($entity);
         }
     }
@@ -44,11 +46,16 @@ class Entities {
             return $entities[0];
         }
 
-        return $entities;
+        return null;
     }
 
-    public function getEntities() {
-        return $this->entities;
+    public function getEntities($callback = null) {
+
+        $entities = [];
+        foreach ($this->entities as $entity) {
+            $entities += $entity->getEntities($callback);
+        }
+        return $entities;
     }
 
 }
