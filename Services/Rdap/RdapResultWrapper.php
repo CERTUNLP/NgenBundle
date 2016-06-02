@@ -19,26 +19,12 @@ use Exception;
 class RdapResultWrapper {
 
     public function __construct($rdap_json_response) {
-//        $this->rdap_json_response = $rdap_json_response;
         $this->rdap_json_object = json_decode($rdap_json_response);
-        var_dump($this->rdap_json_object);die;
         if ($this->getRateLimitNotice()) {
             throw new Exception($this->getRateLimitNotice()[0]);
         }
+
         $this->entities = new Entities($this->rdap_json_object->entities);
-    }
-
-    public function getEmails() {
-
-        $emails = [];
-
-        foreach ($this->getEntities()->getByRole(['abuse']) as $entity) {
-            $emails['abuse_email'][] = $entity->getEmail();
-        }
-        foreach ($this->getEntities()->getByRole(['noc', 'technical']) as $entity) {
-            $emails['extra_email'][] = $entity->getEmail();
-        }
-        return $emails;
     }
 
     public function getName() {
@@ -94,18 +80,8 @@ class RdapResultWrapper {
         return $this->getEventElement('registration');
     }
 
-    public function getEntities($recursive = false) {
-        if ($recursive) {
-            $entities = [];
-            foreach ($this->getEntities()->getEntities() as $entity) {
-                $entities[] = $entity;
+    public function getEntities() {
 
-                foreach ($entity->getEntities() as $entity2) {
-                    $entities[] = $entity2;
-                }
-            }
-            return $entities;
-        }
         return $this->entities;
     }
 

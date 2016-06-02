@@ -9,77 +9,77 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Handler;
+namespace CertUnlp\NgenBundle\Model;
 
 /**
  *
- * @author demyen
+ * @author dam
  */
 interface ApiHandlerInterface {
 
     /**
-     * Get a Page given the identifier
+     * Get a Entity given the identifier
      *
      * @api
      *
      * @param mixed $id
      *
-     * @return PageInterface
+     * @return EntityInterface
      */
     public function get($id);
 
     /**
-     * Get a list of Pages.
+     * Get a list of Entities.
      *
      * @param int $limit  the limit of the result
      * @param int $offset starting from the offset
      *
      * @return array
      */
-    public function all($limit = 5, $offset = 0);
+    public function all(array $params = array(), $order = array(), $limit = null, $offset = null);
 
     /**
-     * Post Page, creates a new Page.
+     * Post Entity, creates a new Entity.
      *
      * @api
      *
      * @param array $parameters
      *
-     * @return PageInterface
+     * @return EntityInterface
      */
-    public function post(array $parameters);
+    public function post(array $parameters, $csrf_protection = false);
 
     /**
-     * Edit a Page.
+     * Edit a Entity.
      *
      * @api
      *
-     * @param PageInterface   $page
+     * @param EntityInterface   $entity
      * @param array           $parameters
      *
-     * @return PageInterface
+     * @return EntityInterface
      */
-    public function put($page, array $parameters);
+    public function put($entity, array $parameters);
 
     /**
-     * Partially update a Page.
+     * Partially update a Entity.
      *
      * @api
      *
-     * @param PageInterface   $page
+     * @param EntityInterface   $entity
      * @param array           $parameters
      *
-     * @return PageInterface
+     * @return EntityInterface
      */
-    public function patch($page, array $parameters);
+    public function patch($entity, array $parameters);
 
     /**
-     * Delete a Page.
+     * Delete a Entity.
      *
-     * @param PageInterface $page
+     * @param EntityInterface $entity
      * @param array $parameters
      *
-     * @return PageInterface
+     * @return EntityInterface
      */
-    public function delete($page, array $parameters);
+    public function delete($entity, array $parameters);
 }

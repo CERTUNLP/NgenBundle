@@ -4,10 +4,6 @@
 # 
 # This source file is subject to the GPL v3.0 license that is bundled
 # with this source code in the file LICENSE.
-
-parameters:
-    cert_unlp.ngen.incident.delegator.class:  CertUnlp\NgenBundle\Services\IncidentDelegator
-    
 services:
     cert_unlp.ngen.api.auth.apikey_authenticator:
         class:     CertUnlp\NgenBundle\Security\ApiKeyAuthenticator
@@ -32,15 +28,29 @@ services:
         class: "%cert_unlp.ngen.feed.shadowserver.class%"
         arguments: ["@cert_unlp.ngen.feed.shadowserver.client","@cert_unlp.ngen.incident.converter"]
     
-    cert_unlp.ngen.incident.handler:
-        class:        "%cert_unlp.ngen.incident.handler.class%"
-        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.class%","@form.factory", "@security.context","%cert_unlp.ngen.incident.reporter.class%"]
+    cert_unlp.ngen.incident.factory:
+        class:        "%cert_unlp.ngen.incident.factory.class%"
+        arguments:    ["@cert_unlp.ngen.network.handler","%cert_unlp.ngen.incident.internal.class%","@form.factory", "@security.context","%cert_unlp.ngen.incident.reporter.class%"]
+        
+    cert_unlp.ngen.user.handler:
+        class:        "%cert_unlp.ngen.user.handler.class%"
+        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.user.class%","%cert_unlp.ngen.user.form_type.class%","@form.factory"]
+    
+    cert_unlp.ngen.incident.internal.handler:
+        class:        "%cert_unlp.ngen.incident.internal.handler.class%"
+        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.internal.class%","%cert_unlp.ngen.incident.internal.form_type.class%","@form.factory", "@security.context","@cert_unlp.ngen.user.handler"]
+
+    cert_unlp.ngen.incident.external.handler:
+        class:        "%cert_unlp.ngen.incident.external.handler.class%"
+        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.external.class%","%cert_unlp.ngen.incident.external.form_type.class%","@form.factory", "@security.context","@cert_unlp.ngen.user.handler"]
       
     cert_unlp.ngen.incident.mailer:
         class:        "%cert_unlp.ngen.incident.mailer.class%"
         arguments:    ["@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","@templating","%cert_unlp.ngen.team.mail%","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%"]
         tags:
             -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
+            -  { name: cert_unlp.ngen.incident.internal.delegate, priority: 1 }
+            -  { name: cert_unlp.ngen.incident.external.delegate, priority: 1 }
             
 #    cert_unlp.ngen.seed.redmine:
 #        class:        "%cert_unlp.ngen.seed.redmine.class%"
@@ -49,18 +59,33 @@ services:
     cert_unlp.ngen.incident.evidence.manager:
         class:        CertUnlp\NgenBundle\Services\IncidentEvidenceManager
         arguments:    ["%cert_unlp.ngen.incident.evidence.path%"]   
+        tags:
+            -  { name: cert_unlp.ngen.incident.internal.delegate, priority: 0 }
+            -  { name: cert_unlp.ngen.incident.external.delegate, priority: 0 }
+
         
-    cert_unlp.ngen.incident.delegator:
-        class:        "%cert_unlp.ngen.incident.delegator.class%"
-        arguments:    [["@cert_unlp.ngen.incident.evidence.manager","@cert_unlp.ngen.incident.mailer"]]
+    cert_unlp.ngen.incident.internal.delegator_chain:
+        class:        "%cert_unlp.ngen.incident.internal.delegator_chain.class%"
+        
+    cert_unlp.ngen.incident.external.delegator_chain:
+        class:        "%cert_unlp.ngen.incident.external.delegator_chain.class%"
+#        arguments:    [["@cert_unlp.ngen.incident.evidence.manager","@cert_unlp.ngen.incident.mailer"]]
     
     cert_unlp.ngen.incident.converter:
         class: CertUnlp\NgenBundle\Services\Converter\IncidentConverter
         arguments: [ "@event_dispatcher" ]
     
-    cert_unlp.ngen.incident.listener:
-        class: CertUnlp\NgenBundle\Entity\Listener\IncidentListener
-        arguments: [ "@cert_unlp.ngen.incident.delegator", "@service_container" ]
+    cert_unlp.ngen.incident.internal.listener:
+        class: CertUnlp\NgenBundle\Entity\Listener\InternalIncidentListener
+        arguments: [ "@cert_unlp.ngen.incident.internal.delegator_chain", "@service_container" ]
+        tags:
+            -  { name: doctrine.entity_listener }
+            -  { name: kernel.event_listener, event: cert_unlp.incident.convert_to_incident.event, method: onConvertToIncident }
+#            -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist }
+
+    cert_unlp.ngen.incident.external.listener:
+        class: CertUnlp\NgenBundle\Entity\Listener\ExternalIncidentListener
+        arguments: [ "@cert_unlp.ngen.incident.external.delegator_chain", "@service_container" ]
         tags:
             -  { name: doctrine.entity_listener }
             -  { name: kernel.event_listener, event: cert_unlp.incident.convert_to_incident.event, method: onConvertToIncident }
@@ -82,7 +107,7 @@ services:
             
     cert_unlp.ngen.network.handler:
         class:        "%cert_unlp.ngen.network.handler.class%"
-        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.network.class%","@form.factory", "@security.context","%cert_unlp.ngen.network.default_network%"]
+        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.network.class%","%cert_unlp.ngen.network.form_type.class%","@form.factory","%cert_unlp.ngen.network.default_network%"]
     
     cert_unlp.ngen.rdap_client:
         class:        CertUnlp\NgenBundle\Services\Rdap\RdapClient 

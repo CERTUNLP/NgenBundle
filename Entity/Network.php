@@ -79,13 +79,13 @@ class Network implements NetworkInterface {
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\NetworkAdmin", inversedBy="networks",cascade={"persist"}) 
      * @JMS\Expose
      */
-    private $networkAdmin;
+    private $network_admin;
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\AcademicUnit", inversedBy="networks",cascade={"persist"}) 
      * @JMS\Expose
      */
-    private $academicUnit;
+    private $academic_unit;
 
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="network", cascade={"persist","remove"}, fetch="EAGER")) */
     private $incidents;
@@ -148,48 +148,6 @@ class Network implements NetworkInterface {
     }
 
     /**
-     * Set networkAdminId
-     *
-     * @param integer $networkAdminId
-     * @return Network
-     */
-    public function setNetworkAdminId($networkAdminId) {
-        $this->networkAdminId = $networkAdminId;
-
-        return $this;
-    }
-
-    /**
-     * Get networkAdminId
-     *
-     * @return integer 
-     */
-    public function getNetworkAdminId() {
-        return $this->networkAdminId;
-    }
-
-    /**
-     * Set academicUnitId
-     *
-     * @param integer $academicUnitId
-     * @return Network
-     */
-    public function setAcademicUnitId($academicUnitId) {
-        $this->academicUnitId = $academicUnitId;
-
-        return $this;
-    }
-
-    /**
-     * Get academicUnitId
-     *
-     * @return integer 
-     */
-    public function getAcademicUnitId() {
-        return $this->academicUnitId;
-    }
-
-    /**
      * Set isActive
      *
      * @param boolean $isActive
@@ -211,45 +169,45 @@ class Network implements NetworkInterface {
     }
 
     /**
-     * Set networkAdmin
+     * Set network_admin
      *
-     * @param \CertUnlp\NgenBundle\Entity\NetworkAdmin $networkAdmin
+     * @param \CertUnlp\NgenBundle\Entity\NetworkAdmin $network_admin
      * @return Network
      */
-    public function setNetworkAdmin(\CertUnlp\NgenBundle\Entity\NetworkAdmin $networkAdmin = null) {
-        $this->networkAdmin = $networkAdmin;
+    public function setNetworkAdmin(\CertUnlp\NgenBundle\Entity\NetworkAdmin $network_admin = null) {
+        $this->network_admin = $network_admin;
 
         return $this;
     }
 
     /**
-     * Get networkAdmin
+     * Get network_admin
      *
      * @return \CertUnlp\NgenBundle\Entity\NetworkAdmin 
      */
     public function getNetworkAdmin() {
-        return $this->networkAdmin;
+        return $this->network_admin;
     }
 
     /**
-     * Set academicUnit
+     * Set academic_unit
      *
-     * @param \CertUnlp\NgenBundle\Entity\AcademicUnit $academicUnit
+     * @param \CertUnlp\NgenBundle\Entity\AcademicUnit $academic_unit
      * @return Network
      */
-    public function setAcademicUnit(\CertUnlp\NgenBundle\Entity\AcademicUnit $academicUnit = null) {
-        $this->academicUnit = $academicUnit;
+    public function setAcademicUnit(\CertUnlp\NgenBundle\Entity\AcademicUnit $academic_unit = null) {
+        $this->academic_unit = $academic_unit;
 
         return $this;
     }
 
     /**
-     * Get academicUnit
+     * Get academic_unit
      *
      * @return \CertUnlp\NgenBundle\Entity\AcademicUnit 
      */
     public function getAcademicUnit() {
-        return $this->academicUnit;
+        return $this->academic_unit;
     }
 
     /**

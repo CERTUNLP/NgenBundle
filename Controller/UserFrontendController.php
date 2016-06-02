@@ -66,7 +66,6 @@ class UserFrontendController extends Controller {
             $encoder = $this->container->get('security.encoder_factory')
                     ->getEncoder($user);
             $password = $encoder->encodePassword($passwordEnClaro, $salt);
-            var_dump($password);
             $user->setPassword($password);
             $user->setSalt($salt);
 

@@ -1,0 +1,89 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}
+{% block problem %}
+
+Se detectaron ataques de fuerza bruta a servicios SSH, provenientes del host {{incident.hostAddress}}, los cuales probablemente se deban a que el equipo ha sido comprometido.
+
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Problemas derivados</p>
+
+Este tipo de ataques suelen estar vinculados a un malware que busca infectar otros dispositivos, de la red o no, o a un atacante que utiliza el mismo para realizar un reconocimiento de la red.
+En cualquiera de los dos casos, existen consecuencias directas de su realización:
+
+<ul>
+<li>Consumo excesivo del ancho de banda por parte del host</li>
+<li>Compromiso de otros equipos</li>
+<li>etc</li>
+</ul>
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">Cómo verificar el problema</p>
+
+Se puede realizar una verificación del problema a través del análisis del tráfico existente en la red o sobre el host afectado, utilizando herramientas como 
+
+<div class = "destacated">
+
+<pre><code>tcpdump
+</code></pre>
+
+</div>
+
+o 
+
+<div class = "destacated">
+
+<pre><code>wireshark
+</code></pre>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recomendations_content %}
+
+
+<p class="lead">Recomendaciones</p>
+
+Adjunto le enviamos logs de conexiones para que pueda identificar la actividad maliciosa del host.
+
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">Mas información</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><a href="http://www.securityweek.com/exercising-alternatives-detect-and-prevent-brute-force-attacks">http://www.securityweek.com/exercising-alternatives-detect-and-prevent-brute-force-attacks</a></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

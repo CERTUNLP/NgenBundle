@@ -59,7 +59,7 @@ class IncidentMarkdowReportParser extends MarkdownExtra implements MarkdownParse
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
-{% set father = 'CertUnlpNgenBundle:Incident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}" . $html : $html;
 
         return $html;

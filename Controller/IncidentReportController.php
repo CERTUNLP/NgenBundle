@@ -17,9 +17,9 @@ use FOS\RestBundle\View\View;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use CertUnlp\NgenBundle\Entity\Incident;
 use Symfony\Component\HttpFoundation\Response;
 use CertUnlp\NgenBundle\Entity\IncidentType;
+use CertUnlp\NgenBundle\Entity\Incident;
 
 class IncidentReportController extends FOSRestController {
 

@@ -29,7 +29,7 @@ class IncidentMailer implements IncidentMailerInterface {
         $this->cert_email = $cert_email;
         $this->templating = $templating;
         $this->upload_directory = $upload_directory;
-        $this->reports_path = 'CertUnlpNgenBundle:Incident:Report/Twig';
+        $this->reports_path = 'CertUnlpNgenBundle:InternalIncident:Report/Twig';
         $this->commentManager = $commentManager;
         $this->environment = ($environment == 'dev') ? '[dev]' : '';
     }
@@ -112,15 +112,14 @@ class IncidentMailer implements IncidentMailerInterface {
 
     public function onCommentPrePersist(CommentPersistEvent $event) {
         $comment = $event->getComment();
-//        var_dump($comment->getNotifyToAdmin());
-//        die;
+
         if (!$this->commentManager->isNewComment($comment)) {
             return;
         }
         if ($comment instanceof SignedCommentInterface) {
             $author = $comment->getAuthor();
         }
-        $this->send_report_reply($comment->getThread()->getIncident(), $comment->getBody(), !$comment->getNotifyToAdmin());
+        $this->send_report_reply($comment->getThread()->getInternalIncident(), $comment->getBody(), !$comment->getNotifyToAdmin());
     }
 
 }
