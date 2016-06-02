@@ -1,5 +1,5 @@
 '''
- This file is part of the Ngen - CSIRT Incident Report System.
+ This file is part of the Ngen - CSIRT InternalIncident Report System.
  
  (c) CERT UNLP <support@cert.unlp.edu.ar>
  
