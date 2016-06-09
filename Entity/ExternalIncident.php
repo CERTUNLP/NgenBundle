@@ -13,6 +13,7 @@ use JMS\Serializer\Annotation as JMS;
 use CertUnlp\NgenBundle\Model\ReporterInterface;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Description of InternalIncident
@@ -22,6 +23,15 @@ use CertUnlp\NgenBundle\Model\NetworkInterface;
  * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Listener\ExternalIncidentListener" })
  */
 class ExternalIncident extends Incident {
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="host_address", type="string", length=20)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    protected $hostAddress;
 
     /**
      * @ORM\Column(name="network", type="string",nullable=true)
@@ -42,6 +52,16 @@ class ExternalIncident extends Incident {
      * @JMS\Groups({"api"})
      */
     private $network_entity;
+
+    /**
+     * @var string
+     * 
+     * @Gedmo\Slug(fields={"hostAddress"},separator="_")     
+     * @ORM\Column(name="slug", type="string", length=100,nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     * */
+    protected $slug;
 
     /**
      * Set network

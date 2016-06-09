@@ -16,6 +16,7 @@ use CertUnlp\NgenBundle\Model\NetworkInterface;
 use JMS\Serializer\Annotation as JMS;
 use CertUnlp\NgenBundle\Entity\Incident;
 use Gedmo\Mapping\Annotation as Gedmo;
+use CertUnlp\NgenBundle\Validator\Constraints as NetworkAssert;
 
 /**
  * Description of InternalIncident
@@ -27,6 +28,17 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * 
  */
 class InternalIncident extends Incident {
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="host_address", type="string", length=20)
+     * @NetworkAssert\Ip
+     * @NetworkAssert\ValidNetwork
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    protected $hostAddress;
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Model\NetworkInterface", inversedBy="incidents") 
@@ -48,6 +60,16 @@ class InternalIncident extends Incident {
      * @JMS\Groups({"api"})
      */
     private $academic_unit;
+
+    /**
+     * @var string
+     * 
+     * @Gedmo\Slug(fields={"hostAddress"},separator="_")     
+     * @ORM\Column(name="slug", type="string", length=100,nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     * */
+    protected $slug;
 
     /**
      * Set network

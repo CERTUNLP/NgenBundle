@@ -22,7 +22,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\File;
 use JMS\Serializer\Annotation as JMS;
 use Doctrine\ORM\Mapping\MappedSuperclass;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity()
@@ -43,17 +42,6 @@ class Incident implements IncidentInterface {
      * @JMS\Expose
      */
     protected $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="host_address", type="string", length=20)
-     * @NetworkAssert\Ip
-     * @NetworkAssert\ValidNetwork
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    protected $hostAddress;
 
     /**
      * @var \DateTime
@@ -84,16 +72,6 @@ class Incident implements IncidentInterface {
      * @JMS\Groups({"api"})
      */
     protected $renotificationDate;
-
-    /**
-     * @var string
-     * 
-     * @Gedmo\Slug(fields={"hostAddress"},separator="_")     
-     * @ORM\Column(name="slug", type="string", length=100,nullable=true,unique=true)
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     * */
-    protected $slug;
 
     /**
      * @var \DateTime
