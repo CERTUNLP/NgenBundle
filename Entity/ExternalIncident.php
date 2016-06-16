@@ -47,11 +47,39 @@ class ExternalIncident extends Incident {
     private $network_admin;
 
     /**
+     * @ORM\Column(type="array",nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    private $network_admin_email;
+
+    /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     private $network_entity;
+
+    /**
+     * @ORM\Column(type="string",nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    private $start_address;
+
+    /**
+     * @ORM\Column(type="string",nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    private $end_address;
+
+    /**
+     * @ORM\Column(type="string",nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    private $country;
 
     /**
      * @var string
@@ -120,4 +148,94 @@ class ExternalIncident extends Incident {
         return $this->network_entity;
     }
 
+    /**
+     * Set startAddress
+     *
+     * @param string $startAddress
+     *
+     * @return ExternalIncident
+     */
+    public function setStartAddress($startAddress) {
+        $this->start_address = $startAddress;
+
+        return $this;
+    }
+
+    /**
+     * Get startAddress
+     *
+     * @return string
+     */
+    public function getStartAddress() {
+        return $this->start_address;
+    }
+
+    /**
+     * Set endAddress
+     *
+     * @param string $endAddress
+     *
+     * @return ExternalIncident
+     */
+    public function setEndAddress($endAddress) {
+        $this->end_address = $endAddress;
+
+        return $this;
+    }
+
+    /**
+     * Get endAddress
+     *
+     * @return string
+     */
+    public function getEndAddress() {
+        return $this->end_address;
+    }
+
+    /**
+     * Set country
+     *
+     * @param string $country
+     *
+     * @return ExternalIncident
+     */
+    public function setCountry($country) {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return string
+     */
+    public function getCountry() {
+        return $this->country;
+    }
+
+
+    /**
+     * Set networkAdminEmail
+     *
+     * @param string $networkAdminEmail
+     *
+     * @return ExternalIncident
+     */
+    public function setNetworkAdminEmail($networkAdminEmail)
+    {
+        $this->network_admin_email = $networkAdminEmail;
+
+        return $this;
+    }
+
+    /**
+     * Get networkAdminEmail
+     *
+     * @return string
+     */
+    public function getNetworkAdminEmail()
+    {
+        return $this->network_admin_email;
+    }
 }
