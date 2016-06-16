@@ -49,11 +49,35 @@ class Entities {
         return null;
     }
 
+    public function getAbuseEntities() {
+
+        $abuse_entities = $this->getByRole(['abuse']);
+        $extra_entities = $this->getByRole(['noc', 'technical']);
+
+        return $abuse_entities ? $abuse_entities : $extra_entities;
+    }
+
+    public function getAbuseEntity() {
+        $abuse_entities = $this->getAbuseEntities();
+        return $abuse_entities ? $abuse_entities[0] : [];
+    }
+
+    public function getAbuseEmails() {
+        $abuse_emails = [];
+        $abuse_entities = $this->getAbuseEntities();
+
+        foreach ($abuse_entities as $abuse_entity) {
+            $abuse_emails = array_merge($abuse_emails, $abuse_entity->getEmails());
+        }
+
+        return $abuse_emails;
+    }
+
     public function getEntities($callback = null) {
 
         $entities = [];
         foreach ($this->entities as $entity) {
-            $entities += $entity->getEntities($callback);
+            $entities = array_merge($entities, $entity->getEntities());
         }
         return $entities;
     }

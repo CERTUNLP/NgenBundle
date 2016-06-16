@@ -30,7 +30,7 @@ class Entity {
     }
 
     public function __toString() {
-        return $this->object->handle . "(" . $this->getRolesAsString() . ")";
+        return $this->object->name . "( " . $this->object->handle . " )";
     }
 
     public function getVcard() {
@@ -63,20 +63,21 @@ class Entity {
     }
 
     public function getVcardElement($element) {
+        $elements = [];
         foreach ($this->getVcard() as $vcard) {
             if ($vcard[0] == $element) {
-                return $vcard[sizeof($vcard) - 1];
+                $elements[] = $vcard[sizeof($vcard) - 1];
             }
         }
-        return null;
+        return $elements;
     }
 
-    public function getEmail() {
+    public function getEmails() {
         return $this->getVcardElement('email');
     }
 
     public function getName() {
-        return $this->getVcardElement('fn');
+        return $this->getVcardElement('fn')[0];
     }
 
     public function getOrganization() {
@@ -95,13 +96,7 @@ class Entity {
             $entities[] = $this;
         }
         foreach ($this->entities as $entity) {
-            if ($callback) {
-                $entities[] = $callback($entity);
-            } else {
-                $entities[] = $entity;
-            }
-
-            $entities += $entity->getEntities($callback);
+            $entities = array_merge($entities, $entity->getEntities($callback));
         }
         return $entities;
     }
