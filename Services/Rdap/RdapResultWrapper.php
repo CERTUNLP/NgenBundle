@@ -43,6 +43,10 @@ class RdapResultWrapper {
         return $this->rdap_json_object->startAddress;
     }
 
+    public function getCountry() {
+        return isset($this->rdap_json_object->country) ? $this->rdap_json_object->country : null;
+    }
+
     public function getEndAddress() {
         return $this->rdap_json_object->endAddress;
     }
@@ -89,6 +93,18 @@ class RdapResultWrapper {
         return $this->rdap_json_object->notices;
     }
 
+    public function getAbuseEmails() {
+        return $this->getEntities()->getAbuseEmails();
+    }
+
+    public function getAbuseEntities() {
+        return $this->getEntities()->getAbuseEntities();
+    }
+
+    public function getAbuseEntity() {
+        return $this->getEntities()->getAbuseEntity();
+    }
+
     public function getRateLimitNotice() {
         return $this->getNoticeElement('Rate Limit Notice');
     }
@@ -100,10 +116,6 @@ class RdapResultWrapper {
             }
         }
         return null;
-    }
-
-    public function getEmail() {
-        return $this->getVcardElement('email');
     }
 
 }
