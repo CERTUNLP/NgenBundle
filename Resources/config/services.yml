@@ -61,7 +61,7 @@ services:
         arguments:    ["%cert_unlp.ngen.incident.evidence.path%"]   
         tags:
             -  { name: cert_unlp.ngen.incident.internal.delegate, priority: 0 }
-            -  { name: cert_unlp.ngen.incident.external.delegate, priority: 0 }
+            -  { name: cert_unlp.ngen.incident.external.delegate, priority: 1 }
 
         
     cert_unlp.ngen.incident.internal.delegator_chain:
@@ -110,8 +110,11 @@ services:
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.network.class%","%cert_unlp.ngen.network.form_type.class%","@form.factory","%cert_unlp.ngen.network.default_network%"]
     
     cert_unlp.ngen.rdap_client:
-        class:        CertUnlp\NgenBundle\Services\Rdap\RdapClient 
+        class:        CertUnlp\NgenBundle\Services\IncidentRdapClient
         arguments: ["%cert_unlp.ngen.resources.path%"]
+        tags:
+            -  { name: cert_unlp.ngen.incident.external.delegate, priority: 0 }
+
         
     fos_comment.form_type.comment.default:
         class: CertUnlp\NgenBundle\Form\IncidentCommentType
