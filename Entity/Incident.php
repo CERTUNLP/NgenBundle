@@ -135,7 +135,7 @@ class Incident implements IncidentInterface {
      * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentCommentThread",mappedBy="incident", fetch="EXTRA_LAZY")
      */
     private $comment_thread;
-    
+
     /**
      * @Assert\File(maxSize = "500k")
      */
@@ -632,7 +632,6 @@ class Incident implements IncidentInterface {
         
     }
 
-
     /**
      * Set commentThread
      *
@@ -640,8 +639,7 @@ class Incident implements IncidentInterface {
      *
      * @return Incident
      */
-    public function setCommentThread(\CertUnlp\NgenBundle\Entity\IncidentCommentThread $commentThread = null)
-    {
+    public function setCommentThread(\CertUnlp\NgenBundle\Entity\IncidentCommentThread $commentThread = null) {
         $this->comment_thread = $commentThread;
 
         return $this;
@@ -652,8 +650,12 @@ class Incident implements IncidentInterface {
      *
      * @return \CertUnlp\NgenBundle\Entity\IncidentCommentThread
      */
-    public function getCommentThread()
-    {
+    public function getCommentThread() {
         return $this->comment_thread;
     }
+
+    public function getEmails() {
+        return [];
+    }
+
 }
