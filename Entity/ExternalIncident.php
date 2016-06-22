@@ -51,7 +51,7 @@ class ExternalIncident extends Incident {
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    private $network_admin_email;
+    private $network_admin_emails;
 
     /**
      * @ORM\Column(type="string",nullable=true)
@@ -214,28 +214,35 @@ class ExternalIncident extends Incident {
         return $this->country;
     }
 
-
     /**
-     * Set networkAdminEmail
+     * Set networkAdminEmails
      *
-     * @param string $networkAdminEmail
+     * @param array $networkAdminEmails
      *
      * @return ExternalIncident
      */
-    public function setNetworkAdminEmail($networkAdminEmail)
-    {
-        $this->network_admin_email = $networkAdminEmail;
+    public function setNetworkAdminEmails($networkAdminEmails) {
+        $this->network_admin_emails = $networkAdminEmails;
 
         return $this;
     }
 
     /**
-     * Get networkAdminEmail
+     * Get networkAdminEmails
      *
-     * @return string
+     * @return array
      */
-    public function getNetworkAdminEmail()
-    {
-        return $this->network_admin_email;
+    public function getNetworkAdminEmails() {
+        return $this->network_admin_emails;
     }
+
+    /**
+     * Get networkAdminEmails
+     *
+     * @return array
+     */
+    public function getEmails() {
+        return $this->network_admin_emails;
+    }
+
 }
