@@ -36,8 +36,12 @@ class IncidentMailer implements IncidentMailerInterface {
 
     public function getBody(IncidentInterface $incident, $type = 'html') {
         $parameters = array('incident' => $incident, 'txtOrHtml' => $type);
-        $template = $incident->getReportEdit() ? $incident->getReportEdit() : $this->reports_path . '/' . $incident->getType()->getSlug() . 'Report.html.twig';
-        return $this->templating->render($template, $parameters);
+        if ($incident->getReportEdit()) {
+            return $this->templating->createTemplate($incident->getReportEdit())->render($parameters);
+        } else {
+            $template = $this->reports_path . '/' . $incident->getType()->getSlug() . 'Report.html.twig';
+            return $this->templating->render($template, $parameters);
+        }
     }
 
     public function getReplyBody(IncidentInterface $incident, $body = '', $type = 'html') {
@@ -46,7 +50,7 @@ class IncidentMailer implements IncidentMailerInterface {
         return $this->templating->render($template, $parameters);
     }
 
-    public function send_report(IncidentInterface $incident, $body = null, $echo = null,  $is_new_incident= FAlSE) {
+    public function send_report(IncidentInterface $incident, $body = null, $echo = null, $is_new_incident = FAlSE) {
         if (!$echo) {
             if ($incident->getSendReport() || $is_new_incident) {
                 $html = $this->getBody($incident);
@@ -55,7 +59,7 @@ class IncidentMailer implements IncidentMailerInterface {
                         ->setSubject(sprintf($this->environment . '[CERTunlp] Incidente de tipo "%s" en el host %s [ID:%s]', $incident->getType()->getName(), $incident->getHostAddress(), $incident->getId()))
                         ->setFrom($this->cert_email)
                         ->setCc($this->cert_email)
-                        ->setTo($incident->getNetworkAdmin()->getEmail())
+                        ->setTo($incident->getEmails())
                         ->setBody($text)
                         ->addPart($html, 'text/html');
                 if ($incident->getEvidenceFilePath()) {
@@ -87,7 +91,7 @@ class IncidentMailer implements IncidentMailerInterface {
                     ->setTo($this->cert_email);
         } else {
             $message
-                    ->setTo($incident->getNetworkAdmin()->getEmail())
+                    ->setTo($incident->getEmails())
                     ->setCc($this->cert_email);
         }
 
@@ -98,7 +102,7 @@ class IncidentMailer implements IncidentMailerInterface {
     }
 
     public function postPersistDelegation($incident) {
-        $this->send_report($incident,null,null,TRUE);
+        $this->send_report($incident, null, null, TRUE);
     }
 
     public function prePersistDelegation($incident) {
