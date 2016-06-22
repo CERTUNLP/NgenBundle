@@ -138,4 +138,8 @@ class InternalIncident extends Incident {
         return $this->academic_unit;
     }
 
+    public function getEmails() {
+        return [$this->getNetworkAdmin()->getEmail()];
+    }
+
 }
