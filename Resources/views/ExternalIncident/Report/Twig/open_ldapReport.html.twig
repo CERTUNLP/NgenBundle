@@ -1,0 +1,40 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+Le contactamos porque se nos ha informado que el <em>host</em> con IP {{incident.hostAddress}} tiene el servicio LDAP accesible desde Internet.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Problemas derivados</p>
+
+El <em>host</em> bajo su administración podría llegar a estar brindando información sensible.
+
+
+{% endblock %}
+
+
+{% block recomendations_content %}
+
+
+<p class="lead">Recomendaciones</p>
+
+<ul>
+<li>Establecer reglas de firewall para permitir consultas sólo desde las redes autorizadas. </li>
+<li>Utilizar TLS en la comunicación con el servicio.</li>
+<li>No permitir conexiones de manera anónima (Anonymous BIND).</li>
+<li><a href="https://www.sans.org/reading-room/whitepapers/directories/securely-implementing-ldap-109">Información adicional</a>.</li>
+</ul>
+
+{% endblock %}
