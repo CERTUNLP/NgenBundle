@@ -29,7 +29,7 @@ class NetworkFrontendController extends Controller {
     public function homeAction(Request $request) {
         $em = $this->get('doctrine.orm.entity_manager');
         $dql = "SELECT n,au,na "
-                . "FROM CertUnlpNgenBundle:Network n join n.academicUnit au join n.networkAdmin na";
+                . "FROM CertUnlpNgenBundle:Network n join n.academic_unit au join n.network_admin na";
         $query = $em->createQuery($dql);
 
         $paginator = $this->get('knp_paginator');
