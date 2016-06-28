@@ -9,9 +9,8 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Services;
+namespace CertUnlp\NgenBundle\Services\Mailer;
 
-use CertUnlp\NgenBundle\Model\IncidentMailerInterface;
 use CertUnlp\NgenBundle\Services\Delegator\DelegateInterface;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
 use FOS\CommentBundle\Event\CommentPersistEvent;
@@ -20,16 +19,19 @@ use FOS\CommentBundle\Model\SignedCommentInterface;
 
 class IncidentMailer implements IncidentMailerInterface {
 
-    private $mailer;
-    private $cert_email;
-    private $templating;
+    protected $mailer;
+    protected $cert_email;
+    protected $templating;
+    protected $upload_directory;
+    protected $reports_path;
+    protected $commentManager;
+    protected $environment;
 
     public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, CommentManagerInterface $commentManager, $environment) {
         $this->mailer = $mailer;
         $this->cert_email = $cert_email;
         $this->templating = $templating;
         $this->upload_directory = $upload_directory;
-        $this->reports_path = 'CertUnlpNgenBundle:InternalIncident:Report/Twig';
         $this->commentManager = $commentManager;
         $this->environment = ($environment == 'dev') ? '[dev]' : '';
     }
@@ -56,7 +58,7 @@ class IncidentMailer implements IncidentMailerInterface {
                 $html = $this->getBody($incident);
                 $text = strip_tags($this->getBody($incident, 'txt'));
                 $message = \Swift_Message::newInstance()
-                        ->setSubject(sprintf($this->environment . '[CERTunlp] Incidente de tipo "%s" en el host %s [ID:%s]', $incident->getType()->getName(), $incident->getHostAddress(), $incident->getId()))
+                        ->setSubject(sprintf($this->environment . $this->getMailSubject(), $incident->getType()->getName(), $incident->getHostAddress(), $incident->getId()))
                         ->setFrom($this->cert_email)
                         ->setCc($this->cert_email)
                         ->setTo($incident->getEmails())
@@ -68,6 +70,7 @@ class IncidentMailer implements IncidentMailerInterface {
                 if ($incident->getReportMessageId()) {
                     $message->setId($incident->getReportMessageId());
                 }
+
                 $this->mailer->send($message);
             }
         } else {
@@ -123,7 +126,11 @@ class IncidentMailer implements IncidentMailerInterface {
         if ($comment instanceof SignedCommentInterface) {
             $author = $comment->getAuthor();
         }
-        $this->send_report_reply($comment->getThread()->getInternalIncident(), $comment->getBody(), !$comment->getNotifyToAdmin());
+        $this->send_report_reply($comment->getThread()->getIncident(), $comment->getBody(), !$comment->getNotifyToAdmin());
+    }
+
+    public function getMailSubject() {
+        return '';
     }
 
 }
