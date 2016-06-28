@@ -44,18 +44,20 @@ services:
         class:        "%cert_unlp.ngen.incident.external.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.external.class%","%cert_unlp.ngen.incident.external.form_type.class%","@form.factory", "@security.context","@cert_unlp.ngen.user.handler"]
       
-    cert_unlp.ngen.incident.mailer:
-        class:        "%cert_unlp.ngen.incident.mailer.class%"
+    cert_unlp.ngen.internal.incident.mailer:
+        class:        "%cert_unlp.ngen.incident.internal.mailer.class%"
         arguments:    ["@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","@twig","%cert_unlp.ngen.team.mail%","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%"]
         tags:
             -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
             -  { name: cert_unlp.ngen.incident.internal.delegate, priority: 1 }
+    
+    cert_unlp.ngen.external.incident.mailer:
+        class:        "%cert_unlp.ngen.incident.external.mailer.class%"
+        arguments:    ["@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","@twig","%cert_unlp.ngen.team.mail%","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%"]
+        tags:
+            -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
             -  { name: cert_unlp.ngen.incident.external.delegate, priority: 1 }
             
-#    cert_unlp.ngen.seed.redmine:
-#        class:        "%cert_unlp.ngen.seed.redmine.class%"
-#        arguments:    ["%cert_unlp.ngen.seed.redmine.url%","%cert_unlp.ngen.seed.redmine.key%","%cert_unlp.ngen.incident.evidence.path%","@service_container"]   
-    
     cert_unlp.ngen.incident.evidence.manager:
         class:        CertUnlp\NgenBundle\Services\IncidentEvidenceManager
         arguments:    ["%cert_unlp.ngen.incident.evidence.path%"]   
