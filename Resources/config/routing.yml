@@ -14,8 +14,13 @@ cert_ngen_user:
     type:     annotation
     prefix:   /user
     
-cert_ngen_incident:
-    resource: '@CertUnlpNgenBundle/Controller/IncidentFrontendController.php'
+cert_ngen_internal_incident:
+    resource: '@CertUnlpNgenBundle/Controller/InternalIncidentFrontendController.php'
+    type:     annotation
+    prefix:   /incidents
+    
+cert_ngen_external_incident:
+    resource: '@CertUnlpNgenBundle/Controller/ExternalIncidentFrontendController.php'
     type:     annotation
     prefix:   /incidents
     
