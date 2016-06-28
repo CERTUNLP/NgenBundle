@@ -20,11 +20,14 @@ use CertUnlp\NgenBundle\Form\InternalIncidentType;
 use CertUnlp\NgenBundle\Form\InternalIncident;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class IncidentFrontendController extends Controller {
+/**
+ * @Route("/externals/")
+ */
+class ExternalIncidentFrontendController extends Controller {
 
     /**
      * @Template("CertUnlpNgenBundle:InternalIncident:Frontend/home.html.twig")
-     * @Route("/", name="cert_unlp_ngen_incident_frontend_home")
+     * @Route("/", name="cert_unlp_ngen_external_incident_frontend_home")
      */
     public function homeAction(Request $request) {
 
@@ -46,7 +49,7 @@ class IncidentFrontendController extends Controller {
 
     /**
      * @Template("CertUnlpNgenBundle:InternalIncident:Frontend/incidentForm.html.twig")
-     * @Route("/new", name="cert_unlp_ngen_incident_new_incident")
+     * @Route("/new", name="cert_unlp_ngen_external_incident_frontend_new_incident")
      */
     public function newIncidentAction(Request $request) {
         return array('form' => $this->createForm(new InternalIncidentType()), 'method' => 'POST');
@@ -54,7 +57,7 @@ class IncidentFrontendController extends Controller {
 
     /**
      * @Template("CertUnlpNgenBundle:InternalIncident:Frontend/incidentForm.html.twig")
-     * @Route("{hostAddress}/{date}/{type}/edit", name="cert_unlp_ngen_incident_edit_incident")
+     * @Route("{hostAddress}/{date}/{type}/edit", name="cert_unlp_ngen_external_incident_frontend_edit_incident")
      * @ParamConverter("incident", class="CertUnlpNgenBundle:InternalIncident", options={"repository_method" = "findByHostDateType"})
 
      */
@@ -64,7 +67,7 @@ class IncidentFrontendController extends Controller {
 
     /**
      * @Template("CertUnlpNgenBundle:InternalIncident:Frontend/incidentDetail.html.twig")
-     * @Route("{hostAddress}/{date}/{type}/detail", name="cert_unlp_ngen_incident_detail_incident")
+     * @Route("{hostAddress}/{date}/{type}/detail", name="cert_unlp_ngen_external_incident_frontend_detail_incident")
      * @ParamConverter("incident", class="CertUnlpNgenBundle:InternalIncident", options={"repository_method" = "findByHostDateType"})
 
      */
@@ -74,7 +77,7 @@ class IncidentFrontendController extends Controller {
 
     /**
      * @Template("CertUnlpNgenBundle:InternalIncident:Frontend/home.html.twig")
-     * @Route("search", name="cert_unlp_ngen_incident_search_incident")
+     * @Route("search", name="cert_unlp_ngen_external_incident_frontend_search_incident")
      */
     public function searchIncidentAction(Request $request) {
         $finder = $this->container->get('fos_elastica.finder.incidents.incident');
