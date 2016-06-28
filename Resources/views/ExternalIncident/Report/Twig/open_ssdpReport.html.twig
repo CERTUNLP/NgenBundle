@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} dispone del servicio SSDP (Simple Service Discovery Protocol) abierto y accesible desde Internet.
+We would like to inform you that we have been notified that the <em>host/server</em> {{incident.hostAddress}} has the <strong>Simple Service Discovery Protocol</strong> (SSDP) service, accessible from the Internet.
 
 {% endblock %}
 
@@ -17,23 +17,24 @@ Lo contactamos porque hemos sido informados que el host/servidor {{incident.host
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-El host bajo su administración podría llegar a ser usado en ataques de amplificación para causar ataques de denegación de servicio (DOS, DDOS).
+The host under you'r administration could be used to perform attacks, such as:
+* Denial of Service attacks (DOS, DDOS).
 
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-Se recomienda alguna de las siguientes:
+We recommend:
 
 <ul>
-<li>Deshabilitar el servicio.</li>
-<li>Establecer reglas de firewall para denegar las consultas desde redes no autorizadas. </li>
+<li>Disable the service.</li>
+<li>Establish firewall rules to filter unauthorized queries.</li>
 </ul>
 
 {% endblock %}
@@ -42,7 +43,7 @@ Se recomienda alguna de las siguientes:
 {% block more_information_content %}
 
 
-<p class="lead">Mas información</p>
+<p class="lead">For more information</p>
 
 
 <div class = "destacated">

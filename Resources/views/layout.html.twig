@@ -3,7 +3,7 @@
     {% block navigation_block %}
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
-                <a class="navbar-brand" href="{{path('cert_unlp_ngen_incident_frontend_home')}}">Ngen</a>
+                <a class="navbar-brand" href="{{path('cert_unlp_ngen_internal_incident_frontend_home')}}">Ngen</a>
             </div> 
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -18,7 +18,7 @@
 
                         <ul class="nav in" id="side-menu">
                             <li class="sidebar-search">
-                                <form method='post' action="{% block sideBar_search_path %}{{path('cert_unlp_ngen_incident_search_incident')}}{% endblock %}" role="search">
+                                <form method='post' action="{% block sideBar_search_path %}{{path('cert_unlp_ngen_internal_incident_forntend_search_incident')}}{% endblock %}" role="search">
                                     <div class="input-group custom-search-form">
                                         <input type="text" name="term" class="form-control" value="{{term | default('')}}" placeholder="Search...">
                                         <span class="input-group-btn">
@@ -33,7 +33,7 @@
                                 <a href="{{path('cert_unlp_ngen_incident_frontend_home')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                             </li>#}
                             <li>
-                                <a href="{{path('cert_unlp_ngen_incident_frontend_home')}}" {% if app.request.get('_route') == 'cert_unlp_ngen_incident_frontend_home' %} class="active" {% endif %}>
+                                <a href="{{path('cert_unlp_ngen_internal_incident_frontend_home')}}" {% if app.request.get('_route') == 'cert_unlp_ngen_incident_frontend_home' %} class="active" {% endif %}>
                                     {{icon('exclamation-circle fa-fw')}} Incidents</a>
                             </li>
                             <li>

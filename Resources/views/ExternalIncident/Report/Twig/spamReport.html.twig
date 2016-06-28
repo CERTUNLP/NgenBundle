@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Nos notificaron que el host {{incident.hostAddress}} está enviando SPAM.
+We would like to inform you that we have been informed that the <em>host</em> {{incident.hostAddress}} is possibly sending SPAM.
 
 {% endblock %}
 
@@ -17,9 +17,10 @@ Nos notificaron que el host {{incident.hostAddress}} está enviando SPAM.
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-De no solucionar el problema, su servidor puede ser introducido en distintas blacklists que causarán que dicho servidor no pueda enviar correos a otros servidores.
+If this issue is not addressed, the <em>host</em> could be added in blacklists, thus emails from this host will be filtered.
+
 
 
 {% endblock %}
@@ -28,20 +29,23 @@ De no solucionar el problema, su servidor puede ser introducido en distintas bla
 {% block verification_content %}
 
 
-<p class="lead">Cómo verificar el problema</p>
+<p class="lead">How to verify the issue</p>
 
-Es probable que el SPAM se envíe utilizando una cuenta de correo comprometida.
-Analizando la cabecera del email de spam adjunto, puede distinguirse el usuario autenticado que realizó el envío del mensaje.
+It is likely that the Phishing emails are being sent by a compromised email account.
+Analyzing the email header, the authenticated user being used to send the emails can be identified (See attached file).
 
 
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-Se recomienda cambiar las credenciales de los usuarios afectados e instruir a los mismos sobre los mails de phishing, ataque que probablemente haya sido utilizado para el robo de las credenciales.
+<em>TODO: Modificar en español tambien</em>
+* Modify the compromised user credentials.
+* Increase awareness related to this issue among the users.
+
 
 {% endblock %}

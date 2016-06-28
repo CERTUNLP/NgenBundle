@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} dispone del servicio NETBIOS abierto desde Internet.
+We would like to inform you that we have been notified that the <em>host/server</em> {{incident.hostAddress}} has the <strong>Network Basic Input/Output System</strong> (NETBIOS) service, accessible from the Internet.
 
 {% endblock %}
 
@@ -17,31 +17,32 @@ Lo contactamos porque hemos sido informados que el host/servidor {{incident.host
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-El host bajo su administración podría ser usado para:
+The <em>host</em> under you'r administration could be used to perform:
 
 <ul>
-<li>Ataques de amplificación que causen denegación de servicio (DOS, DDOS)</li>
-<li>Recopilar información compartida en dicho host</li>
-<li>Realizar ataques de fuerza bruta en caso que el servicio solicite contraseña</li>
-<li>Distribución de malware</li>
-<li>Almacenar información robada</li>
+<li>Denial of Service attacks (DOS, DDOS).</li>
+<li>Gather information shared within the host.</li>
+<li>Perform brute force attacks.</li>
+<li>Malware distribution.</li>
+<li>Store stolen information.</li>
 </ul>
 
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-Se recomienda:
+We recommend:
 
 <ul>
-<li>No correr el servicio sobre TCP/IP.</li>
-<li>Establecer reglas en el firewall para denegar las consultas desde redes no autorizadas. </li>
+<li>Do not use the service over the TCP/IP protocol.</li>
+<li>Establish firewall rules to filter unauthorized queries.</li>
+<li>Establish, if possible, access control.</li>
 </ul>
 
 {% endblock %}
@@ -50,7 +51,7 @@ Se recomienda:
 {% block more_information_content %}
 
 
-<p class="lead">Mas información</p>
+<p class="lead">For more information</p>
 
 
 <div class = "destacated">

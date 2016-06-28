@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Nos comunicamos con usted para informarle que hemos detectado que el Host {{incident.hostAddress}} el cual esta bajo su administración, ha sido detectado en blacklists, las cuales se encuentran en el archivo adjunto.
+We would like to inform you that we have detected that the <em>host</em> {{incident.hostAddress}} under you'r administration has been detected in blacklists. For more information please view the attached file.
 
 
 {% endblock %}
@@ -18,9 +18,9 @@ Nos comunicamos con usted para informarle que hemos detectado que el Host {{inci
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-El envío de email a ciertos destinos puede verse impedido por la existencia de la IP {{incident.hostAddress}} en las mismas.
+Emails sent to certain destinations could be filtered if they contain the IP  {{incident.hostAddress}}.
 
 
 {% endblock %}
@@ -29,9 +29,9 @@ El envío de email a ciertos destinos puede verse impedido por la existencia de 
 {% block verification_content %}
 
 
-<p class="lead">Cómo verificar el problema</p>
+<p class="lead">How to verify the issue</p>
 
-Puede comprobar la existencia de su IP en diferentes blacklist consultando el sitio
+You can verify the existence of you IP in different blacklists accessing the following site
 
 <div class = "destacated">
 
@@ -44,12 +44,12 @@ Puede comprobar la existencia de su IP en diferentes blacklist consultando el si
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-Le sugerimos acceder a las páginas correspondientes para eliminar dichos hosts de las mismas.
+We suggest you to access the corresponding pages to remove those hosts.
 
 
 {% endblock %}

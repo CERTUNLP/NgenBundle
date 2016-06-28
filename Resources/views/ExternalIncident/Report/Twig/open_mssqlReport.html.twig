@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} tiene el servicio de resolución de Microsoft SQL Server abierto desde Internet.
+We would like to inform you that we have been notified that the <em>host</em> {{incident.hostAddress}} has the <strong>Microsoft SQL Server</strong> service, accessible from the Internet.
 
 {% endblock %}
 
@@ -17,19 +17,19 @@ Lo contactamos porque hemos sido informados que el host/servidor {{incident.host
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-El host bajo su administración podría ser usado para revelar información como así también en ataques de amplificación UDP que provoquen denegaciones de servicio (DOS, DDOS).
+The <em>host</em> under you'r administration could be compromising sensitive information, also could victim of UDP amplification performing Denial of Service (DOS,DDOS) attacks.
 
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-Se recomienda establecer reglas de firewall para permitir solamente las conexiones al servicio solo desde los servidores autorizados.
+Establish firewall rules to filter unauthorized access.
 
 {% endblock %}
 
@@ -37,7 +37,7 @@ Se recomienda establecer reglas de firewall para permitir solamente las conexion
 {% block more_information_content %}
 
 
-<p class="lead">Mas información</p>
+<p class="lead">For more information</p>
 
 
 <div class = "destacated">

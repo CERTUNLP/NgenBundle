@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Le contactamos porque se nos ha informado que el <em>host</em> con IP {{incident.hostAddress}} tiene el servicio LDAP accesible desde Internet.
+We would like to inform you that we have been notified that the <em>host</em> {{incident.hostAddress}} has the <strong>Lightweight Directory Access Protocol</strong> (LDAP) service, accessible from the Internet.
 
 {% endblock %}
 
@@ -17,24 +17,24 @@ Le contactamos porque se nos ha informado que el <em>host</em> con IP {{incident
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-El <em>host</em> bajo su administración podría llegar a estar brindando información sensible.
+The <em>host</em> under you'r administration could be compromising sensitive information.
 
 
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
 <ul>
-<li>Establecer reglas de firewall para permitir consultas sólo desde las redes autorizadas. </li>
-<li>Utilizar TLS en la comunicación con el servicio.</li>
-<li>No permitir conexiones de manera anónima (Anonymous BIND).</li>
-<li><a href="https://www.sans.org/reading-room/whitepapers/directories/securely-implementing-ldap-109">Información adicional</a>.</li>
+<li>Establish firewall rules to filter unauthorized queries.</li>
+<li>Use Transport Layer Security (TLS) encryption in the communication service. (IN o OVER - DAniela)</li>
+<li>Deny anonymous bind type connections.</li>
+<li><a href="https://www.sans.org/reading-room/whitepapers/directories/securely-implementing-ldap-109">Additional information</a>.</li>
 </ul>
 
 {% endblock %}

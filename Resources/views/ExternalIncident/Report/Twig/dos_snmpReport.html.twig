@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Le contactamos porque se nos informó que el <em>host</em> con IP {{incident.hostAddress}} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio SNMP (UDP 161).
+We would like to inform you that we have been notified that the <em>host</em> {{incident.hostAddress}} is being used to perform Denial of Service attacks (DOS), through the <strong>SNMP service</strong> (UDP port 161).
 
 {% endblock %}
 
@@ -17,9 +17,9 @@ Le contactamos porque se nos informó que el <em>host</em> con IP {{incident.hos
 {% block verification_content %}
 
 
-<p class="lead">Cómo verificar el problema</p>
+<p class="lead">How to verify the issue</p>
 
-Mediante el monitoreo de red debería observar grandes cantidades de tráfico UDP correspondientes a consultas SNMP spoofeadas recibidas.
+The verification can be achieved analyzing the existing network traffic and observing a mayor UDP traffic consumption corresponding to spoofed SNMP queries received.
 
 {% endblock %}
 
@@ -27,15 +27,15 @@ Mediante el monitoreo de red debería observar grandes cantidades de tráfico UD
 {% block recomendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-Se recomienda:
+We recommend:
 
-<ul>
-<li>Deshabilitar el servicio.</li>
-<li>Establecer reglas en el firewall para denegar las consultas desde redes no autorizadas. </li>
-<li>No usar la "comunidad" por defecto. </li>
-</ul>
+<em>TODO pasar al español tambien, https://www.bitag.org/report-snmp-ddos-attacks.php</em>
+* Users should be allowed and encouraged to disable SNMP.
+* End-user devices should not be configured with SNMP on by default.
+* End-user devices should not be routinely configured with the “public” SNMP community string.
+* Establish firewall rules to filter unauthorized queries.
 
 {% endblock %}
 
@@ -43,7 +43,7 @@ Se recomienda:
 {% block more_information_content %}
 
 
-<p class="lead">Mas información</p>
+<p class="lead">For more information</p>
 
 
 <div class = "destacated">
