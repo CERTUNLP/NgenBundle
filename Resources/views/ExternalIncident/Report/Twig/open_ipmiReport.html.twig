@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} tiene el servicio Intelligent Platform Management Interface (IPMI) accesible desde Internet.
+We would like to inform you that we have been informed that web page hosted with the IP {{incident.hostAddress}} has the Intelligent <strong>Intelligent Platform Management Interface</strong> (IPMI) service, accessible from the Internet.
 
 {% endblock %}
 
@@ -17,24 +17,23 @@ Lo contactamos porque hemos sido informados que el host/servidor {{incident.host
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-El host bajo su administración podría llegar a ser usado para controlar el dispositivo remotamente. IPMI provee acceso a bajo nivel al dispositivo, pudiendo permitir reiniciar el sistema, instalar un nuevo sistema operativo, acceder a información alojada en el sistema, etc.
-
+The host under your administration could be controlled remotely. IPMI provides low level access to the device possibly allowing a system reboot, installation of unknown software, access restricted information, etc.
 
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-Se recomienda:
+We recommend:
 
 <ul>
-<li>Establecer filtros de acceso (reglas de firewall) para exponer el servicio solo a las IPs del administrador.</li>
-<li>En caso de no utilizarlo, es recomendable deshabilitar el servicio.</li>
+<li>Establish firewall rules and filter unauthorized access to the service.</li>
+<li>In case the service is not being used, disable it.</li>
 </ul>
 
 {% endblock %}
@@ -43,7 +42,7 @@ Se recomienda:
 {% block more_information_content %}
 
 
-<p class="lead">Mas información</p>
+<p class="lead">For more information</p>
 
 
 <div class = "destacated">

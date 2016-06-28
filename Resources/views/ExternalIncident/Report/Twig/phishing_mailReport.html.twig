@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Nos notificaron que el host/servidor {{incident.hostAddress}} está enviando correo con contenido de Phishing.
+We would like to inform you that we have been notified that the <em>host</em> {{incident.hostAddress}} is being used to send emails containing Phishing.
 
 {% endblock %}
 
@@ -17,9 +17,10 @@ Nos notificaron que el host/servidor {{incident.hostAddress}} está enviando cor
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-De no solucionar el problema, el host/servidor puede ser introducido en listas públicas de servidores comprometidos que pueden causar que dicho host/servidor no pueda enviar correos a otros servidores.
+If this issue is not addressed, the <em>host</em> could be added in public lists of compromised hosts, thus emails from this host will be filtered.
+
 
 
 {% endblock %}
@@ -28,20 +29,23 @@ De no solucionar el problema, el host/servidor puede ser introducido en listas p
 {% block verification_content %}
 
 
-<p class="lead">Cómo verificar el problema</p>
+<p class="lead">How to verify the issue</p>
 
-Es probable que el Phishing se envíe utilizando una cuenta de correo comprometida.
-Analizando la cabecera del email de spam adjunto, puede distinguirse el usuario autenticado que realizó el envío del mensaje.
+It is likely that the Phishing emails are being sent by a compromised email account.
+Analyzing the email header, the authenticated user being used to send the emails can be identified (See attached file).
 
 
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-Se recomienda cambiar las credenciales de los usuarios afectados e instruir a los mismos sobre ataques de phishing, probablemente utilizado para el robo de las credenciales del usuario.
+<ul>
+<li>Modify the compromised user credentials.</li>
+<li>Increase awareness related to Phishing attacks in the users.</li>
+</ul>
 
 {% endblock %}

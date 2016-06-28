@@ -9,8 +9,8 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Lo contactamos porque hemos sido informados que el host con {{incident.hostAddress}} contiene
-una instalación de Memcached accesible desde Internet.
+We would like to inform you that we have been notified that the <em>host</em> {{incident.hostAddress}} has the <strong>Memcached</strong> service, accessible from the Internet.
+
 
 {% endblock %}
 
@@ -18,14 +18,14 @@ una instalación de Memcached accesible desde Internet.
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-Debido a que este servicio no provee autenticación, cualquier entidad que acceda a la instancia de Memcache, tendrá control total sobre los objetos almacenados, con lo que se podría:
+Due to the service not providing an authentication mechanism, any third party accessing the Memcache service would have total over the stored information. The following items could be compromised:
 
 <ul>
-<li>Acceder a la información almacenada</li>
-<li>Realizar el defacement del servidor WEB</li>
-<li>Realizar una denegación de servicio sobre el servidor</li>
+<li>Access to sensitive information.</li>
+<li>Perform a defacement's attack to the web server.</li>
+<li>Perform a Denial of Service attack (DOS) to the server.</li>
 </ul>
 
 {% endblock %}
@@ -34,9 +34,9 @@ Debido a que este servicio no provee autenticación, cualquier entidad que acced
 {% block verification_content %}
 
 
-<p class="lead">Cómo verificar el problema</p>
+<p class="lead">How to verify the issue</p>
 
-Para comprobar que el servicio está abierto, utilice el comando <code>telnet</code> del siguiente modo:
+To verify that the service is currently open, use the <code>telnet</code> command in the following way:
 
 <div class = "destacated">
 
@@ -50,15 +50,13 @@ stats items
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
-
-Se recomienda alguna de las siguientes:
+<p class="lead">Recommendations</p>
 
 <ul>
-<li>Establecer reglas de firewall para denegar las consultas desde hosts/redes no autorizadas. </li>
+<li>Establish firewall rules to filter unauthorized queries.</li>
 </ul>
 
 {% endblock %}
@@ -67,7 +65,7 @@ Se recomienda alguna de las siguientes:
 {% block more_information_content %}
 
 
-<p class="lead">Mas información</p>
+<p class="lead">For more information</p>
 
 
 <div class = "destacated">

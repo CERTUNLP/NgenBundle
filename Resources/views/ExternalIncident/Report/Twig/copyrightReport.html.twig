@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Nos notificaron que el host {{incident.hostAddress}} está distribuyendo material con copyright. Esto se debe probablemente a que se está utilizando indebidamente una red P2P.
+We have been notified that the <em>host</em> {{incident.hostAddress}} is distributing copyrighted material. This is due to an improper use of a P2P network.
 
 
 {% endblock %}
@@ -18,9 +18,9 @@ Nos notificaron que el host {{incident.hostAddress}} está distribuyendo materia
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-La recepción de acciones legales tomadas contra el responsable del host.
+Legal actions could be taken against the owner of the host responsible.
 
 
 {% endblock %}
@@ -32,14 +32,14 @@ La recepción de acciones legales tomadas contra el responsable del host.
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-La solución a este incidente consiste en filtrar este tipo de tráfico o, en caso de no ser posible, trasladar la inquietud a los usuarios para que estén al tanto de estas notificaciones.
+The corresponding network traffic should be filtered to solve this problem. If this is not possible, forward the issue to the corresponding users.
 
-Adjunto le enviamos una copia del informe que recibimos.
+Attached to this email you can find a copy of the report we have received.
 
 
 {% endblock %}

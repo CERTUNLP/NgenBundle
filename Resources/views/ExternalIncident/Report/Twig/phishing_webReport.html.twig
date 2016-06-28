@@ -9,17 +9,15 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Nos notificaron que el servidor {{incident.hostAddress}} está alojando un sitio web utilizado para ataques de Phishing.
-
-{% endblock %}
+We would like to inform you that we have been notified that the <em>server</em> {{incident.hostAddress}} is currently hosting a web service being used to perform Phising attacks.### [/problem]
 
 
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-Este problema puede provocar que su servidor sea introducido en listas públicas de servidores comprometidos pudiendo los navegadores disparar alertas de seguridad a los usuarios cuando accedan a cualquier página web alojada en dicho servidor.
+If this issue is not addressed, the <em>server</em> could be added in public lists of compromised hosts, forcing the web browsers to show security alerts when accessing web pages hosted in the server.
 
 
 {% endblock %}
@@ -28,21 +26,20 @@ Este problema puede provocar que su servidor sea introducido en listas públicas
 {% block verification_content %}
 
 
-<p class="lead">Cómo verificar el problema</p>
+<p class="lead">How to verify the issue</p>
 
-Verificar la información enviada en el contenido adjunto.
+Verify the information in the attached file.
 
 
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-Se recomienda dar de baja el contenido WEB utilizado para el ataque de phishing y solicitar a CERTUNLP un análisis forense del servidor para 
-determinar la modalidad utilizada por el atacante y el nivel de compromiso del servidor.
+We recommend removing the web content being used to perform the phising attack and request a forensic analysis on the server, as to evaluate what has been compromised.
 
 
 {% endblock %}
@@ -51,7 +48,7 @@ determinar la modalidad utilizada por el atacante y el nivel de compromiso del s
 {% block more_information_content %}
 
 
-<p class="lead">Mas información</p>
+<p class="lead">For more information</p>
 
 
 <div class = "destacated">

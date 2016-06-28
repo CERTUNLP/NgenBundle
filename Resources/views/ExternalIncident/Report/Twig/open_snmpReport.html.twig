@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} dispone de un servicio SNMP (UDP 161) abierto a redes ajenas de la UNLP.
+We would like to inform you that we have been notified that the <em>host/server</em> {{incident.hostAddress}} has the <strong>Simple Network Management Protocol</strong> (SNMP - UDP port 161) service, accessible from the Internet.
 
 {% endblock %}
 
@@ -17,30 +17,29 @@ Lo contactamos porque hemos sido informados que el host/servidor {{incident.host
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-El host bajo su administración podría llegar a ser usado en ataques de:
+The <em>host</em> under you'r administration could be used to perform attacks, such as:
 
 <ul>
-<li>Obtención de información de dispositivos de red en forma remota no autorizada.</li>
-<li>Configuración de dispositivos de red en forma remota no autorizada.</li>
-<li>Ataques de fuerza bruta.</li>
+<li>Obtain unauthorized remote access and information.</li>
+<li>Brute force attacks.</li>
 </ul>
 
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-Se recomienda:
+We recommend:
 
-<ul>
-<li>Deshabilitar el servicio.</li>
-<li>Establecer reglas en el firewall para denegar las consultas desde redes no autorizadas. </li>
-<li>No usar la comunidad por defecto. </li>
-</ul>
+<em>TODO agregar a castellano, https://www.bitag.org/report-snmp-ddos-attacks.php</em>
+* Users should be allowed and encouraged to disable SNMP.
+* End-user devices should not be configured with SNMP on by default.
+* End-user devices should not be routinely configured with the “public” SNMP community string.
+* Establish firewall rules to filter unauthorized queries.
 
 {% endblock %}

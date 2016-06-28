@@ -9,8 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} es
-vulnerable a POODLE.
+We would like to inform you that we have been notified that the <em>server</em> {{incident.hostAddress}} is currently vulnerable to Padding Oracle On Downgraded Legacy Encryption (POODLE) attacks.
 
 {% endblock %}
 
@@ -18,10 +17,9 @@ vulnerable a POODLE.
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-POODLE es una falla en SSLv3 que permite a un atacante recuperar
-información cifrada, ocasionando de esta forma pérdida de confidencialidad.
+POODLE is a man-in-the-middle exploit which takes advantage of Internet and security software clients fallback to SSL 3.0. If attackers successfully exploit this vulnerability, sensitive information could be obtained by attackers, compromising confidentiality.
 
 {% endblock %}
 
@@ -29,10 +27,9 @@ información cifrada, ocasionando de esta forma pérdida de confidencialidad.
 {% block verification_content %}
 
 
-<p class="lead">Cómo verificar el problema</p>
+<p class="lead">How to verify the issue</p>
 
-Acceda a la siguiente página para verificar que los servicios que usted
-provee en el host son vulnerables a POODLE:
+Access the following web page to verify that the services currently provided by you'r host are in fact, vulnerable to POODLE:
 
 
 <div class = "destacated">
@@ -47,13 +44,12 @@ provee en el host son vulnerables a POODLE:
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-Se recomienda dejar de utilizar las librerías SSLv2 y SSLv3. Como reemplazo
-puede utilizar TLS.
+We recommend avoiding the use of the SSLv2 and SSLv3 libraries, use TLS instead.
 
 {% endblock %}
 
@@ -61,7 +57,7 @@ puede utilizar TLS.
 {% block more_information_content %}
 
 
-<p class="lead">Mas información</p>
+<p class="lead">For more information</p>
 
 
 <div class = "destacated">

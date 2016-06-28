@@ -9,9 +9,8 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Lo contactamos porque hemos detectado que el servidor DNS con IP {{incident.hostAddress}}
-tiene habilitada la transferencia de alguna de sus zonas, al menos desde la
-red de nuestro CERT.
+LWe would like to inform you that we have detected that the DNS <em>server</em> with IP {{incident.hostAddress}} has zone transfer active in some zones, visible at least from our CERT network.
+
 
 {% endblock %}
 
@@ -21,8 +20,8 @@ red de nuestro CERT.
 
 <p class="lead">Problemas derivados</p>
 
-El host bajo su administración podría llegar a ser usado en ataques de
-amplificación DNS.
+The <em>server</em> under you'r administration could be used in DNS amplification attacks.
+
 
 {% endblock %}
 
@@ -30,9 +29,9 @@ amplificación DNS.
 {% block verification_content %}
 
 
-<p class="lead">Cómo verificar el problema</p>
+<p class="lead">How to verify the issue</p>
 
-Utilizando el comando:
+Use the following command:
 
 <div class = "destacated">
 
@@ -45,13 +44,13 @@ Utilizando el comando:
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-Se recomienda establecer restricciones en el servidor DNS que permitan la
-consultas de requerimiento de zona solo desde los servidores DNS secundarios.
+We recommend establishing restrictions to the DNS server allowing zone queries only from secondary DNS servers.
+
 
 {% endblock %}
 
@@ -59,7 +58,7 @@ consultas de requerimiento de zona solo desde los servidores DNS secundarios.
 {% block more_information_content %}
 
 
-<p class="lead">Mas información</p>
+<p class="lead">For more information</p>
 
 
 <div class = "destacated">

@@ -9,9 +9,8 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Le contactamos porque se nos ha informado que el <em>host</em> con IP {{incident.hostAddress}} brinda
-el servicio de NTP de manera insegura. En particular, el servicio estaría
-respondiendo a comandos del tipo <code>NTP readvar</code>.
+We would like to inform you that we have been notified that the <em>host</em>  {{incident.hostAddress}} is providing insecure <strong>Network Time Protocol</strong> (NTP) service by responding to <code>NTP readvar</code> commands.
+
 
 {% endblock %}
 
@@ -21,13 +20,10 @@ respondiendo a comandos del tipo <code>NTP readvar</code>.
 
 <p class="lead">Problemas derivados</p>
 
-El <em>host</em> bajo su administración podría llegar a ser usado en ataques de
-<a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplificación</a>. Esto
-permitiría realizar ataques a terceros de tipo:
+The <em>host</em>  under you'r administration could be used to perform <a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplification</a> attacks to third party's, like:
 
 <ul>
-<li>DoS (Denegación de servicio)</li>
-<li>DDoS (Denegación de servicio distribuida)</li>
+<li>Denial of Service attacks (DOS, DDOS).</li>
 </ul>
 
 {% endblock %}
@@ -36,10 +32,10 @@ permitiría realizar ataques a terceros de tipo:
 {% block verification_content %}
 
 
-<p class="lead">Cómo verificar el problema</p>
+<p class="lead">How to verify the issue</p>
 
-Para testear manualmente si el servicio es vulnerable a esta falla puede
-utilizar el comando:
+To manually verify if the service is vulnerable, use the following command:
+
 
 <div class = "destacated">
 
@@ -52,12 +48,12 @@ utilizar el comando:
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-<a href="http://www.team-cymru.org/ReadingRoom/Templates/secure-ntp-template.html">Deshabilitar</a>
-las consultas <code>NTP readvar</code>.
+<a href="http://www.team-cymru.org/ReadingRoom/Templates/secure-ntp-template.html">Disable</a>
+<code>NTP readvar</code> queries.
 
 {% endblock %}
