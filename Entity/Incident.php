@@ -132,7 +132,7 @@ class Incident implements IncidentInterface {
     protected $state;
 
     /**
-     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentCommentThread",mappedBy="incident", fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentCommentThread",inversedBy="incident")
      */
     private $comment_thread;
 
