@@ -19,7 +19,7 @@ class IncidentRdapClient extends RdapClient {
     public function prePersistDelegation(ExternalIncident $incident) {
         $this->response = $this->request($incident->getHostAddress());
         $incident->setNetworkAdmin($this->getNetworkAdmin());
-        $incident->setNetworkAdminEmail($this->getNetworkAdminEmail());
+        $incident->getNetworkAdminEmails($this->getNetworkAdminEmails());
         $incident->setNetworkEntity($this->getNetworkEntity());
         $incident->setStartAddress($this->getStartAddress());
         $incident->setEndAddress($this->getEndAddress());
@@ -30,7 +30,7 @@ class IncidentRdapClient extends RdapClient {
         return $this->response->getAbuseEntity()->getName();
     }
 
-    public function getNetworkAdminEmail() {
+    public function getNetworkAdminEmails() {
         return $this->response->getAbuseEntity()->getEmails('fn');
     }
 
