@@ -9,7 +9,8 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Nos comunicamos con Ud. para comunicarle que el host {{incident.hostAddress}} se encuentra realizando un proceso de Scan sobre otros equipos de la UNLP y/o el exterior.
+We would like to inform you that we have detected that the <em>host</em> {{incident.hostAddress}} is currently performing a Scan process over other devices.
+
 
 {% endblock %}
 
@@ -17,10 +18,10 @@ Nos comunicamos con Ud. para comunicarle que el host {{incident.hostAddress}} se
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-La realización del proceso de Scan probablemente se deba a que el equipo se encuentre comprometido y siendo utilizado para reconocer otros equipos de la red, los cuales dependiendo del scan, serán luego atacados o no.
-Por otro lado este problema genera la circulación en la red grandes volúmenes de información que generan problemas o pérdidas velocidad en la misma.
+Performing a Scan analysis is likely due to the host being compromised and used to gather information about other hosts inside the network, for possible future attacks. On the other hand, this generates great amount of bandwidth consumption, generating a network speed reduction.
+
 
 
 {% endblock %}
@@ -29,9 +30,10 @@ Por otro lado este problema genera la circulación en la red grandes volúmenes 
 {% block verification_content %}
 
 
-<p class="lead">Cómo verificar el problema</p>
+<p class="lead">How to verify the issue</p>
 
-Se puede realizar una verificación del problema a través del análisis del tráfico existente en la red o sobre el host afectado, utilizando herramientas como 
+It can be verified by analyzing the existing network traffic, using tools such as:
+
 
 <div class = "destacated">
 
@@ -40,7 +42,7 @@ Se puede realizar una verificación del problema a través del análisis del tr�
 
 </div>
 
-o 
+or
 
 <div class = "destacated">
 
@@ -53,13 +55,13 @@ o
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-Se recomienda quitar el acceso del host afectado a la red durante la realización del análisis que determine el origen del tráfico.
-Habiendo ocurrido una muy probable obtención de privilegios sobre el host por parte de atacantes, se recomienda la realización de una forencia sobre el equipo con el objetivo de determinar la vulnerabilidad que proporcionó dichos privilegios.
+Remove the access to the network to affected host during the analysis, as to determin it's origin.
+It is likely that attackers had gained privileges over the compromised host, we recommend you to request a forensic analysis on the server, as to evaluate what has been compromised.
 
 {% endblock %}
 
@@ -67,7 +69,7 @@ Habiendo ocurrido una muy probable obtención de privilegios sobre el host por p
 {% block more_information_content %}
 
 
-<p class="lead">Mas información</p>
+<p class="lead">For more information</p>
 
 
 <div class = "destacated">

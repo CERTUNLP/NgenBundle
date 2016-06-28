@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Nos comunicamos con Ud. para informarle que se detectó que el host {{incident.hostAddress}} se encuentra infectado con un malware el cual participa en la formación de una Botnet.
+We would like to inform you that we have detected that the <em>host</em> {{incident.hostAddress}} is currently infected with malware and part of a BotNet.
 
 
 {% endblock %}
@@ -18,14 +18,14 @@ Nos comunicamos con Ud. para informarle que se detectó que el host {{incident.h
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-Encontrándose infectado el equipo, existen diversas consecuencias entre las que podemos listas:
+The consequences of the host being infected may vary, we can list the following:
 
 <ul>
-<li>Consumo excesivo del ancho de banda por parte del host.</li>
-<li>Compromiso de otros equipos.</li>
-<li>Compromiso de información propia de los usuarios.</li>
+<li>Excessive consumption of bandwidth by the host.</li>
+<li>Compromising other hosts.</li>
+<li>Compromising user information.</li>
 <li>etc</li>
 </ul>
 
@@ -35,9 +35,9 @@ Encontrándose infectado el equipo, existen diversas consecuencias entre las que
 {% block verification_content %}
 
 
-<p class="lead">Cómo verificar el problema</p>
+<p class="lead">How to verify the issue</p>
 
-Se puede realizar una verificación del problema a través del análisis del tráfico existente en la red o sobre el host afectado, utilizando herramientas como 
+The verification can be achieved analyzing the existing network traffic of the infected host or network, using tools such as:
 
 <div class = "destacated">
 
@@ -46,7 +46,7 @@ Se puede realizar una verificación del problema a través del análisis del tr�
 
 </div>
 
-o 
+or
 
 <div class = "destacated">
 
@@ -59,12 +59,12 @@ o
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-Se recomienda el filtrado del tráfico hasta que el problema se vea resultó.
+The network traffic should be filtered until the problem is solved.
 
 
 {% endblock %}
@@ -73,7 +73,7 @@ Se recomienda el filtrado del tráfico hasta que el problema se vea resultó.
 {% block more_information_content %}
 
 
-<p class="lead">Mas información</p>
+<p class="lead">For more information</p>
 
 
 <div class = "destacated">

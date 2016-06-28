@@ -6,11 +6,11 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
-{% set father = 'CertUnlpNgenBundle:Incident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} tiene
-vulnerabilidades de SQL Injection.
+We would like to inform you that we have been informed that the <em>host</em> {{incident.hostAddress}} has SQL injection vulnerabilities.
+
 
 {% endblock %}
 
@@ -18,9 +18,9 @@ vulnerabilidades de SQL Injection.
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-El <em>host</em> bajo su administración podría llegar a estar brindando información sensible, comprometiendo sistemas que corren él.
+The <em>host</em> under you'r administration could be compromising sensitive information.
 
 {% endblock %}
 
@@ -28,9 +28,9 @@ El <em>host</em> bajo su administración podría llegar a estar brindando inform
 {% block recomendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-Se recomienda revisar la aplicacion verificando todas las entradas que esten relacionadas con la base de datos y el uso de sql.
+We recommend analyzing the database related entries that use SQL.
 
 {% endblock %}
 
@@ -38,7 +38,7 @@ Se recomienda revisar la aplicacion verificando todas las entradas que esten rel
 {% block more_information_content %}
 
 
-<p class="lead">Mas información</p>
+<p class="lead">For more information</p>
 
 
 <div class = "destacated">
@@ -47,6 +47,7 @@ Se recomienda revisar la aplicacion verificando todas las entradas que esten rel
 <li><a href="https://www.owasp.org/index.php/SQL_Injection">https://www.owasp.org/index.php/SQL_Injection</a></li>
 <li><a href="https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet">SQL Injection Prevention Cheat Sheet</a></li>
 </ul>
+
 </div>
 
 

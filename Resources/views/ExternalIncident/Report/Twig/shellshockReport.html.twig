@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Se ha detectado que el servidor con IP {{incident.hostAddress}} posiblemente ha sido atacado mediante la vulnerabilidad conocida como ShellShock.
+We would like to inform you that we have been detected that the <em>host</em> {{incident.hostAddress}} has possible been attacked using the known vulnerability ShellShock.
 
 
 {% endblock %}
@@ -18,9 +18,10 @@ Se ha detectado que el servidor con IP {{incident.hostAddress}} posiblemente ha 
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-Esta vulnerabilidad permite a un atacante leer la memoria de un servidor o un cliente, permitiéndole por ejemplo, conseguir las claves privadas SSL de un servidor.
+This vulnerability allows an attacker to read the device memory, possibly compromising sensitive information such as private SSL keys.
+
 
 
 {% endblock %}
@@ -29,29 +30,29 @@ Esta vulnerabilidad permite a un atacante leer la memoria de un servidor o un cl
 {% block verification_content %}
 
 
-<p class="lead">Cómo verificar el problema</p>
+<p class="lead">How to verify the issue</p>
 
-Debido a que este reporte puede ser un falso positivo, se recomienda comprobar que el host sea realmente vulnerable a ShellShock:
+Due to the report possible being a false positive, we recommend to verify the existence of the vulnerability using the following commands:
 
 <div class = "destacated">
 
-<pre><code>env x='() { :;}; echo vulnerable' bash -c "echo esto es una prueba"
+<pre><code>env x='() { :;}; echo vulnerable' bash -c "echo this is a test"
 </code></pre>
 
 </div>
 
-Si la ejecución en bash del comando anterior imprime "vulnerable", entonces es probable que el host haya sido comprometido. 
+If the execution of the previous command returns the string "vulnerable", is most likely that the host has been compromised.
 
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-Se recomienda actualizar bash de forma urgente y realizar un relevamiento
-con el fin de comprobar que el host no contenga backdoors.
+We recommend upgrading bash in an urgent manner, and perform a study to analyze possible backdoors in the compromised host.
+
 
 
 {% endblock %}
@@ -60,7 +61,7 @@ con el fin de comprobar que el host no contenga backdoors.
 {% block more_information_content %}
 
 
-<p class="lead">Más información</p>
+<p class="lead">For more information</p>
 
 
 <div class = "destacated">

@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Lo contactamos porque hemos sido informados que el <strong>host/servidor</strong> {{incident.hostAddress}} brinda el servicio portmap accesible desde Internet.
+We would like to inform you that we have been notified that the <em>host/server</em>  {{incident.hostAddress}} has the <strong>Portmap</strong> service, accessible from the Internet.
 
 {% endblock %}
 
@@ -17,18 +17,15 @@ Lo contactamos porque hemos sido informados que el <strong>host/servidor</strong
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-El <em>host</em> bajo su administración podría llegar a ser usado en ataques de
-<a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplificación</a>. Esto 
-permitiría realizar ataques a terceros de tipo:
+The <em>host</em> under you'r administration could be used to perform <a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplification</a> attacks to third party's, like:
 
 <ul>
-<li>DoS (Denegación de servicio)</li>
-<li>DDoS (Denegación de servicio distribuida)</li>
+<li>Denial of Service attacks (DOS, DDOS).</li>
 </ul>
 
-Adicionalmente, el servidor podría exponer otros servicios mal configurados como puede ser carpetas compartidas NFS.
+Additionally, the <strong>host/servidor</strong> could expose other misconfigured services, such as NFS shared folders.
 
 
 {% endblock %}
@@ -37,9 +34,9 @@ Adicionalmente, el servidor podría exponer otros servicios mal configurados com
 {% block verification_content %}
 
 
-<p class="lead">Cómo verificar el problema</p>
+<p class="lead">How to verify the issue</p>
 
-Utilizando el comando:
+To manually verify if the service is vulnerable, use the following command:
 
 <div class = "destacated">
 
@@ -48,7 +45,7 @@ Utilizando el comando:
 
 </div>
 
-Y ver carpetas compartidas NFS utilizando el comando:
+View the NFS shared folders using the command:
 
 <div class = "destacated">
 
@@ -61,14 +58,14 @@ Y ver carpetas compartidas NFS utilizando el comando:
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
 <ul>
-<li><p>Se recomienda desactivar o filtrar el servicio Portmap para que sólo sea accesible desde las redes que usted necesite.</p></li>
-<li><p>En caso de usar carpetas compartidas NFS evaluar la necesidad. Desactivar, configurar o filtrar adecuadamente.</p></li>
+<li>We recommend filtering unauthorized access to Portmap service, or disabling the service.</li>
+<li>If NFS shared folders are being used, use proper filtering methods, or deactivate the feature.</li>
 </ul>
 
 {% endblock %}
@@ -77,7 +74,7 @@ Y ver carpetas compartidas NFS utilizando el comando:
 {% block more_information_content %}
 
 
-<p class="lead">Mas información</p>
+<p class="lead">For more information</p>
 
 
 <div class = "destacated">

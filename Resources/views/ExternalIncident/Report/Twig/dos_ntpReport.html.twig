@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Le contactamos porque se nos informó que el <em>host</em> con IP {{incident.hostAddress}} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio NTP (UDP 123).
+We would like to inform you that we have been notified that the <em>host</em> {{incident.hostAddress}} is being used to perform Denial of Service attacks (DOS), through the <strong>NTP service</strong> (UDP port 123).
 
 {% endblock %}
 
@@ -17,10 +17,10 @@ Le contactamos porque se nos informó que el <em>host</em> con IP {{incident.hos
 {% block verification_content %}
 
 
-<p class="lead">Cómo verificar el problema</p>
+<p class="lead">How to verify the issue</p>
 
-Probablemente su servidor responde a comandos del tipo <strong><em>NTP readvar</em></strong>  y/o a comandos <strong><em>NTP monlist</em></strong>.
-Para testear manualmente si el servicio responde a este tipo de consultas puede utilizar los respectivos comandos:
+The verification can be achieved analyzing the server response to the commands <strong><em>NTP readvar</em></strong> and/or <strong><em>NTP monlist</em></strong>. To manually verify if the service responds to these types of commands, use the following commands:
+
 
 <div class = "destacated">
 
@@ -34,33 +34,32 @@ ntpdc -n -c monlist [{{incident.hostAddress}}]
 {% endblock %}
 
 
-{% block recomendations_content %}
+{% block recommendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
 
-Para el problema <strong><em>NTP readvar</em></strong>, se recomienda:
+To address the <strong><em>NTP readvar</em></strong> issue, we recommend:
+
 
 <div class = "destacated">
 
-<a href="http://www.team-cymru.org/ReadingRoom/Templates/secure-ntp-template.html">Deshabilitar</a>
-las consultas <code>NTP readvar</code>.
+<a href="http://www.team-cymru.org/ReadingRoom/Templates/secure-ntp-template.html">Disable</a>
+<code>NTP readvar</code> queries.
 
 </div>
 
-Para el problema <strong><em>NTP monlist</em></strong>, se recomienda:
+To address the <strong><em>NTP monlist</em></strong> issue, we recommend:
+
 
 <div class = "destacated">
 
-Las versiones de <code>ntpd</code> anteriores a la 4.2.7 son vulnerables por
-defecto. Por lo tanto, lo más simple es actualizar a la última versión.
+Versions of <code>ntpd</code> previous to 4.2.7 are vulnerable. Therefore, we recommend upgrading to the latest version available.
+If upgrading is not possible, as an alternative disable <code>monlist</code>.
 
-En caso de que actualizar no sea una opción, como alternativa se puede
-optar por deshabilitar la funcionalidad <code>monlist</code>.
-
-<a href="http://www.purdue.edu/securepurdue/news/2014/advisory--ntp-amplification-attacks.cfm">Más</a>
-<a href="http://www.team-cymru.org/ReadingRoom/Templates/secure-ntp-template.html">información</a>
-sobre cómo deshabilitar <code>monlist</code>.
+<a href="http://www.purdue.edu/securepurdue/news/2014/advisory--ntp-amplification-attacks.cfm">More</a>
+<a href="http://www.team-cymru.org/ReadingRoom/Templates/secure-ntp-template.html">Information</a>
+about how to disable <code>monlist</code>.
 
 
 </div>
@@ -72,7 +71,7 @@ sobre cómo deshabilitar <code>monlist</code>.
 {% block more_information_content %}
 
 
-<p class="lead">Mas información</p>
+<p class="lead">For more information</p>
 
 
 <div class = "destacated">

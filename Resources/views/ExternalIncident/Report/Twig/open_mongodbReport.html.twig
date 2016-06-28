@@ -9,7 +9,8 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Le contactamos porque se nos ha informado que el <em>host</em> con IP {{incident.hostAddress}} tiene una base de datos MongoDB NoSQL accesible sin restricciones desde Internet.
+We would like to inform you that we have been informed that the <em>host</em> {{incident.hostAddress}} has a database (MongoDB) with unrestricted access from the Internet.
+
 
 {% endblock %}
 
@@ -17,10 +18,9 @@ Le contactamos porque se nos ha informado que el <em>host</em> con IP {{incident
 {% block derivated_problem_content %}
 
 
-<p class="lead">Problemas derivados</p>
+<p class="lead">Related issues</p>
 
-El <em>host</em> bajo su administración podría llegar a estar brindando información sensible, comprometiendo sistemas que corren él.
-
+The <em>host</em> under you'r administration could be compromising sensitive information.
 
 {% endblock %}
 
@@ -28,9 +28,9 @@ El <em>host</em> bajo su administración podría llegar a estar brindando inform
 {% block verification_content %}
 
 
-<p class="lead">Cómo verificar el problema</p>
+<p class="lead">How to verify the issue</p>
 
-Para testear manualmente la conexión al servicio puede utilizar el comando:
+To manually verify the connection to the service, use the following command:
 
 <div class = "destacated">
 
@@ -46,21 +46,36 @@ Para testear manualmente la conexión al servicio puede utilizar el comando:
 {% block recomendations_content %}
 
 
-<p class="lead">Recomendaciones</p>
+<p class="lead">Recommendations</p>
+
+<em>TODO: Cambiar en castellano y agregar links</em>
+* Establish firewall rules to filter unauthorized access.
+* Enable Access Control and Enforce Authentication
+* Configure Role-Based Access Control
+* Run MongoDB with Secure Configuration Options
+* Enable Secure Sockets Layer (SSL) to encrypt communications.
+* Use the loopback address to establish connections to limit exposure.
+* Modify the default port.
+* Ensure that the HTTP status interface, the REST API, and the JSON API are all disabled in production environments to prevent potential data exposure and vulnerability to attackers.
+
+
+{% block more_information_content %}
+
+
+<p class="lead">For more information</p>
+
+
+<div class = "destacated">
 
 <ul>
-<li><a href="http://docs.mongodb.org/manual/core/security-network/#firewalls">Agregar</a>
-firewalls para restringir accesos no autorizados.</li>
-<li><a href="http://docs.mongodb.org/manual/core/authorization/">Habilitar</a>
-la autenticación de accesos.</li>
-<li><a href="http://docs.mongodb.org/manual/core/security-network/#nohttpinterface">Habilitar</a> el servicio con SSL.</li>
-<li><a href="http://docs.mongodb.org/manual/reference/security/#userAdminAnyDatabase">Habilitar</a> la autorización de acciones basada en roles.</li>
-<li><a href="http://docs.mongodb.org/manual/core/security-network/#bind-ip">Configurar</a>
-las conexiones en la interfaz de loopback.</li>
-<li>Alternativamente, se puede <a href="http://docs.mongodb.org/manual/core/security-network/#port">cambiar</a> el puerto de conexión.</li>
-<li><a href="http://docs.mongodb.org/manual/core/security-network/#nohttpinterface">Deshabilitar</a> la interfaz http de estado.</li>
-<li><a href="http://docs.mongodb.org/manual/core/security-network/#rest">Deshabilitar</a>
-la interfaz REST.</li>
+<li><a href="https://docs.mongodb.com/manual/administration/security-checklist/">Security checklist</a></li>
+<li><a href="https://docs.mongodb.com/manual/core/security-mongodb-configuration/#bind-ip">Security configuration</a></li>
 </ul>
+
+</div>
+
+
+{% endblock %}
+
 
 {% endblock %}
