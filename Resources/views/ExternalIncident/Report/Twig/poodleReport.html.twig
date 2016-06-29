@@ -6,7 +6,7 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
-{% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
 We would like to inform you that we have been notified that the <em>server</em> {{incident.hostAddress}} is currently vulnerable to Padding Oracle On Downgraded Legacy Encryption (POODLE) attacks.
