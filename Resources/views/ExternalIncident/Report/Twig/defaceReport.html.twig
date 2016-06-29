@@ -6,7 +6,7 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
-{% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
 We would like to inform you that we have detected that web page hosted with IP {{incident.hostAddress}} has suffered a defacement's attack. This is an attack on a website that changes the visual appearance of the site or a webpage performed by an attacker.
