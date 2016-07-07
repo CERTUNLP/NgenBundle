@@ -15,10 +15,6 @@ use CertUnlp\NgenBundle\Services\Handler\IncidentHandler;
 
 class InternalIncidentHandler extends IncidentHandler {
 
-    protected function prepareToDeletion($incident, array $parameters) {
-        $incident->close();
-    }
-
     protected function checkIfExists($incident, $method) {
         $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'hostAddress' => $incident->getHostAddress(), 'type' => $incident->getType()]);
         if ($incidentDB && $method == 'POST') {
