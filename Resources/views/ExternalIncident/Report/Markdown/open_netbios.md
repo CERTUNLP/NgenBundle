@@ -5,7 +5,7 @@ We would like to inform you that we have been notified that the *host/server* {{
 
 ### [derivated_problem_content]
 ### Related issues
-The *host* under you'r administration could be used to perform:
+The *host* under your administration could be used to perform:
 
 * Denial of Service attacks (DOS, DDOS).
 * Gather information shared within the host.

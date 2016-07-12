@@ -10,7 +10,7 @@ POODLE is a man-in-the-middle exploit which takes advantage of Internet and secu
 
 ### [verification_content]
 ### How to verify the issue
-Access the following web page to verify that the services currently provided by you'r host are in fact, vulnerable to POODLE:
+Access the following web page to verify that the services currently provided by your host are in fact, vulnerable to POODLE:
 
 ### [destacated]
 * [https://www.poodlescan.com/](https://www.poodlescan.com/)

@@ -5,7 +5,7 @@ We would like to inform you that we have been informed that the *host/server* {{
 
 ### [derivated_problem_content]
 ### Related issues
-The *host* under you'r administration could be used to perform attacks, such as ...
+The *host* under your administration could be used to perform attacks, such as ...
 ### [/derivated_problem_content]
 
 
