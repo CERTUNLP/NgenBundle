@@ -140,7 +140,10 @@ class ShadowServerClient implements ContainerAwareInterface {
                     $writer->writeItem($header);
                     $workflow->addWriter($writer);
                     $workflow->process();
-                    $shadow_server_csv_rows[] = $this->shadow_server_report_type_factory->getReportTypeFromCsvRow($row, $file, $shadow_server_report_evidence);
+                    $reportType = $this->shadow_server_report_type_factory->getReportTypeFromCsvRow($row, $file, $shadow_server_report_evidence);
+                    if ($reportType) {
+                        $shadow_server_csv_rows[] = $reportType;
+                    }
                 }
             }
         }
