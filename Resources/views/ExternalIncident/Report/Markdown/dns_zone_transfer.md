@@ -5,7 +5,7 @@ LWe would like to inform you that we have detected that the DNS *server* with IP
 
 ### [derivated_problem_content]
 ### Problemas derivados
-The *server* under you'r administration could be used in DNS amplification attacks.
+The *server* under your administration could be used in DNS amplification attacks.
 
 ### [/derivated_problem_content]
 

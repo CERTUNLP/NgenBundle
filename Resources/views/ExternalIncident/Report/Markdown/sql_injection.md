@@ -5,7 +5,7 @@ We would like to inform you that we have been informed that the *host* {{IP}} ha
 
 ### [derivated_problem_content]
 ### Related issues
-The *host* under you'r administration could be compromising sensitive information.
+The *host* under your administration could be compromising sensitive information.
 ### [/derivated_problem_content]
 
 ### [recomendations_content]

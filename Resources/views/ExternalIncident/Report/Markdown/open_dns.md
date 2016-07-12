@@ -31,7 +31,7 @@ or use the following web page:
 
 ### Recommendations
 
-Disable recursive answers to queries that does not originate from networks under you'r administration.
+Disable recursive answers to queries that does not originate from networks under your administration.
 
 ### [/recommendations_content]
 

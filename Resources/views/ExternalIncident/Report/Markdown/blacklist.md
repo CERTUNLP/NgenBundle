@@ -1,6 +1,6 @@
 ### [problem]
 
-We would like to inform you that we have detected that the *host* {{IP}} under you'r administration has been detected in blacklists. For more information please view the attached file.
+We would like to inform you that we have detected that the *host* {{IP}} under your administration has been detected in blacklists. For more information please view the attached file.
 
 ### [/problem]
 
