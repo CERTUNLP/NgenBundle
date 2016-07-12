@@ -4,7 +4,7 @@ We would like to inform you that we have been notified that the *host* {{IP}} is
 ### [derivated_problem_content]
 
 ### Related issues
-The *host* under you'r administration could be used to perform [amplification](https://www.us-cert.gov/ncas/alerts/TA14-017A) attacks to third party's, like:
+The *host* under your administration could be used to perform [amplification](https://www.us-cert.gov/ncas/alerts/TA14-017A) attacks to third party's, like:
 
 * Denial of Service attacks (DOS, DDOS).
 

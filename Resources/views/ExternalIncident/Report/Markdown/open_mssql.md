@@ -4,7 +4,7 @@ We would like to inform you that we have been notified that the *host* {{IP}} ha
 
 ### [derivated_problem_content]
 ### Related issues
-The *host* under you'r administration could be compromising sensitive information, also could victim of UDP amplification performing Denial of Service (DOS,DDOS) attacks.
+The *host* under your administration could be compromising sensitive information, also could victim of UDP amplification performing Denial of Service (DOS,DDOS) attacks.
 ### [/derivated_problem_content]
 
 ### [recommendations_content]
