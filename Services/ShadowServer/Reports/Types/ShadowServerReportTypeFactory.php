@@ -24,9 +24,12 @@ class ShadowServerReportTypeFactory {
         $file = explode('-', basename($file_path))[0];
         $shadow_server_csv_row = new ShadowServerCsvRow($csv_row, $file);
         $type = __NAMESPACE__ . "\\" . preg_replace('/(?:^|_)(.?)/e', "strtoupper('$1')", $file); //CamelCase
-        $report_type = new $type($shadow_server_csv_row, $csv_evidence_file);
-
-        return $report_type;
+        if (class_exists($type)) {
+            return new $type($shadow_server_csv_row, $csv_evidence_file);
+        } else {
+            echo "[shadowserver]The class $type does not exist \n";
+            return null;
+        }
     }
 
 }
