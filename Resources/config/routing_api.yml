@@ -11,11 +11,11 @@ cert_ngen_incident_report_api:
     resource: 'CertUnlp\NgenBundle\Controller\IncidentReportController'
     name_prefix:  api_1_
     
-cert_ngen_incident_api:
-    type: rest
-    prefix: /v1
-    resource: 'CertUnlp\NgenBundle\Controller\IncidentController'
-    name_prefix:  api_1_
+#cert_ngen_incident_api:
+#    type: rest
+#    prefix: /v1
+#    resource: 'CertUnlp\NgenBundle\Controller\IncidentController'
+#    name_prefix:  api_1_
 
 cert_ngen_internal_incident_api:
     type: rest

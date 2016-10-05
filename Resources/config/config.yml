@@ -65,7 +65,7 @@ fos_rest:
     format_listener:
         rules:
             - { path: ^/api/v1/incidents/(.*)/report/html, priorities: [html], fallback_format: ~ ,prefer_extension: true}
-            - { path: ^/api/v1/, priorities: [json, xml], fallback_format: ~ ,prefer_extension: true}
+            - { path: ^/api/v1/, priorities: json, fallback_format: ~ , prefer_extension: true}
             - { path: '^/', stop: true }
     exception:
         codes:
@@ -107,84 +107,202 @@ fos_elastica:
     indexes:
         incidents:
             types:
-                incident:
+                internal:
                     mappings:
-                        id: ~
-                        hostAddress: ~
+                        id:
+                            type: integer
+                        hostAddress:
+                            type: string
                         date: 
                             type: date
+                            format: date_time_no_millis
                         lastTimeDetected:
                             type: date
+                            format: strict_date_optional_time
                         createdAt: 
                             type: date
+                            format: strict_date_optional_time
                         updatedAt: 
                             type: date
+                            format: strict_date_optional_time
                         isClosed:
                             type: boolean
-                        evidence_file_path: ~
+                        evidence_file_path:
+                            type: string
                         network:
                             type: "object"
                             properties:
-                                ip: ~
-                                ipMask: ~
+                                ip: 
+                                    type: string
+                                ipMask:
+                                    type: string
                                 isActive:
                                     type: boolean
                                 networkAdmin:
                                     type: "object"
                                     properties:
-                                        slug: ~
-                                        email: ~
-                                        name: ~
+                                        slug:
+                                            type: string
+                                        email: 
+                                            type: string
+                                        name: 
+                                            type: string
                                         isActive:
                                             type: boolean
                                 academicUnit:
                                     type: "object"
                                     properties:
-                                        slug: ~
-                                        name: ~
+                                        slug:
+                                            type: string
+                                        name: 
+                                            type: string
                         networkAdmin:
                                     type: "object"
                                     properties:
-                                        slug: ~
-                                        email: ~
-                                        name: ~
+                                        slug:
+                                            type: string
+                                        email:
+                                            type: string
+                                        name:
+                                            type: string
                                         isActive:
                                             type: boolean
                         state:
                             type: "object"
                             properties:
-                                slug: ~
-                                name: ~
+                                slug:
+                                    type: string
+                                name:
+                                    type: string
                         feed:
                             type: "object"
                             properties:
-                                slug: ~
-                                name: ~
+                                slug:
+                                    type: string
+                                name:
+                                    type: string
                         reporter:
                             type: "object"
                             properties:
-                                slug: ~
-                                name: ~
-                                lastname: ~
-                                email: ~
-                                username: ~
+                                slug:
+                                    type: string
+                                name:
+                                    type: string
+                                lastname:
+                                    type: string
+                                email:
+                                    type: string
+                                username:
+                                    type: string
                                 isActive:
                                     type: boolean
                                 createdAt:
                                     type: date
+                                    format: strict_date_optional_time
                                 updatedAt:
                                     type: date
+                                    format: strict_date_optional_time
                         type:
                             type: "object"
                             properties:
-                                slug: ~
-                                name: ~
+                                slug:
+                                    type: string
+                                name:
+                                    type: string
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\InternalIncident
+                        provider: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
+                        finder: ~       
+                external:
+                    mappings:
+                        id:
+                            type: integer
+                        hostAddress:
+                            type: string
+                        date: 
+                            type: date
+                            format: date_time_no_millis
+                        lastTimeDetected:
+                            type: date
+                            format: strict_date_optional_time
+                        createdAt: 
+                            type: date
+                            format: strict_date_optional_time
+                        updatedAt: 
+                            type: date
+                            format: strict_date_optional_time
+                        isClosed:
+                            type: boolean
+                        evidence_file_path:
+                            type: string
+                        abuse_entity:
+                            type: string
+                        network_entity:
+                            type: string
+                        start_address:
+                            type: string
+                        end_address:
+                            type: string
+                        country:
+                            type: string
+                        abuse_entity_emails:
+                            type: string
+                        state:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: string
+                                name:
+                                    type: string
+                        feed:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: string
+                                name:
+                                    type: string
+                        reporter:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: string
+                                name:
+                                    type: string
+                                lastname:
+                                    type: string
+                                email:
+                                    type: string
+                                username:
+                                    type: string
+                                isActive:
+                                    type: boolean
+                                createdAt:
+                                    type: date
+                                    format: strict_date_optional_time
+                                updatedAt:
+                                    type: date
+                                    format: strict_date_optional_time
+                        type:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: string
+                                name:
+                                    type: string
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\ExternalIncident
                         provider: ~
                         listener:
                             insert: true
@@ -200,6 +318,7 @@ fos_elastica:
                         ipMask: ~
                         createdAt: 
                             type: date
+                            format: strict_date_optional_time
                         updatedAt: 
                             type: date
                         isActive:

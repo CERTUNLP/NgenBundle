@@ -9,16 +9,15 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Services\Handler;
+namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
-use CertUnlp\NgenBundle\Services\Handler\IncidentHandler;
+use CertUnlp\NgenBundle\Services\Api\Handler\IncidentHandler;
 
 class InternalIncidentHandler extends IncidentHandler {
 
     protected function checkIfExists($incident, $method) {
         $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'hostAddress' => $incident->getHostAddress(), 'type' => $incident->getType()]);
         if ($incidentDB && $method == 'POST') {
-
             if ($incident->getFeed()->getSlug() == "shadowserver") {
                 $incidentDB->setSendReport(false);
             } else {

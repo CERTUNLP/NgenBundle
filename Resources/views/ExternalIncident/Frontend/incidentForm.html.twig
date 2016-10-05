@@ -7,20 +7,19 @@
  with this source code in the file LICENSE.
 #}
 
-{% extends 'CertUnlpNgenBundle::InternalIncident/Frontend/frontend.html.twig' %}
-
-{% block content_header %}
-    <h1 class="page-header">{{icon('plus-circle fa-fw')}}Add incident</h1>
-{% endblock %}
-
-{% block content_body %}
-    {%  if (form is not null) %}
-        {{ form_errors(form, { 'global_errors': true }) }}
-        {{ form(form, {'attr': {'id': 'incident_add_update_form'},'method': method | default('post'),'style': 'horizontal', 'col_size': 'sm' }) }}
-    {% endif %}
-{% endblock %}
+{% extends 'CertUnlpNgenBundle::Incident/Frontend/incidentForm.html.twig' %}
+{% block sideBar_search_path %}{{path('cert_unlp_ngen_external_incident_search_incident')}}{% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    {{ tinymce_init() }}
+    {{ parent() }}    
+    {% javascripts
+    '@CertUnlpNgenBundle/Resources/public/js/incident/ExternalIncident.js'
+    '@CertUnlpNgenBundle/Resources/public/js/incident/ExternalIncidentApi.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        var externalIncidentApi = new ExternalIncidentApi("{{path("api_2_get")}}/", "{{app.user.apiKey}}");
+        var externalIncident = new ExternalIncident();
+    </script>
 {% endblock %}

@@ -92,6 +92,26 @@ services:
             -  { name: doctrine.entity_listener }
             -  { name: kernel.event_listener, event: cert_unlp.incident.convert_to_incident.event, method: onConvertToIncident }
 #            -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist }
+    
+    cert_unlp.ngen.incident.fos_rest.view.view:
+        class: FOS\RestBundle\View\View
+        factory: [FOS\RestBundle\View\View, create]
+        
+    cert_unlp.ngen.incident.internal.api.controller:
+        class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentApiController
+        arguments: [ @cert_unlp.ngen.incident.internal.handler, @fos_rest.view_handler, @cert_unlp.ngen.incident.fos_rest.view.view ]
+        
+    cert_unlp.ngen.incident.external.api.controller:
+        class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentApiController
+        arguments: [ @cert_unlp.ngen.incident.external.handler, @fos_rest.view_handler, @cert_unlp.ngen.incident.fos_rest.view.view ]
+    
+    cert_unlp.ngen.incident.internal.frontend.controller:
+        class: CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.internal.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.internal","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+    
+    cert_unlp.ngen.incident.external.frontend.controller:
+        class: CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.external.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.external","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.incident.report.markdown.parser:
         class: CertUnlp\NgenBundle\Services\IncidentMarkdowReportParser
