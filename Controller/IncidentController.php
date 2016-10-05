@@ -32,52 +32,52 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class IncidentController extends FOSRestController {
 
-    /**
-     * List all incidents.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
-     * )
-     *
-     *
-     * @param Request               $request      the request object
-     * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
-     * @return array
-     */
-    public function getAction(Request $request, ParamFetcherInterface $paramFetcher) {
+//    /**
+//     * List all incidents.
+//     *
+//     * @ApiDoc(
+//     *   resource = true,
+//     *   statusCodes = {
+//     *     200 = "Returned when successful"
+//     *   }
+//     * )
+//     *
+//     *
+//     * @param Request               $request      the request object
+//     * @param ParamFetcherInterface $paramFetcher param fetcher service
+//     *
+//     * @return array
+//     */
+//    public function getAction(Request $request, ParamFetcherInterface $paramFetcher) {
+//
+//        return null;
+//    }
 
-        return null;
-    }
-
-    /**
-     * List all incidents.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
-     * )
-     *
-     * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incidents.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many incidents to return.")
-     *
-     * @param Request               $request      the request object
-     * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
-     * @return array
-     */
-    public function getIncidentsAction(Request $request, ParamFetcherInterface $paramFetcher) {
-        $offset = $paramFetcher->get('offset');
-        $offset = null == $offset ? 0 : $offset;
-        $limit = $paramFetcher->get('limit');
-
-        return $this->container->get('cert_unlp.ngen.incident.internal.handler')->all([], [], $limit, $offset);
-    }
+//    /**
+//     * List all incidents.
+//     *
+//     * @ApiDoc(
+//     *   resource = true,
+//     *   statusCodes = {
+//     *     200 = "Returned when successful"
+//     *   }
+//     * )
+//     *
+//     * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incidents.")
+//     * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many incidents to return.")
+//     *
+//     * @param Request               $request      the request object
+//     * @param ParamFetcherInterface $paramFetcher param fetcher service
+//     *
+//     * @return array
+//     */
+//    public function getIncidentsAction(Request $request, ParamFetcherInterface $paramFetcher) {
+//        $offset = $paramFetcher->get('offset');
+//        $offset = null == $offset ? 0 : $offset;
+//        $limit = $paramFetcher->get('limit');
+//
+//        return $this->container->get('cert_unlp.ngen.incident.internal.handler')->all([], [], $limit, $offset);
+//    }
 
     /**
      * Get single InternalIncident.
@@ -135,7 +135,7 @@ class IncidentController extends FOSRestController {
                     '_format' => $request->get('_format')
                 );
 
-                return $this->routeRedirectView('api_1_get_incidents', $routeOptions, Codes::HTTP_CREATED);
+                return $this->response( $routeOptions, Codes::HTTP_CREATED);
             } else {
 
                 $newIncident = $this->get('cert_unlp.ngen.incident.internal.handler')->post($incident_data);

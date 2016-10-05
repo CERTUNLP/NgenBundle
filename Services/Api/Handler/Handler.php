@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Services\Handler;
+namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -132,7 +132,6 @@ abstract class Handler implements ApiHandlerInterface {
 
         $form = $this->formFactory->create(new $this->entityType(), $entity_class_instance, array('csrf_protection' => $csrf_protection, 'method' => $method));
         $form->submit($parameters, 'PATCH' !== $method);
-
         if ($form->isValid()) {
             $entity_class_instance = $form->getData();
 

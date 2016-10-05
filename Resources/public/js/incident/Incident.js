@@ -6,11 +6,11 @@
  * This source file is subject to the GPL v3.0 license that is bundled
  * with this source code in the file LICENSE.
  */
-var InternalIncident = Class.extend({
-    init: function (apiUrl, apiKey) {
+var Incident = Class.extend({
+    init: function () {
         this.eventTarget = null;
-        this.api = new IncidentApi(apiUrl, apiKey);
-        this.form = new IncidentForm();
+//        this.api = new InternalIncidentApi(apiUrl, apiKey);
+//        this.form = new IncidentForm();
         $("#incident_action_dropdown").delegate("a.state-label", "click", this.dropDownChangeLinks);
         $(".incident-action-dropdown").delegate("a.state-label", "click", $.proxy(this.changeState, this));
     },

@@ -120,6 +120,7 @@ class Incident implements IncidentInterface {
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
+     * @@Assert\NotNull
      */
     protected $feed;
 

@@ -14,7 +14,6 @@
     <h1 class="page-header">{{icon('exclamation-circle fa-fw')}} Incidents</h1>
 {% endblock %}
 
-{% block sideBar_search_path %}{{path('cert_unlp_ngen_incident_search_incident')}}{% endblock %}
 
 {% block content_body %}
     {% include 'CertUnlpNgenBundle:InternalIncident:Frontend/list/incidentList.html.twig' with {'incident': incidents} %}
@@ -24,12 +23,9 @@
     {{ parent() }}
 
     {% javascripts
-    '@CertUnlpNgenBundle/Resources/public/js/incident/*'
+    '@CertUnlpNgenBundle/Resources/public/js/incident/Incident.js'
+    '@CertUnlpNgenBundle/Resources/public/js/incident/IncidentApi.js'
     %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
-    <script>
-        var incident = new InternalIncident("{{path("api_1_get")}}/", "{{app.user.apiKey}}");
-    </script>
 {% endblock %}
