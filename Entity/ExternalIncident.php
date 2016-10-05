@@ -33,25 +33,25 @@ class ExternalIncident extends Incident {
      */
     protected $hostAddress;
 
-    /**
-     * @ORM\Column(name="network", type="string",nullable=true)
-     * @JMS\Expose
-     */
-    private $network;
+//    /**
+//     * @ORM\Column(name="network", type="string",nullable=true)
+//     * @JMS\Expose
+//     */
+//    private $network;
 
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    private $network_admin;
+    private $abuse_entity;
 
     /**
      * @ORM\Column(type="array",nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    private $network_admin_emails;
+    private $abuse_entity_emails;
 
     /**
      * @ORM\Column(type="string",nullable=true)
@@ -90,43 +90,51 @@ class ExternalIncident extends Incident {
      * @JMS\Groups({"api"})
      * */
     protected $slug;
+//
+//    /**
+//     * Set network
+//     *
+//     * @return Incident
+//     */
+//    public function setNetwork(NetworkInterface $network = null) {
+//        $this->network = $network;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Get network
+//     *
+//     */
+//    public function getNetwork() {
+//        return $this->network;
+//    }
 
     /**
-     * Set network
+     * Set abuse_entity
      *
      * @return Incident
      */
-    public function setNetwork(NetworkInterface $network = null) {
-        $this->network = $network;
+    public function setAbuseEntity($abuse_entity = null) {
+        $this->abuse_entity = $abuse_entity;
 
         return $this;
     }
 
     /**
-     * Get network
+     * Get abuse_entity
      *
      */
-    public function getNetwork() {
-        return $this->network;
+    public function getAbuseEntity() {
+        return $this->abuse_entity;
     }
 
     /**
-     * Set network_admin
-     *
-     * @return Incident
-     */
-    public function setNetworkAdmin($network_admin = null) {
-        $this->network_admin = $network_admin;
-
-        return $this;
-    }
-
-    /**
-     * Get network_admin
+     * Get abuse_entity
      *
      */
     public function getNetworkAdmin() {
-        return $this->network_admin;
+        return $this->abuse_entity;
     }
 
     /**
@@ -221,8 +229,8 @@ class ExternalIncident extends Incident {
      *
      * @return ExternalIncident
      */
-    public function setNetworkAdminEmails($networkAdminEmails) {
-        $this->network_admin_emails = $networkAdminEmails;
+    public function setAbuseEntityEmails($abuse_entity_emails) {
+        $this->abuse_entity_emails = $abuse_entity_emails;
 
         return $this;
     }
@@ -232,17 +240,17 @@ class ExternalIncident extends Incident {
      *
      * @return array
      */
-    public function getNetworkAdminEmails() {
-        return $this->network_admin_emails;
+    public function getAbuseEntityEmails() {
+        return $this->abuse_entity_emails;
     }
 
     /**
-     * Get networkAdminEmails
+     * Get abuse_entity_emails
      *
      * @return array
      */
     public function getEmails() {
-        return $this->network_admin_emails;
+        return $this->abuse_entity_emails;
     }
 
 }

@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Services\Handler;
+namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
-use CertUnlp\NgenBundle\Services\Handler\IncidentHandler;
+use CertUnlp\NgenBundle\Services\Api\Handler\IncidentHandler;
 
 class ExternalIncidentHandler extends IncidentHandler {
 

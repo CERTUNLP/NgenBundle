@@ -27,7 +27,7 @@
         "gedmo/doctrine-extensions": "~2.4",
         "components/jquery": "~2.1",
         "friendsofsymfony/elastica-bundle": "~3.1",
-        "friendsofsymfony/rest-bundle": "~1.7",
+        "friendsofsymfony/rest-bundle": "^2.0",
         "knplabs/knp-markdown-bundle": "~1.4",
         "knplabs/knp-menu-bundle": "~2.0",
         "knplabs/knp-paginator-bundle": "~2.4",

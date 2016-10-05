@@ -17,12 +17,12 @@ cert_ngen_user:
 cert_ngen_internal_incident:
     resource: '@CertUnlpNgenBundle/Controller/InternalIncidentFrontendController.php'
     type:     annotation
-    prefix:   /incidents
+    prefix:   /incidents/internals
     
 cert_ngen_external_incident:
     resource: '@CertUnlpNgenBundle/Controller/ExternalIncidentFrontendController.php'
     type:     annotation
-    prefix:   /incidents
+    prefix:   /incidents/externals
     
 fos_comment_api:
     type: rest

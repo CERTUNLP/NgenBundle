@@ -9,13 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Services\Handler;
+namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
 use Symfony\Component\Security\Core\SecurityContext;
-use CertUnlp\NgenBundle\Services\Handler\Handler;
+use CertUnlp\NgenBundle\Services\Api\Handler\Handler;
 
 class UserHandler extends Handler {
 

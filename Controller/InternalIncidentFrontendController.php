@@ -20,31 +20,18 @@ use CertUnlp\NgenBundle\Form\InternalIncidentType;
 use CertUnlp\NgenBundle\Form\InternalIncident;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-/**
- * @Route("/internals/")
- */
 class InternalIncidentFrontendController extends Controller {
+
+    public function getFrontendController() {
+        return $this->get('cert_unlp.ngen.incident.internal.frontend.controller');
+    }
 
     /**
      * @Template("CertUnlpNgenBundle:InternalIncident:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_internal_incident_frontend_home")
      */
     public function homeAction(Request $request) {
-
-        $em = $this->get('doctrine.orm.entity_manager');
-        $dql = "SELECT i,s,f,t "
-                . "FROM CertUnlpNgenBundle:InternalIncident i join i.state s inner join i.feed f join i.type t "
-//                . "WHERE s.slug = 'open' and i.isClosed = false"
-        ;
-        $query = $em->createQuery($dql);
-
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-                $query, $request->query->get('page', 1), 7
-                , array('defaultSortFieldName' => 'i.createdAt', 'defaultSortDirection' => 'desc')
-        );
-
-        return array('incidents' => $pagination);
+        return $this->getFrontendController()->homeEntity($request,'InternalIncident');
     }
 
     /**
@@ -52,7 +39,7 @@ class InternalIncidentFrontendController extends Controller {
      * @Route("/new", name="cert_unlp_ngen_internal_incident_frontend_new_incident")
      */
     public function newIncidentAction(Request $request) {
-        return array('form' => $this->createForm(new InternalIncidentType()), 'method' => 'POST');
+        return $this->getFrontendController()->newEntity($request);
     }
 
     /**
@@ -62,7 +49,7 @@ class InternalIncidentFrontendController extends Controller {
 
      */
     public function editIncidentAction(IncidentInterface $incident) {
-        return array('form' => $this->createForm(new InternalIncidentType(), $incident), 'method' => 'patch');
+        return $this->getFrontendController()->editEntity($incident);
     }
 
     /**
@@ -72,48 +59,22 @@ class InternalIncidentFrontendController extends Controller {
 
      */
     public function datailIncidentAction(IncidentInterface $incident) {
-        return array('incident' => $incident);
+        return $this->getFrontendController()->editEntity($incident);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:InternalIncident:Frontend/home.html.twig")
-     * @Route("search", name="cert_unlp_ngen_internal_incident_frontend_search_incident")
+     * @Route("search", name="cert_unlp_ngen_internal_incident_search_incident")
      */
     public function searchIncidentAction(Request $request) {
-        $finder = $this->container->get('fos_elastica.finder.incidents.incident');
-
-        $results = $finder->find($request->get('term'), 1000);
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-                $results, $request->query->get('page', 1), 7
-                , array('defaultSortFieldName' => 'i.createdAt', 'defaultSortDirection' => 'desc')
-        );
-        $pagination->setParam('term', $request->get('term'));
-        return array('incidents' => $pagination, 'term' => $request->get('term'));
+        return $this->getFrontendController()->searchEntity($request);
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:InternalIncident:Frontend/incidentComments.html.twig")
+     * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentComments.html.twig")
      */
     public function incidentCommentsAction(IncidentInterface $incident, Request $request) {
-        $id = $incident->getId();
-        $thread = $this->container->get('fos_comment.manager.thread')->findThreadById($id);
-        if (null === $thread) {
-            $thread = $this->container->get('fos_comment.manager.thread')->createThread();
-            $thread->setId($id);
-            $incident->setCommentThread($incident);
-            $thread->setPermalink($request->getUri());
-
-            // Add the thread
-            $this->container->get('fos_comment.manager.thread')->saveThread($thread);
-        }
-
-        $comments = $this->container->get('fos_comment.manager.comment')->findCommentTreeByThread($thread);
-
-        return array(
-            'comments' => $comments,
-            'thread' => $thread,
-        );
+        return $this->getFrontendController()->commentsEntity($incident, $request);
     }
 
 }

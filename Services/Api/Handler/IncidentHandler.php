@@ -9,14 +9,14 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Services\Handler;
+namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use \CertUnlp\NgenBundle\Exception\InvalidFormException;
 use Symfony\Component\Security\Core\SecurityContext;
-use CertUnlp\NgenBundle\Services\Handler\Handler;
-use CertUnlp\NgenBundle\Services\Handler\UserHandler;
+use CertUnlp\NgenBundle\Services\Api\Handler\Handler;
+use CertUnlp\NgenBundle\Services\Api\Handler\UserHandler;
 
 abstract class IncidentHandler extends Handler {
 
@@ -48,7 +48,7 @@ abstract class IncidentHandler extends Handler {
     public function changeState($incident, $state) {
 
         $incident->setState($state);
-        return $this->patch($incident, $parameters);
+        return $this->patch($incident, []);
     }
 
     /**
