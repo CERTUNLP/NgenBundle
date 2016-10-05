@@ -1,12 +1,12 @@
-{# 
+{#
  This file is part of the Ngen - CSIRT Incident Report System.
- 
+
  (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
+
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
-{% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% set father = 'CertUnlpNgenBundle:Incident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
 Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} es
@@ -38,7 +38,7 @@ provee en el host son vulnerables a POODLE:
 <div class = "destacated">
 
 <ul>
-<li><a href="https://www.poodlescan.com/">https://www.poodlescan.com/</a></li>
+<li><a href="http://poodletest.ntt-security.com/">http://poodletest.ntt-security.com/</a></li>
 </ul>
 
 </div>
