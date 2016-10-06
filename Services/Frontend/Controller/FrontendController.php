@@ -66,7 +66,7 @@ class FrontendController {
     }
 
     public function newEntity(Request $request) {
-        return array('form' => $this->formFactory->create(new $this->entityType()), 'method' => 'POST');
+        return array('form' => $this->formFactory->create(new $this->entityType())->createView(), 'method' => 'POST');
     }
 
     public function editEntity($object) {
