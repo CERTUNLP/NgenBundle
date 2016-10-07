@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Services\Api\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormTypeInterface;
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
 use CertUnlp\NgenBundle\Services\Api\Controller\ApiController;
@@ -39,12 +40,12 @@ class IncidentApiController extends ApiController {
                 }
 
 
-                return $this->response([$new_incidents], 201);
+                return $this->response([$new_incidents], Response::HTTP_CREATED);
             } else {
 
                 $newObject = $this->getCustomHandler()->post($object_data);
 
-                return $this->response([$newObject], 201);
+                return $this->response([$newObject], Response::HTTP_CREATED);
             }
         } catch (InvalidFormException $exception) {
             return $exception->getForm();
