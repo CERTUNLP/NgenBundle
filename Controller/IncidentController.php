@@ -16,7 +16,7 @@ namespace CertUnlp\NgenBundle\Controller;
 //use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use FOS\RestBundle\Util\Codes;
+use FOS\RestBundle\Util\Response;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -37,7 +37,7 @@ class IncidentController extends FOSRestController {
 //     *
 //     * @ApiDoc(
 //     *   resource = true,
-//     *   statusCodes = {
+//     *   statusResponse = {
 //     *     200 = "Returned when successful"
 //     *   }
 //     * )
@@ -58,7 +58,7 @@ class IncidentController extends FOSRestController {
 //     *
 //     * @ApiDoc(
 //     *   resource = true,
-//     *   statusCodes = {
+//     *   statusResponse = {
 //     *     200 = "Returned when successful"
 //     *   }
 //     * )
@@ -85,7 +85,7 @@ class IncidentController extends FOSRestController {
      * @ApiDoc(
      *   resource = true,
      *   output = "CertUnlp\NgenBundle\Entity\Incident",
-     *   statusCodes = {
+     *   statusResponse = {
      *     200 = "Returned when successful",
      *     404 = "Returned when the incident is not found"
      *   }
@@ -109,7 +109,7 @@ class IncidentController extends FOSRestController {
      *   resource = true,
      *   description = "Creates a new incident from the submitted data.",
      *   input = "CertUnlp\NgenBundle\Form\InternalIncidentType",
-     *   statusCodes = {
+     *   statusResponse = {
      *     201 = "Returned when successful",
      *     400 = "Returned when the form has errors"
      *   }
@@ -135,7 +135,7 @@ class IncidentController extends FOSRestController {
                     '_format' => $request->get('_format')
                 );
 
-                return $this->response( $routeOptions, Codes::HTTP_CREATED);
+                return $this->response( $routeOptions, Response::HTTP_CREATED);
             } else {
 
                 $newIncident = $this->get('cert_unlp.ngen.incident.internal.handler')->post($incident_data);
@@ -146,9 +146,9 @@ class IncidentController extends FOSRestController {
                     'date' => $newIncident->getDate()->format('Y-m-d'),
                     '_format' => $request->get('_format')
                 );
-//                return View::create(null, Codes::HTTP_OK);
+//                return View::create(null, Response::HTTP_OK);
 
-                return $this->routeRedirectView('api_1_get_incident_with_params', $routeOptions, Codes::HTTP_CREATED);
+                return $this->routeRedirectView('api_1_get_incident_with_params', $routeOptions, Response::HTTP_CREATED);
             }
         } catch (InvalidFormException $exception) {
             return $exception->getForm();
@@ -161,7 +161,7 @@ class IncidentController extends FOSRestController {
 //     * @ApiDoc(
 //     *   resource = true,
 //     *   input = "CertUnlp\NgenBundle\Form\InternalIncidentType",
-//     *   statusCodes = {
+//     *   statusResponse = {
 //     *     201 = "Returned when the IncidentInterface is created",
 //     *     204 = "Returned when successful",
 //     *     400 = "Returned when the form has errors"
@@ -178,12 +178,12 @@ class IncidentController extends FOSRestController {
 //    public function putIncidentAction(Request $request) {
 //        try {
 //            if (!($incident = $this->container->get('cert_unlp.ngen.incident.internal.handler')->get($id))) {
-//                $statusCode = Codes::HTTP_CREATED;
+//                $statusCode = Response::HTTP_CREATED;
 //                $incident = $this->container->get('cert_unlp.ngen.incident.internal.handler')->post(
 //                        $request->request->all()
 //                );
 //            } else {
-//            $statusCode = Codes::HTTP_NO_CONTENT;
+//            $statusCode = Response::HTTP_NO_CONTENT;
 //            $incident = $this->container->get('cert_unlp.ngen.incident.internal.handler')->put(
 //                    $incident, $request->request->all()
 //            );
@@ -196,7 +196,7 @@ class IncidentController extends FOSRestController {
 //                '_format' => $request->get('_format')
 //            );
 //
-////            return $this->routeRedirectView('api_1_get_incident_with_params', $routeOptions, Codes::HTTP_NO_CONTENT);
+////            return $this->routeRedirectView('api_1_get_incident_with_params', $routeOptions, Response::HTTP_NO_CONTENT);
 //
 //            return $this->routeRedirectView('api_1_get_incident_with_params', $routeOptions, $statusCode);
 //        } catch (InvalidFormException $exception) {
@@ -210,7 +210,7 @@ class IncidentController extends FOSRestController {
      *
      * @ApiDoc(
      *   resource = true,
-     *   statusCodes = {
+     *   statusResponse = {
      *     204 = "Returned when successful",
      *     400 = "Returned when the form has errors"
      *   }
@@ -233,7 +233,7 @@ class IncidentController extends FOSRestController {
      *
      * @ApiDoc(
      *   resource = true,
-     *   statusCodes = {
+     *   statusResponse = {
      *     204 = "Returned when successful",
      *     400 = "Returned when the form has errors"
      *   }
@@ -270,9 +270,9 @@ class IncidentController extends FOSRestController {
                 '_format' => $request->get('_format')
             );
 
-            return $this->routeRedirectView('api_1_get_incident_with_params', $routeOptions, Codes::HTTP_NO_CONTENT);
+            return $this->routeRedirectView('api_1_get_incident_with_params', $routeOptions, Response::HTTP_NO_CONTENT);
         } catch (Exception $exception) {
-            return $this->routeRedirectView('api_1_get_incident_with_params', $routeOptions, Codes::HTTP_BAD_REQUEST);
+            return $this->routeRedirectView('api_1_get_incident_with_params', $routeOptions, Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -282,7 +282,7 @@ class IncidentController extends FOSRestController {
      * @ApiDoc(
      *   resource = true,
      *   output = "CertUnlp\NgenBundle\Entity\Incident",
-     *   statusCodes = {
+     *   statusResponse = {
      *     200 = "Returned when successful",
      *     404 = "Returned when the incident is not found"
      *   }
@@ -310,7 +310,7 @@ class IncidentController extends FOSRestController {
      * @ApiDoc(
      *   resource = true,
      *   input = "CertUnlp\NgenBundle\Form\InternalIncidentType",
-     *   statusCodes = {
+     *   statusResponse = {
      *     204 = "Returned when successful",
      *     400 = "Returned when the form has errors"
      *   }
@@ -334,7 +334,7 @@ class IncidentController extends FOSRestController {
      * @ApiDoc(
      *   resource = true,
      *   input = "CertUnlp\NgenBundle\Form\InternalIncidentType",
-     *   statusCodes = {
+     *   statusResponse = {
      *     204 = "Returned when successful",
      *     400 = "Returned when the form has errors"
      *   }
@@ -374,7 +374,7 @@ class IncidentController extends FOSRestController {
                 '_format' => $request->get('_format')
             );
 
-            return $this->routeRedirectView('api_1_get_incident_with_params', $routeOptions, Codes::HTTP_NO_CONTENT);
+            return $this->routeRedirectView('api_1_get_incident_with_params', $routeOptions, Response::HTTP_NO_CONTENT);
         } catch (InvalidFormException $exception) {
 
             return $exception->getForm();
@@ -387,7 +387,7 @@ class IncidentController extends FOSRestController {
 //     * @ApiDoc(
 //     *   resource = true,
 //     *   input = "CertUnlp\NgenBundle\Form\InternalIncidentType",
-//     *   statusCodes = {
+//     *   statusResponse = {
 //     *     204 = "Returned when successful",
 //     *     400 = "Returned when the form has errors"
 //     *   }
@@ -408,7 +408,7 @@ class IncidentController extends FOSRestController {
 //    public function deleteIncidentAction(Request $request, IncidentInterface $incident) {
 //        try {
 //
-//            $statusCode = Codes::HTTP_NO_CONTENT;
+//            $statusCode = Response::HTTP_NO_CONTENT;
 //            $incident = $this->container->get('cert_unlp.ngen.incident.internal.handler')->delete(
 //                    $incident, $request->request->all()
 //            );

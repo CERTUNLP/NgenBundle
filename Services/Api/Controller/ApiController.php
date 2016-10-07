@@ -15,6 +15,7 @@ namespace CertUnlp\NgenBundle\Services\Api\Controller;
 //use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 //use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\FormTypeInterface;
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
@@ -65,7 +66,7 @@ class ApiController {
      * @param  array $data
      * @return View
      */
-    public function response(array $parameters = array(), $statusCode = 201, array $headers = array()) {
+    public function response(array $parameters = array(), $statusCode = Response::HTTP_CREATED, array $headers = array()) {
         $this->setData($parameters);
         $this->setStatusCode($statusCode);
         return $this->view;
@@ -101,7 +102,7 @@ class ApiController {
 
             $newObject = $this->getCustomHandler()->post($object_data);
 
-            return $this->response([$newObject], 201);
+            return $this->response([$newObject], Response::HTTP_CREATED);
         } catch (InvalidFormException $exception) {
             return $exception->getForm();
         }
@@ -119,12 +120,12 @@ class ApiController {
     public function put(Request $request, $object) {
         try {
             if (!($object = $this->getCustomHandler()->get($id))) {
-                $statusCode = 201;
+                $statusCode = Response::HTTP_CREATED;
                 $object = $this->getCustomHandler()->post(
                         $request->request->all()
                 );
             } else {
-                $statusCode = 204;
+                $statusCode = Response::HTTP_NO_CONTENT;
                 $object = $this->getCustomHandler()->put(
                         $object, $request->request->all()
                 );
@@ -152,7 +153,7 @@ class ApiController {
             $object = $this->getCustomHandler()->changeState(
                     $object, $state);
 
-            return $this->response([$object], 204);
+            return $this->response([$object], Response::HTTP_NO_CONTENT);
         } catch (Exception $exception) {
             return null;
         }
@@ -176,7 +177,7 @@ class ApiController {
                     $object, $parameters
             );
 
-            return $this->response([$object], 204);
+            return $this->response([$object], Response::HTTP_NO_CONTENT);
         } catch (InvalidFormException $exception) {
 
             return $exception->getForm();
@@ -201,11 +202,37 @@ class ApiController {
                     $object, $request->request->all()
             );
 
-            return $this->response([$object], 204);
+            return $this->response([$object], Response::HTTP_NO_CONTENT);
         } catch (InvalidFormException $exception) {
 
             return $exception->getForm();
         }
+    }
+
+    /**
+     * Delete a Network.
+     *
+     * @param NetworkInterface $network
+     * @param array $parameters
+     *
+     * @return NetworkInterface
+     */
+    public function desactivate($object, array $parameters = null) {
+
+        return $this->delete($object, $parameters);
+    }
+
+    /**
+     * Delete a Network.
+     *
+     * @param NetworkInterface $network
+     * @param array $parameters
+     *
+     * @return NetworkInterface
+     */
+    public function activate($object, array $parameters = null) {
+        $object->setIsActive(TRUE);
+        return $this->patch($object, $parameters);
     }
 
 }
