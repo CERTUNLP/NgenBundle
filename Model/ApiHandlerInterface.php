@@ -26,7 +26,7 @@ interface ApiHandlerInterface {
      *
      * @return EntityInterface
      */
-    public function get($id);
+    public function get(array $parameters);
 
     /**
      * Get a list of Entities.

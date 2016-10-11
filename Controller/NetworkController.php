@@ -160,7 +160,7 @@ class NetworkController extends FOSRestController {
      * @FOS\QueryParam(name="ipMask",strict=true ,requirements="[0-32]", description="A decimal ip mask.")
      */
     public function patchNetworkAction(Request $request, Network $network) {
-        return $this->getApiController()->patch($request, $incident);
+        return $this->getApiController()->patch($request, $network);
     }
 
     /**
@@ -191,7 +191,7 @@ class NetworkController extends FOSRestController {
      */
     public function patchNetworkActivateAction(Request $request, Network $network) {
 
-        return $this->getApiController()->activate($request, $incident);
+        return $this->getApiController()->activate($request, $network);
     }
 
     /**
@@ -222,7 +222,7 @@ class NetworkController extends FOSRestController {
      */
     public function patchNetworkDesactivateAction(Request $request, Network $network) {
 
-        return $this->getApiController()->desactivate($request, $incident);
+        return $this->getApiController()->desactivate($request, $network);
     }
 
 }

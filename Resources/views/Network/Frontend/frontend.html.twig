@@ -17,7 +17,7 @@
 {% block sideBar_search_path %}{{path('cert_unlp_ngen_network_frontend_home')}}{% endblock %}
 
 {% block content_body %}
-    {% include 'CertUnlpNgenBundle:Network:Frontend/list/networkList.html.twig' with {'networks': networks} %}
+    {% include 'CertUnlpNgenBundle:Network:Frontend/list/networkList.html.twig' with {'networks': objects} %}
 {% endblock %}
 
 

@@ -39,8 +39,14 @@ abstract class Handler implements ApiHandlerInterface {
      *
      * @return Entity
      */
-    public function get($id) {
-        return $this->repository->findOneBy($id);
+    public function get(array $parameters) {
+        $ip_and_mask = explode('/', $parameters['ip']);
+
+        $parameters['ip'] = $ip_and_mask[0];
+        if (isset($ip_and_mask[1])) {
+            $parameters['ipMask'] = $ip_and_mask[1];
+        }
+        return $this->repository->findOneBy($parameters);
     }
 
     /**
@@ -88,7 +94,7 @@ abstract class Handler implements ApiHandlerInterface {
      *
      * @return Entity
      */
-    public function patch($entity_class_instance, array $parameters) {
+    public function patch($entity_class_instance, array $parameters = null) {
         return $this->processForm($entity_class_instance, $parameters, 'PATCH', false);
     }
 
@@ -100,7 +106,7 @@ abstract class Handler implements ApiHandlerInterface {
      *
      * @return Entity
      */
-    public function delete($entity_class_instance, array $parameters) {
+    public function delete($entity_class_instance, array $parameters = null) {
         $this->prepareToDeletion($entity_class_instance, $parameters);
         return $this->patch($entity_class_instance, $parameters);
     }
@@ -132,6 +138,7 @@ abstract class Handler implements ApiHandlerInterface {
 
         $form = $this->formFactory->create(new $this->entityType(), $entity_class_instance, array('csrf_protection' => $csrf_protection, 'method' => $method));
         $form->submit($parameters, 'PATCH' !== $method);
+
         if ($form->isValid()) {
             $entity_class_instance = $form->getData();
 
