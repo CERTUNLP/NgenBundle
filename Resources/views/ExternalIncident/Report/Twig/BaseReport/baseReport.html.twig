@@ -15,7 +15,7 @@
                 <tr>
                     <td>
                         {% block greeting %}
-                            {% include 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/headerReport.html.twig' %}
+                            {% include 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/headerReport.html.twig' %}
                         {% endblock %}
                         {{block('problem')}}
                     </td>
@@ -59,4 +59,4 @@
     </tr>
 </table>
 
-{% include 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/foot.html.twig' with { 'incident': incident }%}
+{% include 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/foot.html.twig' with { 'incident': incident }%}
