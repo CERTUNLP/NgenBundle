@@ -63,7 +63,6 @@ class NetworkHandler extends Handler {
      * @return NetworkInterface
      */
     public function desactivate($network, array $parameters = null) {
-
         return $this->delete($network, $parameters);
     }
 

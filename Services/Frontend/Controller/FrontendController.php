@@ -71,10 +71,10 @@ class FrontendController {
 
     public function editEntity($object) {
 
-        return array('form' => $this->formFactory->create(new $this->entityType(), $object), 'method' => 'patch');
+        return array('form' => $this->formFactory->create(new $this->entityType(), $object)->createView(), 'method' => 'patch');
     }
 
-    public function datailEntity($object) {
+    public function detailEntity($object) {
         return array('object' => $object);
     }
 

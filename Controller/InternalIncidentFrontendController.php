@@ -58,8 +58,8 @@ class InternalIncidentFrontendController extends Controller {
      * @ParamConverter("incident", class="CertUnlpNgenBundle:InternalIncident", options={"repository_method" = "findByHostDateType"})
 
      */
-    public function datailIncidentAction(IncidentInterface $incident) {
-        return $this->getFrontendController()->editEntity($incident);
+    public function detailIncidentAction(IncidentInterface $incident) {
+        return $this->getFrontendController()->detailEntity($incident);
     }
 
     /**

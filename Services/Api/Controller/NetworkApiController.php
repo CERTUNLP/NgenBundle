@@ -26,41 +26,34 @@ class NetworkApiController extends ApiController {
      *
      * @return FormTypeInterface|View
      */
-    public function patchNetworkAction(Request $request, Network $network) {
+    public function patch(Request $request, $network) {
         try {
-
             $parameters = $request->request->all();
             unset($parameters['_method'], $parameters['force_edit'], $parameters['reactivate']);
 
+            $DBnetwork = $this->getCustomHandler()->get(['ip' => $request->request->get('ip'), 'ipMask' => $request->request->get('ipMask')]);
 
-            $DBnetwork = $this->container->get('cert_unlp.ngen.network.handler')->get(['ip' => $request->request->get('ip'), 'ipMask' => $request->request->get('ipMask')]);
-
-            if ($request->get('reactivate')) {
-                $network->setIsActive(TRUE);
-            }
-
-            if (!$network->equals($DBnetwork)) {
+            if (!$DBnetwork) {
+                if ($request->get('reactivate')) {
+                    $network->setIsActive(TRUE);
+                }
                 if ($request->get('force_edit')) {
                     $statusCode = Response::HTTP_NO_CONTENT;
 
-                    $network = $this->container->get('cert_unlp.ngen.network.handler')->patch($network, $parameters);
+                    $network = $this->getCustomHandler()->patch($network, $parameters);
                 } else {
                     $statusCode = Response::HTTP_CREATED;
-                    $this->container->get('cert_unlp.ngen.network.handler')->delete($network);
-                    $network = $this->container->get('cert_unlp.ngen.network.handler')->post($parameters);
+                    $this->getCustomHandler()->desactivate($network);
+                    $network = $this->getCustomHandler()->post($parameters);
                 }
             } else {
                 $statusCode = Response::HTTP_NO_CONTENT;
 
-                $network = $this->container->get('cert_unlp.ngen.network.handler')->patch($network, $parameters);
+                $this->getCustomHandler()->activate($DBnetwork);
+                $network = $this->getCustomHandler()->patch($DBnetwork, $parameters);
             }
 
-            $routeOptions = array(
-                'ip' => $network->getIp(),
-                'ipMask' => $network->getIpMask(),
-                '_format' => $request->get('_format')
-            );
-            return $this->routeRedirectView('api_1_get_network', $routeOptions, $statusCode);
+            return $this->response([$network], $statusCode);
         } catch (InvalidFormException $exception) {
 
             return $exception->getForm();
