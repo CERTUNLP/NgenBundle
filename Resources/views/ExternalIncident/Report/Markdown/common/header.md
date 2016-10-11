@@ -1,1 +1,1 @@
-Estimado {{networkAdmin}},
+Estimated {{networkAdmin}},
