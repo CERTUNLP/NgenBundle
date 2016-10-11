@@ -22,47 +22,16 @@ use CertUnlp\NgenBundle\Entity\Network;
 
 class NetworkFrontendController extends Controller {
 
+    public function getFrontendController() {
+        return $this->get('cert_unlp.ngen.network.frontend.controller');
+    }
+
     /**
      * @Template("CertUnlpNgenBundle:Network:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_network_frontend_home")
      */
     public function homeAction(Request $request) {
-        $em = $this->get('doctrine.orm.entity_manager');
-        $dql = "SELECT n,au,na "
-                . "FROM CertUnlpNgenBundle:Network n join n.academic_unit au join n.network_admin na";
-        $query = $em->createQuery($dql);
-
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-                $query, $request->query->get('page', 1), 7
-                , array('defaultSortFieldName' => 'n.ip', 'defaultSortDirection' => 'asc')
-        );
-
-        return array('networks' => $pagination);
-    }
-
-    /**
-     * @Template("CertUnlpNgenBundle:Network:Frontend/networkForm.html.twig")
-     * @Route("/new", name="cert_unlp_ngen_network_new_network")
-     */
-    public function newNetworkAction(Request $request) {
-        return array('form' => $this->createForm(new NetworkType()), 'method' => 'POST');
-    }
-
-    /**
-     * @Template("CertUnlpNgenBundle:Network:Frontend/networkForm.html.twig")
-     * @Route("{ip}/{ipMask}/edit", name="cert_unlp_ngen_network_edit_network")
-     */
-    public function editNetworkAction(Network $network) {
-        return array('form' => $this->createForm(new NetworkType(), $network), 'method' => 'PATCH');
-    }
-
-    /**
-     * @Template("CertUnlpNgenBundle:Network:Frontend/networkDetail.html.twig")
-     * @Route("{ip}/{ipMask}/detail", name="cert_unlp_ngen_network_detail_network")
-     */
-    public function datailNetworkAction(Network $network) {
-        return array('network' => $network);
+        return $this->getFrontendController()->homeEntity($request, 'Network');
     }
 
     /**
@@ -70,19 +39,31 @@ class NetworkFrontendController extends Controller {
      * @Route("search", name="cert_unlp_ngen_network_search_network")
      */
     public function searchNetworkAction(Request $request) {
-        $finder = $this->container->get('fos_elastica.finder.networks.network');
+        return $this->getFrontendController()->searchEntity($request);
+    }
 
-        $results = $finder->find($request->get('term'));
+    /**
+     * @Template("CertUnlpNgenBundle:Network:Frontend/networkForm.html.twig")
+     * @Route("/new", name="cert_unlp_ngen_network_new_network")
+     */
+    public function newNetworkAction(Request $request) {
+        return $this->getFrontendController()->newEntity($request);
+    }
 
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-                $results, $request->query->get('page', 1), 7
-                , array('defaultSortFieldName' => 'i.createdAt', 'defaultSortDirection' => 'desc')
-        );
-        
-        $pagination->setParam('term', $request->get('term'));
+    /**
+     * @Template("CertUnlpNgenBundle:Network:Frontend/networkForm.html.twig")
+     * @Route("{ip}/{ipMask}/edit", name="cert_unlp_ngen_network_edit_network")
+     */
+    public function editNetworkAction(Network $network) {
+        return $this->getFrontendController()->editEntity($network);
+    }
 
-        return array('networks' => $pagination, 'term' => $request->get('term'));
+    /**
+     * @Template("CertUnlpNgenBundle:Network:Frontend/networkDetail.html.twig")
+     * @Route("{ip}/{ipMask}/detail", name="cert_unlp_ngen_network_detail_network")
+     */
+    public function datailNetworkAction(Network $network) {
+        return $this->getFrontendController()->detailEntity($network);
     }
 
 }

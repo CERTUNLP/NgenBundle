@@ -176,7 +176,6 @@ class ApiController {
             $object = $this->getCustomHandler()->patch(
                     $object, $parameters
             );
-
             return $this->response([$object], Response::HTTP_NO_CONTENT);
         } catch (InvalidFormException $exception) {
 
@@ -217,9 +216,19 @@ class ApiController {
      *
      * @return NetworkInterface
      */
-    public function desactivate($object, array $parameters = null) {
+    public function desactivate(Request $request, $object) {
 
-        return $this->delete($object, $parameters);
+        try {
+            $parameters = $request->request->all();
+            unset($parameters['_method']);
+            $object = $this->getCustomHandler()->desactivate(
+                    $object, $parameters
+            );
+            return $this->response([$object], Response::HTTP_NO_CONTENT);
+        } catch (InvalidFormException $exception) {
+
+            return $exception->getForm();
+        }
     }
 
     /**
@@ -230,9 +239,18 @@ class ApiController {
      *
      * @return NetworkInterface
      */
-    public function activate($object, array $parameters = null) {
-        $object->setIsActive(TRUE);
-        return $this->patch($object, $parameters);
+    public function activate(Request $request, $object) {
+         try {
+            $parameters = $request->request->all();
+            unset($parameters['_method']);
+            $object = $this->getCustomHandler()->activate(
+                    $object, $parameters
+            );
+            return $this->response([$object], Response::HTTP_NO_CONTENT);
+        } catch (InvalidFormException $exception) {
+
+            return $exception->getForm();
+        }
     }
 
 }

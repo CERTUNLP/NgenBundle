@@ -9,7 +9,7 @@
 
 var NetworkApi = ApiClient.extend({
     config: function () {
-        this.api.add("networks", {stripTrailingSlash: true});
+//        this.api.add("networks", {stripTrailingSlash: true});
 //        this.api.networks.add("report", {stripTrailingSlash: true});
         $.subscribe('/cert_unlp/network/activate', $.proxy(this.activate, this));
         $.subscribe('/cert_unlp/network/desactivate', $.proxy(this.desactivate, this));
@@ -17,6 +17,7 @@ var NetworkApi = ApiClient.extend({
         $.subscribe('/cert_unlp/network/update', $.proxy(this.update, this));
     },
     addDefaultChannel: function () {
+        this.api.add("networks", {stripTrailingSlash: true});
         this.defaultChannel = this.api.networks;
     },
     changeState: function (networkId, isActive, callback) {
