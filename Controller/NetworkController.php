@@ -13,7 +13,6 @@ namespace CertUnlp\NgenBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -27,6 +26,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
 
 class NetworkController extends FOSRestController {
+
+    public function getApiController() {
+
+        return $this->container->get('cert_unlp.ngen.network.api.controller');
+    }
 
     /**
      * List all networks.
@@ -72,11 +76,7 @@ class NetworkController extends FOSRestController {
      * @return array
      */
     public function getNetworksAction(Request $request, ParamFetcherInterface $paramFetcher) {
-        $offset = $paramFetcher->get('offset');
-        $offset = null == $offset ? 0 : $offset;
-        $limit = $paramFetcher->get('limit');
-
-        return $this->container->get('cert_unlp.ngen.network.handler')->all([], [], $limit, $offset);
+        return $this->getApiController()->getAll($request, $paramFetcher);
     }
 
     /**
@@ -127,19 +127,7 @@ class NetworkController extends FOSRestController {
      * @return FormTypeInterface|View
      */
     public function postNetworkAction(Request $request) {
-        try {
-            $network = $this->container->get('cert_unlp.ngen.network.handler')->post(
-                    $request->request->all()
-            );
-            $routeOptions = array(
-                'ip' => $network->getIp(),
-                'ipMask' => $network->getIpMask(),
-                '_format' => $request->get('_format')
-            );
-            return $this->routeRedirectView('api_1_get_network', $routeOptions, Codes::HTTP_CREATED);
-        } catch (InvalidFormException $exception) {
-            return $exception->getForm();
-        }
+        return $this->getApiController()->post($request);
     }
 
     /**
@@ -172,44 +160,7 @@ class NetworkController extends FOSRestController {
      * @FOS\QueryParam(name="ipMask",strict=true ,requirements="[0-32]", description="A decimal ip mask.")
      */
     public function patchNetworkAction(Request $request, Network $network) {
-        try {
-
-            $parameters = $request->request->all();
-            unset($parameters['_method'], $parameters['force_edit'], $parameters['reactivate']);
-
-
-            $DBnetwork = $this->container->get('cert_unlp.ngen.network.handler')->get(['ip' => $request->request->get('ip'), 'ipMask' => $request->request->get('ipMask')]);
-
-            if ($request->get('reactivate')) {
-                $network->setIsActive(TRUE);
-            }
-
-            if (!$network->equals($DBnetwork)) {
-                if ($request->get('force_edit')) {
-                    $statusCode = Codes::HTTP_NO_CONTENT;
-
-                    $network = $this->container->get('cert_unlp.ngen.network.handler')->patch($network, $parameters);
-                } else {
-                    $statusCode = Codes::HTTP_CREATED;
-                    $this->container->get('cert_unlp.ngen.network.handler')->delete($network);
-                    $network = $this->container->get('cert_unlp.ngen.network.handler')->post($parameters);
-                }
-            } else {
-                $statusCode = Codes::HTTP_NO_CONTENT;
-
-                $network = $this->container->get('cert_unlp.ngen.network.handler')->patch($network, $parameters);
-            }
-
-            $routeOptions = array(
-                'ip' => $network->getIp(),
-                'ipMask' => $network->getIpMask(),
-                '_format' => $request->get('_format')
-            );
-            return $this->routeRedirectView('api_1_get_network', $routeOptions, $statusCode);
-        } catch (InvalidFormException $exception) {
-
-            return $exception->getForm();
-        }
+        return $this->getApiController()->patch($request, $incident);
     }
 
     /**
@@ -224,9 +175,6 @@ class NetworkController extends FOSRestController {
      *   }
      * )
      *
-     * @FOS\View(
-     *  statusCode = Codes::HTTP_BAD_REQUEST,
-     * )
      *
      * @param Request $request the request object
      * @param int     $id      the network id
@@ -243,23 +191,7 @@ class NetworkController extends FOSRestController {
      */
     public function patchNetworkActivateAction(Request $request, Network $network) {
 
-        try {
-            $network = $this->container->get('cert_unlp.ngen.network.handler')->activate($network);
-            $routeOptions = array(
-                'ip' => $network->getIp(),
-                'ipMask' => $network->getIpMask(),
-                '_format' => $request->get('_format')
-            );
-            $routeOptions = array(
-                'ip' => $network->getIp(),
-                'ipMask' => $network->getIpMask(),
-                '_format' => $request->get('_format')
-            );
-
-            return $this->routeRedirectView('api_1_get_network', $routeOptions, Codes::HTTP_NO_CONTENT);
-        } catch (Exception $exception) {
-            return $this->routeRedirectView('api_1_get_network', $routeOptions, Codes::HTTP_BAD_REQUEST);
-        }
+        return $this->getApiController()->activate($request, $incident);
     }
 
     /**
@@ -274,9 +206,6 @@ class NetworkController extends FOSRestController {
      *   }
      * )
      *
-     * @FOS\View(
-     *  statusCode = Codes::HTTP_BAD_REQUEST,
-     * )
      *
      * @param Request $request the request object
      * @param int     $id      the network id
@@ -293,19 +222,7 @@ class NetworkController extends FOSRestController {
      */
     public function patchNetworkDesactivateAction(Request $request, Network $network) {
 
-        try {
-            $network = $this->container->get('cert_unlp.ngen.network.handler')->delete($network);
-
-            $routeOptions = array(
-                'ip' => $network->getIp(),
-                'ipMask' => $network->getIpMask(),
-                '_format' => $request->get('_format')
-            );
-
-            return $this->routeRedirectView('api_1_get_network', $routeOptions, Codes::HTTP_NO_CONTENT);
-        } catch (Exception $exception) {
-            return $this->routeRedirectView('api_1_get_network', $routeOptions, Codes::HTTP_BAD_REQUEST);
-        }
+        return $this->getApiController()->desactivate($request, $incident);
     }
 
 }

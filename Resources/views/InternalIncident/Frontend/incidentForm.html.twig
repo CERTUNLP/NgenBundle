@@ -1,0 +1,25 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+
+{% extends 'CertUnlpNgenBundle::Incident/Frontend/incidentForm.html.twig' %}
+{% block sideBar_search_path %}{{path('cert_unlp_ngen_internal_incident_search_incident')}}{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    '@CertUnlpNgenBundle/Resources/public/js/incident/InternalIncident.js'
+    '@CertUnlpNgenBundle/Resources/public/js/incident/InternalIncidentApi.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        var internalIncidentApi = new InternalIncidentApi("{{path("api_2_get")}}/", "{{app.user.apiKey}}");
+        var internalIncident = new InternalIncident();
+    </script>
+{% endblock %}

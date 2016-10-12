@@ -1,0 +1,91 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+We would like to inform you that we have been notified that the <em>host/server</em>  {{incident.hostAddress}} has the <strong>Portmap</strong> service, accessible from the Internet.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Related issues</p>
+
+The <em>host</em> under your administration could be used to perform <a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplification</a> attacks to third party's, like:
+
+<ul>
+<li>Denial of Service attacks (DOS, DDOS).</li>
+</ul>
+
+Additionally, the <strong>host/servidor</strong> could expose other misconfigured services, such as NFS shared folders.
+
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">How to verify the issue</p>
+
+To manually verify if the service is vulnerable, use the following command:
+
+<div class = "destacated">
+
+<pre><code>rpcinfo -T udp -p {{incident.hostAddress}}
+</code></pre>
+
+</div>
+
+View the NFS shared folders using the command:
+
+<div class = "destacated">
+
+<pre><code>showmount -e {{incident.hostAddress}}
+</code></pre>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recommendations_content %}
+
+
+<p class="lead">Recommendations</p>
+
+<ul>
+<li>We recommend filtering unauthorized access to Portmap service, or disabling the service.</li>
+<li>If NFS shared folders are being used, use proper filtering methods, or deactivate the feature.</li>
+</ul>
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">For more information</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><a href="https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2005-2132">https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2005-2132</a></li>
+<li><a href="http://blog.level3.com/security/a-new-ddos-reflection-attack-portmapper-an-early-warning-to-the-industry/">http://blog.level3.com/security/a-new-ddos-reflection-attack-portmapper-an-early-warning-to-the-industry/</a></li>
+<li><a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">https://www.us-cert.gov/ncas/alerts/TA14-017A</a></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

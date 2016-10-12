@@ -1,0 +1,65 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+We would like to inform you that we have detected that web page hosted with IP {{incident.hostAddress}} has suffered a defacement's attack. This is an attack on a website that changes the visual appearance of the site or a webpage performed by an attacker.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Related issues</p>
+
+The changes in the existing information of the server indicates that the attackers succeeded to obtain restricted privileges on the server. As a result, the server may be exposed to other types of problems, such as:
+
+<ul>
+<li>Malware.</li>
+<li>Be used to perform more sophisticated attacks.</li>
+<li>Obtaining more privileges.</li>
+<li>etc.</li>
+</ul>
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">How to verify the issue</p>
+
+The defacement's attack can be observed in the URL
+
+<div class = "destacated">
+
+<pre><code>http://{{incident.hostAddress}}/
+</code></pre>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recommendations_content %}
+
+
+<p class="lead">Recommendations</p>
+
+We recommend a forensic analysis on the involved server to obtain information about the source of the problem and it's extent. On the other hand, we recommend a penetration test analysis over the involved site, which allows early problem identification that could lead to similar situations.
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+{% endblock %}
