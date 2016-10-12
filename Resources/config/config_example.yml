@@ -12,36 +12,67 @@ cert_ngen:
     indcidents:
         internal:
             class: CertUnlp\NgenBundle\Entity\InternalIncident
+            handler: 
+                class: CertUnlp\NgenBundle\Services\Api\Handler\InternalIncidentHandler
+            delegator_chain: 
+                class: CertUnlp\NgenBundle\Services\Delegator\InternalIncidentDelegatorChain
+            form_type: 
+                class: CertUnlp\NgenBundle\Form\InternalIncidentType
+            reports: 
+                markdown:
+                    path: %kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/views/InternalIncident/Report/Markdown
+                twig:
+                    path: %kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/views/InternalIncident/Report/Twig
+            mailer:
+                class: CertUnlp\NgenBundle\Services\Mailer\InternalIncidentMailer
+                  
         external:
             class: CertUnlp\NgenBundle\Entity\ExternalIncident
+            handler: 
+                class: CertUnlp\NgenBundle\Services\Api\Handler\ExternalIncidentHandler
+            delegator_chain: 
+                class: CertUnlp\NgenBundle\Services\Delegator\ExternalIncidentDelegatorChain
+            form_type: 
+                class: CertUnlp\NgenBundle\Form\ExternalIncidentType
+            reports: 
+                markdown:
+                    path: %kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/views/ExternalIncident/Report/Markdown
+                twig:
+                    path: %kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/views/ExternalIncident/Report/Twig
+            mailer:
+                class: CertUnlp\NgenBundle\Services\Mailer\ExternalIncidentMailer
         
-        handler: 
-            class: CertUnlp\NgenBundle\Services\IncidentHandler
-        reporter:
-            class: CertUnlp\NgenBundle\Entity\User
-        evidence:
-            path: %kernel.root_dir%/Resources/incident/evidence
-            prefix:        
-        reports:
-            markdown:
-                path: %kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/views/InternalIncident/Report/Markdown
-            twig:
-                path: %kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/views/InternalIncident/Report/Twig
         mailer:
             class: CertUnlp\NgenBundle\Services\IncidentMailer
-            transport: 
-            host:      
-            sender_address: 
-            username:
-            password:
+            transport: smtp
+            host: ~      
+            username: ~
+            password: ~
+            sender_address: ~
+        evidence:
+            path: %kernel.root_dir%/Resources/incident/evidence #pasar a external internal
+            prefix: ~        
+        factory:
+            class: CertUnlp\NgenBundle\Services\IncidentFactory
+        reporter:
+            class: CertUnlp\NgenBundle\Entity\User
 
     networks:
         class: CertUnlp\NgenBundle\Entity\Network
+        default_network: ~
         handler:
-            class: CertUnlp\NgenBundle\Services\NetworkHandler
+            class: CertUnlp\NgenBundle\Services\Api\Handler\NetworkHandler
         validator:
             class: CertUnlp\NgenBundle\Validator\Constraints\ValidNetworkValidator
-        default_network:
+        form_type:
+            class: CertUnlp\NgenBundle\Form\NetworkType
+            
+    users:
+        class: CertUnlp\NgenBundle\Entity\User
+        handler:
+            class: CertUnlp\NgenBundle\Services\Api\Handler\UserHandler
+        form_type:
+            class: CertUnlp\NgenBundle\Form\UserType
             
     feeds:
         path: %kernel.root_dir%/Resources/feed
@@ -50,14 +81,12 @@ cert_ngen:
             client:
                 class: CertUnlp\NgenBundle\Services\ShadowServer\ShadowServerClient
                 url: https://dl.shadowserver.org/reports/index.php
-                user: 
-                password:
-            reports:
-                path:
+                user: ~ 
+                password: ~
     seeds:
         redmine:
             class: CertUnlp\NgenBundle\Services\IncidentRedmine
-            url:
-            key:
+            url: ~
+            key: ~
 
                
