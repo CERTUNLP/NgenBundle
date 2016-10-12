@@ -1,0 +1,66 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+We would like to inform you that we have been notified that the <em>host/server</em> {{incident.hostAddress}} has the <strong>Network Basic Input/Output System</strong> (NETBIOS) service, accessible from the Internet.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Related issues</p>
+
+The <em>host</em> under your administration could be used to perform:
+
+<ul>
+<li>Denial of Service attacks (DOS, DDOS).</li>
+<li>Gather information shared within the host.</li>
+<li>Perform brute force attacks.</li>
+<li>Malware distribution.</li>
+<li>Store stolen information.</li>
+</ul>
+
+{% endblock %}
+
+
+{% block recommendations_content %}
+
+
+<p class="lead">Recommendations</p>
+
+We recommend:
+
+<ul>
+<li>Do not use the service over the TCP/IP protocol.</li>
+<li>Establish firewall rules to filter unauthorized queries.</li>
+<li>Establish, if possible, access control.</li>
+</ul>
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">For more information</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">https://www.us-cert.gov/ncas/alerts/TA14-017A</a></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

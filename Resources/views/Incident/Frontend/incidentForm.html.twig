@@ -23,4 +23,13 @@
 {% block javascripts %}
     {{ parent() }}
     {{ tinymce_init() }}
+
+    {% javascripts
+    '@CertUnlpNgenBundle/Resources/public/js/incident/IncidentForm.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        var incidentForm = new IncidentForm();
+    </script>
 {% endblock %}

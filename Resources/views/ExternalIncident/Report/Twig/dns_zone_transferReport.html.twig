@@ -1,0 +1,74 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+LWe would like to inform you that we have detected that the DNS <em>server</em> with IP {{incident.hostAddress}} has zone transfer active in some zones, visible at least from our CERT network.
+
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Problemas derivados</p>
+
+The <em>server</em> under your administration could be used in DNS amplification attacks.
+
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">How to verify the issue</p>
+
+Use the following command:
+
+<div class = "destacated">
+
+<pre><code>dig &lt;zona&gt;.unlp.edu.ar @{{incident.hostAddress}} axfr
+</code></pre>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recommendations_content %}
+
+
+<p class="lead">Recommendations</p>
+
+We recommend establishing restrictions to the DNS server allowing zone queries only from secondary DNS servers.
+
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">For more information</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><a href="http://www.sans.org/reading_room/whitepapers/dns/securing-dns-zone-transfer_868">http://www.sans.org/reading_room/whitepapers/dns/securing-dns-zone-transfer_868</a></li>
+<li><a href="http://www.sans.org/reading_room/whitepapers/dns/securing-dns-zone-transfer_868">http://www.esdebian.org/wiki/transferencias-zonas-bind9</a></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

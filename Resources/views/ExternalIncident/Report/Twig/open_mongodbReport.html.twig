@@ -1,0 +1,81 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+We would like to inform you that we have been informed that the <em>host</em> {{incident.hostAddress}} has a database (MongoDB) with unrestricted access from the Internet.
+
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Related issues</p>
+
+The <em>host</em> under your administration could be compromising sensitive information.
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">How to verify the issue</p>
+
+To manually verify the connection to the service, use the following command:
+
+<div class = "destacated">
+
+<pre><code>mongo {{incident.hostAddress}}
+</code></pre>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recomendations_content %}
+
+
+<p class="lead">Recommendations</p>
+
+<em>TODO: Cambiar en castellano y agregar links</em>
+* Establish firewall rules to filter unauthorized access.
+* Enable Access Control and Enforce Authentication
+* Configure Role-Based Access Control
+* Run MongoDB with Secure Configuration Options
+* Enable Secure Sockets Layer (SSL) to encrypt communications.
+* Use the loopback address to establish connections to limit exposure.
+* Modify the default port.
+* Ensure that the HTTP status interface, the REST API, and the JSON API are all disabled in production environments to prevent potential data exposure and vulnerability to attackers.
+
+
+{% block more_information_content %}
+
+
+<p class="lead">For more information</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><a href="https://docs.mongodb.com/manual/administration/security-checklist/">Security checklist</a></li>
+<li><a href="https://docs.mongodb.com/manual/core/security-mongodb-configuration/#bind-ip">Security configuration</a></li>
+</ul>
+
+</div>
+
+
+{% endblock %}
+
+
+{% endblock %}

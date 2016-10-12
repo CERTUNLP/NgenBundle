@@ -14,6 +14,7 @@ namespace CertUnlp\NgenBundle\Entity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use CertUnlp\NgenBundle\Model\ReporterInterface;
+use CertUnlp\NgenBundle\Model\IncidentInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 
@@ -93,7 +94,7 @@ class User implements UserInterface, ReporterInterface {
      */
     private $updatedAt;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident",mappedBy="reporter") */
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="reporter") */
     private $incidents;
 
     /**
@@ -324,10 +325,10 @@ class User implements UserInterface, ReporterInterface {
     /**
      * Add incidents
      *
-     * @param \CertUnlp\NgenBundle\Entity\Incident $incidents
+     * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
      * @return User
      */
-    public function addIncident(\CertUnlp\NgenBundle\Entity\Incident $incidents) {
+    public function addIncident(IncidentInterface $incidents) {
         $this->incidents[] = $incidents;
 
         return $this;
@@ -336,9 +337,9 @@ class User implements UserInterface, ReporterInterface {
     /**
      * Remove incidents
      *
-     * @param \CertUnlp\NgenBundle\Entity\Incident $incidents
+     * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
      */
-    public function removeIncident(\CertUnlp\NgenBundle\Entity\Incident $incidents) {
+    public function removeIncident(IncidentInterface $incidents) {
         $this->incidents->removeElement($incidents);
     }
 

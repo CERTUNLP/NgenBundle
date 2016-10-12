@@ -1,0 +1,278 @@
+# This file is part of the Ngen - CSIRT Incident Report System.
+# 
+# (c) CERT UNLP <support@cert.unlp.edu.ar>
+# 
+# This source file is subject to the GPL v3.0 license that is bundled
+# with this source code in the file LICENSE.
+
+fos_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        incidents:
+            types:
+                internal:
+                    mappings:
+                        id:
+                            type: integer
+                        hostAddress:
+                            type: string
+                        date: 
+                            type: date
+                            format: date_time_no_millis
+                        lastTimeDetected:
+                            type: date
+                            format: strict_date_optional_time
+                        createdAt: 
+                            type: date
+                            format: strict_date_optional_time
+                        updatedAt: 
+                            type: date
+                            format: strict_date_optional_time
+                        isClosed:
+                            type: boolean
+                        evidence_file_path:
+                            type: string
+                        network:
+                            type: "object"
+                            properties:
+                                ip: 
+                                    type: string
+                                ipMask:
+                                    type: string
+                                isActive:
+                                    type: boolean
+                                networkAdmin:
+                                    type: "object"
+                                    properties:
+                                        slug:
+                                            type: string
+                                        email: 
+                                            type: string
+                                        name: 
+                                            type: string
+                                        isActive:
+                                            type: boolean
+                                academicUnit:
+                                    type: "object"
+                                    properties:
+                                        slug:
+                                            type: string
+                                        name: 
+                                            type: string
+                        networkAdmin:
+                                    type: "object"
+                                    properties:
+                                        slug:
+                                            type: string
+                                        email:
+                                            type: string
+                                        name:
+                                            type: string
+                                        isActive:
+                                            type: boolean
+                        state:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: string
+                                name:
+                                    type: string
+                        feed:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: string
+                                name:
+                                    type: string
+                        reporter:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: string
+                                name:
+                                    type: string
+                                lastname:
+                                    type: string
+                                email:
+                                    type: string
+                                username:
+                                    type: string
+                                isActive:
+                                    type: boolean
+                                createdAt:
+                                    type: date
+                                    format: strict_date_optional_time
+                                updatedAt:
+                                    type: date
+                                    format: strict_date_optional_time
+                        type:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: string
+                                name:
+                                    type: string
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\InternalIncident
+                        provider: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
+                        finder: ~       
+                external:
+                    mappings:
+                        id:
+                            type: integer
+                        hostAddress:
+                            type: string
+                        date: 
+                            type: date
+                            format: date_time_no_millis
+                        lastTimeDetected:
+                            type: date
+                            format: strict_date_optional_time
+                        createdAt: 
+                            type: date
+                            format: strict_date_optional_time
+                        updatedAt: 
+                            type: date
+                            format: strict_date_optional_time
+                        isClosed:
+                            type: boolean
+                        evidence_file_path:
+                            type: string
+                        abuse_entity:
+                            type: string
+                        network_entity:
+                            type: string
+                        start_address:
+                            type: string
+                        end_address:
+                            type: string
+                        country:
+                            type: string
+                        abuse_entity_emails:
+                            type: string
+                        state:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: string
+                                name:
+                                    type: string
+                        feed:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: string
+                                name:
+                                    type: string
+                        reporter:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: string
+                                name:
+                                    type: string
+                                lastname:
+                                    type: string
+                                email:
+                                    type: string
+                                username:
+                                    type: string
+                                isActive:
+                                    type: boolean
+                                createdAt:
+                                    type: date
+                                    format: strict_date_optional_time
+                                updatedAt:
+                                    type: date
+                                    format: strict_date_optional_time
+                        type:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: string
+                                name:
+                                    type: string
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\ExternalIncident
+                        provider: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
+                        finder: ~
+        networks:
+            types:
+                network:
+                    mappings:
+                        id: ~
+                        ip: ~
+                        ipMask: ~
+                        createdAt: 
+                            type: date
+                            format: strict_date_optional_time
+                        updatedAt: 
+                            type: date
+                        isActive:
+                            type: boolean
+                        networkAdmin:
+                            type: "object"
+                            properties:
+                                slug: ~
+                                email: ~
+                                name: ~
+                                isActive:
+                                    type: boolean
+                        academicUnit:
+                            type: "object"
+                            properties:
+                                slug: ~
+                                name: ~
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\Network
+                        provider: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
+                        finder: ~
+        networkadmins:
+            types:
+                networkadmin:
+                    mappings:
+#                        id: ~
+                        name: ~
+                        slug: ~
+                        email: ~
+#                        isActive:
+#                            type: boolean
+#                        createdAt: ~
+#                        updatedAt: ~
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\NetworkAdmin
+                        provider: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
+                        finder: ~
