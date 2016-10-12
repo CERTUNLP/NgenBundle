@@ -2,7 +2,7 @@ CERT UNLP Ngen Bundle
 ========================
 
 Requeriments:
--------------
+--------------
     sudo apt-get install apache2 php5 mysql-server php5-mysql php5-curl curl ant php-apc git 
     curl -sS https://getcomposer.org/installer | sudo php
     sudo curl -LsS http://symfony.com/installer -o /usr/local/app/symfony
@@ -18,23 +18,21 @@ Requeriments:
     sudo ln -s /usr/bin/nodejs /usr/bin/node
 
     sudo npm install -g less
-
-Checkingin requeriments:
-------------------------
-    php app/check.php
-
 1) Installing
--------------
-
+----------------------------------
 ### Add the ngen bundle in composer.json
     
         "require": {
         ...
         ...
-        "certunlp/ngen-bundle": "dev-master",
+        "certunlp/ngen-bundle": "~ 0.1.0.0",
         ...
         },
         ...
+
+### Install vendors
+    $ composer install
+    $ composer update
 
 ### Configure apache virtualhost
 #### Basic config
@@ -54,8 +52,8 @@ Checkingin requeriments:
     </VirtualHost>
 
 ### Edit app/config/parameters.yml
-#### add your DB config and create the database_user manually 
-
+#### add your DB config
+#### create the database_user manually 
     parameters:
         database_host: 127.0.0.1
         database_port: null
@@ -67,6 +65,23 @@ Checkingin requeriments:
         mailer_user: null
         mailer_password: null
         secret: b9622e02c564144683568d638137aed04f61359c
+
+
+### Add the routing resource to your app/AppKernel.php
+    new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+    new FOS\RestBundle\FOSRestBundle(),
+    new FOS\CommentBundle\FOSCommentBundle(),
+    new FOS\ElasticaBundle\FOSElasticaBundle(),
+    new JMS\SerializerBundle\JMSSerializerBundle($this),
+    new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+    new CertUnlp\NgenBundle\CertUnlpNgenBundle(),
+    new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(), //swiftmailer should be here for the conriguration load
+    new Ddeboer\DataImportBundle\DdeboerDataImportBundle(),
+    new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
+    new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+    new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+    new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
+    new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle()
     
 ### Add the routing resource to your app/config/routing.yml
     cert_unlp_ngen:
@@ -91,44 +106,19 @@ Checkingin requeriments:
                username:  
                password: 
 
-### Create the DB and fill it with default data
-    php app/console doctrine:database:create --no-interaction
-    php app/console doctrine:schema:create --no-interaction
-    php app/console doctrine:fixtures:load --no-interaction
-### Set permissions on logs and cache
+### deploy
+    php app/console d:d:c --no-interaction
+    php app/console d:s:c --no-interaction
+    php app/console d:f:l --no-interaction
+### deploy
     rm -rf app/logs/* app/cache/*;
 
     setfacl -R -m u:<user>:rwx -m u:www-data:rwx  app/cache app/logs  app/Resources/feed/ app/Resources/incident/;
     setfacl -dR -m u:<user>:rwx -m u:www-data:rwx  app/cache app/logs  app/Resources/feed/ app/Resources/incident/;
-
-###Clear Caches
-
+    composer install --optimize-autoloader
     php app/console cache:clear --env=prod --no-debug
-    php -r "apc_clear_cache(); apc_clear_cache('user');apc_clear_cache('opcode');";
-
-###Dump Assetic Assets
-
     php app/console assetic:dump --env=prod --no-debug
     php app/console assets:install --symlink 
-
+    php -r "apc_clear_cache(); apc_clear_cache('user');apc_clear_cache('opcode');";
     php app/console braincrafted:bootstrap:install
     php app/console braincrafted:bootstrap:generate
-
-### Install vendors
-    $ composer install --no-dev --optimize-autoloader
-
-### Add the routing resource to your app/AppKernel.php
-    new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-    new FOS\RestBundle\FOSRestBundle(),
-    new FOS\CommentBundle\FOSCommentBundle(),
-    new FOS\ElasticaBundle\FOSElasticaBundle(),
-    new JMS\SerializerBundle\JMSSerializerBundle($this),
-    new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
-    new CertUnlp\NgenBundle\CertUnlpNgenBundle(),
-    new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(), //swiftmailer should be here for the conriguration load
-    new Ddeboer\DataImportBundle\DdeboerDataImportBundle(),
-    new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
-    new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-    new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-    new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
-    new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle()
