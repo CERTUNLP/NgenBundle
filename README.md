@@ -1,7 +1,7 @@
 CERT UNLP Ngen
 ==============
 
-[English version](https://github.com/CERTUNLP/NgenBundle/blob/master/Readme.en.md)
+[English version](https://github.com/CERTUNLP/NgenBundle/blob/master/README.en.md)
 
 ¿Qué es?
 --------
