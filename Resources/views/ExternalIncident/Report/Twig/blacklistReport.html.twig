@@ -1,0 +1,55 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+We would like to inform you that we have detected that the <em>host</em> {{incident.hostAddress}} under your administration has been detected in blacklists. For more information please view the attached file.
+
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Related issues</p>
+
+Emails sent to certain destinations could be filtered if they contain the IP  {{incident.hostAddress}}.
+
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">How to verify the issue</p>
+
+You can verify the existence of you IP in different blacklists accessing the following site
+
+<div class = "destacated">
+
+<pre><code>http://whatismyipaddress.com/blacklist-check
+</code></pre>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recommendations_content %}
+
+
+<p class="lead">Recommendations</p>
+
+We suggest you to access the corresponding pages to remove those hosts.
+
+
+{% endblock %}

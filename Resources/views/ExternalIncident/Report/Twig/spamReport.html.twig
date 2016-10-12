@@ -1,0 +1,51 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+We would like to inform you that we have been informed that the <em>host</em> {{incident.hostAddress}} is possibly sending SPAM.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Related issues</p>
+
+If this issue is not addressed, the <em>host</em> could be added in blacklists, thus emails from this host will be filtered.
+
+
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">How to verify the issue</p>
+
+It is likely that the Phishing emails are being sent by a compromised email account.
+Analyzing the email header, the authenticated user being used to send the emails can be identified (See attached file).
+
+
+{% endblock %}
+
+
+{% block recommendations_content %}
+
+
+<p class="lead">Recommendations</p>
+
+<em>TODO: Modificar en español tambien</em>
+* Modify the compromised user credentials.
+* Increase awareness related to this issue among the users.
+
+
+{% endblock %}

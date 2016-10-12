@@ -17,7 +17,7 @@
 {% block sideBar_search_path %}{{path('cert_unlp_ngen_incident_search_incident')}}{% endblock %}
 
 {% block content_body %}
-    {% include 'CertUnlpNgenBundle:Incident:Frontend/list/incidentList.html.twig' with {'incident': incidents} %}
+    {% include 'CertUnlpNgenBundle:InternalIncident:Frontend/list/incidentList.html.twig' with {'incident': incidents} %}
 {% endblock %}
 
 {% block javascripts %}
@@ -30,6 +30,6 @@
     {% endjavascripts %}
 
     <script>
-        var incident = new Incident("{{path("api_1_get")}}/", "{{app.user.apiKey}}");
+        var incident = new InternalIncident("{{path("api_1_get")}}/", "{{app.user.apiKey}}");
     </script>
 {% endblock %}

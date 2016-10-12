@@ -1,0 +1,88 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+We would like to inform you that we have detected that the <em>host</em> {{incident.hostAddress}} is involved in brute forcing attacks, most likely due the host being compromised.
+
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Related issues</p>
+
+This type of attacks are commonly linked to a malware trying to infect other devices inside or outside the network, or possibly an attacker realizing a network scan. Whichever the case, there direct consequences are:
+
+<ul>
+<li>Excessive consumption of bandwidth by the host.</li>
+<li>Compromising other hosts.</li>
+<li>etc</li>
+</ul>
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">How to verify the issue</p>
+
+The verification can be achieved analyzing the existing network traffic of the infected host or network, using tools such as:
+
+<div class = "destacated">
+
+<pre><code>tcpdump
+</code></pre>
+
+</div>
+
+or
+
+<div class = "destacated">
+
+<pre><code>wireshark
+</code></pre>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recommendations_content %}
+
+
+<p class="lead">Recommendations</p>
+
+The network traffic should be filtered until the problem is solved.
+Attached to this email you can find the connection logs to identify the malicious activity.
+
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">For more information</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><a href="http://www.securityweek.com/exercising-alternatives-detect-and-prevent-brute-force-attacks">http://www.securityweek.com/exercising-alternatives-detect-and-prevent-brute-force-attacks</a></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+We would like to inform you that we have been notified that the <em>server</em> {{incident.hostAddress}} is currently hosting a web service being used to perform Phising attacks.### [/problem]
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Related issues</p>
+
+If this issue is not addressed, the <em>server</em> could be added in public lists of compromised hosts, forcing the web browsers to show security alerts when accessing web pages hosted in the server.
+
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">How to verify the issue</p>
+
+Verify the information in the attached file.
+
+
+{% endblock %}
+
+
+{% block recommendations_content %}
+
+
+<p class="lead">Recommendations</p>
+
+We recommend removing the web content being used to perform the phising attack and request a forensic analysis on the server, as to evaluate what has been compromised.
+
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">For more information</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><a href="https://support.google.com/chrome/answer/99020?hl=es-419">https://support.google.com/chrome/answer/99020?hl=es-419</a></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

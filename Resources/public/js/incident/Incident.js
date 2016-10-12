@@ -7,10 +7,10 @@
  * with this source code in the file LICENSE.
  */
 var Incident = Class.extend({
-    init: function (apiUrl, apiKey) {
+    init: function () {
         this.eventTarget = null;
-        this.api = new IncidentApi(apiUrl, apiKey);
-        this.form = new IncidentForm();
+//        this.api = new InternalIncidentApi(apiUrl, apiKey);
+//        this.form = new IncidentForm();
         $("#incident_action_dropdown").delegate("a.state-label", "click", this.dropDownChangeLinks);
         $(".incident-action-dropdown").delegate("a.state-label", "click", $.proxy(this.changeState, this));
     },
@@ -49,7 +49,7 @@ var Incident = Class.extend({
         if (jqXHR.status > '300') {
             $.publish('/cert_unlp/notify/error', ["The state was not changed. An error occurred."]);
         } else {
-            $.publish('/cert_unlp/notify/success', ["Incident status has been changed successfully"]);
+            $.publish('/cert_unlp/notify/success', ["InternalIncident status has been changed successfully"]);
             this.stateLabelChange();
             this.dropDownChangeLinks();
         }

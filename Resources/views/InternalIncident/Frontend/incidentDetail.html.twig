@@ -1,0 +1,75 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+
+{% extends 'CertUnlpNgenBundle::Incident/Frontend/incidentDetail.html.twig' %}
+{% block sideBar_search_path %}{{path('cert_unlp_ngen_internal_incident_search_incident')}}{% endblock %}
+
+{% block content_header %}
+    <h1 class="page-header">{{icon('arrow-circle-down fa-fw')}}Internal incident [ID: {{incident.id}}][{{incident.type}}]{%include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': incident}%}</h1>
+{% endblock %}
+
+
+{% block network_body %}
+    <div class="col-lg-6">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">Network info</h3>
+            </div>
+            <div class="panel-body table-responsive">
+                <table class="table table-bordered">
+                    <tr>
+                        <td class="">
+                            IP/mask
+                        </td>
+                        <td class="">
+                            {{incident.network}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="">
+                            Active
+                        </td>
+                        <td class="">
+                            {{incident.network.isActive ? 'Yes':'No'}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="">
+                            Academic Unit
+                        </td>
+                        <td class="">
+                            {{incident.network.academicUnit}}
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="">
+                            Network Admin
+                        </td>
+                        <td class="">
+                            {{incident.network.networkAdmin}}
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="">
+                        </td>
+                        <td class="">
+                            {{incident.network.networkAdmin.email}}
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block comments_body %}
+    {{ render(controller('CertUnlpNgenBundle:InternalIncidentFrontend:incidentComments', {'incident': incident, 'request': app.request})) }}
+{% endblock %}

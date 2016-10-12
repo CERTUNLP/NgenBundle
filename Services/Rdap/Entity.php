@@ -19,15 +19,18 @@ class Entity {
 
     public function __construct($entity_object) {
         $this->object = $entity_object;
-        $this->entities = [];
-//        var_dump("$$$$$$$$$$$$$$$$$", $entity->entities);
-//        var_dump("$$$$$$$",$this);die;
-//        die;
         if (isset($this->object->entities)) {
             foreach ($this->object->entities as $entity) {
+
                 $this->entities[] = new Entity($entity);
             }
+        } else {
+            $this->entities = [];
         }
+    }
+
+    public function __toString() {
+        return $this->object->name . "( " . $this->object->handle . " )";
     }
 
     public function getVcard() {
@@ -40,6 +43,17 @@ class Entity {
         if (isset($this->object->roles)) {
             return $this->object->roles;
         }
+        return [];
+    }
+
+    public function getRolesAsString() {
+        $string = "";
+        if (isset($this->object->roles)) {
+            foreach ($this->object->roles as $role) {
+                $string .= "$role ";
+            }
+        }
+        return $string;
     }
 
     public function getHandle() {
@@ -49,20 +63,21 @@ class Entity {
     }
 
     public function getVcardElement($element) {
+        $elements = [];
         foreach ($this->getVcard() as $vcard) {
             if ($vcard[0] == $element) {
-                return $vcard[sizeof($vcard) - 1];
+                $elements[] = $vcard[sizeof($vcard) - 1];
             }
         }
-        return null;
+        return $elements;
     }
 
-    public function getEmail() {
+    public function getEmails() {
         return $this->getVcardElement('email');
     }
 
     public function getName() {
-        return $this->getVcardElement('fn');
+        return $this->getVcardElement('fn')[0];
     }
 
     public function getOrganization() {
@@ -73,9 +88,17 @@ class Entity {
         return $this->getVcardElement('tel');
     }
 
-    public function getEntities() {
-        
-        return $this->entities;
+    public function getEntities($callback = null) {
+        $entities = [];
+        if ($callback) {
+            $entities[] = $callback($this);
+        } else {
+            $entities[] = $this;
+        }
+        foreach ($this->entities as $entity) {
+            $entities = array_merge($entities, $entity->getEntities($callback));
+        }
+        return $entities;
     }
 
 }

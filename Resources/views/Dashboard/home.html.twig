@@ -6,8 +6,8 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
-{% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
+{% extends 'CertUnlpNgenBundle::InternalIncident/Frontend/frontend.html.twig' %}
 
 {% block content_body %}
-    {% include 'CertUnlpNgenBundle:Incident:Frontend/list/incidentList.html.twig' with {'incident': incidents} %}
+    {% include 'CertUnlpNgenBundle:InternalIncident:Frontend/list/incidentList.html.twig' with {'incident': incidents} %}
 {% endblock %}

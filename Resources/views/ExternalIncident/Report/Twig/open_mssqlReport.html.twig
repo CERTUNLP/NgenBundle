@@ -1,0 +1,54 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+We would like to inform you that we have been notified that the <em>host</em> {{incident.hostAddress}} has the <strong>Microsoft SQL Server</strong> service, accessible from the Internet.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Related issues</p>
+
+The <em>host</em> under your administration could be compromising sensitive information, also could victim of UDP amplification performing Denial of Service (DOS,DDOS) attacks.
+
+{% endblock %}
+
+
+{% block recommendations_content %}
+
+
+<p class="lead">Recommendations</p>
+
+Establish firewall rules to filter unauthorized access.
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">For more information</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">https://www.us-cert.gov/ncas/alerts/TA14-017A</a></li>
+<li><a href="https://blogs.akamai.com/2015/02/plxsert-warns-of-ms-sql-reflection-attacks.html">https://blogs.akamai.com/2015/02/plxsert-warns-of-ms-sql-reflection-attacks.html</a></li>
+<li><a href="http://es.wikipedia.org/wiki/SQL_Slammer">http://es.wikipedia.org/wiki/SQL_Slammer</a></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

@@ -57,10 +57,10 @@ class NetworkAdmin {
      */
     private $email;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network",mappedBy="networkAdmin", cascade={"persist","remove"}, fetch="EAGER")) */
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network",mappedBy="network_admin", cascade={"persist","remove"}, fetch="EAGER")) */
     private $networks;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="networkAdmin", cascade={"persist","remove"}, fetch="EAGER")) */
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="network_admin", cascade={"persist","remove"}, fetch="EAGER")) */
     private $incidents;
 
     /**
@@ -228,10 +228,10 @@ class NetworkAdmin {
     /**
      * Add incidents
      *
-     * @param \CertUnlp\NgenBundle\Entity\Incident $incidents
+     * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
      * @return NetworkAdmin
      */
-    public function addIncident(\CertUnlp\NgenBundle\Entity\Incident $incidents) {
+    public function addIncident(\CertUnlp\NgenBundle\Model\IncidentInterface $incidents) {
         $this->incidents[] = $incidents;
 
         return $this;
@@ -240,9 +240,9 @@ class NetworkAdmin {
     /**
      * Remove incidents
      *
-     * @param \CertUnlp\NgenBundle\Entity\Incident $incidents
+     * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
      */
-    public function removeIncident(\CertUnlp\NgenBundle\Entity\Incident $incidents) {
+    public function removeIncident(\CertUnlp\NgenBundle\Model\IncidentInterface $incidents) {
         $this->incidents->removeElement($incidents);
     }
 
