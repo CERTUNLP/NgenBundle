@@ -1,5 +1,27 @@
 #!/bin/bash
 
+
+
+configurarAppKernel(){
+
+    cp $PATH_WEB/dependencias/installer/AppKernel.php app/
+
+    #~ "new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+    #~ new FOS\RestBundle\FOSRestBundle(),
+    #~ new FOS\CommentBundle\FOSCommentBundle(),
+    #~ new FOS\ElasticaBundle\FOSElasticaBundle(),
+    #~ new JMS\SerializerBundle\JMSSerializerBundle($this),
+    #~ new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+    #~ new CertUnlp\NgenBundle\CertUnlpNgenBundle(),
+    #~ new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(), //swiftmailer should be here for the conriguration load
+    #~ new Ddeboer\DataImportBundle\DdeboerDataImportBundle(),
+    #~ new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
+    #~ new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+    #~ new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+    #~ new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
+    #~ new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle()"
+}
+
 configurarApache(){
     
     read -p "Ingrese el nombre del host. Por defecto: "$(hostname) APACHE_HOSTNAME
@@ -8,7 +30,7 @@ configurarApache(){
        APACHE_HOSTNAME=$(hostname)
     fi
     
-    cp $WEB_PATH/dependencias/installer/ngen.conf /etc/apache2/sites-available/    
+    cp $PATH_WEB/dependencias/installer/ngen.conf /etc/apache2/sites-available/    
     
     sed -i "s/PATH_TO_WORKSPACE/$PATH_WEB/g" /etc/apache2/sites-available/ngen.conf ;   
     sed -i "s/SERVER_NAME/$APACHE_HOSTNAME/g" /etc/apache2/sites-available/ngen.conf ;   
@@ -20,7 +42,7 @@ configurarApache(){
     }
 
 configurarParameters(){
-    cp $WEB_PATH/dependencias/installer/parameters.yml $WEB_PATH/ngen_basic/app/config/parameters.yml
+    cp $PATH_WEB/dependencias/installer/parameters.yml $PATH_WEB/ngen_basic/app/config/parameters.yml
     read -p "Ingrese el host de la base de datos. Por defecto: 127.0.0.1)" DB_IP
     if [ -z $DB_IP ]
        then
@@ -73,16 +95,16 @@ configurarParameters(){
        SEC_KEY=$SEC_TEMPORAL
     fi
     
-    sed -i "s/DATABASE_IP/$DB_IP/g" $WEB_PATH/ngen_basic/app/config/parameters.yml ;
-    sed -i "s/DATABASE_PORT/$DB_PORT/g" $WEB_PATH/ngen_basic/app/config/parameters.yml ;
-    sed -i "s/DATABASE_NAME/$DB_NAME/g" $WEB_PATH/ngen_basic/app/config/parameters.yml ;
-    sed -i "s/DATABASE_USER/$DB_USER/g" $WEB_PATH/ngen_basic/app/config/parameters.yml ;
-    sed -i "s/DATABASE_PASSWORD/$DB_PASSWORD/g" $WEB_PATH/ngen_basic/app/config/parameters.yml ;
-    sed -i "s/MAILER_TRANSPORT/$ML_TRANSPORT/g" $WEB_PATH/ngen_basic/app/config/parameters.yml ;
-    sed -i "s/MAILER_IP/$ML_IP/g" $WEB_PATH/ngen_basic/app/config/parameters.yml ;
-    sed -i "s/MAILER_USER/$ML_USER/g" $WEB_PATH/ngen_basic/app/config/parameters.yml ;
-    sed -i "s/MAILER_PASSWORD/$ML_PASSWORD/g" $WEB_PATH/ngen_basic/app/config/parameters.yml ;
-    sed -i "s/SECRET_KEY/$SEC_KEY/g" $WEB_PATH/ngen_basic/app/config/parameters.yml ;
+    sed -i "s/DATABASE_IP/$DB_IP/g" $PATH_WEB/ngen_basic/app/config/parameters.yml ;
+    sed -i "s/DATABASE_PORT/$DB_PORT/g" $PATH_WEB/ngen_basic/app/config/parameters.yml ;
+    sed -i "s/DATABASE_NAME/$DB_NAME/g" $PATH_WEB/ngen_basic/app/config/parameters.yml ;
+    sed -i "s/DATABASE_USER/$DB_USER/g" $PATH_WEB/ngen_basic/app/config/parameters.yml ;
+    sed -i "s/DATABASE_PASSWORD/$DB_PASSWORD/g" $PATH_WEB/ngen_basic/app/config/parameters.yml ;
+    sed -i "s/MAILER_TRANSPORT/$ML_TRANSPORT/g" $PATH_WEB/ngen_basic/app/config/parameters.yml ;
+    sed -i "s/MAILER_IP/$ML_IP/g" $PATH_WEB/ngen_basic/app/config/parameters.yml ;
+    sed -i "s/MAILER_USER/$ML_USER/g" $PATH_WEB/ngen_basic/app/config/parameters.yml ;
+    sed -i "s/MAILER_PASSWORD/$ML_PASSWORD/g" $PATH_WEB/ngen_basic/app/config/parameters.yml ;
+    sed -i "s/SECRET_KEY/$SEC_KEY/g" $PATH_WEB/ngen_basic/app/config/parameters.yml ;
     
     }
 
@@ -120,11 +142,33 @@ configurarDependencias(){
     instalarNode
     }
     
+deployNgen(){
+    #~ ### deploy
+    php app/console d:d:c --no-interaction
+    php app/console d:s:c --no-interaction
+    php app/console d:f:l --no-interaction
+    ### deploy
+    rm -rf app/logs/* app/cache/*;
+    setfacl -R -m u:<user>:rwx -m u:www-data:rwx  app/cache app/logs  app/Resources/feed/ app/Resources/incident/;
+    setfacl -dR -m u:<user>:rwx -m u:www-data:rwx  app/cache app/logs  app/Resources/feed/ app/Resources/incident/;
+    php ../binarios/composer.phar install --optimize-autoloader
+    php app/console cache:clear --env=prod --no-debug
+    php app/console assetic:dump --env=prod --no-debug
+    php app/console assets:install --symlink 
+    php -r "apc_clear_cache(); apc_clear_cache('user');apc_clear_cache('opcode');";
+    php app/console braincrafted:bootstrap:install
+    php app/console braincrafted:bootstrap:generate
+    
+    }    
+    
 instalarNgen(){
     ./binarios/symfony new ngen_basic 2.8
     cd ngen_basic
     php ../binarios/composer.phar require certunlp/ngen-bundle:dev-master
     php ../binarios/composer.phar update
+    configurarParameters
+    configurarAppKernel
+    deployNgen
 }
     
 clear
@@ -176,27 +220,12 @@ if [[ $METELE != 0 ]]; then
     cd $PATH_WEB
     instalarNgen
     configurarApache
-    configurarParameters
-    configurarAppKernel
+    
 fi;
 
 
-#~ ### Add the routing resource to your app/AppKernel.php
-    #~ new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-    #~ new FOS\RestBundle\FOSRestBundle(),
-    #~ new FOS\CommentBundle\FOSCommentBundle(),
-    #~ new FOS\ElasticaBundle\FOSElasticaBundle(),
-    #~ new JMS\SerializerBundle\JMSSerializerBundle($this),
-    #~ new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
-    #~ new CertUnlp\NgenBundle\CertUnlpNgenBundle(),
-    #~ new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(), //swiftmailer should be here for the conriguration load
-    #~ new Ddeboer\DataImportBundle\DdeboerDataImportBundle(),
-    #~ new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
-    #~ new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-    #~ new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-    #~ new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
-    #~ new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle()
-    #~ 
+
+    
 #~ ### Add the routing resource to your app/config/routing.yml
     #~ cert_unlp_ngen:
         #~ resource: "@CertUnlpNgenBundle/Resources/config/routing.yml"     
@@ -220,19 +249,3 @@ fi;
                #~ username:  
                #~ password: 
 #~ 
-#~ ### deploy
-    #~ php app/console d:d:c --no-interaction
-    #~ php app/console d:s:c --no-interaction
-    #~ php app/console d:f:l --no-interaction
-#~ ### deploy
-    #~ rm -rf app/logs/* app/cache/*;
-#~ 
-    #~ setfacl -R -m u:<user>:rwx -m u:www-data:rwx  app/cache app/logs  app/Resources/feed/ app/Resources/incident/;
-    #~ setfacl -dR -m u:<user>:rwx -m u:www-data:rwx  app/cache app/logs  app/Resources/feed/ app/Resources/incident/;
-    #~ composer install --optimize-autoloader
-    #~ php app/console cache:clear --env=prod --no-debug
-    #~ php app/console assetic:dump --env=prod --no-debug
-    #~ php app/console assets:install --symlink 
-    #~ php -r "apc_clear_cache(); apc_clear_cache('user');apc_clear_cache('opcode');";
-    #~ php app/console braincrafted:bootstrap:install
-    #~ php app/console braincrafted:bootstrap:generate
