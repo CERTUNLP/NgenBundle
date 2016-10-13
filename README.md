@@ -35,9 +35,7 @@ Estado actual
 Documentación
 -------------
 
-La mayor parte de la documentación la encontrarán a partir de `Resources/doc/index.md`
-
-[La Documentación](https://github.com/CERTUNLP/NgenBundle/blob/master/Resources/doc/index.es.md)
+La mayor parte de la documentación la encontrarán a partir de [La Documentación](https://github.com/CERTUNLP/NgenBundle/blob/master/Resources/doc/index.es.md)
 
 Installación
 ------------

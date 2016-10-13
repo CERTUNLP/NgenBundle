@@ -1,8 +1,9 @@
 CERT UNLP Ngen Bundle
 ========================
 
-Requeriments:
---------------
+Requerimientos:
+---------------
+
     sudo apt-get install apache2 php5 mysql-server php5-mysql php5-curl curl ant php-apc git 
     curl -sS https://getcomposer.org/installer | sudo php
     sudo curl -LsS http://symfony.com/installer -o /usr/local/app/symfony
@@ -18,6 +19,7 @@ Requeriments:
     sudo ln -s /usr/bin/nodejs /usr/bin/node
 
     sudo npm install -g less
+
 1) Installing
 ----------------------------------
 ### Add the ngen bundle in composer.json
