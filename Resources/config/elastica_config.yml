@@ -252,18 +252,18 @@ fos_elastica:
                             update: true
                             delete: true
                         finder: ~
-        networkadmins:
+        network_admins:
             types:
-                networkadmin:
+                network_admin:
                     mappings:
-#                        id: ~
+                        id: ~
                         name: ~
                         slug: ~
                         email: ~
-#                        isActive:
-#                            type: boolean
-#                        createdAt: ~
-#                        updatedAt: ~
+                        isActive:
+                            type: boolean
+                        createdAt: ~
+                        updatedAt: ~
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by

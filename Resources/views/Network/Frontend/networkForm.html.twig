@@ -20,4 +20,13 @@
 
 {% block javascripts %}
     {{ parent() }}
+
+    {% javascripts
+    '@CertUnlpNgenBundle/Resources/public/js/network/NetworkForm.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        var incidentForm = new NetworkForm();
+    </script>
 {% endblock %}
