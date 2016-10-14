@@ -66,6 +66,12 @@ cert_ngen:
             class: CertUnlp\NgenBundle\Validator\Constraints\ValidNetworkValidator
         form_type:
             class: CertUnlp\NgenBundle\Form\NetworkType
+        admin:
+            class: CertUnlp\NgenBundle\Entity\NetworkAdmin
+            handler:
+                class: CertUnlp\NgenBundle\Services\Api\Handler\NetworkAdminHandler
+            form_type:
+                class: CertUnlp\NgenBundle\Form\NetworkAdminType
             
     users:
         class: CertUnlp\NgenBundle\Entity\User

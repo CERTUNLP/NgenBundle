@@ -11,3 +11,17 @@
 {% block content_body %}
     {% include 'CertUnlpNgenBundle:Network:Frontend/list/networkList.html.twig' with {'networks': objects} %}
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+    '@CertUnlpNgenBundle/Resources/public/js/network/Network.js'
+    '@CertUnlpNgenBundle/Resources/public/js/network/NetworkApi.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        var network = new Network();
+        var network_api = new NetworkApi("{{path("api_1_get")}}/", "{{app.user.apiKey}}");
+    </script>
+{% endblock %}

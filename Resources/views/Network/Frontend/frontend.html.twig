@@ -25,12 +25,9 @@
     {{ parent() }}
 
     {% javascripts
-    '@CertUnlpNgenBundle/Resources/public/js/network/*'
+    '@CertUnlpNgenBundle/Resources/public/js/network/Network.js'
+    '@CertUnlpNgenBundle/Resources/public/js/network/NetworkApi.js'
     %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
-    <script>
-        var incident = new Network("{{path("api_1_get")}}/", "{{app.user.apiKey}}");
-    </script>
 {% endblock %}
