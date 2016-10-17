@@ -146,6 +146,15 @@ instalarNode(){
     $SUDO npm install -g less
     }
     
+bajarArchivosTemplate(){
+    cd $DEPENDENCIAS_PATH
+    wget -qO https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/dependencias/AppKernel.php
+    wget -qO https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/dependencias/config.yml
+    wget -qO https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/dependencias/ngen.conf
+    wget -qO https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/dependencias/parameters.yml
+    cd $OLDPWD
+    }
+    
 configurarDependencias(){
     cd $BINARIOS_PATH
     instalarElastic
@@ -153,6 +162,7 @@ configurarDependencias(){
     cd $OLDPWD
     instalarSymfony
     instalarNode
+    bajarArchivosTemplates
     }
     
 deployNgen(){
@@ -295,15 +305,10 @@ if [[ $METELE != 0 ]]; then
     DEPENDENCIAS_PATH="$(pwd)/dependencias";
     BINARIOS_PATH="$PATH_WEB/binarios";
     PARAMETERS_PATH="$PATH_WEB/ngen_basic/app/config/parameters.yml";
+    mkdir $DEPENDENCIAS_PATH
     mkdir -p $BINARIOS_PATH
     configurarDependencias
     instalarNgen
     configurarApache
     
 fi;
-
-    
-#~ ### Add the routing resource to your app/config/routing.yml
-    #~ cert_unlp_ngen:
-        #~ resource: "@CertUnlpNgenBundle/Resources/config/routing.yml"     
- 
