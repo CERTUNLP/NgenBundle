@@ -1,0 +1,262 @@
+# This file is part of the Ngen - CSIRT Incident Report System.
+# 
+# (c) CERT UNLP <support@cert.unlp.edu.ar>
+# 
+# This source file is subject to the GPL v3.0 license that is bundled
+# with this source code in the file LICENSE.
+assetic:
+    filters:
+        less:
+            node: /usr/bin/node
+            node_paths: [/usr/lib/node_modules]
+            apply_to: "\.less$"
+        cssrewrite: ~
+    bundles:
+        - CertUnlpNgenBundle
+        - FOSCommentBundle
+        
+swiftmailer:
+    mailers:
+        cert_unlp.ngen.incident.mailer:
+#            transport: "%cert_unlp.ngen.incident.mailer.transport%"
+            host:      "%cert_unlp.ngen.incident.mailer.host%"
+            sender_address: "%cert_unlp.ngen.incident.mailer.sender_address%"
+            username:  "%cert_unlp.ngen.incident.mailer.username%"
+            password:  "%cert_unlp.ngen.incident.mailer.password%"
+            
+doctrine:
+    orm:
+        auto_mapping: true
+        query_cache_driver:    apc
+        metadata_cache_driver: apc
+        entity_listener_resolver: cert_unlp.ngen.doctrine.entity_listener_resolver
+        resolve_target_entities:
+            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\Incident 
+            CertUnlp\NgenBundle\Model\ReporterInterface: CertUnlp\NgenBundle\Entity\User 
+            CertUnlp\NgenBundle\Model\NetworkInterface: CertUnlp\NgenBundle\Entity\Network 
+        dql:
+            string_functions:
+                INET_ATON: CertUnlp\NgenBundle\DQL\InetAtonFunction  
+
+sensio_framework_extra:
+    view: { annotations: false }
+    router: { annotations: true }
+    request: { converters: true }
+
+fos_rest:
+    param_fetcher_listener: true
+    allowed_methods_listener: true
+#    access_denied_listener:
+#        json: true
+    body_listener: true
+    view:
+        view_response_listener: 'force'
+        formats:
+            xml:  true
+            json: true
+#            html: true
+#        templating_formats:
+#            html: true
+        
+    routing_loader:
+        default_format: json
+#        include_format: true
+    format_listener:
+        rules:
+            - { path: ^/api/v1/incidents/(.*)/report/html, priorities: [html], fallback_format: ~ ,prefer_extension: true}
+            - { path: ^/api/v1/, priorities: [json, xml], fallback_format: ~ ,prefer_extension: true}
+            - { path: '^/', stop: true }
+    exception:
+        codes:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
+            'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
+        messages:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
+    disable_csrf_role: ROLE_API
+
+
+nelmio_api_doc:
+    name: Page API
+                            
+
+
+braincrafted_bootstrap:
+    assets_dir: %kernel.root_dir%/../vendor/twbs/bootstrap
+    jquery_path: %kernel.root_dir%/../vendor/components/jquery/jquery.min.js
+#    less_filter: less
+    fonts_dir: %kernel.root_dir%/../web/fonts
+    icon_prefix: fa
+    auto_configure:
+        assetic: true
+        twig: true
+        knp_menu: true
+        knp_paginator: true
+    customize:
+        variables_file: ~
+        bootstrap_output: %kernel.root_dir%/Resources/less/bootstrap.less
+        bootstrap_template: BraincraftedBootstrapBundle:Bootstrap:bootstrap.less.twig
+
+knp_markdown:
+    parser:
+        service: cert_unlp.ngen.incident.report.markdown.parser 
+        
+fos_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        incidents:
+            types:
+                incident:
+                    mappings:
+                        id: ~
+                        hostAddress: ~
+                        date: 
+                            type: date
+                        lastTimeDetected:
+                            type: date
+                        createdAt: 
+                            type: date
+                        updatedAt: 
+                            type: date
+                        isClosed:
+                            type: boolean
+                        evidence_file_path: ~
+                        network:
+                            type: "object"
+                            properties:
+                                ip: ~
+                                ipMask: ~
+                                isActive:
+                                    type: boolean
+                                networkAdmin:
+                                    type: "object"
+                                    properties:
+                                        slug: ~
+                                        email: ~
+                                        name: ~
+                                        isActive:
+                                            type: boolean
+                                academicUnit:
+                                    type: "object"
+                                    properties:
+                                        slug: ~
+                                        name: ~
+                        networkAdmin:
+                                    type: "object"
+                                    properties:
+                                        slug: ~
+                                        email: ~
+                                        name: ~
+                                        isActive:
+                                            type: boolean
+                        state:
+                            type: "object"
+                            properties:
+                                slug: ~
+                                name: ~
+                        feed:
+                            type: "object"
+                            properties:
+                                slug: ~
+                                name: ~
+                        reporter:
+                            type: "object"
+                            properties:
+                                slug: ~
+                                name: ~
+                                lastname: ~
+                                email: ~
+                                username: ~
+                                isActive:
+                                    type: boolean
+                                createdAt:
+                                    type: date
+                                updatedAt:
+                                    type: date
+                        type:
+                            type: "object"
+                            properties:
+                                slug: ~
+                                name: ~
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\Incident
+                        provider: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
+                        finder: ~
+        networks:
+            types:
+                network:
+                    mappings:
+                        id: ~
+                        ip: ~
+                        ipMask: ~
+                        createdAt: 
+                            type: date
+                        updatedAt: 
+                            type: date
+                        isActive:
+                            type: boolean
+                        networkAdmin:
+                            type: "object"
+                            properties:
+                                slug: ~
+                                email: ~
+                                name: ~
+                                isActive:
+                                    type: boolean
+                        academicUnit:
+                            type: "object"
+                            properties:
+                                slug: ~
+                                name: ~
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\Network
+                        provider: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
+                        finder: ~
+fos_comment:
+    db_driver: orm
+    class:
+        model:
+            comment: CertUnlp\NgenBundle\Entity\IncidentComment
+            thread: CertUnlp\NgenBundle\Entity\IncidentCommentThread
+    acl: true
+    service:
+        acl:
+            thread:  fos_comment.acl.thread.roles
+            comment: fos_comment.acl.comment.roles
+            vote:    fos_comment.acl.vote.roles
+        manager:
+            thread:  fos_comment.manager.thread.acl
+            comment: fos_comment.manager.comment.acl
+            vote:    fos_comment.manager.vote.acl
+    acl_roles:
+        comment:
+            create: ROLE_USER
+            view: ROLE_USER
+        thread:
+            create: ROLE_USER
+            view: ROLE_USER
+
+stfalcon_tinymce:
+        theme:
+            simple:
+                mode: "textareas"
+                theme: "advanced"
+                force_br_newlines: false
+                force_p_newlines: false
+                forced_root_block: ''
