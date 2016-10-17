@@ -1,6 +1,19 @@
 CERT UNLP Ngen Bundle
 ========================
 
+Instalación automática
+----------------------
+
+Este script de instalación esta pensado para aplicarse en una máquina limpia, ya que podría eventualmente interferir con algún sistema que este ejecutandose en la misma.
+
+Pasos
++++++
+
+Bajar https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/install.es.sh
+Ejecutarlo
+
+
+
 Requerimientos:
 ---------------
 
