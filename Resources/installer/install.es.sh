@@ -146,11 +146,11 @@ instalarNode(){
     $SUDO npm install -g less
     }
     
-bajarArchivosTemplate(){
+bajarArchivosTemplates(){
     cd $DEPENDENCIAS_PATH
-    wget -qO https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/dependencias/AppKernel.php
-    wget -qO https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/dependencias/ngen.conf
-    wget -qO https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/dependencias/parameters.yml
+    wget -qO AppKernel.php https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/dependencias/AppKernel.php
+    wget -qO ngen.conf https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/dependencias/ngen.conf
+    wget -qO parameters.yml https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/dependencias/parameters.yml
     cd $OLDPWD
     }
     
