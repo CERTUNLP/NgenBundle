@@ -149,7 +149,6 @@ instalarNode(){
 bajarArchivosTemplate(){
     cd $DEPENDENCIAS_PATH
     wget -qO https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/dependencias/AppKernel.php
-    wget -qO https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/dependencias/config.yml
     wget -qO https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/dependencias/ngen.conf
     wget -qO https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/dependencias/parameters.yml
     cd $OLDPWD
