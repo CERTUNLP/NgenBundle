@@ -80,6 +80,10 @@ class CertUnlpNgenExtension extends Extension {
         $container->setParameter('cert_unlp.ngen.network.handler.class', $config['networks']['handler']['class']);
         $container->setParameter('cert_unlp.ngen.network.validator.class', $config['networks']['validator']['class']);
         $container->setParameter('cert_unlp.ngen.network.form_type.class', $config['networks']['form_type']['class']);
+        
+        $container->setParameter('cert_unlp.ngen.network.admin.class', $config['networks']['admin']['class']);
+        $container->setParameter('cert_unlp.ngen.network.admin.handler.class', $config['networks']['admin']['handler']['class']);
+        $container->setParameter('cert_unlp.ngen.network.admin.form_type.class', $config['networks']['admin']['form_type']['class']);
 
 
         $container->setParameter('cert_unlp.ngen.user.class', $config['users']['class']);

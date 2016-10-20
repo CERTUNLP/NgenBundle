@@ -17,7 +17,7 @@ use Symfony\Component\Form\FormTypeInterface;
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
 use CertUnlp\NgenBundle\Services\Api\Controller\ApiController;
 
-class NetworkApiController extends ApiController {
+class NetworkAdminApiController extends ApiController {
 
     /**
      * Create a Object from the submitted data.
@@ -26,35 +26,35 @@ class NetworkApiController extends ApiController {
      *
      * @return FormTypeInterface|View
      */
-    public function patch(Request $request, $network) {
+    public function patch(Request $request, $network_admin) {
         try {
             $parameters = $request->request->all();
             unset($parameters['_method'], $parameters['force_edit'], $parameters['reactivate']);
 
-            $DBnetwork = $this->getCustomHandler()->get(['ip' => $request->request->get('ip'), 'ipMask' => $request->request->get('ipMask')]);
+            $DBnetwork_admin = $this->getCustomHandler()->get(['name' => $request->request->get('name'), 'email' => $request->request->get('email')]);
 
-            if (!$DBnetwork) {
+            if (!$DBnetwork_admin) {
                 if ($request->get('reactivate')) {
-                    $network->setIsActive(TRUE);
+                    $network_admin->setIsActive(TRUE);
                 }
                 if ($request->get('force_edit')) {
                     $statusCode = Response::HTTP_NO_CONTENT;
 
-                    $network = $this->getCustomHandler()->patch($network, $parameters);
+                    $network_admin = $this->getCustomHandler()->patch($network_admin, $parameters);
                 } else {
                     $statusCode = Response::HTTP_CREATED;
-                    $this->getCustomHandler()->desactivate($network);
-                    $network = $this->getCustomHandler()->post($parameters);
+                    $this->getCustomHandler()->desactivate($network_admin);
+                    $network_admin = $this->getCustomHandler()->post($parameters);
                 }
             } else {
                 $statusCode = Response::HTTP_NO_CONTENT;
 
-                $this->getCustomHandler()->desactivate($network);
-                $this->getCustomHandler()->activate($DBnetwork);
-                $network = $this->getCustomHandler()->patch($DBnetwork, $parameters);
+                $this->getCustomHandler()->desactivate($network_admin);
+                $this->getCustomHandler()->activate($DBnetwork_admin);
+                $network_admin = $this->getCustomHandler()->patch($DBnetwork_admin, $parameters);
             }
 
-            return $this->response([$network], $statusCode);
+            return $this->response([$network_admin], $statusCode);
         } catch (InvalidFormException $exception) {
 
             return $exception->getForm();

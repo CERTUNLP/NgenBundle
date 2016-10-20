@@ -27,6 +27,23 @@ class NetworkHandler extends Handler {
     }
 
     /**
+     * Get a Entity by id.
+     *
+     * @param mixed $id
+     *
+     * @return Entity
+     */
+    public function get(array $parameters) {
+        $ip_and_mask = explode('/', $parameters['ip']);
+
+        $parameters['ip'] = $ip_and_mask[0];
+        if (isset($ip_and_mask[1])) {
+            $parameters['ipMask'] = $ip_and_mask[1];
+        }
+        return $this->repository->findOneBy($parameters);
+    }
+
+    /**
      * Get a Network.
      *
      * @param mixed $parameters
@@ -52,31 +69,6 @@ class NetworkHandler extends Handler {
      */
     public function prepareToDeletion($network, array $parameters = null) {
         $network->setIsActive(FALSE);
-    }
-
-    /**
-     * Delete a Network.
-     *
-     * @param NetworkInterface $network
-     * @param array $parameters
-     *
-     * @return NetworkInterface
-     */
-    public function desactivate($network, array $parameters = null) {
-        return $this->delete($network, $parameters);
-    }
-
-    /**
-     * Delete a Network.
-     *
-     * @param NetworkInterface $network
-     * @param array $parameters
-     *
-     * @return NetworkInterface
-     */
-    public function activate($network, array $parameters = null) {
-        $network->setIsActive(TRUE);
-        return $this->patch($network, $parameters);
     }
 
     protected function checkIfExists($network, $method) {

@@ -16,9 +16,6 @@ var IncidentForm = Form.extend({
     setIncidentId: function () {
         this.incidentId = $('#hostAddress').val() + "/" + $('#date').val() + "/" + $('#type').val();
     },
-    getFormId: function () {
-        return 'incident_add_update_form';
-    },
     getObjectBrief: function () {
         return 'incident';
     },

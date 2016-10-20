@@ -6,24 +6,35 @@
  * This source file is subject to the GPL v3.0 license that is bundled
  * with this source code in the file LICENSE.
  */
-var NetworkForm = Form.extend({
+var NetworkAdminForm = Form.extend({
     config: function (apiUrl, apiKey) {
-        this.setNetworkId();
-    },
-    getFormId: function () {
-        return 'network_admin_add_update_form';
+        this.setNetworkAdminId();
     },
     getObjectBrief: function () {
-        return 'network';
+        return 'network/admin';
     },
     getObjectId: function () {
-        return  this.getNetworkId();
+        return  this.getNetworkAdminId();
     },
-    setNetworkId: function () {
-        this.networkId = $('#ip').val();
+    setNetworkAdminId: function () {
+        this.network_admin_id = (($('#name').val().replace(' ', '_')) + '_' + ($('#email').val().replace('@', '_').replace('.', '_'))).toLowerCase();
     },
-    getNetworkId: function () {
-        return  this.networkId;
+    getNetworkAdminId: function () {
+        return  this.network_admin_id;
     },
+    handleExtraErrors: function (jqXHR) {
+//        $.each(jqXHR.responseJSON.errors.errors, function (k, v) {
+//            errorsText = "";
+//            if (v.length > 0) {
+//                ul = $('<ul class="help-block" ></ul>');
+//                ul.append($('<li>' + v + '</li>'));
+//                $('#ip').after(ul);
+//                $('#ip').closest('div[class="form-group"]').addClass('has-error');
+//            } else {
+//                $('#ip').closest('div[class="form-group has-error"]').removeClass('has-error');
+//                $('#ip').siblings('ul').remove();
+//            }
+//        });
+    }
 });
 
