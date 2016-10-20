@@ -20,6 +20,7 @@ use JMS\Serializer\Annotation as JMS;
  *
  * @ORM\Table()
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Entity\NetworkAdminRepository")
  * @JMS\ExclusionPolicy("all")
  */
 class NetworkAdmin {
@@ -44,7 +45,7 @@ class NetworkAdmin {
     /**
      * @var string
      * 
-     * @Gedmo\Slug(fields={"name"}, separator="_")
+     * @Gedmo\Slug(fields={"name","email"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true,unique=true)
      * */
     private $slug;
@@ -143,7 +144,7 @@ class NetworkAdmin {
     /**
      * Constructor
      */
-    public function __construct($name, $email) {
+    public function __construct($name = null, $email = null) {
         $this->setName($name);
         $this->setEmail($email);
         $this->networks = new \Doctrine\Common\Collections\ArrayCollection();
@@ -255,15 +256,13 @@ class NetworkAdmin {
         return $this->incidents;
     }
 
-
     /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
      * @return NetworkAdmin
      */
-    public function setCreatedAt($createdAt)
-    {
+    public function setCreatedAt($createdAt) {
         $this->createdAt = $createdAt;
 
         return $this;
@@ -274,8 +273,7 @@ class NetworkAdmin {
      *
      * @return \DateTime 
      */
-    public function getCreatedAt()
-    {
+    public function getCreatedAt() {
         return $this->createdAt;
     }
 
@@ -285,8 +283,7 @@ class NetworkAdmin {
      * @param \DateTime $updatedAt
      * @return NetworkAdmin
      */
-    public function setUpdatedAt($updatedAt)
-    {
+    public function setUpdatedAt($updatedAt) {
         $this->updatedAt = $updatedAt;
 
         return $this;
@@ -297,8 +294,8 @@ class NetworkAdmin {
      *
      * @return \DateTime 
      */
-    public function getUpdatedAt()
-    {
+    public function getUpdatedAt() {
         return $this->updatedAt;
     }
+
 }

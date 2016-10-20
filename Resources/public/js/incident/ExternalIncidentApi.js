@@ -8,7 +8,7 @@
  */
 var ExternalIncidentApi = IncidentApi.extend({
     addDefaultChannel: function () {
-        this.api.add("externals", {stripTrailingSlash: true});
+        this.api.add("externals", {stripTrailingSlash: true, url:"incidents/externals"});
         this.defaultChannel = this.api.externals;
     }
 });

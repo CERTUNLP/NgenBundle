@@ -14,7 +14,7 @@
 {% block content_body %}
     {%  if (form is not null) %}
         {{ form_errors(form, { 'global_errors': true }) }}
-        {{ form(form, {'attr': {'id': 'network_add_update_form'},'method': method | default('post'),'style': 'horizontal', 'col_size': 'sm' }) }}
+        {{ form(form, {'attr': {'id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal', 'col_size': 'sm' }) }}
     {% endif %}
 {% endblock %}
 
@@ -27,6 +27,6 @@
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
-        var incidentForm = new NetworkForm();
+        var network_form = new NetworkForm();
     </script>
 {% endblock %}

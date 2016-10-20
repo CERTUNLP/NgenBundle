@@ -40,12 +40,6 @@ abstract class Handler implements ApiHandlerInterface {
      * @return Entity
      */
     public function get(array $parameters) {
-        $ip_and_mask = explode('/', $parameters['ip']);
-
-        $parameters['ip'] = $ip_and_mask[0];
-        if (isset($ip_and_mask[1])) {
-            $parameters['ipMask'] = $ip_and_mask[1];
-        }
         return $this->repository->findOneBy($parameters);
     }
 
@@ -138,7 +132,6 @@ abstract class Handler implements ApiHandlerInterface {
 
         $form = $this->formFactory->create(new $this->entityType(), $entity_class_instance, array('csrf_protection' => $csrf_protection, 'method' => $method));
         $form->submit($parameters, 'PATCH' !== $method);
-
         if ($form->isValid()) {
             $entity_class_instance = $form->getData();
 
@@ -155,6 +148,31 @@ abstract class Handler implements ApiHandlerInterface {
     private function createEntityInstance() {
 
         return new $this->entityClass();
+    }
+
+    /**
+     * Delete a Network.
+     *
+     * @param NetworkInterface $network
+     * @param array $parameters
+     *
+     * @return NetworkInterface
+     */
+    public function desactivate($network, array $parameters = null) {
+        return $this->delete($network, $parameters);
+    }
+
+    /**
+     * Delete a Network.
+     *
+     * @param NetworkInterface $network
+     * @param array $parameters
+     *
+     * @return NetworkInterface
+     */
+    public function activate($network, array $parameters = null) {
+        $network->setIsActive(TRUE);
+        return $this->patch($network, $parameters);
     }
 
 }
