@@ -35,10 +35,10 @@ var Frontend = Class.extend({
         label.removeClass().addClass("label label-" + this.getColorClass());
     },
     getColorClass: function () {
-        if (this.eventTarget.data('state-slug') == "open" || this.eventTarget.data('state-slug') == "active") {
+        if (this.eventTarget.data('state-slug') == "open") {
             return 'info';
         } else {
-            if (this.eventTarget.data('state-slug') == "closed") {
+            if (this.eventTarget.data('state-slug') == "closed" || this.eventTarget.data('state-slug') == "active") {
                 return 'success';
             } else {
                 return 'danger';

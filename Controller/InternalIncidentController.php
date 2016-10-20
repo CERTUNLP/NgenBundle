@@ -69,7 +69,9 @@ class InternalIncidentController extends FOSRestController {
      * )
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incidents.")
      * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many incidents to return.")
-     *
+     * @FOS\View(
+     *  templateVar="incidents"
+     * )
      * @param Request               $request      the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
@@ -91,7 +93,9 @@ class InternalIncidentController extends FOSRestController {
      *     404 = "Returned when the incident is not found"
      *   }
      * )
-     *
+     * @FOS\View(
+     *  templateVar="incident"
+     * )
      * @param int     $id      the incident id
      *
      * @return array
@@ -115,7 +119,9 @@ class InternalIncidentController extends FOSRestController {
      *     400 = "Returned when the form has errors"
      *   }
      * )
-     * 
+     * @FOS\View(
+     *  templateVar="incidents"
+     * )
      * @param Request $request the request object
      *
      * @return FormTypeInterface|View
@@ -140,7 +146,9 @@ class InternalIncidentController extends FOSRestController {
      *
      * @param Request $request the request object
      * @param int     $id      the incident id
-     *
+     * @FOS\View(
+     *  templateVar="incidents"
+     * )
      * @return FormTypeInterface|View
      * @FOS\Put("/internals/{hostAddress}/{date}/{type}")
      * @throws NotFoundHttpException when incident not exist
@@ -159,7 +167,9 @@ class InternalIncidentController extends FOSRestController {
      *     400 = "Returned when the form has errors"
      *   }
      * )
-     *
+     * @FOS\View(
+     *  templateVar="incidents"
+     * )
      * @param Request $request the request object
      * @param int     $id      the incident id
      *
@@ -192,7 +202,9 @@ class InternalIncidentController extends FOSRestController {
      * 
      * @FOS\Patch("/internals/{hostAddress}/{date}/{type}/states/{state}")
      * @ParamConverter("incident", class="CertUnlpNgenBundle:Incident", options={"repository_method" = "findByHostDateType"})
-     *      
+     * @FOS\View(
+     *  templateVar="incidents"
+     * )   
      * @FOS\QueryParam(name="state",strict=true ,requirements="open|closed|closed_by_inactivity|removed|unresolved|stand_by")
      * @FOS\QueryParam(name="date",strict=true ,requirements="yyyy-MM-dd", description="If no date is selected, the date will be today.")
      * @FOS\QueryParam(name="type",strict=true ,requirements="blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|open_ssdp|phishing|poodle|scan|shellshock|spam", description="The incident type")
@@ -220,7 +232,9 @@ class InternalIncidentController extends FOSRestController {
      *
      * @throws NotFoundHttpException when page not exist
      * @Fos\Get("/internals/{hostAddress}/{date}/{type}")
-     * 
+     * @FOS\View(
+     *  templateVar="incidents"
+     * )
      * @ParamConverter("incident", class="CertUnlpNgenBundle:Incident", options={"repository_method" = "findByHostDateType"})
      * @FOS\QueryParam(name="date",strict=true ,requirements="yyyy-MM-dd", description="If no date is selected, the date will be today.")
      * @FOS\QueryParam(name="type",strict=true ,requirements="blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|open_ssdp|phishing|poodle|scan|shellshock|spam", description="The incident type")
@@ -242,7 +256,9 @@ class InternalIncidentController extends FOSRestController {
      *   }
      * )
      *
-     *
+     * @FOS\View(
+     *  templateVar="incidents"
+     * )
      * @param Request $request the request object
      * @param int     $id      the incident id
      *
@@ -274,7 +290,9 @@ class InternalIncidentController extends FOSRestController {
      *
      * @throws NotFoundHttpException when incident not exist
      * @FOS\Patch("/internals/{hostAddress}/{date}/{type}")
-     *
+     * @FOS\View(
+     *  templateVar="incidents"
+     * )
      * @ParamConverter("incident", class="CertUnlpNgenBundle:InternalIncident", options={"repository_method" = "findByHostDateType"})
      * @FOS\QueryParam(name="date",strict=true ,requirements="yyyy-MM-dd", description="If no date is selected, the date will be today.")
      * @FOS\QueryParam(name="type",strict=true ,requirements="blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|open_ssdp|phishing|poodle|scan|shellshock|spam", description="The incident type")
@@ -296,7 +314,9 @@ class InternalIncidentController extends FOSRestController {
      *     400 = "Returned when the form has errors"
      *   }
      * )
-     *
+     * @FOS\View(
+     *  templateVar="incidents"
+     * )
      * @param Request $request the request object
      * @param int     $incident      the incident id
      *

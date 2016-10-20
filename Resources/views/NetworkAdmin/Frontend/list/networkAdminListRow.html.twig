@@ -7,7 +7,7 @@
  with this source code in the file LICENSE.
 #}
 
-<tr>
+<tr data-id="{{networkAdmin.id}}">
     <td class="col-md-1">
         {{networkAdmin.name}}
     </td>
@@ -21,7 +21,7 @@
     </td>
     <td class="col-sm-1">
 
-        <div class="btn-group inline pull-left dropdown networkAdmin-action-dropdown">
+        <div class="btn-group inline pull-left dropdown action-dropdown">
             <a   class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_network_detail_network_admin',{'id': networkAdmin.id})}}">
                 Details
             </a>
@@ -35,11 +35,11 @@
                 </li>
 
                 <li role="presentation">
-                    <a {% if networkAdmin.isActive %}style="display: none;"{% endif %} class="state-label" data-action="reactivate" data-state-name="active" role="menuitem" tabindex="-1" href="#">{{ icon('repeat alert-info')}} <span class="action-text">Reactivate</span></a>
+                    <a {% if networkAdmin.isActive %}style="display: none;"{% endif %} class="state-label" data-action="reactivate" data-state-slug="active" data-state-name="active" role="menuitem" tabindex="-1" href="#">{{ icon('repeat alert-info')}} <span class="action-text">Reactivate</span></a>
                 </li>
 
                 <li role="presentation">
-                    <a {% if not networkAdmin.isActive %}style="display: none;"{% endif %} class="state-label" data-action="desactivate"  data-state-name="innactive" role="menuitem" tabindex="-1" href="#">{{ icon('lock alert-success') }} <span class="action-text">Desactivate</span></a>
+                    <a {% if not networkAdmin.isActive %}style="display: none;"{% endif %} class="state-label" data-action="desactivate"  data-state-slug="innactive" data-state-name="innactive" role="menuitem" tabindex="-1" href="#">{{ icon('lock alert-success') }} <span class="action-text">Desactivate</span></a>
                 </li>
             </ul>
         </div>

@@ -10,9 +10,6 @@ var NetworkForm = Form.extend({
     config: function (apiUrl, apiKey) {
         this.setNetworkId();
     },
-    getFormId: function () {
-        return 'network_add_update_form';
-    },
     getObjectBrief: function () {
         return 'network';
     },

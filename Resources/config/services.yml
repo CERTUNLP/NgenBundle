@@ -44,6 +44,14 @@ services:
         class:        "%cert_unlp.ngen.incident.external.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.external.class%","%cert_unlp.ngen.incident.external.form_type.class%","@form.factory", "@security.context","@cert_unlp.ngen.user.handler"]
       
+    cert_unlp.ngen.network.handler:
+        class:        "%cert_unlp.ngen.network.handler.class%"
+        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.network.class%","%cert_unlp.ngen.network.form_type.class%","@form.factory","%cert_unlp.ngen.network.default_network%"]
+    
+    cert_unlp.ngen.network.admin.handler:
+        class:        "%cert_unlp.ngen.network.admin.handler.class%"
+        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.network.admin.class%","%cert_unlp.ngen.network.admin.form_type.class%","@form.factory"]
+    
     cert_unlp.ngen.internal.incident.mailer:
         class:        "%cert_unlp.ngen.incident.internal.mailer.class%"
         arguments:    ["@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","@twig","%cert_unlp.ngen.team.mail%","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%"]
@@ -109,6 +117,10 @@ services:
         class: CertUnlp\NgenBundle\Services\Api\Controller\NetworkApiController
         arguments: [ @cert_unlp.ngen.network.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view ]
     
+    cert_unlp.ngen.network.admin.api.controller:
+        class: CertUnlp\NgenBundle\Services\Api\Controller\NetworkAdminApiController
+        arguments: [ @cert_unlp.ngen.network.admin.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view ]
+    
     cert_unlp.ngen.incident.internal.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.internal.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.internal","@fos_comment.manager.comment","@fos_comment.manager.thread"]
@@ -120,9 +132,10 @@ services:
     cert_unlp.ngen.network.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\NetworkFrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.network.form_type.class%","@knp_paginator","@fos_elastica.finder.networks.network","@fos_comment.manager.comment","@fos_comment.manager.thread"]
-#    cert_unlp.ngen.network.admin.frontend.controller:
-#        class: CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
-#        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.network.admin.form_type.class%","@knp_paginator","@fos_elastica.finder.network_admins.network_admin","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+    
+    cert_unlp.ngen.network.admin.frontend.controller:
+        class: CertUnlp\NgenBundle\Services\Frontend\Controller\NetworkAdminFrontendController
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.network.admin.form_type.class%","@knp_paginator","@fos_elastica.finder.network_admins.network_admin","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.incident.report.markdown.parser:
         class: CertUnlp\NgenBundle\Services\IncidentMarkdowReportParser
@@ -138,10 +151,6 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: ip.validator }
             
-    cert_unlp.ngen.network.handler:
-        class:        "%cert_unlp.ngen.network.handler.class%"
-        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.network.class%","%cert_unlp.ngen.network.form_type.class%","@form.factory","%cert_unlp.ngen.network.default_network%"]
-    
     cert_unlp.ngen.rdap_client:
         class:        CertUnlp\NgenBundle\Services\IncidentRdapClient
         arguments: ["%cert_unlp.ngen.resources.path%"]

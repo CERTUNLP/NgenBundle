@@ -24,13 +24,14 @@
 {% block javascripts %}
     {{ parent() }}
 
-    {#{% javascripts
-    '@CertUnlpNgenBundle/Resources/public/js/networkAdmin/*'
+    {% javascripts
+    '@CertUnlpNgenBundle/Resources/public/js/network_admin/NetworkAdmin.js'
+    '@CertUnlpNgenBundle/Resources/public/js/network_admin/NetworkAdminApi.js'
     %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
     <script>
-        var incident = new NetworkAdmin("{{path("api_1_get")}}/", "{{app.user.apiKey}}");
-    </script>#}
+        var network_admin = new NetworkAdmin();
+        var network_admin_api = new NetworkAdminApi("{{path("api_2_get")}}/", "{{app.user.apiKey}}");
+    </script>
 {% endblock %}
