@@ -22,7 +22,7 @@ var NetworkApi = ApiClient.extend({
     },
     changeState: function (networkId, isActive, callback) {
 
-        var request = this.api.networks.update(networkId + "/" + (isActive ? "activate" : "desactivate"), {}, {apikey: this.apiKey});
+        var request = this.defaultChannel.update(networkId + "/" + (isActive ? "activate" : "desactivate"), {}, {apikey: this.apiKey});
         this.doRequest(request, callback);
 
     },

@@ -30,4 +30,8 @@
     %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
+    <script>
+        var network = new Network();
+        var network_api = new NetworkApi("{{path("api_1_get")}}/", "{{app.user.apiKey}}");
+    </script>
 {% endblock %}

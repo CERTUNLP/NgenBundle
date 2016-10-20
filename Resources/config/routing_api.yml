@@ -41,6 +41,12 @@ cert_ngen_network_api:
     prefix: /v1
     resource: 'CertUnlp\NgenBundle\Controller\NetworkController'
     name_prefix:  api_1_
+
+cert_ngen_network_admin_api:
+    type: rest
+    prefix: /v2
+    resource: 'CertUnlp\NgenBundle\Controller\NetworkAdminController'
+    name_prefix:  api_2_
 #
 #NelmioApiDocBundle:
 #    resource: '@NelmioApiDocBundle/Resources/config/routing.yml'
