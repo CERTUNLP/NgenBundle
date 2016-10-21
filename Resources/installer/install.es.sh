@@ -5,21 +5,6 @@
 configurarAppKernel(){
 
     cp "$DEPENDENCIAS_PATH/AppKernel.php" app/
-
-    #~ "new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-    #~ new FOS\RestBundle\FOSRestBundle(),
-    #~ new FOS\CommentBundle\FOSCommentBundle(),
-    #~ new FOS\ElasticaBundle\FOSElasticaBundle(),
-    #~ new JMS\SerializerBundle\JMSSerializerBundle($this),
-    #~ new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
-    #~ new CertUnlp\NgenBundle\CertUnlpNgenBundle(),
-    #~ new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(), //swiftmailer should be here for the conriguration load
-    #~ new Ddeboer\DataImportBundle\DdeboerDataImportBundle(),
-    #~ new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
-    #~ new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-    #~ new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-    #~ new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
-    #~ new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle()"
 }
 
 configurarApache(){
@@ -37,6 +22,7 @@ configurarApache(){
     
     $SUDO a2enmod rewrite ssl
     $SUDO a2ensite ngen
+    $SUDO a2dissite 000-default
     $SUDO service apache2 restart
     
     }
@@ -309,5 +295,5 @@ if [[ $METELE != 0 ]]; then
     configurarDependencias
     instalarNgen
     configurarApache
-    
+    echo "Listo tenes que apuntar tu servidor en http://ip_server/incidents/internals"    
 fi;
