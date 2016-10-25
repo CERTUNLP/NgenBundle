@@ -15,7 +15,7 @@ Pasos
 * Ejecutarlo
 
 
-Instalacion Manual:
+Instalación Manual:
 -------------------
 
 En forma manual se pueden seguir los siguientes pasos para llegar al mismo punto. 
