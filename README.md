@@ -24,7 +24,7 @@ CERT UNLP Ngen
 Extensiones
 -----------
 
-* Tiene algunas extensiones que permite integrarlo con feeds reconocidos como son: Spamhouse, Shadowserver, Shodan o Spampot.
+* Tiene algunas extensiones que permite integrarlo con feeds reconocidos como son: Spamhaus, Shadowserver, CERT.br Spampot o scripts que extraigan información de buscadores como Shodan/Censys.
 
 
 Estado actual
