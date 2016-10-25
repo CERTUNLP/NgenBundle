@@ -4,7 +4,7 @@ CERT UNLP Ngen Bundle
 Instalación automática
 ----------------------
 
-Este script de instalación desarrollado para bash, esta pensado para aplicarse en una máquina limpia ya que podría eventualmente interferir con algún sistema que este ejecutandose en la misma.
+Este script de instalación fue desarrollado para bash, está pensado para aplicarse en una máquina limpia ya que podría eventualmente interferir con algún sistema que este ejecutándose en la misma.
 
 El instalador fue pensado y probado para una distro de GNU/Linux basada en Debian 8. Es probable que funcione para otras, pero no lo podemos asegurar.
 
@@ -12,7 +12,9 @@ Pasos
 -----
 
 * Bajar https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/install.es.sh
-* Ejecutarlo **bash install.es.sh**
+* Ejecutarlo 
+
+* O en una línea: **wget https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/install.es.sh; bash install.es.sh** 
 
 
 Instalación Manual:
