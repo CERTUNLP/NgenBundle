@@ -12,7 +12,7 @@ Pasos
 -----
 
 * Bajar https://raw.githubusercontent.com/CERTUNLP/NgenBundle/master/Resources/installer/install.es.sh
-* Ejecutarlo
+* Ejecutarlo **bash install.es.sh**
 
 
 Instalación Manual:
