@@ -25,12 +25,12 @@ Extensiones
 * Tiene algunas extensiones que permite integrarlo con feeds reconocidos como son: Spamhaus, Shadowserver, CERT.br Spampot or bash scripts that extracts information from search engines such as Shodan/Censys.
 
 
-Estado actual
--------------
+Actual state
+------------
 
 [![Build Status](https://travis-ci.org/CERTUNLP/NgenBundle.svg?branch=master)](https://travis-ci.org/CERTUNLP/NgenBundle)
 
-Documentación
+Documentation
 -------------
 
 La mayor parte de la documentación la encontrarán a partir de `Resources/doc/index.md`
@@ -40,12 +40,12 @@ La mayor parte de la documentación la encontrarán a partir de `Resources/doc/i
 Installación
 ------------
 
-Como instalarlo en [documentation](https://github.com/CERTUNLP/NgenBundle/blob/master/Resources/doc/index.es.md).
+[How to install](https://github.com/CERTUNLP/NgenBundle/blob/master/Resources/doc/index.es.md).
 
 Licencia
 --------
 
-Este software esta regirstrado bajo la licencia GPL v3.0. Para ver la licencia:
+This software is registered under GLP v3.0 license. 
 [Resources/meta/LICENSE](https://github.com/CERTUNLP/NgenBundle/blob/master/Resources/meta/LICENSE.es)
 
 
