@@ -29,6 +29,12 @@ cert_ngen_external_incident_api:
     resource: 'CertUnlp\NgenBundle\Controller\ExternalIncidentController'
     name_prefix:  api_2_
 
+cert_ngen_incident_feed_api:
+    type: rest
+    prefix: /v2/incidents
+    resource: 'CertUnlp\NgenBundle\Controller\IncidentFeedController'
+    name_prefix:  api_2_
+
 fos_comment_api:
     type: rest
     prefix: /v1

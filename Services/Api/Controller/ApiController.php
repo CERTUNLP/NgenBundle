@@ -169,7 +169,30 @@ class ApiController {
      *
      * @throws NotFoundHttpException when object not exist
      */
-    public function patch(Request $request, $object) {
+    public function patch(Request $request, $object, $reactivate = false) {
+        try {
+            if ($reactivate) {
+                return $this->doPatchAndReactivate($request, $object);
+            } else {
+                return $this->doPatch($request, $object);
+            }
+        } catch (InvalidFormException $exception) {
+
+            return $exception->getForm();
+        }
+    }
+
+    /**
+     * Update existing object from the submitted data or create a new object at a specific location.
+     *
+     * @param Request $request the request object
+     * @param int     $id      the object id
+     *
+     * @return FormTypeInterface|View
+     *
+     * @throws NotFoundHttpException when object not exist
+     */
+    public function doPatch(Request $request, $object) {
         try {
             $parameters = $request->request->all();
             unset($parameters['_method']);
@@ -177,6 +200,48 @@ class ApiController {
                     $object, $parameters
             );
             return $this->response([$object], Response::HTTP_NO_CONTENT);
+        } catch (InvalidFormException $exception) {
+
+            return $exception->getForm();
+        }
+    }
+
+    /**
+     * Create a Object from the submitted data.
+     *
+     * @param Request $request the request object
+     *
+     * @return FormTypeInterface|View
+     */
+    public function doPatchAndReactivate(Request $request, $object) {
+        try {
+            $parameters = $request->request->all();
+            unset($parameters['_method'], $parameters['force_edit'], $parameters['reactivate']);
+
+//            $db_object = $this->getCustomHandler()->get(['name' => $request->request->get('name'), 'email' => $request->request->get('email')]);
+            $db_object = $this->findObjectBy($parameters);
+            if (!$db_object) {
+                if ($request->get('reactivate')) {
+                    $object->setIsActive(TRUE);
+                }
+                if ($request->get('force_edit')) {
+                    $statusCode = Response::HTTP_NO_CONTENT;
+
+                    $object = $this->getCustomHandler()->patch($object, $parameters);
+                } else {
+                    $statusCode = Response::HTTP_CREATED;
+                    $this->getCustomHandler()->desactivate($object);
+                    $object = $this->getCustomHandler()->post($parameters);
+                }
+            } else {
+                $statusCode = Response::HTTP_NO_CONTENT;
+
+                $this->getCustomHandler()->desactivate($object);
+                $this->getCustomHandler()->activate($db_object);
+                $object = $this->getCustomHandler()->patch($db_object, $parameters);
+            }
+
+            return $this->response([$object], $statusCode);
         } catch (InvalidFormException $exception) {
 
             return $exception->getForm();
@@ -240,7 +305,7 @@ class ApiController {
      * @return NetworkInterface
      */
     public function activate(Request $request, $object) {
-         try {
+        try {
             $parameters = $request->request->all();
             unset($parameters['_method']);
             $object = $this->getCustomHandler()->activate(
