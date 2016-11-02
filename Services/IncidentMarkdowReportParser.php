@@ -102,7 +102,7 @@ class IncidentMarkdowReportParser extends MarkdownExtra implements MarkdownParse
         }
     }
 
-    protected function formParagraphs($text) {
+    protected function formParagraphs($text, $wrap_in_p = true) {
         #
         #	Params:
         #		$text - string to process with html <p> tags
