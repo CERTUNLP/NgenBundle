@@ -41,7 +41,7 @@ cert_ngen:
                     path: %kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/views/ExternalIncident/Report/Twig
             mailer:
                 class: CertUnlp\NgenBundle\Services\Mailer\ExternalIncidentMailer
-        
+                
         mailer:
             class: CertUnlp\NgenBundle\Services\IncidentMailer
             transport: smtp
@@ -54,8 +54,29 @@ cert_ngen:
             prefix: ~        
         factory:
             class: CertUnlp\NgenBundle\Services\IncidentFactory
+            
         reporter:
             class: CertUnlp\NgenBundle\Entity\User
+                feeds:
+            class: CertUnlp\NgenBundle\Entity\IncidentFeed
+            handler:
+                class: CertUnlp\NgenBundle\Services\Api\Handler\IncidentFeedHandler
+            form_type:
+                class: CertUnlp\NgenBundle\Form\IncidentFeedType
+                
+        states:
+            class: CertUnlp\NgenBundle\Entity\IncidentState
+            handler:
+                class: CertUnlp\NgenBundle\Services\Api\Handler\IncidentStateHandler
+            form_type:
+                class: CertUnlp\NgenBundle\Form\IncidentStateType
+                
+        types:
+            class: CertUnlp\NgenBundle\Entity\IncidentType
+            handler:
+                class: CertUnlp\NgenBundle\Services\Api\Handler\IncidentTypeHandler
+            form_type:
+                class: CertUnlp\NgenBundle\Form\IncidentTypeType
 
     networks:
         class: CertUnlp\NgenBundle\Entity\Network
