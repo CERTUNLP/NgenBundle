@@ -22,43 +22,12 @@ class NetworkApiController extends ApiController {
     /**
      * Create a Object from the submitted data.
      *
-     * @param Request $request the request object
+     * @param $params array
      *
-     * @return FormTypeInterface|View
+     * @return Network entity
      */
-    public function patch(Request $request, $network) {
-        try {
-            $parameters = $request->request->all();
-            unset($parameters['_method'], $parameters['force_edit'], $parameters['reactivate']);
-
-            $DBnetwork = $this->getCustomHandler()->get(['ip' => $request->request->get('ip'), 'ipMask' => $request->request->get('ipMask')]);
-
-            if (!$DBnetwork) {
-                if ($request->get('reactivate')) {
-                    $network->setIsActive(TRUE);
-                }
-                if ($request->get('force_edit')) {
-                    $statusCode = Response::HTTP_NO_CONTENT;
-
-                    $network = $this->getCustomHandler()->patch($network, $parameters);
-                } else {
-                    $statusCode = Response::HTTP_CREATED;
-                    $this->getCustomHandler()->desactivate($network);
-                    $network = $this->getCustomHandler()->post($parameters);
-                }
-            } else {
-                $statusCode = Response::HTTP_NO_CONTENT;
-
-                $this->getCustomHandler()->desactivate($network);
-                $this->getCustomHandler()->activate($DBnetwork);
-                $network = $this->getCustomHandler()->patch($DBnetwork, $parameters);
-            }
-
-            return $this->response([$network], $statusCode);
-        } catch (InvalidFormException $exception) {
-
-            return $exception->getForm();
-        }
+    public function findObjectBy($params) {
+        return $this->getCustomHandler()->get(['ip' => $params['ip'], 'ipMask' => $params['ipMask']]);
     }
 
 }

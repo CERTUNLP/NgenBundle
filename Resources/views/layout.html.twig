@@ -49,6 +49,9 @@
                                             {{icon('arrow-circle-up fa-fw')}} Externals</a>
                                     </li>
                                     {#                                    {% if 'incident' in app.request.get('_route') %} ::after {% endif %}#}
+                                    <li>
+                                        <a href="{{path('cert_unlp_ngen_incident_feed_frontend_home')}}" {{ ('feed' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('users fa-fw')}} Feeds</a>
+                                    </li>
                                 </ul>
 
                             </li>
@@ -60,6 +63,7 @@
                             <li>
                                 <a href="{{path('cert_unlp_ngen_network_admin_frontend_home')}}" {{ ('admin' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('users fa-fw')}} Admins</a>
                             </li>
+
                         </ul>
                     </div>
                     <!-- /.sidebar-collapse -->

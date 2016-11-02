@@ -18,18 +18,18 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use CertUnlp\NgenBundle\Form\NetworkType;
-use CertUnlp\NgenBundle\Entity\Network;
+use CertUnlp\NgenBundle\Form\IncidentFeedType;
+use CertUnlp\NgenBundle\Entity\IncidentFeed;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
 
-class NetworkController extends FOSRestController {
+class IncidentFeedController extends FOSRestController {
 
     public function getApiController() {
 
-        return $this->container->get('cert_unlp.ngen.network.api.controller');
+        return $this->container->get('cert_unlp.ngen.incident.feed.api.controller');
     }
 
     /**
@@ -54,7 +54,7 @@ class NetworkController extends FOSRestController {
     }
 
     /**
-     * List all networks.
+     * List all incident feeds.
      *
      * @ApiDoc(
      *   resource = true,
@@ -63,11 +63,13 @@ class NetworkController extends FOSRestController {
      *   }
      * )
      *
-     * @FOS\RequestParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing networks.")
-     * @FOS\RequestParam(name="limit", requirements="\d+", default="5", description="How many networks to return.")
+     * @FOS\Get("/feeds")
+
+     * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident feeds.")
+     * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many incident feeds to return.")
      *
      * @FOS\View(
-     *  templateVar="networks"
+     *  templateVar="incident_feeds"
      * )
      *
      * @param Request               $request      the request object
@@ -75,7 +77,7 @@ class NetworkController extends FOSRestController {
      *
      * @return array
      */
-    public function getNetworksAction(Request $request, ParamFetcherInterface $paramFetcher) {
+    public function getIncidentFeedsAction(Request $request, ParamFetcherInterface $paramFetcher) {
         return $this->getApiController()->getAll($request, $paramFetcher);
     }
 
@@ -84,8 +86,8 @@ class NetworkController extends FOSRestController {
      *
      * @ApiDoc(
      *   resource = true,
-     *   description = "Gets a Network for a given id",
-     *   output = "CertUnlp\NgenBundle\Entity\Network",
+     *   description = "Gets a network admin for a given id",
+     *   output = "CertUnlp\NgenBundle\Entity\IncidentFeed",
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     404 = "Returned when the network is not found"
@@ -95,18 +97,16 @@ class NetworkController extends FOSRestController {
      * @param int     $id      the network id
      *
      * @return array
-     *
-     * @throws NotFoundHttpException when network not exist
-     *
-     * @FOS\Get("/networks/{ip}/{ipMask}",requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ipMask"="^[1-3]?[0-9]$"} )
-     * 
      * @FOS\View(
-     *  templateVar="network"
-     * )     
-     *  @ParamConverter("network", class="CertUnlpNgenBundle:Network", options={"repository_method" = "findOneBy"})
+     *  templateVar="incident_feed"
+     * )
+     * @throws NotFoundHttpException when network not exist
+     * @ParamConverter("incident_feed", class="CertUnlpNgenBundle:IncidentFeed")
+     * @FOS\Get("/feeds/{slug}")
+     *         
      */
-    public function getNetworkAction(Network $network) {
-        return $network;
+    public function getIncidentFeedAction(IncidentFeed $incident_feed) {
+        return $incident_feed;
     }
 
     /**
@@ -122,14 +122,13 @@ class NetworkController extends FOSRestController {
      *   }
      * )
      *
-     * @FOS\View(
-     *  templateVar = "network"
-     * )
+     * @FOS\Post("/feeds")
+
      * @param Request $request the request object
      *
      * @return FormTypeInterface|View
      */
-    public function postNetworkAction(Request $request) {
+    public function postIncidentFeedAction(Request $request) {
         return $this->getApiController()->post($request);
     }
 
@@ -144,23 +143,39 @@ class NetworkController extends FOSRestController {
      *     400 = "Returned when the form has errors"
      *   }
      * )
-     *
-     * @FOS\View(
-     *  templateVar = "network"
-     * )
-     *
+     * @FOS\Patch("/feeds/{slug}")
      * @param Request $request the request object
      * @param int     $id      the network id
      *
      * @return FormTypeInterface|View
      *
      * @throws NotFoundHttpException when network not exist
-     * @FOS\Patch("/networks/{ip}/{ipMask}", requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ipMask"="^[1-3]?[0-9]$"} )
-     *
-     * @ParamConverter("network", class="CertUnlpNgenBundle:Network", options={"repository_method" = "findOneBy"})
      */
-    public function patchNetworkAction(Request $request, Network $network) {
-        return $this->getApiController()->patch($request, $network, true);
+    public function patchIncidentFeedAction(Request $request, IncidentFeed $incident_feed) {
+        return $this->getApiController()->patch($request, $incident_feed, true);
+    }
+
+    /**
+     * Update existing network from the submitted data or create a new network at a specific location.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
+     *   statusCodes = {
+     *     204 = "Returned when successful",
+     *     400 = "Returned when the form has errors"
+     *   }
+     * )
+     * @FOS\Patch("/feeds/{slug}")
+     * @param Request $request the request object
+     * @param int     $id      the network id
+     *
+     * @return FormTypeInterface|View
+     *
+     * @throws NotFoundHttpException when network not exist
+     */
+    public function patchIncidentFeedBySlugAction(Request $request, IncidentFeed $incident_feed) {
+        return $this->getApiController()->patch($request, $incident_feed);
     }
 
     /**
@@ -182,16 +197,11 @@ class NetworkController extends FOSRestController {
      * @return FormTypeInterface|View
      *
      * @throws NotFoundHttpException when network not exist
-     * 
-     * @FOS\Patch("/networks/{ip}/{ipMask}/activate", requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ipMask"="^[1-3]?[0-9]$"} )
-     * @FOS\View(
-     *  templateVar = "network"
-     * )
-     * @ParamConverter("network", class="CertUnlpNgenBundle:Network", options={"repository_method" = "findOneBy"})
+     * @FOS\Patch("/feeds/{slug}/activate")
      */
-    public function patchNetworkActivateAction(Request $request, Network $network) {
+    public function patchIncidentFeedActivateAction(Request $request, IncidentFeed $incident_feed) {
 
-        return $this->getApiController()->activate($request, $network);
+        return $this->getApiController()->activate($request, $incident_feed);
     }
 
     /**
@@ -213,16 +223,11 @@ class NetworkController extends FOSRestController {
      * @return FormTypeInterface|View
      *
      * @throws NotFoundHttpException when network not exist
-     * 
-     * @FOS\Patch("/networks/{ip}/{ipMask}/desactivate", requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ipMask"="^[1-3]?[0-9]$"} )
-     * @FOS\View(
-     *  templateVar = "network"
-     * )
-     * @ParamConverter("network", class="CertUnlpNgenBundle:Network", options={"repository_method" = "findOneBy"})
+     * @FOS\Patch("/feeds/{slug}/desactivate")
      */
-    public function patchNetworkDesactivateAction(Request $request, Network $network) {
+    public function patchIncidentFeedDesactivateAction(Request $request, IncidentFeed $incident_feed) {
 
-        return $this->getApiController()->desactivate($request, $network);
+        return $this->getApiController()->desactivate($request, $incident_feed);
     }
 
 }

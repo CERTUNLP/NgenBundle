@@ -23,6 +23,11 @@ cert_ngen_external_incident:
     resource: '@CertUnlpNgenBundle/Controller/ExternalIncidentFrontendController.php'
     type:     annotation
     prefix:   /incidents/externals
+
+cert_ngen_incident_feed:
+    resource: '@CertUnlpNgenBundle/Controller/IncidentFeedFrontendController.php'
+    type:     annotation
+    prefix:   /incidents/feeds
     
 fos_comment_api:
     type: rest

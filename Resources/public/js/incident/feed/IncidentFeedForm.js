@@ -6,21 +6,21 @@
  * This source file is subject to the GPL v3.0 license that is bundled
  * with this source code in the file LICENSE.
  */
-var NetworkAdminForm = Form.extend({
+var IncidentFeedForm = Form.extend({
     config: function () {
-        this.setNetworkAdminId();
+        this.setIncidentFeedId();
     },
     getObjectBrief: function () {
-        return 'network/admin';
+        return 'incident/feed';
     },
     getObjectId: function () {
-        return  this.getNetworkAdminId();
+        return  this.getIncidentFeedId();
     },
-    setNetworkAdminId: function () {
-        this.network_admin_id = (($('#name').val().replace(' ', '_')) + '_' + ($('#email').val().replace('@', '_').replace('.', '_'))).toLowerCase();
+    setIncidentFeedId: function () {
+        this.incident_feed_id = (($('#name').val().replace(' ', '_'))).toLowerCase();
     },
-    getNetworkAdminId: function () {
-        return  this.network_admin_id;
+    getIncidentFeedId: function () {
+        return  this.incident_feed_id;
     },
     handleExtraErrors: function (jqXHR) {
 //        $.each(jqXHR.responseJSON.errors.errors, function (k, v) {
