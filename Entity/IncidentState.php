@@ -74,6 +74,9 @@ class IncidentState {
      */
     private $updatedAt;
 
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="feed", cascade={"persist","remove"}, fetch="EAGER")) */
+    private $incidents;
+
     public function __toString() {
         return $this->getName();
     }
@@ -192,4 +195,45 @@ class IncidentState {
         return $this->updatedAt;
     }
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add incident
+     *
+     * @param \CertUnlp\NgenBundle\Entity\InternalIncident $incident
+     *
+     * @return IncidentState
+     */
+    public function addIncident(\CertUnlp\NgenBundle\Entity\InternalIncident $incident)
+    {
+        $this->incidents[] = $incident;
+
+        return $this;
+    }
+
+    /**
+     * Remove incident
+     *
+     * @param \CertUnlp\NgenBundle\Entity\InternalIncident $incident
+     */
+    public function removeIncident(\CertUnlp\NgenBundle\Entity\InternalIncident $incident)
+    {
+        $this->incidents->removeElement($incident);
+    }
+
+    /**
+     * Get incidents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getIncidents()
+    {
+        return $this->incidents;
+    }
 }

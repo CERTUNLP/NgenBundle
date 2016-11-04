@@ -76,11 +76,8 @@ class IncidentType {
      */
     private $updatedAt;
 
-//    /**
-//     *  @var \Doctrine\Common\Collections\Collection
-//     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="type", cascade={"persist","remove"}, fetch="EAGER")) 
-//     */
-//    private $incidents;
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="feed", cascade={"persist","remove"}, fetch="EAGER")) */
+    private $incidents;
 
     /**
      * Constructor
@@ -207,4 +204,38 @@ class IncidentType {
         return $this->updatedAt;
     }
 
+
+    /**
+     * Add incident
+     *
+     * @param \CertUnlp\NgenBundle\Entity\InternalIncident $incident
+     *
+     * @return IncidentType
+     */
+    public function addIncident(\CertUnlp\NgenBundle\Entity\InternalIncident $incident)
+    {
+        $this->incidents[] = $incident;
+
+        return $this;
+    }
+
+    /**
+     * Remove incident
+     *
+     * @param \CertUnlp\NgenBundle\Entity\InternalIncident $incident
+     */
+    public function removeIncident(\CertUnlp\NgenBundle\Entity\InternalIncident $incident)
+    {
+        $this->incidents->removeElement($incident);
+    }
+
+    /**
+     * Get incidents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getIncidents()
+    {
+        return $this->incidents;
+    }
 }

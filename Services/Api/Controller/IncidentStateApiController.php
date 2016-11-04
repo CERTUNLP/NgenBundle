@@ -27,7 +27,7 @@ class IncidentStateApiController extends ApiController {
      * @return Network entity
      */
     public function findObjectBy($params) {
-        return $this->getCustomHandler()->get(['slug' => $params['slug']]);
+        return $this->getCustomHandler()->get(['name' => $params['name']]);
     }
 
 }
