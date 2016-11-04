@@ -108,7 +108,7 @@ class Incident implements IncidentInterface {
     protected $isClosed = false;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentType")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentType",inversedBy="incidents")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
@@ -116,7 +116,7 @@ class Incident implements IncidentInterface {
     protected $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentFeed") 
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentFeed", inversedBy="incidents") 
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
@@ -125,7 +125,7 @@ class Incident implements IncidentInterface {
     protected $feed;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentState") 
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentState", inversedBy="incidents") 
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})

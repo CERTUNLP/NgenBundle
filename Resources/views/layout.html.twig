@@ -50,13 +50,13 @@
                                     </li>
                                     {#                                    {% if 'incident' in app.request.get('_route') %} ::after {% endif %}#}
                                     <li>
-                                        <a href="{{path('cert_unlp_ngen_incident_feed_frontend_home')}}" {{ ('feed' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('users fa-fw')}} Feeds</a>
+                                        <a href="{{path('cert_unlp_ngen_incident_feed_frontend_home')}}" {{ ('feed' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('feed fa-fw')}} Feeds</a>
                                     </li>
                                     <li>
-                                        <a href="{{path('cert_unlp_ngen_incident_state_frontend_home')}}" {{ ('state' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('users fa-fw')}} States</a>
+                                        <a href="{{path('cert_unlp_ngen_incident_state_frontend_home')}}" {{ ('state' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('unlock-alt fa-fw')}} States</a>
                                     </li>
                                     <li>
-                                        <a href="{{path('cert_unlp_ngen_incident_type_frontend_home')}}" {{ ('type' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('users fa-fw')}} Types</a>
+                                        <a href="{{path('cert_unlp_ngen_incident_type_frontend_home')}}" {{ ('type' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('cubes fa-fw')}} Types</a>
                                     </li>
                                 </ul>
 
