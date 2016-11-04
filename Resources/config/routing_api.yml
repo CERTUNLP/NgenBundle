@@ -35,6 +35,18 @@ cert_ngen_incident_feed_api:
     resource: 'CertUnlp\NgenBundle\Controller\IncidentFeedController'
     name_prefix:  api_2_
 
+cert_ngen_incident_state_api:
+    type: rest
+    prefix: /v2/incidents
+    resource: 'CertUnlp\NgenBundle\Controller\IncidentStateController'
+    name_prefix:  api_2_
+
+cert_ngen_incident_type_api:
+    type: rest
+    prefix: /v2/incidents
+    resource: 'CertUnlp\NgenBundle\Controller\IncidentTypeController'
+    name_prefix:  api_2_
+
 fos_comment_api:
     type: rest
     prefix: /v1
