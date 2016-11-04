@@ -52,6 +52,12 @@
                                     <li>
                                         <a href="{{path('cert_unlp_ngen_incident_feed_frontend_home')}}" {{ ('feed' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('users fa-fw')}} Feeds</a>
                                     </li>
+                                    <li>
+                                        <a href="{{path('cert_unlp_ngen_incident_state_frontend_home')}}" {{ ('state' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('users fa-fw')}} States</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{path('cert_unlp_ngen_incident_type_frontend_home')}}" {{ ('type' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('users fa-fw')}} Types</a>
+                                    </li>
                                 </ul>
 
                             </li>

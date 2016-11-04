@@ -18,7 +18,7 @@ class IncidentStateFrontendController extends FrontendController {
 
     public function homeEntity(Request $request, $entity) {
         $em = $this->getDoctrine();
-        $dql = "SELECT i"
+        $dql = "SELECT i "
                 . "FROM CertUnlpNgenBundle:$entity i"
 //                . "WHERE s.slug = 'open' and i.isClosed = false"
         ;
