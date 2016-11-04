@@ -139,11 +139,11 @@ services:
         arguments: [ @cert_unlp.ngen.incident.feed.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view ]
     
     cert_unlp.ngen.incident.state.api.controller:
-        class: CertUnlp\NgenBundle\Services\Api\Controller\ApiController
+        class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentStateApiController
         arguments: [ @cert_unlp.ngen.incident.state.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view ]
     
     cert_unlp.ngen.incident.type.api.controller:
-        class: CertUnlp\NgenBundle\Services\Api\Controller\ApiController
+        class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentTypeApiController
         arguments: [ @cert_unlp.ngen.incident.type.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view ]
     
     cert_unlp.ngen.incident.internal.frontend.controller:
@@ -165,6 +165,14 @@ services:
     cert_unlp.ngen.incident.feed.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFeedFrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.feed.form_type.class%","@knp_paginator","@fos_elastica.finder.network_admins.network_admin","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+
+    cert_unlp.ngen.incident.state.frontend.controller:
+        class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentStateFrontendController
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.state.form_type.class%","@knp_paginator","@fos_elastica.finder.network_admins.network_admin","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+    
+    cert_unlp.ngen.incident.type.frontend.controller:
+        class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentTypeFrontendController
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.type.form_type.class%","@knp_paginator","@fos_elastica.finder.network_admins.network_admin","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.incident.report.markdown.parser:
         class: CertUnlp\NgenBundle\Services\IncidentMarkdowReportParser

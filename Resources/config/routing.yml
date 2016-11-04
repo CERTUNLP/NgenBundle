@@ -28,6 +28,16 @@ cert_ngen_incident_feed:
     resource: '@CertUnlpNgenBundle/Controller/IncidentFeedFrontendController.php'
     type:     annotation
     prefix:   /incidents/feeds
+
+cert_ngen_incident_state:
+    resource: '@CertUnlpNgenBundle/Controller/IncidentStateFrontendController.php'
+    type:     annotation
+    prefix:   /incidents/states
+
+cert_ngen_incident_type:
+    resource: '@CertUnlpNgenBundle/Controller/IncidentTypeFrontendController.php'
+    type:     annotation
+    prefix:   /incidents/types
     
 fos_comment_api:
     type: rest
