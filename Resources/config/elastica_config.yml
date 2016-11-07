@@ -85,6 +85,13 @@ fos_elastica:
                                     type: string
                                 name:
                                     type: string
+                        type:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: string
+                                name:
+                                    type: string
                         reporter:
                             type: "object"
                             properties:
@@ -106,13 +113,6 @@ fos_elastica:
                                 updatedAt:
                                     type: date
                                     format: strict_date_optional_time
-                        type:
-                            type: "object"
-                            properties:
-                                slug:
-                                    type: string
-                                name:
-                                    type: string
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
@@ -270,6 +270,75 @@ fos_elastica:
                         # propel and should be removed
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\NetworkAdmin
+                        provider: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
+                        finder: ~
+        feeds:
+            types:
+                feeds:
+                    mappings:
+                        name: ~
+                        slug: ~
+                        isActive:
+                            type: boolean
+                        createdAt: ~
+                        updatedAt: ~
+                    persistence:
+                        identifier: slug
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\IncidentFeed
+                        provider: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
+                        finder: ~
+        states:
+            types:
+                states:
+                    mappings:
+                        name: ~
+                        slug: ~
+                        isActive:
+                            type: boolean
+                        createdAt: ~
+                        updatedAt: ~
+                    persistence:
+                        identifier: slug
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\IncidentType
+                        provider: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
+                        finder: ~
+        types:
+            types:
+                types:
+                    mappings:
+                        name: ~
+                        slug: ~
+                        isActive:
+                            type: boolean
+                        createdAt: ~
+                        updatedAt: ~
+                    persistence:
+                        identifier: slug
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\IncidentType
                         provider: ~
                         listener:
                             insert: true
