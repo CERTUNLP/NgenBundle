@@ -164,15 +164,15 @@ services:
     
     cert_unlp.ngen.incident.feed.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFeedFrontendController
-        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.feed.form_type.class%","@knp_paginator","@fos_elastica.finder.network_admins.network_admin","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.feed.form_type.class%","@knp_paginator","@fos_elastica.finder.feeds.feeds","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.incident.state.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentStateFrontendController
-        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.state.form_type.class%","@knp_paginator","@fos_elastica.finder.network_admins.network_admin","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.state.form_type.class%","@knp_paginator","@fos_elastica.finder.states.states","@fos_comment.manager.comment","@fos_comment.manager.thread"]
     
     cert_unlp.ngen.incident.type.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentTypeFrontendController
-        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.type.form_type.class%","@knp_paginator","@fos_elastica.finder.network_admins.network_admin","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.type.form_type.class%","@knp_paginator","@fos_elastica.finder.types.types","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.incident.report.markdown.parser:
         class: CertUnlp\NgenBundle\Services\IncidentMarkdowReportParser
