@@ -74,7 +74,7 @@ class IncidentState {
      */
     private $updatedAt;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="feed", cascade={"persist","remove"}, fetch="EAGER")) */
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="state", cascade={"persist","remove"}, fetch="EAGER")) */
     private $incidents;
 
     public function __toString() {
