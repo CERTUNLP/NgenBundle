@@ -8,7 +8,7 @@
 
 ### Pasos:
 * Clonar este repo y posicionarse dentro de él:
-  * `git clone https://gitlab.linti.unlp.edu.ar/certunlp/ngen-docker.git && cd ngen-docker/`
+  * `git clone https://github.com/CERTUNLP/NgenBundle.git && cd NgenBundle/Docker/`
 
 * Ejecutar docker-compose para crear nuestros containers (puede tardar un largo rato):
   * `docker-compose build`
