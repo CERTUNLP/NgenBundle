@@ -11,7 +11,7 @@
 {% block sideBar_search_path %}{{path('cert_unlp_ngen_internal_incident_search_incident')}}{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{icon('arrow-circle-down fa-fw')}}Internal incident [ID: {{incident.id}}][{{incident.type}}]{%include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': incident}%}</h1>
+    <h1 class="page-header">{{icon('arrow-circle-down fa-fw')}}Internal incident [ID: {{object.id}}][{{object.type}}]{%include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object}%}</h1>
 {% endblock %}
 
 
@@ -28,7 +28,7 @@
                             IP/mask
                         </td>
                         <td class="">
-                            {{incident.network}}
+                            {{object.network}}
                         </td>
                     </tr>
                     <tr>
@@ -36,7 +36,7 @@
                             Active
                         </td>
                         <td class="">
-                            {{incident.network.isActive ? 'Yes':'No'}}
+                            {{object.network.isActive ? 'Yes':'No'}}
                         </td>
                     </tr>
                     <tr>
@@ -44,7 +44,7 @@
                             Academic Unit
                         </td>
                         <td class="">
-                            {{incident.network.academicUnit}}
+                            {{object.network.academicUnit}}
 
                         </td>
                     </tr>
@@ -53,7 +53,7 @@
                             Network Admin
                         </td>
                         <td class="">
-                            {{incident.network.networkAdmin}}
+                            {{object.network.networkAdmin}}
 
                         </td>
                     </tr>
@@ -61,7 +61,7 @@
                         <td class="">
                         </td>
                         <td class="">
-                            {{incident.network.networkAdmin.email}}
+                            {{object.network.networkAdmin.email}}
 
                         </td>
                     </tr>
@@ -71,5 +71,5 @@
     </div>
 {% endblock %}
 {% block comments_body %}
-    {{ render(controller('CertUnlpNgenBundle:InternalIncidentFrontend:incidentComments', {'incident': incident, 'request': app.request})) }}
+    {{ render(controller('CertUnlpNgenBundle:InternalIncidentFrontend:incidentComments', {'incident': object, 'request': app.request})) }}
 {% endblock %}

@@ -9,7 +9,7 @@
 {% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
 {% extends father %}{% block problem %}
 
-Nos notificaron que el servidor {{incident.hostAddress}} está alojando un sitio web utilizado para ataques de Phishing.
+Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} se está comportando de manera sospechosa.
 
 {% endblock %}
 
@@ -19,19 +19,13 @@ Nos notificaron que el servidor {{incident.hostAddress}} está alojando un sitio
 
 <p class="lead">Problemas derivados</p>
 
-Este problema puede provocar que su servidor sea introducido en listas públicas de servidores comprometidos pudiendo los navegadores disparar alertas de seguridad a los usuarios cuando accedan a cualquier página web alojada en dicho servidor.
+esto se puede deber a
 
-
-{% endblock %}
-
-
-{% block verification_content %}
-
-
-<p class="lead">Cómo verificar el problema</p>
-
-Verificar la información enviada en el contenido adjunto.
-
+<ul>
+<li><p>El sitio web contiene software malicioso: El sitio podría instalar software malicioso a los usuarios.</p></li>
+<li><p>Sitio engañoso: El sitio web podría realizar una suplantación de identidad.</p></li>
+<li><p>El sitio contiene programas peligrosos: El sitio podría engañar usuarios para instalar programas que causen problemas cuando navegan.</p></li>
+</ul>
 
 {% endblock %}
 
@@ -41,9 +35,7 @@ Verificar la información enviada en el contenido adjunto.
 
 <p class="lead">Recomendaciones</p>
 
-Se recomienda dar de baja el contenido WEB utilizado para el ataque de phishing y solicitar a CERTUNLP un análisis forense del servidor para 
-determinar la modalidad utilizada por el atacante y el nivel de compromiso del servidor.
-
+Se recomienda verificar la herramienta,aplicación o CMS que este utilizando con el fin de encotrar vulnerabilidades o malware.
 
 {% endblock %}
 
@@ -57,6 +49,7 @@ determinar la modalidad utilizada por el atacante y el nivel de compromiso del s
 <div class = "destacated">
 
 <ul>
+<li><p><a href="https://www.owasp.org/index.php/Category:Vulnerability_Scanning_Tools">https://www.owasp.org/index.php/Category:Vulnerability_Scanning_Tools</a></p></li>
 <li><p><a href="https://support.google.com/chrome/answer/99020?hl=es-419">https://support.google.com/chrome/answer/99020?hl=es-419</a></p></li>
 </ul>
 

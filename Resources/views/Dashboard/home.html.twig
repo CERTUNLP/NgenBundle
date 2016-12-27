@@ -6,8 +6,14 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
-{% extends 'CertUnlpNgenBundle::InternalIncident/Frontend/frontend.html.twig' %}
+{% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
 
 {% block content_body %}
-    {% include 'CertUnlpNgenBundle:InternalIncident:Frontend/list/incidentList.html.twig' with {'incident': incidents} %}
+   <iframe src="http://dam.develop.ngen.cert.unlp.edu.ar:5601/app/kibana#/visualize/edit/New-Visualization?embed=true&_g=(refreshInterval:(display:Off,pause:!f,value:0),time:(from:now-6M,mode:quick,to:now))&_a=(filters:!(),linked:!f,query:(query_string:(analyze_wildcard:!t,query:'*')),uiState:(spy:(mode:(fill:!f,name:!n))),vis:(aggs:!((enabled:!t,id:'1',params:(),schema:metric,type:count),(enabled:!t,id:'2',params:(customInterval:'2h',extended_bounds:(),field:createdAt,interval:auto,min_doc_count:1),schema:segment,type:date_histogram)),listeners:(),params:(addLegend:!t,addTimeMarker:!f,addTooltip:!t,defaultYExtents:!f,legendPosition:right,mode:stacked,scale:linear,setYExtents:!f,shareYAxis:!t,times:!(),yAxis:()),title:'New+Visualization',type:histogram))" height="600" width="800"></iframe>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        {{ chart(chart) }}
+    </script>
 {% endblock %}

@@ -85,6 +85,7 @@ class FrontendController {
             $thread = $this->thread_manager->createThread();
             $thread->setId($id);
             $object->setCommentThread($thread);
+            $thread->setIncident($object);
             $thread->setPermalink($request->getUri());
 
             // Add the thread
