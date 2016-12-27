@@ -65,7 +65,7 @@ class IncidentCommentThread extends BaseThread {
         $this->incident = $incident;
 
         return $this;
-    }
+}
 
     /**
      * Get incident

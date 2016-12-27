@@ -1,0 +1,89 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+We would like to inform you that we have been notified that the <strong>host/servidor</strong> {{incident.hostAddress}} provides insecure <strong>DNS</strong> services. The service  <a href="https://www.us-cert.gov/ncas/alerts/TA13-088A">responds to recursive queries</a> originated outside your network.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Related issues</p>
+
+The <em>host</em> under your administration could be used to perform <a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplification</a> attacks. This could allow attacks such as:
+
+<ul>
+<li><p>Dos (Denial of service)</p></li>
+<li><p>DDOS (Distributed denial of service)</p></li>
+</ul>
+
+Additionally , the host could be exposed to DNS cache poisoning or <strong>Pharming</strong>..
+
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">How to verify the issue</p>
+
+Use the following command:
+
+<div class = "destacated">
+
+<pre><code>dig +short test.openresolver.com TXT @{{incident.hostAddress}}
+</code></pre>
+
+</div>
+
+or use the following web page:
+
+<div class = "destacated">
+
+<pre><code>http://openresolver.com/?ip={{incident.hostAddress}}
+</code></pre>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recommendations_content %}
+
+
+<p class="lead">Recommendations</p>
+
+Disable recursive answers to queries that does not originate from networks under your administration.
+
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">For more information</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><p><a href="https://www.us-cert.gov/ncas/alerts/TA13-088A">https://www.us-cert.gov/ncas/alerts/TA13-088A</a></p></li>
+<li><p><a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">https://www.us-cert.gov/ncas/alerts/TA14-017A</a></p></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

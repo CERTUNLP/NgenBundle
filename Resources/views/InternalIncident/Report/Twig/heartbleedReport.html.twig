@@ -1,0 +1,82 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+Se detectó que el servidor {{incident.hostAddress}} posiblemente ha sido atacado mediante la
+vulnerabilidad de OpenSSL conocida como
+"<a href="http://heartbleed.com/">Heartbleed</a>".
+
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Problemas derivados</p>
+
+Esta vulnerabilidad permite a un atacante leer la memoria de un servidor o
+un cliente, permitiéndole por ejemplo, conseguir las claves privadas SSL de
+un servidor.
+
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">Cómo verificar el problema</p>
+
+Para comprobar que el servicio es vulnerable, acceda al siguiente sitio
+web y siga las instrucciones. 
+
+<div class = "destacated">
+
+<pre><code>https://filippo.io/Heartbleed/
+</code></pre>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recomendations_content %}
+
+
+<p class="lead">Recomendaciones</p>
+
+Se recomienda actualizar de forma inmediata la librería OpenSSL del
+servidor y reiniciar los servicios que hagan uso de ésta. La vulnerabilidad
+"Heartbleed" permite leer fragmentos de la memoria del servicio
+vulnerable. Por este motivo, es posible que el certificado SSL haya sido
+comprometido y por lo tanto se recomienda regenerarlo.
+
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">Mas información</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><p><a href="https://www.openssl.org/news/secadv_20140407.txt">https://www.openssl.org/news/secadv_20140407.txt</a></p></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

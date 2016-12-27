@@ -17,8 +17,34 @@ var ApiClient = Class.extend({
                 'update': 'PATCH',
                 'destroy': 'DELETE'
             }});
+        this.addDefaultChannel();
         this.config();
     },
+    doRequest: function (request, callback) {
+        request.done($.proxy(function (data, text, jqXHR)
+        {
+            callback(this.getResponse(jqXHR), jqXHR);
+        }, this)).fail($.proxy(function (jqXHR)
+        {
+            callback(this.getResponse(jqXHR), jqXHR);
+        }, this));
+    },
+    getResponse: function (jqXHR) {
+        if (jqXHR.status >= 200 && jqXHR.status < 300) {
+            return jqXHR;
+        }
+        return {};
+
+    },
+    create: function (data, callback) {
+        var request = this.defaultChannel.create(data, {apikey: this.apiKey});
+        this.doRequest(request, callback);
+    },
+    update: function (id, data, callback) {
+        var request = this.defaultChannel.create(id, data, {apikey: this.apiKey});
+        this.doRequest(request, callback);
+    }
+
 });
 
 

@@ -1,0 +1,82 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+We would like to inform you that we have been notified that the <em>host</em> {{incident.hostAddress}} has the <strong>Memcached</strong> service, accessible from the Internet.
+
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Related issues</p>
+
+Due to the service not providing an authentication mechanism, any third party accessing the Memcache service would have total over the stored information. The following items could be compromised:
+
+<ul>
+<li><p>Access to sensitive information.</p></li>
+<li><p>Perform a defacement's attack to the web server.</p></li>
+<li><p>Perform a Denial of Service attack (DOS) to the server.</p></li>
+</ul>
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">How to verify the issue</p>
+
+To verify that the service is currently open, use the <code>telnet</code> command in the following way:
+
+<div class = "destacated">
+
+<pre><code>telnet {{incident.hostAddress}} 11211
+stats items
+</code></pre>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recommendations_content %}
+
+
+<p class="lead">Recommendations</p>
+
+<ul>
+<li><p>Establish firewall rules to filter unauthorized queries.</p></li>
+</ul>
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">For more information</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><p>[memcached.org] (memcached.org)</p></li>
+<li><p>[http://infiltrate.tumblr.com/post/38565427/hacking-memcache] (http://infiltrate.tumblr.com/post/38565427/hacking-memcache)</p></li>
+<li><p>[http://es.wikipedia.org/wiki/Defacement] (http://es.wikipedia.org/wiki/Defacement)</p></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+Le contactamos porque se nos informó que el <em>host</em> con IP {{incident.hostAddress}} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio SNMP (UDP 161).
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">Cómo verificar el problema</p>
+
+Mediante el monitoreo de red debería observar grandes cantidades de tráfico UDP correspondientes a consultas SNMP spoofeadas recibidas.
+
+{% endblock %}
+
+
+{% block recomendations_content %}
+
+
+<p class="lead">Recomendaciones</p>
+
+Se recomienda:
+
+<ul>
+<li><p>Deshabilitar el servicio.</p></li>
+<li><p>Establecer reglas en el firewall para denegar las consultas desde redes no autorizadas.</p></li>
+<li><p>No usar la "comunidad" por defecto.</p></li>
+</ul>
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">Mas información</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><p><a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">https://www.us-cert.gov/ncas/alerts/TA14-017A</a></p></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

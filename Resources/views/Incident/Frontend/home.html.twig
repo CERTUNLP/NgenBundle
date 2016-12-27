@@ -9,5 +9,43 @@
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
 
 {% block content_body %}
-    {% include 'CertUnlpNgenBundle:Incident:Frontend/list/incidentList.html.twig' with {'incident': incidents} %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {% block list_header %}
+                <strong>{{icon('exclamation-circle fa-fw')}} Incidents</strong>
+            {% endblock %}
+            <div class="pull-right">
+                <div class="btn-group">
+                    {% block add_incident %}
+                        <a class="btn btn-default btn-xs" href="{{path('cert_unlp_ngen_internal_incident_frontend_new_incident')}}">
+                            {{icon('plus-circle fa-fw')}}add incident
+                        </a>
+                    {% endblock %}
+
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered table-hover dataTable no-footer">
+            <tr role="row">
+                <th>{{ knp_pagination_sortable(objects, 'Status', 's.name') }}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Host address', 'i.hostAddress') }}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Type', 't.name') }}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Feed', 'f.name') }}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Date', 'i.date') }}</th>
+                <th>Action</th>
+            </tr>
+            <tbody>
+                {% for incident in objects %}
+                    {% block list_body %}
+
+                    {% endblock %}
+
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+    <div class="pagination-centered">
+        {{ knp_pagination_render(objects, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}
+    </div>
 {% endblock %}

@@ -8,28 +8,64 @@
 cert_ngen_incident_report_api:
     type: rest
     prefix: /v1
-    resource: CertUnlp\NgenBundle\Controller\IncidentReportController
+    resource: 'CertUnlp\NgenBundle\Controller\IncidentReportController'
     name_prefix:  api_1_
     
-cert_ngen_incident_api:
+#cert_ngen_incident_api:
+#    type: rest
+#    prefix: /v1
+#    resource: 'CertUnlp\NgenBundle\Controller\IncidentController'
+#    name_prefix:  api_1_
+
+cert_ngen_internal_incident_api:
     type: rest
-    prefix: /v1
-    resource: CertUnlp\NgenBundle\Controller\IncidentController
-    name_prefix:  api_1_
+    prefix: /v2/incidents
+    resource: 'CertUnlp\NgenBundle\Controller\InternalIncidentController'
+    name_prefix:  api_2_
+
+cert_ngen_external_incident_api:
+    type: rest
+    prefix: /v2/incidents
+    resource: 'CertUnlp\NgenBundle\Controller\ExternalIncidentController'
+    name_prefix:  api_2_
+
+cert_ngen_incident_feed_api:
+    type: rest
+    prefix: /v2/incidents
+    resource: 'CertUnlp\NgenBundle\Controller\IncidentFeedController'
+    name_prefix:  api_2_
+
+cert_ngen_incident_state_api:
+    type: rest
+    prefix: /v2/incidents
+    resource: 'CertUnlp\NgenBundle\Controller\IncidentStateController'
+    name_prefix:  api_2_
+
+cert_ngen_incident_type_api:
+    type: rest
+    prefix: /v2/incidents
+    resource: 'CertUnlp\NgenBundle\Controller\IncidentTypeController'
+    name_prefix:  api_2_
 
 fos_comment_api:
     type: rest
     prefix: /v1
-    resource: "@FOSCommentBundle/Resources/config/routing.yml"
+    resource: '@FOSCommentBundle/Resources/config/routing.yml'
     defaults: { _format: html }
     name_prefix:  api_1_
 
 cert_ngen_network_api:
     type: rest
     prefix: /v1
-    resource: CertUnlp\NgenBundle\Controller\NetworkController
+    resource: 'CertUnlp\NgenBundle\Controller\NetworkController'
     name_prefix:  api_1_
 
-NelmioApiDocBundle:
-    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
-    prefix:   /incidents/api/doc
+cert_ngen_network_admin_api:
+    type: rest
+    prefix: /v2
+    resource: 'CertUnlp\NgenBundle\Controller\NetworkAdminController'
+    name_prefix:  api_2_
+#
+#NelmioApiDocBundle:
+#    resource: '@NelmioApiDocBundle/Resources/config/routing.yml'
+#    prefix:   /incidents/api/doc

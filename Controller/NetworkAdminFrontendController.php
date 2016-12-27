@@ -28,47 +28,16 @@ use CertUnlp\NgenBundle\Entity\NetworkAdmin;
 
 class NetworkAdminFrontendController extends Controller {
 
+    public function getFrontendController() {
+        return $this->get('cert_unlp.ngen.network.admin.frontend.controller');
+    }
+
     /**
      * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_network_admin_frontend_home")
      */
     public function homeAction(Request $request) {
-        $em = $this->get('doctrine.orm.entity_manager');
-        $dql = "SELECT na "
-                . "FROM CertUnlpNgenBundle:NetworkAdmin na";
-        $query = $em->createQuery($dql);
-
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-                $query, $request->query->get('page', 1), 7
-                , array('defaultSortFieldName' => 'na.name', 'defaultSortDirection' => 'asc')
-        );
-
-        return array('networkAdmins' => $pagination);
-    }
-
-    /**
-     * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/networkAdminForm.html.twig")
-     * @Route("/new", name="cert_unlp_ngen_network_new_network_admin")
-     */
-    public function newNetworkAdminAction(Request $request) {
-        return array('form' => $this->createForm(new NetworkAdminType()), 'method' => 'POST');
-    }
-
-    /**
-     * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/networkAdminForm.html.twig")
-     * @Route("{id}/edit", name="cert_unlp_ngen_network_edit_network_admin")
-     */
-    public function editNetworkAdminAction(NetworkAdmin $networkAdmin) {
-        return array('form' => $this->createForm(new NetworkAdminType(), $networkAdmin), 'method' => 'PATCH');
-    }
-
-    /**
-     * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/networkAdminDetail.html.twig")
-     * @Route("{id}/detail", name="cert_unlp_ngen_network_detail_network_admin")
-     */
-    public function datailNetworkAdminAction(NetworkAdmin $networkAdmin) {
-        return array('networkAdmin' => $networkAdmin);
+        return $this->getFrontendController()->homeEntity($request, 'NetworkAdmin');
     }
 
     /**
@@ -76,19 +45,31 @@ class NetworkAdminFrontendController extends Controller {
      * @Route("search", name="cert_unlp_ngen_network_search_network_admin")
      */
     public function searchNetworkAdminAction(Request $request) {
-        $finder = $this->container->get('fos_elastica.finder.networks.network');
+        return $this->getFrontendController()->searchEntity($request);
+    }
 
-        $results = $finder->find($request->get('term'));
+    /**
+     * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/networkAdminForm.html.twig")
+     * @Route("/new", name="cert_unlp_ngen_network_new_network_admin")
+     */
+    public function newNetworkAdminAction(Request $request) {
+        return $this->getFrontendController()->newEntity($request);
+    }
 
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-                $results, $request->query->get('page', 1), 7
-                , array('defaultSortFieldName' => 'i.createdAt', 'defaultSortDirection' => 'desc')
-        );
+    /**
+     * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/networkAdminForm.html.twig")
+     * @Route("{id}/edit", name="cert_unlp_ngen_network_edit_network_admin")
+     */
+    public function editNetworkAdminAction(NetworkAdmin $networkAdmin) {
+        return $this->getFrontendController()->editEntity($networkAdmin);
+    }
 
-        $pagination->setParam('term', $request->get('term'));
-
-        return array('networkAdmins' => $pagination, 'term' => $request->get('term'));
+    /**
+     * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/networkAdminDetail.html.twig")
+     * @Route("{id}/detail", name="cert_unlp_ngen_network_detail_network_admin")
+     */
+    public function detailNetworkAdminAction(NetworkAdmin $networkAdmin) {
+        return $this->getFrontendController()->detailEntity($networkAdmin);
     }
 
 }

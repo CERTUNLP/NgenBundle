@@ -15,6 +15,9 @@ var Form = Class.extend({
     setForm: function () {
         this.form = $('#' + this.getFormId());
     },
+    getFormId: function () {
+        return 'add_update_form';
+    },
     getSubmitButton: function () {
         return $('#' + this.getFormId() + ' :submit');
     },
