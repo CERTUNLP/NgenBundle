@@ -11,6 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Services\Mailer;
 
+use FOS\CommentBundle\Event\CommentPersistEvent;
+
 class ExternalIncidentMailer extends IncidentMailer {
 
     public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, $commentManager, $environment) {
@@ -20,6 +22,13 @@ class ExternalIncidentMailer extends IncidentMailer {
 
     public function getMailSubject() {
         return '[CERTunlp] Incident report about "%s" on %s [ID:%s]';
+    }
+
+    public function onCommentPrePersist(CommentPersistEvent $event) {
+        if ($event->getComment()->getThread()->getIncident()->isExternal()) {
+            parent::onCommentPrePersist($event);
+        }
+        return null;
     }
 
 }

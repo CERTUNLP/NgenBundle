@@ -90,6 +90,7 @@ class ExternalIncident extends Incident {
      * @JMS\Groups({"api"})
      * */
     protected $slug;
+
 //
 //    /**
 //     * Set network
@@ -251,6 +252,14 @@ class ExternalIncident extends Incident {
      */
     public function getEmails() {
         return $this->abuse_entity_emails;
+    }
+
+    public function isInternal() {
+        return false;
+    }
+
+    public function isExternal() {
+        return true;
     }
 
 }
