@@ -1,0 +1,40 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% extends 'CertUnlpNgenBundle::Incident/Frontend/home.html.twig' %}
+{% block sideBar_search_path %}{{path('cert_unlp_ngen_internal_incident_search_incident')}}{% endblock %}
+
+{% block content_header %}
+    <h1 class="page-header">{{icon('arrow-circle-down fa-fw')}} Internal incidents</h1>
+{% endblock %}
+{% block list_header %}
+    <strong>{{icon('arrow-circle-down fa-fw')}} Internal incidents</strong>
+{% endblock %}
+{% block add_incident %}
+    <a class="btn btn-default btn-xs" href="{{path('cert_unlp_ngen_internal_incident_frontend_new_incident')}}">
+        {{icon('plus-circle fa-fw')}}add incident
+    </a>
+{% endblock %}
+{% block list_body %}
+    {% include 'CertUnlpNgenBundle:InternalIncident:Frontend/list/incidentListRow.html.twig' with {'incident': incident} %}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+    '@CertUnlpNgenBundle/Resources/public/js/incident/InternalIncident.js'
+    '@CertUnlpNgenBundle/Resources/public/js/incident/InternalIncidentApi.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+        var internalIncidentApi = new InternalIncidentApi("{{path("api_2_get")}}/", "{{app.user.apiKey}}");
+        var internalIncident = new InternalIncident();
+    </script>
+{% endblock %}

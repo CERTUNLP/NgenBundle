@@ -1,0 +1,74 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+We would like to inform you that we have detected that the <em>host</em> {{incident.hostAddress}} has possible been attacked trough the OpenSSL vulnerability, known as "<a href="http://heartbleed.com/">Heartbleed</a>".
+
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Related issues</p>
+
+This vulnerability allows an attacker to read part of the memory of a client or server, possibly compromising sensible data.
+
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">How to verify the issue</p>
+
+To verify the vulnerability, access the following site and follow the instructions
+
+<div class = "destacated">
+
+<pre><code>https://filippo.io/Heartbleed/
+</code></pre>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recommendations_content %}
+
+
+<p class="lead">Recommendations</p>
+
+We recommend an immediate  upgrade of the OpenSSL library on the compromised host, and reboot all the services linked to the library.
+The SSL certificate on the host could have been compromised, therefore we recommend generating a new one.
+
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">For more information</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><p><a href="https://www.openssl.org/news/secadv_20140407.txt">https://www.openssl.org/news/secadv_20140407.txt</a></p></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

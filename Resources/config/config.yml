@@ -4,6 +4,13 @@
 # 
 # This source file is subject to the GPL v3.0 license that is bundled
 # with this source code in the file LICENSE.
+imports:
+    - { resource: elastica_config.yml }
+    
+framework:
+    http_method_override: true
+    translator: ~
+    
 assetic:
     filters:
         less:
@@ -23,15 +30,16 @@ swiftmailer:
             sender_address: "%cert_unlp.ngen.incident.mailer.sender_address%"
             username:  "%cert_unlp.ngen.incident.mailer.username%"
             password:  "%cert_unlp.ngen.incident.mailer.password%"
-            
+            encryption: tls            
 doctrine:
     orm:
         auto_mapping: true
-        query_cache_driver:    apc
-        metadata_cache_driver: apc
+#        query_cache_driver:    apc
+#        metadata_cache_driver: apc
         entity_listener_resolver: cert_unlp.ngen.doctrine.entity_listener_resolver
         resolve_target_entities:
-            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\Incident 
+            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\InternalIncident 
+            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\ExternalIncident 
             CertUnlp\NgenBundle\Model\ReporterInterface: CertUnlp\NgenBundle\Entity\User 
             CertUnlp\NgenBundle\Model\NetworkInterface: CertUnlp\NgenBundle\Entity\Network 
         dql:
@@ -50,7 +58,7 @@ fos_rest:
 #        json: true
     body_listener: true
     view:
-        view_response_listener: 'force'
+        view_response_listener: true
         formats:
             xml:  true
             json: true
@@ -64,7 +72,7 @@ fos_rest:
     format_listener:
         rules:
             - { path: ^/api/v1/incidents/(.*)/report/html, priorities: [html], fallback_format: ~ ,prefer_extension: true}
-            - { path: ^/api/v1/, priorities: [json, xml], fallback_format: ~ ,prefer_extension: true}
+            - { path: ^/api/v1/, priorities: json, fallback_format: ~ , prefer_extension: true}
             - { path: '^/', stop: true }
     exception:
         codes:
@@ -100,134 +108,6 @@ knp_markdown:
     parser:
         service: cert_unlp.ngen.incident.report.markdown.parser 
         
-fos_elastica:
-    clients:
-        default: { host: localhost, port: 9200 }
-    indexes:
-        incidents:
-            types:
-                incident:
-                    mappings:
-                        id: ~
-                        hostAddress: ~
-                        date: 
-                            type: date
-                        lastTimeDetected:
-                            type: date
-                        createdAt: 
-                            type: date
-                        updatedAt: 
-                            type: date
-                        isClosed:
-                            type: boolean
-                        evidence_file_path: ~
-                        network:
-                            type: "object"
-                            properties:
-                                ip: ~
-                                ipMask: ~
-                                isActive:
-                                    type: boolean
-                                networkAdmin:
-                                    type: "object"
-                                    properties:
-                                        slug: ~
-                                        email: ~
-                                        name: ~
-                                        isActive:
-                                            type: boolean
-                                academicUnit:
-                                    type: "object"
-                                    properties:
-                                        slug: ~
-                                        name: ~
-                        networkAdmin:
-                                    type: "object"
-                                    properties:
-                                        slug: ~
-                                        email: ~
-                                        name: ~
-                                        isActive:
-                                            type: boolean
-                        state:
-                            type: "object"
-                            properties:
-                                slug: ~
-                                name: ~
-                        feed:
-                            type: "object"
-                            properties:
-                                slug: ~
-                                name: ~
-                        reporter:
-                            type: "object"
-                            properties:
-                                slug: ~
-                                name: ~
-                                lastname: ~
-                                email: ~
-                                username: ~
-                                isActive:
-                                    type: boolean
-                                createdAt:
-                                    type: date
-                                updatedAt:
-                                    type: date
-                        type:
-                            type: "object"
-                            properties:
-                                slug: ~
-                                name: ~
-                    persistence:
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
-                        driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Incident
-                        provider: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
-                        finder: ~
-        networks:
-            types:
-                network:
-                    mappings:
-                        id: ~
-                        ip: ~
-                        ipMask: ~
-                        createdAt: 
-                            type: date
-                        updatedAt: 
-                            type: date
-                        isActive:
-                            type: boolean
-                        networkAdmin:
-                            type: "object"
-                            properties:
-                                slug: ~
-                                email: ~
-                                name: ~
-                                isActive:
-                                    type: boolean
-                        academicUnit:
-                            type: "object"
-                            properties:
-                                slug: ~
-                                name: ~
-                    persistence:
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
-                        driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Network
-                        provider: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
-                        finder: ~
 fos_comment:
     db_driver: orm
     class:

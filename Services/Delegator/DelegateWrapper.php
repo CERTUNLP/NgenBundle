@@ -22,9 +22,13 @@ class DelegateWrapper implements DelegateInterface {
 
     private $delegateKey;
     private $delegate;
+    private $alias;
+    private $priority;
 
-    public function __construct($delegate) {
+    public function __construct($delegate, $alias = null, $priority = null) {
         $this->setDelegate($delegate);
+        $this->setAlias($alias);
+        $this->setPriority($priority);
     }
 
     public function getDelegate() {
@@ -36,8 +40,24 @@ class DelegateWrapper implements DelegateInterface {
         $this->delegate = $delegate;
     }
 
+    public function getAlias() {
+        return $this->alias;
+    }
+
+    public function setAlias($alias) {
+        $this->alias = $alias;
+    }
+
+    public function getPriority() {
+        return $this->priority;
+    }
+
+    public function setPriority($priority) {
+        $this->priority = $priority;
+    }
+
     public function getDelegateKey() {
-        return $this->delegateKey;
+        return $this->delegateKey . ($this->getAlias() ? ('.' . $this->getAlias()) : '');
     }
 
     public function setDelegateKey($delegateKey) {

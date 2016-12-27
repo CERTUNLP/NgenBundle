@@ -16,9 +16,6 @@ var IncidentForm = Form.extend({
     setIncidentId: function () {
         this.incidentId = $('#hostAddress').val() + "/" + $('#date').val() + "/" + $('#type').val();
     },
-    getFormId: function () {
-        return 'incident_add_update_form';
-    },
     getObjectBrief: function () {
         return 'incident';
     },
@@ -36,6 +33,11 @@ var IncidentForm = Form.extend({
     loadReportEditArea: function (data, response) {
         $("#reportEdit").text(response.responseText);
         initTinyMCE();
+        tinymce.activeEditor.on('change', function (ed) {
+            $("#reportEdit").val(ed.target.getContent());
+        });
+
+
     },
     editReportChangeText: function (data, response) {
         if (!$("#reportEdit").hasClass('hidden')) {
@@ -51,7 +53,6 @@ var IncidentForm = Form.extend({
             if ($("#reportEdit").hasClass('hidden')) {
                 $("#reportEdit").removeClass('hidden');
                 $("#reportEdit").addClass('tinymce');
-
                 $.publish('/cert_unlp/incident/report/html', [$('#type').val(), $.proxy(this.loadReportEditArea, this)]);
                 $("#reportEdit").parent().siblings().removeClass('hidden');
             } else {
