@@ -12,7 +12,7 @@ import configparser
 config = configparser.ConfigParser()
 config.read(os.path.dirname(os.path.abspath(__file__)) + '/settings.cfg')
 
-input_stream = io.TextIOWrapper(sys.stdin.buffer, encoding='latin1')
+input_stream = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
 raw_email = input_stream.read()
 
 message = email.message_from_string(raw_email)
