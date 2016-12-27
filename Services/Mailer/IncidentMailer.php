@@ -58,7 +58,7 @@ class IncidentMailer implements IncidentMailerInterface {
                 $html = $this->getBody($incident);
                 $text = strip_tags($this->getBody($incident, 'txt'));
                 $message = \Swift_Message::newInstance()
-                        ->setSubject(sprintf($this->environment . $this->getMailSubject(), $incident->getType()->getName(), $incident->getHostAddress(), $incident->getId()))
+                        ->setSubject(sprintf($this->mailSubject(), $incident->getType()->getName(), $incident->getHostAddress(), $incident->getId()))
                         ->setFrom($this->cert_email)
                         ->setCc($this->cert_email)
                         ->setTo($incident->getEmails())
@@ -84,7 +84,7 @@ class IncidentMailer implements IncidentMailerInterface {
         $html = $this->getReplyBody($incident, $body);
         $text = strip_tags($this->getReplyBody($incident, $body, 'txt'));
         $message = \Swift_Message::newInstance()
-                ->setSubject(sprintf('Comment:[CERTunlp] Incidente de tipo "%s" en el host %s [ID:%s]', $incident->getType()->getName(), $incident->getHostAddress(), $incident->getId()))
+                ->setSubject(sprintf($this->replySubject(), $incident->getType()->getName(), $incident->getHostAddress(), $incident->getId()))
                 ->setFrom($this->cert_email)
                 ->setBody($text)
                 ->addPart($html, 'text/html');
@@ -129,7 +129,19 @@ class IncidentMailer implements IncidentMailerInterface {
         $this->send_report_reply($comment->getThread()->getIncident(), $comment->getBody(), !$comment->getNotifyToAdmin());
     }
 
+    public function mailSubject() {
+        return $this->environment . $this->getMailSubject();
+    }
+
+    public function replySubject() {
+        return 'Comment:' . $this->mailSubject();
+    }
+
     public function getMailSubject() {
+        return '';
+    }
+
+    public function getReplySubject() {
         return '';
     }
 

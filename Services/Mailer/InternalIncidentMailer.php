@@ -11,6 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Services\Mailer;
 
+use FOS\CommentBundle\Event\CommentPersistEvent;
+
 class InternalIncidentMailer extends IncidentMailer {
 
     public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, $commentManager, $environment) {
@@ -20,6 +22,13 @@ class InternalIncidentMailer extends IncidentMailer {
 
     public function getMailSubject() {
         return '[CERTunlp] Incidente de tipo "%s" en el host %s [ID:%s]';
+    }
+
+    public function onCommentPrePersist(CommentPersistEvent $event) {
+        if ($event->getComment()->getThread()->getIncident()->isInternal()) {
+            parent::onCommentPrePersist($event);
+        }
+        return null;
     }
 
 }

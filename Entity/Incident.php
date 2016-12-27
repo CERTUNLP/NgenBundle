@@ -659,4 +659,12 @@ class Incident implements IncidentInterface {
         return [];
     }
 
+    public function isInternal() {
+        return false;
+    }
+
+    public function isExternal() {
+        return false;
+    }
+
 }

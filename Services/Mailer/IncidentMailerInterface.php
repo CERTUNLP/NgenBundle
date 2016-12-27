@@ -24,6 +24,8 @@ interface IncidentMailerInterface {
 
     public function getMailSubject();
 
+    public function getReplySubject();
+
     public function getBody(IncidentInterface $incident, $type = 'html');
 
     public function getReplyBody(IncidentInterface $incident, $body = '', $type = 'html');

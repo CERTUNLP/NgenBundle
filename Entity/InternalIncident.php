@@ -142,4 +142,12 @@ class InternalIncident extends Incident {
         return [$this->getNetworkAdmin()->getEmail()];
     }
 
+    public function isInternal() {
+        return true;
+    }
+
+    public function isExternal() {
+        return false;
+    }
+
 }
