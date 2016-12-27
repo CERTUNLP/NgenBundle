@@ -1,0 +1,45 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+We would like to inform you that we have been notified that the <em>host/server</em> {{incident.hostAddress}} has the <strong>Simple Network Management Protocol</strong> (SNMP - UDP port 161) service, accessible from the Internet.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Related issues</p>
+
+The <em>host</em> under your administration could be used to perform attacks, such as:
+
+<ul>
+<li><p>Obtain unauthorized remote access and information.</p></li>
+<li><p>Brute force attacks.</p></li>
+</ul>
+
+{% endblock %}
+
+
+{% block recommendations_content %}
+
+
+<p class="lead">Recommendations</p>
+
+We recommend:
+
+<em>TODO agregar a castellano, https://www.bitag.org/report-snmp-ddos-attacks.php</em>
+* Users should be allowed and encouraged to disable SNMP.
+* End-user devices should not be configured with SNMP on by default.
+* End-user devices should not be routinely configured with the “public” SNMP community string.
+* Establish firewall rules to filter unauthorized queries.
+
+{% endblock %}

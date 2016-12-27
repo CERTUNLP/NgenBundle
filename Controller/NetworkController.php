@@ -13,7 +13,6 @@ namespace CertUnlp\NgenBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -27,6 +26,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
 
 class NetworkController extends FOSRestController {
+
+    public function getApiController() {
+
+        return $this->container->get('cert_unlp.ngen.network.api.controller');
+    }
 
     /**
      * List all networks.
@@ -59,8 +63,8 @@ class NetworkController extends FOSRestController {
      *   }
      * )
      *
-     * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing networks.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many networks to return.")
+     * @FOS\RequestParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing networks.")
+     * @FOS\RequestParam(name="limit", requirements="\d+", default="5", description="How many networks to return.")
      *
      * @FOS\View(
      *  templateVar="networks"
@@ -72,11 +76,7 @@ class NetworkController extends FOSRestController {
      * @return array
      */
     public function getNetworksAction(Request $request, ParamFetcherInterface $paramFetcher) {
-        $offset = $paramFetcher->get('offset');
-        $offset = null == $offset ? 0 : $offset;
-        $limit = $paramFetcher->get('limit');
-
-        return $this->container->get('cert_unlp.ngen.network.handler')->all([], [], $limit, $offset);
+        return $this->getApiController()->getAll($request, $paramFetcher);
     }
 
     /**
@@ -98,11 +98,12 @@ class NetworkController extends FOSRestController {
      *
      * @throws NotFoundHttpException when network not exist
      *
-     * @FOS\Get("/networks/{ip}/{ipMask}")
-     *
-     * @ParamConverter("network", class="CertUnlpNgenBundle:Network", options={"repository_method" = "findOneBy"})
-     * @FOS\QueryParam(name="ip",strict=true ,requirements="[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", description="An IP.")
-     * @FOS\QueryParam(name="ipMask",strict=true ,requirements="[0-32]", description="A decimal ip mask.")
+     * @FOS\Get("/networks/{ip}/{ipMask}",requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ipMask"="^[1-3]?[0-9]$"} )
+     * 
+     * @FOS\View(
+     *  templateVar="network"
+     * )     
+     *  @ParamConverter("network", class="CertUnlpNgenBundle:Network", options={"repository_method" = "findOneBy"})
      */
     public function getNetworkAction(Network $network) {
         return $network;
@@ -121,25 +122,15 @@ class NetworkController extends FOSRestController {
      *   }
      * )
      *
-     *
+     * @FOS\View(
+     *  templateVar = "network"
+     * )
      * @param Request $request the request object
      *
      * @return FormTypeInterface|View
      */
     public function postNetworkAction(Request $request) {
-        try {
-            $network = $this->container->get('cert_unlp.ngen.network.handler')->post(
-                    $request->request->all()
-            );
-            $routeOptions = array(
-                'ip' => $network->getIp(),
-                'ipMask' => $network->getIpMask(),
-                '_format' => $request->get('_format')
-            );
-            return $this->routeRedirectView('api_1_get_network', $routeOptions, Codes::HTTP_CREATED);
-        } catch (InvalidFormException $exception) {
-            return $exception->getForm();
-        }
+        return $this->getApiController()->post($request);
     }
 
     /**
@@ -155,8 +146,7 @@ class NetworkController extends FOSRestController {
      * )
      *
      * @FOS\View(
-     *  template = "CertUnlpNgenBundle:Network:editNetwork.html.twig",
-     *  templateVar = "form"
+     *  templateVar = "network"
      * )
      *
      * @param Request $request the request object
@@ -165,51 +155,12 @@ class NetworkController extends FOSRestController {
      * @return FormTypeInterface|View
      *
      * @throws NotFoundHttpException when network not exist
-     * @FOS\Patch("/networks/{ip}/{ipMask}")
+     * @FOS\Patch("/networks/{ip}/{ipMask}", requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ipMask"="^[1-3]?[0-9]$"} )
      *
      * @ParamConverter("network", class="CertUnlpNgenBundle:Network", options={"repository_method" = "findOneBy"})
-     * @FOS\QueryParam(name="ip",strict=true ,requirements="[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", description="An IP.")
-     * @FOS\QueryParam(name="ipMask",strict=true ,requirements="[0-32]", description="A decimal ip mask.")
      */
     public function patchNetworkAction(Request $request, Network $network) {
-        try {
-
-            $parameters = $request->request->all();
-            unset($parameters['_method'], $parameters['force_edit'], $parameters['reactivate']);
-
-
-            $DBnetwork = $this->container->get('cert_unlp.ngen.network.handler')->get(['ip' => $request->request->get('ip'), 'ipMask' => $request->request->get('ipMask')]);
-
-            if ($request->get('reactivate')) {
-                $network->setIsActive(TRUE);
-            }
-
-            if (!$network->equals($DBnetwork)) {
-                if ($request->get('force_edit')) {
-                    $statusCode = Codes::HTTP_NO_CONTENT;
-
-                    $network = $this->container->get('cert_unlp.ngen.network.handler')->patch($network, $parameters);
-                } else {
-                    $statusCode = Codes::HTTP_CREATED;
-                    $this->container->get('cert_unlp.ngen.network.handler')->delete($network);
-                    $network = $this->container->get('cert_unlp.ngen.network.handler')->post($parameters);
-                }
-            } else {
-                $statusCode = Codes::HTTP_NO_CONTENT;
-
-                $network = $this->container->get('cert_unlp.ngen.network.handler')->patch($network, $parameters);
-            }
-
-            $routeOptions = array(
-                'ip' => $network->getIp(),
-                'ipMask' => $network->getIpMask(),
-                '_format' => $request->get('_format')
-            );
-            return $this->routeRedirectView('api_1_get_network', $routeOptions, $statusCode);
-        } catch (InvalidFormException $exception) {
-
-            return $exception->getForm();
-        }
+        return $this->getApiController()->patch($request, $network, true);
     }
 
     /**
@@ -224,9 +175,6 @@ class NetworkController extends FOSRestController {
      *   }
      * )
      *
-     * @FOS\View(
-     *  statusCode = Codes::HTTP_BAD_REQUEST,
-     * )
      *
      * @param Request $request the request object
      * @param int     $id      the network id
@@ -235,31 +183,15 @@ class NetworkController extends FOSRestController {
      *
      * @throws NotFoundHttpException when network not exist
      * 
-     * @FOS\Patch("/networks/{ip}/{ipMask}/activate")
-     *
+     * @FOS\Patch("/networks/{ip}/{ipMask}/activate", requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ipMask"="^[1-3]?[0-9]$"} )
+     * @FOS\View(
+     *  templateVar = "network"
+     * )
      * @ParamConverter("network", class="CertUnlpNgenBundle:Network", options={"repository_method" = "findOneBy"})
-     * @FOS\QueryParam(name="ip",strict=true ,requirements="[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", description="An IP.")
-     * @FOS\QueryParam(name="ipMask",strict=true ,requirements="[0-32]", description="A decimal ip mask.")
      */
     public function patchNetworkActivateAction(Request $request, Network $network) {
 
-        try {
-            $network = $this->container->get('cert_unlp.ngen.network.handler')->activate($network);
-            $routeOptions = array(
-                'ip' => $network->getIp(),
-                'ipMask' => $network->getIpMask(),
-                '_format' => $request->get('_format')
-            );
-            $routeOptions = array(
-                'ip' => $network->getIp(),
-                'ipMask' => $network->getIpMask(),
-                '_format' => $request->get('_format')
-            );
-
-            return $this->routeRedirectView('api_1_get_network', $routeOptions, Codes::HTTP_NO_CONTENT);
-        } catch (Exception $exception) {
-            return $this->routeRedirectView('api_1_get_network', $routeOptions, Codes::HTTP_BAD_REQUEST);
-        }
+        return $this->getApiController()->activate($request, $network);
     }
 
     /**
@@ -274,9 +206,6 @@ class NetworkController extends FOSRestController {
      *   }
      * )
      *
-     * @FOS\View(
-     *  statusCode = Codes::HTTP_BAD_REQUEST,
-     * )
      *
      * @param Request $request the request object
      * @param int     $id      the network id
@@ -285,27 +214,15 @@ class NetworkController extends FOSRestController {
      *
      * @throws NotFoundHttpException when network not exist
      * 
-     * @FOS\Patch("/networks/{ip}/{ipMask}/desactivate")
-     *
+     * @FOS\Patch("/networks/{ip}/{ipMask}/desactivate", requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ipMask"="^[1-3]?[0-9]$"} )
+     * @FOS\View(
+     *  templateVar = "network"
+     * )
      * @ParamConverter("network", class="CertUnlpNgenBundle:Network", options={"repository_method" = "findOneBy"})
-     * @FOS\QueryParam(name="ip",strict=true ,requirements="[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", description="An IP.")
-     * @FOS\QueryParam(name="ipMask",strict=true ,requirements="[0-32]", description="A decimal ip mask.")
      */
     public function patchNetworkDesactivateAction(Request $request, Network $network) {
 
-        try {
-            $network = $this->container->get('cert_unlp.ngen.network.handler')->delete($network);
-
-            $routeOptions = array(
-                'ip' => $network->getIp(),
-                'ipMask' => $network->getIpMask(),
-                '_format' => $request->get('_format')
-            );
-
-            return $this->routeRedirectView('api_1_get_network', $routeOptions, Codes::HTTP_NO_CONTENT);
-        } catch (Exception $exception) {
-            return $this->routeRedirectView('api_1_get_network', $routeOptions, Codes::HTTP_BAD_REQUEST);
-        }
+        return $this->getApiController()->desactivate($request, $network);
     }
 
 }

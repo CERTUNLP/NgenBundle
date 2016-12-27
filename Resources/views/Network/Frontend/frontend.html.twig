@@ -14,10 +14,10 @@
     <h1 class="page-header">{{icon('share-alt fa-fw')}} Networks</h1>
 {% endblock %}
 
-{% block sideBar_search_path %}{{path('cert_unlp_ngen_network_search_network')}}{% endblock %}
+{% block sideBar_search_path %}{{path('cert_unlp_ngen_network_frontend_home')}}{% endblock %}
 
 {% block content_body %}
-    {% include 'CertUnlpNgenBundle:Network:Frontend/list/networkList.html.twig' with {'networks': networks} %}
+    {% include 'CertUnlpNgenBundle:Network:Frontend/list/networkList.html.twig' with {'networks': objects} %}
 {% endblock %}
 
 
@@ -25,12 +25,13 @@
     {{ parent() }}
 
     {% javascripts
-    '@CertUnlpNgenBundle/Resources/public/js/network/*'
+    '@CertUnlpNgenBundle/Resources/public/js/network/Network.js'
+    '@CertUnlpNgenBundle/Resources/public/js/network/NetworkApi.js'
     %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
     <script>
-        var incident = new Network("{{path("api_1_get")}}/", "{{app.user.apiKey}}");
+        var network = new Network();
+        var network_api = new NetworkApi("{{path("api_1_get")}}/", "{{app.user.apiKey}}");
     </script>
 {% endblock %}

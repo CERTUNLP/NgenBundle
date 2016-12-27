@@ -1,0 +1,76 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+We would like to inform you that we have been detected that the <em>host</em> {{incident.hostAddress}} has possible been attacked using the known vulnerability ShellShock.
+
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Related issues</p>
+
+This vulnerability allows an attacker to read the device memory, possibly compromising sensitive information such as private SSL keys.
+
+
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">How to verify the issue</p>
+
+Due to the report possible being a false positive, we recommend to verify the existence of the vulnerability using the following commands:
+
+<div class = "destacated">
+
+<pre><code>env x='() { :;}; echo vulnerable' bash -c "echo this is a test"
+</code></pre>
+
+</div>
+
+If the execution of the previous command returns the string "vulnerable", is most likely that the host has been compromised.
+
+{% endblock %}
+
+
+{% block recommendations_content %}
+
+
+<p class="lead">Recommendations</p>
+
+We recommend upgrading bash in an urgent manner, and perform a study to analyze possible backdoors in the compromised host.
+
+
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">For more information</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><p><a href="http://blog.segu-info.com.ar/2014/09/faq-de-shellshock-exploit-rce-ddos-y.html">http://blog.segu-info.com.ar/2014/09/faq-de-shellshock-exploit-rce-ddos-y.html</a></p></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

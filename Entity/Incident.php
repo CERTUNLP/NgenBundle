@@ -21,16 +21,15 @@ use CertUnlp\NgenBundle\Model\NetworkInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\File;
 use JMS\Serializer\Annotation as JMS;
+use Doctrine\ORM\Mapping\MappedSuperclass;
 
 /**
- * Incident
- *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Entity\IncidentRepository")
+ * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
- * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Listener\IncidentListener" })
  * @JMS\ExclusionPolicy("all")
- * 
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"incident"="incident","internal" = "InternalIncident", "external" = "ExternalIncident"})
  */
 class Incident implements IncidentInterface {
 
@@ -42,18 +41,7 @@ class Incident implements IncidentInterface {
      * @ORM\GeneratedValue(strategy="AUTO")
      * @JMS\Expose
      */
-    private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="host_address", type="string", length=20)
-     * @NetworkAssert\Ip
-     * @NetworkAssert\ValidNetwork
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    private $hostAddress;
+    protected $id;
 
     /**
      * @var \DateTime
@@ -63,7 +51,7 @@ class Incident implements IncidentInterface {
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      * @JMS\Groups({"api"})
      */
-    private $date;
+    protected $date;
 
     /**
      * @var \DateTime
@@ -73,7 +61,7 @@ class Incident implements IncidentInterface {
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      * @JMS\Groups({"api"})
      */
-    private $lastTimeDetected;
+    protected $lastTimeDetected;
 
     /**
      * @var \DateTime
@@ -83,17 +71,7 @@ class Incident implements IncidentInterface {
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      * @JMS\Groups({"api"})
      */
-    private $renotificationDate;
-
-    /**
-     * @var string
-     * 
-     * @Gedmo\Slug(fields={"hostAddress"},separator="_")     
-     * @ORM\Column(name="slug", type="string", length=100,nullable=true,unique=true)
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     * */
-    private $slug;
+    protected $renotificationDate;
 
     /**
      * @var \DateTime
@@ -103,7 +81,7 @@ class Incident implements IncidentInterface {
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      * @JMS\Groups({"api"})
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime
@@ -113,32 +91,12 @@ class Incident implements IncidentInterface {
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      * @JMS\Groups({"api"})
      */
-    private $updatedAt;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Model\NetworkInterface", inversedBy="incidents") 
-     * @JMS\Expose
-     */
-    private $network;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\NetworkAdmin", inversedBy="incidents")    
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    private $networkAdmin;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\AcademicUnit", inversedBy="incidents") 
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    private $academicUnit;
+    protected $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Model\ReporterInterface", inversedBy="incidents") 
      */
-    private $reporter;
+    protected $reporter;
 
     /**
      * @var boolean
@@ -147,66 +105,67 @@ class Incident implements IncidentInterface {
      * @JMS\Expose
      * @JMS\Type("boolean")
      */
-    private $isClosed = false;
+    protected $isClosed = false;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentType")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentType",inversedBy="incidents")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    private $type;
+    protected $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentFeed") 
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentFeed", inversedBy="incidents") 
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
+     * @@Assert\NotNull
      */
-    private $feed;
+    protected $feed;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentState") 
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentState", inversedBy="incidents") 
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    private $state;
+    protected $state;
 
     /**
-     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentCommentThread",mappedBy="incident", fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentCommentThread",mappedBy="incident",fetch="EXTRA_LAZY"))
      */
     private $comment_thread;
-    
+
     /**
      * @Assert\File(maxSize = "500k")
      */
-    private $evidence_file;
+    protected $evidence_file;
 
     /**
      * @ORM\Column(name="evidence_file_path", type="string",nullable=true)
      */
-    private $evidence_file_path;
+    protected $evidence_file_path;
 
     /**
      * @ORM\Column(name="report_message_id", type="string",nullable=true)
      */
-    private $report_message_id;
+    protected $report_message_id;
 
     /**
      * @var $evidence_file_temp
      */
-    private $evidence_file_temp;
+    protected $evidence_file_temp;
 
     /**
      * @var $sendReport
      */
-    private $sendReport;
+    protected $sendReport;
 
     /**
      * @var $report_edit
      */
-    private $report_edit;
+    protected $report_edit;
 
     /**
      * Get id
@@ -310,29 +269,6 @@ class Incident implements IncidentInterface {
     }
 
     /**
-     * Set network
-     *
-     * @param \CertUnlp\NgenBundle\Model\NetworkInterface $network
-     * @return Incident
-     */
-    public function setNetwork(NetworkInterface $network = null) {
-        $this->network = $network;
-        $this->setNetworkAdmin($network->getNetworkAdmin());
-        $this->setAcademicUnit($network->getAcademicUnit());
-
-        return $this;
-    }
-
-    /**
-     * Get network
-     *
-     * @return \CertUnlp\NgenBundle\Model\NetworkInterface} 
-     */
-    public function getNetwork() {
-        return $this->network;
-    }
-
-    /**
      * Set type
      *
      * @param \CertUnlp\NgenBundle\Entity\IncidentType $type
@@ -398,7 +334,6 @@ class Incident implements IncidentInterface {
     public function getReporter() {
         return $this->reporter;
     }
-
 
     public function close() {
         $this->setIsClosed(true);
@@ -659,27 +594,6 @@ class Incident implements IncidentInterface {
     }
 
     /**
-     * Set networkAdmin
-     *
-     * @param \CertUnlp\NgenBundle\Entity\NetworkAdmin $networkAdmin
-     * @return Incident
-     */
-    public function setNetworkAdmin(\CertUnlp\NgenBundle\Entity\NetworkAdmin $networkAdmin = null) {
-        $this->networkAdmin = $networkAdmin;
-
-        return $this;
-    }
-
-    /**
-     * Get networkAdmin
-     *
-     * @return \CertUnlp\NgenBundle\Entity\NetworkAdmin 
-     */
-    public function getNetworkAdmin() {
-        return $this->networkAdmin;
-    }
-
-    /**
      * Set report_message_id
      *
      * @param string $reportMessageId
@@ -701,9 +615,29 @@ class Incident implements IncidentInterface {
     }
 
     /**
-     * Set comment_thread
+     * Set network
+     *
+     * @param \CertUnlp\NgenBundle\Model\NetworkInterface $network
+     * @return Incident
+     */
+    public function setNetwork(NetworkInterface $network = null) {
+        
+    }
+
+    /**
+     * Get network
+     *
+     * @return \CertUnlp\NgenBundle\Model\NetworkInterface
+     */
+    public function getNetwork() {
+        
+    }
+
+    /**
+     * Set commentThread
      *
      * @param \CertUnlp\NgenBundle\Entity\IncidentCommentThread $commentThread
+     *
      * @return Incident
      */
     public function setCommentThread(\CertUnlp\NgenBundle\Entity\IncidentCommentThread $commentThread = null) {
@@ -713,33 +647,24 @@ class Incident implements IncidentInterface {
     }
 
     /**
-     * Get comment_thread
+     * Get commentThread
      *
-     * @return \CertUnlp\NgenBundle\Entity\IncidentCommentThread 
+     * @return \CertUnlp\NgenBundle\Entity\IncidentCommentThread
      */
     public function getCommentThread() {
         return $this->comment_thread;
     }
 
-    /**
-     * Set academicUnit
-     *
-     * @param \CertUnlp\NgenBundle\Entity\AcademicUnit $academicUnit
-     * @return Incident
-     */
-    public function setAcademicUnit(\CertUnlp\NgenBundle\Entity\AcademicUnit $academicUnit = null) {
-        $this->academicUnit = $academicUnit;
-
-        return $this;
+    public function getEmails() {
+        return [];
     }
 
-    /**
-     * Get academicUnit
-     *
-     * @return \CertUnlp\NgenBundle\Entity\AcademicUnit 
-     */
-    public function getAcademicUnit() {
-        return $this->academicUnit;
+    public function isInternal() {
+        return false;
+    }
+
+    public function isExternal() {
+        return false;
     }
 
 }

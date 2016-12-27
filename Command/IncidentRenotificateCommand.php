@@ -30,8 +30,6 @@ class IncidentRenotificateCommand extends ContainerAwareCommand {
         $output->writeln('[incidents]: Starting.');
         $output->writeln('[incidents]: Renotificating incidents...');
         $incidents = $this->getContainer()->get('cert_unlp.ngen.incident.handler')->renotificateIncidents();
-        var_dump($incidents);
-        die;
 //        foreach ($incidents as $incident) {
 //            $incident->setSendReport(true);
 //            $this->getContainer()->get('cert_unlp.incident.mailer')->send_report($incident);

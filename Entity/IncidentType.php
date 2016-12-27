@@ -50,11 +50,34 @@ class IncidentType {
      */
     private $slug;
 
-//    /**
-//     *  @var \Doctrine\Common\Collections\Collection
-//     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident",mappedBy="type", cascade={"persist","remove"}, fetch="EAGER")) 
-//     */
-//    private $incidents;
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     * @JMS\Expose
+     */
+    private $isActive = true;
+
+    /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="updated_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    private $updatedAt;
+
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="type", cascade={"persist","remove"}, fetch="EAGER")) */
+    private $incidents;
 
     /**
      * Constructor
@@ -118,4 +141,101 @@ class IncidentType {
         return $this->slug;
     }
 
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return Network
+     */
+    public function setIsActive($isActive) {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean 
+     */
+    public function getIsActive() {
+        return $this->isActive;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Network
+     */
+    public function setCreatedAt($createdAt) {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt() {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return Network
+     */
+    public function setUpdatedAt($updatedAt) {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt() {
+        return $this->updatedAt;
+    }
+
+
+    /**
+     * Add incident
+     *
+     * @param \CertUnlp\NgenBundle\Entity\InternalIncident $incident
+     *
+     * @return IncidentType
+     */
+    public function addIncident(\CertUnlp\NgenBundle\Entity\InternalIncident $incident)
+    {
+        $this->incidents[] = $incident;
+
+        return $this;
+    }
+
+    /**
+     * Remove incident
+     *
+     * @param \CertUnlp\NgenBundle\Entity\InternalIncident $incident
+     */
+    public function removeIncident(\CertUnlp\NgenBundle\Entity\InternalIncident $incident)
+    {
+        $this->incidents->removeElement($incident);
+    }
+
+    /**
+     * Get incidents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getIncidents()
+    {
+        return $this->incidents;
+    }
 }

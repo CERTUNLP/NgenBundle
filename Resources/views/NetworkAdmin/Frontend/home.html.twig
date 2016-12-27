@@ -9,5 +9,5 @@
 {% extends 'CertUnlpNgenBundle::NetworkAdmin/Frontend/frontend.html.twig' %}
 
 {% block content_body %}
-    {% include 'CertUnlpNgenBundle:NetworkAdmin:Frontend/list/networkAdminList.html.twig' with {'networkAdmins': networkAdmins} %}
+    {% include 'CertUnlpNgenBundle:NetworkAdmin:Frontend/list/networkAdminList.html.twig' with {'networkAdmins': objects} %}
 {% endblock %}

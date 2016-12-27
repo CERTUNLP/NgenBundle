@@ -14,7 +14,7 @@ namespace CertUnlp\NgenBundle\Validator\Constraints;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use CertUnlp\NgenBundle\Services\NetworkHandler;
+use CertUnlp\NgenBundle\Services\Api\Handler\NetworkHandler;
 
 class ValidNetworkValidator extends ConstraintValidator {
 
