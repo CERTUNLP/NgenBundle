@@ -16,7 +16,7 @@ Acceda a la siguiente página para verificar que los servicios que usted
 provee en el host son vulnerables a POODLE:
 
 ### [destacated]
-* [https://www.poodlescan.com/](https://www.poodlescan.com/)
+* [http://poodletest.ntt-security.com/](http://poodletest.ntt-security.com/)
 ### [/destacated]
 ### [/verification_content]
 

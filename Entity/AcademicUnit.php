@@ -50,10 +50,10 @@ class AcademicUnit {
      * */
     private $slug;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network",mappedBy="academicUnit", cascade={"persist","remove"}, fetch="EAGER")) */
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network",mappedBy="academic_unit", cascade={"persist","remove"}, fetch="EAGER")) */
     private $networks;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="academicUnit", cascade={"persist","remove"}, fetch="EAGER")) */
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="academic_unit", cascade={"persist","remove"}, fetch="EAGER")) */
     private $incidents;
 
     /**
@@ -152,10 +152,10 @@ class AcademicUnit {
     /**
      * Add incidents
      *
-     * @param \CertUnlp\NgenBundle\Entity\Incident $incidents
+     * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
      * @return AcademicUnit
      */
-    public function addIncident(\CertUnlp\NgenBundle\Entity\Incident $incidents) {
+    public function addIncident(\CertUnlp\NgenBundle\Model\IncidentInterface $incidents) {
         $this->incidents[] = $incidents;
 
         return $this;
@@ -164,9 +164,9 @@ class AcademicUnit {
     /**
      * Remove incidents
      *
-     * @param \CertUnlp\NgenBundle\Entity\Incident $incidents
+     * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
      */
-    public function removeIncident(\CertUnlp\NgenBundle\Entity\Incident $incidents) {
+    public function removeIncident(\CertUnlp\NgenBundle\Model\IncidentInterface $incidents) {
         $this->incidents->removeElement($incidents);
     }
 

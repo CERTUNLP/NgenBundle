@@ -92,3 +92,8 @@ app/Resources/analyzer/*
 app/Resources/incident/*
 app/Resources/feed/*
 /app/config/parameters.yml
+cache.*
+
+# -- Docker Container
+
+Docker/datadir/*

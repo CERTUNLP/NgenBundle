@@ -1,0 +1,68 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+We would like to inform you that we have been notified that the <em>host</em> {{incident.hostAddress}} is providing insecure <strong>Network Time Protocol</strong> (NTP) service by responding to <a href="https://www.us-cert.gov/ncas/alerts/TA14-013A">NTP monlist</a> commands.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Related issues</p>
+
+The <em>host</em> under your administration could be used to perform <a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplification</a> attacks to third party's, like:
+
+<ul>
+<li><p>Denial of Service attacks (DOS, DDOS).</p></li>
+</ul>
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">How to verify the issue</p>
+
+To manually verify if the service is vulnerable, use the following command:
+
+
+<div class = "destacated">
+
+<pre><code>ntpdc -n -c monlist {{incident.hostAddress}}
+</code></pre>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recommendations_content %}
+
+
+<p class="lead">Recommendations</p>
+
+Versions of  <code>ntpd</code> previous to 4.2.7 are vulnerable. Therefore, we recommend upgrading to the latest version available.
+If upgrading is not possible, as an alternative disable <code>monlist</code>.
+
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+<a href="http://www.purdue.edu/securepurdue/news/2014/advisory--ntp-amplification-attacks.cfm">More</a>
+<a href="http://www.team-cymru.org/ReadingRoom/Templates/secure-ntp-template.html">information</a>
+about how to disable <code>monlist</code>.
+
+{% endblock %}

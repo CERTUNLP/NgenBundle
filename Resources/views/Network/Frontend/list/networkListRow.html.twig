@@ -24,7 +24,7 @@
     </td>
     <td class="col-sm-1">
 
-        <div class="btn-group inline pull-left dropdown network-action-dropdown">
+        <div class="btn-group inline pull-left dropdown action-dropdown">
             <a   class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_network_detail_network',{'ip': network.ip,'ipMask':network.ipMask})}}">
                 Details
             </a>
@@ -38,11 +38,11 @@
                 </li>
 
                 <li role="presentation">
-                    <a {% if network.isActive %}style="display: none;"{% endif %} class="state-label" data-action="reactivate" data-state-name="active" role="menuitem" tabindex="-1" href="#">{{ icon('repeat alert-info')}} <span class="action-text">Reactivate</span></a>
+                    <a {% if network.isActive %}style="display: none;"{% endif %} class="state-label" data-action="reactivate" data-state-name="active" data-state-slug="active" role="menuitem" tabindex="-1" href="#">{{ icon('repeat alert-info')}} <span class="action-text">Reactivate</span></a>
                 </li>
 
                 <li role="presentation">
-                    <a {% if not network.isActive %}style="display: none;"{% endif %} class="state-label" data-action="desactivate"  data-state-name="innactive" role="menuitem" tabindex="-1" href="#">{{ icon('lock alert-success') }} <span class="action-text">Desactivate</span></a>
+                    <a {% if not network.isActive %}style="display: none;"{% endif %} class="state-label" data-action="desactivate"  data-state-name="innactive" data-state-slug="innactive" role="menuitem" tabindex="-1" href="#">{{ icon('lock alert-success') }} <span class="action-text">Desactivate</span></a>
                 </li>
             </ul>
         </div>

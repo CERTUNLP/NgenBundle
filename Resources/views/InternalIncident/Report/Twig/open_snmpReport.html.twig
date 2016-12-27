@@ -1,0 +1,46 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} dispone de un servicio SNMP (UDP 161) abierto a redes ajenas de la UNLP.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Problemas derivados</p>
+
+El host bajo su administración podría llegar a ser usado en ataques de:
+
+<ul>
+<li><p>Obtención de información de dispositivos de red en forma remota no autorizada.</p></li>
+<li><p>Configuración de dispositivos de red en forma remota no autorizada.</p></li>
+<li><p>Ataques de fuerza bruta.</p></li>
+</ul>
+
+{% endblock %}
+
+
+{% block recomendations_content %}
+
+
+<p class="lead">Recomendaciones</p>
+
+Se recomienda:
+
+<ul>
+<li><p>Deshabilitar el servicio.</p></li>
+<li><p>Establecer reglas en el firewall para denegar las consultas desde redes no autorizadas.</p></li>
+<li><p>No usar la comunidad por defecto.</p></li>
+</ul>
+
+{% endblock %}

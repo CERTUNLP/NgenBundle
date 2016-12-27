@@ -1,0 +1,59 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} se está comportando de manera sospechosa.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Problemas derivados</p>
+
+esto se puede deber a
+
+<ul>
+<li><p>El sitio web contiene software malicioso: El sitio podría instalar software malicioso a los usuarios.</p></li>
+<li><p>Sitio engañoso: El sitio web podría realizar una suplantación de identidad.</p></li>
+<li><p>El sitio contiene programas peligrosos: El sitio podría engañar usuarios para instalar programas que causen problemas cuando navegan.</p></li>
+</ul>
+
+{% endblock %}
+
+
+{% block recomendations_content %}
+
+
+<p class="lead">Recomendaciones</p>
+
+Se recomienda verificar la herramienta,aplicación o CMS que este utilizando con el fin de encotrar vulnerabilidades o malware.
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">Mas información</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><p><a href="https://www.owasp.org/index.php/Category:Vulnerability_Scanning_Tools">https://www.owasp.org/index.php/Category:Vulnerability_Scanning_Tools</a></p></li>
+<li><p><a href="https://support.google.com/chrome/answer/99020?hl=es-419">https://support.google.com/chrome/answer/99020?hl=es-419</a></p></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

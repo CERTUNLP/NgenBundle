@@ -1,0 +1,85 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+We would like to inform you that we have detected that the <em>host</em> {{incident.hostAddress}} is currently performing a Scan process over other devices.
+
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Related issues</p>
+
+Performing a Scan analysis is likely due to the host being compromised and used to gather information about other hosts inside the network, for possible future attacks. On the other hand, this generates great amount of bandwidth consumption, generating a network speed reduction.
+
+
+
+{% endblock %}
+
+
+{% block verification_content %}
+
+
+<p class="lead">How to verify the issue</p>
+
+It can be verified by analyzing the existing network traffic, using tools such as:
+
+
+<div class = "destacated">
+
+<pre><code>tcpdump
+</code></pre>
+
+</div>
+
+or
+
+<div class = "destacated">
+
+<pre><code>wireshark
+</code></pre>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block recommendations_content %}
+
+
+<p class="lead">Recommendations</p>
+
+Remove the access to the network to affected host during the analysis, as to determin it's origin.
+It is likely that attackers had gained privileges over the compromised host, we recommend you to request a forensic analysis on the server, as to evaluate what has been compromised.
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">For more information</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><p><a href="http://archive.oreilly.com/pub/h/1393">http://archive.oreilly.com/pub/h/1393</a></p></li>
+<li><p><a href="http://inai.de/documents/Chaostables.pdf">http://inai.de/documents/Chaostables.pdf</a></p></li>
+</ul>
+
+</div>
+
+
+{% endblock %}

@@ -17,6 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class NetworkType extends AbstractType {
 
@@ -32,7 +33,8 @@ class NetworkType extends AbstractType {
                     'label' => 'Ip/Mask',
                     'description' => "The network ip and mask",
                 ))
-                ->add('networkAdmin', null, array(
+                ->add('networkAdmin', EntityType::class, array(
+                    'class' => 'CertUnlpNgenBundle:NetworkAdmin',
                     'required' => true,
                     'empty_value' => 'Choose an admin',
                     'attr' => array('help_text' => 'This will be the network admin'),
@@ -43,7 +45,8 @@ class NetworkType extends AbstractType {
                         ->orderBy('na.name', 'ASC');
             }
                 ))
-                ->add('academicUnit', null, array(
+                ->add('academicUnit', EntityType::class, array(
+                    'class' => 'CertUnlpNgenBundle:AcademicUnit',
                     'required' => true,
                     'empty_value' => 'Choose a unit',
                     'attr' => array('help_text' => 'The unit to which the network belongs'),

@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  ngen_db:
+    image: mysql:5.7
+    container_name: ngen_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - './datadir/mysql/:/var/lib/mysql'
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      # MYSQL_USER: ${DB_USER}
+      # MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+  ngen_app:
+    image: einar1/ngen
+    container_name: ngen_app
+    ports:
+      - "80:80"
+    volumes:
+      - './datadir/app/feed/:${PATH_WEB}/ngen_basic/app/Resources/feed/'
+      - './datadir/app/incident/:${PATH_WEB}/ngen_basic/app/Resources/incident/'
+    depends_on: 
+      - ngen_db
