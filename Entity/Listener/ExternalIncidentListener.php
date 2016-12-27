@@ -136,6 +136,7 @@ class ExternalIncidentListener implements ContainerAwareInterface {
             $thread = $this->container->get('fos_comment.manager.thread')->createThread();
             $thread->setId($id);
             $incident->setCommentThread($thread);
+            $thread->setIncident($incident);
             $uri = $this->container->get('router')->generate('cert_unlp_ngen_external_incident_frontend_edit_incident', array(
                 'hostAddress' => $incident->getHostAddress(),
                 'date' => $incident->getDate()->format('Y-m-d'),

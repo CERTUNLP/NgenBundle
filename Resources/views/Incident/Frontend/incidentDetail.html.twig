@@ -9,7 +9,7 @@
 
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
 {% block content_header %}
-    <h1 class="page-header">Incident [ID: {{incident.id}}][{{incident.type}}]{%include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': incident}%}</h1>
+    <h1 class="page-header">Incident [ID: {{object.id}}][{{object.type}}]{%include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object}%}</h1>
 {% endblock %}
 {% block content_body %}
     <div class="row">
@@ -26,7 +26,7 @@
                                     Sistem Id
                                 </td>
                                 <td class="">
-                                    {{incident.id}}
+                                    {{object.id}}
                                 </td>
                             </tr>
                             <tr>
@@ -34,7 +34,7 @@
                                     Host Address
                                 </td>
                                 <td class="">
-                                    {{incident.hostAddress}}
+                                    {{object.hostAddress}}
                                 </td>
                             </tr>
                             <tr>
@@ -42,7 +42,7 @@
                                     State
                                 </td>
                                 <td class="">
-                                    {%include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': incident}%}
+                                    {%include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object}%}
                                 </td>
                             </tr>
                             <tr>
@@ -50,7 +50,7 @@
                                     Closed
                                 </td>
                                 <td class="">
-                                    {{incident.isClosed ? 'Yes':'No'}}
+                                    {{object.isClosed ? 'Yes':'No'}}
                                 </td>
                             </tr>
 
@@ -59,7 +59,7 @@
                                     Type
                                 </td>
                                 <td class="">
-                                    {{incident.type}}
+                                    {{object.type}}
                                 </td>
                             </tr>
 
@@ -68,7 +68,7 @@
                                     Feed
                                 </td>
                                 <td class="">
-                                    {{incident.feed}}
+                                    {{object.feed}}
                                 </td>
                             </tr>
 
@@ -77,16 +77,16 @@
                                     Date
                                 </td>
                                 <td class="">
-                                    {%include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incident': incident,'lastTimeDetected': false}%}
+                                    {%include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incident': object,'lastTimeDetected': false}%}
                                 </td>
                             </tr>
-                            {%if incident.lastTimeDetected%}
+                            {%if object.lastTimeDetected%}
                                 <tr>
                                     <td class="">
                                         Last Time Detected
                                     </td>
                                     <td class="">
-                                        {%include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incident': incident, 'lastTimeDetected':true}%}
+                                        {%include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incident': object, 'lastTimeDetected':true}%}
                                     </td>
                                 </tr>
                             {%endif%}
@@ -96,7 +96,7 @@
                                     Created at 
                                 </td>
                                 <td class="">
-                                    {{incident.createdAt|date('Y-m-d')}}
+                                    {{object.createdAt|date('Y-m-d')}}
                                 </td>
                             </tr>
 
@@ -105,17 +105,17 @@
                                     Last Update
                                 </td>
                                 <td class="">
-                                    {{incident.lastTimeDetected|date('Y-m-d')}}
+                                    {{object.lastTimeDetected|date('Y-m-d')}}
                                 </td>
                             </tr>
-                            {%if incident.evidenceFilePath%}
+                            {%if object.evidenceFilePath%}
 
                                 <tr>
                                     <td class="">
                                         Evidence File
                                     </td>
                                     <td class="">
-                                        {{incident.evidenceFilePath}}
+                                        {{object.evidenceFilePath}}
                                     </td>
                                 </tr>
                             {%endif%}
@@ -137,7 +137,7 @@
                                     IP/mask
                                 </td>
                                 <td class="">
-                                    {{incident.network}}
+                                    {{object.network}}
                                 </td>
                             </tr>
                             <tr>
@@ -145,7 +145,7 @@
                                     Active
                                 </td>
                                 <td class="">
-                                    {{incident.network.isActive ? 'Yes':'No'}}
+                                    {{object.network.isActive ? 'Yes':'No'}}
                                 </td>
                             </tr>
                             <tr>
@@ -153,7 +153,7 @@
                                     Academic Unit
                                 </td>
                                 <td class="">
-                                    {{incident.network.academicUnit}}
+                                    {{object.network.academicUnit}}
 
                                 </td>
                             </tr>
@@ -162,7 +162,7 @@
                                     Network Admin
                                 </td>
                                 <td class="">
-                                    {{incident.network.networkAdmin}}
+                                    {{object.network.networkAdmin}}
 
                                 </td>
                             </tr>
@@ -170,7 +170,7 @@
                                 <td class="">
                                 </td>
                                 <td class="">
-                                    {{incident.network.networkAdmin.email}}
+                                    {{object.network.networkAdmin.email}}
 
                                 </td>
                             </tr>
@@ -195,7 +195,7 @@
                                     Name
                                 </td>
                                 <td class="">
-                                    {{incident.reporter}}
+                                    {{object.reporter}}
                                 </td>
                             </tr>
                             <tr>
@@ -203,7 +203,7 @@
                                     Email
                                 </td>
                                 <td class="">
-                                    {{incident.reporter.email}}
+                                    {{object.reporter.email}}
                                 </td>
                             </tr>
                         </table>
@@ -230,12 +230,13 @@
         </div>
     {% endblock %}
 
-    {% block javascripts %}
 
-        {{ parent() }}
+{% endblock %}
+{% block javascripts %}
 
-        {% javascripts '@FOSCommentBundle/Resources/assets/js/comments.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-    {% endblock %}
+    {{ parent() }}
+
+    {% javascripts '@FOSCommentBundle/Resources/assets/js/comments.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}

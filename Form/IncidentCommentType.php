@@ -37,8 +37,7 @@ class IncidentCommentType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('body', 'textarea')
                 ->add('notify_to_admin', 'checkbox', array('data' => false, 'mapped' => true, 'attr' => array(), 'required' => false, 'label' => 'Notify to admin'))
-                ->add('save', 'submit', array('attr' =>
-                    array('class' => 'save ladda-button btn-lg btn-block ', 'data-style' => "slide-down"),))
+
         ;
     }
 
