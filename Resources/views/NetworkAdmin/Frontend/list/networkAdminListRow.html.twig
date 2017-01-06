@@ -22,7 +22,7 @@
     <td class="col-sm-1">
 
         <div class="btn-group inline pull-left dropdown action-dropdown">
-            <a   class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_network_detail_network_admin',{'id': networkAdmin.id})}}">
+            <a   class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_network_detail_network_admin',{'slug': networkAdmin.slug})}}">
                 Details
             </a>
             <button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
@@ -31,7 +31,7 @@
             </button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                 <li role="presentation">
-                    <a  role="menuitem" tabindex="-1" href="{{path('cert_unlp_ngen_network_edit_network_admin',{'id': networkAdmin.id})}}">{{ icon('edit alert-info')}} <span class="action-text">Edit</span></a>
+                    <a  role="menuitem" tabindex="-1" href="{{path('cert_unlp_ngen_network_edit_network_admin',{'slug': networkAdmin.slug})}}">{{ icon('edit alert-info')}} <span class="action-text">Edit</span></a>
                 </li>
 
                 <li role="presentation">

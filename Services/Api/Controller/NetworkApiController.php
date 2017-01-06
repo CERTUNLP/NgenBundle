@@ -27,7 +27,7 @@ class NetworkApiController extends ApiController {
      * @return Network entity
      */
     public function findObjectBy($params) {
-        return $this->getCustomHandler()->get(['ip' => $params['ip'], 'ipMask' => $params['ipMask']]);
+        return $this->getCustomHandler()->get(['ip' => $params['ip']]);
     }
 
 }

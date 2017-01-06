@@ -175,7 +175,7 @@ class NetworkAdminController extends FOSRestController {
      * @throws NotFoundHttpException when network not exist
      */
     public function patchNetworkAdminBySlugAction(Request $request, NetworkAdmin $network_admin) {
-        return $this->getApiController()->patch($request, $network_admin);
+        return $this->getApiController()->patch($request, $network_admin, true);
     }
 
     /**
