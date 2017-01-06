@@ -58,7 +58,7 @@ class NetworkAdminFrontendController extends Controller {
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/networkAdminForm.html.twig")
-     * @Route("{id}/edit", name="cert_unlp_ngen_network_edit_network_admin")
+     * @Route("{slug}/edit", name="cert_unlp_ngen_network_edit_network_admin")
      */
     public function editNetworkAdminAction(NetworkAdmin $networkAdmin) {
         return $this->getFrontendController()->editEntity($networkAdmin);
@@ -66,7 +66,7 @@ class NetworkAdminFrontendController extends Controller {
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/networkAdminDetail.html.twig")
-     * @Route("{id}/detail", name="cert_unlp_ngen_network_detail_network_admin")
+     * @Route("{slug}/detail", name="cert_unlp_ngen_network_detail_network_admin")
      */
     public function detailNetworkAdminAction(NetworkAdmin $networkAdmin) {
         return $this->getFrontendController()->detailEntity($networkAdmin);
