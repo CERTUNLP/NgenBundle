@@ -17,7 +17,7 @@ var NetworkAdminForm = Form.extend({
         return  this.getNetworkAdminId();
     },
     setNetworkAdminId: function () {
-        this.network_admin_id = (($('#name').val().replace(' ', '_')) + '_' + ($('#email').val().replace('@', '_').replace('.', '_'))).toLowerCase();
+        this.network_admin_id = (($('#name').val().replace(/\ /g, '_')) + '_' + ($('#email').val().replace(/\./g, '_'))).replace('@', '_').toLowerCase();
     },
     getNetworkAdminId: function () {
         return  this.network_admin_id;
