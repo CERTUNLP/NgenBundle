@@ -26,7 +26,7 @@
         "twig/extensions": "~1.2",
         "gedmo/doctrine-extensions": "~2.4",
         "components/jquery": "~2.1",
-        "friendsofsymfony/elastica-bundle": "@dev",
+        "friendsofsymfony/elastica-bundle": "dev-master@dev",
         "friendsofsymfony/comment-bundle": "2.0.8",
         "knplabs/knp-markdown-bundle": "~1.4",
         "knplabs/knp-menu-bundle": "~2.0",
