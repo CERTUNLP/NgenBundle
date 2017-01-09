@@ -5,8 +5,8 @@
     "keywords": ["cert", "unlp", "incident", "management", "report", "system"],
     "homepage": "https://github.com/CERTUNLP/NgenBundle",
     "license": "GPL v3.0",
-    "prefer-stable": true,
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "CERT UNLP",
