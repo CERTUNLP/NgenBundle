@@ -18,7 +18,9 @@ Si el host no es un servidor de correo, es muy probable que tenga algún malware
 ### [recomendations_content]
 ### Recomendaciones
 Si se trata de un servidor de correo:
-1) Borrar de la cola los mails que sean considerados spam.
-2) Verificar la configuración del correo o si hay una cuenta comprometida.
-3) Verificar que nuestro host no esté listado en black list's.
+
+* Borrar de la cola los mails que sean considerados spam.
+* Verificar la configuración del correo o si hay una cuenta comprometida.
+* Verificar que nuestro host no esté listado en black list's.
+
 ### [/recomendations_content]
