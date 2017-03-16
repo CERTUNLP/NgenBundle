@@ -86,7 +86,7 @@ class InternalIncidentListener implements ContainerAwareInterface {
         ];
 
         try {
-            $this->container->get('cert_unlp.ngen.incident.handler')->post($parameters, false);
+            $this->container->get('cert_unlp.ngen.incident.internal.handler')->post($parameters, false);
         } catch (InvalidFormException $exc) {
             return;
         }
