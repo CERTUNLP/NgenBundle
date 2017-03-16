@@ -7,7 +7,7 @@ Nos comunicamos con usted para informarle que hemos detectado que el Host {{IP}}
 ### [derivated_problem_content]
 ### Problemas derivados
 
-El envío de email a ciertos destinos puede verse impedido por la existencia de la IP {{IP}} en las mismas.
+Servicios brindados por la IP {{IP}} puede verse afectados por la existencia de dicha IP en la blacklist reportada.
 
 ### [/derivated_problem_content]
 
