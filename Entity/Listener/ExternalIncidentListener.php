@@ -58,39 +58,39 @@ class ExternalIncidentListener implements ContainerAwareInterface {
 //        $this->delegator_chain->preFlushDelegation($incident);
 //    }
 
-    public function onConvertToIncident(ConvertToIncidentEvent $event) {
-        $convertible = $event->getConvertible();
-        $entityManager = $this->container->get('doctrine')->getManager();
-        $incidentType = $entityManager->getRepository('CertUnlpNgenBundle:IncidentType')->findOneBySlug($convertible->getType());
-        $incidentFeed = $entityManager->getRepository('CertUnlpNgenBundle:IncidentFeed')->findOneBySlug($convertible->getFeed());
-        if ($convertible->getReporter() == 'random') {
-
-            $incidentReporter = $entityManager->getRepository('CertUnlpNgenBundle:User')->findOneRandom();
-        } else {
-            $incidentReporter = $entityManager->getRepository('CertUnlpNgenBundle:User')->findOneBySlug($convertible->getReporter());
-        }
-
-        if (!$incidentType || !$incidentFeed || !$incidentReporter) {
-            return;
-        }
-
-        $UploadedFile = new File(realpath($convertible->getEvidenceFile()));
-
-        $parameters = [
-            'type' => $convertible->getType(),
-            'feed' => $convertible->getFeed(),
-            'reporter' => $incidentReporter->getId(),
-            'hostAddress' => $convertible->getHostAddress(),
-            'evidence_file' => $UploadedFile,
-            'sendReport' => true
-        ];
-
-        try {
-            $this->container->get('cert_unlp.ngen.incident.handler')->post($parameters, false);
-        } catch (InvalidFormException $exc) {
-            return;
-        }
-    }
+//    public function onConvertToIncident(ConvertToIncidentEvent $event) {
+//        $convertible = $event->getConvertible();
+//        $entityManager = $this->container->get('doctrine')->getManager();
+//        $incidentType = $entityManager->getRepository('CertUnlpNgenBundle:IncidentType')->findOneBySlug($convertible->getType());
+//        $incidentFeed = $entityManager->getRepository('CertUnlpNgenBundle:IncidentFeed')->findOneBySlug($convertible->getFeed());
+//        if ($convertible->getReporter() == 'random') {
+//
+//            $incidentReporter = $entityManager->getRepository('CertUnlpNgenBundle:User')->findOneRandom();
+//        } else {
+//            $incidentReporter = $entityManager->getRepository('CertUnlpNgenBundle:User')->findOneBySlug($convertible->getReporter());
+//        }
+//
+//        if (!$incidentType || !$incidentFeed || !$incidentReporter) {
+//            return;
+//        }
+//
+//        $UploadedFile = new File(realpath($convertible->getEvidenceFile()));
+//
+//        $parameters = [
+//            'type' => $convertible->getType(),
+//            'feed' => $convertible->getFeed(),
+//            'reporter' => $incidentReporter->getId(),
+//            'hostAddress' => $convertible->getHostAddress(),
+//            'evidence_file' => $UploadedFile,
+//            'sendReport' => true
+//        ];
+//
+//        try {
+//            $this->container->get('cert_unlp.ngen.incident.external.handler')->post($parameters, false);
+//        } catch (InvalidFormException $exc) {
+//            return;
+//        }
+//    }
 
     /** @ORM\PostPersist */
     public function postPersistHandler(IncidentInterface $incident, LifecycleEventArgs $event) {
