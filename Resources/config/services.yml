@@ -78,7 +78,7 @@ services:
         arguments: [ "@cert_unlp.ngen.incident.external.delegator_chain", "@service_container" ]
         tags:
             -  { name: doctrine.entity_listener }
-            -  { name: kernel.event_listener, event: cert_unlp.incident.convert_to_incident.event, method: onConvertToIncident }
+#            -  { name: kernel.event_listener, event: cert_unlp.incident.convert_to_incident.event, method: onConvertToIncident }
 #            -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist }
     
     cert_unlp.ngen.fos_rest.view.view:

@@ -12,23 +12,19 @@ fos_elastica:
         incidents:
             types:
                 internal:
-                    mappings:
+                    properties:
                         id:
                             type: integer
                         hostAddress:
                             type: string
                         date: 
                             type: date
-                            format: date_time_no_millis
                         lastTimeDetected:
                             type: date
-                            format: strict_date_optional_time
                         createdAt: 
-                            type: date
-                            format: strict_date_optional_time
+                            type: string
                         updatedAt: 
                             type: date
-                            format: strict_date_optional_time
                         isClosed:
                             type: boolean
                         evidence_file_path:
@@ -109,10 +105,8 @@ fos_elastica:
                                     type: boolean
                                 createdAt:
                                     type: date
-                                    format: strict_date_optional_time
                                 updatedAt:
                                     type: date
-                                    format: strict_date_optional_time
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
@@ -126,23 +120,19 @@ fos_elastica:
                             delete: true
                         finder: ~       
                 external:
-                    mappings:
+                    properties:
                         id:
                             type: integer
                         hostAddress:
                             type: string
                         date: 
                             type: date
-                            format: date_time_no_millis
                         lastTimeDetected:
                             type: date
-                            format: strict_date_optional_time
                         createdAt: 
-                            type: date
-                            format: strict_date_optional_time
+                            type: string
                         updatedAt: 
                             type: date
-                            format: strict_date_optional_time
                         isClosed:
                             type: boolean
                         evidence_file_path:
@@ -190,10 +180,8 @@ fos_elastica:
                                     type: boolean
                                 createdAt:
                                     type: date
-                                    format: strict_date_optional_time
                                 updatedAt:
                                     type: date
-                                    format: strict_date_optional_time
                         type:
                             type: "object"
                             properties:
@@ -216,13 +204,12 @@ fos_elastica:
         networks:
             types:
                 network:
-                    mappings:
+                    properties:
                         id: ~
                         ip: ~
                         ipMask: ~
                         createdAt: 
                             type: date
-                            format: strict_date_optional_time
                         updatedAt: 
                             type: date
                         isActive:
@@ -255,7 +242,7 @@ fos_elastica:
         network_admins:
             types:
                 network_admin:
-                    mappings:
+                    properties:
                         id: ~
                         name: ~
                         slug: ~
@@ -279,7 +266,7 @@ fos_elastica:
         feeds:
             types:
                 feeds:
-                    mappings:
+                    properties:
                         name: ~
                         slug: ~
                         isActive:
@@ -302,7 +289,7 @@ fos_elastica:
         states:
             types:
                 states:
-                    mappings:
+                    properties:
                         name: ~
                         slug: ~
                         isActive:
@@ -315,7 +302,7 @@ fos_elastica:
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
-                        model: CertUnlp\NgenBundle\Entity\IncidentType
+                        model: CertUnlp\NgenBundle\Entity\IncidentState
                         provider: ~
                         listener:
                             insert: true
@@ -325,7 +312,7 @@ fos_elastica:
         types:
             types:
                 types:
-                    mappings:
+                    properties:
                         name: ~
                         slug: ~
                         isActive:
