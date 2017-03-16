@@ -49,9 +49,9 @@ cert_ngen_incident_type:
     type:     annotation
     prefix:   /incidents/types
     
-cert_ngen_dashboard:
-    resource: '@CertUnlpNgenBundle/Controller/DashboardController.php'
-    type:     annotation
+#cert_ngen_dashboard:
+#    resource: '@CertUnlpNgenBundle/Controller/DashboardController.php'
+#    type:     annotation
 #    prefix:   /incidents/types
     
 fos_comment_api:
