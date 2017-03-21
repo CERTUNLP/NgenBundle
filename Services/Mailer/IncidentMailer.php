@@ -125,6 +125,9 @@ class IncidentMailer implements IncidentMailerInterface {
         }
         if ($comment instanceof SignedCommentInterface) {
             $author = $comment->getAuthor();
+            if ($author->getUsername() == 'mailbot') {
+                return;
+            }
         }
         $this->send_report_reply($comment->getThread()->getIncident(), $comment->getBody(), !$comment->getNotifyToAdmin());
     }
