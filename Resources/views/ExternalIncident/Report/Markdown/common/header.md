@@ -1,1 +1,1 @@
-Estimated {{networkAdmin}},
+Estimated {{abuseEntity}},
