@@ -25,6 +25,7 @@ class IncidentMarkdowReportParser extends MarkdownExtra implements MarkdownParse
             '{{type}}' => '{{incident.type}}',
             '{{network}}' => '{{incident.network}}',
             '{{networkAdmin}}' => '{{incident.network.networkAdmin}}',
+            '{{abuseEntity}}' => '{{incident.abuseEntity}}',
         ];
     }
 
