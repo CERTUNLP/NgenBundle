@@ -10,7 +10,7 @@
 <tr data-id="{{incident.id}}" role="row">
     <td id="state_label_holder" >
         <div class="label-holder">
-            {%include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incdent': incident}%}
+            {%include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': incident}%}
         </div>
     </td>
     <td >
@@ -23,7 +23,7 @@
         {{incident.feed}}
     </td>
     <td >
-        {%include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incdent': incident,'lastTimeDetected':incident.lastTimeDetected}%}
+        {%include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incident': incident,'lastTimeDetected':incident.lastTimeDetected}%}
     </td>
     <td >
         <div class="btn-group inline pull-left dropdown action-dropdown">
