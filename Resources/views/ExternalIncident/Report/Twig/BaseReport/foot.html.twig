@@ -14,7 +14,7 @@
             <table class="twelve columns">
                 <tr>
                     <td class="panel">
-                        {% include 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/footerReport.html.twig' %}
+                        {% include 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/footerReport.html.twig' %}
 
                     </td>
                     <td class="expander"></td>
@@ -25,18 +25,21 @@
     </tr>
 </table>
 
-<table class="row">
+
+<table class="row callout">
     <tr>
         <td class="wrapper last">
 
             <table class="twelve columns">
                 <tr>
-                    <td align="center">
-                <center>
-                    <p style="text-align:center;"><a href="#">Terms</a> | <a href="#">Privacy</a> | <a href="#">Unsubscribe</a></p>
-                </center>
+                    <td class="panel">
+                        {#                <center>#}
+                        <p style="text-align:center;"> This report has been generated with <a href="https://github.com/CERTUNLP/NgenBundle">https://github.com/CERTUNLP/NgenBundle</a></p>
+                        {#                </center>                    </td>#}
+                    <td class="expander"></td>
+                </tr>
+            </table>
         </td>
-        <td class="expander"></td>
     </tr>
 </table>
 
