@@ -68,7 +68,7 @@ class ExternalIncidentFrontendController extends Controller {
 
      */
     public function datailIncidentAction(IncidentInterface $incident) {
-        return $this->getFrontendController()->editEntity($incident);
+        return $this->getFrontendController()->detailEntity($incident);
     }
 
     /**
