@@ -140,3 +140,11 @@ stfalcon_tinymce:
                 force_br_newlines: false
                 force_p_newlines: false
                 forced_root_block: ''
+
+fos_user:
+    db_driver: orm # other valid values are 'mongodb' and 'couchdb'
+    firewall_name: frontend
+    user_class: CertUnlp\NgenBundle\Entity\User
+    from_email:
+        address: "%cert_unlp.ngen.incident.mailer.sender_address%"
+        sender_name: "%cert_unlp.ngen.incident.mailer.sender_address%"
