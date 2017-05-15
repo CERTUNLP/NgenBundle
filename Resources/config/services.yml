@@ -34,14 +34,14 @@ services:
         
     cert_unlp.ngen.internal.incident.mailer:
         class:        "%cert_unlp.ngen.incident.internal.mailer.class%"
-        arguments:    ["@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","@twig","%cert_unlp.ngen.team.mail%","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%"]
+        arguments:    ["@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","@twig","%cert_unlp.ngen.incident.mailer.sender_address%","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%"]
         tags:
             -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
             -  { name: cert_unlp.ngen.incident.internal.delegate, priority: 1 }
     
     cert_unlp.ngen.external.incident.mailer:
         class:        "%cert_unlp.ngen.incident.external.mailer.class%"
-        arguments:    ["@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","@twig","%cert_unlp.ngen.team.mail%","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%"]
+        arguments:    ["@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","@twig","%cert_unlp.ngen.incident.mailer.sender_address%","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%"]
         tags:
             -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
             -  { name: cert_unlp.ngen.incident.external.delegate, priority: 1 }
