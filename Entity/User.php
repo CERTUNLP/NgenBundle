@@ -17,6 +17,7 @@ use CertUnlp\NgenBundle\Model\ReporterInterface;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * User
@@ -26,7 +27,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
  */
-class User implements UserInterface, ReporterInterface {
+class User extends BaseUser implements UserInterface {
 
     /**
      * @var integer
@@ -35,7 +36,7 @@ class User implements UserInterface, ReporterInterface {
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
@@ -51,34 +52,6 @@ class User implements UserInterface, ReporterInterface {
      * @ORM\Column(name="lastname", type="string", length=50)
      */
     private $lastname;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=50)
-     */
-    private $email;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="username", type="string", length=50)
-     */
-    private $username;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=255)
-     */
-    private $password;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="salt", type="string", length=255)
-     */
-    private $salt;
 
     /**
      * @var \DateTime
@@ -109,22 +82,6 @@ class User implements UserInterface, ReporterInterface {
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
      * */
     private $slug;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     */
-    private $isActive = true;
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId() {
-        return $this->id;
-    }
 
     /**
      * Set name
@@ -169,90 +126,6 @@ class User implements UserInterface, ReporterInterface {
     }
 
     /**
-     * Set email
-     *
-     * @param string $email
-     * @return User
-     */
-    public function setEmail($email) {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string 
-     */
-    public function getEmail() {
-        return $this->email;
-    }
-
-    /**
-     * Set username
-     *
-     * @param string $username
-     * @return User
-     */
-    public function setUsername($username) {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * Get username
-     *
-     * @return string 
-     */
-    public function getUsername() {
-        return $this->username;
-    }
-
-    /**
-     * Set password
-     *
-     * @param string $password
-     * @return User
-     */
-    public function setPassword($password) {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Get password
-     *
-     * @return string 
-     */
-    public function getPassword() {
-        return $this->password;
-    }
-
-    /**
-     * Set salt
-     *
-     * @param string $salt
-     * @return User
-     */
-    public function setSalt($salt) {
-        $this->salt = $salt;
-
-        return $this;
-    }
-
-    /**
-     * Get salt
-     *
-     * @return string 
-     */
-    public function getSalt() {
-        return $this->salt;
-    }
-
-    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
@@ -294,13 +167,9 @@ class User implements UserInterface, ReporterInterface {
         return $this->updatedAt;
     }
 
-    function eraseCredentials() {
-        
-    }
-
-    function getRoles() {
-        return array('ROLE_USER', 'ROLE_API');
-    }
+//    function getRoles() {
+//        return array('ROLE_USER', 'ROLE_API');
+//    }
 
     /**
      *
@@ -396,27 +265,6 @@ class User implements UserInterface, ReporterInterface {
      */
     public function getSlug() {
         return $this->slug;
-    }
-
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return User
-     */
-    public function setIsActive($isActive) {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean 
-     */
-    public function getIsActive() {
-        return $this->isActive;
     }
 
 }

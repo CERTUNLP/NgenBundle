@@ -33,23 +33,26 @@ class Users extends AbstractFixture implements OrderedFixtureInterface, Containe
     public function load(ObjectManager $manager) {
 
         $names = array('admin');
+        $userManager = $this->container->get('fos_user.user_manager');
 
         foreach ($names as $name) {
-            $user = new User();
+
+            $user = $userManager->createUser();
             $user->setName($name);
             $user->setLastname($name);
             $user->setUsername($name);
             $user->setEmail($name . '@cert.com');
 
-            $passwordEnClaro = $name;
+//            $passwordEnClaro = $name;
             $salt = md5(time());
-            $encoder = $this->container->get('security.encoder_factory')
-                    ->getEncoder($user);
-            $password = $encoder->encodePassword($passwordEnClaro, $salt);
+//            $encoder = $this->container->get('security.encoder_factory')
+//                    ->getEncoder($user);
+//            $password = $encoder->encodePassword($passwordEnClaro, $salt);
 
-            $user->setApiKey(sha1($name . time() . $password));
-            $user->setPassword($password);
-            $user->setSalt($salt);
+            $user->setApiKey(sha1($name . time() . $salt));
+            $user->setPlainPassword($name);
+//            $user->setSalt($salt);
+            $user->setEnabled(true);
 
 
             $manager->persist($user);
