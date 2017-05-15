@@ -18,35 +18,33 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 use CertUnlp\NgenBundle\Form\Model\UserChangePassword;
 use CertUnlp\NgenBundle\Form\UserChangePasswordType;
+use FOS\UserBundle\Controller\SecurityController;
 
-class UserFrontendController extends Controller {
+class UserFrontendController extends SecurityController {
 
     /**
      * @Route("/login", name="cert_unlp_ngen_user_login")
      */
-    public function loginAction(Request $peticion) {
-        $sesion = $peticion->getSession();
-        $error = $peticion->attributes->get(
-                SecurityContext::AUTHENTICATION_ERROR, $sesion->get(SecurityContext::AUTHENTICATION_ERROR)
-        );
-        return $this->render('CertUnlpNgenBundle:User:Frontend/login.html.twig', array(
-                    'last_username' => $sesion->get(SecurityContext::LAST_USERNAME),
-                    'error' => $error
-        ));
+    public function loginAction(Request $request) {
+        return parent::loginAction($request);
+    }
+
+    protected function renderLogin(array $data) {
+        return $this->render('CertUnlpNgenBundle:User:Frontend/login.html.twig', $data);
     }
 
     /**
      * @Route("/login_check", name="cert_unlp_ngen_user_login_check")
      */
-    public function loginCheckAction() {
-        return $this->redirect($this->generateUrl('cert_unlp_ngen_incident_frontend_home'));
+    public function checkAction() {
+        return $this->redirect($this->generateUrl('cert_unlp_ngen_incident_internal_frontend_home'));
     }
 
     /**
      * @Route("/logout", name="cert_unlp_ngen_user_logout")
      */
     public function logoutAction() {
-        return $this->redirect($this->generateUrl('cert_unlp_ngen_incident_frontend_home'));
+        return parent::logoutAction();
     }
 
     /**

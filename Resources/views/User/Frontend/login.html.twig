@@ -22,6 +22,9 @@
                     <div class="panel-body">
                         <form role="form" class="form-signin" _lpchecked="1" action="{{ path('cert_unlp_ngen_user_login_check') }}" method="post">
                             <fieldset>
+                                {% if csrf_token %}
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                                {% endif %}
                                 {% if error %}
                                     <div class="alert-danger">{{ error.message }}</div>
                                 {% endif %}
