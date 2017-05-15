@@ -49,15 +49,20 @@ cert_ngen_incident_type:
     type:     annotation
     prefix:   /incidents/types
     
-#cert_ngen_dashboard:
-#    resource: '@CertUnlpNgenBundle/Controller/DashboardController.php'
-#    type:     annotation
-#    prefix:   /incidents/types
+cert_ngen_dashboard:
+    resource: '@CertUnlpNgenBundle/Controller/DashboardController.php'
+    type:     annotation
+    prefix:   /
     
 fos_comment_api:
     type: rest
     resource: '@FOSCommentBundle/Resources/config/routing.yml'
     defaults: { _format: html }
+
+#fos_user:
+#    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+#    prefix: /
+
 
 cert_ngen_api:
     type: rest
