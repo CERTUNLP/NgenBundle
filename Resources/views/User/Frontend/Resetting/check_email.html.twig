@@ -1,0 +1,20 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+
+{% extends 'CertUnlpNgenBundle::User/Frontend/frontend.html.twig' %}
+
+{% block content_body %}
+    <p>
+        An email has been sent. It contains a link you must click to reset your password.<br />
+        Note: You can only request a new password within 2 hours.<br />
+        <br />
+        If you don&#039;t get an email check your spam folder or try again.<br />
+
+    </p>
+{% endblock %}
