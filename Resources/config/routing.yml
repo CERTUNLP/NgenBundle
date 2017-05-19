@@ -14,6 +14,16 @@ cert_ngen_user:
     type:     annotation
     prefix:   /user
     
+cert_ngen_user_resetting:
+    resource: '@CertUnlpNgenBundle/Controller/UserResettingFrontendController.php'
+    type:     annotation
+    prefix:   /user/resetting
+
+cert_ngen_user_profile:
+    resource: '@CertUnlpNgenBundle/Controller/UserProfileFrontendController.php'
+    type:     annotation
+    prefix:   /user/profile
+    
 cert_ngen_network_admin:
     resource: '@CertUnlpNgenBundle/Controller/NetworkAdminFrontendController.php'
     type:     annotation
