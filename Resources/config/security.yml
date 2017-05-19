@@ -14,15 +14,15 @@ security:
             pattern:        ^/*
             form_login:
                 provider:       fos_userbundle
-                login_path:     cert_unlp_ngen_user_login
+                login_path:     fos_user_security_login
 #                logout:     cert_unlp_ngen_user_logout
-                check_path: cert_unlp_ngen_user_login_check
+                check_path: fos_user_security_check
                 csrf_token_generator: security.csrf.token_manager
             anonymous:      true
 #                login_path: cert_unlp_ngen_user_login
             logout:
-                path: cert_unlp_ngen_user_logout
-                target: cert_unlp_ngen_user_login
+                path: fos_user_security_logout
+                target: fos_user_security_login
 #            remember_me:
 #                secret:     4aca1f11eea0be14028201ecc5579fb210c90bd3
 #                lifetime:   604800  # 604.800 = 3.600 * 24 * 7 = 1 semana

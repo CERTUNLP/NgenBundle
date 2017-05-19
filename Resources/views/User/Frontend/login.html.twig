@@ -20,7 +20,7 @@
                         <h3 class="panel-title">Please Sign In</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form" class="form-signin" _lpchecked="1" action="{{ path('cert_unlp_ngen_user_login_check') }}" method="post">
+                        <form role="form" class="form-signin" _lpchecked="1" action="{{ path('fos_user_security_check') }}" method="post">
                             <fieldset>
                                 {% if csrf_token %}
                                     <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
@@ -40,8 +40,10 @@
                                     <label>
                                         <input type="checkbox" id="remember_me" name="_remember_me" checked /> Remember me
                                     </label>
+                                    <a class="pull-right" href="{{ path('fos_user_resetting_request') }}">Forgot password?</a>
+
                                 </div>
-                                <input class="btn btn-lg btn-success btn-block"" type="submit" name="login" value="{{ "Login" | trans }}" />
+                                <input class="btn btn-lg btn-success btn-block" type="submit" name="login" value="{{ "Login" | trans }}" />
                             </fieldset>
                         </form>
                     </div>
