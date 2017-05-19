@@ -5,77 +5,79 @@
             <div class="navbar-header">
                 <a class="navbar-brand" href="{{path('cert_unlp_ngen_internal_incident_frontend_home')}}">Ngen</a>
             </div> 
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            {% include 'CertUnlpNgenBundle:navBar:navRight.html.twig' %}
-            {% block navigation_sidebar %}
-                <div class="navbar-default sidebar" role="navigation">
-                    <div class="sidebar-nav navbar-collapse" aria-expanded="false" style="height: 1px;">
+            {% if app.user %}
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                {% include 'CertUnlpNgenBundle:navBar:navRight.html.twig' %}
+                {% block navigation_sidebar %}
+                    <div class="navbar-default sidebar" role="navigation">
+                        <div class="sidebar-nav navbar-collapse" aria-expanded="false" style="height: 1px;">
 
-                        <ul class="nav in" id="side-menu">
-                            <li class="sidebar-search">
-                                <form method='post' action="{% block sideBar_search_path %}{% endblock %}" role="search">
-                                    <div class="input-group custom-search-form">
-                                        <input type="text" name="term" class="form-control" value="{{term | default('')}}" placeholder="Search...">
-                                        <span class="input-group-btn">
-                                            <button type="submit" class="btn btn-default">
-                                                {{ icon('search') }}
-                                            </button>
+                            <ul class="nav in" id="side-menu">
+                                <li class="sidebar-search">
+                                    <form method='post' action="{% block sideBar_search_path %}{% endblock %}" role="search">
+                                        <div class="input-group custom-search-form">
+                                            <input type="text" name="term" class="form-control" value="{{term | default('')}}" placeholder="Search...">
+                                            <span class="input-group-btn">
+                                                <button type="submit" class="btn btn-default">
+                                                    {{ icon('search') }}
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </form>
+                                </li>
+                                {#<li>
+                                    <a href="{{path('cert_unlp_ngen_incident_frontend_home')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                                </li>#}
+                                <li {{ ('incident' in app.request.get('_route'))? 'class="active"' : 'class' }} >
+                                    <a href="#" {{ ('incident' in app.request.get('_route'))? 'class="active"' : 'class' }}>
+                                        {{icon('exclamation-circle fa-fw')}} Incidents
+                                        <span class="fa arrow">
                                         </span>
-                                    </div>
-                                </form>
-                            </li>
-                            {#<li>
-                                <a href="{{path('cert_unlp_ngen_incident_frontend_home')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                            </li>#}
-                            <li {{ ('incident' in app.request.get('_route'))? 'class="active"' : 'class' }} >
-                                <a href="#" {{ ('incident' in app.request.get('_route'))? 'class="active"' : 'class' }}>
-                                    {{icon('exclamation-circle fa-fw')}} Incidents
-                                    <span class="fa arrow">
-                                    </span>
-                                </a>
-                                <ul class="nav nav-second-level collapse{{ ('incident' in app.request.get('_route'))? 'in' : '' }}" aria-expanded="{{ ('incident' in app.request.get('_route'))? 'true' : 'false' }}" {{ ('incident' in app.request.get('_route'))? '' : 'style="height: 0px;"' }}>
-                                    {#                                    {% if 'incident' in app.request.get('_route') %} ::before {% endif %}#}
-                                    <li>
-                                        <a href="{{path('cert_unlp_ngen_internal_incident_frontend_home')}}" {{ ('internal' in app.request.get('_route'))? 'class="active"' : '' }}>
-                                            {{icon('arrow-circle-down fa-fw')}} Internals</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{path('cert_unlp_ngen_external_incident_frontend_home')}}" {{ ('external' in app.request.get('_route'))? 'class="active"' : '' }}>
-                                            {{icon('arrow-circle-up fa-fw')}} Externals</a>
-                                    </li>
-                                    {#                                    {% if 'incident' in app.request.get('_route') %} ::after {% endif %}#}
-                                    <li>
-                                        <a href="{{path('cert_unlp_ngen_incident_feed_frontend_home')}}" {{ ('feed' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('feed fa-fw')}} Feeds</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{path('cert_unlp_ngen_incident_state_frontend_home')}}" {{ ('state' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('unlock-alt fa-fw')}} States</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{path('cert_unlp_ngen_incident_type_frontend_home')}}" {{ ('type' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('cubes fa-fw')}} Types</a>
-                                    </li>
-                                </ul>
+                                    </a>
+                                    <ul class="nav nav-second-level collapse{{ ('incident' in app.request.get('_route'))? 'in' : '' }}" aria-expanded="{{ ('incident' in app.request.get('_route'))? 'true' : 'false' }}" {{ ('incident' in app.request.get('_route'))? '' : 'style="height: 0px;"' }}>
+                                        {#                                    {% if 'incident' in app.request.get('_route') %} ::before {% endif %}#}
+                                        <li>
+                                            <a href="{{path('cert_unlp_ngen_internal_incident_frontend_home')}}" {{ ('internal' in app.request.get('_route'))? 'class="active"' : '' }}>
+                                                {{icon('arrow-circle-down fa-fw')}} Internals</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{path('cert_unlp_ngen_external_incident_frontend_home')}}" {{ ('external' in app.request.get('_route'))? 'class="active"' : '' }}>
+                                                {{icon('arrow-circle-up fa-fw')}} Externals</a>
+                                        </li>
+                                        {#                                    {% if 'incident' in app.request.get('_route') %} ::after {% endif %}#}
+                                        <li>
+                                            <a href="{{path('cert_unlp_ngen_incident_feed_frontend_home')}}" {{ ('feed' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('feed fa-fw')}} Feeds</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{path('cert_unlp_ngen_incident_state_frontend_home')}}" {{ ('state' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('unlock-alt fa-fw')}} States</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{path('cert_unlp_ngen_incident_type_frontend_home')}}" {{ ('type' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('cubes fa-fw')}} Types</a>
+                                        </li>
+                                    </ul>
 
-                            </li>
-                            <li>
-                                <a href="{{path('cert_unlp_ngen_network_frontend_home')}}" {{ ('network_frontend' in app.request.get('_route'))? 'class="active"' : '' }}>
-                                    {{icon('share-alt fa-fw')}} Networks
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{path('cert_unlp_ngen_network_admin_frontend_home')}}" {{ ('admin' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('users fa-fw')}} Admins</a>
-                            </li>
+                                </li>
+                                <li>
+                                    <a href="{{path('cert_unlp_ngen_network_frontend_home')}}" {{ ('network_frontend' in app.request.get('_route'))? 'class="active"' : '' }}>
+                                        {{icon('share-alt fa-fw')}} Networks
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{path('cert_unlp_ngen_network_admin_frontend_home')}}" {{ ('admin' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('users fa-fw')}} Admins</a>
+                                </li>
 
-                        </ul>
+                            </ul>
+                        </div>
+                        <!-- /.sidebar-collapse -->
                     </div>
-                    <!-- /.sidebar-collapse -->
-                </div>
-            {% endblock %}
-        </nav>
+                {% endblock %}
+            </nav>
+        {%endif%}
     {% endblock %}
 
     {% block page_wrapper %}
