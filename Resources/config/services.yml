@@ -194,6 +194,10 @@ services:
         tags:
             -  { name: cert_unlp.ngen.incident.external.delegate, priority: 0 }
 
+    app.form.registration:
+        class: CertUnlp\NgenBundle\Form\UserRegistrationType
+        tags:
+            - { name: form.type, alias: app_user_registration }
         
     fos_comment.form_type.comment.default:
         class: CertUnlp\NgenBundle\Form\IncidentCommentType

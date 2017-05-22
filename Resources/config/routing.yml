@@ -18,6 +18,11 @@ cert_ngen_user_resetting:
     resource: '@CertUnlpNgenBundle/Controller/UserResettingFrontendController.php'
     type:     annotation
     prefix:   /user/resetting
+    
+cert_ngen_user_registration:
+    resource: '@CertUnlpNgenBundle/Controller/UserRegistrationFrontendController.php'
+    type:     annotation
+    prefix:   /user/register
 
 cert_ngen_user_profile:
     resource: '@CertUnlpNgenBundle/Controller/UserProfileFrontendController.php'
