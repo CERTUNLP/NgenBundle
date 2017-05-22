@@ -27,7 +27,7 @@ use FOS\UserBundle\Model\User as BaseUser;
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
  */
-class User extends BaseUser implements UserInterface {
+class User extends BaseUser implements ReporterInterface {
 
     /**
      * @var integer
@@ -188,6 +188,7 @@ class User extends BaseUser implements UserInterface {
      * Constructor
      */
     public function __construct() {
+        parent::__construct();
         $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
