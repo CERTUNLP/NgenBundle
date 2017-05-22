@@ -43,7 +43,8 @@
         "stfalcon/tinymce-bundle": "~0.3.8",
         "fortawesome/font-awesome": "^4.4",
         "doctrine/doctrine-migrations-bundle": "^1.1",
-        "symfony/assetic-bundle": "^2.7"
+        "symfony/assetic-bundle": "^2.7",
+        "friendsofsymfony/user-bundle": "^2.0"
     },
     "require-dev": {
         "symfony/assetic-bundle": "^2.7",
