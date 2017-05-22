@@ -23,9 +23,14 @@ cert_ngen_user_registration:
     resource: '@CertUnlpNgenBundle/Controller/UserRegistrationFrontendController.php'
     type:     annotation
     prefix:   /user/register
-
+    
 cert_ngen_user_profile:
     resource: '@CertUnlpNgenBundle/Controller/UserProfileFrontendController.php'
+    type:     annotation
+    prefix:   /user/profile
+    
+cert_ngen_user_change_password:
+    resource: '@CertUnlpNgenBundle/Controller/UserChangePasswordFrontendController.php'
     type:     annotation
     prefix:   /user/profile
     
