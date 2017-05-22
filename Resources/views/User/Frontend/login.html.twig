@@ -36,15 +36,21 @@
                                     <input type="password" id="password" name="_password" class="form-control" placeholder="Password" required="" autocomplete="off" style="background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDhss3LcOZQAAAU5JREFUOMvdkzFLA0EQhd/bO7iIYmklaCUopLAQA6KNaawt9BeIgnUwLHPJRchfEBR7CyGWgiDY2SlIQBT/gDaCoGDudiy8SLwkBiwz1c7y+GZ25i0wnFEqlSZFZKGdi8iiiOR7aU32QkR2c7ncPcljAARAkgckb8IwrGf1fg/oJ8lRAHkR2VDVmOQ8AKjqY1bMHgCGYXhFchnAg6omJGcBXEZRtNoXYK2dMsaMt1qtD9/3p40x5yS9tHICYF1Vn0mOxXH8Uq/Xb389wff9PQDbQRB0t/QNOiPZ1h4B2MoO0fxnYz8dOOcOVbWhqq8kJzzPa3RAXZIkawCenHMjJN/+GiIqlcoFgKKq3pEMAMwAuCa5VK1W3SAfbAIopum+cy5KzwXn3M5AI6XVYlVt1mq1U8/zTlS1CeC9j2+6o1wuz1lrVzpWXLDWTg3pz/0CQnd2Jos49xUAAAAASUVORK5CYII=); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
                                 </div>
 
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" id="remember_me" name="_remember_me" checked /> Remember me
-                                    </label>
-                                    <a class="pull-right" href="{{ path('fos_user_resetting_request') }}">Forgot password?</a>
 
-                                </div>
+                            </fieldset>                            
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="remember_me" name="_remember_me" checked /> Remember me
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <a class="pull-left btn btn-link" href="{{ path('fos_user_registration_register') }}">Sing in</a>
+                                <a class="pull-right btn btn-link" href="{{ path('fos_user_resetting_request') }}">Forgot password?</a>
+                            </div>
+                            <div class="form-group">
+
                                 <input class="btn btn-lg btn-success btn-block" type="submit" name="login" value="{{ "Login" | trans }}" />
-                            </fieldset>
+                            </div>
                         </form>
                     </div>
                 </div>
