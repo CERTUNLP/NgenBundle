@@ -101,7 +101,7 @@ fos_elastica:
                                     type: string
                                 username:
                                     type: string
-                                isActive:
+                                enabled:
                                     type: boolean
                                 createdAt:
                                     type: date
@@ -176,7 +176,7 @@ fos_elastica:
                                     type: string
                                 username:
                                     type: string
-                                isActive:
+                                enabled:
                                     type: boolean
                                 createdAt:
                                     type: date

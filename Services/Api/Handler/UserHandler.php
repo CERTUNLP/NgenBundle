@@ -40,7 +40,7 @@ class UserHandler extends Handler {
      * @return NetworkInterface
      */
     public function prepareToDeletion($user, array $parameters = null) {
-        $user->setIsActive(FALSE);
+        $user->setEnabled(FALSE);
     }
 
     /**
@@ -65,7 +65,7 @@ class UserHandler extends Handler {
      * @return NetworkInterface
      */
     public function activate($network, array $parameters = null) {
-        $network->setIsActive(TRUE);
+        $network->setEnabled(TRUE);
         return $this->patch($network, $parameters);
     }
 
@@ -73,8 +73,8 @@ class UserHandler extends Handler {
         $userDB = $this->repository->findOneBy(['username' => $user->getUsername()]);
 
         if ($userDB && $method == 'POST') {
-            if (!$userDB->getIsActive()) {
-                $userDB->setIsActive(TRUE);
+            if (!$userDB->isEnabled()) {
+                $userDB->setEnabled(TRUE);
             }
             $user = $userDB;
         }
