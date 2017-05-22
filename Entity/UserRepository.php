@@ -27,7 +27,7 @@ class UserRepository extends EntityRepository {
         $qb = $em->createQueryBuilder();
         $qb->select('u')
                 ->from('CertUnlpNgenBundle:User', 'u')
-                ->where('u.isActive = 1');
+                ->where('u.enabled = 1');
         $users = $qb->getQuery()->getResult();
         shuffle($users);
 
