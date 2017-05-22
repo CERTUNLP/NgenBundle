@@ -148,3 +148,8 @@ fos_user:
     from_email:
         address: "%cert_unlp.ngen.incident.mailer.sender_address%"
         sender_name: "%cert_unlp.ngen.incident.mailer.sender_address%"
+    registration:
+        confirmation:
+            enabled: true
+        form:
+            type: CertUnlp\NgenBundle\Form\UserRegistrationType
