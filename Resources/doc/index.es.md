@@ -105,6 +105,8 @@ Requerimientos:
     new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
     new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
     new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle()
+    new FOS\UserBundle\FOSUserBundle(),
+
     
 ### Add the routing resource to your app/config/routing.yml
     cert_unlp_ngen:
