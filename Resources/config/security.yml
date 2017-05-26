@@ -29,9 +29,9 @@ security:
             logout:
                 path: fos_user_security_logout
                 target: fos_user_security_login
-#            remember_me:
-#                secret:     4aca1f11eea0be14028201ecc5579fb210c90bd3
-#                lifetime:   604800  # 604.800 = 3.600 * 24 * 7 = 1 semana
+            remember_me:
+                secret:     4aca1f11eea0be14028201ecc5579fb210c90bd3
+                lifetime:   604800  # 604.800 = 3.600 * 24 * 7 = 1 semana
 
     
     access_control:
