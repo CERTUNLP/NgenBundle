@@ -168,7 +168,7 @@ class ExternalIncidentController extends FOSRestController {
      * @throws NotFoundHttpException when incident not exist
      * 
      * @FOS\Patch("/externals/{hostAddress}/{date}/{type}/states/{state}")
-     * @ParamConverter("incident", class="CertUnlpNgenBundle:Incident", options={"repository_method" = "findByHostDateType"})
+     * @ParamConverter("incident", class="CertUnlpNgenBundle:ExternalIncident", options={"repository_method" = "findByHostDateType"})
      *      
      * @FOS\QueryParam(name="state",strict=true ,requirements="open|closed|closed_by_inactivity|removed|unresolved|stand_by")
      * @FOS\QueryParam(name="date",strict=true ,requirements="yyyy-MM-dd", description="If no date is selected, the date will be today.")
@@ -198,7 +198,7 @@ class ExternalIncidentController extends FOSRestController {
      * @throws NotFoundHttpException when page not exist
      * @Fos\Get("/externals/{hostAddress}/{date}/{type}")
      * 
-     * @ParamConverter("incident", class="CertUnlpNgenBundle:Incident", options={"repository_method" = "findByHostDateType"})
+     * @ParamConverter("incident", class="CertUnlpNgenBundle:ExternalIncident", options={"repository_method" = "findByHostDateType"})
      * @FOS\QueryParam(name="date",strict=true ,requirements="yyyy-MM-dd", description="If no date is selected, the date will be today.")
      * @FOS\QueryParam(name="type",strict=true ,requirements="blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|open_ssdp|phishing|poodle|scan|shellshock|spam", description="The incident type")
      * @FOS\QueryParam(name="hostAddress",strict=true ,requirements="[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", description="The host IP.")
