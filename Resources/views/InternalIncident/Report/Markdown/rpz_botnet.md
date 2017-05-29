@@ -1,7 +1,7 @@
 ### [problem]
 Lo contactamos porque hemos sido informados que el host/servidor {{IP}} está realizando consultas de DNS que arrojan coincidencia con nuestra zona RPZ "BOTNET".
 
-Dicha RPZ, contiene direcciones de red conocidas que están vinculadas a infraestructas de botnets. Es probable que cualquier dispositivo que esté intentando acceder a este cualquiera de los dominios incluidos en esta RPZ se encuentre comprometido y conteniendo algún tipo de malware.
+Dicha RPZ, contiene direcciones de red conocidas que están vinculadas a infraestructuras de botnets. Es probable que cualquier dispositivo que esté intentando acceder a este cualquiera de los dominios incluidos en esta RPZ se encuentre comprometido y conteniendo algún tipo de malware.
 ### [/problem]
 
 ### [derivated_problem_content]
