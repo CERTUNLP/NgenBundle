@@ -16,18 +16,18 @@ use CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController;
 
 class NetworkFrontendController extends FrontendController {
 
-    public function homeEntity(Request $request, $entity = 'Network') {
-        $em = $this->getDoctrine();
-        $dql = "SELECT n,au,na "
-                . "FROM CertUnlpNgenBundle:Network n join n.academic_unit au join n.network_admin na";
-        $query = $em->createQuery($dql);
-
-        $pagination = $this->getPaginator()->paginate(
-                $query, $request->query->get('page', 1), 7
-                , array('defaultSortFieldName' => 'n.createdAt', 'defaultSortDirection' => 'desc')
-        );
-
-        return array('objects' => $pagination);
-    }
+//    public function homeEntity(Request $request, $entity = 'Network') {
+//        $em = $this->getDoctrine();
+//        $dql = "SELECT n,au,na "
+//                . "FROM CertUnlpNgenBundle:Network n join n.academic_unit au join n.network_admin na";
+//        $query = $em->createQuery($dql);
+//
+//        $pagination = $this->getPaginator()->paginate(
+//                $query, $request->query->get('page', 1), 7
+//                , array('defaultSortFieldName' => 'n.createdAt', 'defaultSortDirection' => 'desc')
+//        );
+//
+//        return array('objects' => $pagination);
+//    }
 
 }
