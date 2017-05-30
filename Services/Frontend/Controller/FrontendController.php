@@ -37,32 +37,22 @@ class FrontendController {
         return $this->paginator;
     }
 
-    public function homeEntity(Request $request, $entity) {
-        $em = $this->getDoctrine();
-        $dql = "SELECT i,s,f,t "
-                . "FROM CertUnlpNgenBundle:$entity i join i.state s inner join i.feed f join i.type t "
-//                . "WHERE s.slug = 'open' and i.isClosed = false"
-        ;
-        $query = $em->createQuery($dql);
-
-        $pagination = $this->getPaginator()->paginate(
-                $query, $request->query->get('page', 1), 7
-                , array('defaultSortFieldName' => 'i.createdAt', 'defaultSortDirection' => 'desc')
-        );
-
-        return array('objects' => $pagination);
+    public function homeEntity(Request $request, $entity = '') {
+        return $this->searchEntity($request);
     }
 
     public function searchEntity(Request $request) {
-//        $results = $finder->createPaginatorAdapter('192.168.1.111');
-        $results = $this->getFinder()->find($request->get('term'), 1000);
+        $term = $request->get('term') ? $request->get('term') : '*';
+        $results = $this->getFinder()->createPaginatorAdapter($term);
 
         $pagination = $this->getPaginator()->paginate(
                 $results, $request->query->get('page', 1), 7
-                , array('defaultSortFieldName' => 'i.createdAt', 'defaultSortDirection' => 'desc')
+                , array('defaultSortFieldName' => 'createdAt', 'defaultSortDirection' => 'desc')
         );
-        $pagination->setParam('term', $request->get('term'));
-        return array('objects' => $pagination, 'term' => $request->get('term'));
+
+        $pagination->setParam('term', $term);
+
+        return array('objects' => $pagination, 'term' => $term);
     }
 
     public function newEntity(Request $request) {

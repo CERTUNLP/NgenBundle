@@ -17,12 +17,13 @@ fos_elastica:
                             type: integer
                         hostAddress:
                             type: string
+                            fielddata: true
                         date: 
                             type: date
                         lastTimeDetected:
                             type: date
                         createdAt: 
-                            type: string
+                            type: date
                         updatedAt: 
                             type: date
                         isClosed:
@@ -74,6 +75,7 @@ fos_elastica:
                                     type: string
                                 name:
                                     type: string
+                                    fielddata: true
                         feed:
                             type: "object"
                             properties:
@@ -81,6 +83,7 @@ fos_elastica:
                                     type: string
                                 name:
                                     type: string
+                                    fielddata: true
                         type:
                             type: "object"
                             properties:
@@ -88,6 +91,7 @@ fos_elastica:
                                     type: string
                                 name:
                                     type: string
+                                    fielddata: true
                         reporter:
                             type: "object"
                             properties:
@@ -125,12 +129,13 @@ fos_elastica:
                             type: integer
                         hostAddress:
                             type: string
+                            fielddata: true
                         date: 
                             type: date
                         lastTimeDetected:
                             type: date
                         createdAt: 
-                            type: string
+                            type: date
                         updatedAt: 
                             type: date
                         isClosed:
@@ -156,6 +161,7 @@ fos_elastica:
                                     type: string
                                 name:
                                     type: string
+                                    fielddata: true
                         feed:
                             type: "object"
                             properties:
@@ -163,6 +169,7 @@ fos_elastica:
                                     type: string
                                 name:
                                     type: string
+                                    fielddata: true
                         reporter:
                             type: "object"
                             properties:
@@ -189,6 +196,7 @@ fos_elastica:
                                     type: string
                                 name:
                                     type: string
+                                    fielddata: true
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
@@ -206,7 +214,8 @@ fos_elastica:
                 network:
                     properties:
                         id: ~
-                        ip: ~
+                        ip:
+                            type: ip
                         ipMask: ~
                         createdAt: 
                             type: date
@@ -219,14 +228,18 @@ fos_elastica:
                             properties:
                                 slug: ~
                                 email: ~
-                                name: ~
+                                name:
+                                    type: string
+                                    fielddata: true
                                 isActive:
                                     type: boolean
                         academicUnit:
                             type: "object"
                             properties:
                                 slug: ~
-                                name: ~
+                                name:
+                                    type: string
+                                    fielddata: true
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
@@ -244,13 +257,21 @@ fos_elastica:
                 network_admin:
                     properties:
                         id: ~
-                        name: ~
-                        slug: ~
-                        email: ~
+                        name:
+                            type: string
+                            fielddata: true
+                        slug:
+                            type: string
+                            fielddata: true
+                        email:
+                            type: string
+                            fielddata: true
                         isActive:
                             type: boolean
-                        createdAt: ~
-                        updatedAt: ~
+                        createdAt:
+                            type: date
+                        updatedAt:
+                            type: date
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
@@ -267,12 +288,18 @@ fos_elastica:
             types:
                 feeds:
                     properties:
-                        name: ~
-                        slug: ~
+                        name:
+                            type: string
+                            fielddata: true
+                        slug:
+                            type: string
+                            fielddata: true
                         isActive:
                             type: boolean
-                        createdAt: ~
-                        updatedAt: ~
+                        createdAt:
+                            type: date
+                        updatedAt:
+                            type: date
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel
@@ -290,12 +317,18 @@ fos_elastica:
             types:
                 states:
                     properties:
-                        name: ~
-                        slug: ~
+                        name:
+                            type: string
+                            fielddata: true
+                        slug:
+                            type: string
+                            fielddata: true
                         isActive:
                             type: boolean
-                        createdAt: ~
-                        updatedAt: ~
+                        createdAt:
+                            type: date
+                        updatedAt:
+                            type: date
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel
@@ -313,12 +346,18 @@ fos_elastica:
             types:
                 types:
                     properties:
-                        name: ~
-                        slug: ~
+                        name:
+                            type: string
+                            fielddata: true
+                        slug:
+                            type: string
+                            fielddata: true
                         isActive:
                             type: boolean
-                        createdAt: ~
-                        updatedAt: ~
+                        createdAt:
+                            type: date
+                        updatedAt:
+                            type: date
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel
