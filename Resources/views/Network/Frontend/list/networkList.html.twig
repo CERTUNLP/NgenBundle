@@ -19,10 +19,10 @@
     </div>
     <table class="table table-striped table-bordered table-hover dataTable no-footer">
         <tr role="row">
-            <th>{{ knp_pagination_sortable(networks, 'Ip/Mask', 'n.ip') }}</th>
-            <th>{{ knp_pagination_sortable(networks, 'Academic unit', 'au.name') }}</th>
-            <th>{{ knp_pagination_sortable(networks, 'Admin', 'na.name') }}</th>
-            <th>{{ knp_pagination_sortable(networks, 'active', 'n.isActive') }}</th>
+            <th>{{ knp_pagination_sortable(networks, 'Ip/Mask', 'ip') }}</th>
+            <th>{{ knp_pagination_sortable(networks, 'Academic unit', 'academicUnit.name') }}</th>
+            <th>{{ knp_pagination_sortable(networks, 'Admin', 'networkAdmin.name') }}</th>
+            <th>{{ knp_pagination_sortable(networks, 'active', 'isActive') }}</th>
             <th>Action</th>
         </tr>
         <tbody>

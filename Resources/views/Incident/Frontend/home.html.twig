@@ -27,11 +27,11 @@
         </div>
         <table class="table table-striped table-bordered table-hover dataTable no-footer">
             <tr role="row">
-                <th>{{ knp_pagination_sortable(objects, 'Status', 's.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Host address', 'i.hostAddress') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Type', 't.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Feed', 'f.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Date', 'i.date') }}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Status', 'state.name') }}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Host address', 'hostAddress') }}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Type', 'type.name') }}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Feed', 'feed.name') }}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Date', 'date') }}</th>
                 <th>Action</th>
             </tr>
             <tbody>

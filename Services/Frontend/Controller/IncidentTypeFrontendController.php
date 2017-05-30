@@ -15,21 +15,5 @@ use Symfony\Component\HttpFoundation\Request;
 use CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController;
 
 class IncidentTypeFrontendController extends FrontendController {
-
-    public function homeEntity(Request $request, $entity) {
-        $em = $this->getDoctrine();
-        $dql = "SELECT i "
-                . "FROM CertUnlpNgenBundle:$entity i"
-//                . "WHERE s.slug = 'open' and i.isClosed = false"
-        ;
-        $query = $em->createQuery($dql);
-
-        $pagination = $this->getPaginator()->paginate(
-                $query, $request->query->get('page', 1), 7
-                , array('defaultSortFieldName' => 'i.createdAt', 'defaultSortDirection' => 'desc')
-        );
-
-        return array('objects' => $pagination);
-    }
-
+    
 }

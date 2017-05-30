@@ -15,19 +15,5 @@ use Symfony\Component\HttpFoundation\Request;
 use CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController;
 
 class NetworkAdminFrontendController extends FrontendController {
-
-    public function homeEntity(Request $request, $entity = 'NetworkAdmin') {
-        $em = $this->getDoctrine();
-        $dql = "SELECT na "
-                . "FROM CertUnlpNgenBundle:NetworkAdmin na";
-        $query = $em->createQuery($dql);
-
-        $pagination = $this->getPaginator()->paginate(
-                $query, $request->query->get('page', 1), 7
-                , array('defaultSortFieldName' => 'na.createdAt', 'defaultSortDirection' => 'desc')
-        );
-
-        return array('objects' => $pagination);
-    }
-
+    
 }
