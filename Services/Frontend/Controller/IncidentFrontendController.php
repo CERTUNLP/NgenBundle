@@ -16,20 +16,4 @@ use CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController;
 
 class IncidentFrontendController extends FrontendController {
 
-    public function homeEntity(Request $request, $entity) {
-        $em = $this->getDoctrine();
-        $dql = "SELECT i,s,f,t "
-                . "FROM CertUnlpNgenBundle:$entity i join i.state s inner join i.feed f join i.type t "
-//                . "WHERE s.slug = 'open' and i.isClosed = false"
-        ;
-        $query = $em->createQuery($dql);
-
-        $pagination = $this->getPaginator()->paginate(
-                $query, $request->query->get('page', 1), 7
-                , array('defaultSortFieldName' => 'i.createdAt', 'defaultSortDirection' => 'desc')
-        );
-
-        return array('objects' => $pagination);
-    }
-
 }
