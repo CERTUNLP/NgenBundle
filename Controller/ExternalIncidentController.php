@@ -29,12 +29,56 @@ use Symfony\Component\HttpFoundation\File\File;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use CertUnlp\NgenBundle\Entity\IncidentType;
 
 class ExternalIncidentController extends FOSRestController {
 
     public function getApiController() {
 
         return $this->container->get('cert_unlp.ngen.incident.external.api.controller');
+    }
+
+    /**
+     * Prints a mail template for the given incident.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Prints a mail twig template for the given incident type.",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the incident is not found"
+     *   }
+     * )
+     * @param int     $id      the incident id
+     *
+     * @return array
+     */
+    public function getExternalReportHtmlAction(IncidentType $incidentType) {
+
+        return $this->getApiController()->reportHtmlAction($incidentType->getSlug());
+    }
+
+    /**
+     * Prints a mail template for the given incident.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Prints a mail html template for the given incident.",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the incident is not found"
+     *   }
+     * )
+     *
+     * @Fos\View()
+     *
+     * @param int     $id      the incident id
+     *
+     * @return array
+     */
+    public function getExternalReportMailAction(ExternalIncident $incident) {
+
+        return $this->getApiController()->reportMailAction($incident);
     }
 
     /**
@@ -122,7 +166,7 @@ class ExternalIncidentController extends FOSRestController {
      * @FOS\Put("/externals/{hostAddress}/{date}/{type}")
      * @throws NotFoundHttpException when incident not exist
      */
-    public function putIncidentAction(Request $request, ExternalIncident $incident) {
+    public function putExternalAction(Request $request, ExternalIncident $incident) {
         return $this->getApiController()->put($request, $incident);
     }
 
@@ -286,7 +330,7 @@ class ExternalIncidentController extends FOSRestController {
      *
      * @throws NotFoundHttpException when incident not exist
      */
-    public function deleteIncidentAction(Request $request, ExternalIncident $incident) {
+    public function deleteExternalAction(Request $request, ExternalIncident $incident) {
         return $this->getApiController()->delete($request, $incident);
     }
 
