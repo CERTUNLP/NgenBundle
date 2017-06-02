@@ -120,11 +120,11 @@ services:
         
     cert_unlp.ngen.incident.internal.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentApiController
-        arguments: [ @cert_unlp.ngen.incident.internal.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view ]
+        arguments: [ @cert_unlp.ngen.incident.internal.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view,@cert_unlp.ngen.internal.incident.mailer ]
         
     cert_unlp.ngen.incident.external.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentApiController
-        arguments: [ @cert_unlp.ngen.incident.external.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view ]
+        arguments: [ @cert_unlp.ngen.incident.external.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view,@cert_unlp.ngen.external.incident.mailer ]
     
     cert_unlp.ngen.network.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\NetworkApiController
