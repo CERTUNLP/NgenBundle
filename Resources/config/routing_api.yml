@@ -5,11 +5,11 @@
 # This source file is subject to the GPL v3.0 license that is bundled
 # with this source code in the file LICENSE.
 
-cert_ngen_incident_report_api:
-    type: rest
-    prefix: /v1
-    resource: 'CertUnlp\NgenBundle\Controller\IncidentReportController'
-    name_prefix:  api_1_
+#cert_ngen_incident_report_api:
+#    type: rest
+#    prefix: /v2/incidents/internals
+#    resource: 'CertUnlp\NgenBundle\Controller\IncidentReportController'
+#    name_prefix:  api_1_
     
 #cert_ngen_incident_api:
 #    type: rest
