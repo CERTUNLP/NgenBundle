@@ -71,7 +71,8 @@ fos_rest:
 #        include_format: true
     format_listener:
         rules:
-            - { path: ^/api/v1/incidents/(.*)/report/html, priorities: [html], fallback_format: ~ ,prefer_extension: true}
+            - { path: ^/api/v2/incidents/internals/(.*)/report/html, priorities: [html], fallback_format: ~ ,prefer_extension: true}
+            - { path: ^/api/v2/, priorities: json, fallback_format: ~ , prefer_extension: true}
             - { path: ^/api/v1/, priorities: json, fallback_format: ~ , prefer_extension: true}
             - { path: '^/', stop: true }
     exception:
