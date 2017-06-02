@@ -61,6 +61,7 @@ class IncidentMailer implements IncidentMailerInterface {
                         ->setSubject(sprintf($this->mailSubject(), $incident->getType()->getName(), $incident->getHostAddress(), $incident->getId()))
                         ->setFrom($this->cert_email)
                         ->setCc($this->cert_email)
+                        ->setSender($this->cert_email)
                         ->setTo($incident->getEmails())
                         ->setBody($text)
                         ->addPart($html, 'text/html');
