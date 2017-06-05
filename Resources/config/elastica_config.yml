@@ -142,9 +142,9 @@ fos_elastica:
                         network_entity:
                             type: keyword
                         start_address:
-                            type: ip
+                            type: keyword
                         end_address:
-                            type: ip
+                            type: keyword
                         country:
                             type: keyword
                         abuse_entity_emails:
