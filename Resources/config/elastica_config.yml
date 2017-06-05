@@ -16,8 +16,7 @@ fos_elastica:
                         id:
                             type: integer
                         hostAddress:
-                            type: string
-                            fielddata: true
+                            type: ip
                         date: 
                             type: date
                         lastTimeDetected:
@@ -29,82 +28,79 @@ fos_elastica:
                         isClosed:
                             type: boolean
                         evidence_file_path:
-                            type: string
+                            type: keyword
                         network:
                             type: "object"
                             properties:
                                 ip: 
-                                    type: string
+                                    type: ip
                                 ipMask:
-                                    type: string
+                                    type: integer
                                 isActive:
                                     type: boolean
                                 networkAdmin:
                                     type: "object"
                                     properties:
                                         slug:
-                                            type: string
+                                            type: keyword
                                         email: 
-                                            type: string
+                                            type: keyword
                                         name: 
-                                            type: string
+                                            type: keyword
                                         isActive:
                                             type: boolean
                                 academicUnit:
                                     type: "object"
                                     properties:
                                         slug:
-                                            type: string
+                                            type: keyword
                                         name: 
-                                            type: string
+                                            type: keyword
                         networkAdmin:
                                     type: "object"
                                     properties:
                                         slug:
-                                            type: string
+                                            type: keyword
                                         email:
-                                            type: string
+                                            type: keyword
                                         name:
-                                            type: string
+                                            type: keyword
                                         isActive:
                                             type: boolean
                         state:
                             type: "object"
                             properties:
                                 slug:
-                                    type: string
+                                    type: keyword
                                 name:
-                                    type: string
-                                    fielddata: true
+                                    type: keyword
                         feed:
                             type: "object"
                             properties:
                                 slug:
-                                    type: string
+                                    type: keyword
                                 name:
-                                    type: string
-                                    fielddata: true
+                                    type: keyword
                         type:
                             type: "object"
                             properties:
                                 slug:
-                                    type: string
+                                    type: keyword
                                 name:
-                                    type: string
-                                    fielddata: true
+                                    type: keyword
                         reporter:
                             type: "object"
                             properties:
                                 slug:
-                                    type: string
+                                    type: keyword
                                 name:
-                                    type: string
+                                    type: keyword
                                 lastname:
-                                    type: string
+                                    type: keyword
                                 email:
-                                    type: string
+                                    type: keyword
                                 username:
-                                    type: string
+                                    type: keyword
                                 enabled:
                                     type: boolean
                                 createdAt:
@@ -128,8 +124,7 @@ fos_elastica:
                         id:
                             type: integer
                         hostAddress:
-                            type: string
-                            fielddata: true
+                            type: ip
                         date: 
                             type: date
                         lastTimeDetected:
@@ -141,48 +136,46 @@ fos_elastica:
                         isClosed:
                             type: boolean
                         evidence_file_path:
-                            type: string
+                            type: keyword
                         abuse_entity:
-                            type: string
+                            type: keyword
                         network_entity:
-                            type: string
+                            type: keyword
                         start_address:
-                            type: string
+                            type: ip
                         end_address:
-                            type: string
+                            type: ip
                         country:
-                            type: string
+                            type: keyword
                         abuse_entity_emails:
-                            type: string
+                            type: keyword
                         state:
                             type: "object"
                             properties:
                                 slug:
-                                    type: string
+                                    type: keyword
                                 name:
-                                    type: string
-                                    fielddata: true
+                                    type: keyword
                         feed:
                             type: "object"
                             properties:
                                 slug:
-                                    type: string
+                                    type: keyword
                                 name:
-                                    type: string
-                                    fielddata: true
+                                    type: keyword
                         reporter:
                             type: "object"
                             properties:
                                 slug:
-                                    type: string
+                                    type: keyword
                                 name:
-                                    type: string
+                                    type: keyword
                                 lastname:
-                                    type: string
+                                    type: keyword
                                 email:
-                                    type: string
+                                    type: keyword
                                 username:
-                                    type: string
+                                    type: keyword
                                 enabled:
                                     type: boolean
                                 createdAt:
@@ -193,10 +186,9 @@ fos_elastica:
                             type: "object"
                             properties:
                                 slug:
-                                    type: string
+                                    type: keyword
                                 name:
-                                    type: string
-                                    fielddata: true
+                                    type: keyword
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
@@ -213,10 +205,12 @@ fos_elastica:
             types:
                 network:
                     properties:
-                        id: ~
+                        id:
+                            type: integer
                         ip:
                             type: ip
-                        ipMask: ~
+                        ipMask:
+                            type: integer
                         createdAt: 
                             type: date
                         updatedAt: 
@@ -226,20 +220,21 @@ fos_elastica:
                         networkAdmin:
                             type: "object"
                             properties:
-                                slug: ~
-                                email: ~
+                                slug:
+                                    type: keyword
+                                email:
+                                    type: keyword
                                 name:
-                                    type: string
-                                    fielddata: true
+                                    type: keyword
                                 isActive:
                                     type: boolean
                         academicUnit:
                             type: "object"
                             properties:
-                                slug: ~
+                                slug:
+                                    type: keyword
                                 name:
-                                    type: string
-                                    fielddata: true
+                                    type: keyword
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
@@ -256,16 +251,14 @@ fos_elastica:
             types:
                 network_admin:
                     properties:
-                        id: ~
+                        id:
+                            type: integer
                         name:
-                            type: string
-                            fielddata: true
+                            type: keyword
                         slug:
-                            type: string
-                            fielddata: true
+                            type: keyword
                         email:
-                            type: string
-                            fielddata: true
+                            type: keyword
                         isActive:
                             type: boolean
                         createdAt:
@@ -289,11 +282,9 @@ fos_elastica:
                 feeds:
                     properties:
                         name:
-                            type: string
-                            fielddata: true
+                            type: keyword
                         slug:
-                            type: string
-                            fielddata: true
+                            type: keyword
                         isActive:
                             type: boolean
                         createdAt:
@@ -318,11 +309,9 @@ fos_elastica:
                 states:
                     properties:
                         name:
-                            type: string
-                            fielddata: true
+                            type: keyword
                         slug:
-                            type: string
-                            fielddata: true
+                            type: keyword
                         isActive:
                             type: boolean
                         createdAt:
@@ -347,11 +336,9 @@ fos_elastica:
                 types:
                     properties:
                         name:
-                            type: string
-                            fielddata: true
+                            type: keyword
                         slug:
-                            type: string
-                            fielddata: true
+                            type: keyword
                         isActive:
                             type: boolean
                         createdAt:
