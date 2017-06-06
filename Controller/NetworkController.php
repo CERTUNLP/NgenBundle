@@ -84,6 +84,36 @@ class NetworkController extends FOSRestController {
      *
      * @ApiDoc(
      *   resource = true,
+     *   description = "Gets a Network for a given host address",
+     *   output = "CertUnlp\NgenBundle\Entity\Network",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the network is not found"
+     *   }
+     * )
+     *
+     * @param int     $id      the network id
+     *
+     * @return array
+     *
+     * @throws NotFoundHttpException when network not exist
+     *
+     * @FOS\Get("/networks/host/{ip}",requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"} )
+     * 
+     * @FOS\View(
+     *  templateVar="network"
+     * )     
+     *  @ParamConverter("network", class="CertUnlpNgenBundle:Network", options={"repository_method" = "findByHostAddress"})
+     */
+    public function getNetworkHostAction(Network $network) {
+        return $network;
+    }
+
+    /**
+     * Gets a Network for a given id.
+     *
+     * @ApiDoc(
+     *   resource = true,
      *   description = "Gets a Network for a given id",
      *   output = "CertUnlp\NgenBundle\Entity\Network",
      *   statusCodes = {
