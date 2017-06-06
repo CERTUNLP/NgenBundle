@@ -57,7 +57,6 @@ class ExternalIncidentListener implements ContainerAwareInterface {
 //    public function preFlushHandler(IncidentInterface $incident, PreFlushEventArgs $event) {
 //        $this->delegator_chain->preFlushDelegation($incident);
 //    }
-
 //    public function onConvertToIncident(ConvertToIncidentEvent $event) {
 //        $convertible = $event->getConvertible();
 //        $entityManager = $this->container->get('doctrine')->getManager();
@@ -154,21 +153,7 @@ class ExternalIncidentListener implements ContainerAwareInterface {
     }
 
     public function networkUpdate($incident, $event) {
-//        if (!$incident->isClosed()) {
-        $entityManager = $event->getEntityManager();
-        $network_handler = $this->container->get('cert_unlp.ngen.network.handler');
-        $network = $incident->getNetwork();
-        $newNetwork = $network_handler->getByHostAddress($incident->getHostAddress());
-        if ($network != null && !$incident->isClosed()) {
-            if (!$network->equals($newNetwork)) {
-                $incident->setNetwork($newNetwork);
-                $incident->setNetworkAdmin($newNetwork->getNetworkAdmin());
-            }
-        } else {
-            $incident->setNetwork($newNetwork);
-            $incident->setNetworkAdmin($newNetwork->getNetworkAdmin());
-        }
-//        }
+        
     }
 
     public function stateUpdate($incident, $event) {
