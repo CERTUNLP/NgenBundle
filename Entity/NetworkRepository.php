@@ -22,7 +22,6 @@ use Doctrine\ORM\EntityRepository;
 class NetworkRepository extends EntityRepository {
 
     public function findByHostAddress($address) {
-
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
         $qb->select('n')
@@ -31,11 +30,11 @@ class NetworkRepository extends EntityRepository {
                 ->andWhere('n.isActive = true')
                 ->orderBy("n.ipMask", "DESC");
 
-
-        $qb->setParameter('address', $address);
+        $ip = is_array($address) ? $address['ip'] : $address;
+        $qb->setParameter('address', $ip);
 
         $results = $qb->getQuery()->getResult();
-        
+
         if (count($results)) {
             return $results[0];
         }
