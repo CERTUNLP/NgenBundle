@@ -87,7 +87,10 @@ class Network implements NetworkInterface {
      */
     private $academic_unit;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="network", cascade={"persist","remove"}, fetch="EAGER")) */
+    /** 
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="network", cascade={"persist","remove"}, fetch="EAGER")) 
+     * @JMS\Expose
+     */
     private $incidents;
 
     /**
