@@ -35,10 +35,7 @@ class NetworkRepository extends EntityRepository {
 
         $results = $qb->getQuery()->getResult();
 
-        if (count($results)) {
-            return $results[0];
-        }
-        return $results;
+        return $results ? $results[0] : null;
     }
 
 }
