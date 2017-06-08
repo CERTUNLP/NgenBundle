@@ -1,26 +1,25 @@
 ### [problem]
 Lo contactamos porque hemos sido informados que el host/servidor {{IP}} está realizando consultas de DNS que arrojan coincidencia con nuestra zona RPZ "BOTNET".
 
-Dicha RPZ, contiene direcciones de red conocidas que están vinculadas a infraestructuras de botnets. Es probable que cualquier dispositivo que esté intentando acceder a este cualquiera de los dominios incluidos en esta RPZ se encuentre comprometido y conteniendo algún tipo de malware.
+Dicha RPZ, contiene direcciones de red conocidas que están vinculadas a infraestructuras de botnets.
 ### [/problem]
 
 ### [derivated_problem_content]
 ### Problemas derivados
-Esto indica que es probable que su servidor esté comprometido y que esté intentando conectarse a un servidor de C&C para esperar instrucciones.
+Es probable que su PC o servidor que esté intentando acceder a dominios de BOTNETs.
+
+Esto indica que la misma esté comprometido con algún tipo de malware y quiera conectarse a un servidor C&C para esperar instrucciones a ejecutar (DoS, fuerza bruta, envío de spams, etc.).
+
 ### [/derivated_problem_content]
+### Consideraciones
 
-### [verification_content]
-### Cómo verificar el problema
-Puede verificar las conexiones establecidas con el comando "netstat".
+Se debe tener en cuenta que si la IP informada es un servidor de mail, este reporte podría tratarse de un falso positivo. La razón de ello es que en la detección de SPAM, se evalúan URLs observadas en los correos electrónicos.
 
-### [destacated]
-* netstat -ntulp
-### [/destacated]
-
-También verificar tráfico inusual con Wireshark como así también los procesos ejecutándose en el host.
-### [/verification_content]
+Por otro lado, si la IP informada es un servidor de DNS (resolver local) el origen del problema no es el servidor sino el host que le hizo la consulta DNS reportada. En este caso, la manera de detectar el host infectado es registrando las consultas DNS.
 
 ### [recomendations_content]
 ### Recomendaciones
-Se recomienda aislar el host de la red hasta verificar y solucionar el problema.
+Se recomienda analizar el host de la red para verificar y solucionar el problema.
+
+
 ### [/recomendations_content]
