@@ -358,3 +358,38 @@ fos_elastica:
                             update: true
                             delete: true
                         finder: ~
+        users:
+            types:
+                users:
+                    properties:
+                        username:
+                            type: keyword
+                        name:
+                            type: keyword
+                        lastname:
+                            type: keyword
+                        slug:
+                            type: keyword
+                        email:
+                            type: keyword
+                        lastLogin:
+                            type: date
+                        isEnabled:
+                            type: boolean
+                        createdAt:
+                            type: date
+                        updatedAt:
+                            type: date
+                    persistence:
+                        identifier: slug
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\User
+                        provider: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
+                        finder: ~
