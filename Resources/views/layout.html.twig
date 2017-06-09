@@ -62,13 +62,24 @@
                                     </ul>
 
                                 </li>
-                                <li>
-                                    <a href="{{path('cert_unlp_ngen_network_frontend_home')}}" {{ ('network_frontend' in app.request.get('_route'))? 'class="active"' : '' }}>
-                                        {{icon('share-alt fa-fw')}} Networks
+                                <li {{ ('network' in app.request.get('_route'))? 'class="active"' : '' }}>
+
+                                    <a href="#" {{ ('network' in app.request.get('_route'))? 'class="active"' : '' }}>
+                                        {{icon('share-alt-square fa-fw')}} Networks
+                                        <span class="fa arrow">
                                     </a>
+                                    <ul class="nav nav-second-level collapse{{ ('network' in app.request.get('_route'))? 'in' : '' }}" aria-expanded="{{ ('network' in app.request.get('_route'))? 'true' : 'false' }}" {{ ('network' in app.request.get('_route'))? '' : 'style="height: 0px;"' }}>
+                                        <li>
+                                            <a href="{{path('cert_unlp_ngen_network_frontend_home')}}" {{ ('network_frontend' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('share-alt fa-fw')}} Networks</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{path('cert_unlp_ngen_network_admin_frontend_home')}}" {{ ('admin' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('users fa-fw')}} Admins</a>
+                                        </li>
+                                    </ul>
+
                                 </li>
                                 <li>
-                                    <a href="{{path('cert_unlp_ngen_network_admin_frontend_home')}}" {{ ('admin' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('users fa-fw')}} Admins</a>
+                                    <a href="{{path('cert_unlp_ngen_user_frontend_home')}}" {{ ('user' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('users fa-fw')}} Users</a>
                                 </li>
 
                             </ul>

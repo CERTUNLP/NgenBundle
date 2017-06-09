@@ -11,40 +11,59 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContext;
-use CertUnlp\NgenBundle\Form\Model\UserChangePassword;
-use CertUnlp\NgenBundle\Form\UserChangePasswordType;
-use FOS\UserBundle\Controller\SecurityController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use CertUnlp\NgenBundle\Form\UserType;
+use CertUnlp\NgenBundle\Entity\User;
 
-class UserFrontendController extends SecurityController {
+class UserFrontendController extends Controller {
 
-    /**
-     * @Route("/login", name="fos_user_security_login")
-     */
-    public function loginAction(Request $request) {
-        return parent::loginAction($request);
-    }
-
-    protected function renderLogin(array $data) {
-        return $this->render('CertUnlpNgenBundle:User:Frontend/login.html.twig', $data);
+    public function getFrontendController() {
+        return $this->get('cert_unlp.ngen.user.frontend.controller');
     }
 
     /**
-     * @Route("/login_check", name="fos_user_security_check")
+     * @Template("CertUnlpNgenBundle:User:Frontend/home.html.twig")
+     * @Route("/", name="cert_unlp_ngen_user_frontend_home")
      */
-    public function checkAction() {
-        return $this->redirect("/");
+    public function homeAction(Request $request) {
+        return $this->getFrontendController()->homeEntity($request);
     }
 
     /**
-     * @Route("/logout", name="fos_user_security_logout")
+     * @Template("CertUnlpNgenBundle:User:Frontend/home.html.twig")
+     * @Route("/search", name="cert_unlp_ngen_user_search_user")
      */
-    public function logoutAction() {
-        return parent::logoutAction();
+    public function searchUserAction(Request $request) {
+        return $this->getFrontendController()->searchEntity($request);
+    }
+
+    /**
+     * @Template("CertUnlpNgenBundle:User:Frontend/userForm.html.twig")
+     * @Route("/new", name="cert_unlp_ngen_user_new_user")
+     */
+    public function newUserAction(Request $request) {
+        return $this->getFrontendController()->newEntity($request);
+    }
+
+    /**
+     * @Template("CertUnlpNgenBundle:User:Frontend/userForm.html.twig")
+     * @Route("/{username}/edit", name="cert_unlp_ngen_user_edit_user")
+     */
+    public function editUserAction(User $user) {
+        return $this->getFrontendController()->editEntity($user);
+    }
+
+    /**
+     * @Template("CertUnlpNgenBundle:User:Frontend/userDetail.html.twig")
+     * @Route("/{username}/detail", name="cert_unlp_ngen_user_detail_user")
+     */
+    public function datailUserAction(User $user) {
+        return $this->getFrontendController()->detailEntity($user);
     }
 
 }
