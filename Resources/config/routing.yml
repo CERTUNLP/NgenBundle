@@ -14,7 +14,7 @@ cert_ngen_user:
 cert_ngen_user_security:
     resource: '@CertUnlpNgenBundle/Controller/UserSecurityFrontendController.php'
     type:     annotation
-    prefix:   /user
+    prefix:   /users
     
 cert_ngen_user_security:
     resource: '@CertUnlpNgenBundle/Controller/UserSecurityFrontendController.php'
