@@ -35,10 +35,10 @@ security:
 
     
     access_control:
-        - { path: ^/user/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/resetting, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/*, roles: ROLE_USER }
+        - { path: ^/users/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/users/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/users/resetting, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/users/*, roles: ROLE_USER }
         - { path: ^/incidents/*, roles: ROLE_USER }
         - { path: ^/networks/*, roles: ROLE_USER }
         - { path: ^/api/*, roles: ROLE_API }
