@@ -27,13 +27,14 @@ class IncidentMailer implements IncidentMailerInterface {
     protected $commentManager;
     protected $environment;
 
-    public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, CommentManagerInterface $commentManager, $environment) {
+    public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, $incident_openpgpsigner, CommentManagerInterface $commentManager, $environment) {
         $this->mailer = $mailer;
         $this->cert_email = $cert_email;
         $this->templating = $templating;
         $this->upload_directory = $upload_directory;
+        $this->incident_openpgpsigner = $incident_openpgpsigner;
         $this->commentManager = $commentManager;
-        $this->environment = ($environment == 'dev') ? '[dev]' : '';
+        $this->environment = (in_array($environment, ['dev', 'test'])) ? '[dev]' : '';
     }
 
     public function getBody(IncidentInterface $incident, $type = 'html') {
@@ -65,6 +66,8 @@ class IncidentMailer implements IncidentMailerInterface {
                         ->setTo($incident->getEmails())
                         ->setBody($text)
                         ->addPart($html, 'text/html');
+                $this->incident_openpgpsigner->sign($message, true);
+
                 if ($incident->getEvidenceFilePath()) {
                     $message->attach(\Swift_Attachment::fromPath($this->upload_directory . $incident->getEvidenceFilePath(true)));
                 }
