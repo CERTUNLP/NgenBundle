@@ -10,6 +10,7 @@ fos_elastica:
         default: { host: localhost, port: 9200 }
     indexes:
         incidents:
+            index_name: incidents_%kernel.environment%
             types:
                 internal:
                     properties:
@@ -194,7 +195,9 @@ fos_elastica:
                         provider: ~
                         finder: ~
         networks:
+            index_name: networks_%kernel.environment%
             types:
+    
                 network:
                     properties:
                         id:
@@ -236,6 +239,7 @@ fos_elastica:
                         provider: ~
                         finder: ~
         network_admins:
+            index_name: network_admins_%kernel.environment%
             types:
                 network_admin:
                     properties:
@@ -262,6 +266,7 @@ fos_elastica:
                         provider: ~
                         finder: ~
         feeds:
+            index_name: feeds_%kernel.environment%
             types:
                 feeds:
                     properties:
@@ -285,6 +290,7 @@ fos_elastica:
                         provider: ~
                         finder: ~
         states:
+            index_name: states_%kernel.environment%
             types:
                 states:
                     properties:
@@ -308,6 +314,7 @@ fos_elastica:
                         provider: ~
                         finder: ~
         types:
+            index_name: types_%kernel.environment%
             types:
                 types:
                     properties:
@@ -331,6 +338,7 @@ fos_elastica:
                         provider: ~
                         finder: ~
         users:
+            index_name: users_%kernel.environment%
             types:
                 users:
                     properties:
