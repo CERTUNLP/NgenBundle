@@ -114,10 +114,6 @@ fos_elastica:
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\InternalIncident
                         provider: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
                         finder: ~       
                 external:
                     properties:
@@ -196,10 +192,6 @@ fos_elastica:
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\ExternalIncident
                         provider: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
                         finder: ~
         networks:
             types:
@@ -242,10 +234,6 @@ fos_elastica:
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Network
                         provider: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
                         finder: ~
         network_admins:
             types:
@@ -272,10 +260,6 @@ fos_elastica:
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\NetworkAdmin
                         provider: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
                         finder: ~
         feeds:
             types:
@@ -299,10 +283,6 @@ fos_elastica:
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\IncidentFeed
                         provider: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
                         finder: ~
         states:
             types:
@@ -326,10 +306,6 @@ fos_elastica:
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\IncidentState
                         provider: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
                         finder: ~
         types:
             types:
@@ -353,10 +329,6 @@ fos_elastica:
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\IncidentType
                         provider: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
                         finder: ~
         users:
             types:
@@ -388,8 +360,4 @@ fos_elastica:
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\User
                         provider: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
                         finder: ~
