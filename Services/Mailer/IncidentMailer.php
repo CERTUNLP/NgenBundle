@@ -27,7 +27,7 @@ class IncidentMailer implements IncidentMailerInterface {
     protected $commentManager;
     protected $environment;
 
-    public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, $incident_openpgpsigner, CommentManagerInterface $commentManager, $environment) {
+    public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, CommentManagerInterface $commentManager, $environment) {
         $this->mailer = $mailer;
         $this->cert_email = $cert_email;
         $this->templating = $templating;
