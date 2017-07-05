@@ -32,7 +32,7 @@ class IncidentMailer implements IncidentMailerInterface {
         $this->cert_email = $cert_email;
         $this->templating = $templating;
         $this->upload_directory = $upload_directory;
-        $this->incident_openpgpsigner = $incident_openpgpsigner;
+//        $this->incident_openpgpsigner = $incident_openpgpsigner;
         $this->commentManager = $commentManager;
         $this->environment = (in_array($environment, ['dev', 'test'])) ? '[dev]' : '';
     }
