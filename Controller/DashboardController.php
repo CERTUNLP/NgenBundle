@@ -33,7 +33,7 @@ class DashboardController extends Controller {
      */
     public function homeAction(Request $request) {
 
-       return $this->redirect($this->generateUrl('cert_unlp_ngen_internal_incident_frontend_home'));
+        return $this->redirect($this->generateUrl('cert_unlp_ngen_internal_incident_frontend_home'));
 //        // Chart
 //        $series = array(
 //            array("name" => "Data Serie Name", "data" => array(1, 2, 4, 5, 6, 3, 8))
