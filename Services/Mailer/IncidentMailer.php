@@ -66,7 +66,7 @@ class IncidentMailer implements IncidentMailerInterface {
                         ->setTo($incident->getEmails())
                         ->setBody($text)
                         ->addPart($html, 'text/html');
-//                $this->incident_openpgpsigner->sign($message, true);
+                $this->incident_openpgpsigner->sign($message, true);
 
                 if ($incident->getEvidenceFilePath()) {
                     $message->attach(\Swift_Attachment::fromPath($this->upload_directory . $incident->getEvidenceFilePath(true)));
