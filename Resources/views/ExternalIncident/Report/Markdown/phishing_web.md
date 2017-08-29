@@ -1,5 +1,6 @@
 ### [problem]
-We would like to inform you that we have been notified that the *server* {{IP}} is currently hosting a web service being used to perform Phising attacks.### [/problem]
+We would like to inform you that we have been notified that the *server* {{IP}} is currently hosting a web service being used to perform Phising attacks.
+### [/problem]
 
 ### [derivated_problem_content]
 ### Related issues
