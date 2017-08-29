@@ -62,6 +62,7 @@ class InternalIncidentListener implements ContainerAwareInterface {
         $convertible = $event->getConvertible();
         $entityManager = $this->container->get('doctrine')->getManager();
         $incidentType = $entityManager->getRepository('CertUnlpNgenBundle:IncidentType')->findOneBySlug($convertible->getType());
+        echo $incidentType ? "" :  $convertible->getType()."\n";
         $incidentFeed = $entityManager->getRepository('CertUnlpNgenBundle:IncidentFeed')->findOneBySlug($convertible->getFeed());
         if ($convertible->getReporter() == 'random') {
 
