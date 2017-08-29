@@ -1,0 +1,59 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% set father = 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
+{% extends father %}{% block problem %}
+
+Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} tiene el servicio Telnet accesible desde Internet.
+
+{% endblock %}
+
+
+{% block derivated_problem_content %}
+
+
+<p class="lead">Problemas derivados</p>
+
+Este servicio no utiliza encriptación y puede revelar información sensible o el host bajo su administración podría llegar a ser usado para controlar el dispositivo remotamente.
+
+
+{% endblock %}
+
+
+{% block recomendations_content %}
+
+
+<p class="lead">Recomendaciones</p>
+
+Se recomienda:
+
+<ul>
+<li><p>Establecer filtros de acceso (reglas de firewall) para exponer el servicio solo a las IPs del administrador.</p></li>
+<li><p>En caso de no utilizarlo, es recomendable deshabilitar el servicio.</p></li>
+</ul>
+
+{% endblock %}
+
+
+{% block more_information_content %}
+
+
+<p class="lead">Mas información</p>
+
+
+<div class = "destacated">
+
+<ul>
+<li><p><a href="https://technet.microsoft.com/en-us/library/cc755017%28v=ws.10%29.aspx?f=255&amp;MSPPError=-2147217396">https://technet.microsoft.com/en-us/library/cc755017%28v=ws.10%29.aspx?f=255&amp;MSPPError=-2147217396</a></p></li>
+<li><p><a href="https://interwork.com/qa-how-to-eliminate-the-security-risks-associated-with-telnet-ftp/">https://interwork.com/qa-how-to-eliminate-the-security-risks-associated-with-telnet-ftp/</a></p></li>
+</ul>
+
+</div>
+
+
+{% endblock %}
