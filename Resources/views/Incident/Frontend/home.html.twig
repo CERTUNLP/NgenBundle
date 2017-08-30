@@ -14,6 +14,7 @@
             {% block list_header %}
                 <strong>{{icon('exclamation-circle fa-fw')}} Incidents</strong>
             {% endblock %}
+            <strong>({{objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount}})</strong>
             <div class="pull-right">
                 <div class="btn-group">
                     {% block add_incident %}

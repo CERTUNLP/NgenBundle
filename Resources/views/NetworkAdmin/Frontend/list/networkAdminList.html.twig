@@ -9,6 +9,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <strong>{{icon('users fa-fw')}} Network admins</strong>
+        <strong>({{objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount}})</strong>
         <div class="pull-right">
             <div class="btn-group">
                 <a class="btn btn-default btn-xs" href="{{path('cert_unlp_ngen_network_new_network_admin')}}">
