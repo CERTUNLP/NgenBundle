@@ -9,6 +9,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <strong>{{icon('feed fa-fw')}} Incident Feeds</strong>
+        <strong>({{objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount}})</strong>
         <div class="pull-right">
             <div class="btn-group">
                 <a class="btn btn-default btn-xs" href="{{path('cert_unlp_ngen_incident_feed_new')}}">
