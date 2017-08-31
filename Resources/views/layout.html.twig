@@ -81,6 +81,9 @@
                                 <li>
                                     <a href="{{path('cert_unlp_ngen_user_frontend_home')}}" {{ ('user' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('users fa-fw')}} Users</a>
                                 </li>
+                                <li>
+                                    <a href="{{path('cert_unlp_ngen_academic_unit_frontend_home')}}" {{ ('academic' in app.request.get('_route'))? 'class="active"' : '' }}>{{icon('cubes fa-fw')}} Academic Units</a>
+                                </li>
 
                             </ul>
                         </div>
