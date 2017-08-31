@@ -78,6 +78,10 @@ class CertUnlpNgenExtension extends Extension {
         $container->setParameter('cert_unlp.ngen.incident.type.handler.class', $config['incidents']['types']['handler']['class']);
         $container->setParameter('cert_unlp.ngen.incident.type.form_type.class', $config['incidents']['types']['form_type']['class']);
 
+        $container->setParameter('cert_unlp.ngen.academic_unit.class', $config['academic_unit']['class']);
+        $container->setParameter('cert_unlp.ngen.academic_unit.handler.class', $config['academic_unit']['handler']['class']);
+        $container->setParameter('cert_unlp.ngen.academic_unit.form_type.class', $config['academic_unit']['form_type']['class']);
+
         if (isset($config['incidents']['mailer']['sender_address'])) {
             $container->setParameter('cert_unlp.ngen.incident.mailer.sender_address', $config['incidents']['mailer']['sender_address']);
         } else {

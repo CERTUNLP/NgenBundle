@@ -218,7 +218,6 @@ class ApiController {
             $parameters = $request->request->all();
             unset($parameters['_method'], $parameters['force_edit'], $parameters['reactivate']);
 
-//            $db_object = $this->getCustomHandler()->get(['name' => $request->request->get('name'), 'email' => $request->request->get('email')]);
             $db_object = $this->findObjectBy($parameters);
             if (!$db_object) {
                 if ($request->get('reactivate')) {

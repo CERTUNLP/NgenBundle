@@ -265,6 +265,31 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\NetworkAdmin
                         provider: ~
                         finder: ~
+        academic_units:
+            index_name: academic_units_%kernel.environment%
+            types:
+                academic_unit:
+                    properties:
+                        id:
+                            type: integer
+                        name:
+                            type: keyword
+                        slug:
+                            type: keyword
+                        isActive:
+                            type: boolean
+                        createdAt:
+                            type: date
+                        updatedAt:
+                            type: date
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\AcademicUnit
+                        provider: ~
+                        finder: ~
         feeds:
             index_name: feeds_%kernel.environment%
             types:
