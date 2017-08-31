@@ -48,6 +48,7 @@ class Configuration implements ConfigurationInterface {
         $this->addNetworkSection($rootNode);
         $this->addFeedSection($rootNode);
         $this->addSeedSection($rootNode);
+        $this->addAcademicUnitSection($rootNode);
         return $treeBuilder;
     }
 
@@ -306,6 +307,35 @@ class Configuration implements ConfigurationInterface {
             ->end();
 }
 
+    private function addAcademicUnitSection(ArrayNodeDefinition $rootNode) {
+        $rootNode
+                ->children()
+                    ->arrayNode('academic_unit')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('class')
+                                ->defaultValue('CertUnlp\NgenBundle\Entity\AcademicUnit')
+                            ->end()
+                            ->arrayNode('handler')
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    ->scalarNode('class')
+                                        ->defaultValue('CertUnlp\NgenBundle\Services\Api\Handler\AcademicUnitHandler')
+                                    ->end()
+                                ->end()
+                            ->end()
+                            ->arrayNode('form_type')
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    ->scalarNode('class')
+                                        ->defaultValue('CertUnlp\NgenBundle\Form\AcademicUnitType')
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end();
+    }
+    
     private function addNetworkSection(ArrayNodeDefinition $rootNode) {
         $rootNode
                 ->children()
