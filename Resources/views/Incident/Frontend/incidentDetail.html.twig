@@ -115,7 +115,8 @@
                                         Evidence File
                                     </td>
                                     <td class="">
-                                        {{object.evidenceFilePath}}
+
+                                        <a href="{{path('cert_unlp_ngen_internal_incident_frontend_evidence_incident',{'hostAddress':object.hostAddress,'date':object.date|date('Y-m-d'),'type':object.type.slug})}}">Evidence (.zip)</a>
                                     </td>
                                 </tr>
                             {%endif%}
