@@ -16,4 +16,30 @@ use CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController;
 
 class IncidentFrontendController extends FrontendController {
 
+    public function __construct($doctrine, $formFactory, $entityType, $paginator, $finder, $comment_manager, $thread_manager, $evidence_path) {
+        parent::__construct($doctrine, $formFactory, $entityType, $paginator, $finder, $comment_manager, $thread_manager);
+        $this->evidence_path = $evidence_path;
+    }
+
+    public function evidenceIncidentAction($incident) {
+
+        $zipname = $incident . '_' . md5(time()) . '.zip';
+        $zip = new \ZipArchive();
+        $zip->open("/tmp/" . $zipname, \ZipArchive::CREATE);
+
+        $evidence_path = $this->evidence_path . $incident->getEvidenceSubDirectory() . "/";
+
+        $options = array('remove_all_path' => TRUE);
+        $zip->addGlob($evidence_path . $incident . "*", GLOB_BRACE, $options);
+        $zip->close();
+
+        $response = new \Symfony\Component\HttpFoundation\Response();
+        $response->setContent(readfile("/tmp/" . $zipname));
+        $response->headers->set('Content-Type', 'application/zip');
+        $response->headers->set('Content-disposition', ' attachment; filename="' . $zipname . '"');
+        $response->headers->set('Content-Length', filesize("/tmp/" . $zipname));
+
+        return $response;
+    }
+
 }
