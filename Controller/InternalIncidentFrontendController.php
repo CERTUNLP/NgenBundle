@@ -31,7 +31,7 @@ class InternalIncidentFrontendController extends Controller {
      * @Route("/", name="cert_unlp_ngen_internal_incident_frontend_home")
      */
     public function homeAction(Request $request) {
-        return $this->getFrontendController()->homeEntity($request,'InternalIncident');
+        return $this->getFrontendController()->homeEntity($request, 'InternalIncident');
     }
 
     /**
@@ -60,6 +60,16 @@ class InternalIncidentFrontendController extends Controller {
      */
     public function detailIncidentAction(IncidentInterface $incident) {
         return $this->getFrontendController()->detailEntity($incident);
+    }
+
+    /**
+     * @Route("{hostAddress}/{date}/{type}/evidence", name="cert_unlp_ngen_internal_incident_frontend_evidence_incident")
+     * @ParamConverter("incident", class="CertUnlpNgenBundle:InternalIncident", options={"repository_method" = "findByHostDateType"})
+
+     */
+    public function evidenceIncidentAction(IncidentInterface $incident) {
+
+        return $this->getFrontendController()->evidenceIncidentAction($incident);
     }
 
     /**
