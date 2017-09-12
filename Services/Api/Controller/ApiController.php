@@ -219,7 +219,8 @@ class ApiController {
             unset($parameters['_method'], $parameters['force_edit'], $parameters['reactivate']);
 
             $db_object = $this->findObjectBy($parameters);
-            if (!$db_object) {
+
+            if ($db_object) {
                 if ($request->get('reactivate')) {
                     $object->setIsActive(TRUE);
                 }
