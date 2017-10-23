@@ -175,7 +175,7 @@ class IncidentTypeController extends FOSRestController {
      * @throws NotFoundHttpException when network not exist
      */
     public function patchIncidentTypeBySlugAction(Request $request, IncidentType $incident_type) {
-        return $this->getApiController()->patch($request, $incident_type);
+        return $this->getApiController()->patch($request, $incident_type,true);
     }
 
     /**
