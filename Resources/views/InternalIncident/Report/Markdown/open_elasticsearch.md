@@ -15,6 +15,13 @@ Se recomienda alguna de las siguientes:
 * Establecer reglas de firewall para denegar las consultas desde redes no autorizadas. 
 ### [/recomendations_content]
 
+### [verification_content]
+### Cómo verificar el problema
+### [destacated]
+    * curl -XGET http://[ip]:9200/
+### [/destacated]   
+### [/verification_content]
+
 ### [more_information_content]
 ### Mas información
 ### [destacated]
