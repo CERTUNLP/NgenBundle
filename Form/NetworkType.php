@@ -40,10 +40,10 @@ class NetworkType extends AbstractType {
                     'attr' => array('help_text' => 'This will be the network admin'),
                     'description' => "The administrator responsible for the network",
                     'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('na')
-                        ->where('na.isActive = TRUE')
-                        ->orderBy('na.name', 'ASC');
-            }
+                        return $er->createQueryBuilder('na')
+                                ->where('na.isActive = TRUE')
+                                ->orderBy('na.name', 'ASC');
+                    }
                 ))
                 ->add('academicUnit', EntityType::class, array(
                     'class' => 'CertUnlpNgenBundle:AcademicUnit',
@@ -52,9 +52,9 @@ class NetworkType extends AbstractType {
                     'attr' => array('help_text' => 'The unit to which the network belongs'),
                     'description' => "The unit responsible, that owns the network",
                     'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('au')
-                        ->orderBy('au.name', 'ASC');
-            }));
+                        return $er->createQueryBuilder('au')
+                                ->orderBy('au.name', 'ASC');
+                    }));
 
         if ($builder->getData()) {
             if (!$builder->getData()->getIsActive()) {
@@ -86,7 +86,8 @@ class NetworkType extends AbstractType {
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'CertUnlp\NgenBundle\Entity\Network'
+            'data_class' => 'CertUnlp\NgenBundle\Entity\Network',
+            'csrf_protection' => false,
         ));
     }
 

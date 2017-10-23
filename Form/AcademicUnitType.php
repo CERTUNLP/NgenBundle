@@ -52,7 +52,8 @@ class AcademicUnitType extends AbstractType {
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'CertUnlp\NgenBundle\Entity\AcademicUnit'
+        'data_class' => 'CertUnlp\NgenBundle\Entity\AcademicUnit',
+        'csrf_protection' => false,
         ));
     }
 
