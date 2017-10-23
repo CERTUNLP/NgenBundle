@@ -96,7 +96,6 @@ class ApiController {
      * @return FormTypeInterface|View
      */
     public function post(Request $request) {
-        //TODO: refactoring aca o algo, poqnomegusta
         try {
             $object_data = array_merge($request->request->all(), $request->files->all());
 
@@ -220,7 +219,7 @@ class ApiController {
 
             $db_object = $this->findObjectBy($parameters);
 
-            if ($db_object) {
+            if (!$db_object) {
                 if ($request->get('reactivate')) {
                     $object->setIsActive(TRUE);
                 }
