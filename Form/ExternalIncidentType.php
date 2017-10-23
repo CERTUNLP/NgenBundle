@@ -85,7 +85,8 @@ class ExternalIncidentType extends AbstractType {
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'CertUnlp\NgenBundle\Model\IncidentInterface'
+            'data_class' => 'CertUnlp\NgenBundle\Model\IncidentInterface',
+            'csrf_protection' => false,
         ));
     }
 
