@@ -24,14 +24,6 @@ use JMS\Serializer\Annotation as JMS;
  * @JMS\ExclusionPolicy("all")
  */
 class IncidentType {
-//    /**
-//     * @var integer
-//     *
-//     * @ORM\Column(name="id", type="integer")
-//     * @ORM\Id
-//     * @ORM\GeneratedValue(strategy="AUTO")
-//     */
-//    private $id;
 
     /**
      * @var string
@@ -78,6 +70,9 @@ class IncidentType {
 
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="type", cascade={"persist","remove"}, fetch="EAGER")) */
     private $incidents;
+
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\IncidentReport",mappedBy="type",indexBy="lang", cascade={"persist","remove"}, fetch="EAGER")) */
+    private $reports;
 
     /**
      * Constructor
@@ -163,6 +158,15 @@ class IncidentType {
     }
 
     /**
+     * Get evidence_file
+     *
+     * @return string 
+     */
+    public function getReportName() {
+        return $this->getSlug() . ".md";
+    }
+
+    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
@@ -204,7 +208,6 @@ class IncidentType {
         return $this->updatedAt;
     }
 
-
     /**
      * Add incident
      *
@@ -212,8 +215,7 @@ class IncidentType {
      *
      * @return IncidentType
      */
-    public function addIncident(\CertUnlp\NgenBundle\Entity\InternalIncident $incident)
-    {
+    public function addIncident(\CertUnlp\NgenBundle\Entity\InternalIncident $incident) {
         $this->incidents[] = $incident;
 
         return $this;
@@ -224,8 +226,7 @@ class IncidentType {
      *
      * @param \CertUnlp\NgenBundle\Entity\InternalIncident $incident
      */
-    public function removeIncident(\CertUnlp\NgenBundle\Entity\InternalIncident $incident)
-    {
+    public function removeIncident(\CertUnlp\NgenBundle\Entity\InternalIncident $incident) {
         $this->incidents->removeElement($incident);
     }
 
@@ -234,8 +235,39 @@ class IncidentType {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getIncidents()
-    {
+    public function getIncidents() {
         return $this->incidents;
     }
+
+    /**
+     * Add report
+     *
+     * @param \CertUnlp\NgenBundle\Entity\IncidentReport $report
+     *
+     * @return IncidentType
+     */
+    public function addReport(\CertUnlp\NgenBundle\Entity\IncidentReport $report) {
+        $this->reports[] = $report;
+
+        return $this;
+    }
+
+    /**
+     * Remove report
+     *
+     * @param \CertUnlp\NgenBundle\Entity\IncidentReport $report
+     */
+    public function removeReport(\CertUnlp\NgenBundle\Entity\IncidentReport $report) {
+        $this->reports->removeElement($report);
+    }
+
+    /**
+     * Get reports
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReports() {
+        return $this->reports;
+    }
+
 }

@@ -7,9 +7,9 @@
  with this source code in the file LICENSE.
 #}
 
-{% extends 'CertUnlpNgenBundle::IncidentType/Frontend/frontend.html.twig' %}
+{% extends 'CertUnlpNgenBundle::IncidentReport/Frontend/frontend.html.twig' %}
 {% block content_header %}
-    <h1 class="page-header"> {{object}} {%include "CertUnlpNgenBundle:IncidentType:Frontend/list/stateLabel.html.twig" with {'incidentType': object}%}
+    <h1 class="page-header"> {{object}} {%include "CertUnlpNgenBundle:IncidentReport:Frontend/list/stateLabel.html.twig" with {'incidentReport': object}%}
     </h1>
 {% endblock %}
 {% block content_body %}
@@ -17,7 +17,7 @@
         <div class="col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Type Information</h3>
+                    <h3 class="panel-title">Report Information</h3>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -27,15 +27,23 @@
                                     Sistem Id
                                 </td>
                                 <td class="">
-                                    {{object.slug}}
+                                    {{object.lang}}
                                 </td>
                             </tr>
                             <tr>
                                 <td class="">
-                                    Name
+                                    Type
                                 </td>
                                 <td class="">
-                                    {{object.name}}
+                                    {{object.type}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    Type
+                                </td>
+                                <td class="">
+                                    {{object.problem}}
                                 </td>
                             </tr>
                             <tr>
@@ -60,7 +68,7 @@
                                     Active
                                 </td>
                                 <td class="">
-                                    {%include "CertUnlpNgenBundle:IncidentType:Frontend/list/stateLabel.html.twig" with {'incidentType': object}%}
+                                    {%include "CertUnlpNgenBundle:IncidentReport:Frontend/list/stateLabel.html.twig" with {'incidentReport': object}%}
                                 </td>
                             </tr>
                             <tr>
@@ -69,7 +77,7 @@
                                 </td>
                                 <td class="">
                                     {#                                    <a target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~object.name~'"'~ "&&" ~'"'~object.email~'"'})}}">#}
-                                    <span>{{label_info(object.incidents.count)}} </span>
+                                    <span>{{label_info(object.type.incidents.count)}} </span>
                                     {#                                    </a>#}
                                 </td>
                             </tr>
@@ -78,21 +86,5 @@
                 </div>
             </div>
         </div>
-
     </div>
-    {{ render(controller('CertUnlpNgenBundle:IncidentReportFrontend:home', {'term': object.slug, 'request': app.request})) }}
-{% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-
-    {% javascripts
-    '@CertUnlpNgenBundle/Resources/public/js/incident/report/IncidentReport.js'
-    '@CertUnlpNgenBundle/Resources/public/js/incident/report/IncidentReportApi.js'
-    %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-    <script>
-        var incident_report = new IncidentReport();
-        var incident_report_api = new IncidentReportApi("{{path("api_2_get")}}/", "{{app.user.apiKey}}");
-    </script>
 {% endblock %}
