@@ -47,7 +47,7 @@ doctrine:
                 INET_ATON: CertUnlp\NgenBundle\DQL\InetAtonFunction  
 
 sensio_framework_extra:
-    view: { annotations: false }
+    view: { annotations: true }
     router: { annotations: true }
     request: { converters: true }
 
@@ -58,7 +58,7 @@ fos_rest:
 #        json: true
     body_listener: true
     view:
-        view_response_listener: true
+        view_response_listener: force
         formats:
             xml:  true
             json: true

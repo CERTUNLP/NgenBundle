@@ -34,7 +34,6 @@ var ApiClient = Class.extend({
             return jqXHR;
         }
         return {};
-
     },
     create: function (data, callback) {
         var request = this.defaultChannel.create(data, {apikey: this.apiKey});

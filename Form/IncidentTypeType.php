@@ -19,6 +19,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use CertUnlp\NgenBundle\Form\IncidentReportType;
 
 class IncidentTypeType extends AbstractType {
 
@@ -52,7 +53,8 @@ class IncidentTypeType extends AbstractType {
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'CertUnlp\NgenBundle\Entity\IncidentType'
+            'data_class' => 'CertUnlp\NgenBundle\Entity\IncidentType',
+            'csrf_protection' => false,
         ));
     }
 
