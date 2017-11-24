@@ -76,6 +76,11 @@ cert_ngen_incident_type:
     type:     annotation
     prefix:   /incidents/types
 
+cert_ngen_incident_type_reports:
+    resource: '@CertUnlpNgenBundle/Controller/IncidentReportFrontendController.php'
+    type:     annotation
+    prefix:   /incidents/types
+
 cert_ngen_academic_unit:
     resource: '@CertUnlpNgenBundle/Controller/AcademicUnitFrontendController.php'
     type:     annotation

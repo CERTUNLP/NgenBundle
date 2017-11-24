@@ -19,6 +19,12 @@ use CertUnlp\NgenBundle\Services\Api\Handler\Handler;
 
 class IncidentTypeHandler extends Handler {
 
+    public function __construct(ObjectManager $om, $entityClass, $entityType, FormFactoryInterface $formFactory, $report_handler) {
+        parent::__construct($om, $entityClass, $entityType, $formFactory);
+
+        $this->report_handler = $report_handler;
+    }
+
     /**
      * Delete a Network.
      *
@@ -41,6 +47,17 @@ class IncidentTypeHandler extends Handler {
             $incident_type = $incident_typeDB;
         }
         return $incident_type;
+    }
+
+    public function patch($entity_class_instance, array $parameters = null) {
+        if (isset($parameters['report'])) {
+//            $parameters['report']['type'] = $entity_class_instance->getSlug();
+            $report = $this->report_handler->post($parameters['report']);
+            $report->setType($entity_class_instance);
+            $this->report_handler->patch();
+        }
+
+        return parent::patch($entity_class_instance, $parameters);
     }
 
 }

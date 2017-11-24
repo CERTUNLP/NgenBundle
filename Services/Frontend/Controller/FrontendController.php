@@ -37,14 +37,17 @@ class FrontendController {
         return $this->paginator;
     }
 
-    public function homeEntity(Request $request, $entity = '') {
-        return $this->searchEntity($request);
+    public function homeEntity(Request $request, $term = '') {
+        return $this->searchEntity($request, $term);
     }
 
-    public function searchEntity(Request $request) {
-        $term = $request->get('term') ? $request->get('term') : '*';
+    public function searchEntity(Request $request, $term = null) {
+        if (!$term) {
+            $term = $request->get('term') ? $request->get('term') : '*';
+        }
         $results = $this->getFinder()->createPaginatorAdapter($term);
 
+//        var_dump($results);die;
         $pagination = $this->getPaginator()->paginate(
                 $results, $request->query->get('page', 1), 7
                 , array('defaultSortFieldName' => 'createdAt', 'defaultSortDirection' => 'desc')

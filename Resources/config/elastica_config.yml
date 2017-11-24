@@ -362,6 +362,38 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\IncidentType
                         provider: ~
                         finder: ~
+        reports:
+            index_name: reports_%kernel.environment%
+            types:
+                reports:
+                    properties:
+                        lang:
+                            type: keyword
+                        slug:
+                            type: keyword
+                        problem:
+                            type: text
+                        derivated_problem:
+                            type: text
+                        verification:
+                            type: text
+                        more_information:
+                            type: text
+                        isActive:
+                            type: boolean
+                        createdAt:
+                            type: date
+                        updatedAt:
+                            type: date
+                    persistence:
+                        identifier: slug
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\IncidentReport
+                        provider: ~
+                        finder: ~
         users:
             index_name: users_%kernel.environment%
             types:
