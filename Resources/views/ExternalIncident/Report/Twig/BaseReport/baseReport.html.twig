@@ -17,14 +17,18 @@
                         {% block greeting %}
                             {% include 'CertUnlpNgenBundle:ExternalIncident:Report/Twig/BaseReport/headerReport.html.twig' %}
                         {% endblock %}
-                        {{block('problem')}}
+                        {% if block('problem') is defined %}
+                            {{block('problem')}}
+                        {% endif %}
                     </td>
                     <td class="expander"></td>
                 </tr>
                 {% block derivated_problem %}
                     <tr>
                         <td>
-                            {{block('derivated_problem_content')}}
+                            {% if block('derivated_problem_content') is defined %}
+                                {{block('derivated_problem_content')}}
+                            {% endif %}
                         </td>
                         <td class="expander"></td>
                     </tr>
@@ -32,7 +36,9 @@
                 {% block verification %}
                     <tr>
                         <td>
-                            {{block('verification_content')}}
+                            {% if block('verification_content') is defined %}
+                                {{block('verification_content')}}
+                            {% endif %}
                         </td>
                         <td class="expander"></td>
                     </tr>
@@ -40,7 +46,9 @@
                 {% block recomendations %}
                     <tr>
                         <td>
-                            {{block('recomendations_content')}}
+                            {% if block('recomendations_content') is defined %}
+                                {{block('recomendations_content')}}
+                            {% endif %}
                         </td>
                         <td class="expander"></td>
                     </tr>
@@ -48,8 +56,9 @@
                 {% block more_information %}
                     <tr>
                         <td>
-                            {{block('more_information_content')}}
-                        </td>
+                            {% if block('more_information_content') is defined %}
+                                {{block('more_information_content')}}
+                            {% endif %}
                         <td class="expander"></td>
                     </tr>
                 {% endblock %}

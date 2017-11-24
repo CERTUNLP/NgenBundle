@@ -37,7 +37,7 @@ class IncidentTypeFrontendController extends Controller {
      * @Route("/", name="cert_unlp_ngen_incident_type_frontend_home")
      */
     public function homeAction(Request $request) {
-        return $this->getFrontendController()->homeEntity($request, 'IncidentType');
+        return $this->getFrontendController()->homeEntity($request);
     }
 
     /**
@@ -61,6 +61,8 @@ class IncidentTypeFrontendController extends Controller {
      * @Route("{slug}/edit", name="cert_unlp_ngen_incident_type_edit")
      */
     public function editIncidentTypeAction(IncidentType $incidentType) {
+//        $incidentType->setReportEdit($this->readReportFile($incidentType));
+
         return $this->getFrontendController()->editEntity($incidentType);
     }
 
@@ -70,6 +72,14 @@ class IncidentTypeFrontendController extends Controller {
      */
     public function detailIncidentTypeAction(IncidentType $incidentType) {
         return $this->getFrontendController()->detailEntity($incidentType);
+    }
+
+    private function getReportName(IncidentType $incidentType) {
+        return $this->getParameter('cert_unlp.ngen.incident.internal.report.markdown.path') . "/" . $incidentType->getReportName();
+    }
+
+    private function readReportFile(IncidentType $incidentType) {
+        return $this->container->get('markdown.parser')->transformMarkdown(file_get_contents($this->getReportName($incidentType)));
     }
 
 }

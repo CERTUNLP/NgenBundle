@@ -115,8 +115,12 @@ services:
         
     cert_unlp.ngen.incident.type.handler:
         class:        "%cert_unlp.ngen.incident.type.handler.class%"
-        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.type.class%","%cert_unlp.ngen.incident.type.form_type.class%","@form.factory"]
-#        
+        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.type.class%","%cert_unlp.ngen.incident.type.form_type.class%","@form.factory","@cert_unlp.ngen.incident.type.report.handler"]
+    
+    cert_unlp.ngen.incident.type.report.handler:
+        class:        "%cert_unlp.ngen.incident.type.report.handler.class%"
+        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.type.report.class%","%cert_unlp.ngen.incident.type.report.form_type.class%","@form.factory"]
+        
     cert_unlp.ngen.network.handler:
         class:        "%cert_unlp.ngen.network.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.network.class%","%cert_unlp.ngen.network.form_type.class%","@form.factory","%cert_unlp.ngen.network.default_network%"]
@@ -156,7 +160,11 @@ services:
     
     cert_unlp.ngen.incident.type.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentTypeApiController
-        arguments: [ @cert_unlp.ngen.incident.type.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view ]
+        arguments: [ @cert_unlp.ngen.incident.type.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view, %cert_unlp.ngen.incident.internal.report.markdown.path% ]
+    
+    cert_unlp.ngen.incident.type.report.api.controller:
+        class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentReportApiController
+        arguments: [ @cert_unlp.ngen.incident.type.report.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view, %cert_unlp.ngen.incident.internal.report.markdown.path% ]
     
     cert_unlp.ngen.user.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\UserApiController
@@ -191,8 +199,12 @@ services:
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.state.form_type.class%","@knp_paginator","@fos_elastica.finder.states.states","@fos_comment.manager.comment","@fos_comment.manager.thread"]
     
     cert_unlp.ngen.incident.type.frontend.controller:
-        class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentTypeFrontendController
+        class: CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.type.form_type.class%","@knp_paginator","@fos_elastica.finder.types.types","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+    
+    cert_unlp.ngen.incident.report.frontend.controller:
+        class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentReportFrontendController
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.type.report.form_type.class%","@knp_paginator","@fos_elastica.finder.reports.reports","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.user.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\UserFrontendController

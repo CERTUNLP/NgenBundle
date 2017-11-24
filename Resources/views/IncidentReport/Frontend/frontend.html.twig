@@ -1,0 +1,37 @@
+{# 
+ This file is part of the Ngen - CSIRT Network Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
+
+{% block title %}Incident Reports{% endblock %}
+
+{% block content_header %}
+    <h1 class="page-header">{{icon('cubes fa-fw')}} Incident Reports</h1>
+{% endblock %}
+
+{#{% block sideBar_search_path %}{{path('cert_unlp_ngen_incident_report_search')}}{% endblock %}#}
+
+{% block content_body %}
+    {% include 'CertUnlpNgenBundle:IncidentReport:Frontend/list/incidentReportList.html.twig' with {'incidentReports': objects  } %}
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+    '@CertUnlpNgenBundle/Resources/public/js/incident/report/IncidentReport.js'
+    '@CertUnlpNgenBundle/Resources/public/js/incident/report/IncidentReportApi.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        var incident_report = new IncidentReport();
+        var incident_report_api = new IncidentReportApi("{{path("api_2_get")}}/", "{{app.user.apiKey}}");
+    </script>
+{% endblock %}

@@ -46,6 +46,12 @@ cert_ngen_incident_type_api:
     prefix: /v2/incidents
     resource: 'CertUnlp\NgenBundle\Controller\IncidentTypeController'
     name_prefix:  api_2_
+
+cert_ngen_incident_report_api:
+    type: rest
+    parent: cert_ngen_incident_type_api
+    resource: 'CertUnlp\NgenBundle\Controller\IncidentReportController'
+    name_prefix:  api_2_
     
 cert_ngen_user_api:
     type: rest
