@@ -32,7 +32,7 @@ class ExternalIncidentFrontendController extends Controller {
      */
     public function homeAction(Request $request) {
 
-        return $this->getFrontendController()->homeEntity($request, 'ExternalIncident');
+        return $this->getFrontendController()->homeEntity($request);
     }
 
     /**

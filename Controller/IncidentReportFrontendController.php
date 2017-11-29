@@ -65,7 +65,6 @@ class IncidentReportFrontendController extends Controller {
      */
     public function editIncidentReportAction(IncidentType $slug, IncidentReport $lang) {
 //        $incidentReport->setReportEdit($this->readReportFile($incidentReport));
-
         return $this->getFrontendController()->editEntity($lang);
     }
 
@@ -75,6 +74,8 @@ class IncidentReportFrontendController extends Controller {
      * @ParamConverter("lang", class="CertUnlpNgenBundle:IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
     public function detailIncidentReportAction(IncidentType $slug, IncidentReport $lang) {
+                var_dump($slug->getReports('es'));die;
+
         return $this->getFrontendController()->detailEntity($lang);
     }
 
