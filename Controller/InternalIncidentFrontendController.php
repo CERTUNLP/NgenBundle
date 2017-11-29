@@ -31,7 +31,7 @@ class InternalIncidentFrontendController extends Controller {
      * @Route("/", name="cert_unlp_ngen_internal_incident_frontend_home")
      */
     public function homeAction(Request $request) {
-        return $this->getFrontendController()->homeEntity($request, 'InternalIncident');
+        return $this->getFrontendController()->homeEntity($request);
     }
 
     /**

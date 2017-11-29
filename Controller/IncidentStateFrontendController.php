@@ -37,7 +37,7 @@ class IncidentStateFrontendController extends Controller {
      * @Route("/", name="cert_unlp_ngen_incident_state_frontend_home")
      */
     public function homeAction(Request $request) {
-        return $this->getFrontendController()->homeEntity($request, 'IncidentState');
+        return $this->getFrontendController()->homeEntity($request);
     }
 
     /**
