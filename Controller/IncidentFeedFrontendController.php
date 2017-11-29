@@ -37,7 +37,7 @@ class IncidentFeedFrontendController extends Controller {
      * @Route("/", name="cert_unlp_ngen_incident_feed_frontend_home")
      */
     public function homeAction(Request $request) {
-        return $this->getFrontendController()->homeEntity($request, 'IncidentFeed');
+        return $this->getFrontendController()->homeEntity($request);
     }
 
     /**
