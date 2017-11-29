@@ -37,7 +37,7 @@ class NetworkAdminFrontendController extends Controller {
      * @Route("/", name="cert_unlp_ngen_network_admin_frontend_home")
      */
     public function homeAction(Request $request) {
-        return $this->getFrontendController()->homeEntity($request, 'NetworkAdmin');
+        return $this->getFrontendController()->homeEntity($request);
     }
 
     /**

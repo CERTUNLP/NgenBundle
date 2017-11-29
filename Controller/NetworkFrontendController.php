@@ -31,7 +31,7 @@ class NetworkFrontendController extends Controller {
      * @Route("/", name="cert_unlp_ngen_network_frontend_home")
      */
     public function homeAction(Request $request) {
-        return $this->getFrontendController()->homeEntity($request, 'Network');
+        return $this->getFrontendController()->homeEntity($request);
     }
 
     /**
