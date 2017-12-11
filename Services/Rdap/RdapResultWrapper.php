@@ -19,28 +19,29 @@ use Exception;
 class RdapResultWrapper {
 
     public function __construct($rdap_json_response) {
+
         $this->rdap_json_object = json_decode($rdap_json_response);
         if ($this->getRateLimitNotice()) {
             throw new Exception($this->getRateLimitNotice()[0]);
         }
 
-        $this->entities = new Entities($this->rdap_json_object->entities);
+        $this->entities = new Entities(isset($this->rdap_json_object->entities) ? $this->rdap_json_object->entities : []);
     }
 
     public function getName() {
-        return $this->rdap_json_object->name;
+        return isset($this->rdap_json_object->name) ? $this->rdap_json_object->name : '';
     }
 
     public function getObjectClassName() {
-        return $this->rdap_json_object->objectClassName;
+        return isset($this->rdap_json_object->objectClassName) ? $this->rdap_json_object->objectClassName : '';
     }
 
     public function getHandle() {
-        return $this->rdap_json_object->handle;
+        return isset($this->rdap_json_object->handle) ? $this->rdap_json_object->handle : '';
     }
 
     public function getStartAddress() {
-        return $this->rdap_json_object->startAddress;
+        return isset($this->rdap_json_object->startAddress) ? $this->rdap_json_object->startAddress : '';
     }
 
     public function getCountry() {
@@ -48,23 +49,23 @@ class RdapResultWrapper {
     }
 
     public function getEndAddress() {
-        return $this->rdap_json_object->endAddress;
+        return isset($this->rdap_json_object->endAddress) ? $this->rdap_json_object->endAddress : '';
     }
 
     public function getIpVersion() {
-        return $this->rdap_json_object->ipVersion;
+        return isset($this->rdap_json_object->ipVersion) ? $this->rdap_json_object->ipVersion : '';
     }
 
     public function getParentHandle() {
-        return $this->rdap_json_object->parentHandle;
+        return isset($this->rdap_json_object->parentHandle) ? $this->rdap_json_object->parentHandle : '';
     }
 
     public function getRemarks() {
-        return $this->rdap_json_object->remarks;
+        return isset($this->rdap_json_object->remarks) ? $this->rdap_json_object->remarks : '';
     }
 
     public function getEvents() {
-        return $this->rdap_json_object->events;
+        return isset($this->rdap_json_object->events) ? $this->rdap_json_object->events : '';
     }
 
     public function getEventElement($element) {

@@ -17,13 +17,31 @@ use CertUnlp\NgenBundle\Entity\ExternalIncident;
 class IncidentRdapClient extends RdapClient {
 
     public function prePersistDelegation(ExternalIncident $incident) {
-        $this->response = $this->request($incident->getHostAddress());
-        $incident->setAbuseEntity($this->getAbuseEntity());
-        $incident->setAbuseEntityEmails($this->getAbuseEntityEmails());
-        $incident->setNetworkEntity($this->getNetworkEntity());
-        $incident->setStartAddress($this->getStartAddress());
-        $incident->setEndAddress($this->getEndAddress());
-        $incident->setCountry($this->getCountry());
+        try {
+            $this->response = $this->requestIp($incident->getHostAddress());
+            $this->seachForAbuseEntities();
+            $incident->setAbuseEntity($this->getAbuseEntity());
+            $incident->setAbuseEntityEmails($this->getAbuseEntityEmails());
+            $incident->setNetworkEntity($this->getNetworkEntity());
+            $incident->setStartAddress($this->getStartAddress());
+            $incident->setEndAddress($this->getEndAddress());
+            $incident->setCountry($this->getCountry());
+        } catch (Exception $exc) {
+            throw new Exception($exc);
+        }
+    }
+
+    public function seachForAbuseEntities() {
+        if ($this->response->getAbuseEntities()) {
+            foreach ($this->response->getAbuseEntities() as $index => $abuse) {
+                if (!$abuse->getEmails()) {
+                    $new_entity = $this->requestEntity($abuse->getSelfLink());
+                    if ($new_entity->getEmails()) {
+                        $abuse->object->vcardArray = $new_entity->object->vcardArray;
+                    }
+                }
+            }
+        }
     }
 
     public function getAbuseEntity() {

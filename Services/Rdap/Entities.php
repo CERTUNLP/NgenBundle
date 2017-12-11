@@ -30,8 +30,13 @@ class Entities {
         $entities = [];
         foreach ($this->getEntities() as $entity) {
             foreach ($roles as $role) {
+
                 if (in_array($role, $entity->getRoles())) {
                     $entities[] = $entity;
+                } else {
+                    if (strpos($entity->getRolesAsString(), $role) !== false) {
+                        $entities[] = $entity;
+                    }
                 }
             }
         }
