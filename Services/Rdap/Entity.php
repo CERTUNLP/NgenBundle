@@ -37,6 +37,24 @@ class Entity {
         if (isset($this->object->vcardArray)) {
             return $this->object->vcardArray[1];
         }
+        return [];
+    }
+
+    public function getLinks() {
+        if (isset($this->object->links)) {
+            return $this->object->links;
+        }
+    }
+
+    public function getSelfLink() {
+        if ($this->getLinks()) {
+            return array_filter(
+                            $this->getLinks(), function ($e) {
+                        return $e->rel == "self";
+                    }
+                    )[0]->href;
+        }
+        return [];
     }
 
     public function getRoles() {

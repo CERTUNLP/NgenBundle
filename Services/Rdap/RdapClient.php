@@ -25,17 +25,36 @@ class RdapClient {
         $this->resources_path = $resources_path;
         $this->entities = [];
         $this->response = null;
+        $this->request_url = 'https://rdap.arin.net/registry/ip/';
     }
 
-    public function request($ip) {
+    public function request($url) {
         try {
-
-            $result_file = 'https://rdap.arin.net/registry/ip/' . $ip;
-            $this->response = new RdapResultWrapper(file_get_contents($result_file));
+            $this->response = new RdapResultWrapper(file_get_contents($url));
 
             return $this->response;
         } catch (Exception $exc) {
-            return $exc;
+            var_dump($exc);
+            die;
+
+            throw new Exception("Request Limit", 400);
+        }
+    }
+
+    public function requestIp($ip) {
+        try {
+            $result_file = $this->request_url . $ip;
+            return $this->request($result_file);
+        } catch (Exception $exc) {
+            throw new Exception("Request Limit", 400);
+        }
+    }
+
+    public function requestEntity($link) {
+        try {
+            return new Entity(json_decode(file_get_contents($link)));
+        } catch (Exception $exc) {
+            throw new Exception($exc);
         }
     }
 
