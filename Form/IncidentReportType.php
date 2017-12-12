@@ -44,7 +44,10 @@ class IncidentReportType extends AbstractType {
                     'description' => "The administrator responsible for the network",
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('it')
+                                ->leftJoin('it.reports', 'ir')
                                 ->where('it.isActive = TRUE')
+                                ->groupBy('it.slug')
+                                ->having('count(ir) < 2')
                                 ->orderBy('it.name', 'ASC');
                     }
                 ))
@@ -52,21 +55,21 @@ class IncidentReportType extends AbstractType {
                     'required' => true,
                 ))
                 ->add('derivated_problem', null, array(
-                    'required' => true,
+                    'required' => false,
                 ))
                 ->add('verification', null, array(
-                    'required' => true,
+                    'required' => false,
                 ))
                 ->add('recomendations', null, array(
-                    'required' => true,
+                    'required' => false,
                 ))
                 ->add('more_information', null, array(
-                    'required' => true,
+                    'required' => false,
                 ))
                 ->add('save', 'submit', array('attr' =>
                     array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => "slide-down"),
         ));
-        
+
 
 
 //        if ($builder->getData()) {

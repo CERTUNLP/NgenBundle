@@ -15,9 +15,9 @@ use FOS\CommentBundle\Event\CommentPersistEvent;
 
 class ExternalIncidentMailer extends IncidentMailer {
 
-    public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, $commentManager, $environment) {
+    public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, $commentManager, $environment,$report_factory, $lang) {
         $this->reports_path = 'CertUnlpNgenBundle:ExternalIncident:Report/Twig';
-        parent::__construct($mailer, $templating, $cert_email, $upload_directory, $commentManager, $environment);
+        parent::__construct($mailer, $templating, $cert_email, $upload_directory, $commentManager, $environment,$report_factory, $lang);
     }
 
     public function getMailSubject() {

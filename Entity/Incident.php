@@ -13,7 +13,7 @@ namespace CertUnlp\NgenBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use CertUnlp\NgenBundle\Validator\Constraints as NetworkAssert;
+use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use CertUnlp\NgenBundle\Model\ReporterInterface;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
@@ -112,6 +112,7 @@ class Incident implements IncidentInterface {
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
+     * @CustomAssert\TypeHasReport
      */
     protected $type;
 
@@ -630,6 +631,14 @@ class Incident implements IncidentInterface {
      * @return \CertUnlp\NgenBundle\Model\NetworkInterface
      */
     public function getNetwork() {
+        
+    }
+
+    /**
+     * Get network
+     *
+     */
+    public function getNetworkAdmin() {
         
     }
 

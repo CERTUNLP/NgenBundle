@@ -47,7 +47,6 @@ class FrontendController {
         }
         $results = $this->getFinder()->createPaginatorAdapter($term);
 
-//        var_dump($results);die;
         $pagination = $this->getPaginator()->paginate(
                 $results, $request->query->get('page', 1), 7
                 , array('defaultSortFieldName' => 'createdAt', 'defaultSortDirection' => 'desc')

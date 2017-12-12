@@ -70,7 +70,7 @@ class IncidentReport {
     /**
      * @var boolean
      *
-     * @ORM\Column(name="derivated_problem", type="text")
+     * @ORM\Column(name="derivated_problem", type="text",nullable=true)
      * @JMS\Expose
      */
     private $derivated_problem = '';
@@ -78,7 +78,7 @@ class IncidentReport {
     /**
      * @var boolean
      *
-     * @ORM\Column(name="verification", type="text")
+     * @ORM\Column(name="verification", type="text",nullable=true)
      * @JMS\Expose
      */
     private $verification = '';
@@ -86,7 +86,7 @@ class IncidentReport {
     /**
      * @var boolean
      *
-     * @ORM\Column(name="recomendations", type="text")
+     * @ORM\Column(name="recomendations", type="text",nullable=true)
      * @JMS\Expose
      */
     private $recomendations = '';
@@ -94,7 +94,7 @@ class IncidentReport {
     /**
      * @var boolean
      *
-     * @ORM\Column(name="more_information", type="text")
+     * @ORM\Column(name="more_information", type="text",nullable=true)
      * @JMS\Expose
      */
     private $more_information = '';
@@ -444,7 +444,6 @@ class IncidentReport {
         return $this->lang;
     }
 
-
     /**
      * Set slug
      *
@@ -452,8 +451,7 @@ class IncidentReport {
      *
      * @return IncidentReport
      */
-    public function setSlug($slug)
-    {
+    public function setSlug($slug) {
         $this->slug = $slug;
 
         return $this;
@@ -464,8 +462,8 @@ class IncidentReport {
      *
      * @return string
      */
-    public function getSlug()
-    {
+    public function getSlug() {
         return $this->slug;
     }
+
 }
