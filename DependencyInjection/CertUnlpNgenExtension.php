@@ -52,9 +52,11 @@ class CertUnlpNgenExtension extends Extension {
         $container->setParameter('cert_unlp.ngen.incident.factory.class', $config['incidents']['factory']['class']);
         $container->setParameter('cert_unlp.ngen.incident.reporter.class', $config['incidents']['reporter']['class']);
 
+        $container->setParameter('cert_unlp.ngen.incident.internal.report.lang', $config['incidents']['internal']['reports']['lang']);
         $container->setParameter('cert_unlp.ngen.incident.internal.report.markdown.path', $config['incidents']['internal']['reports']['markdown']['path']);
         $container->setParameter('cert_unlp.ngen.incident.internal.report.twig.path', $config['incidents']['internal']['reports']['twig']['path']);
 
+        $container->setParameter('cert_unlp.ngen.incident.external.report.lang', $config['incidents']['external']['reports']['lang']);
         $container->setParameter('cert_unlp.ngen.incident.external.report.markdown.path', $config['incidents']['external']['reports']['markdown']['path']);
         $container->setParameter('cert_unlp.ngen.incident.external.report.twig.path', $config['incidents']['external']['reports']['twig']['path']);
 

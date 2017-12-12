@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 //use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * IncidentType
@@ -71,7 +72,13 @@ class IncidentType {
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="type", cascade={"persist","remove"}, fetch="EAGER")) */
     private $incidents;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\IncidentReport",mappedBy="type",indexBy="lang", cascade={"persist","remove"}, fetch="EAGER")) */
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\IncidentReport",mappedBy="type",indexBy="lang", cascade={"persist","remove"}, fetch="EAGER")) 
+     *
+     *  @Assert\Count(
+     *      min = 1,
+     *      minMessage = "This type needs at least one report to be used",
+     * )
+     */
     private $reports;
 
     /**
@@ -268,6 +275,17 @@ class IncidentType {
      */
     public function getReports() {
         return $this->reports;
+    }
+
+    /**
+     * Get report
+     *
+     * @return \CertUnlp\NgenBundle\Entity\IncidentReport
+     */
+    public function getReport($lang = null) {
+        return $this->reports->filter(function($report)use ($lang) {
+                    return $report->getLang() == $lang;
+                })->first();
     }
 
 }

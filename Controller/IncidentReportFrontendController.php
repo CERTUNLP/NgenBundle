@@ -74,8 +74,6 @@ class IncidentReportFrontendController extends Controller {
      * @ParamConverter("lang", class="CertUnlpNgenBundle:IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
     public function detailIncidentReportAction(IncidentType $slug, IncidentReport $lang) {
-                var_dump($slug->getReports('es'));die;
-
         return $this->getFrontendController()->detailEntity($lang);
     }
 
