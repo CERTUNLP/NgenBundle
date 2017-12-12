@@ -1,0 +1,34 @@
+{% extends  'CertUnlpNgenBundle:IncidentReport:Report/base/baseReport.html.twig' %}
+{% block greeting %}
+    Estimated {{incident.networkAdmin}},
+{% endblock %}
+{% block derivated_problem_title %}
+    Related issues
+{% endblock %}
+{% block verification_title %}
+    How to verify the issue
+{% endblock %}
+{% block recomendations_title %}
+    Recommendations
+{% endblock %}
+{% block more_information_title %}
+    For more information
+{% endblock %}
+{% block footer_content %}
+    <div class = "destacated">
+        PLEASE DO NOT REPLY TO THIS MAIL.
+    </div>
+
+    We would appreciate that you notify us when you solve the problem. 
+    For any questions, please contact us to <strong>abuse@cert.unlp.edu.ar</strong>.
+
+    Regards, CertUnlp Support.
+
+    CERTunlp - http://www.cert.unlp.edu.ar
+
+{% endblock %}
+{% block footer_generated_by %}
+
+    This report has been generated with <a href="https://github.com/CERTUNLP/NgenBundle">https://github.com/CERTUNLP/NgenBundle</a>
+
+{% endblock %}

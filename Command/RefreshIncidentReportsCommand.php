@@ -31,10 +31,10 @@ class RefreshIncidentReportsCommand extends ContainerAwareCommand {
         $output->writeln('[incidents:reports]: Getting reports...');
         try {
             $output->writeln('[incidents:reports]: Parsing internal incident reports.');
-            $this->parse_markdowns($this->getContainer()->getParameter('cert_unlp.ngen.incident.internal.report.markdown.path'), $this->getContainer()->getParameter('cert_unlp.ngen.incident.internal.report.twig.path'), $output);
+            $this->parse_markdowns($this->getContainer()->getParameter('cert_unlp.ngen.incident.internal.report.twig.path'), $this->getContainer()->getParameter('cert_unlp.ngen.incident.internal.report.twig.path'), $output, "es");
             $output->writeln('[incidents:reports]: Done.');
             $output->writeln('[incidents:reports]: Parsing internal external reports.');
-            $this->parse_markdowns($this->getContainer()->getParameter('cert_unlp.ngen.incident.external.report.markdown.path'), $this->getContainer()->getParameter('cert_unlp.ngen.incident.external.report.twig.path'), $output, false);
+            $this->parse_markdowns($this->getContainer()->getParameter('cert_unlp.ngen.incident.external.report.twig.path'), $this->getContainer()->getParameter('cert_unlp.ngen.incident.external.report.twig.path'), $output, "en");
             $output->writeln('[incidents:reports]: Done.');
         } catch (Exception $ex) {
             $output->writeln('[incidents:reports]: Something is wrong.');
@@ -42,40 +42,56 @@ class RefreshIncidentReportsCommand extends ContainerAwareCommand {
         $output->writeln('[incidents:reports]: Done.');
     }
 
-    private function parse_markdowns($markdown_files_path, $twig_files_path, $output, $internal = true) {
+    private function parse_markdowns($markdown_files_path, $twig_files_path, $output, $lang = true) {
         $report_files = glob($markdown_files_path . '/*'); // get all file names
         $common_report_files = glob($markdown_files_path . '/common/*');
-        $header = "{# 
- This file is part of the Ngen - CSIRT Incident Report System.
- 
- (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
- This source file is subject to the GPL v3.0 license that is bundled
- with this source code in the file LICENSE.
-#}
-{% set father = 'CertUnlpNgenBundle:" . ($internal ? "Internal" : "External") . "Incident:Report/Twig/BaseReport/baseReport.'~txtOrHtml~'.twig' %}
-{% extends father %}";
+
 
         foreach ($report_files as $file) { // iterate files
             $filename = basename($file);
-            if (!in_array($filename, ['TODO.md', 'template.md', 'common'])) {
+            if (!in_array($filename, ['TODO.md', 'template.md', 'common', 'BaseReport', 'reportReply.html.twig', 'baseReport.html.twig'])) {
                 if ($output->isVerbose()) {
                     $output->writeln('[incidents:reports]: parsing ' . $filename);
                 }
                 $html = $this->getContainer()->get('markdown.parser')->transformMarkdown(file_get_contents($file));
-                $html = $header . $html;
-                file_put_contents($twig_files_path . "/" . str_replace(".md", "Report.html.twig", basename($file)), $html);
-            }
-        }
-        foreach ($common_report_files as $file) { // iterate files
-            $filename = basename($file);
 
-            if ($output->isVerbose()) {
-                $output->writeln('[incidents:reports]: parsing ' . $filename);
+//                var_dump(str_split($filename, strpos($filename, 'Report.html.twig'))[0]);
+//                die;
+                $templateContent = $this->getContainer()->get('twig')->loadTemplate('CertUnlpNgenBundle:InternalIncident:Report/Twig/' . $filename);
+                $incident = new \stdClass();
+                $incident->hostAddress = "{{incident.hostAddress}}";
+                $params['problem'] = trim($templateContent->renderBlock('problem', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'), array('incident' => array(new \stdClass(), 'incident'))));
+                if ($templateContent->hasBlock('derivated_problem_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'))) {
+                    $params['derivated_problem'] = strip_tags(trim($templateContent->renderBlock('derivated_problem_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'), array('incident' => array(new \stdClass(), 'incident')))));
+                }
+                if ($templateContent->hasBlock('verification_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'))) {
+                    $params['verification'] = strip_tags(trim($templateContent->renderBlock('verification_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'), array('incident' => array(new \stdClass(), 'incident')))));
+                }
+                if ($templateContent->hasBlock('recomendations_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'))) {
+                    $params['recomendations'] = strip_tags(trim($templateContent->renderBlock('recomendations_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'), array('incident' => array(new \stdClass(), 'incident')))));
+                }
+                if ($templateContent->hasBlock('more_information_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'))) {
+                    $params['more_information'] = strip_tags(trim($templateContent->renderBlock('more_information_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'), array('incident' => array(new \stdClass(), 'incident')))));
+                }
+                $params['lang'] = $lang;
+                $params['type'] = str_split($filename, strpos($filename, 'Report.html.twig'))[0];
+                var_dump($params['type']);
+                try {
+                    $this->getContainer()->get('cert_unlp.ngen.incident.type.report.handler')->post($params);
+                } catch (Exception $exc) {
+//                    continue;
+                }
             }
-            $html = $this->getContainer()->get('markdown.parser')->transformMarkdown(file_get_contents($file));
-            file_put_contents($twig_files_path . "/BaseReport/" . str_replace(".md", "Report.html.twig", basename($file)), $html);
         }
+//        foreach ($common_report_files as $file) { // iterate files
+//            $filename = basename($file);
+//
+//            if ($output->isVerbose()) {
+//                $output->writeln('[incidents:reports]: parsing ' . $filename);
+//            }
+//            $html = $this->getContainer()->get('markdown.parser')->transformMarkdown(file_get_contents($file));
+//            $this->getContainer()->get('cert_unlp.ngen.incident.type.report.handler');
+//        }
     }
 
 }

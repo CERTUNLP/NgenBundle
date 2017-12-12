@@ -26,8 +26,9 @@ class IncidentMailer implements IncidentMailerInterface {
     protected $reports_path;
     protected $commentManager;
     protected $environment;
+    protected $report_factory;
 
-    public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, CommentManagerInterface $commentManager, $environment) {
+    public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, CommentManagerInterface $commentManager, $environment, $report_factory, $lang) {
         $this->mailer = $mailer;
         $this->cert_email = $cert_email;
         $this->templating = $templating;
@@ -35,16 +36,21 @@ class IncidentMailer implements IncidentMailerInterface {
 //        $this->incident_openpgpsigner = $incident_openpgpsigner;
         $this->commentManager = $commentManager;
         $this->environment = (in_array($environment, ['dev', 'test'])) ? '[dev]' : '';
+        $this->report_factory = $report_factory;
+        $this->lang = $lang;
     }
 
     public function getBody(IncidentInterface $incident, $type = 'html') {
         $parameters = array('incident' => $incident, 'txtOrHtml' => $type);
-        if ($incident->getReportEdit()) {
-            return $this->templating->createTemplate($incident->getReportEdit())->render($parameters);
-        } else {
-            $template = $this->reports_path . '/' . $incident->getType()->getSlug() . 'Report.html.twig';
-            return $this->templating->render($template, $parameters);
-        }
+//        if ($incident->getReportEdit()) {
+//            return $this->templating->createTemplate($incident->getReportEdit())->render($parameters);
+//        } else {
+//            $this->report_factory->getReport($incident);
+//            $template = $this->reports_path . '/' . $incident->getType()->getSlug() . 'Report.html.twig';
+//            return $this->templating->render($template, $parameters);
+//        var_dump($this->report_factory->getReport($incident));die;
+        return $this->report_factory->getReport($incident, $this->lang);
+//        }
     }
 
     public function getReplyBody(IncidentInterface $incident, $body = '', $type = 'html') {

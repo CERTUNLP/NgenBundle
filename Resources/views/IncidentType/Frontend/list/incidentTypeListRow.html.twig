@@ -16,6 +16,9 @@
             {%include "CertUnlpNgenBundle:IncidentType:Frontend/list/stateLabel.html.twig" with {'incidentType': incidentType}%}
         </div>
     </td>
+    <td class="col-md-1">
+        {{incidentType.Reports.count()}}
+    </td>
     <td class="col-sm-1">
 
         <div class="btn-group inline pull-left dropdown action-dropdown">
