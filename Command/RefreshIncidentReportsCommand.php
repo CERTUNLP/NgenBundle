@@ -31,10 +31,10 @@ class RefreshIncidentReportsCommand extends ContainerAwareCommand {
         $output->writeln('[incidents:reports]: Getting reports...');
         try {
             $output->writeln('[incidents:reports]: Parsing internal incident reports.');
-            $this->parse_markdowns($this->getContainer()->getParameter('cert_unlp.ngen.incident.internal.report.twig.path'), $this->getContainer()->getParameter('cert_unlp.ngen.incident.internal.report.twig.path'), $output, "es");
+            $this->parse_markdowns($this->getContainer()->getParameter('kernel.root_dir')."/../vendor/certunlp/ngen-bundle/Resources/views/InternalIncident/Report/Twig", $this->getContainer()->getParameter('cert_unlp.ngen.incident.internal.report.twig.path'), $output, "es");
             $output->writeln('[incidents:reports]: Done.');
             $output->writeln('[incidents:reports]: Parsing internal external reports.');
-            $this->parse_markdowns($this->getContainer()->getParameter('cert_unlp.ngen.incident.external.report.twig.path'), $this->getContainer()->getParameter('cert_unlp.ngen.incident.external.report.twig.path'), $output, "en");
+            $this->parse_markdowns($this->getContainer()->getParameter('kernel.root_dir')."/../vendor/certunlp/ngen-bundle/Resources/views/ExternalIncident/Report/Twig", $this->getContainer()->getParameter('cert_unlp.ngen.incident.external.report.twig.path'), $output, "en");
             $output->writeln('[incidents:reports]: Done.');
         } catch (Exception $ex) {
             $output->writeln('[incidents:reports]: Something is wrong.');
@@ -46,6 +46,7 @@ class RefreshIncidentReportsCommand extends ContainerAwareCommand {
         $report_files = glob($markdown_files_path . '/*'); // get all file names
         $common_report_files = glob($markdown_files_path . '/common/*');
 
+//        die;
 
         foreach ($report_files as $file) { // iterate files
             $filename = basename($file);
@@ -75,8 +76,8 @@ class RefreshIncidentReportsCommand extends ContainerAwareCommand {
                 }
                 $params['lang'] = $lang;
                 $params['type'] = str_split($filename, strpos($filename, 'Report.html.twig'))[0];
-                var_dump($params['type']);
                 try {
+                    var_dump($params['type']);
                     $this->getContainer()->get('cert_unlp.ngen.incident.type.report.handler')->post($params);
                 } catch (Exception $exc) {
 //                    continue;

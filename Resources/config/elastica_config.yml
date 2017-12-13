@@ -378,6 +378,8 @@ fos_elastica:
                             type: keyword
                         slug:
                             type: keyword
+                        type:
+                            type: keyword
                         problem:
                             type: text
                         derivated_problem:
