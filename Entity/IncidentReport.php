@@ -32,14 +32,12 @@ class IncidentReport {
 
     /**
      * @var boolean
-     * @ORM\id
      * @ORM\Column(name="lang", type="string", length=2)
      * @JMS\Expose  
      */
     private $lang = '';
 
     /**
-     * @ORM\id
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentType",inversedBy="reports")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      */
@@ -47,12 +45,12 @@ class IncidentReport {
 
     /**
      * Person domain object class
-     *
+     * @ORM\id
      * @Gedmo\Slug(handlers={
      *      @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\RelativeSlugHandler", options={
      *          @Gedmo\SlugHandlerOption(name="relationField", value="type"),
      *          @Gedmo\SlugHandlerOption(name="relationSlugField", value="slug"),
-     *          @Gedmo\SlugHandlerOption(name="separator", value="/")
+     *          @Gedmo\SlugHandlerOption(name="separator", value="-")
      *      })
      * }, fields={"lang"})
      * @Doctrine\ORM\Mapping\Column(length=64, unique=true)
