@@ -48,10 +48,10 @@ class RefreshIncidentReportsCommand extends ContainerAwareCommand {
         $output->writeln('[incidents:reports]: Getting reports...');
         try {
             $output->writeln('[incidents:reports]: Parsing internal incident reports.');
-            $this->parse_markdowns($this->getContainer()->getParameter('cert_unlp.ngen.incident.internal.report.twig.path'), $this->getContainer()->getParameter('cert_unlp.ngen.incident.internal.report.twig.path'), $output, "es");
+            $this->parse_markdowns($this->getContainer()->getParameter('kernel.root_dir')."/../vendor/certunlp/ngen-bundle/Resources/views/InternalIncident/Report/Twig", $this->getContainer()->getParameter('cert_unlp.ngen.incident.internal.report.twig.path'), $output, "es");
             $output->writeln('[incidents:reports]: Done.');
             $output->writeln('[incidents:reports]: Parsing internal external reports.');
-            $this->parse_markdowns($this->getContainer()->getParameter('cert_unlp.ngen.incident.external.report.twig.path'), $this->getContainer()->getParameter('cert_unlp.ngen.incident.external.report.twig.path'), $output, "en");
+            $this->parse_markdowns($this->getContainer()->getParameter('kernel.root_dir')."/../vendor/certunlp/ngen-bundle/Resources/views/ExternalIncident/Report/Twig", $this->getContainer()->getParameter('cert_unlp.ngen.incident.external.report.twig.path'), $output, "en");
             $output->writeln('[incidents:reports]: Done.');
         } catch (Exception $ex) {
             $output->writeln('[incidents:reports]: Something is wrong.');
