@@ -19,6 +19,23 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class RefreshIncidentReportsCommand extends ContainerAwareCommand {
 
+    protected function strip_tags_content($text, $tags = '', $invert = FALSE) {
+
+        preg_match_all('/<(.+?)[\s]*\/?[\s]*>/si', trim($tags), $tags);
+        $tags = array_unique($tags[1]);
+
+        if (is_array($tags) AND count($tags) > 0) {
+            if ($invert == FALSE) {
+                return preg_replace('@<(?!(?:' . implode('|', $tags) . ')\b)(\w+)\b.*?>.*?</\1>@si', '', $text);
+            } else {
+                return preg_replace('@<(' . implode('|', $tags) . ')\b.*?>.*?</\1>@si', '', $text);
+            }
+        } elseif ($invert == FALSE) {
+            return preg_replace('@<(\w+)\b.*?>.*?</\1>@si', '', $text);
+        }
+        return $text;
+    }
+
     protected function configure() {
         $this
                 ->setName('cert_unlp:incidents:reports:refresh')
@@ -31,10 +48,10 @@ class RefreshIncidentReportsCommand extends ContainerAwareCommand {
         $output->writeln('[incidents:reports]: Getting reports...');
         try {
             $output->writeln('[incidents:reports]: Parsing internal incident reports.');
-            $this->parse_markdowns($this->getContainer()->getParameter('kernel.root_dir')."/../vendor/certunlp/ngen-bundle/Resources/views/InternalIncident/Report/Twig", $this->getContainer()->getParameter('cert_unlp.ngen.incident.internal.report.twig.path'), $output, "es");
+            $this->parse_markdowns($this->getContainer()->getParameter('cert_unlp.ngen.incident.internal.report.twig.path'), $this->getContainer()->getParameter('cert_unlp.ngen.incident.internal.report.twig.path'), $output, "es");
             $output->writeln('[incidents:reports]: Done.');
             $output->writeln('[incidents:reports]: Parsing internal external reports.');
-            $this->parse_markdowns($this->getContainer()->getParameter('kernel.root_dir')."/../vendor/certunlp/ngen-bundle/Resources/views/ExternalIncident/Report/Twig", $this->getContainer()->getParameter('cert_unlp.ngen.incident.external.report.twig.path'), $output, "en");
+            $this->parse_markdowns($this->getContainer()->getParameter('cert_unlp.ngen.incident.external.report.twig.path'), $this->getContainer()->getParameter('cert_unlp.ngen.incident.external.report.twig.path'), $output, "en");
             $output->writeln('[incidents:reports]: Done.');
         } catch (Exception $ex) {
             $output->writeln('[incidents:reports]: Something is wrong.');
@@ -63,21 +80,21 @@ class RefreshIncidentReportsCommand extends ContainerAwareCommand {
                 $incident->hostAddress = "{{incident.hostAddress}}";
                 $params['problem'] = trim($templateContent->renderBlock('problem', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'), array('incident' => array(new \stdClass(), 'incident'))));
                 if ($templateContent->hasBlock('derivated_problem_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'))) {
-                    $params['derivated_problem'] = strip_tags(trim($templateContent->renderBlock('derivated_problem_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'), array('incident' => array(new \stdClass(), 'incident')))));
+      
+                    $params['derivated_problem'] = trim($this->strip_tags_content($templateContent->renderBlock('derivated_problem_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'), array('incident' => array(new \stdClass(), 'incident')))));
                 }
                 if ($templateContent->hasBlock('verification_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'))) {
-                    $params['verification'] = strip_tags(trim($templateContent->renderBlock('verification_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'), array('incident' => array(new \stdClass(), 'incident')))));
+                    $params['verification'] = trim($this->strip_tags_content($templateContent->renderBlock('verification_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'), array('incident' => array(new \stdClass(), 'incident')))));
                 }
                 if ($templateContent->hasBlock('recomendations_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'))) {
-                    $params['recomendations'] = strip_tags(trim($templateContent->renderBlock('recomendations_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'), array('incident' => array(new \stdClass(), 'incident')))));
+                    $params['recomendations'] = trim($this->strip_tags_content($templateContent->renderBlock('recomendations_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'), array('incident' => array(new \stdClass(), 'incident')))));
                 }
                 if ($templateContent->hasBlock('more_information_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'))) {
-                    $params['more_information'] = strip_tags(trim($templateContent->renderBlock('more_information_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'), array('incident' => array(new \stdClass(), 'incident')))));
+                    $params['more_information'] = trim($this->strip_tags_content($templateContent->renderBlock('more_information_content', array('incident' => $incident, "father" => 'CertUnlpNgenBundle:InternalIncident:Report/Twig/BaseReport/baseReport.html.twig'), array('incident' => array(new \stdClass(), 'incident')))));
                 }
                 $params['lang'] = $lang;
                 $params['type'] = str_split($filename, strpos($filename, 'Report.html.twig'))[0];
                 try {
-                    var_dump($params['type']);
                     $this->getContainer()->get('cert_unlp.ngen.incident.type.report.handler')->post($params);
                 } catch (Exception $exc) {
 //                    continue;
