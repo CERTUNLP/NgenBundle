@@ -79,4 +79,63 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Report content</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td class="">
+                                    Problem
+                                </td>
+                                <td class="">
+                                    {{object.problem}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    Derivated problem
+                                </td>
+                                <td class="">
+                                    {{object.derivatedProblem}}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="">
+                                    Verification
+                                </td>
+                                <td class="">
+                                    {{object.verification}}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="">
+                                    Recomendations
+                                </td>
+                                <td class="">
+                                    {{object.recomendations}}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="">
+                                    More information
+                                </td>
+                                <td class="">
+                                    {{object.moreInformation}}
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
