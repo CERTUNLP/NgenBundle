@@ -93,7 +93,7 @@
                                     Problem
                                 </td>
                                 <td class="">
-                                    {{object.problem}}
+                                    {{object.problem|striptags('<div>,<a>,<pre>,<code>')|raw}}
                                 </td>
                             </tr>
                             <tr>
@@ -101,7 +101,7 @@
                                     Derivated problem
                                 </td>
                                 <td class="">
-                                    {{object.derivatedProblem}}
+                                    {{object.derivatedProblem|striptags('<div>,<a>,<pre>,<code>')|raw}}
                                 </td>
                             </tr>
 
@@ -110,7 +110,7 @@
                                     Verification
                                 </td>
                                 <td class="">
-                                    {{object.verification}}
+                                    {{object.verification|striptags('<div>,<a>,<pre>,<code>')|raw}}
                                 </td>
                             </tr>
 
@@ -119,7 +119,7 @@
                                     Recomendations
                                 </td>
                                 <td class="">
-                                    {{object.recomendations}}
+                                    {{object.recomendations|striptags('<div>,<a>,<pre>,<code>')|raw}}
                                 </td>
                             </tr>
 
@@ -128,7 +128,7 @@
                                     More information
                                 </td>
                                 <td class="">
-                                    {{object.moreInformation}}
+                                    {{object.moreInformation|striptags('<div>,<a>,<pre>,<code>')|raw}}
                                 </td>
                             </tr>
 

@@ -34,7 +34,7 @@
                                                                     {% block greeting %}
                                                                     {% endblock %}
                                                                 </p>
-                                                                {{report.problem}}
+                                                                {{report.problem|striptags('<div>,<a>,<pre>,<code>')|raw}}
                                                             {%endif%}
                                                         </td>
                                                         <td class="expander"></td>
@@ -46,7 +46,7 @@
                                                                     {% block derivated_problem_title %}
                                                                     {% endblock %}
                                                                 </p>
-                                                                {{report.derivatedProblem}}
+                                                                {{report.derivatedProblem|striptags('<div>,<a>,<pre>,<code>')|raw}}
                                                             {% endif %}
                                                         </td>
                                                         <td class="expander"></td>
@@ -58,7 +58,7 @@
                                                                     {% block verification_title %}
                                                                     {% endblock %}
                                                                 </p>
-                                                                {{report.verification}}
+                                                                {{report.verification|striptags('<div>,<a>,<pre>,<code>')|raw}}
                                                             {% endif %}
                                                         </td>
                                                         <td class="expander"></td>
@@ -70,7 +70,7 @@
                                                                     {% block recomendations_title %}
                                                                     {% endblock %}
                                                                 </p>
-                                                                {{report.recomendations}}
+                                                                {{report.recomendations|striptags('<div>,<a>,<pre>,<code>')|raw}}
                                                             {% endif %}
                                                         </td>
                                                         <td class="expander"></td>
@@ -82,7 +82,7 @@
                                                                     {% block more_information_title %}
                                                                     {% endblock %}
                                                                 </p>
-                                                                {{report.moreInformation}}
+                                                                {{report.moreInformation|striptags('<div>,<a>,<pre>,<code>')|raw}}
                                                             {% endif %}
                                                             <td class="expander"></td>
                                                         </td>
