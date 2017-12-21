@@ -14,6 +14,7 @@ namespace CertUnlp\NgenBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Doctrine\ORM\EntityRepository;
 
 class InternalIncidentType extends AbstractType {
 
@@ -29,22 +30,39 @@ class InternalIncidentType extends AbstractType {
                     'description' => "(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|"
                     . "dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|"
                     . "open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|"
-                    . "open_ssdp|phishing|poodle|scan|shellshock|spam)"))
+                    . "open_ssdp|phishing|poodle|scan|shellshock|spam)",
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('it')
+                                ->where('it.isActive = TRUE');
+                    }
+                    ))
                 ->add('hostAddress', null, array(
                     'attr' => array('maxlength' => '300', 'help_text' => 'Add more than one address separating them with a comma.'),
                     'description' => "The host IP. (Add more than one address separating them with a comma.)"))
                 ->add('reporter', null, array(
                     'empty_value' => 'Choose a reporter',
                     'attr' => array('help_text' => 'If none is selected, the reporter will be the logged user.'),
-                    'description' => "The reporter ID. If none was selected, the reporter will be the logged user or the apikey user."))
+                    'description' => "The reporter ID. If none was selected, the reporter will be the logged user or the apikey user.",
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('it')
+                                ->where('it.enabled = TRUE');
+                    }))
                 ->add('state', null, array(
                     'empty_value' => 'Choose an incident state',
                     'attr' => array('help_text' => 'If none is selected, the state will be \'open\'.'),
-                    'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'."))
+                    'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('it')
+                                ->where('it.isActive = TRUE');
+                    }))
                 ->add('feed', 'entity', array(
                     'class' => 'CertUnlpNgenBundle:IncidentFeed',
                     'required' => true,
-                    'description' => "(bro|external_report|netflow|shadowserver)"))
+                    'description' => "(bro|external_report|netflow|shadowserver)",
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('it')
+                                ->where('it.isActive = TRUE');
+                    }))
                 ->add('date', 'date', array(
                     'required' => false,
                     'html5' => true,
