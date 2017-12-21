@@ -23,8 +23,8 @@ class TypeHasReportValidator extends ConstraintValidator {
     }
 
     public function validate($value, Constraint $constraint) {
-
-        if (!$this->type_handler->get(['slug' => $value])->getReport($this->lang)) {
+        $type = $this->type_handler->get(['slug' => $value]);
+        if ($type && !$type->getReport($this->lang)) {
             $this->context->addViolation(
                     $constraint->message, array('%string%' => $this->lang)
             );

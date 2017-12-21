@@ -352,9 +352,9 @@ class Incident implements IncidentInterface {
      */
     public function setEvidenceFile(File $evidenceFile = null) {
         $this->evidence_file = $evidenceFile;
-        // check if we have an old image path
+// check if we have an old image path
         if ($this->getEvidenceFilePath()) {
-            // store the old name to delete after the update
+// store the old name to delete after the update
             $this->setEvidenceFileTemp($this->getEvidenceFilePath());
             $this->setEvidenceFilePath(null);
         } else {
