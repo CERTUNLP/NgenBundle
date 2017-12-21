@@ -39,8 +39,8 @@ var Form = Class.extend({
             $.publish('/cert_unlp/notify/error', [ul.html()]);
         } else {
             $.publish('/cert_unlp/notify/error', ['The ' + this.getObjectBrief() + ' has errors. Please check the form.']);
-            if (jqXHR.responseJSON.children) {
-                $.each(jqXHR.responseJSON.children, function (k, v) {
+            if (jqXHR.responseJSON.hasOwnProperty('errors')) {
+                $.each(jqXHR.responseJSON.errors.children, function (k, v) {
                     errorsText = "";
                     if ((v.errors) && (v.errors.length > 0)) {
                         ul = $('<ul class="help-block" ></ul>');
