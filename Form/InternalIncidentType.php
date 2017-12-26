@@ -34,8 +34,7 @@ class InternalIncidentType extends AbstractType {
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('it')
                                 ->where('it.isActive = TRUE');
-                    }
-                    ))
+                    }))
                 ->add('hostAddress', null, array(
                     'attr' => array('maxlength' => '300', 'help_text' => 'Add more than one address separating them with a comma.'),
                     'description' => "The host IP. (Add more than one address separating them with a comma.)"))
