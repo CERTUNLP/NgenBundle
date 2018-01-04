@@ -79,7 +79,6 @@ var Form = Class.extend({
         event.preventDefault();
         this.preRequest();
         this.doRequest();
-//        this.postRequest();
     },
     doRequest: function (event) {
         if (this.form.attr('method') == 'post' && !$('input[name="_method"]').val()) {
