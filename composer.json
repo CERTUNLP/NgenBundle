@@ -30,6 +30,7 @@
         "components/jquery": "~2.1",
         "friendsofsymfony/elastica-bundle": "4.*",
         "friendsofsymfony/comment-bundle": "~2.0.8",
+        "friendsofsymfony/user-bundle": "^2.0",
         "knplabs/knp-markdown-bundle": "~1.4",
         "knplabs/knp-menu-bundle": "~2.0",
         "knplabs/knp-paginator-bundle": "dev-master@dev",
@@ -43,8 +44,7 @@
         "stfalcon/tinymce-bundle": "~0.3.8",
         "fortawesome/font-awesome": "^4.4",
         "doctrine/doctrine-migrations-bundle": "^1.1",
-        "symfony/assetic-bundle": "^2.7",
-        "friendsofsymfony/user-bundle": "^2.0"
+        "symfony/assetic-bundle": "^2.7"
     },
     "require-dev": {
         "symfony/assetic-bundle": "^2.7",
