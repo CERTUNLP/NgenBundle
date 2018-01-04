@@ -25,7 +25,7 @@ var Form = Class.extend({
         return new FormData(this.form[0]);
     },
     preRequest: function () {
-        event.preventDefault();
+//        event.preventDefault();
         this.laddaButton = Ladda.create(this.getSubmitButton().get(0));
         this.laddaButton.start();
     },
@@ -75,7 +75,8 @@ var Form = Class.extend({
         }
         this.laddaButton.stop();
     },
-    request: function () {
+    request: function (event) {
+        event.preventDefault();
         this.preRequest();
         this.doRequest();
 //        this.postRequest();
