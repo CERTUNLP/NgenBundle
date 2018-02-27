@@ -22,9 +22,9 @@
                     <div class="panel-body">
                         <form role="form" class="form-signin" _lpchecked="1" action="{{ path('fos_user_security_check') }}" method="post">
                             <fieldset>
-                                {% if csrf_token %}
-                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-                                {% endif %}
+{#                                {% if csrf_token %}#}
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+{#                                {% endif %}#}
                                 {% if error %}
                                     <div class="alert-danger">{{ error.message }}</div>
                                 {% endif %}
