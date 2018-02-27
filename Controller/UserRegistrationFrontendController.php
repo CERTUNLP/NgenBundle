@@ -96,7 +96,7 @@ class UserRegistrationFrontendController extends RegistrationController {
     /**
      * @Route("/check-email", name="fos_user_registration_check_email", methods="GET|POST")
      */
-    public function checkEmailAction() {
+    public function checkEmailAction(Request $request) {
         $email = $this->get('session')->get('fos_user_send_confirmation_email/email');
 
         if (empty($email)) {
@@ -153,7 +153,7 @@ class UserRegistrationFrontendController extends RegistrationController {
     /**
      * @Route("/confirmed", name="fos_user_registration_confirmed", methods="GET")
      */
-    public function confirmedAction() {
+    public function confirmedAction(Request $request){
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
