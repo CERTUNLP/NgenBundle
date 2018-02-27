@@ -4,7 +4,6 @@
     "description": "This Bundle provides a incident management for certs",
     "keywords": ["cert", "unlp", "incident", "management", "report", "system"],
     "homepage": "https://github.com/CERTUNLP/NgenBundle",
-    "license": "GPL v3.0",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "authors": [
