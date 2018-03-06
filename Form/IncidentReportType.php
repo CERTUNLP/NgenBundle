@@ -41,15 +41,7 @@ class IncidentReportType extends AbstractType {
                 ->add('type', EntityType::class, array(
                     'class' => 'CertUnlpNgenBundle:IncidentType',
                     'required' => true,
-                    'description' => "The administrator responsible for the network",
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('it')
-                                ->leftJoin('it.reports', 'ir')
-                                ->where('it.isActive = TRUE')
-                                ->groupBy('it.slug')
-                                ->having('count(ir) < 2')
-                                ->orderBy('it.name', 'ASC');
-                    }
+                    'description' => "The administrator responsible for the network"
                 ))
                 ->add('problem', null, array(
                     'required' => true,
