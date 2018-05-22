@@ -5,7 +5,6 @@
 # This source file is subject to the GPL v3.0 license that is bundled
 # with this source code in the file LICENSE.
 
-
 cert_ngen_user:
     resource: '@CertUnlpNgenBundle/Controller/UserFrontendController.php'
     type:     annotation
@@ -15,27 +14,27 @@ cert_ngen_user_security:
     resource: '@CertUnlpNgenBundle/Controller/UserSecurityFrontendController.php'
     type:     annotation
     prefix:   /users
-    
+
 cert_ngen_user_security:
     resource: '@CertUnlpNgenBundle/Controller/UserSecurityFrontendController.php'
     type:     annotation
     prefix:   /users
-    
+
 cert_ngen_user_resetting:
     resource: '@CertUnlpNgenBundle/Controller/UserResettingFrontendController.php'
     type:     annotation
     prefix:   /users/resetting
-    
+
 cert_ngen_user_registration:
     resource: '@CertUnlpNgenBundle/Controller/UserRegistrationFrontendController.php'
     type:     annotation
     prefix:   /users/register
-    
+
 cert_ngen_user_profile:
     resource: '@CertUnlpNgenBundle/Controller/UserProfileFrontendController.php'
     type:     annotation
     prefix:   /users/profile
-    
+
 cert_ngen_user_change_password:
     resource: '@CertUnlpNgenBundle/Controller/UserChangePasswordFrontendController.php'
     type:     annotation
