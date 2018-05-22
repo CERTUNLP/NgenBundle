@@ -38,7 +38,7 @@ class IncidentRenotificateCommand extends ContainerAwareCommand
             $incident->setRenotificationDate(New \DateTime());
             $this->getContainer()->get('cert_unlp.ngen.internal.incident.mailer')->send_report($incident, false, false, false, true);
             $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->patch($incident);
-            die;
+//            die;
         }
         $output->writeln('[incidents]: Done.');
     }
