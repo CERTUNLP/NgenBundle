@@ -13,18 +13,23 @@ namespace CertUnlp\NgenBundle\Services\Mailer;
 
 use FOS\CommentBundle\Event\CommentPersistEvent;
 
-class InternalIncidentMailer extends IncidentMailer {
+class InternalIncidentMailer extends IncidentMailer
+{
 
-    public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, $commentManager, $environment, $report_factory, $lang) {
+    public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, $commentManager, $environment, $report_factory, $lang)
+    {
         $this->reports_path = 'CertUnlpNgenBundle:InternalIncident:Report/Twig';
         parent::__construct($mailer, $templating, $cert_email, $upload_directory, $commentManager, $environment, $report_factory, $lang);
     }
 
-    public function getMailSubject() {
-        return '[CERTunlp] Incidente de tipo "%s" en el host %s [ID:%s]';
+    public function getMailSubject($renotification = false)
+    {
+        $renotification_text = $renotification ? '[Renotificacion]' : '';
+        return $renotification_text . '[CERTunlp] Incidente de tipo "%s" en el host %s [ID:%s]';
     }
 
-    public function onCommentPrePersist(CommentPersistEvent $event) {
+    public function onCommentPrePersist(CommentPersistEvent $event)
+    {
         if ($event->getComment()->getThread()->getIncident()->isInternal()) {
             parent::onCommentPrePersist($event);
         }
