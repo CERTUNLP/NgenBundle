@@ -12,28 +12,34 @@
 namespace CertUnlp\NgenBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class IncidentRenotificateCommand extends ContainerAwareCommand {
+class IncidentRenotificateCommand extends ContainerAwareCommand
+{
 
-    protected function configure() {
+    protected function configure()
+    {
         $this
-                ->setName('cert_unlp:incidents:renotificate')
-                ->setDescription('Walk through incidents that have a date of 6 day ago or more and closes them.')
-        ;
+            ->setName('cert_unlp:incidents:renotificate')
+            ->setDescription('Walk through incidents that have a date of 6 day ago or more and closes them.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $output->writeln('[incidents]: Starting.');
         $output->writeln('[incidents]: Renotificating incidents...');
-        $incidents = $this->getContainer()->get('cert_unlp.ngen.incident.handler')->renotificateIncidents();
-//        foreach ($incidents as $incident) {
+        $incidents = $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->renotificateIncidents();
+//        var_dump($incidents);die;
+        foreach ($incidents as $incident) {
+
+
 //            $incident->setSendReport(true);
-//            $this->getContainer()->get('cert_unlp.incident.mailer')->send_report($incident);
-//        }
+            $incident->setRenotificationDate(New \DateTime());
+            $this->getContainer()->get('cert_unlp.ngen.internal.incident.mailer')->send_report($incident, false, false, false, true);
+            $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->patch($incident);
+            die;
+        }
         $output->writeln('[incidents]: Done.');
     }
 

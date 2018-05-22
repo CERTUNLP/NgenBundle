@@ -18,11 +18,12 @@ use FOS\CommentBundle\Event\CommentPersistEvent;
  *
  * @author demyen
  */
-interface IncidentMailerInterface {
+interface IncidentMailerInterface
+{
 
     public function send_report(IncidentInterface $incident, $body = null, $echo = null, $is_new_incident = FALSE);
 
-    public function getMailSubject();
+    public function getMailSubject($renotification = false);
 
     public function getReplySubject();
 
