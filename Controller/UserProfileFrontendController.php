@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use FOS\UserBundle\Controller\ProfileController;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
@@ -19,39 +19,43 @@ use FOS\UserBundle\Form\Factory\FactoryInterface;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use FOS\UserBundle\Controller\ProfileController;
 
 /**
  * Controller managing the user profile.
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
-class UserProfileFrontendController extends ProfileController {
+class UserProfileFrontendController extends ProfileController
+{
+    public function __construct()
+    {
+    }
 
     /**
      * @Route("/", name="fos_user_profile_show", methods="GET")
      */
-    public function showAction() {
+    public function showAction()
+    {
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
         return $this->render('CertUnlpNgenBundle:User:Frontend/Profile/show.html.twig', array(
-                    'user' => $user,
+            'user' => $user,
         ));
     }
 
     /**
      * @Route("/edit", name="fos_user_profile_edit", methods="GET|POST")
      */
-    public function editAction(Request $request) {
+    public function editAction(Request $request)
+    {
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
@@ -95,7 +99,7 @@ class UserProfileFrontendController extends ProfileController {
         }
 
         return $this->render('CertUnlpNgenBundle:User:Frontend/Profile/edit.html.twig', array(
-                    'form' => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
