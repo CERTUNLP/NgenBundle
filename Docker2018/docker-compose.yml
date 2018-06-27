@@ -1,0 +1,48 @@
+###############################################################################
+#                          Generated on phpdocker.io                          #
+###############################################################################
+version: "3.1"
+services:
+
+    mysql:
+      image: mysql:5.7
+      container_name: ngen-db-5.7
+      #working_dir: /application
+      volumes:
+        - ./bdd:/var/lib/mysql
+      #  - .:/application
+      environment:
+        - MYSQL_ROOT_PASSWORD=dbrootpw
+        - MYSQL_DATABASE=${DB_NAME}
+        - MYSQL_USER=${DB_USER}
+        - MYSQL_PASSWORD=${DB_PASSWORD}
+      ports:
+        - "8002:3306"
+
+    webserver:
+      image: nginx:alpine
+      container_name: ngen-webserver
+      working_dir: /application
+      volumes:
+          - ./ngen:/application
+          - ./confdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      ports:
+       - "8000:80"
+
+    php-fpm:
+      build: confdocker/php-fpm
+      container_name: ngen-php-fpm
+      working_dir: /application
+      environment:
+        - ML_TRANSPORT=lalalal
+        - ML_IP=${ML_IP}
+        - ML_USERMAIL=${ML_USERMAIL}
+        - ML_USER=${ML_USER}
+        - ML_PASSWORD=${ML_PASSWORD}
+
+      volumes:
+        - ./ngen/feed:/application/ngen_basic/app/Resources/feed
+        - ./ngen/incident:/application/ngen_basic/app/Resources/incident
+        - ./confdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
+        - ./ngen/parameters.yml:/application/ngen_basic/app/config/parameters.yml
+        - ./ngen/config.yml:/application/ngen_basic/app/config/config.yml
