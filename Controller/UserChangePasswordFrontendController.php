@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
+use FOS\UserBundle\Controller\ChangePasswordController;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
@@ -18,14 +19,11 @@ use FOS\UserBundle\Form\Factory\FactoryInterface;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use FOS\UserBundle\Controller\ChangePasswordController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
  * Controller managing the password change.
@@ -33,12 +31,17 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
  * @author Christophe Coevoet <stof@notk.org>
  */
-class UserChangePasswordFrontendController extends ChangePasswordController {
+class UserChangePasswordFrontendController extends ChangePasswordController
+{
+    public function __construct()
+    {
+    }
 
     /**
      * @Route("/change-password", name="fos_user_change_password", methods="GET|POST")
      */
-    public function changePasswordAction(Request $request) {
+    public function changePasswordAction(Request $request)
+    {
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
@@ -82,7 +85,7 @@ class UserChangePasswordFrontendController extends ChangePasswordController {
         }
 
         return $this->render('CertUnlpNgenBundle:User:Frontend/ChangePassword/change_password.html.twig', array(
-                    'form' => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 

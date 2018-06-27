@@ -11,42 +11,45 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContext;
 use CertUnlp\NgenBundle\Form\Model\UserChangePassword;
-use CertUnlp\NgenBundle\Form\UserChangePasswordType;
 use FOS\UserBundle\Controller\ResettingController;
+use FOS\UserBundle\Event\FilterUserResponseEvent;
+use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\FOSUserEvents;
-use FOS\UserBundle\Event\FormEvent;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use FOS\UserBundle\Event\FilterUserResponseEvent;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class UserResettingFrontendController extends ResettingController {
+class UserResettingFrontendController extends ResettingController
+{
+    public function __construct()
+    {
+    }
 
     /**
      * @Route("/request", name="fos_user_resetting_request", methods="GET")
      */
-    public function requestAction() {
+    public function requestAction()
+    {
         return $this->render('CertUnlpNgenBundle:User:Frontend/Resetting/request.html.twig');
     }
 
     /**
      * @Route("/send-email", name="fos_user_resetting_send_email", methods="POST")
      */
-    public function sendEmailAction(Request $request) {
+    public function sendEmailAction(Request $request)
+    {
         return parent::sendEmailAction($request);
     }
 
     /**
      * @Route("/check-email", name="fos_user_resetting_check_email", methods="GET")
      */
-    public function checkEmailAction(Request $request) {
+    public function checkEmailAction(Request $request)
+    {
         $response = parent::checkEmailAction($request);
         $response->setContent($this->renderView('CertUnlpNgenBundle:User:Frontend/Resetting/check_email.html.twig'));
         return $response;
@@ -56,7 +59,8 @@ class UserResettingFrontendController extends ResettingController {
      * @Route("/reset/{token}", name="fos_user_resetting_reset")
      * @Method({"GET", "POST"})
      */
-    public function resetAction(Request $request, $token) {
+    public function resetAction(Request $request, $token)
+    {
         /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
         $formFactory = $this->get('fos_user.resetting.form.factory');
         /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
@@ -94,15 +98,15 @@ class UserResettingFrontendController extends ResettingController {
             }
 
             $dispatcher->dispatch(
-                    FOSUserEvents::RESETTING_RESET_COMPLETED, new FilterUserResponseEvent($user, $request, $response)
+                FOSUserEvents::RESETTING_RESET_COMPLETED, new FilterUserResponseEvent($user, $request, $response)
             );
 
             return $response;
         }
 
         return $this->render('CertUnlpNgenBundle:User:Frontend/Resetting/reset.html.twig', array(
-                    'token' => $token,
-                    'form' => $form->createView(),
+            'token' => $token,
+            'form' => $form->createView(),
         ));
     }
 
