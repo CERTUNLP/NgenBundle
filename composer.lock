@@ -1071,7 +1071,6 @@
             },
             "require-dev": {
                 "jekyll": "1.0.2",
-                "lessc": "1.4.2"
             },
             "type": "library",
             "extra": {
@@ -2918,7 +2917,6 @@
                 "css",
                 "framework",
                 "front-end",
-                "less",
                 "mobile-first",
                 "responsive",
                 "web"
@@ -3154,10 +3152,6 @@
                 "cssmin/cssmin": "*",
                 "joliclic/javascript-packer": "*",
                 "kamicane/packager": "*",
-                "leafo/lessphp": "^0.3.7",
-                "leafo/scssphp": "*@dev",
-                "leafo/scssphp-compass": "*@dev",
-                "mrclay/minify": "*",
                 "patchwork/jsqueeze": "~1.0|~2.0",
                 "phpunit/phpunit": "~4.8",
                 "psr/log": "~1.0",
@@ -3166,7 +3160,6 @@
                 "twig/twig": "~1.8|~2.0"
             },
             "suggest": {
-                "leafo/lessphp": "Assetic provides the integration with the lessphp LESS compiler",
                 "leafo/scssphp": "Assetic provides the integration with the scssphp SCSS compiler",
                 "leafo/scssphp-compass": "Assetic provides the integration with the SCSS compass plugin",
                 "patchwork/jsqueeze": "Assetic provides the integration with the JSqueeze JavaScript compressor",
