@@ -14,23 +14,26 @@ namespace CertUnlp\NgenBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use CertUnlp\NgenBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class Users extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface {
+class Users extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+{
 
     private $container;
 
-    public function setContainer(ContainerInterface $container = null) {
+    public function setContainer(ContainerInterface $container = null)
+    {
         $this->container = $container;
     }
 
-    public function getOrder() {
+    public function getOrder()
+    {
         return 1;
     }
 
-    public function load(ObjectManager $manager) {
+    public function load(ObjectManager $manager)
+    {
 
         $names = array('admin');
         $userManager = $this->container->get('fos_user.user_manager');
@@ -42,7 +45,7 @@ class Users extends AbstractFixture implements OrderedFixtureInterface, Containe
             $user->setLastname($name);
             $user->setUsername($name);
             $user->setEmail($name . '@cert.com');
-
+            $user->addRole('ROLE_API');
 //            $passwordEnClaro = $name;
             $salt = md5(time());
 //            $encoder = $this->container->get('security.encoder_factory')
