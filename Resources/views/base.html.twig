@@ -9,53 +9,52 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Ngen | {% block title %}{% endblock %}</title>
-        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
-        {#        <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen">#}
-        {#        <link rel="stylesheet" href="{{ asset('bundles/certunlpngen/css/style.css') }}" media="screen" />#}
-        {% block stylesheets %}        
-            {% stylesheets
-        'css/bootstrap.css'
-        '@CertUnlpNgenBundle/Resources/public/css/plugins/metisMenu/metisMenu.min.css'
-        '@CertUnlpNgenBundle/Resources/public/css/sb-admin-2.css'
-        '@CertUnlpNgenBundle/Resources/public/css/style.css'
-        '@CertUnlpNgenBundle/Resources/public/css/ladda-themeless.min.css'
-        output='css/*.css' filter='cssrewrite' %}
-            <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
-            {% endstylesheets %}
-        {% endblock %}
-        {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
-        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        <div id="wrapper">
-            <div id="notifications" class="notifications">
-                {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
-            </div>
-            {% block body %}
-            {% endblock %}
-        </div>
-        <footer>
-            {% block javascripts %}
-                {% javascripts
-                    'js/jquery.js'
-                    'js/bootstrap.js'
-                    '@CertUnlpNgenBundle/Resources/public/js/plugins/metisMenu/metisMenu.min.js'
-                    '@CertUnlpNgenBundle/Resources/public/js/lib/sb-admin-2.js'
-                    '@CertUnlpNgenBundle/Resources/public/js/lib/spin.min.js'
-                    '@CertUnlpNgenBundle/Resources/public/js/lib/*'
-                    '@CertUnlpNgenBundle/Resources/public/js/api/*'
-                    '@CertUnlpNgenBundle/Resources/public/js/CertUnlp.js'
-                %}
-                <script type="text/javascript" src="{{ asset_url }}"></script>
-                {% endjavascripts %}
-                <script>
-                    var cert_unlp = new CertUnlp();
-                </script>
-            {% endblock %}
-        </footer>
-    </body>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ngen | {% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"/>
+    {#        <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen">#}
+    {#        <link rel="stylesheet" href="{{ asset('bundles/certunlpngen/css/style.css') }}" media="screen" />#}
+    {% block stylesheets %}
+        {% stylesheets
+            'css/bootstrap.css'
+            '@CertUnlpNgenBundle/Resources/public/css/plugins/metisMenu/metisMenu.min.css'
+            '@CertUnlpNgenBundle/Resources/public/css/sb-admin-2.css'
+            '@CertUnlpNgenBundle/Resources/public/css/style.css'
+            '@CertUnlpNgenBundle/Resources/public/css/ladda-themeless.min.css'
+            output='css/*.css' filter='cssrewrite' %}
+            <link rel="stylesheet" type="text/css" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    {% endblock %}
+    {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+<body>
+<div id="wrapper">
+    <div id="notifications" class="notifications">
+        {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
+    </div>
+    {% block body %}
+    {% endblock %}
+</div>
+<footer>
+    {% block javascripts %}
+        {% javascripts
+            'js/jquery.js'
+            'js/bootstrap.js'
+            '@CertUnlpNgenBundle/Resources/public/js/plugins/metisMenu/metisMenu.min.js'
+            '@CertUnlpNgenBundle/Resources/public/js/lib/sb-admin-2.js'
+            '@CertUnlpNgenBundle/Resources/public/js/lib/spin.min.js'
+            '@CertUnlpNgenBundle/Resources/public/js/lib/*'
+            '@CertUnlpNgenBundle/Resources/public/js/api/*'
+            '@CertUnlpNgenBundle/Resources/public/js/CertUnlp.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        <script>
+            var cert_unlp = new CertUnlp();
+        </script>
+    {% endblock %}
+</footer>
+</body>
 </html>
