@@ -9,4 +9,5 @@ parameters:
     mailer_host: MAILER_IP
     mailer_user: MAILER_USER
     mailer_password: MAILER_PASSWORD
+    mailer_sender: MAILER_SENDER
     secret: SECRET_KEY
