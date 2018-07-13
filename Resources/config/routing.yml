@@ -85,10 +85,10 @@ cert_ngen_academic_unit:
     type:     annotation
     prefix:   /academic_unit
     
-#cert_ngen_dashboard:
-#    resource: '@CertUnlpNgenBundle/Controller/DashboardController.php'
-#    type:     annotation
-#    prefix:   /
+cert_ngen_root:
+    resource: '@CertUnlpNgenBundle/Controller/InternalIncidentFrontendController.php'
+    type:     annotation
+    prefix:   /
     
 fos_comment_api:
     type: rest
