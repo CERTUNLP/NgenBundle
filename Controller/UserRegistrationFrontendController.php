@@ -101,7 +101,7 @@ class UserRegistrationFrontendController extends RegistrationController
      * @Route("/check-email", name="fos_user_registration_check_email", methods="GET|POST")
      */
     public
-    function checkEmailAction(Request $request)
+    function checkEmailAction()
     {
         $email = $this->get('session')->get('fos_user_send_confirmation_email/email');
 
@@ -162,7 +162,7 @@ class UserRegistrationFrontendController extends RegistrationController
      * @Route("/confirmed", name="fos_user_registration_confirmed", methods="GET")
      */
     public
-    function confirmedAction(Request $request)
+    function confirmedAction()
     {
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
