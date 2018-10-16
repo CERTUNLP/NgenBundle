@@ -36,7 +36,7 @@
     "components/jquery": "~2.1",
     "friendsofsymfony/elastica-bundle": "4.*",
     "friendsofsymfony/comment-bundle": "~2.0.8",
-    "friendsofsymfony/user-bundle": "^2.0",
+    "friendsofsymfony/user-bundle": "=2.0.1",
     "knplabs/knp-markdown-bundle": "~1.4",
     "knplabs/knp-menu-bundle": "~2.0",
     "knplabs/knp-paginator-bundle": "^2.8",
