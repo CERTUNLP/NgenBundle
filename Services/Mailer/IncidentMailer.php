@@ -52,14 +52,12 @@ class IncidentMailer implements IncidentMailerInterface
         if (!$echo) {
             if ($incident->getSendReport() || $is_new_incident || $renotification) {
                 $html = $this->getBody($incident);
-                $text = strip_tags($this->getBody($incident, 'txt'));
                 $message = \Swift_Message::newInstance()
                     ->setSubject(sprintf($this->mailSubject($renotification), $incident->getType()->getName(), $incident->getHostAddress(), $incident->getId()))
                     ->setFrom($this->cert_email)
                     ->setCc($this->cert_email)
                     ->setSender($this->cert_email)
                     ->setTo($incident->getEmails())
-                    ->setBody($text)
                     ->addPart($html, 'text/html');
 //                $this->incident_openpgpsigner->sign($message, true);
 
@@ -140,11 +138,9 @@ class IncidentMailer implements IncidentMailerInterface
     {
 
         $html = $this->getReplyBody($incident, $body);
-        $text = strip_tags($this->getReplyBody($incident, $body, 'txt'));
         $message = \Swift_Message::newInstance()
             ->setSubject(sprintf($this->replySubject(), $incident->getType()->getName(), $incident->getHostAddress(), $incident->getId()))
             ->setFrom($this->cert_email)
-            ->setBody($text)
             ->addPart($html, 'text/html');
 
         if ($self_reply) {
