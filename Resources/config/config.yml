@@ -116,6 +116,9 @@ fos_comment:
         model:
             comment: CertUnlp\NgenBundle\Entity\IncidentComment
             thread: CertUnlp\NgenBundle\Entity\IncidentCommentThread
+    form:
+        comment:
+            type: fos_comment_comment
     acl: true
     service:
         acl:
