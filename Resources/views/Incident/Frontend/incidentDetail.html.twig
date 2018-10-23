@@ -9,210 +9,211 @@
 
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
 {% block content_header %}
-    <h1 class="page-header">Incident [ID: {{object.id}}][{{object.type}}]{%include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object}%}</h1>
+    <h1 class="page-header">Incident [ID: {{ object.id }}][{{ object.type }}
+        ]{% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object} %}</h1>
 {% endblock %}
 {% block content_body %}
     <div class="row">
-        {% block incident_body %}
-            <div class="col-lg-6">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Incident Information</h3>
-                    </div>
-                    <div class="panel-body table-responsive">
-                        <table class="table table-bordered">
-                            <tr>
-                                <td class="">
-                                    Sistem Id
-                                </td>
-                                <td class="">
-                                    {{object.id}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    Host Address
-                                </td>
-                                <td class="">
-                                    {{object.hostAddress}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    State
-                                </td>
-                                <td class="">
-                                    {%include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object}%}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    Closed
-                                </td>
-                                <td class="">
-                                    {{object.isClosed ? 'Yes':'No'}}
-                                </td>
-                            </tr>
+    {% block incident_body %}
+        <div class="col-lg-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Incident Information</h3>
+                </div>
+                <div class="panel-body table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td class="">
+                                Sistem Id
+                            </td>
+                            <td class="">
+                                {{ object.id }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                Host Address
+                            </td>
+                            <td class="">
+                                {{ object.hostAddress }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                State
+                            </td>
+                            <td class="">
+                                {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object} %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                Closed
+                            </td>
+                            <td class="">
+                                {{ object.isClosed ? 'Yes':'No' }}
+                            </td>
+                        </tr>
 
+                        <tr>
+                            <td class="">
+                                Type
+                            </td>
+                            <td class="">
+                                {{ object.type }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="">
+                                Feed
+                            </td>
+                            <td class="">
+                                {{ object.feed }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="">
+                                Date
+                            </td>
+                            <td class="">
+                                {% include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incident': object,'lastTimeDetected': false} %}
+                            </td>
+                        </tr>
+                        {% if object.lastTimeDetected %}
                             <tr>
                                 <td class="">
-                                    Type
+                                    Last Time Detected
                                 </td>
                                 <td class="">
-                                    {{object.type}}
+                                    {% include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incident': object, 'lastTimeDetected':true} %}
                                 </td>
                             </tr>
+                        {% endif %}
 
+                        <tr>
+                            <td class="">
+                                Created at
+                            </td>
+                            <td class="">
+                                {{ object.createdAt|date('Y-m-d') }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="">
+                                Last Update
+                            </td>
+                            <td class="">
+                                {{ object.lastTimeDetected|date('Y-m-d') }}
+                            </td>
+                        </tr>
+                        {% if object.evidenceFilePath %}
                             <tr>
                                 <td class="">
-                                    Feed
+                                    Evidence File
                                 </td>
                                 <td class="">
-                                    {{object.feed}}
+                                    <a href="{{ path('cert_unlp_ngen_'~ (object.isInternal? 'internal':'external') ~'_incident_frontend_evidence_incident',{'hostAddress':object.hostAddress,'date':object.date|date('Y-m-d'),'type':object.type.slug}) }}">Evidence
+                                        (.zip)</a>
                                 </td>
                             </tr>
-
-                            <tr>
-                                <td class="">
-                                    Date
-                                </td>
-                                <td class="">
-                                    {%include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incident': object,'lastTimeDetected': false}%}
-                                </td>
-                            </tr>
-                            {%if object.lastTimeDetected%}
-                                <tr>
-                                    <td class="">
-                                        Last Time Detected
-                                    </td>
-                                    <td class="">
-                                        {%include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incident': object, 'lastTimeDetected':true}%}
-                                    </td>
-                                </tr>
-                            {%endif%}
-
-                            <tr>
-                                <td class="">
-                                    Created at 
-                                </td>
-                                <td class="">
-                                    {{object.createdAt|date('Y-m-d')}}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td class="">
-                                    Last Update
-                                </td>
-                                <td class="">
-                                    {{object.lastTimeDetected|date('Y-m-d')}}
-                                </td>
-                            </tr>
-                            {%if object.evidenceFilePath%}
-
-                                <tr>
-                                    <td class="">
-                                        Evidence File
-                                    </td>
-                                    <td class="">
-                                        <a href="{{path('cert_unlp_ngen_internal_incident_frontend_evidence_incident',{'hostAddress':object.hostAddress,'date':object.date|date('Y-m-d'),'type':object.type.slug})}}">Evidence (.zip)</a>
-                                    </td>
-                                </tr>
-                            {%endif%}
-                        </table>
-                    </div>
+                        {% endif %}
+                    </table>
                 </div>
             </div>
-        {% endblock %}
-        {% block network_body %}
-            <div class="col-lg-6">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Network info</h3>
-                    </div>
-                    <div class="panel-body table-responsive">
-                        <table class="table table-bordered">
-                            <tr>
-                                <td class="">
-                                    IP/mask
-                                </td>
-                                <td class="">
-                                    {{object.network}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    Active
-                                </td>
-                                <td class="">
-                                    {{object.network.isActive ? 'Yes':'No'}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    Academic Unit
-                                </td>
-                                <td class="">
-                                    {{object.network.academicUnit}}
+        </div>
+    {% endblock %}
+    {% block network_body %}
+        <div class="col-lg-6">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Network info</h3>
+                </div>
+                <div class="panel-body table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td class="">
+                                IP/mask
+                            </td>
+                            <td class="">
+                                {{ object.network }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                Active
+                            </td>
+                            <td class="">
+                                {{ object.network.isActive ? 'Yes':'No' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                Academic Unit
+                            </td>
+                            <td class="">
+                                {{ object.network.academicUnit }}
 
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    Network Admin
-                                </td>
-                                <td class="">
-                                    {{object.network.networkAdmin}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                Network Admin
+                            </td>
+                            <td class="">
+                                {{ object.network.networkAdmin }}
 
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                </td>
-                                <td class="">
-                                    {{object.network.networkAdmin.email}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                            </td>
+                            <td class="">
+                                {{ object.network.networkAdmin.email }}
 
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-        {% endblock %}
-        {% block reporter_body %}
+        </div>
+    {% endblock %}
+    {% block reporter_body %}
 
-            <div class="col-lg-6">
+        <div class="col-lg-6">
 
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Reporter info</h3>
-                    </div>
-                    <div class="panel-body table-responsive">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Reporter info</h3>
+                </div>
+                <div class="panel-body table-responsive">
 
-                        <table class="table table-bordered">
-                            <tr>
-                                <td class="">
-                                    Name
-                                </td>
-                                <td class="">
-                                    {{object.reporter}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    Email
-                                </td>
-                                <td class="">
-                                    {{object.reporter.email}}
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td class="">
+                                Name
+                            </td>
+                            <td class="">
+                                {{ object.reporter }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                Email
+                            </td>
+                            <td class="">
+                                {{ object.reporter.email }}
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-        {% endblock %}
+        </div>
+    {% endblock %}
 
-        {% block comments %}
+    {% block comments %}
 
         </div>
         <div class="col-lg-12">
@@ -237,6 +238,6 @@
     {{ parent() }}
 
     {% javascripts '@FOSCommentBundle/Resources/public/js/comments.js' %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
+        <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
