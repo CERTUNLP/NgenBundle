@@ -11,23 +11,20 @@
 
 namespace CertUnlp\NgenBundle\Services;
 
-use CertUnlp\NgenBundle\Services\Delegator\DelegateInterface;
-use CertUnlp\NgenBundle\Model\IncidentInterface;
-use FOS\CommentBundle\Event\CommentPersistEvent;
-use FOS\CommentBundle\Model\CommentManagerInterface;
-use FOS\CommentBundle\Model\SignedCommentInterface;
-
-class IncidentReportFactory {
+class IncidentReportFactory
+{
 
     protected $templating;
 
-    public function __construct($templating, $viewHandler, $view) {
+    public function __construct($templating, $viewHandler, $view)
+    {
         $this->templating = $templating;
         $this->viewHandler = $viewHandler;
         $this->view = $view;
     }
 
-    public function getReport($incident, $lang) {
+    public function getReport($incident, $lang)
+    {
         $data = array('report' => $incident->getType()->getReport($lang), 'incident' => $incident);
         $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/' . $lang . '.html.twig');
         $this->getView()->setTemplateData($data);
@@ -37,12 +34,25 @@ class IncidentReportFactory {
         return $this->templating->createTemplate($html)->render($parameters);
     }
 
-    public function getCustomHandler() {
-        return $this->custom_handler;
+    public function getView()
+    {
+        return $this->view;
     }
 
-    public function getView() {
-        return $this->view;
+    public function getReportReply($incident, $body, $lang)
+    {
+        $data = array('report' => $incident->getType()->getReport($lang), 'incident' => $incident, 'body' => $body);
+        $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/' . $lang . 'Reply.html.twig');
+        $this->getView()->setTemplateData($data);
+        $html = $this->viewHandler->renderTemplate($this->getView(), 'html');
+        $parameters = array('incident' => $incident);
+
+        return $this->templating->createTemplate($html)->render($parameters);
+    }
+
+    public function getCustomHandler()
+    {
+        return $this->custom_handler;
     }
 
     /**
@@ -50,7 +60,8 @@ class IncidentReportFactory {
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function handle($view = null) {
+    public function handle($view = null)
+    {
         $view = $view ? $view : $this->view;
         return $this->viewHandler->handle($view);
     }
@@ -59,7 +70,19 @@ class IncidentReportFactory {
      * @param  array $data
      * @return View
      */
-    public function setData(array $data) {
+    public function response(array $parameters = array(), $statusCode = Response::HTTP_CREATED, array $headers = array())
+    {
+        $this->setData($parameters);
+        $this->setStatusCode($statusCode);
+        return $this->view;
+    }
+
+    /**
+     * @param  array $data
+     * @return View
+     */
+    public function setData(array $data)
+    {
         return $this->view->setData($data);
     }
 
@@ -67,18 +90,9 @@ class IncidentReportFactory {
      * @param  array $data
      * @return View
      */
-    public function setStatusCode($statusCode) {
+    public function setStatusCode($statusCode)
+    {
         return $this->view->setStatusCode($statusCode);
-    }
-
-    /**
-     * @param  array $data
-     * @return View
-     */
-    public function response(array $parameters = array(), $statusCode = Response::HTTP_CREATED, array $headers = array()) {
-        $this->setData($parameters);
-        $this->setStatusCode($statusCode);
-        return $this->view;
     }
 
 }
