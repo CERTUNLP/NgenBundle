@@ -29,7 +29,7 @@ interface IncidentMailerInterface
 
     public function getBody(IncidentInterface $incident, $type = 'html');
 
-    public function getReplyBody(IncidentInterface $incident, $body = '', $type = 'html');
+    public function getReplyBody(IncidentInterface $incident, $body = '');
 
     public function send_report_reply(IncidentInterface $incident, $body = '', $self_reply = true);
 
