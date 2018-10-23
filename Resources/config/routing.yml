@@ -4,13 +4,9 @@
 # 
 # This source file is subject to the GPL v3.0 license that is bundled
 # with this source code in the file LICENSE.
+
 cert_ngen_user:
     resource: '@CertUnlpNgenBundle/Controller/UserFrontendController.php'
-    type:     annotation
-    prefix:   /users
-
-cert_ngen_user_security:
-    resource: '@CertUnlpNgenBundle/Controller/UserSecurityFrontendController.php'
     type:     annotation
     prefix:   /users
 
@@ -49,16 +45,15 @@ cert_ngen_network:
     type:     annotation
     prefix:   /networks    
     
-cert_ngen_external_incident:
-    resource: '@CertUnlpNgenBundle/Controller/ExternalIncidentFrontendController.php'
-    type:     annotation
-    prefix:   /incidents/externals
-
 cert_ngen_internal_incident:
     resource: '@CertUnlpNgenBundle/Controller/InternalIncidentFrontendController.php'
     type:     annotation
     prefix:   /incidents/internals
 
+cert_ngen_external_incident:
+    resource: '@CertUnlpNgenBundle/Controller/ExternalIncidentFrontendController.php'
+    type:     annotation
+    prefix:   /incidents/externals
 
 cert_ngen_incident_feed:
     resource: '@CertUnlpNgenBundle/Controller/IncidentFeedFrontendController.php'
@@ -84,21 +79,21 @@ cert_ngen_academic_unit:
     resource: '@CertUnlpNgenBundle/Controller/AcademicUnitFrontendController.php'
     type:     annotation
     prefix:   /academic_unit
+
+cert_ngen_root:
+    resource: '@CertUnlpNgenBundle/Controller/InternalIncidentFrontendController.php'
+    type:     annotation
+    prefix:   /
     
 fos_comment_api:
     type: rest
     resource: '@FOSCommentBundle/Resources/config/routing.yml'
     defaults: { _format: html }
 
-
 cert_ngen_dashboard:
     resource: '@CertUnlpNgenBundle/Controller/DashboardController.php'
     type:     annotation
     prefix:   /
-
-#fos_user:
-#    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
-#    prefix: /
 
 
 cert_ngen_api:
