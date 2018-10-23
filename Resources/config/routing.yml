@@ -4,12 +4,6 @@
 # 
 # This source file is subject to the GPL v3.0 license that is bundled
 # with this source code in the file LICENSE.
-
-cert_ngen_dashboard:
-    resource: '@CertUnlpNgenBundle/Controller/DashboardController.php'
-    type:     annotation
-    prefix:   /
-
 cert_ngen_user:
     resource: '@CertUnlpNgenBundle/Controller/UserFrontendController.php'
     type:     annotation
@@ -95,6 +89,12 @@ fos_comment_api:
     type: rest
     resource: '@FOSCommentBundle/Resources/config/routing.yml'
     defaults: { _format: html }
+
+
+cert_ngen_dashboard:
+    resource: '@CertUnlpNgenBundle/Controller/DashboardController.php'
+    type:     annotation
+    prefix:   /
 
 #fos_user:
 #    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
