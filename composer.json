@@ -28,14 +28,14 @@
     }
   },
   "require": {
+    "php": ">=5.3.9",
     "symfony/symfony": "2.8.*",
-    "symfony/swiftmailer-bundle": "~2.3",
     "doctrine/doctrine-fixtures-bundle": "^2.3",
     "twig/extensions": "~1.2",
     "gedmo/doctrine-extensions": "~2.4",
     "components/jquery": "~2.1",
     "friendsofsymfony/elastica-bundle": "4.*",
-    "friendsofsymfony/comment-bundle": "~2.0.8",
+    "friendsofsymfony/comment-bundle": "^2.2",
     "friendsofsymfony/user-bundle": "=2.0.1",
     "knplabs/knp-markdown-bundle": "~1.4",
     "knplabs/knp-menu-bundle": "~2.0",
@@ -50,7 +50,8 @@
     "stfalcon/tinymce-bundle": "~0.3.8",
     "fortawesome/font-awesome": "^4.4",
     "doctrine/doctrine-migrations-bundle": "^1.1",
-    "symfony/assetic-bundle": "^2.7"
+    "symfony/assetic-bundle": "^2.7",
+    "symfony/security-acl": "^3.0"
   },
   "require-dev": {
     "symfony/assetic-bundle": "^2.7",
