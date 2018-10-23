@@ -81,7 +81,7 @@ cert_ngen_academic_unit:
     prefix:   /academic_unit
 
 cert_ngen_root:
-    resource: '@CertUnlpNgenBundle/Controller/InternalIncidentFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/DashboardController.php'
     type:     annotation
     prefix:   /
     
@@ -94,7 +94,6 @@ cert_ngen_dashboard:
     resource: '@CertUnlpNgenBundle/Controller/DashboardController.php'
     type:     annotation
     prefix:   /
-
 
 cert_ngen_api:
     type: rest
