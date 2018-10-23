@@ -9,128 +9,135 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width"/>
-        {% include 'CertUnlpNgenBundle:IncidentReport:Report/base/style.css.twig' %}
-    </head>
-    <body>
-        <table class="body">
-            <tr>
-                <td class="center" align="center" valign="top">
-                    <center>
-                        {% include 'CertUnlpNgenBundle:IncidentReport:Report/base/header.html.twig'%}
-                        <table class="container">
-                            <tr>
-                                <td>
-                                    <table class="row">
-                                        <tr>
-                                            <td class="wrapper last">
-                                                <table class="twelve columns">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width"/>
+    {% include 'CertUnlpNgenBundle:IncidentReport:Report/base/style.css.twig' %}
+</head>
+<body>
+<table class="body">
+    <tr>
+        <td class="center" align="center" valign="top">
+            <center>
+                {% include 'CertUnlpNgenBundle:IncidentReport:Report/base/header.html.twig' %}
+                <table class="container">
+                    <tr>
+                        <td>
+                            <table class="row">
+                                <tr>
+                                    <td class="wrapper last">
+                                        <table class="twelve columns">
+                                            <tr>
+                                                <td>
+                                                    <p>
+                                                        {% block greeting %}
+                                                        {% endblock %}
+                                                    </p>
+                                                </td>
+                                                <td class="expander"></td>
+                                            </tr>
+                                            {% block report_content %}
+                                                {% if(report.problem) %}
                                                     <tr>
                                                         <td>
-                                                            {% if(report.problem) %}
-                                                                <p>
-                                                                    {% block greeting %}
-                                                                    {% endblock %}
-                                                                </p>
-                                                                {{report.problem|striptags('<div>,<a>,<pre>,<code>')|raw}}
-                                                            {%endif%}
+                                                            {{ report.problem|striptags('<div>,<a>,<pre>,<code>')|raw }}
                                                         </td>
                                                         <td class="expander"></td>
                                                     </tr>
+                                                {% endif %}
+                                                {% if(report.derivatedProblem) %}
                                                     <tr>
                                                         <td>
-                                                            {% if(report.derivatedProblem) %}
-                                                                <p class="lead">
-                                                                    {% block derivated_problem_title %}
-                                                                    {% endblock %}
-                                                                </p>
-                                                                {{report.derivatedProblem|striptags('<div>,<a>,<pre>,<code>')|raw}}
-                                                            {% endif %}
-                                                        </td>
-                                                        <td class="expander"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            {% if(report.verification) %}
-                                                                <p class="lead">
-                                                                    {% block verification_title %}
-                                                                    {% endblock %}
-                                                                </p>
-                                                                {{report.verification|striptags('<div>,<a>,<pre>,<code>')|raw}}
-                                                            {% endif %}
-                                                        </td>
-                                                        <td class="expander"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>                                                 
-                                                            {% if(report.recomendations) %}
-                                                                <p class="lead">
-                                                                    {% block recomendations_title %}
-                                                                    {% endblock %}
-                                                                </p>
-                                                                {{report.recomendations|striptags('<div>,<a>,<pre>,<code>')|raw}}
-                                                            {% endif %}
-                                                        </td>
-                                                        <td class="expander"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            {% if(report.moreInformation) %}
-                                                                <p class="lead">
-                                                                    {% block more_information_title %}
-                                                                    {% endblock %}
-                                                                </p>
-                                                                {{report.moreInformation|striptags('<div>,<a>,<pre>,<code>')|raw}}
-                                                            {% endif %}
-                                                            <td class="expander"></td>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <table class="row callout">
-                                        <tr>
-                                            <td class="wrapper last">
-                                                <table class="twelve columns">
-                                                    <tr>
-                                                        <td class="panel">
-                                                            <p>
-                                                                {% block footer_content %}
+                                                            <p class="lead">
+                                                                {% block derivated_problem_title %}
                                                                 {% endblock %}
                                                             </p>
+                                                            {{ report.derivatedProblem|striptags('<div>,<a>,<pre>,<code>')|raw }}
                                                         </td>
                                                         <td class="expander"></td>
                                                     </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <table class="row callout">
-                                        <tr>
-                                            <td class="wrapper last">
-                                                <table class="twelve columns">
+                                                {% endif %}
+                                                {% if(report.verification) %}
                                                     <tr>
-                                                        <td class="panel">
-                                                            <p style="text-align:center;"> 
-                                                                {% block footer_generated_by %}
+                                                        <td>
+                                                            <p class="lead">
+                                                                {% block verification_title %}
                                                                 {% endblock %}
                                                             </p>
-                                                            <td class="expander"></td>
+                                                            {{ report.verification|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                {% endif %}
+                                                {% if(report.recomendations) %}
+                                                    <tr>
+                                                        <td>
+                                                            <p class="lead">
+                                                                {% block recomendations_title %}
+                                                                {% endblock %}
+                                                            </p>
+                                                            {{ report.recomendations|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+                                                {% endif %}
+                                                {% if(report.moreInformation) %}
+                                                    <tr>
+                                                        <td>
+                                                            <p class="lead">
+                                                                {% block more_information_title %}
+                                                                {% endblock %}
+                                                            </p>
+                                                            {{ report.moreInformation|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                        <td class="expander"></td>
                                                         </td>
                                                     </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </center>
-                </td>
-            </tr>
-        </table>
-    </body>
+                                                {% endif %}
+                                            {% endblock report_content %}
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="row callout">
+                                <tr>
+                                    <td class="wrapper last">
+                                        <table class="twelve columns">
+                                            <tr>
+                                                <td class="panel">
+                                                    <p>
+                                                        {% block footer_content %}
+                                                        {% endblock %}
+                                                    </p>
+                                                </td>
+                                                <td class="expander"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="row callout">
+                                <tr>
+                                    <td class="wrapper last">
+                                        <table class="twelve columns">
+                                            <tr>
+                                                <td class="panel">
+                                                    <p style="text-align:center;">
+                                                        {% block footer_generated_by %}
+                                                        {% endblock %}
+                                                    </p>
+                                                <td class="expander"></td>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </td>
+    </tr>
+</table>
+</body>
 </html>

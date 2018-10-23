@@ -41,8 +41,7 @@ class IncidentMailer implements IncidentMailerInterface
         $this->lang = $lang;
     }
 
-    public
-    function postPersistDelegation($incident)
+    public function postPersistDelegation($incident)
     {
         $this->send_report($incident, null, null, TRUE);
     }
@@ -79,45 +78,31 @@ class IncidentMailer implements IncidentMailerInterface
 
     public function getBody(IncidentInterface $incident, $type = 'html')
     {
-        $parameters = array('incident' => $incident, 'txtOrHtml' => $type);
-//        if ($incident->getReportEdit()) {
-//            return $this->templating->createTemplate($incident->getReportEdit())->render($parameters);
-//        } else {
-//            $this->report_factory->getReport($incident);
-//            $template = $this->reports_path . '/' . $incident->getType()->getSlug() . 'Report.html.twig';
-//            return $this->templating->render($template, $parameters);
-//        var_dump($this->report_factory->getReport($incident));die;
         return $this->report_factory->getReport($incident, $this->lang);
-//        }
     }
 
-    public
-    function mailSubject($renotification = false)
+    public function mailSubject($renotification = false)
     {
         return $this->environment . $this->getMailSubject($renotification);
     }
 
-    public
-    function getMailSubject($renotification = false)
+    public function getMailSubject($renotification = false)
     {
         return '';
     }
 
-    public
-    function prePersistDelegation($incident)
+    public function prePersistDelegation($incident)
     {
         $message = \Swift_Message::newInstance();
         $incident->setReportMessageId($message->getId());
     }
 
-    public
-    function postUpdateDelegation($incident)
+    public function postUpdateDelegation($incident)
     {
         $this->send_report($incident);
     }
 
-    public
-    function onCommentPrePersist(CommentPersistEvent $event)
+    public function onCommentPrePersist(CommentPersistEvent $event)
     {
         $comment = $event->getComment();
 
@@ -133,8 +118,7 @@ class IncidentMailer implements IncidentMailerInterface
         $this->send_report_reply($comment->getThread()->getIncident(), $comment->getBody(), !$comment->getNotifyToAdmin());
     }
 
-    public
-    function send_report_reply(IncidentInterface $incident, $body = '', $self_reply = true)
+    public function send_report_reply(IncidentInterface $incident, $body = '', $self_reply = true)
     {
 
         $html = $this->getReplyBody($incident, $body);
@@ -158,21 +142,18 @@ class IncidentMailer implements IncidentMailerInterface
         $this->mailer->send($message);
     }
 
-    public function getReplyBody(IncidentInterface $incident, $body = '', $type = 'html')
+    public function getReplyBody(IncidentInterface $incident, $body = '')
     {
-        $parameters = array('incident' => $incident, 'body' => $body, 'txtOrHtml' => $type);
-        $template = $this->reports_path . '/reportReply.html.twig';
-        return $this->templating->render($template, $parameters);
+        return $this->report_factory->getReportReply($incident, $body, $this->lang);
+
     }
 
-    public
-    function replySubject()
+    public function replySubject()
     {
         return 'Comment:' . $this->mailSubject();
     }
 
-    public
-    function getReplySubject()
+    public function getReplySubject()
     {
         return '';
     }
