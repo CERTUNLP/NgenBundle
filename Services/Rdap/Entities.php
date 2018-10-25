@@ -8,17 +8,18 @@
 
 namespace CertUnlp\NgenBundle\Services\Rdap;
 
-use CertUnlp\NgenBundle\Services\Rdap\Entity;
-use RecursiveArrayIterator;
-
 /**
  * Description of Entities
  *
  * @author dam
  */
-class Entities {
+class Entities
+{
 
-    public function __construct($entities = []) {
+    private $entities;
+
+    public function __construct($entities = [])
+    {
         $this->entities = [];
         foreach ($entities as $entity) {
 
@@ -26,7 +27,19 @@ class Entities {
         }
     }
 
-    public function getByRole($roles) {
+    public function getOneByRole($roles)
+    {
+        $entities = $this->getByRole($roles);
+
+        if ($entities) {
+            return $entities[0];
+        }
+
+        return null;
+    }
+
+    public function getByRole($roles)
+    {
         $entities = [];
         foreach ($this->getEntities() as $entity) {
             foreach ($roles as $role) {
@@ -44,17 +57,24 @@ class Entities {
         return $entities;
     }
 
-    public function getOneByRole($roles) {
-        $entities = $this->getByRole($roles);
+    public function getEntities($callback = null)
+    {
 
-        if ($entities) {
-            return $entities[0];
+        $entities = [];
+        foreach ($this->entities as $entity) {
+            $entities = array_merge($entities, $entity->getEntities($callback));
         }
-
-        return null;
+        return $entities;
     }
 
-    public function getAbuseEntities() {
+    public function getAbuseEntity()
+    {
+        $abuse_entities = $this->getAbuseEntities();
+        return $abuse_entities ? $abuse_entities[0] : [];
+    }
+
+    public function getAbuseEntities()
+    {
 
         $abuse_entities = $this->getByRole(['abuse']);
         $extra_entities = $this->getByRole(['noc', 'technical']);
@@ -62,12 +82,8 @@ class Entities {
         return $abuse_entities ? $abuse_entities : $extra_entities;
     }
 
-    public function getAbuseEntity() {
-        $abuse_entities = $this->getAbuseEntities();
-        return $abuse_entities ? $abuse_entities[0] : [];
-    }
-
-    public function getAbuseEmails() {
+    public function getAbuseEmails()
+    {
         $abuse_emails = [];
         $abuse_entities = $this->getAbuseEntities();
 
@@ -76,15 +92,6 @@ class Entities {
         }
 
         return $abuse_emails;
-    }
-
-    public function getEntities($callback = null) {
-
-        $entities = [];
-        foreach ($this->entities as $entity) {
-            $entities = array_merge($entities, $entity->getEntities());
-        }
-        return $entities;
     }
 
 }

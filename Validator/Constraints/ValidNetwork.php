@@ -16,11 +16,13 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class ValidNetwork extends Constraint {
+class ValidNetwork extends Constraint
+{
 
     public $message = 'The host addres "%string%" does not belong to any network!';
 
-    public function validatedBy() {
+    public function validatedBy()
+    {
         return 'valid.network.validator';
     }
 

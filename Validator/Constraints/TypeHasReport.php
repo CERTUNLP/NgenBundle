@@ -16,11 +16,13 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class TypeHasReport extends Constraint {
+class TypeHasReport extends Constraint
+{
 
     public $message = 'This type does\'n have a report for this language ("%string%")';
 
-    public function validatedBy() {
+    public function validatedBy()
+    {
         return 'type.has.report.validator';
     }
 

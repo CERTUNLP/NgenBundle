@@ -9,11 +9,8 @@
 namespace CertUnlp\NgenBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
-use CertUnlp\NgenBundle\Model\ReporterInterface;
-use CertUnlp\NgenBundle\Model\IncidentInterface;
-use CertUnlp\NgenBundle\Model\NetworkInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Description of InternalIncident
@@ -22,7 +19,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Entity\ExternalIncidentRepository")
  * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Listener\ExternalIncidentListener" })
  */
-class ExternalIncident extends Incident {
+class ExternalIncident extends Incident
+{
 
     /**
      * @var string
@@ -38,42 +36,45 @@ class ExternalIncident extends Incident {
 //     * @JMS\Expose
 //     */
 //    private $network;
-
+    /**
+     * @var string
+     *
+     * @Gedmo\Slug(fields={"hostAddress"},separator="_")
+     * @ORM\Column(name="slug", type="string", length=100,nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     * */
+    protected $slug;
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     private $abuse_entity;
-
     /**
      * @ORM\Column(type="array",nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     private $abuse_entity_emails;
-
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     private $network_entity;
-
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     private $start_address;
-
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     private $end_address;
-
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
@@ -82,15 +83,26 @@ class ExternalIncident extends Incident {
     private $country;
 
     /**
-     * @var string
-     * 
-     * @Gedmo\Slug(fields={"hostAddress"},separator="_")     
-     * @ORM\Column(name="slug", type="string", length=100,nullable=true)
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     * */
-    protected $slug;
+     * Get hostAddress
+     *
+     * @return string
+     */
+    public function getHostAddress()
+    {
+        return $this->hostAddress;
+    }
 
+    /**
+     * Set hostAddress
+     *
+     * @param string $hostAddress
+     * @return Incident
+     */
+    public function setHostAddress($hostAddress)
+    {
+        $this->hostAddress = $hostAddress;
+        return $this;
+    }
 //
 //    /**
 //     * Set network
@@ -112,11 +124,22 @@ class ExternalIncident extends Incident {
 //    }
 
     /**
+     * Get abuse_entity
+     *
+     */
+    public function getAbuseEntity()
+    {
+        return $this->abuse_entity;
+    }
+
+    /**
      * Set abuse_entity
      *
+     * @param null $abuse_entity
      * @return Incident
      */
-    public function setAbuseEntity($abuse_entity = null) {
+    public function setAbuseEntity($abuse_entity = null)
+    {
         $this->abuse_entity = $abuse_entity;
 
         return $this;
@@ -126,46 +149,29 @@ class ExternalIncident extends Incident {
      * Get abuse_entity
      *
      */
-    public function getAbuseEntity() {
+    public function getNetworkAdmin()
+    {
         return $this->abuse_entity;
-    }
-
-    /**
-     * Get abuse_entity
-     *
-     */
-    public function getNetworkAdmin() {
-        return $this->abuse_entity;
-    }
-
-    /**
-     * Set network_entity
-     *
-     * @return Incident
-     */
-    public function setNetworkEntity($network_entity = null) {
-        $this->network_entity = $network_entity;
-
-        return $this;
     }
 
     /**
      * Get network_entity
      *
      */
-    public function getNetworkEntity() {
+    public function getNetworkEntity()
+    {
         return $this->network_entity;
     }
 
     /**
-     * Set startAddress
+     * Set network_entity
      *
-     * @param string $startAddress
-     *
-     * @return ExternalIncident
+     * @param null $network_entity
+     * @return Incident
      */
-    public function setStartAddress($startAddress) {
-        $this->start_address = $startAddress;
+    public function setNetworkEntity($network_entity = null)
+    {
+        $this->network_entity = $network_entity;
 
         return $this;
     }
@@ -175,19 +181,21 @@ class ExternalIncident extends Incident {
      *
      * @return string
      */
-    public function getStartAddress() {
+    public function getStartAddress()
+    {
         return $this->start_address;
     }
 
     /**
-     * Set endAddress
+     * Set startAddress
      *
-     * @param string $endAddress
+     * @param string $startAddress
      *
      * @return ExternalIncident
      */
-    public function setEndAddress($endAddress) {
-        $this->end_address = $endAddress;
+    public function setStartAddress($startAddress)
+    {
+        $this->start_address = $startAddress;
 
         return $this;
     }
@@ -197,19 +205,21 @@ class ExternalIncident extends Incident {
      *
      * @return string
      */
-    public function getEndAddress() {
+    public function getEndAddress()
+    {
         return $this->end_address;
     }
 
     /**
-     * Set country
+     * Set endAddress
      *
-     * @param string $country
+     * @param string $endAddress
      *
      * @return ExternalIncident
      */
-    public function setCountry($country) {
-        $this->country = $country;
+    public function setEndAddress($endAddress)
+    {
+        $this->end_address = $endAddress;
 
         return $this;
     }
@@ -219,19 +229,21 @@ class ExternalIncident extends Incident {
      *
      * @return string
      */
-    public function getCountry() {
+    public function getCountry()
+    {
         return $this->country;
     }
 
     /**
-     * Set networkAdminEmails
+     * Set country
      *
-     * @param array $networkAdminEmails
+     * @param string $country
      *
      * @return ExternalIncident
      */
-    public function setAbuseEntityEmails($abuse_entity_emails) {
-        $this->abuse_entity_emails = $abuse_entity_emails;
+    public function setCountry($country)
+    {
+        $this->country = $country;
 
         return $this;
     }
@@ -241,8 +253,22 @@ class ExternalIncident extends Incident {
      *
      * @return array
      */
-    public function getAbuseEntityEmails() {
+    public function getAbuseEntityEmails()
+    {
         return $this->abuse_entity_emails;
+    }
+
+    /**
+     * Set networkAdminEmails
+     *
+     * @param $abuse_entity_emails
+     * @return ExternalIncident
+     */
+    public function setAbuseEntityEmails($abuse_entity_emails)
+    {
+        $this->abuse_entity_emails = $abuse_entity_emails;
+
+        return $this;
     }
 
     /**
@@ -250,15 +276,18 @@ class ExternalIncident extends Incident {
      *
      * @return array
      */
-    public function getEmails() {
+    public function getEmails()
+    {
         return $this->abuse_entity_emails;
     }
 
-    public function isInternal() {
+    public function isInternal()
+    {
         return false;
     }
 
-    public function isExternal() {
+    public function isExternal()
+    {
         return true;
     }
 

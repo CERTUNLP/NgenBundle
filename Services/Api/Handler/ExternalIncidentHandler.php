@@ -11,11 +11,11 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
-use CertUnlp\NgenBundle\Services\Api\Handler\IncidentHandler;
+class ExternalIncidentHandler extends IncidentHandler
+{
 
-class ExternalIncidentHandler extends IncidentHandler {
-
-    protected function prepareToDeletion($incident, array $parameters) {
+    protected function prepareToDeletion($incident, array $parameters)
+    {
         $incident->close();
     }
 
@@ -37,7 +37,8 @@ class ExternalIncidentHandler extends IncidentHandler {
 //        return parent::processForm($incident, $parameters, $method, $csrf_protection);
 //    }
 
-    protected function checkIfExists($incident, $method) {
+    protected function checkIfExists($incident, $method)
+    {
         $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'hostAddress' => $incident->getHostAddress(), 'type' => $incident->getType()]);
         if ($incidentDB && $method == 'POST') {
 

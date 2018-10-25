@@ -14,13 +14,13 @@ var NetworkAdminForm = Form.extend({
         return 'network/admin';
     },
     getObjectId: function () {
-        return  this.getNetworkAdminId();
+        return this.getNetworkAdminId();
     },
     setNetworkAdminId: function () {
         this.network_admin_id = (($('#name').val().replace(/\ /g, '_')) + '_' + ($('#email').val().replace(/\./g, '_'))).replace('@', '_').toLowerCase();
     },
     getNetworkAdminId: function () {
-        return  this.network_admin_id;
+        return this.network_admin_id;
     },
     handleExtraErrors: function (jqXHR) {
 //        $.each(jqXHR.responseJSON.errors.errors, function (k, v) {

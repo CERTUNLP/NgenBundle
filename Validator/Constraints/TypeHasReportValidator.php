@@ -11,23 +11,31 @@
 
 namespace CertUnlp\NgenBundle\Validator\Constraints;
 
+use CertUnlp\NgenBundle\Services\Api\Handler\IncidentTypeHandler;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use CertUnlp\NgenBundle\Services\Api\Handler\IncidentTypeHandler;
 
-class TypeHasReportValidator extends ConstraintValidator {
+class TypeHasReportValidator extends ConstraintValidator
+{
 
-    public function __construct(IncidentTypeHandler $networkHandler, $lang) {
+    private $type_handler;
+    private $lang;
+
+    public function __construct(IncidentTypeHandler $networkHandler, $lang)
+    {
         $this->type_handler = $networkHandler;
         $this->lang = $lang;
     }
 
-    public function validate($value, Constraint $constraint) {
+    public function validate($value, Constraint $constraint)
+    {
         $type = $this->type_handler->get(['slug' => $value]);
         if ($type && !$type->getReport($this->lang)) {
-            $this->context->addViolation(
+            if (!empty($constraint->message)) {
+                $this->context->addViolation(
                     $constraint->message, array('%string%' => $this->lang)
-            );
+                );
+            }
         }
     }
 

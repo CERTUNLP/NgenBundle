@@ -15,7 +15,8 @@ namespace CertUnlp\NgenBundle\Services\Delegator;
  *
  * @author demyen
  */
-interface DelegateInterface {
+interface DelegateInterface
+{
 
     public function getDelegateKey();
 

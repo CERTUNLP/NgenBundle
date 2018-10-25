@@ -12,10 +12,11 @@
 namespace CertUnlp\NgenBundle\Doctrine;
 
 use Doctrine\ORM\Mapping\DefaultEntityListenerResolver;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class EntityListenerResolver extends DefaultEntityListenerResolver implements ContainerAwareInterface {
+class EntityListenerResolver extends DefaultEntityListenerResolver implements ContainerAwareInterface
+{
 
     /** @var \Symfony\Component\DependencyInjection\ContainerInterface */
     private $container;
@@ -28,7 +29,8 @@ class EntityListenerResolver extends DefaultEntityListenerResolver implements Co
      *
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container The container.
      */
-    public function __construct(ContainerInterface $container) {
+    public function __construct(ContainerInterface $container)
+    {
         $this->setContainer($container);
 
         $this->mapping = array();
@@ -37,7 +39,8 @@ class EntityListenerResolver extends DefaultEntityListenerResolver implements Co
     /**
      * {@inheritdoc}
      */
-    public function setContainer(ContainerInterface $container = null) {
+    public function setContainer(ContainerInterface $container = null)
+    {
         $this->container = $container;
     }
 
@@ -45,16 +48,18 @@ class EntityListenerResolver extends DefaultEntityListenerResolver implements Co
      * Maps an entity listener to a service.
      *
      * @param string $className The entity listener class.
-     * @param string $service   The service ID.
+     * @param string $service The service ID.
      */
-    public function addMapping($className, $service) {
+    public function addMapping($className, $service)
+    {
         $this->mapping[$className] = $service;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function resolve($className) {
+    public function resolve($className)
+    {
         if (isset($this->mapping[$className]) && $this->container->has($this->mapping[$className])) {
             return $this->container->get($this->mapping[$className]);
         }

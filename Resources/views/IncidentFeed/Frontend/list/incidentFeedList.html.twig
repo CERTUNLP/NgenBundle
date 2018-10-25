@@ -8,12 +8,12 @@
 #}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong>{{icon('feed fa-fw')}} Incident Feeds</strong>
-        <strong>({{objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount}})</strong>
+        <strong>{{ icon('feed fa-fw') }} Incident Feeds</strong>
+        <strong>({{ objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount }})</strong>
         <div class="pull-right">
             <div class="btn-group">
-                <a class="btn btn-default btn-xs" href="{{path('cert_unlp_ngen_incident_feed_new')}}">
-                    {{icon('plus-circle fa-fw')}}add incident feed
+                <a class="btn btn-default btn-xs" href="{{ path('cert_unlp_ngen_incident_feed_new') }}">
+                    {{ icon('plus-circle fa-fw') }}add incident feed
                 </a>
             </div>
         </div>
@@ -25,9 +25,9 @@
             <th>Action</th>
         </tr>
         <tbody>
-            {% for incidentFeed in incidentFeeds %}
-                {% include 'CertUnlpNgenBundle:IncidentFeed:Frontend/list/incidentFeedListRow.html.twig' with {'incidentFeed': incidentFeed} %}
-            {% endfor %}
+        {% for incidentFeed in incidentFeeds %}
+            {% include 'CertUnlpNgenBundle:IncidentFeed:Frontend/list/incidentFeedListRow.html.twig' with {'incidentFeed': incidentFeed} %}
+        {% endfor %}
         </tbody>
 
     </table>

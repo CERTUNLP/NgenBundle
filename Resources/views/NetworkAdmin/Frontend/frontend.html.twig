@@ -11,10 +11,10 @@
 {% block title %}Network admins{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{icon('users fa-fw')}} Network Admins</h1>
+    <h1 class="page-header">{{ icon('users fa-fw') }} Network Admins</h1>
 {% endblock %}
 
-{% block sideBar_search_path %}{{path('cert_unlp_ngen_network_search_network_admin')}}{% endblock %}
+{% block sideBar_search_path %}{{ path('cert_unlp_ngen_network_search_network_admin') }}{% endblock %}
 
 {% block content_body %}
     {% include 'CertUnlpNgenBundle:NetworkAdmin:Frontend/list/networkAdminList.html.twig' with {'networkAdmins': objects  } %}
@@ -25,13 +25,12 @@
     {{ parent() }}
 
     {% javascripts
-    '@CertUnlpNgenBundle/Resources/public/js/network_admin/NetworkAdmin.js'
-    '@CertUnlpNgenBundle/Resources/public/js/network_admin/NetworkAdminApi.js'
-    %}
-    <script src="{{ asset_url }}"></script>
+        '@CertUnlpNgenBundle/Resources/public/js/network_admin/NetworkAdmin.js'
+        '@CertUnlpNgenBundle/Resources/public/js/network_admin/NetworkAdminApi.js' %}
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
         var network_admin = new NetworkAdmin();
-        var network_admin_api = new NetworkAdminApi("{{path("api_2_get")}}/", "{{app.user.apiKey}}");
+        var network_admin_api = new NetworkAdminApi("{{ path("api_2_get") }}/", "{{ app.user.apiKey }}");
     </script>
 {% endblock %}

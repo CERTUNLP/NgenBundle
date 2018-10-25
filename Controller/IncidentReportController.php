@@ -11,27 +11,18 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use FOS\RestBundle\View\View;
-use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Request\ParamFetcherInterface;
-use Symfony\Component\Form\FormTypeInterface;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use CertUnlp\NgenBundle\Form\IncidentReportType;
 use CertUnlp\NgenBundle\Entity\IncidentReport;
 use CertUnlp\NgenBundle\Entity\IncidentType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use FOS\RestBundle\Controller\Annotations as FOS;
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\View\View;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use CertUnlp\NgenBundle\Exception\InvalidFormException;
+use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-class IncidentReportController extends FOSRestController {
-
-    public function getApiController() {
-
-        return $this->container->get('cert_unlp.ngen.incident.type.report.api.controller');
-    }
+class IncidentReportController extends FOSRestController
+{
 
     /**
      * Gets a Network for a given id.
@@ -46,16 +37,16 @@ class IncidentReportController extends FOSRestController {
      *   }
      * )
      *
-     * @param int     $id      the network id
-     *
-     * @return array
+     * @param IncidentType $slug
+     * @param IncidentReport $lang
+     * @return IncidentReport
      * @FOS\View(
      *  templateVar="incident_report"
      * )
-     * @throws NotFoundHttpException when network not exist
      * @ParamConverter("lang", class="CertUnlpNgenBundle:IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
-    public function getReportAction(IncidentType $slug, IncidentReport $lang) {
+    public function getReportAction(IncidentType $slug, IncidentReport $lang)
+    {
         return $lang;
     }
 
@@ -74,11 +65,18 @@ class IncidentReportController extends FOSRestController {
      *
      * @param Request $request the request object
      *
+     * @param IncidentType $slug
      * @return FormTypeInterface|View
-
      */
-    public function postReportAction(Request $request, IncidentType $slug) {
+    public function postReportAction(Request $request, IncidentType $slug)
+    {
         return $this->getApiController()->post($request);
+    }
+
+    public function getApiController()
+    {
+
+        return $this->container->get('cert_unlp.ngen.incident.type.report.api.controller');
     }
 
     /**
@@ -93,14 +91,14 @@ class IncidentReportController extends FOSRestController {
      *   }
      * )
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param IncidentType $slug
+     * @param IncidentReport $lang
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
      * @ParamConverter("lang", class="CertUnlpNgenBundle:IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
-    public function patchReportAction(Request $request, IncidentType $slug, IncidentReport $lang) {
+    public function patchReportAction(Request $request, IncidentType $slug, IncidentReport $lang)
+    {
 
         return $this->getApiController()->patch($request, $lang, true);
     }
@@ -119,14 +117,14 @@ class IncidentReportController extends FOSRestController {
      *
      *
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param IncidentType $slug
+     * @param IncidentReport $lang
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
      * @ParamConverter("lang", class="CertUnlpNgenBundle:IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
-    public function patchReportActivateAction(Request $request, IncidentType $slug, IncidentReport $lang) {
+    public function patchReportActivateAction(Request $request, IncidentType $slug, IncidentReport $lang)
+    {
 
         return $this->getApiController()->activate($request, $lang);
     }
@@ -145,14 +143,14 @@ class IncidentReportController extends FOSRestController {
      *
      *
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param IncidentType $slug
+     * @param IncidentReport $lang
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
      * @ParamConverter("lang", class="CertUnlpNgenBundle:IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
-    public function patchReportDesactivateAction(Request $request, IncidentType $slug, IncidentReport $lang) {
+    public function patchReportDesactivateAction(Request $request, IncidentType $slug, IncidentReport $lang)
+    {
 
         return $this->getApiController()->desactivate($request, $lang);
     }

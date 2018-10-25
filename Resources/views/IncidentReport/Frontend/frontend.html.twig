@@ -11,7 +11,7 @@
 {% block title %}Incident Reports{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{icon('cubes fa-fw')}} Incident Reports</h1>
+    <h1 class="page-header">{{ icon('cubes fa-fw') }} Incident Reports</h1>
 {% endblock %}
 
 {#{% block sideBar_search_path %}{{path('cert_unlp_ngen_incident_report_search')}}{% endblock %}#}
@@ -24,13 +24,12 @@
     {{ parent() }}
 
     {% javascripts
-    '@CertUnlpNgenBundle/Resources/public/js/incident/report/IncidentReport.js'
-    '@CertUnlpNgenBundle/Resources/public/js/incident/report/IncidentReportApi.js'
-    %}
-    <script src="{{ asset_url }}"></script>
+        '@CertUnlpNgenBundle/Resources/public/js/incident/report/IncidentReport.js'
+        '@CertUnlpNgenBundle/Resources/public/js/incident/report/IncidentReportApi.js' %}
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
         var incident_report = new IncidentReport();
-        var incident_report_api = new IncidentReportApi("{{path("api_2_get")}}/", "{{app.user.apiKey}}");
+        var incident_report_api = new IncidentReportApi("{{ path("api_2_get") }}/", "{{ app.user.apiKey }}");
     </script>
 {% endblock %}

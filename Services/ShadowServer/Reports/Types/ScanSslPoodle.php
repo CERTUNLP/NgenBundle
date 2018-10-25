@@ -11,9 +11,11 @@
 
 namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types;
 
-class ScanSslPoodle extends ShadowServerReport {
+class ScanSslPoodle extends ShadowServerReport
+{
 
-    public function getType() {
+    public function getType()
+    {
         return "poodle";
     }
 

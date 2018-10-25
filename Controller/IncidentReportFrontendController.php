@@ -17,28 +17,32 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use CertUnlp\NgenBundle\Form\IncidentReportType;
 use CertUnlp\NgenBundle\Entity\IncidentReport;
 use CertUnlp\NgenBundle\Entity\IncidentType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
-class IncidentReportFrontendController extends Controller {
-
-    public function getFrontendController() {
-        return $this->get('cert_unlp.ngen.incident.report.frontend.controller');
-    }
+class IncidentReportFrontendController extends Controller
+{
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentReport:Frontend/list/incidentReportList.html.twig")
+     * @param Request $request
+     * @param null $term
+     * @return array
      */
-    public function homeAction(Request $request, $term = null) {
+    public function homeAction(Request $request, $term = null)
+    {
 //        var_dump($request,$term);die;
         return $this->getFrontendController()->homeEntity($request, $term);
+    }
+
+    public function getFrontendController()
+    {
+        return $this->get('cert_unlp.ngen.incident.report.frontend.controller');
     }
 
 //
@@ -53,8 +57,11 @@ class IncidentReportFrontendController extends Controller {
     /**
      * @Template("CertUnlpNgenBundle:IncidentReport:Frontend/incidentReportForm.html.twig")
      * @Route("reports/new", name="cert_unlp_ngen_incident_type_report_new")
+     * @param Request $request
+     * @return array
      */
-    public function newIncidentReportAction(Request $request) {
+    public function newIncidentReportAction(Request $request)
+    {
         return $this->getFrontendController()->newEntity($request);
     }
 
@@ -62,8 +69,12 @@ class IncidentReportFrontendController extends Controller {
      * @Template("CertUnlpNgenBundle:IncidentReport:Frontend/incidentReportForm.html.twig")
      * @Route("{slug}/reports/{lang}/edit", name="cert_unlp_ngen_incident_type_report_edit")
      * @ParamConverter("lang", class="CertUnlpNgenBundle:IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
+     * @param IncidentType $slug
+     * @param IncidentReport $lang
+     * @return array
      */
-    public function editIncidentReportAction(IncidentType $slug, IncidentReport $lang) {
+    public function editIncidentReportAction(IncidentType $slug, IncidentReport $lang)
+    {
 //        $incidentReport->setReportEdit($this->readReportFile($incidentReport));
         return $this->getFrontendController()->editEntity($lang);
     }
@@ -72,8 +83,12 @@ class IncidentReportFrontendController extends Controller {
      * @Template("CertUnlpNgenBundle:IncidentReport:Frontend/incidentReportDetail.html.twig")
      * @Route("{slug}/reports/{lang}/detail", name="cert_unlp_ngen_incident_type_report_detail")
      * @ParamConverter("lang", class="CertUnlpNgenBundle:IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
+     * @param IncidentType $slug
+     * @param IncidentReport $lang
+     * @return array
      */
-    public function detailIncidentReportAction(IncidentType $slug, IncidentReport $lang) {
+    public function detailIncidentReportAction(IncidentType $slug, IncidentReport $lang)
+    {
         return $this->getFrontendController()->detailEntity($lang);
     }
 

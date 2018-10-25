@@ -11,8 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Services\Delegator;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -20,9 +20,11 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author dam
  */
-class DelegatorCompilerPass implements CompilerPassInterface {
+class DelegatorCompilerPass implements CompilerPassInterface
+{
 
-    public function process(ContainerBuilder $container) {
+    public function process(ContainerBuilder $container)
+    {
         if (!$container->hasDefinition('cert_unlp.ngen.incident.internal.delegator_chain')) {
             return;
         }
@@ -41,7 +43,7 @@ class DelegatorCompilerPass implements CompilerPassInterface {
             foreach ($tags as $attributes) {
 
                 $definition_internal_delegator->addMethodCall(
-                        'addDelegate', array(new Reference($id), isset($attributes["alias"]) ? $attributes["alias"] : null, isset($attributes["priority"]) ? $attributes["priority"] : null)
+                    'addDelegate', array(new Reference($id), isset($attributes["alias"]) ? $attributes["alias"] : null, isset($attributes["priority"]) ? $attributes["priority"] : null)
                 );
             }
         }
@@ -50,7 +52,7 @@ class DelegatorCompilerPass implements CompilerPassInterface {
             foreach ($tags as $attributes) {
 
                 $definition_external_delegator->addMethodCall(
-                        'addDelegate', array(new Reference($id), isset($attributes["alias"]) ? $attributes["alias"] : null, isset($attributes["priority"]) ? $attributes["priority"] : null)
+                    'addDelegate', array(new Reference($id), isset($attributes["alias"]) ? $attributes["alias"] : null, isset($attributes["priority"]) ? $attributes["priority"] : null)
                 );
             }
         }

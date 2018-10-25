@@ -12,33 +12,41 @@
 namespace CertUnlp\NgenBundle\Services\ShadowServer;
 
 use CertUnlp\NgenBundle\Model\AbstractAnalyzer;
-use CertUnlp\NgenBundle\Services\ShadowServer\ShadowServerClient;
+use CertUnlp\NgenBundle\Services\Converter\IncidentConverter;
 
 /**
  * Description of ShadowServerAnalyzer
  *
  * @author demyen
  */
-class ShadowServerAnalyzer extends AbstractAnalyzer {
+class ShadowServerAnalyzer extends AbstractAnalyzer
+{
 
-    public function __construct($shadow_server_client, $converter) {
+    private $shadow_server_client;
+    private $converter;
+
+    public function __construct(ShadowServerClient $shadow_server_client, IncidentConverter $converter)
+    {
         $this->shadow_server_client = $shadow_server_client;
         $this->converter = $converter;
     }
 
-    public function analyze($daysAgo = '1', $username = null, $analyzeCache = null) {
+    public function analyze($daysAgo = '1', $username = null, $analyzeCache = null)
+    {
 
         $params = ['daysAgo' => $daysAgo, 'username' => $username, 'analyzeCache' => $analyzeCache];
         parent::analyze($params);
     }
 
-    public function input($params = null) {
+    public function input($params = null)
+    {
         return $this->shadow_server_client->importCsv($params['daysAgo'], $params['analyzeCache']);
     }
 
     //no defino doAnalisys porq confiamos en q funcionan los reportes
 
-    public function output($analyze_output = null) {
+    public function output($analyze_output = null)
+    {
         foreach ($analyze_output as $imported_report) {
             $this->converter->convert($imported_report);
         }

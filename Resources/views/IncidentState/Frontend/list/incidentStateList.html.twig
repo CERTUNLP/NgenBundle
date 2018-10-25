@@ -8,12 +8,12 @@
 #}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong>{{icon('unlock-alt fa-fw')}} Incident States</strong>
-        <strong>({{objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount}})</strong>
+        <strong>{{ icon('unlock-alt fa-fw') }} Incident States</strong>
+        <strong>({{ objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount }})</strong>
         <div class="pull-right">
             <div class="btn-group">
-                <a class="btn btn-default btn-xs" href="{{path('cert_unlp_ngen_incident_state_new')}}">
-                    {{icon('plus-circle fa-fw')}}add incident state
+                <a class="btn btn-default btn-xs" href="{{ path('cert_unlp_ngen_incident_state_new') }}">
+                    {{ icon('plus-circle fa-fw') }}add incident state
                 </a>
             </div>
         </div>
@@ -25,9 +25,9 @@
             <th>Action</th>
         </tr>
         <tbody>
-            {% for incidentState in incidentStates %}
-                {% include 'CertUnlpNgenBundle:IncidentState:Frontend/list/incidentStateListRow.html.twig' with {'incidentState': incidentState} %}
-            {% endfor %}
+        {% for incidentState in incidentStates %}
+            {% include 'CertUnlpNgenBundle:IncidentState:Frontend/list/incidentStateListRow.html.twig' with {'incidentState': incidentState} %}
+        {% endfor %}
         </tbody>
 
     </table>

@@ -11,9 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types;
 
-use CertUnlp\NgenBundle\Services\ShadowServer\Reports\ShadowServerCsvRow;
 use CertUnlp\NgenBundle\Services\Converter\IncidentConvertible;
-use Gedmo\Sluggable\Util as Sluggable;
+use CertUnlp\NgenBundle\Services\ShadowServer\Reports\ShadowServerCsvRow;
 
 //use Ddeboer\DataImport\ValueConverter\CallbackValueConverter;
 
@@ -22,38 +21,50 @@ use Gedmo\Sluggable\Util as Sluggable;
  *
  * @author demyen
  */
-class ShadowServerReport implements IncidentConvertible {
+class ShadowServerReport implements IncidentConvertible
+{
 
-    public function __construct(ShadowServerCsvRow $shadow_server_csv_row, $csv_evidence_file) {
+    private $shadow_server_csv_row;
+    private $csv_evidence_file;
+
+    public function __construct(ShadowServerCsvRow $shadow_server_csv_row, $csv_evidence_file)
+    {
         $this->shadow_server_csv_row = $shadow_server_csv_row;
         $this->csv_evidence_file = $csv_evidence_file;
     }
 
-    public function getReportCsvRow() {
+    public function getReportCsvRow()
+    {
         return $this->getShadowServerCsvRow()->getCsvRow();
     }
 
-    public function getShadowServerCsvRow() {
+    public function getShadowServerCsvRow()
+    {
         return $this->shadow_server_csv_row;
     }
 
-    public function getHostAddress() {
+    public function getHostAddress()
+    {
         return $this->getShadowServerCsvRow()->getIp();
     }
 
-    public function getType() {
+    public function getType()
+    {
         return $this->getShadowServerCsvRow()->getReportFile();
     }
 
-    public function getEvidenceFile() {
+    public function getEvidenceFile()
+    {
         return $this->csv_evidence_file;
     }
 
-    public function getFeed() {
+    public function getFeed()
+    {
         return 'shadowserver';
     }
 
-    public function getReporter() {
+    public function getReporter()
+    {
         return 'random';
     }
 

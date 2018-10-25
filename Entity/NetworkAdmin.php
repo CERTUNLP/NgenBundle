@@ -23,7 +23,8 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Entity\NetworkAdminRepository")
  * @JMS\ExclusionPolicy("all")
  */
-class NetworkAdmin {
+class NetworkAdmin
+{
 
     /**
      * @var integer
@@ -44,7 +45,7 @@ class NetworkAdmin {
 
     /**
      * @var string
-     * 
+     *
      * @Gedmo\Slug(fields={"name","email"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true,unique=true)
      * */
@@ -91,72 +92,35 @@ class NetworkAdmin {
     private $updatedAt;
 
     /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId() {
-        return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return NetworkAdmin
-     */
-    public function setName($name) {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName() {
-        return $this->name;
-    }
-
-    /**
-     * Set email
-     *
-     * @param string $email
-     * @return NetworkAdmin
-     */
-    public function setEmail($email) {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string 
-     */
-    public function getEmail() {
-        return $this->email;
-    }
-
-    /**
      * Constructor
+     * @param null $name
+     * @param null $email
      */
-    public function __construct($name = null, $email = null) {
+    public function __construct($name = null, $email = null)
+    {
         $this->setName($name);
         $this->setEmail($email);
         $this->networks = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * Add networks
      *
-     * @param \CertUnlp\NgenBundle\Entity\Network $networks
+     * @param Network $networks
      * @return NetworkAdmin
      */
-    public function addNetwork(\CertUnlp\NgenBundle\Entity\Network $networks) {
+    public function addNetwork(Network $networks)
+    {
         $this->networks[] = $networks;
 
         return $this;
@@ -165,23 +129,82 @@ class NetworkAdmin {
     /**
      * Remove networks
      *
-     * @param \CertUnlp\NgenBundle\Entity\Network $networks
+     * @param Network $networks
      */
-    public function removeNetwork(\CertUnlp\NgenBundle\Entity\Network $networks) {
+    public function removeNetwork(Network $networks)
+    {
         $this->networks->removeElement($networks);
     }
 
     /**
      * Get networks
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getNetworks() {
+    public function getNetworks()
+    {
         return $this->networks;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getName() . " (" . $this->getEmail() . ")";
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return NetworkAdmin
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return NetworkAdmin
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**
@@ -190,19 +213,21 @@ class NetworkAdmin {
      * @param string $slug
      * @return NetworkAdmin
      */
-    public function setSlug($slug) {
+    public function setSlug($slug)
+    {
         $this->slug = $slug;
 
         return $this;
     }
 
     /**
-     * Get slug
+     * Get isActive
      *
-     * @return string 
+     * @return boolean
      */
-    public function getSlug() {
-        return $this->slug;
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 
     /**
@@ -211,19 +236,11 @@ class NetworkAdmin {
      * @param boolean $isActive
      * @return NetworkAdmin
      */
-    public function setIsActive($isActive) {
+    public function setIsActive($isActive)
+    {
         $this->isActive = $isActive;
 
         return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean 
-     */
-    public function getIsActive() {
-        return $this->isActive;
     }
 
     /**
@@ -232,7 +249,8 @@ class NetworkAdmin {
      * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
      * @return NetworkAdmin
      */
-    public function addIncident(\CertUnlp\NgenBundle\Model\IncidentInterface $incidents) {
+    public function addIncident(\CertUnlp\NgenBundle\Model\IncidentInterface $incidents)
+    {
         $this->incidents[] = $incidents;
 
         return $this;
@@ -243,17 +261,29 @@ class NetworkAdmin {
      *
      * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
      */
-    public function removeIncident(\CertUnlp\NgenBundle\Model\IncidentInterface $incidents) {
+    public function removeIncident(\CertUnlp\NgenBundle\Model\IncidentInterface $incidents)
+    {
         $this->incidents->removeElement($incidents);
     }
 
     /**
      * Get incidents
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getIncidents() {
+    public function getIncidents()
+    {
         return $this->incidents;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 
     /**
@@ -262,19 +292,21 @@ class NetworkAdmin {
      * @param \DateTime $createdAt
      * @return NetworkAdmin
      */
-    public function setCreatedAt($createdAt) {
+    public function setCreatedAt($createdAt)
+    {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
     /**
-     * Get createdAt
+     * Get updatedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
-    public function getCreatedAt() {
-        return $this->createdAt;
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 
     /**
@@ -283,19 +315,11 @@ class NetworkAdmin {
      * @param \DateTime $updatedAt
      * @return NetworkAdmin
      */
-    public function setUpdatedAt($updatedAt) {
+    public function setUpdatedAt($updatedAt)
+    {
         $this->updatedAt = $updatedAt;
 
         return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return \DateTime 
-     */
-    public function getUpdatedAt() {
-        return $this->updatedAt;
     }
 
 }

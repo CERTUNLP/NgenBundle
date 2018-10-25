@@ -11,7 +11,6 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-use CertUnlp\NgenBundle\Form\ExternalIncident;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -25,6 +24,8 @@ class ExternalIncidentFrontendController extends Controller
     /**
      * @Template("CertUnlpNgenBundle:ExternalIncident:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_external_incident_frontend_home")
+     * @param Request $request
+     * @return array
      */
     public function homeAction(Request $request)
     {
@@ -40,6 +41,8 @@ class ExternalIncidentFrontendController extends Controller
     /**
      * @Template("CertUnlpNgenBundle:ExternalIncident:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_external_incident_search_incident")
+     * @param Request $request
+     * @return array
      */
     public function searchIncidentAction(Request $request)
     {
@@ -49,6 +52,8 @@ class ExternalIncidentFrontendController extends Controller
     /**
      * @Template("CertUnlpNgenBundle:ExternalIncident:Frontend/incidentForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_external_incident_frontend_new_incident")
+     * @param Request $request
+     * @return array
      */
     public function newIncidentAction(Request $request)
     {
@@ -59,6 +64,8 @@ class ExternalIncidentFrontendController extends Controller
      * @Template("CertUnlpNgenBundle:ExternalIncident:Frontend/incidentForm.html.twig")
      * @Route("{hostAddress}/{date}/{type}/edit", name="cert_unlp_ngen_external_incident_frontend_edit_incident")
      * @ParamConverter("incident", class="CertUnlpNgenBundle:ExternalIncident", options={"repository_method" = "findByHostDateType"})
+     * @param IncidentInterface $incident
+     * @return array
      */
     public function editIncidentAction(IncidentInterface $incident)
     {
@@ -80,6 +87,8 @@ class ExternalIncidentFrontendController extends Controller
     /**
      * @Route("{hostAddress}/{date}/{type}/evidence", name="cert_unlp_ngen_external_incident_frontend_evidence_incident")
      * @ParamConverter("incident", class="CertUnlpNgenBundle:ExternalIncident", options={"repository_method" = "findByHostDateType"})
+     * @param IncidentInterface $incident
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function evidenceIncidentAction(IncidentInterface $incident)
     {
@@ -89,6 +98,9 @@ class ExternalIncidentFrontendController extends Controller
 
     /**
      * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentComments.html.twig")
+     * @param IncidentInterface $incident
+     * @param Request $request
+     * @return array
      */
     public function incidentCommentsAction(IncidentInterface $incident, Request $request)
     {

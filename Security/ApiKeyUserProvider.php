@@ -11,34 +11,42 @@
 
 namespace CertUnlp\NgenBundle\Security;
 
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Doctrine\Common\Persistence\ObjectManager;
-use CertUnlp\NgenBundle\Entity\User;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class ApiKeyUserProvider implements UserProviderInterface {
+class ApiKeyUserProvider implements UserProviderInterface
+{
 
-    public function __construct(ObjectManager $om, $user_class) {
+    private $om;
+    private $repository;
+
+    public function __construct(ObjectManager $om, $user_class)
+    {
         $this->om = $om;
         $this->repository = $this->om->getRepository($user_class);
     }
 
-    public function getUsernameForApiKey($apiKey) {
+    public function getUsernameForApiKey($apiKey)
+    {
 
         $user = $this->repository->findOneByApiKey($apiKey);
         return $user;
     }
 
-    public function loadUserByUsername($user) {
+    public function loadUserByUsername($user)
+    {
         return $user;
     }
 
-    public function refreshUser(UserInterface $user) {
+    public function refreshUser(UserInterface $user)
+    {
         throw new UnsupportedUserException();
     }
 
-    public function supportsClass($class) {
+    public function supportsClass($class)
+    {
         return 'CertUnlp\NgenBundle\Entity\User' === $class;
     }
 

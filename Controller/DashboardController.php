@@ -11,11 +11,9 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-use CertUnlp\NgenBundle\Form\ExternalIncident;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends Controller
 {
@@ -28,8 +26,9 @@ class DashboardController extends Controller
     /**
      * @Template()
      * @Route("/")
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function homeAction(Request $request)
+    public function homeAction()
     {
 
         return $this->redirect($this->generateUrl('cert_unlp_ngen_internal_incident_frontend_home'));

@@ -11,22 +11,20 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\FormTypeInterface;
-use CertUnlp\NgenBundle\Exception\InvalidFormException;
-use CertUnlp\NgenBundle\Services\Api\Controller\ApiController;
+use CertUnlp\NgenBundle\Entity\IncidentFeed;
 
-class IncidentFeedApiController extends ApiController {
+class IncidentFeedApiController extends ApiController
+{
 
     /**
      * Create a Object from the submitted data.
      *
      * @param $params array
      *
-     * @return Network entity
+     * @return IncidentFeed
      */
-    public function findObjectBy($params) {
+    public function findObjectBy($params)
+    {
         return $this->getCustomHandler()->get(['name' => $params['name']]);
     }
 

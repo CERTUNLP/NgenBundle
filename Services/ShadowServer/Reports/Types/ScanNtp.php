@@ -16,9 +16,11 @@ namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types;
  *
  * @author demyen
  */
-class ScanNtp extends ShadowServerReport {
+class ScanNtp extends ShadowServerReport
+{
 
-    public function getType() {
+    public function getType()
+    {
         return "open_ntp_version";
     }
 

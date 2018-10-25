@@ -13,9 +13,11 @@ namespace AppBundle\Tests\Controller;
 
 //use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class DefaultControllerTest extends \PHPUnit_Framework_TestCase {
+class DefaultControllerTest extends \PHPUnit_Framework_TestCase
+{
 
-    public function testIndex() {
+    public function testIndex()
+    {
 //        $client = static::createClient();
 //        $crawler = $client->request('GET', '/incidents');
         return true;

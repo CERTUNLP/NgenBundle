@@ -11,15 +11,16 @@
 
 namespace CertUnlp\NgenBundle\Validator\Constraints;
 
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Ip as IpConstraint;
 
 /**
  * @Annotation
  */
-class Ip extends IpConstraint {
+class Ip extends IpConstraint
+{
 
-    public function validatedBy() {
+    public function validatedBy()
+    {
         return 'ip.validator';
     }
 

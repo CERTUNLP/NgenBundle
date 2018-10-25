@@ -16,6 +16,7 @@ namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types;
  *
  * @author demyen
  */
-class MicrosoftSinkhole extends ShadowServerReport {
+class MicrosoftSinkhole extends ShadowServerReport
+{
     //put your code here
 }

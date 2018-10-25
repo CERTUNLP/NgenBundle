@@ -12,16 +12,17 @@
 namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types;
 
 use CertUnlp\NgenBundle\Services\ShadowServer\Reports\ShadowServerCsvRow;
-use CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types\ShadowServerReport;
 
 /**
  * Description of TypeFactory
  *
  * @author demyen
  */
-class ShadowServerReportTypeFactory {
+class ShadowServerReportTypeFactory
+{
 
-    public function getReportTypeFromCsvRow($csv_row, $file_path, $csv_evidence_file) {
+    public function getReportTypeFromCsvRow($csv_row, $file_path, $csv_evidence_file)
+    {
         $file = explode('-', basename($file_path))[0];
         $file = str_replace("scan", "open", $file);
         switch ($file) {

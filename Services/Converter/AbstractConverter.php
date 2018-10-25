@@ -11,14 +11,13 @@
 
 namespace CertUnlp\NgenBundle\Services\Converter;
 
-use CertUnlp\NgenBundle\Services\Converter\Convertible;
-
 /**
  * Description of Converter
  *
  * @author demyen
  */
-abstract class AbstractConverter {
+abstract class AbstractConverter
+{
 
     abstract function convert(Convertible $convertible);
 }

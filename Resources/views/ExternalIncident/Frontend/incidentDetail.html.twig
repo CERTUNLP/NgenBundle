@@ -8,10 +8,11 @@
 #}
 
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/incidentDetail.html.twig' %}
-{% block sideBar_search_path %}{{path('cert_unlp_ngen_external_incident_search_incident')}}{% endblock %}
+{% block sideBar_search_path %}{{ path('cert_unlp_ngen_external_incident_search_incident') }}{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{icon('arrow-circle-up fa-fw')}}External object [ID: {{object.id}}][{{object.type}}]{%include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object}%}</h1>
+    <h1 class="page-header">{{ icon('arrow-circle-up fa-fw') }}External object [ID: {{ object.id }}][{{ object.type }}
+        ]{% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object} %}</h1>
 {% endblock %}
 {% block network_body %}
 
@@ -27,7 +28,7 @@
                             IP/mask
                         </td>
                         <td class="">
-                            {{object.network}}
+                            {{ object.network }}
                         </td>
                     </tr>
                     <tr>
@@ -35,7 +36,7 @@
                             Country
                         </td>
                         <td class="">
-                            {{object.country}}
+                            {{ object.country }}
                         </td>
                     </tr>
                     <tr>
@@ -43,7 +44,7 @@
                             Start address
                         </td>
                         <td class="">
-                            {{object.startAddress}}
+                            {{ object.startAddress }}
                         </td>
                     </tr>
                     <tr>
@@ -51,7 +52,7 @@
                             End address
                         </td>
                         <td class="">
-                            {{object.endAddress}}
+                            {{ object.endAddress }}
                         </td>
                     </tr>
                     <tr>
@@ -59,7 +60,7 @@
                             Network entity
                         </td>
                         <td class="">
-                            {{object.networkEntity}}
+                            {{ object.networkEntity }}
 
                         </td>
                     </tr>
@@ -68,7 +69,7 @@
                             Abuse entity
                         </td>
                         <td class="">
-                            {{object.abuseEntity}}
+                            {{ object.abuseEntity }}
 
                         </td>
                     </tr>
@@ -76,7 +77,7 @@
                         <td class="">
                         </td>
                         <td class="">
-                            {{object.abuseEntityEmails|join('|')}}
+                            {{ object.abuseEntityEmails|join('|') }}
 
                         </td>
                     </tr>

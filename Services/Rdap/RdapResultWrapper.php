@@ -8,7 +8,6 @@
 
 namespace CertUnlp\NgenBundle\Services\Rdap;
 
-use CertUnlp\NgenBundle\Services\Rdap\Entities;
 use Exception;
 
 /**
@@ -16,9 +15,18 @@ use Exception;
  *
  * @author dam
  */
-class RdapResultWrapper {
+class RdapResultWrapper
+{
+    private $entities;
+    private $rdap_json_object;
 
-    public function __construct($rdap_json_response) {
+    /**
+     * RdapResultWrapper constructor.
+     * @param $rdap_json_response
+     * @throws Exception
+     */
+    public function __construct($rdap_json_response)
+    {
 
         $this->rdap_json_object = json_decode($rdap_json_response);
         if ($this->getRateLimitNotice()) {
@@ -28,47 +36,78 @@ class RdapResultWrapper {
         $this->entities = new Entities(isset($this->rdap_json_object->entities) ? $this->rdap_json_object->entities : []);
     }
 
-    public function getName() {
+    public function getRateLimitNotice()
+    {
+        return $this->getNoticeElement('Rate Limit Notice');
+    }
+
+    public function getNoticeElement($element)
+    {
+        foreach ($this->getNotices() as $notice) {
+            if ($notice->title == $element) {
+                return $notice->description;
+            }
+        }
+        return null;
+    }
+
+    public function getNotices()
+    {
+        return $this->rdap_json_object->notices;
+    }
+
+    public function getName()
+    {
         return isset($this->rdap_json_object->name) ? $this->rdap_json_object->name : '';
     }
 
-    public function getObjectClassName() {
+    public function getObjectClassName()
+    {
         return isset($this->rdap_json_object->objectClassName) ? $this->rdap_json_object->objectClassName : '';
     }
 
-    public function getHandle() {
+    public function getHandle()
+    {
         return isset($this->rdap_json_object->handle) ? $this->rdap_json_object->handle : '';
     }
 
-    public function getStartAddress() {
+    public function getStartAddress()
+    {
         return isset($this->rdap_json_object->startAddress) ? $this->rdap_json_object->startAddress : '';
     }
 
-    public function getCountry() {
+    public function getCountry()
+    {
         return isset($this->rdap_json_object->country) ? $this->rdap_json_object->country : null;
     }
 
-    public function getEndAddress() {
+    public function getEndAddress()
+    {
         return isset($this->rdap_json_object->endAddress) ? $this->rdap_json_object->endAddress : '';
     }
 
-    public function getIpVersion() {
+    public function getIpVersion()
+    {
         return isset($this->rdap_json_object->ipVersion) ? $this->rdap_json_object->ipVersion : '';
     }
 
-    public function getParentHandle() {
+    public function getParentHandle()
+    {
         return isset($this->rdap_json_object->parentHandle) ? $this->rdap_json_object->parentHandle : '';
     }
 
-    public function getRemarks() {
+    public function getRemarks()
+    {
         return isset($this->rdap_json_object->remarks) ? $this->rdap_json_object->remarks : '';
     }
 
-    public function getEvents() {
-        return isset($this->rdap_json_object->events) ? $this->rdap_json_object->events : '';
+    public function getLastChanged()
+    {
+        return $this->getEventElement('last changed');
     }
 
-    public function getEventElement($element) {
+    public function getEventElement($element)
+    {
         foreach ($this->getEvents() as $event) {
             if ($event->eventAction == $element) {
                 return $event->eventDate;
@@ -77,46 +116,35 @@ class RdapResultWrapper {
         return null;
     }
 
-    public function getLastChanged() {
-        return $this->getEventElement('last changed');
+    public function getEvents()
+    {
+        return isset($this->rdap_json_object->events) ? $this->rdap_json_object->events : '';
     }
 
-    public function getRegistration() {
+    public function getRegistration()
+    {
         return $this->getEventElement('registration');
     }
 
-    public function getEntities() {
+    public function getAbuseEmails()
+    {
+        return $this->getEntities()->getAbuseEmails();
+    }
+
+    public function getEntities()
+    {
 
         return $this->entities;
     }
 
-    public function getNotices() {
-        return $this->rdap_json_object->notices;
-    }
-
-    public function getAbuseEmails() {
-        return $this->getEntities()->getAbuseEmails();
-    }
-
-    public function getAbuseEntities() {
+    public function getAbuseEntities()
+    {
         return $this->getEntities()->getAbuseEntities();
     }
 
-    public function getAbuseEntity() {
+    public function getAbuseEntity()
+    {
         return $this->getEntities()->getAbuseEntity();
-    }
-
-    public function getRateLimitNotice() {
-        return $this->getNoticeElement('Rate Limit Notice');
-    }
-
-    public function getNoticeElement($element) {
-        foreach ($this->getNotices() as $notice) {
-            if ($notice->title == $element) {
-                return $notice->description;
-            }
-        }
-        return null;
     }
 
 }

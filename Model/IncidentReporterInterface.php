@@ -21,6 +21,7 @@ namespace CertUnlp\NgenBundle\Model;
  *
  * @author demyen
  */
-interface IncidentReporterInterface {
+interface IncidentReporterInterface
+{
     //put your code here
 }

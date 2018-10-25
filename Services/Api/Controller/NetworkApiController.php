@@ -11,13 +11,10 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\FormTypeInterface;
-use CertUnlp\NgenBundle\Exception\InvalidFormException;
-use CertUnlp\NgenBundle\Services\Api\Controller\ApiController;
+use CertUnlp\NgenBundle\Entity\Network;
 
-class NetworkApiController extends ApiController {
+class NetworkApiController extends ApiController
+{
 
     /**
      * Create a Object from the submitted data.
@@ -26,7 +23,8 @@ class NetworkApiController extends ApiController {
      *
      * @return Network entity
      */
-    public function findObjectBy($params) {
+    public function findObjectBy($params)
+    {
         return $this->getCustomHandler()->get(['ip' => $params['ip']]);
     }
 

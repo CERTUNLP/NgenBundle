@@ -14,13 +14,13 @@ var IncidentTypeForm = Form.extend({
         return 'incident/type';
     },
     getObjectId: function () {
-        return  this.getIncidentTypeId();
+        return this.getIncidentTypeId();
     },
     setIncidentTypeId: function () {
         this.incident_type_id = (($('#name').val().replace(' ', '_'))).toLowerCase();
     },
     getIncidentTypeId: function () {
-        return  this.incident_type_id;
+        return this.incident_type_id;
     },
     handleExtraErrors: function (jqXHR) {
 //        $.each(jqXHR.responseJSON.errors.errors, function (k, v) {

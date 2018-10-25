@@ -2,7 +2,8 @@
 // Jaime Pillora <dev@jpillora.com> - MIT Copyright 2014
 (function (window, $, undefined) {
     'use strict';
-    var Cache, Resource, Verb, defaultOpts, deleteWarning, encode64, error, inheritExtend, s, stringify, validateOpts, validateStr;
+    var Cache, Resource, Verb, defaultOpts, deleteWarning, encode64, error, inheritExtend, s, stringify, validateOpts,
+        validateStr;
 
     error = function (msg) {
         throw new Error("ERROR: jquery.rest: " + msg);
@@ -33,7 +34,8 @@
 
     inheritExtend = function (a, b) {
         var F;
-        F = function () {};
+        F = function () {
+        };
         F.prototype = a;
         return $.extend(true, new F(), b);
     };
@@ -99,7 +101,7 @@
 
         Cache.prototype.key = function (obj) {
             var key,
-                    _this = this;
+                _this = this;
             key = "";
             $.each(obj, function (k, v) {
                 return key += k + "=" + ($.isPlainObject(v) ? "{" + _this.key(v) + "}" : v) + "|";
@@ -331,7 +333,7 @@
 
         Resource.prototype.ajax = function (method, url, data) {
             var ajaxOpts, encoded, escapedUrl, headers, key, req, useCache,
-                    _this = this;
+                _this = this;
             if (!method) {
                 error("method missing");
             }
@@ -355,7 +357,7 @@
                 var urlEnd = url.indexOf("?");
                 if (urlEnd == -1) {
                     urlEnd = url.length;
-            }
+                }
 
                 // Don't bother doing anything if the URL is empty
                 if (urlEnd > 0) {

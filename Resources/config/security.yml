@@ -17,17 +17,17 @@ security:
             anonymous: ~
             stateless:  true
             simple_preauth:
-                authenticator: cert_unlp.ngen.api.auth.apikey_authenticator        
+                authenticator: cert_unlp.ngen.api.auth.apikey_authenticator
         frontend:
             pattern:        ^/*
             form_login:
                 provider:       fos_userbundle
                 login_path:     fos_user_security_login
-#                logout:     cert_unlp_ngen_user_logout
+                #                logout:     cert_unlp_ngen_user_logout
                 check_path: fos_user_security_check
                 csrf_token_generator: security.csrf.token_manager
             anonymous:      true
-#                login_path: cert_unlp_ngen_user_login
+            #                login_path: cert_unlp_ngen_user_login
             logout:
                 path: fos_user_security_logout
                 target: fos_user_security_login
@@ -35,7 +35,7 @@ security:
                 secret:     4aca1f11eea0be14028201ecc5579fb210c90bd3
                 lifetime:   604800  # 604.800 = 3.600 * 24 * 7 = 1 semana
 
-    
+
     access_control:
         - { path: ^/users/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/users/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -47,18 +47,18 @@ security:
         - { path: ^/*, roles: ROLE_USER }
 
     encoders:
-#        CertUnlp\NgenBundle\Entity\User:    { algorithm: sha512, iterations: 10 }
+        #        CertUnlp\NgenBundle\Entity\User:    { algorithm: sha512, iterations: 10 }
         FOS\UserBundle\Model\UserInterface: bcrypt
-#        Symfony\Component\Security\Core\User\User: plaintext
+    #        Symfony\Component\Security\Core\User\User: plaintext
 
     providers:
         cert_unlp.ngen.api.auth.apikey_user_provider:
             id: cert_unlp.ngen.api.auth.apikey_user_provider
-#        users:
-#            entity: { class: CertUnlp\NgenBundle\Entity\User, property: username }
+        #        users:
+        #            entity: { class: CertUnlp\NgenBundle\Entity\User, property: username }
         fos_userbundle:
             id: fos_user.user_provider.username
-            
+
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]    

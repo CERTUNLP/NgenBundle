@@ -11,35 +11,26 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Form\FormFactoryInterface;
-use CertUnlp\NgenBundle\Exception\InvalidFormException;
-use Symfony\Component\Security\Core\SecurityContext;
-use CertUnlp\NgenBundle\Services\Api\Handler\Handler;
+use CertUnlp\NgenBundle\Entity\IncidentReport;
 
-class IncidentReportHandler extends Handler {
+class IncidentReportHandler extends Handler
+{
 
     /**
-     * Delete a Network.
+     * Delete a IncidentReport.
      *
-     * @param NetworkInterface $incident_report
+     * @param IncidentReport $incident_report
      * @param array $parameters
      *
-     * @return NetworkInterface
+     * @return void
      */
-    public function prepareToDeletion($incident_report, array $parameters = null) {
+    public function prepareToDeletion($incident_report, array $parameters = null)
+    {
         $incident_report->setIsActive(FALSE);
     }
 
-    protected function checkIfExists($incident_report, $method) {
-        $incident_reportDB = $this->repository->findOneBy(['lang' => $incident_report->getLang(), 'type' => $incident_report->getType()]);
-
-//        if ($incident_reportDB && $method == 'POST') {
-//            if (!$incident_reportDB->getIsActive()) {
-//                $incident_reportDB->setIsActive(TRUE);
-//            }
-//            $incident_report = $incident_reportDB;
-//        }
+    protected function checkIfExists($incident_report, $method)
+    {
         return $incident_report;
     }
 

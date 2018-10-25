@@ -11,19 +11,27 @@
 
 namespace CertUnlp\NgenBundle\Services\Frontend\Controller;
 
+use CertUnlp\NgenBundle\Model\IncidentInterface;
+use FOS\CommentBundle\Model\CommentManagerInterface;
+use FOS\CommentBundle\Model\ThreadManagerInterface;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
+use Knp\Component\Pager\Paginator;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class IncidentFrontendController extends FrontendController
 {
 
-    public function __construct($doctrine, $formFactory, $entityType, $paginator, $finder, $comment_manager, $thread_manager, $evidence_path)
+    private $evidence_path;
+
+    public function __construct($doctrine, FormFactory $formFactory, $entityType, Paginator $paginator, PaginatedFinderInterface $finder, CommentManagerInterface $comment_manager, ThreadManagerInterface $thread_manager, string $evidence_path)
     {
         parent::__construct($doctrine, $formFactory, $entityType, $paginator, $finder, $comment_manager, $thread_manager);
         $this->evidence_path = $evidence_path;
     }
 
-    public function evidenceIncidentAction($incident)
+    public function evidenceIncidentAction(IncidentInterface $incident)
     {
 
         $zipname = $incident . '_' . md5(time()) . '.zip';
@@ -44,7 +52,7 @@ class IncidentFrontendController extends FrontendController
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
             $zipname
         );
-        
+
         $response->headers->set('Content-Disposition', $disposition);
         return $response;
     }

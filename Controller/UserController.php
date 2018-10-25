@@ -20,7 +20,6 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends FOSRestController
 {
@@ -96,11 +95,8 @@ class UserController extends FOSRestController
      *   }
      * )
      *
-     * @param int $id the user id
-     *
-     * @return array
-     *
-     * @throws NotFoundHttpException when user not exist
+     * @param User $user
+     * @return User
      *
      * @FOS\Get("/users/{username}")
      *
@@ -156,11 +152,9 @@ class UserController extends FOSRestController
      * )
      *
      * @param Request $request the request object
-     * @param int $id the user id
-     *
+     * @param User $user
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when user not exist
      * @FOS\Patch("/users/{username}")
      *
      * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
@@ -184,11 +178,8 @@ class UserController extends FOSRestController
      *
      *
      * @param Request $request the request object
-     * @param int $id the user id
-     *
+     * @param User $user
      * @return FormTypeInterface|View
-     *
-     * @throws NotFoundHttpException when user not exist
      *
      * @FOS\Patch("/users/{username}/activate")
      * @FOS\View(
@@ -216,11 +207,8 @@ class UserController extends FOSRestController
      *
      *
      * @param Request $request the request object
-     * @param int $id the user id
-     *
+     * @param User $user
      * @return FormTypeInterface|View
-     *
-     * @throws NotFoundHttpException when user not exist
      *
      * @FOS\Patch("/users/{username}/desactivate")
      * @FOS\View(

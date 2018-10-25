@@ -11,14 +11,13 @@
 
 namespace CertUnlp\NgenBundle\Services\Converter;
 
-use CertUnlp\NgenBundle\Services\Converter\Convertible;
-
 /**
  * Description of IncidentConvertible
  *
  * @author demyen
  */
-interface IncidentConvertible extends Convertible {
+interface IncidentConvertible extends Convertible
+{
 
     public function getHostAddress();
 

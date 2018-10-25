@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Services\Mailer;
 
 use CertUnlp\NgenBundle\Model\IncidentInterface;
+use CertUnlp\NgenBundle\Services\IncidentReportFactory;
 use FOS\CommentBundle\Event\CommentPersistEvent;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\SignedCommentInterface;
@@ -27,14 +28,14 @@ class IncidentMailer implements IncidentMailerInterface
     protected $commentManager;
     protected $environment;
     protected $report_factory;
+    protected $lang;
 
-    public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, CommentManagerInterface $commentManager, $environment, $report_factory, $lang)
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $templating, string $cert_email, string $upload_directory, CommentManagerInterface $commentManager, string $environment, IncidentReportFactory $report_factory, string $lang)
     {
         $this->mailer = $mailer;
         $this->cert_email = $cert_email;
         $this->templating = $templating;
         $this->upload_directory = $upload_directory;
-//        $this->incident_openpgpsigner = $incident_openpgpsigner;
         $this->commentManager = $commentManager;
         $this->environment = (in_array($environment, ['dev', 'test'])) ? '[dev]' : '';
         $this->report_factory = $report_factory;
@@ -46,6 +47,14 @@ class IncidentMailer implements IncidentMailerInterface
         $this->send_report($incident, null, null, TRUE);
     }
 
+    /**
+     * @param IncidentInterface $incident
+     * @param null $body
+     * @param null $echo
+     * @param bool $is_new_incident
+     * @param bool $renotification
+     * @return int
+     */
     public function send_report(IncidentInterface $incident, $body = null, $echo = null, $is_new_incident = FAlSE, $renotification = false)
     {
         if (!$echo) {
@@ -58,7 +67,6 @@ class IncidentMailer implements IncidentMailerInterface
                     ->setSender($this->cert_email)
                     ->setTo($incident->getEmails())
                     ->addPart($html, 'text/html');
-//                $this->incident_openpgpsigner->sign($message, true);
 
                 if ($incident->getEvidenceFilePath()) {
                     $message->attach(\Swift_Attachment::fromPath($this->upload_directory . $incident->getEvidenceFilePath(true)));
@@ -68,12 +76,13 @@ class IncidentMailer implements IncidentMailerInterface
                     $message->setId($incident->getReportMessageId());
                 }
 
-                $this->mailer->send($message);
+                return $this->mailer->send($message);
             }
         } else {
             $html = $this->getBody($incident);
-            echo $html;
+            return $html;
         }
+        return null;
     }
 
     public function getBody(IncidentInterface $incident, $type = 'html')
@@ -91,7 +100,7 @@ class IncidentMailer implements IncidentMailerInterface
         return '';
     }
 
-    public function prePersistDelegation($incident)
+    public function prePersistDelegation(IncidentInterface $incident)
     {
         $message = \Swift_Message::newInstance();
         $incident->setReportMessageId($message->getId());

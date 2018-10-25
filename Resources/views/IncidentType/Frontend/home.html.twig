@@ -15,13 +15,12 @@
     {{ parent() }}
 
     {% javascripts
-    '@CertUnlpNgenBundle/Resources/public/js/incident/type/IncidentType.js'
-    '@CertUnlpNgenBundle/Resources/public/js/incident/type/IncidentTypeApi.js'
-    %}
-    <script src="{{ asset_url }}"></script>
+        '@CertUnlpNgenBundle/Resources/public/js/incident/type/IncidentType.js'
+        '@CertUnlpNgenBundle/Resources/public/js/incident/type/IncidentTypeApi.js' %}
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
         var incident_type = new IncidentType();
-        var incident_type_api = new IncidentTypeApi("{{path("api_2_get")}}/", "{{app.user.apiKey}}");
+        var incident_type_api = new IncidentTypeApi("{{ path("api_2_get") }}/", "{{ app.user.apiKey }}");
     </script>
 {% endblock %}

@@ -17,58 +17,72 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use CertUnlp\NgenBundle\Entity\NetworkAdmin;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use CertUnlp\NgenBundle\Form\NetworkAdminType;
-use CertUnlp\NgenBundle\Entity\NetworkAdmin;
+use Symfony\Component\HttpFoundation\Request;
 
-class NetworkAdminFrontendController extends Controller {
+class NetworkAdminFrontendController extends Controller
+{
 
-    public function getFrontendController() {
+    /**
+     * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/home.html.twig")
+     * @Route("/", name="cert_unlp_ngen_network_admin_frontend_home")
+     * @param Request $request
+     * @return array
+     */
+    public function homeAction(Request $request)
+    {
+        return $this->getFrontendController()->homeEntity($request);
+    }
+
+    public function getFrontendController()
+    {
         return $this->get('cert_unlp.ngen.network.admin.frontend.controller');
     }
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/home.html.twig")
-     * @Route("/", name="cert_unlp_ngen_network_admin_frontend_home")
-     */
-    public function homeAction(Request $request) {
-        return $this->getFrontendController()->homeEntity($request);
-    }
-
-    /**
-     * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_network_search_network_admin")
+     * @param Request $request
+     * @return array
      */
-    public function searchNetworkAdminAction(Request $request) {
+    public function searchNetworkAdminAction(Request $request)
+    {
         return $this->getFrontendController()->searchEntity($request);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/networkAdminForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_network_new_network_admin")
+     * @param Request $request
+     * @return array
      */
-    public function newNetworkAdminAction(Request $request) {
+    public function newNetworkAdminAction(Request $request)
+    {
         return $this->getFrontendController()->newEntity($request);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/networkAdminForm.html.twig")
      * @Route("{slug}/edit", name="cert_unlp_ngen_network_edit_network_admin")
+     * @param NetworkAdmin $networkAdmin
+     * @return array
      */
-    public function editNetworkAdminAction(NetworkAdmin $networkAdmin) {
+    public function editNetworkAdminAction(NetworkAdmin $networkAdmin)
+    {
         return $this->getFrontendController()->editEntity($networkAdmin);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/networkAdminDetail.html.twig")
      * @Route("{slug}/detail", name="cert_unlp_ngen_network_detail_network_admin")
+     * @param NetworkAdmin $networkAdmin
+     * @return array
      */
-    public function detailNetworkAdminAction(NetworkAdmin $networkAdmin) {
+    public function detailNetworkAdminAction(NetworkAdmin $networkAdmin)
+    {
         return $this->getFrontendController()->detailEntity($networkAdmin);
     }
 

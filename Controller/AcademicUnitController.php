@@ -11,26 +11,18 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use FOS\RestBundle\View\View;
+use CertUnlp\NgenBundle\Entity\AcademicUnit;
+use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
-use Symfony\Component\Form\FormTypeInterface;
+use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use CertUnlp\NgenBundle\Form\AcademicUnitType;
-use CertUnlp\NgenBundle\Entity\AcademicUnit;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use FOS\RestBundle\Controller\Annotations as FOS;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use CertUnlp\NgenBundle\Exception\InvalidFormException;
+use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-class AcademicUnitController extends FOSRestController {
-
-    public function getApiController() {
-
-        return $this->container->get('cert_unlp.ngen.academic_unit.api.controller');
-    }
+class AcademicUnitController extends FOSRestController
+{
 
     /**
      * List all networks.
@@ -43,12 +35,13 @@ class AcademicUnitController extends FOSRestController {
      * )
      *
      *
-     * @param Request               $request      the request object
+     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
      * @return array
      */
-    public function getAction(Request $request, ParamFetcherInterface $paramFetcher) {
+    public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
 
         return null;
     }
@@ -64,7 +57,6 @@ class AcademicUnitController extends FOSRestController {
      * )
      *
      * @FOS\Get("/academic_unit")
-
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing academic unit academic_unit.")
      * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many academic unit academic_unit to return.")
      *
@@ -72,13 +64,20 @@ class AcademicUnitController extends FOSRestController {
      *  templateVar="academic_units"
      * )
      *
-     * @param Request               $request      the request object
+     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
      * @return array
      */
-    public function getAcademicUnitsAction(Request $request, ParamFetcherInterface $paramFetcher) {
+    public function getAcademicUnitsAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
         return $this->getApiController()->getAll($request, $paramFetcher);
+    }
+
+    public function getApiController()
+    {
+
+        return $this->container->get('cert_unlp.ngen.academic_unit.api.controller');
     }
 
     /**
@@ -94,18 +93,16 @@ class AcademicUnitController extends FOSRestController {
      *   }
      * )
      *
-     * @param int     $id      the network id
-     *
-     * @return array
+     * @param AcademicUnit $academic_unit
+     * @return AcademicUnit
      * @FOS\View(
      *  templateVar="academic_unit"
      * )
-     * @throws NotFoundHttpException when network not exist
      * @ParamConverter("academic_unit", class="CertUnlpNgenBundle:AcademicUnit")
      * @FOS\Get("/academic_unit/{slug}")
-     *         
      */
-    public function getAcademicUnitAction(AcademicUnit $academic_unit) {
+    public function getAcademicUnitAction(AcademicUnit $academic_unit)
+    {
         return $academic_unit;
     }
 
@@ -123,12 +120,12 @@ class AcademicUnitController extends FOSRestController {
      * )
      *
      * @FOS\Post("/academic_unit")
-
      * @param Request $request the request object
      *
      * @return FormTypeInterface|View
      */
-    public function postAcademicUnitAction(Request $request) {
+    public function postAcademicUnitAction(Request $request)
+    {
         return $this->getApiController()->post($request);
     }
 
@@ -145,13 +142,12 @@ class AcademicUnitController extends FOSRestController {
      * )
      * @FOS\Patch("/academic_unit/{slug}")
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param AcademicUnit $academic_unit
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
      */
-    public function patchAcademicUnitAction(Request $request, AcademicUnit $academic_unit) {
+    public function patchAcademicUnitAction(Request $request, AcademicUnit $academic_unit)
+    {
         return $this->getApiController()->patch($request, $academic_unit, true);
     }
 
@@ -168,13 +164,12 @@ class AcademicUnitController extends FOSRestController {
      * )
      * @FOS\Patch("/academic_unit/{slug}")
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param AcademicUnit $academic_unit
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
      */
-    public function patchAcademicUnitBySlugAction(Request $request, AcademicUnit $academic_unit) {
+    public function patchAcademicUnitBySlugAction(Request $request, AcademicUnit $academic_unit)
+    {
         return $this->getApiController()->patch($request, $academic_unit);
     }
 
@@ -192,14 +187,13 @@ class AcademicUnitController extends FOSRestController {
      *
      *
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param AcademicUnit $academic_unit
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
      * @FOS\Patch("/academic_unit/{slug}/activate")
      */
-    public function patchAcademicUnitActivateAction(Request $request, AcademicUnit $academic_unit) {
+    public function patchAcademicUnitActivateAction(Request $request, AcademicUnit $academic_unit)
+    {
 
         return $this->getApiController()->activate($request, $academic_unit);
     }
@@ -218,14 +212,13 @@ class AcademicUnitController extends FOSRestController {
      *
      *
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param AcademicUnit $academic_unit
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
      * @FOS\Patch("/academic_unit/{slug}/desactivate")
      */
-    public function patchAcademicUnitDesactivateAction(Request $request, AcademicUnit $academic_unit) {
+    public function patchAcademicUnitDesactivateAction(Request $request, AcademicUnit $academic_unit)
+    {
 
         return $this->getApiController()->desactivate($request, $academic_unit);
     }

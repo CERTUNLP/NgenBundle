@@ -16,6 +16,7 @@ namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types;
  *
  * @author demyen
  */
-class ScanMdns extends ShadowServerReport {
-    
+class ScanMdns extends ShadowServerReport
+{
+
 }

@@ -11,7 +11,6 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-use CertUnlp\NgenBundle\Form\Model\UserChangePassword;
 use FOS\UserBundle\Controller\SecurityController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +23,8 @@ class UserSecurityFrontendController extends SecurityController
 
     /**
      * @Route("/login", name="fos_user_security_login")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function loginAction(Request $request)
     {

@@ -11,24 +11,30 @@
 
 namespace CertUnlp\NgenBundle\Validator\Constraints;
 
+use CertUnlp\NgenBundle\Services\Api\Handler\NetworkHandler;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use CertUnlp\NgenBundle\Services\Api\Handler\NetworkHandler;
 
-class ValidNetworkValidator extends ConstraintValidator {
+class ValidNetworkValidator extends ConstraintValidator
+{
 
-    public function __construct(ObjectManager $om, NetworkHandler $networkHandler) {
+    private $om;
+    private $network_handler;
+
+    public function __construct(ObjectManager $om, NetworkHandler $networkHandler)
+    {
         $this->om = $om;
         $this->network_handler = $networkHandler;
     }
 
-    public function validate($value, Constraint $constraint) {
+    public function validate($value, Constraint $constraint)
+    {
         $hostAddresses = explode(',', $value);
         foreach ($hostAddresses as $hostAddress) {
             if (!$this->network_handler->getByHostAddress($hostAddress)) {
                 $this->context->addViolation(
-                        $constraint->message, array('%string%' => $hostAddress)
+                    $constraint->message, array('%string%' => $hostAddress)
                 );
             }
         }

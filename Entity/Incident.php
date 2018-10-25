@@ -11,17 +11,16 @@
 
 namespace CertUnlp\NgenBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use CertUnlp\NgenBundle\Model\ReporterInterface;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
+use CertUnlp\NgenBundle\Model\ReporterInterface;
+use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
+use Doctrine\ORM\Mapping as ORM;
+use FOS\CommentBundle\Model\Thread;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\HttpFoundation\File\File;
 use JMS\Serializer\Annotation as JMS;
-use Doctrine\ORM\Mapping\MappedSuperclass;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity()
@@ -31,7 +30,8 @@ use Doctrine\ORM\Mapping\MappedSuperclass;
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"incident"="incident","internal" = "InternalIncident", "external" = "ExternalIncident"})
  */
-class Incident implements IncidentInterface {
+class Incident implements IncidentInterface
+{
 
     /**
      * @var integer
@@ -94,7 +94,7 @@ class Incident implements IncidentInterface {
     protected $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Model\ReporterInterface", inversedBy="incidents") 
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Model\ReporterInterface", inversedBy="incidents")
      */
     protected $reporter;
 
@@ -117,7 +117,7 @@ class Incident implements IncidentInterface {
     protected $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentFeed", inversedBy="incidents") 
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentFeed", inversedBy="incidents")
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
@@ -126,55 +126,61 @@ class Incident implements IncidentInterface {
     protected $feed;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentState", inversedBy="incidents") 
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentState", inversedBy="incidents")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     protected $state;
-
-    /**
-     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentCommentThread",mappedBy="incident",fetch="EXTRA_LAZY"))
-     */
-    private $comment_thread;
-
     /**
      * @Assert\File(maxSize = "500k")
      */
     protected $evidence_file;
-
     /**
      * @ORM\Column(name="evidence_file_path", type="string",nullable=true)
      */
     protected $evidence_file_path;
-
     /**
      * @ORM\Column(name="report_message_id", type="string",nullable=true)
      */
     protected $report_message_id;
-
     /**
      * @var $evidence_file_temp
      */
     protected $evidence_file_temp;
-
     /**
      * @var $sendReport
      */
     protected $sendReport;
-
     /**
      * @var $report_edit
      */
     protected $report_edit;
+    /**
+     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentCommentThread",mappedBy="incident",fetch="EXTRA_LAZY"))
+     */
+    protected $comment_thread;
+    protected $hostAddress;
+    protected $slug;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
+    }
+
+    /**
+     * Get hostAddress
+     *
+     * @return string
+     */
+    public function getHostAddress()
+    {
+        return $this->hostAddress;
     }
 
     /**
@@ -183,18 +189,20 @@ class Incident implements IncidentInterface {
      * @param string $hostAddress
      * @return Incident
      */
-    public function setHostAddress($hostAddress) {
+    public function setHostAddress($hostAddress)
+    {
         $this->hostAddress = $hostAddress;
         return $this;
     }
 
     /**
-     * Get hostAddress
+     * Get createdAt
      *
-     * @return string 
+     * @return \DateTime
      */
-    public function getHostAddress() {
-        return $this->hostAddress;
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 
     /**
@@ -203,19 +211,21 @@ class Incident implements IncidentInterface {
      * @param \DateTime $createdAt
      * @return Incident
      */
-    public function setCreatedAt($createdAt) {
+    public function setCreatedAt($createdAt)
+    {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
     /**
-     * Get createdAt
+     * Get updatedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
-    public function getCreatedAt() {
-        return $this->createdAt;
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 
     /**
@@ -224,19 +234,31 @@ class Incident implements IncidentInterface {
      * @param \DateTime $updatedAt
      * @return Incident
      */
-    public function setUpdatedAt($updatedAt) {
+    public function setUpdatedAt($updatedAt)
+    {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
     /**
-     * Get updatedAt
+     * Get isClosed
      *
-     * @return \DateTime 
+     * @return boolean
      */
-    public function getUpdatedAt() {
-        return $this->updatedAt;
+    public function getIsClosed()
+    {
+        return $this->isClosed;
+    }
+
+    /**
+     * Get isClosed
+     *
+     * @return boolean
+     */
+    public function isClosed()
+    {
+        return $this->getIsClosed();
     }
 
     /**
@@ -245,38 +267,9 @@ class Incident implements IncidentInterface {
      * @param boolean $isClosed
      * @return Incident
      */
-    public function setIsClosed($isClosed) {
+    public function setIsClosed($isClosed)
+    {
         $this->isClosed = $isClosed;
-
-        return $this;
-    }
-
-    /**
-     * Get isClosed
-     *
-     * @return boolean 
-     */
-    public function getIsClosed() {
-        return $this->isClosed;
-    }
-
-    /**
-     * Get isClosed
-     *
-     * @return boolean 
-     */
-    public function isClosed() {
-        return $this->getIsClosed();
-    }
-
-    /**
-     * Set type
-     *
-     * @param \CertUnlp\NgenBundle\Entity\IncidentType $type
-     * @return Incident
-     */
-    public function setType(\CertUnlp\NgenBundle\Entity\IncidentType $type = null) {
-        $this->type = $type;
 
         return $this;
     }
@@ -284,35 +277,62 @@ class Incident implements IncidentInterface {
     /**
      * Get type
      *
-     * @return \CertUnlp\NgenBundle\Entity\IncidentType 
+     * @return IncidentType
      */
-    public function getType() {
+    public function getType()
+    {
         return $this->type;
     }
 
     /**
-     * Set date
+     * Set type
      *
-     * @param \DateTime $date
+     * @param IncidentType $type
      * @return Incident
      */
-    public function setDate($date) {
-        $this->date = $date;
+    public function setType(IncidentType $type = null)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getSlug();
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Incident
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
 
         return $this;
     }
 
     /**
-     * Get date
+     * Get reporter
      *
-     * @return \DateTime 
+     * @return \CertUnlp\NgenBundle\Model\ReporterInterface
      */
-    public function getDate() {
-        return $this->date;
-    }
-
-    public function __toString() {
-        return $this->getSlug();
+    public function getReporter()
+    {
+        return $this->reporter;
     }
 
     /**
@@ -321,36 +341,31 @@ class Incident implements IncidentInterface {
      * @param \CertUnlp\NgenBundle\Model\ReporterInterface $reporter
      * @return Incident
      */
-    public function setReporter(ReporterInterface $reporter = null) {
+    public function setReporter(ReporterInterface $reporter = null)
+    {
         $this->reporter = $reporter;
 
         return $this;
     }
 
     /**
-     * Get reporter
+     * Get evidence_file
      *
-     * @return \CertUnlp\NgenBundle\Model\ReporterInterface 
+     * @return string
      */
-    public function getReporter() {
-        return $this->reporter;
-    }
-
-    public function close() {
-        $this->setIsClosed(true);
-    }
-
-    public function open() {
-        $this->setIsClosed(false);
+    public function getEvidenceFile()
+    {
+        return $this->evidence_file;
     }
 
     /**
      * Set evidence_file
      *
-     * @param string $evidenceFile
+     * @param File $evidenceFile
      * @return Incident
      */
-    public function setEvidenceFile(File $evidenceFile = null) {
+    public function setEvidenceFile(File $evidenceFile = null)
+    {
         $this->evidence_file = $evidenceFile;
 // check if we have an old image path
         if ($this->getEvidenceFilePath()) {
@@ -364,32 +379,13 @@ class Incident implements IncidentInterface {
     }
 
     /**
-     * Get evidence_file
-     *
-     * @return string 
-     */
-    public function getEvidenceFile() {
-        return $this->evidence_file;
-    }
-
-    /**
-     * Set evidence_file_path
-     *
-     * @param string $evidenceFilePath
-     * @return Incident
-     */
-    public function setEvidenceFilePath($evidenceFilePath) {
-        $this->evidence_file_path = $evidenceFilePath;
-
-        return $this;
-    }
-
-    /**
      * Get evidence_file_path
      *
-     * @return string 
+     * @param bool $fullPath
+     * @return string
      */
-    public function getEvidenceFilePath($fullPath = false) {
+    public function getEvidenceFilePath($fullPath = false)
+    {
 
         if ($this->evidence_file_path) {
 
@@ -405,12 +401,59 @@ class Incident implements IncidentInterface {
     }
 
     /**
+     * Set evidence_file_path
+     *
+     * @param string $evidenceFilePath
+     * @return Incident
+     */
+    public function setEvidenceFilePath($evidenceFilePath)
+    {
+        $this->evidence_file_path = $evidenceFilePath;
+
+        return $this;
+    }
+
+    /**
      * Get evidence_file_path
      *
-     * @return string 
+     * @return string
      */
-    public function getEvidenceSubDirectory() {
+    public function getEvidenceSubDirectory()
+    {
         return '/' . $this->getDate()->format('Y') . '/' . $this->getDate()->format('F') . '/' . $this->getDate()->format('d');
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     * @return Incident
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get evidence_file_temp
+     *
+     * @return string
+     */
+    public function getEvidenceFileTemp()
+    {
+        return $this->evidence_file_temp;
     }
 
     /**
@@ -419,28 +462,31 @@ class Incident implements IncidentInterface {
      * @param string $evidenceFileTemp
      * @return Incident
      */
-    public function setEvidenceFileTemp($evidenceFileTemp) {
+    public function setEvidenceFileTemp($evidenceFileTemp)
+    {
         $this->evidence_file_temp = $evidenceFileTemp;
 
         return $this;
     }
 
     /**
-     * Get evidence_file_temp
+     * Get state
      *
-     * @return string 
+     * @return IncidentState
      */
-    public function getEvidenceFileTemp() {
-        return $this->evidence_file_temp;
+    public function getState()
+    {
+        return $this->state;
     }
 
     /**
      * Set state
      *
-     * @param \CertUnlp\NgenBundle\Entity\IncidentState $state
+     * @param IncidentState $state
      * @return Incident
      */
-    public function setState(\CertUnlp\NgenBundle\Entity\IncidentState $state = null) {
+    public function setState(IncidentState $state = null)
+    {
         if (!in_array($state->getSlug(), ['open', 'stand_by'])) {
             $this->close();
         } else {
@@ -451,16 +497,18 @@ class Incident implements IncidentInterface {
         return $this;
     }
 
-    /**
-     * Get state
-     *
-     * @return \CertUnlp\NgenBundle\Entity\IncidentState 
-     */
-    public function getState() {
-        return $this->state;
+    public function close()
+    {
+        $this->setIsClosed(true);
     }
 
-    public function getOpenDays($lastTimeDetected = false) {
+    public function open()
+    {
+        $this->setIsClosed(false);
+    }
+
+    public function getOpenDays($lastTimeDetected = false)
+    {
         if ($lastTimeDetected) {
             $date = $this->getLastTimeDetected() ? $this->getLastTimeDetected() : $this->getDate();
         } else {
@@ -471,85 +519,13 @@ class Incident implements IncidentInterface {
     }
 
     /**
-     * Set report_sent
+     * Get lastTimeDetected
      *
-     * @param boolean $sendReport
-     * @return Incident
+     * @return \DateTime
      */
-    public function setSendReport($sendReport) {
-        $this->sendReport = $sendReport;
-
-        return $this;
-    }
-
-    /**
-     * Get sendReport
-     *
-     * @return boolean 
-     */
-    public function getSendReport() {
-        return $this->sendReport;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return Incident
-     */
-    public function setSlug($slug) {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string 
-     */
-    public function getSlug() {
-        return $this->slug;
-    }
-
-    /**
-     * Set feed
-     *
-     * @param \CertUnlp\NgenBundle\Entity\IncidentFeed $feed
-     * @return Incident
-     */
-    public function setFeed(\CertUnlp\NgenBundle\Entity\IncidentFeed $feed = null) {
-        $this->feed = $feed;
-
-        return $this;
-    }
-
-    /**
-     * Get feed
-     *
-     * @return \CertUnlp\NgenBundle\Entity\IncidentFeed 
-     */
-    public function getFeed() {
-        return $this->feed;
-    }
-
-    /**
-     * Get evidence_file
-     *
-     * @return string 
-     */
-    public function getReportEdit() {
-        return $this->report_edit;
-    }
-
-    /**
-     * Get evidence_file
-     *
-     * @return string 
-     */
-    public function setReportEdit($report_edit) {
-        $this->report_edit = $report_edit;
-        return $this;
+    public function getLastTimeDetected()
+    {
+        return $this->lastTimeDetected;
     }
 
     /**
@@ -558,19 +534,89 @@ class Incident implements IncidentInterface {
      * @param \DateTime $lastTimeDetected
      * @return Incident
      */
-    public function setLastTimeDetected($lastTimeDetected) {
+    public function setLastTimeDetected($lastTimeDetected)
+    {
         $this->lastTimeDetected = $lastTimeDetected;
 
         return $this;
     }
 
     /**
-     * Get lastTimeDetected
+     * Get sendReport
      *
-     * @return \DateTime 
+     * @return boolean
      */
-    public function getLastTimeDetected() {
-        return $this->lastTimeDetected;
+    public function getSendReport()
+    {
+        return $this->sendReport;
+    }
+
+    /**
+     * Set report_sent
+     *
+     * @param boolean $sendReport
+     * @return Incident
+     */
+    public function setSendReport($sendReport)
+    {
+        $this->sendReport = $sendReport;
+
+        return $this;
+    }
+
+    /**
+     * Get feed
+     *
+     * @return IncidentFeed
+     */
+    public function getFeed()
+    {
+        return $this->feed;
+    }
+
+    /**
+     * Set feed
+     *
+     * @param IncidentFeed $feed
+     * @return Incident
+     */
+    public function setFeed(IncidentFeed $feed = null)
+    {
+        $this->feed = $feed;
+
+        return $this;
+    }
+
+    /**
+     * Get evidence_file
+     *
+     * @return string
+     */
+    public function getReportEdit()
+    {
+        return $this->report_edit;
+    }
+
+    /**
+     * Get evidence_file
+     *
+     * @param $report_edit
+     * @return string
+     */
+    public function setReportEdit($report_edit)
+    {
+        $this->report_edit = $report_edit;
+        return $this;
+    }
+
+    /**
+     * Get renotificationDate
+     *
+     * @return \DateTime
+     */
+    public function getRenotificationDate()
+    {
+        return $this->renotificationDate;
     }
 
     /**
@@ -579,19 +625,21 @@ class Incident implements IncidentInterface {
      * @param \DateTime $renotificationDate
      * @return Incident
      */
-    public function setRenotificationDate($renotificationDate) {
+    public function setRenotificationDate($renotificationDate)
+    {
         $this->renotificationDate = $renotificationDate;
 
         return $this;
     }
 
     /**
-     * Get renotificationDate
+     * Get report_message_id
      *
-     * @return \DateTime 
+     * @return string
      */
-    public function getRenotificationDate() {
-        return $this->renotificationDate;
+    public function getReportMessageId()
+    {
+        return $this->report_message_id;
     }
 
     /**
@@ -600,79 +648,84 @@ class Incident implements IncidentInterface {
      * @param string $reportMessageId
      * @return Incident
      */
-    public function setReportMessageId($reportMessageId) {
+    public function setReportMessageId($reportMessageId)
+    {
         $this->report_message_id = $reportMessageId;
 
         return $this;
     }
 
     /**
-     * Get report_message_id
-     *
-     * @return string 
-     */
-    public function getReportMessageId() {
-        return $this->report_message_id;
-    }
-
-    /**
      * Set network
      *
      * @param \CertUnlp\NgenBundle\Model\NetworkInterface $network
-     * @return Incident
+     * @return void
      */
-    public function setNetwork(NetworkInterface $network = null) {
-        
+    public function setNetwork(NetworkInterface $network = null)
+    {
+
+    }
+
+    public function setNetworkAdmin(NetworkAdmin $networkAdmin)
+    {
+        // TODO: Implement setNetworkAdmin() method.
     }
 
     /**
      * Get network
      *
-     * @return \CertUnlp\NgenBundle\Model\NetworkInterface
+     * @return void
      */
-    public function getNetwork() {
-        
+    public function getNetwork()
+    {
+
     }
 
     /**
      * Get network
      *
      */
-    public function getNetworkAdmin() {
-        
-    }
+    public function getNetworkAdmin()
+    {
 
-    /**
-     * Set commentThread
-     *
-     * @param \CertUnlp\NgenBundle\Entity\IncidentCommentThread $commentThread
-     *
-     * @return Incident
-     */
-    public function setCommentThread(\CertUnlp\NgenBundle\Entity\IncidentCommentThread $commentThread = null) {
-        $this->comment_thread = $commentThread;
-
-        return $this;
     }
 
     /**
      * Get commentThread
      *
-     * @return \CertUnlp\NgenBundle\Entity\IncidentCommentThread
+     * @return IncidentCommentThread
      */
-    public function getCommentThread() {
+    public function getCommentThread()
+    {
         return $this->comment_thread;
     }
 
-    public function getEmails() {
+    /**
+     * Set commentThread
+     *
+     * @param IncidentCommentThread $commentThread
+     *
+     * @return Incident
+     */
+    public function setCommentThread(Thread $commentThread = null)
+    {
+        $this->comment_thread = $commentThread;
+
+        return $this;
+    }
+
+    public function getEmails()
+    {
         return [];
     }
 
-    public function isInternal() {
+    public function isInternal()
+    {
         return false;
     }
 
-    public function isExternal() {
+    public function isExternal()
+    {
         return false;
     }
 

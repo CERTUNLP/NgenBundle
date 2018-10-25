@@ -16,9 +16,11 @@ namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types;
  *
  * @author demyen
  */
-class ScanMssql extends ShadowServerReport {
+class ScanMssql extends ShadowServerReport
+{
 
-    public function getType() {
+    public function getType()
+    {
         return "open_mssql";
     }
 

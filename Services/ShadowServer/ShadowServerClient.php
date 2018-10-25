@@ -11,26 +11,36 @@
 
 namespace CertUnlp\NgenBundle\Services\ShadowServer;
 
-use Goutte\Client as Scraper;
-use Ddeboer\DataImport\Reader\CsvReader;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use CertUnlp\NgenBundle\Services\ShadowServer\ShadowServerCsvRow;
-use Ddeboer\DataImport\Workflow;
+use CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types\ShadowServerReportTypeFactory;
 use Ddeboer\DataImport\Reader\ArrayReader;
+use Ddeboer\DataImport\Reader\CsvReader;
+use Ddeboer\DataImport\Workflow;
 use Ddeboer\DataImport\Writer\CsvWriter;
+use Exception;
+use Goutte\Client as Scraper;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Description of ShadowServerClient
  *
  * @author demyen
  */
-class ShadowServerClient implements ContainerAwareInterface {
+class ShadowServerClient implements ContainerAwareInterface
+{
 
     /** @var \Symfony\Component\DependencyInjection\ContainerInterface */
     private $container;
+    /** @var ShadowServerReportTypeFactory */
+    private $shadow_server_report_type_factory;
+    private $shadow_server_user;
+    private $download_directory;
+    private $scraper;
+    private $reports_url;
+    private $shadow_server_password;
 
-    public function __construct($reports_url, $shadow_server_user, $shadow_server_password, $download_directory, $shadow_server_report_type_factory, ContainerInterface $container) {
+    public function __construct($reports_url, $shadow_server_user, $shadow_server_password, $download_directory, $shadow_server_report_type_factory, ContainerInterface $container)
+    {
 
         $this->download_directory = $download_directory . "/shadowserver/reports/";
 
@@ -55,69 +65,13 @@ class ShadowServerClient implements ContainerAwareInterface {
     /**
      * {@inheritdoc}
      */
-    public function setContainer(ContainerInterface $container = null) {
+    public function setContainer(ContainerInterface $container = null)
+    {
         $this->container = $container;
     }
 
-    public function shadowServerReportSiteLogin() {
-        $crawler = $this->scraper->request('GET', $this->reports_url);
-        $form = $crawler->selectButton('Login')->form();
-
-        $crawler = $this->scraper->submit($form, array('user' => $this->shadow_server_user, 'password' => $this->shadow_server_password));
-
-        return $crawler;
-    }
-
-    public function getReportsLinks($daysAgo) {
-
-        try {
-            $crawler = $this->shadowServerReportSiteLogin();
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-        $date = new \DateTime();
-        $report_links = [];
-        $crawler->filter('ul#treemenu1')->children()->each(function ($node) use($date, &$report_links, $daysAgo) {
-            if (strpos($node->text(), $date->format('Y')) === 0) {
-                $node->children()->children()->each(function($li) use ($date, &$report_links, $daysAgo) {
-                    if (strpos($li->text(), $date->format('F')) === 0) {
-
-                        $day = ($date->format('d') == '01') ? $date->format('d') : $date->modify('-' . $daysAgo . ' day')->format('d');
-                        $li->children()->children()->each(function($li2) use($day, &$report_links) {
-                            if (strpos($li2->text(), $day) === 0) {
-                                $li2->children()->children()->each(function($li3) use (&$report_links) {
-                                    $a = $li3->filter('a');
-                                    $report_links[] = ['name' => $a->text(), 'link' => $a->attr('href')];
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        });
-
-        return $report_links;
-    }
-
-    private function cleanDownloadDirectory() {
-        $files = glob($this->download_directory . '*'); // get all file names
-        foreach ($files as $file) { // iterate files
-            if (is_file($file)) {
-                unlink($file); // delete file}
-            }
-        }
-    }
-
-    public function downloadReports($daysAgo) {
-        $files = $this->getReportsLinks($daysAgo);
-        $this->cleanDownloadDirectory();
-        foreach ($files as $file) {
-            $content = file_get_contents($file['link']);
-            file_put_contents($this->download_directory . $file['name'], $content);
-        }
-    }
-
-    public function importCsv($daysAgo, $analyzeCache) {
+    public function importCsv($daysAgo, $analyzeCache)
+    {
         if (!$analyzeCache) {
             $this->downloadReports($daysAgo);
         }
@@ -135,6 +89,7 @@ class ShadowServerClient implements ContainerAwareInterface {
                     $writer = new CsvWriter();
                     $shadow_server_report_evidence = '/tmp/' . uniqid('shadow_server_report_evidence') . ".csv";
                     touch($shadow_server_report_evidence);
+                    // TODO: checkear esto
                     chmod($shadow_server_report_evidence, 0777);
                     $writer->setStream(fopen($shadow_server_report_evidence, 'w'));
                     $writer->writeItem($header);
@@ -149,6 +104,76 @@ class ShadowServerClient implements ContainerAwareInterface {
         }
 
         return $shadow_server_csv_rows;
+    }
+
+    public function downloadReports($daysAgo)
+    {
+        $files = $this->getReportsLinks($daysAgo);
+        $this->cleanDownloadDirectory();
+        foreach ($files as $file) {
+            $content = file_get_contents($file['link']);
+            file_put_contents($this->download_directory . $file['name'], $content);
+        }
+    }
+
+    /**
+     * @param $daysAgo
+     * @return array
+     */
+    public function getReportsLinks($daysAgo)
+    {
+        $crawler = null;
+        try {
+            $crawler = $this->shadowServerReportSiteLogin();
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+
+        $date = new \DateTime();
+        $report_links = [];
+
+        if ($crawler) {
+            $crawler->filter('ul#treemenu1')->children()->each(function ($node) use ($date, &$report_links, $daysAgo) {
+                if (strpos($node->text(), $date->format('Y')) === 0) {
+                    $node->children()->children()->each(function ($li) use ($date, &$report_links, $daysAgo) {
+                        if (strpos($li->text(), $date->format('F')) === 0) {
+
+                            $day = ($date->format('d') == '01') ? $date->format('d') : $date->modify('-' . $daysAgo . ' day')->format('d');
+                            $li->children()->children()->each(function ($li2) use ($day, &$report_links) {
+                                if (strpos($li2->text(), $day) === 0) {
+                                    $li2->children()->children()->each(function ($li3) use (&$report_links) {
+                                        $a = $li3->filter('a');
+                                        $report_links[] = ['name' => $a->text(), 'link' => $a->attr('href')];
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+        return $report_links;
+    }
+
+    public function shadowServerReportSiteLogin()
+    {
+        $crawler = $this->scraper->request('GET', $this->reports_url);
+        $form = $crawler->selectButton('Login')->form();
+
+        $crawler = $this->scraper->submit($form, array('user' => $this->shadow_server_user, 'password' => $this->shadow_server_password));
+
+        return $crawler;
+    }
+
+    private function cleanDownloadDirectory()
+    {
+        $files = glob($this->download_directory . '*'); // get all file names
+        foreach ($files as $file) { // iterate files
+            if (is_file($file)) {
+                unlink($file); // delete file}
+            }
+        }
     }
 
 }

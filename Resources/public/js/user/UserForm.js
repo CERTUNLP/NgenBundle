@@ -14,13 +14,13 @@ var UserForm = Form.extend({
         return 'user';
     },
     getObjectId: function () {
-        return  this.getUserId();
+        return this.getUserId();
     },
     setUserId: function () {
         this.userId = $('#username').val();
     },
     getUserId: function () {
-        return  this.userId;
+        return this.userId;
     },
     handleExtraErrors: function (jqXHR) {
         $.each(jqXHR.responseJSON.errors.errors, function (k, v) {

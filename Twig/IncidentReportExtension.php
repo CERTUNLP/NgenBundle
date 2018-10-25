@@ -11,9 +11,13 @@
 
 namespace CertUnlp\NgenBundle\Twig;
 
-class IncidentReportExtension extends \Twig_Extension {
+use Twig_Extension;
 
-    public function getFilters() {
+class IncidentReportExtension extends Twig_Extension
+{
+
+    public function getFilters()
+    {
         return array(
             new \Twig_SimpleFilter('subtitle', array($this, 'subtitleFilter'), array('is_safe' => array('html'))),
             new \Twig_SimpleFilter('paragraph', array($this, 'paragraphFilter'), array('is_safe' => array('html'))),
@@ -25,37 +29,43 @@ class IncidentReportExtension extends \Twig_Extension {
         );
     }
 
-    public function paragraphFilter($text) {
+    public function paragraphFilter($text)
+    {
         $text = '<p>' . $text . '</p>';
 
         return $text;
     }
 
-    public function codeFilter($text) {
+    public function codeFilter($text)
+    {
         $text = '<pre><code>' . $text . '</code></pre>';
 
         return $text;
     }
 
-    public function subtitleFilter($text) {
+    public function subtitleFilter($text)
+    {
         $text = '<p class="lead">' . $text . '</p>';
 
         return $text;
     }
 
-    public function destacatedFilter($text) {
+    public function destacatedFilter($text)
+    {
         $text = '<div class="destacated">' . $text . '</div>';
 
         return $text;
     }
 
-    public function emphasizedFilter($text) {
+    public function emphasizedFilter($text)
+    {
         $text = '<em>' . $text . '</em>';
 
         return $text;
     }
 
-    public function listFilter($text, $function = null) {
+    public function listFilter($text, $function = null)
+    {
         $elements = explode(',', $text);
         $list = '<ul>';
         $function = $function ? $function . "Filter" : $function;
@@ -68,7 +78,8 @@ class IncidentReportExtension extends \Twig_Extension {
         return $list;
     }
 
-    public function urlLinkFilter($url, $text = null) {
+    public function urlLinkFilter($url, $text = null)
+    {
         if (!$text) {
             $text = $url;
         }
@@ -76,7 +87,8 @@ class IncidentReportExtension extends \Twig_Extension {
         return $text;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return 'incident_report_extension';
     }
 

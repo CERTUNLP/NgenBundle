@@ -16,6 +16,7 @@ namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types;
  *
  * @author demyen
  */
-class SinkholeHttpDrone extends ShadowServerReport {
+class SinkholeHttpDrone extends ShadowServerReport
+{
     //put your code here
 }

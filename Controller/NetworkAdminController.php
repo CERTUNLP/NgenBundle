@@ -11,26 +11,18 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use FOS\RestBundle\View\View;
+use CertUnlp\NgenBundle\Entity\NetworkAdmin;
+use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
-use Symfony\Component\Form\FormTypeInterface;
+use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use CertUnlp\NgenBundle\Form\NetworkAdminType;
-use CertUnlp\NgenBundle\Entity\NetworkAdmin;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use FOS\RestBundle\Controller\Annotations as FOS;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use CertUnlp\NgenBundle\Exception\InvalidFormException;
+use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-class NetworkAdminController extends FOSRestController {
-
-    public function getApiController() {
-
-        return $this->container->get('cert_unlp.ngen.network.admin.api.controller');
-    }
+class NetworkAdminController extends FOSRestController
+{
 
     /**
      * List all networks.
@@ -43,12 +35,13 @@ class NetworkAdminController extends FOSRestController {
      * )
      *
      *
-     * @param Request               $request      the request object
+     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
      * @return array
      */
-    public function getAction(Request $request, ParamFetcherInterface $paramFetcher) {
+    public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
 
         return null;
     }
@@ -64,7 +57,6 @@ class NetworkAdminController extends FOSRestController {
      * )
      *
      * @FOS\Get("/networks/admins")
-
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing network admins.")
      * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many network admins to return.")
      *
@@ -72,13 +64,20 @@ class NetworkAdminController extends FOSRestController {
      *  templateVar="network_admins"
      * )
      *
-     * @param Request               $request      the request object
+     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
      * @return array
      */
-    public function getNetworkAdminsAction(Request $request, ParamFetcherInterface $paramFetcher) {
+    public function getNetworkAdminsAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
         return $this->getApiController()->getAll($request, $paramFetcher);
+    }
+
+    public function getApiController()
+    {
+
+        return $this->container->get('cert_unlp.ngen.network.admin.api.controller');
     }
 
     /**
@@ -94,18 +93,16 @@ class NetworkAdminController extends FOSRestController {
      *   }
      * )
      *
-     * @param int     $id      the network id
-     *
-     * @return array
+     * @param NetworkAdmin $network_admin
+     * @return NetworkAdmin
      * @FOS\View(
      *  templateVar="network_admin"
      * )
-     * @throws NotFoundHttpException when network not exist
      * @ParamConverter("network_admin", class="CertUnlpNgenBundle:NetworkAdmin")
      * @FOS\Get("/networks/admins/{id}", requirements={"id" = "\d+"})
-     *         
      */
-    public function getNetworkAdminAction(NetworkAdmin $network_admin) {
+    public function getNetworkAdminAction(NetworkAdmin $network_admin)
+    {
         return $network_admin;
     }
 
@@ -123,12 +120,12 @@ class NetworkAdminController extends FOSRestController {
      * )
      *
      * @FOS\Post("/networks/admins")
-
      * @param Request $request the request object
      *
      * @return FormTypeInterface|View
      */
-    public function postNetworkAdminAction(Request $request) {
+    public function postNetworkAdminAction(Request $request)
+    {
         return $this->getApiController()->post($request);
     }
 
@@ -145,13 +142,12 @@ class NetworkAdminController extends FOSRestController {
      * )
      * @FOS\Patch("/networks/admins/{id}", requirements={"id" = "\d+"})
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param NetworkAdmin $network_admin
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
      */
-    public function patchNetworkAdminAction(Request $request, NetworkAdmin $network_admin) {
+    public function patchNetworkAdminAction(Request $request, NetworkAdmin $network_admin)
+    {
         return $this->getApiController()->patch($request, $network_admin, true);
     }
 
@@ -168,13 +164,12 @@ class NetworkAdminController extends FOSRestController {
      * )
      * @FOS\Patch("/networks/admins/{slug}")
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param NetworkAdmin $network_admin
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
      */
-    public function patchNetworkAdminBySlugAction(Request $request, NetworkAdmin $network_admin) {
+    public function patchNetworkAdminBySlugAction(Request $request, NetworkAdmin $network_admin)
+    {
         return $this->getApiController()->patch($request, $network_admin, true);
     }
 
@@ -192,14 +187,13 @@ class NetworkAdminController extends FOSRestController {
      *
      *
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param NetworkAdmin $network_admin
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
      * @FOS\Patch("/networks/admins/{id}/activate")
      */
-    public function patchNetworkAdminActivateAction(Request $request, NetworkAdmin $network_admin) {
+    public function patchNetworkAdminActivateAction(Request $request, NetworkAdmin $network_admin)
+    {
 
         return $this->getApiController()->activate($request, $network_admin);
     }
@@ -218,14 +212,13 @@ class NetworkAdminController extends FOSRestController {
      *
      *
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param NetworkAdmin $network_admin
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
      * @FOS\Patch("/networks/admins/{id}/desactivate")
      */
-    public function patchNetworkAdminDesactivateAction(Request $request, NetworkAdmin $network_admin) {
+    public function patchNetworkAdminDesactivateAction(Request $request, NetworkAdmin $network_admin)
+    {
 
         return $this->getApiController()->desactivate($request, $network_admin);
     }

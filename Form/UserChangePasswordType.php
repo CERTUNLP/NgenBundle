@@ -15,28 +15,32 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class UserChangePasswordType extends AbstractType {
+class UserChangePasswordType extends AbstractType
+{
 
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder->add('oldPassword', 'password');
         $builder->add('newPassword', 'repeated', array(
-                    'type' => 'password',
-                    'invalid_message' => 'The password fields must match.',
-                    'required' => true,
-                    'first_options' => array('label' => 'Password'),
-                    'second_options' => array('label' => 'Repeat Password')))
-                ->add('save', 'submit', array('attr' =>
-                    array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => "slide-down"),
-        ));
+            'type' => 'password',
+            'invalid_message' => 'The password fields must match.',
+            'required' => true,
+            'first_options' => array('label' => 'Password'),
+            'second_options' => array('label' => 'Repeat Password')))
+            ->add('save', 'submit', array('attr' =>
+                array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => "slide-down"),
+            ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver) {
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
         $resolver->setDefaults(array(
             'data_class' => 'CertUnlp\NgenBundle\Form\Model\UserChangePassword',
         ));
     }
 
-    public function getName() {
+    public function getName()
+    {
         return 'change_passwd';
     }
 

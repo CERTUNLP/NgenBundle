@@ -17,22 +17,27 @@ namespace CertUnlp\NgenBundle\Services\Converter;
  * and open the template in the editor.
  */
 
-use CertUnlp\NgenBundle\Services\Converter\AbstractConverter;
-use CertUnlp\NgenBundle\Services\Converter\Convertible;
 use CertUnlp\NgenBundle\Event\ConvertToIncidentEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Description of IncidentConverter
  *
  * @author demyen
  */
-class IncidentConverter extends AbstractConverter {
+class IncidentConverter extends AbstractConverter
+{
 
-    public function __construct($event_dispatcher) {
+    private $event_dispatcher;
+
+
+    public function __construct(EventDispatcherInterface $event_dispatcher)
+    {
         $this->event_dispatcher = $event_dispatcher;
     }
 
-    public function convert(Convertible $convertible) {
+    public function convert(Convertible $convertible)
+    {
         $this->event_dispatcher->dispatch('cert_unlp.incident.convert_to_incident.event', new ConvertToIncidentEvent($convertible));
     }
 

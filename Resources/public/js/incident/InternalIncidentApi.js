@@ -8,7 +8,7 @@
  */
 var InternalIncidentApi = IncidentApi.extend({
     addDefaultChannel: function () {
-        this.api.add("internals", {stripTrailingSlash: true, url:"incidents/internals"});
+        this.api.add("internals", {stripTrailingSlash: true, url: "incidents/internals"});
         this.defaultChannel = this.api.internals;
     }
 });

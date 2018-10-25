@@ -11,7 +11,7 @@
 {% block title %}Incidents{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{icon('exclamation-circle fa-fw')}} Incidents</h1>
+    <h1 class="page-header">{{ icon('exclamation-circle fa-fw') }} Incidents</h1>
 {% endblock %}
 
 
@@ -22,9 +22,8 @@
     {{ parent() }}
 
     {% javascripts
-    '@CertUnlpNgenBundle/Resources/public/js/incident/Incident.js'
-    '@CertUnlpNgenBundle/Resources/public/js/incident/IncidentApi.js'
-    %}
-    <script src="{{ asset_url }}"></script>
+        '@CertUnlpNgenBundle/Resources/public/js/incident/Incident.js'
+        '@CertUnlpNgenBundle/Resources/public/js/incident/IncidentApi.js' %}
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}

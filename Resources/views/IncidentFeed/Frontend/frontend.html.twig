@@ -11,10 +11,10 @@
 {% block title %}Incident Feeds{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{icon('feed fa-fw')}} Incident Feeds</h1>
+    <h1 class="page-header">{{ icon('feed fa-fw') }} Incident Feeds</h1>
 {% endblock %}
 
-{% block sideBar_search_path %}{{path('cert_unlp_ngen_incident_feed_search')}}{% endblock %}
+{% block sideBar_search_path %}{{ path('cert_unlp_ngen_incident_feed_search') }}{% endblock %}
 
 {% block content_body %}
     {% include 'CertUnlpNgenBundle:IncidentFeed:Frontend/list/incidentFeedList.html.twig' with {'incidentFeeds': objects  } %}
@@ -25,13 +25,12 @@
     {{ parent() }}
 
     {% javascripts
-    '@CertUnlpNgenBundle/Resources/public/js/incident/feed/IncidentFeed.js'
-    '@CertUnlpNgenBundle/Resources/public/js/incident/feed/IncidentFeedApi.js'
-    %}
-    <script src="{{ asset_url }}"></script>
+        '@CertUnlpNgenBundle/Resources/public/js/incident/feed/IncidentFeed.js'
+        '@CertUnlpNgenBundle/Resources/public/js/incident/feed/IncidentFeedApi.js' %}
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
         var incident_feed = new IncidentFeed();
-        var incident_feed_api = new IncidentFeedApi("{{path("api_2_get")}}/", "{{app.user.apiKey}}");
+        var incident_feed_api = new IncidentFeedApi("{{ path("api_2_get") }}/", "{{ app.user.apiKey }}");
     </script>
 {% endblock %}

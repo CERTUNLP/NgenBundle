@@ -11,58 +11,72 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use CertUnlp\NgenBundle\Entity\Network;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use CertUnlp\NgenBundle\Form\NetworkType;
-use CertUnlp\NgenBundle\Entity\Network;
+use Symfony\Component\HttpFoundation\Request;
 
-class NetworkFrontendController extends Controller {
+class NetworkFrontendController extends Controller
+{
 
-    public function getFrontendController() {
+    /**
+     * @Template("CertUnlpNgenBundle:Network:Frontend/home.html.twig")
+     * @Route("/", name="cert_unlp_ngen_network_frontend_home")
+     * @param Request $request
+     * @return array
+     */
+    public function homeAction(Request $request)
+    {
+        return $this->getFrontendController()->homeEntity($request);
+    }
+
+    public function getFrontendController()
+    {
         return $this->get('cert_unlp.ngen.network.frontend.controller');
     }
 
     /**
      * @Template("CertUnlpNgenBundle:Network:Frontend/home.html.twig")
-     * @Route("/", name="cert_unlp_ngen_network_frontend_home")
-     */
-    public function homeAction(Request $request) {
-        return $this->getFrontendController()->homeEntity($request);
-    }
-
-    /**
-     * @Template("CertUnlpNgenBundle:Network:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_network_search_network")
+     * @param Request $request
+     * @return array
      */
-    public function searchNetworkAction(Request $request) {
+    public function searchNetworkAction(Request $request)
+    {
         return $this->getFrontendController()->searchEntity($request);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:Network:Frontend/networkForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_network_new_network")
+     * @param Request $request
+     * @return array
      */
-    public function newNetworkAction(Request $request) {
+    public function newNetworkAction(Request $request)
+    {
         return $this->getFrontendController()->newEntity($request);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:Network:Frontend/networkForm.html.twig")
      * @Route("{ip}/{ipMask}/edit", name="cert_unlp_ngen_network_edit_network")
+     * @param Network $network
+     * @return array
      */
-    public function editNetworkAction(Network $network) {
+    public function editNetworkAction(Network $network)
+    {
         return $this->getFrontendController()->editEntity($network);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:Network:Frontend/networkDetail.html.twig")
      * @Route("{ip}/{ipMask}/detail", name="cert_unlp_ngen_network_detail_network")
+     * @param Network $network
+     * @return array
      */
-    public function datailNetworkAction(Network $network) {
+    public function datailNetworkAction(Network $network)
+    {
         return $this->getFrontendController()->detailEntity($network);
     }
 

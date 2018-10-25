@@ -12,15 +12,17 @@
 namespace CertUnlp\NgenBundle\Services\Frontend\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController;
 
-class IncidentReportFrontendController extends FrontendController {
+class IncidentReportFrontendController extends FrontendController
+{
 
-    public function newEntity(Request $request, $default_type = '') {
+    public function newEntity(Request $request, $default_type = '')
+    {
         return array('form' => $this->formFactory->create(new $this->entityType())->createView(), 'method' => 'POST', 'default_type' => $default_type);
     }
 
-    public function editEntity($object, $default_type = '') {
+    public function editEntity($object, $default_type = '')
+    {
 
         return array('form' => $this->formFactory->create(new $this->entityType(), $object)->createView(), 'method' => 'patch', 'default_type' => $default_type);
     }

@@ -8,12 +8,12 @@
 #}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong>{{icon('users fa-fw')}} Network admins</strong>
-        <strong>({{objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount}})</strong>
+        <strong>{{ icon('users fa-fw') }} Network admins</strong>
+        <strong>({{ objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount }})</strong>
         <div class="pull-right">
             <div class="btn-group">
-                <a class="btn btn-default btn-xs" href="{{path('cert_unlp_ngen_network_new_network_admin')}}">
-                    {{icon('plus-circle fa-fw')}}add network admins
+                <a class="btn btn-default btn-xs" href="{{ path('cert_unlp_ngen_network_new_network_admin') }}">
+                    {{ icon('plus-circle fa-fw') }}add network admins
                 </a>
             </div>
         </div>
@@ -26,9 +26,9 @@
             <th>Action</th>
         </tr>
         <tbody>
-            {% for networkAdmin in networkAdmins %}
-                {% include 'CertUnlpNgenBundle:NetworkAdmin:Frontend/list/networkAdminListRow.html.twig' with {'networkAdmin': networkAdmin} %}
-            {% endfor %}
+        {% for networkAdmin in networkAdmins %}
+            {% include 'CertUnlpNgenBundle:NetworkAdmin:Frontend/list/networkAdminListRow.html.twig' with {'networkAdmin': networkAdmin} %}
+        {% endfor %}
         </tbody>
 
     </table>

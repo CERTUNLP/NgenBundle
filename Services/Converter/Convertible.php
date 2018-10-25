@@ -16,6 +16,7 @@ namespace CertUnlp\NgenBundle\Services\Converter;
  *
  * @author demyen
  */
-interface Convertible {
-    
+interface Convertible
+{
+
 }

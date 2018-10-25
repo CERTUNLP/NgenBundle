@@ -10,10 +10,10 @@
 {% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
 
 {% block content_header %}
-    <h1 class="page-header">{{icon('key fa-fw')}}Change password</h1>
+    <h1 class="page-header">{{ icon('key fa-fw') }}Change password</h1>
 {% endblock %}
 {% block content_body %}
-    {%  if (form is not null) %}
+    {% if (form is not null) %}
         {{ form_errors(form, { 'global_errors': true }) }}
         {{ form(form, {'attr': {'id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal', 'col_size': 'sm' }) }}
     {% endif %}

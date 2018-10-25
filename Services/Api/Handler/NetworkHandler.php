@@ -11,17 +11,17 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
+use CertUnlp\NgenBundle\Model\NetworkInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
-use CertUnlp\NgenBundle\Exception\InvalidFormException;
-use Symfony\Component\Security\Core\SecurityContext;
-use CertUnlp\NgenBundle\Services\Api\Handler\Handler;
 
-class NetworkHandler extends Handler {
+class NetworkHandler extends Handler
+{
 
     private $default_network;
 
-    public function __construct(ObjectManager $om, $entityClass, $entityType, FormFactoryInterface $formFactory, $default_network) {
+    public function __construct(ObjectManager $om, $entityClass, $entityType, FormFactoryInterface $formFactory, $default_network)
+    {
         parent::__construct($om, $entityClass, $entityType, $formFactory);
         $this->default_network = $default_network;
     }
@@ -29,11 +29,11 @@ class NetworkHandler extends Handler {
     /**
      * Get a Entity by id.
      *
-     * @param mixed $id
-     *
-     * @return Entity
+     * @param array $parameters
+     * @return object
      */
-    public function get(array $parameters) {
+    public function get(array $parameters)
+    {
         $ip_and_mask = explode('/', $parameters['ip']);
 
         $parameters['ip'] = $ip_and_mask[0];
@@ -46,11 +46,11 @@ class NetworkHandler extends Handler {
     /**
      * Get a Network.
      *
-     * @param mixed $parameters
-     *
+     * @param $address
      * @return NetworkInterface
      */
-    public function getByHostAddress($address) {
+    public function getByHostAddress($address)
+    {
         $network = $this->repository->findByHostAddress($address);
         if (!$network && $this->default_network) {
 
@@ -65,13 +65,15 @@ class NetworkHandler extends Handler {
      * @param NetworkInterface $network
      * @param array $parameters
      *
-     * @return NetworkInterface
+     * @return void
      */
-    public function prepareToDeletion($network, array $parameters = null) {
+    public function prepareToDeletion($network, array $parameters = null)
+    {
         $network->setIsActive(FALSE);
     }
 
-    protected function checkIfExists($network, $method) {
+    protected function checkIfExists($network, $method)
+    {
         $networkDB = $this->repository->findOneBy(['ip' => $network->getIP(), 'ipMask' => $network->getIpMask()]);
 
         if ($networkDB && $method == 'POST') {

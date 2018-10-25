@@ -6,11 +6,11 @@
 # with this source code in the file LICENSE.
 imports:
     - { resource: elastica_config.yml }
-    
+
 framework:
     http_method_override: true
     translator: ~
-    
+
 assetic:
     filters:
         less:
@@ -21,30 +21,30 @@ assetic:
     bundles:
         - CertUnlpNgenBundle
         - FOSCommentBundle
-        
+
 swiftmailer:
     mailers:
         cert_unlp.ngen.incident.mailer:
-#            transport: "%cert_unlp.ngen.incident.mailer.transport%"
+            #            transport: "%cert_unlp.ngen.incident.mailer.transport%"
             host:      "%cert_unlp.ngen.incident.mailer.host%"
             sender_address: "%cert_unlp.ngen.incident.mailer.sender_address%"
             username:  "%cert_unlp.ngen.incident.mailer.username%"
             password:  "%cert_unlp.ngen.incident.mailer.password%"
-            encryption: tls            
+            encryption: tls
 doctrine:
     orm:
         auto_mapping: true
-#        query_cache_driver:    apc
-#        metadata_cache_driver: apc
+        #        query_cache_driver:    apc
+        #        metadata_cache_driver: apc
         entity_listener_resolver: cert_unlp.ngen.doctrine.entity_listener_resolver
         resolve_target_entities:
-            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\InternalIncident 
-            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\ExternalIncident 
-            CertUnlp\NgenBundle\Model\ReporterInterface: CertUnlp\NgenBundle\Entity\User 
-            CertUnlp\NgenBundle\Model\NetworkInterface: CertUnlp\NgenBundle\Entity\Network 
+            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\InternalIncident
+            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\ExternalIncident
+            CertUnlp\NgenBundle\Model\ReporterInterface: CertUnlp\NgenBundle\Entity\User
+            CertUnlp\NgenBundle\Model\NetworkInterface: CertUnlp\NgenBundle\Entity\Network
         dql:
             string_functions:
-                INET_ATON: CertUnlp\NgenBundle\DQL\InetAtonFunction  
+                INET_ATON: CertUnlp\NgenBundle\DQL\InetAtonFunction
 
 sensio_framework_extra:
     view: { annotations: true }
@@ -54,21 +54,21 @@ sensio_framework_extra:
 fos_rest:
     param_fetcher_listener: true
     allowed_methods_listener: true
-#    access_denied_listener:
-#        json: true
+    #    access_denied_listener:
+    #        json: true
     body_listener: true
     view:
         view_response_listener: force
         formats:
             xml:  true
             json: true
-#            html: true
-#        templating_formats:
-#            html: true
-        
+        #            html: true
+        #        templating_formats:
+        #            html: true
+
     routing_loader:
         default_format: json
-#        include_format: true
+    #        include_format: true
     format_listener:
         rules:
             - { path: ^/api/v2/incidents/internals/(.*)/report/html, priorities: [html], fallback_format: ~ ,prefer_extension: true}
@@ -87,14 +87,13 @@ fos_rest:
 
 nelmio_api_doc:
     name: Page API
-                            
+
 
 
 braincrafted_bootstrap:
-    assets_dir: %kernel.root_dir%/../vendor/twbs/bootstrap
-    jquery_path: %kernel.root_dir%/../vendor/components/jquery/jquery.min.js
-#    less_filter: less
-    fonts_dir: %kernel.root_dir%/../web/fonts
+    assets_dir: "%kernel.root_dir%/../vendor/twbs/bootstrap"
+    jquery_path: "%kernel.root_dir%/../vendor/components/jquery/jquery.min.js"
+    fonts_dir: "%kernel.root_dir%/../web/fonts"
     icon_prefix: fa
     auto_configure:
         assetic: true
@@ -103,13 +102,13 @@ braincrafted_bootstrap:
         knp_paginator: true
     customize:
         variables_file: ~
-        bootstrap_output: %kernel.root_dir%/Resources/less/bootstrap.less
+        bootstrap_output: "%kernel.root_dir%/Resources/less/bootstrap.less"
         bootstrap_template: BraincraftedBootstrapBundle:Bootstrap:bootstrap.less.twig
 
 knp_markdown:
     parser:
-        service: cert_unlp.ngen.incident.report.markdown.parser 
-        
+        service: cert_unlp.ngen.incident.report.markdown.parser
+
 fos_comment:
     db_driver: orm
     class:
@@ -138,13 +137,13 @@ fos_comment:
             view: ROLE_USER
 
 stfalcon_tinymce:
-        theme:
-            simple:
-                mode: "textareas"
-                theme: "advanced"
-                force_br_newlines: false
-                force_p_newlines: false
-                forced_root_block: ''
+    theme:
+        simple:
+            mode: "textareas"
+            theme: "advanced"
+            force_br_newlines: false
+            force_p_newlines: false
+            forced_root_block: ''
 
 fos_user:
     db_driver: orm # other valid values are 'mongodb' and 'couchdb'

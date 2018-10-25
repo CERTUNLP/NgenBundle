@@ -11,27 +11,23 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use CertUnlp\NgenBundle\Entity\IncidentType;
+use FOS\RestBundle\View\View;
 use Symfony\Component\Form\FormTypeInterface;
-use CertUnlp\NgenBundle\Exception\InvalidFormException;
-use CertUnlp\NgenBundle\Services\Api\Controller\ApiController;
+use Symfony\Component\HttpFoundation\Request;
 
-class IncidentTypeApiController extends ApiController {
-
-    public function __construct($handler, $viewHandler, $view, $markdown_path) {
-        parent::__construct($handler, $viewHandler, $view);
-        $this->markdown_path = $markdown_path;
-    }
+class IncidentTypeApiController extends ApiController
+{
 
     /**
      * Create a Object from the submitted data.
      *
      * @param $params array
      *
-     * @return Network entity
+     * @return IncidentType entity
      */
-    public function findObjectBy($params) {
+    public function findObjectBy($params)
+    {
         return $this->getCustomHandler()->get(['name' => $params['name']]);
     }
 
@@ -39,26 +35,14 @@ class IncidentTypeApiController extends ApiController {
      * Update existing object from the submitted data or create a new object at a specific location.
      *
      * @param Request $request the request object
-     * @param int     $id      the object id
-     *
+     * @param $object
+     * @param bool $reactivate
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when object not exist
      */
-    public function patch(Request $request, $object, $reactivate = false) {
-//        var_dump($request->request->get('reportEdit'));
-//        $this->writeReportFile($object, $request->request->get('reportEdit'));
-        
+    public function patch(Request $request, $object, $reactivate = false)
+    {
         return parent::patch($request, $object, $reactivate);
-    }
-
-    private function getReportName($incidentType) {
-        return $this->markdown_path . "/" . $incidentType->getReportName();
-    }
-
-    private function writeReportFile($incidentType, $data) {
-//        $data = str_replace('<br />', '\n', $data);
-        return file_put_contents($this->getReportName($incidentType), $data);
     }
 
 }
