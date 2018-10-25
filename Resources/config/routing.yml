@@ -15,11 +15,6 @@ cert_ngen_user_security:
     type:     annotation
     prefix:   /users
 
-cert_ngen_user_security:
-    resource: '@CertUnlpNgenBundle/Controller/UserSecurityFrontendController.php'
-    type:     annotation
-    prefix:   /users
-
 cert_ngen_user_resetting:
     resource: '@CertUnlpNgenBundle/Controller/UserResettingFrontendController.php'
     type:     annotation
@@ -54,7 +49,7 @@ cert_ngen_internal_incident:
     resource: '@CertUnlpNgenBundle/Controller/InternalIncidentFrontendController.php'
     type:     annotation
     prefix:   /incidents/internals
-    
+
 cert_ngen_external_incident:
     resource: '@CertUnlpNgenBundle/Controller/ExternalIncidentFrontendController.php'
     type:     annotation
@@ -84,8 +79,8 @@ cert_ngen_academic_unit:
     resource: '@CertUnlpNgenBundle/Controller/AcademicUnitFrontendController.php'
     type:     annotation
     prefix:   /academic_unit
-    
-cert_ngen_dashboard:
+
+cert_ngen_root:
     resource: '@CertUnlpNgenBundle/Controller/DashboardController.php'
     type:     annotation
     prefix:   /
@@ -95,10 +90,10 @@ fos_comment_api:
     resource: '@FOSCommentBundle/Resources/config/routing.yml'
     defaults: { _format: html }
 
-#fos_user:
-#    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
-#    prefix: /
-
+cert_ngen_dashboard:
+    resource: '@CertUnlpNgenBundle/Controller/DashboardController.php'
+    type:     annotation
+    prefix:   /
 
 cert_ngen_api:
     type: rest

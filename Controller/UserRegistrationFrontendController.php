@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
+use FOS\UserBundle\Controller\RegistrationController;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
@@ -18,15 +19,12 @@ use FOS\UserBundle\Form\Factory\FactoryInterface;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use FOS\UserBundle\Controller\RegistrationController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Controller managing the registration.
@@ -34,12 +32,18 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
  * @author Christophe Coevoet <stof@notk.org>
  */
-class UserRegistrationFrontendController extends RegistrationController {
+class UserRegistrationFrontendController extends RegistrationController
+{
+    public function __construct()
+    {
+    }
 
     /**
      * @Route("/", name="fos_user_registration_register", methods="GET|POST")
      */
-    public function registerAction(Request $request) {
+    public
+    function registerAction(Request $request)
+    {
         /** @var $formFactory FactoryInterface */
         $formFactory = $this->get('fos_user.registration.form.factory');
         /** @var $userManager UserManagerInterface */
@@ -89,14 +93,16 @@ class UserRegistrationFrontendController extends RegistrationController {
         }
 //        var_dump($form);die;
         return $this->render('CertUnlpNgenBundle:User:Frontend/Registration/register.html.twig', array(
-                    'form' => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
     /**
      * @Route("/check-email", name="fos_user_registration_check_email", methods="GET|POST")
      */
-    public function checkEmailAction(Request $request) {
+    public
+    function checkEmailAction()
+    {
         $email = $this->get('session')->get('fos_user_send_confirmation_email/email');
 
         if (empty($email)) {
@@ -111,14 +117,16 @@ class UserRegistrationFrontendController extends RegistrationController {
         }
 
         return $this->render('CertUnlpNgenBundle:User:Frontend/Registration/check_email.html.twig', array(
-                    'user' => $user,
+            'user' => $user,
         ));
     }
 
     /**
      * @Route("/confirm/{token}", name="fos_user_registration_confirm", methods="GET")
      */
-    public function confirmAction(Request $request, $token) {
+    public
+    function confirmAction(Request $request, $token)
+    {
 
         /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
         $userManager = $this->get('fos_user.user_manager');
@@ -153,22 +161,26 @@ class UserRegistrationFrontendController extends RegistrationController {
     /**
      * @Route("/confirmed", name="fos_user_registration_confirmed", methods="GET")
      */
-    public function confirmedAction(Request $request){
+    public
+    function confirmedAction()
+    {
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
         return $this->render('CertUnlpNgenBundle:User:Frontend/Registration/confirmed.html.twig', array(
-                    'user' => $user,
-                    'targetUrl' => $this->getTargetUrlFromSession(),
+            'user' => $user,
+            'targetUrl' => $this->getTargetUrlFromSession(),
         ));
     }
 
     /**
      * @return mixed
      */
-    private function getTargetUrlFromSession() {
+    private
+    function getTargetUrlFromSession()
+    {
         $key = sprintf('_security.%s.target_path', $this->get('security.token_storage')->getToken()->getProviderKey());
 
         if ($this->get('session')->has($key)) {

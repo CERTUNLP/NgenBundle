@@ -8,18 +8,18 @@ services:
     cert_unlp.ngen.api.auth.apikey_authenticator:
         class:     CertUnlp\NgenBundle\Security\ApiKeyAuthenticator
         arguments: ["@cert_unlp.ngen.api.auth.apikey_user_provider"]
-    
+
     cert_unlp.ngen.api.auth.apikey_user_provider:
         class: CertUnlp\NgenBundle\Security\ApiKeyUserProvider
         arguments: ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.reporter.class%"]
-        
+
     cert_unlp.ngen.doctrine.entity_listener_resolver:
         class: CertUnlp\NgenBundle\Doctrine\EntityListenerResolver
         arguments: [ "@service_container" ]
-    
+
     cert_unlp.ngen.feed.shadowserver.report.factory:
         class: CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types\ShadowServerReportTypeFactory
-        
+
     cert_unlp.ngen.feed.shadowserver.client:
         class: "%cert_unlp.ngen.feed.shadowserver.client.class%"
         arguments:    ["%cert_unlp.ngen.feed.shadowserver.client.url%","%cert_unlp.ngen.feed.shadowserver.client.user%","%cert_unlp.ngen.feed.shadowserver.client.password%","%cert_unlp.ngen.feed.path%","@cert_unlp.ngen.feed.shadowserver.report.factory","@service_container"]
@@ -27,83 +27,83 @@ services:
     cert_unlp.ngen.feed.shadowserver:
         class: "%cert_unlp.ngen.feed.shadowserver.class%"
         arguments: ["@cert_unlp.ngen.feed.shadowserver.client","@cert_unlp.ngen.incident.converter"]
-    
+
     cert_unlp.ngen.incident.factory:
         class:        "%cert_unlp.ngen.incident.factory.class%"
         arguments:    ["@cert_unlp.ngen.network.handler","%cert_unlp.ngen.incident.internal.class%","@form.factory", "@security.context","%cert_unlp.ngen.incident.reporter.class%"]
-        
-#    cert_unlp.ngen.incident.openpgp.signer:
-#        class:        CertUnlp\NgenBundle\Services\Mailer\OpenPGP\IncidentOpenPGPSigner
-#        arguments:    ["@cert_unlp.ngen.openpgp.signer","/home/cert/private.key","/home/cert/public.key"]
-#            
-#    cert_unlp.ngen.openpgp.signer:
-#        class:        CertUnlp\NgenBundle\Services\Mailer\OpenPGP\OpenPGPSigner
-#        arguments:    ["%cert_unlp.ngen.incident.internal.mailer.sender_address%","","/home/cert/.gnupg"]
-        
+
+        #    cert_unlp.ngen.incident.openpgp.signer:
+        #        class:        CertUnlp\NgenBundle\Services\Mailer\OpenPGP\IncidentOpenPGPSigner
+        #        arguments:    ["@cert_unlp.ngen.openpgp.signer","/home/cert/private.key","/home/cert/public.key"]
+        #
+        #    cert_unlp.ngen.openpgp.signer:
+        #        class:        CertUnlp\NgenBundle\Services\Mailer\OpenPGP\OpenPGPSigner
+        #        arguments:    ["%cert_unlp.ngen.incident.internal.mailer.sender_address%","","/home/cert/.gnupg"]
+
     cert_unlp.ngen.incident.report.factory:
         class:     CertUnlp\NgenBundle\Services\IncidentReportFactory
         arguments: ["@twig", @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view]
-#        tags:
-#            -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
-#            -  { name: cert_unlp.ngen.incident.internal.delegate, priority: 1 }
-            
+          #        tags:
+          #            -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
+        #            -  { name: cert_unlp.ngen.incident.internal.delegate, priority: 1 }
+
     cert_unlp.ngen.internal.incident.mailer:
         class:        "%cert_unlp.ngen.incident.internal.mailer.class%"
         arguments:    ["@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","@twig","%cert_unlp.ngen.incident.internal.mailer.sender_address%","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%","@cert_unlp.ngen.incident.report.factory","%cert_unlp.ngen.incident.internal.report.lang%"]
         tags:
-            -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
-            -  { name: cert_unlp.ngen.incident.internal.delegate, priority: 1 }
-    
+            - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
+            - { name: cert_unlp.ngen.incident.internal.delegate, priority: 1 }
+
     cert_unlp.ngen.external.incident.mailer:
         class:        "%cert_unlp.ngen.incident.external.mailer.class%"
         arguments:    ["@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","@twig","%cert_unlp.ngen.incident.external.mailer.sender_address%","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%","@cert_unlp.ngen.incident.report.factory","%cert_unlp.ngen.incident.external.report.lang%"]
         tags:
-            -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
-            -  { name: cert_unlp.ngen.incident.external.delegate, priority: 1 }
+            - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
+            - { name: cert_unlp.ngen.incident.external.delegate, priority: 1 }
 
     cert_unlp.ngen.incident.evidence.manager:
         class:        CertUnlp\NgenBundle\Services\IncidentEvidenceManager
-        arguments:    ["%cert_unlp.ngen.incident.evidence.path%"]   
+        arguments:    ["%cert_unlp.ngen.incident.evidence.path%"]
         tags:
-            -  { name: cert_unlp.ngen.incident.internal.delegate, priority: 0 }
-            -  { name: cert_unlp.ngen.incident.external.delegate, priority: 1 }
+            - { name: cert_unlp.ngen.incident.internal.delegate, priority: 0 }
+            - { name: cert_unlp.ngen.incident.external.delegate, priority: 1 }
 
-        
+
     cert_unlp.ngen.incident.internal.delegator_chain:
         class:        "%cert_unlp.ngen.incident.internal.delegator_chain.class%"
-        
+
     cert_unlp.ngen.incident.external.delegator_chain:
         class:        "%cert_unlp.ngen.incident.external.delegator_chain.class%"
-#        arguments:    [["@cert_unlp.ngen.incident.evidence.manager","@cert_unlp.ngen.incident.mailer"]]
-    
+    #        arguments:    [["@cert_unlp.ngen.incident.evidence.manager","@cert_unlp.ngen.incident.mailer"]]
+
     cert_unlp.ngen.incident.converter:
         class: CertUnlp\NgenBundle\Services\Converter\IncidentConverter
         arguments: [ "@event_dispatcher" ]
-    
+
     cert_unlp.ngen.incident.internal.listener:
         class: CertUnlp\NgenBundle\Entity\Listener\InternalIncidentListener
         arguments: [ "@cert_unlp.ngen.incident.internal.delegator_chain", "@service_container" ]
         tags:
-            -  { name: doctrine.entity_listener }
-            -  { name: kernel.event_listener, event: cert_unlp.incident.convert_to_incident.event, method: onConvertToIncident }
-#            -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist }
+            - { name: doctrine.entity_listener }
+            - { name: kernel.event_listener, event: cert_unlp.incident.convert_to_incident.event, method: onConvertToIncident }
+    #            -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist }
 
     cert_unlp.ngen.incident.external.listener:
         class: CertUnlp\NgenBundle\Entity\Listener\ExternalIncidentListener
         arguments: [ "@cert_unlp.ngen.incident.external.delegator_chain", "@service_container" ]
         tags:
-            -  { name: doctrine.entity_listener }
-#            -  { name: kernel.event_listener, event: cert_unlp.incident.convert_to_incident.event, method: onConvertToIncident }
-#            -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist }
-    
+            - { name: doctrine.entity_listener }
+    #            -  { name: kernel.event_listener, event: cert_unlp.incident.convert_to_incident.event, method: onConvertToIncident }
+    #            -  { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist }
+
     cert_unlp.ngen.fos_rest.view.view:
         class: FOS\RestBundle\View\View
         factory: [FOS\RestBundle\View\View, create]
-    
+
     cert_unlp.ngen.user.handler:
         class:        "%cert_unlp.ngen.user.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.user.class%","%cert_unlp.ngen.user.form_type.class%","@form.factory"]
-    
+
     cert_unlp.ngen.incident.internal.handler:
         class:        "%cert_unlp.ngen.incident.internal.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.internal.class%","%cert_unlp.ngen.incident.internal.form_type.class%","@form.factory", "@security.context","@cert_unlp.ngen.user.handler"]
@@ -111,92 +111,92 @@ services:
     cert_unlp.ngen.incident.external.handler:
         class:        "%cert_unlp.ngen.incident.external.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.external.class%","%cert_unlp.ngen.incident.external.form_type.class%","@form.factory", "@security.context","@cert_unlp.ngen.user.handler"]
-      
+
     cert_unlp.ngen.incident.feed.handler:
         class:        "%cert_unlp.ngen.incident.feed.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.feed.class%","%cert_unlp.ngen.incident.feed.form_type.class%","@form.factory"]
-        
+
     cert_unlp.ngen.incident.state.handler:
         class:        "%cert_unlp.ngen.incident.state.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.state.class%","%cert_unlp.ngen.incident.state.form_type.class%","@form.factory"]
-        
+
     cert_unlp.ngen.incident.type.handler:
         class:        "%cert_unlp.ngen.incident.type.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.type.class%","%cert_unlp.ngen.incident.type.form_type.class%","@form.factory","@cert_unlp.ngen.incident.type.report.handler"]
-    
+
     cert_unlp.ngen.incident.type.report.handler:
         class:        "%cert_unlp.ngen.incident.type.report.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.type.report.class%","%cert_unlp.ngen.incident.type.report.form_type.class%","@form.factory"]
-        
+
     cert_unlp.ngen.network.handler:
         class:        "%cert_unlp.ngen.network.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.network.class%","%cert_unlp.ngen.network.form_type.class%","@form.factory","%cert_unlp.ngen.network.default_network%"]
-    
+
     cert_unlp.ngen.network.admin.handler:
         class:        "%cert_unlp.ngen.network.admin.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.network.admin.class%","%cert_unlp.ngen.network.admin.form_type.class%","@form.factory"]
-    
+
     cert_unlp.ngen.academic_unit.handler:
         class:        "%cert_unlp.ngen.academic_unit.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.academic_unit.class%","%cert_unlp.ngen.academic_unit.form_type.class%","@form.factory"]
-        
-        
+
+
     cert_unlp.ngen.incident.internal.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentApiController
         arguments: [ @cert_unlp.ngen.incident.internal.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view,@cert_unlp.ngen.internal.incident.mailer ]
-        
+
     cert_unlp.ngen.incident.external.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentApiController
         arguments: [ @cert_unlp.ngen.incident.external.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view,@cert_unlp.ngen.external.incident.mailer ]
-    
+
     cert_unlp.ngen.network.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\NetworkApiController
         arguments: [ @cert_unlp.ngen.network.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view ]
-    
+
     cert_unlp.ngen.network.admin.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\NetworkAdminApiController
         arguments: [ @cert_unlp.ngen.network.admin.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view ]
-    
+
     cert_unlp.ngen.incident.feed.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentFeedApiController
         arguments: [ @cert_unlp.ngen.incident.feed.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view ]
-    
+
     cert_unlp.ngen.incident.state.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentStateApiController
         arguments: [ @cert_unlp.ngen.incident.state.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view ]
-    
+
     cert_unlp.ngen.incident.type.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentTypeApiController
         arguments: [ @cert_unlp.ngen.incident.type.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view, %cert_unlp.ngen.incident.internal.report.markdown.path% ]
-    
+
     cert_unlp.ngen.incident.type.report.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentReportApiController
         arguments: [ @cert_unlp.ngen.incident.type.report.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view, %cert_unlp.ngen.incident.internal.report.markdown.path% ]
-    
+
     cert_unlp.ngen.user.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\UserApiController
         arguments: [ @cert_unlp.ngen.user.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view ]
-    
+
     cert_unlp.ngen.academic_unit.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\AcademicUnitApiController
         arguments: [ @cert_unlp.ngen.academic_unit.handler, @fos_rest.view_handler, @cert_unlp.ngen.fos_rest.view.view ]
-    
+
     cert_unlp.ngen.incident.internal.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.internal.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.internal","@fos_comment.manager.comment","@fos_comment.manager.thread","%cert_unlp.ngen.incident.evidence.path%"]
-    
+
     cert_unlp.ngen.incident.external.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.external.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.external","@fos_comment.manager.comment","@fos_comment.manager.thread","%cert_unlp.ngen.incident.evidence.path%"]
-    
+
     cert_unlp.ngen.network.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\NetworkFrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.network.form_type.class%","@knp_paginator","@fos_elastica.finder.networks.network","@fos_comment.manager.comment","@fos_comment.manager.thread"]
-    
+
     cert_unlp.ngen.network.admin.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\NetworkAdminFrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.network.admin.form_type.class%","@knp_paginator","@fos_elastica.finder.network_admins.network_admin","@fos_comment.manager.comment","@fos_comment.manager.thread"]
-    
+
     cert_unlp.ngen.incident.feed.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFeedFrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.feed.form_type.class%","@knp_paginator","@fos_elastica.finder.feeds.feeds","@fos_comment.manager.comment","@fos_comment.manager.thread"]
@@ -204,11 +204,11 @@ services:
     cert_unlp.ngen.incident.state.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentStateFrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.state.form_type.class%","@knp_paginator","@fos_elastica.finder.states.states","@fos_comment.manager.comment","@fos_comment.manager.thread"]
-    
+
     cert_unlp.ngen.incident.type.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.type.form_type.class%","@knp_paginator","@fos_elastica.finder.types.types","@fos_comment.manager.comment","@fos_comment.manager.thread"]
-    
+
     cert_unlp.ngen.incident.report.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentReportFrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.type.report.form_type.class%","@knp_paginator","@fos_elastica.finder.reports.reports","@fos_comment.manager.comment","@fos_comment.manager.thread"]
@@ -216,42 +216,42 @@ services:
     cert_unlp.ngen.user.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\UserFrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.user.form_type.class%","@knp_paginator","@fos_elastica.finder.users.users","@fos_comment.manager.comment","@fos_comment.manager.thread"]
-    
+
     cert_unlp.ngen.academic_unit.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.academic_unit.form_type.class%","@knp_paginator","@fos_elastica.finder.academic_units.academic_unit","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.incident.report.markdown.parser:
         class: CertUnlp\NgenBundle\Services\IncidentMarkdowReportParser
-     
+
     cert_unlp.ngen.network.validator:
         class: "%cert_unlp.ngen.network.validator.class%"
         arguments:    ["@doctrine.orm.entity_manager","@cert_unlp.ngen.network.handler"]
         tags:
             - { name: validator.constraint_validator, alias: valid.network.validator }
-            
+
     cert_unlp.ngen.network.ip.validator:
         class: CertUnlp\NgenBundle\Validator\Constraints\IpValidator
         tags:
             - { name: validator.constraint_validator, alias: ip.validator }
-    
+
     cert_unlp.ngen.type.has_type.validator:
         class: CertUnlp\NgenBundle\Validator\Constraints\TypeHasReportValidator
         arguments:    ["@cert_unlp.ngen.incident.type.handler","%cert_unlp.ngen.incident.external.report.lang%"]
         tags:
             - { name: validator.constraint_validator, alias: type.has.report.validator }
-            
+
     cert_unlp.ngen.rdap_client:
         class:        CertUnlp\NgenBundle\Services\IncidentRdapClient
         arguments: ["%cert_unlp.ngen.resources.path%"]
         tags:
-            -  { name: cert_unlp.ngen.incident.external.delegate, priority: 0 }
+            - { name: cert_unlp.ngen.incident.external.delegate, priority: 0 }
 
     app.form.registration:
         class: CertUnlp\NgenBundle\Form\UserRegistrationType
         tags:
             - { name: form.type, alias: app_user_registration }
-        
+
     fos_comment.form_type.comment.default:
         class: CertUnlp\NgenBundle\Form\IncidentCommentType
         arguments: ["%fos_comment.model.comment.class%"]
@@ -260,21 +260,21 @@ services:
     acme.twig.incident_report_extension:
         class: CertUnlp\NgenBundle\Twig\IncidentReportExtension
         tags:
-            - { name: twig.extension }       
-     
+            - { name: twig.extension }
+
     twig.stringloader:
         class: Twig_Loader_Array
         arguments: [[]]
         tags:
-            - { name: twig.loader }    
-     
+            - { name: twig.loader }
+
     gedmo.listener.sluggable:
         class: Gedmo\Sluggable\SluggableListener
         tags:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
             - [ setAnnotationReader, [ @annotation_reader ] ]
-            
+
     gedmo.listener.timestampable:
         class: Gedmo\Timestampable\TimestampableListener
         tags:

@@ -11,31 +11,36 @@
 
 namespace CertUnlp\NgenBundle\DataFixtures\ORM;
 
+use CertUnlp\NgenBundle\Entity\IncidentType;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use CertUnlp\NgenBundle\Entity\IncidentType;
-use Doctrine\Common\Collections\ArrayCollection;
 
-class IncidentTypes extends AbstractFixture implements OrderedFixtureInterface {
+class IncidentTypes extends AbstractFixture implements OrderedFixtureInterface
+{
 
-    public function getOrder() {
+    public function getOrder()
+    {
         return 0;
     }
 
-    public function load(ObjectManager $manager) {
+    public function load(ObjectManager $manager)
+    {
         $incident_types = array(
             array('name' => "Blacklist"),
             array('name' => "Botnet"),
             array('name' => "Bruteforce"),
-//            array('name' => "Bruteforcing SSH"),
+            array('name' => "Cisco Smart Install"),
             array('name' => "Copyright"),
+            array('name' => "Data Breach"),
             array('name' => "Deface"),
             array('name' => "DNS zone transfer"),
             array('name' => "DOS chargen"),
             array('name' => "DOS NTP"),
             array('name' => "DOS SNMP"),
+            array('name' => "Drupal Remote Code Execution"),
             array('name' => "Heartbleed"),
+            array('name' => "Information Leakage"),
             array('name' => "Malware"),
             array('name' => "Open Chargen"),
             array('name' => "Open Elasticsearch"),
@@ -81,11 +86,11 @@ class IncidentTypes extends AbstractFixture implements OrderedFixtureInterface {
             $newIncidentType->setName($incident_type['name']);
 
             $manager->persist($newIncidentType);
+            $manager->flush();
 
-            $this->addReference('incidentType-' . $incident_type['name'], $newIncidentType);
+            $this->addReference('incidentType-' . $newIncidentType->getSlug(), $newIncidentType);
         }
 
-        $manager->flush();
     }
 
 }
