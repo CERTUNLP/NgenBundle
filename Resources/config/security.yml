@@ -6,6 +6,8 @@
 # with this source code in the file LICENSE.
 
 security:
+    acl:
+        connection: default
     firewalls:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
@@ -42,7 +44,8 @@ security:
         - { path: ^/incidents/*, roles: ROLE_USER }
         - { path: ^/networks/*, roles: ROLE_USER }
         - { path: ^/api/*, roles: ROLE_API }
-        
+        - { path: ^/*, roles: ROLE_USER }
+
     encoders:
 #        CertUnlp\NgenBundle\Entity\User:    { algorithm: sha512, iterations: 10 }
         FOS\UserBundle\Model\UserInterface: bcrypt

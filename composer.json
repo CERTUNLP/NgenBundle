@@ -1,58 +1,66 @@
 {
-    "name": "certunlp/ngen-bundle",
-    "type": "symfony-bundle",
-    "description": "This Bundle provides a incident management for certs",
-    "keywords": ["cert", "unlp", "incident", "management", "report", "system"],
-    "homepage": "https://github.com/CERTUNLP/NgenBundle",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "authors": [
-        {
-            "name": "CERT UNLP",
-            "email": "support@cert.unlp.edu.ar"
-        }
-    ],
-    "support": {
-        "issues": "https://github.com/CERTUNLP/NgenBundle/issues"
-    },
-    "autoload": {
-        "psr-4": {
-            "CertUnlp\\NgenBundle\\": ""
-        }
-    },
-    "require": {
-        "symfony/symfony": "2.8.*",
-        "symfony/swiftmailer-bundle": "~2.3",
-        "doctrine/doctrine-fixtures-bundle": "^2.3",
-        "twig/extensions": "~1.2",
-        "gedmo/doctrine-extensions": "~2.4",
-        "components/jquery": "~2.1",
-        "friendsofsymfony/elastica-bundle": "4.*",
-        "friendsofsymfony/comment-bundle": "~2.0.8",
-        "friendsofsymfony/user-bundle": "^2.0",
-        "knplabs/knp-markdown-bundle": "~1.4",
-        "knplabs/knp-menu-bundle": "~2.0",
-        "knplabs/knp-paginator-bundle": "dev-master@dev",
-        "braincrafted/bootstrap-bundle": "~2.1",
-        "twbs/bootstrap": "~3.3",
-        "kbsali/redmine-api": "~1.5",
-        "nelmio/api-doc-bundle": "~2.9",
-        "fabpot/goutte": "~2.0",
-        "ddeboer/data-import": "~0.18.0",
-        "ddeboer/data-import-bundle": "~0.1.0",
-        "stfalcon/tinymce-bundle": "~0.3.8",
-        "fortawesome/font-awesome": "^4.4",
-        "doctrine/doctrine-migrations-bundle": "^1.1",
-        "symfony/assetic-bundle": "^2.7"
-    },
-    "require-dev": {
-        "symfony/assetic-bundle": "^2.7",
-        "symfony/browser-kit": "~2.3",
-        "symfony/css-selector": "~2.3"
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "0.1.x.x-dev"
-        }
+  "name": "certunlp/ngen-bundle",
+  "type": "symfony-bundle",
+  "description": "This Bundle provides a incident management for certs",
+  "keywords": [
+    "cert",
+    "unlp",
+    "incident",
+    "management",
+    "report",
+    "system"
+  ],
+  "homepage": "https://github.com/CERTUNLP/NgenBundle",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "authors": [
+    {
+      "name": "CERT UNLP",
+      "email": "support@cert.unlp.edu.ar"
     }
+  ],
+  "support": {
+    "issues": "https://github.com/CERTUNLP/NgenBundle/issues"
+  },
+  "autoload": {
+    "psr-4": {
+      "CertUnlp\\NgenBundle\\": ""
+    }
+  },
+  "require": {
+    "php": ">=5.3.9",
+    "symfony/symfony": "2.8.*",
+    "doctrine/doctrine-fixtures-bundle": "^2.3",
+    "twig/extensions": "~1.2",
+    "gedmo/doctrine-extensions": "~2.4",
+    "components/jquery": "~2.1",
+    "friendsofsymfony/elastica-bundle": "4.*",
+    "friendsofsymfony/comment-bundle": "^2.2",
+    "friendsofsymfony/user-bundle": "=2.0.1",
+    "knplabs/knp-markdown-bundle": "~1.4",
+    "knplabs/knp-menu-bundle": "~2.0",
+    "knplabs/knp-paginator-bundle": "^2.8",
+    "braincrafted/bootstrap-bundle": "~2.1",
+    "twbs/bootstrap": "~3.3",
+    "kbsali/redmine-api": "~1.5",
+    "nelmio/api-doc-bundle": "~2.9",
+    "fabpot/goutte": "~2.0",
+    "ddeboer/data-import": "~0.18.0",
+    "ddeboer/data-import-bundle": "~0.1.0",
+    "stfalcon/tinymce-bundle": "~0.3.8",
+    "fortawesome/font-awesome": "^4.4",
+    "doctrine/doctrine-migrations-bundle": "^1.1",
+    "symfony/assetic-bundle": "^2.7",
+    "symfony/security-acl": "^3.0"
+  },
+  "require-dev": {
+    "symfony/assetic-bundle": "^2.7",
+    "symfony/browser-kit": "~2.3",
+    "symfony/css-selector": "~2.3"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.1.x.x-dev"
+    }
+  }
 }

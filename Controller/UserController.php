@@ -11,25 +11,21 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use FOS\RestBundle\View\View;
+use CertUnlp\NgenBundle\Entity\User;
+use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
-use Symfony\Component\Form\FormTypeInterface;
+use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use CertUnlp\NgenBundle\Form\UserType;
-use CertUnlp\NgenBundle\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use FOS\RestBundle\Controller\Annotations as FOS;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use CertUnlp\NgenBundle\Exception\InvalidFormException;
+use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class UserController extends FOSRestController {
-
-    public function getApiController() {
-
-        return $this->container->get('cert_unlp.ngen.user.api.controller');
+class UserController extends FOSRestController
+{
+    public function __construct()
+    {
     }
 
     /**
@@ -43,12 +39,13 @@ class UserController extends FOSRestController {
      * )
      *
      *
-     * @param Request               $request      the request object
+     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
      * @return array
      */
-    public function getAction(Request $request, ParamFetcherInterface $paramFetcher) {
+    public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
 
         return null;
     }
@@ -70,13 +67,20 @@ class UserController extends FOSRestController {
      *  templateVar="users"
      * )
      *
-     * @param Request               $request      the request object
+     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
      * @return array
      */
-    public function getUsersAction(Request $request, ParamFetcherInterface $paramFetcher) {
+    public function getUsersAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
         return $this->getApiController()->getAll($request, $paramFetcher);
+    }
+
+    public function getApiController()
+    {
+
+        return $this->container->get('cert_unlp.ngen.user.api.controller');
     }
 
     /**
@@ -92,20 +96,21 @@ class UserController extends FOSRestController {
      *   }
      * )
      *
-     * @param int     $id      the user id
+     * @param int $id the user id
      *
      * @return array
      *
      * @throws NotFoundHttpException when user not exist
      *
      * @FOS\Get("/users/{username}")
-     * 
+     *
      * @FOS\View(
      *  templateVar="user"
-     * )     
-     *  @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
+     * )
+     * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
      */
-    public function getUserAction(User $user) {
+    public function getUserAction(User $user)
+    {
         return $user;
     }
 
@@ -129,7 +134,8 @@ class UserController extends FOSRestController {
      *
      * @return FormTypeInterface|View
      */
-    public function postUserAction(Request $request) {
+    public function postUserAction(Request $request)
+    {
         return $this->getApiController()->post($request);
     }
 
@@ -150,7 +156,7 @@ class UserController extends FOSRestController {
      * )
      *
      * @param Request $request the request object
-     * @param int     $id      the user id
+     * @param int $id the user id
      *
      * @return FormTypeInterface|View
      *
@@ -159,7 +165,8 @@ class UserController extends FOSRestController {
      *
      * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
      */
-    public function patchUserAction(Request $request, User $user) {
+    public function patchUserAction(Request $request, User $user)
+    {
         return $this->getApiController()->patch($request, $user);
     }
 
@@ -177,19 +184,20 @@ class UserController extends FOSRestController {
      *
      *
      * @param Request $request the request object
-     * @param int     $id      the user id
+     * @param int $id the user id
      *
      * @return FormTypeInterface|View
      *
      * @throws NotFoundHttpException when user not exist
-     * 
+     *
      * @FOS\Patch("/users/{username}/activate")
      * @FOS\View(
      *  templateVar = "user"
      * )
      * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
      */
-    public function patchUserActivateAction(Request $request, User $user) {
+    public function patchUserActivateAction(Request $request, User $user)
+    {
 
         return $this->getApiController()->activate($request, $user);
     }
@@ -208,19 +216,20 @@ class UserController extends FOSRestController {
      *
      *
      * @param Request $request the request object
-     * @param int     $id      the user id
+     * @param int $id the user id
      *
      * @return FormTypeInterface|View
      *
      * @throws NotFoundHttpException when user not exist
-     * 
+     *
      * @FOS\Patch("/users/{username}/desactivate")
      * @FOS\View(
      *  templateVar = "user"
      * )
      * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
      */
-    public function patchUserDesactivateAction(Request $request, User $user) {
+    public function patchUserDesactivateAction(Request $request, User $user)
+    {
 
         return $this->getApiController()->desactivate($request, $user);
     }
