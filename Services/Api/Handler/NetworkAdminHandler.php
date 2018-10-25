@@ -11,27 +11,26 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Form\FormFactoryInterface;
-use CertUnlp\NgenBundle\Exception\InvalidFormException;
-use Symfony\Component\Security\Core\SecurityContext;
-use CertUnlp\NgenBundle\Services\Api\Handler\Handler;
+use CertUnlp\NgenBundle\Entity\NetworkAdmin;
 
-class NetworkAdminHandler extends Handler {
+class NetworkAdminHandler extends Handler
+{
 
     /**
      * Delete a Network.
      *
-     * @param NetworkInterface $network_admin
+     * @param NetworkAdmin $network_admin
      * @param array $parameters
      *
-     * @return NetworkInterface
+     * @return void
      */
-    public function prepareToDeletion($network_admin, array $parameters = null) {
+    public function prepareToDeletion($network_admin, array $parameters = null)
+    {
         $network_admin->setIsActive(FALSE);
     }
 
-    protected function checkIfExists($network_admin, $method) {
+    protected function checkIfExists($network_admin, $method)
+    {
         $network_adminDB = $this->repository->findOneBy(['name' => $network_admin->getName(), 'email' => $network_admin->getEmail()]);
 
         if ($network_adminDB && $method == 'POST') {

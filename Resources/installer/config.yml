@@ -72,13 +72,13 @@ swiftmailer:
 cert_unlp_ngen:
     team:
         mail: soporte@cert.unlp.edu.ar
-    incidents:    
+    incidents:
         mailer:
-           transport: smtp
-           host:      mail.cert.unlp.edu.ar
-           sender_address: soporte@cert.unlp.edu.ar # optional cert.ngen.team.mail by default
-           username:  cert
-           password:  C3rT_e=mc**2SMR
+            transport: smtp
+            host:      mail.cert.unlp.edu.ar
+            sender_address: soporte@cert.unlp.edu.ar # optional cert.ngen.team.mail by default
+            username:  cert
+            password:  C3rT_e=mc**2SMR
     networks:
         default_network: 163.10.0.0
     feeds:

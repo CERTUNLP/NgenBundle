@@ -28,12 +28,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     message="This lang is already in use on that type."
  * )
  */
-class IncidentReport {
+class IncidentReport
+{
 
     /**
      * @var boolean
      * @ORM\Column(name="lang", type="string", length=2)
-     * @JMS\Expose  
+     * @JMS\Expose
      */
     private $lang = '';
 
@@ -123,45 +124,43 @@ class IncidentReport {
      */
     private $updatedAt;
 
-    /**
-     * Constructor
-     */
-    public function __construct() {
-        $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getType() . "/" . $this->getLang();
     }
 
     /**
-     * Get id
+     * Get type
      *
-     * @return integer 
+     * @return IncidentType
      */
-    public function getId() {
-        return $this->lang;
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
-     * Set name
+     * Set type
      *
-     * @param string $name
+     * @param IncidentType $type
+     *
      * @return IncidentReport
      */
-    public function setName($name) {
-        $this->name = $name;
+    public function setType(IncidentType $type = null)
+    {
+        $this->type = $type;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get lang
      *
-     * @return string 
+     * @return string
      */
-    public function getName() {
-        return $this->name;
+    public function getLang()
+    {
+        return $this->lang;
     }
 
 //    /**
@@ -179,246 +178,11 @@ class IncidentReport {
 //    /**
 //     * Get slug
 //     *
-//     * @return string 
+//     * @return string
 //     */
 //    public function getSlug() {
 //        return $this->slug;
 //    }
-
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return Network
-     */
-    public function setIsActive($isActive) {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean 
-     */
-    public function getIsActive() {
-        return $this->isActive;
-    }
-
-    /**
-     * Get evidence_file
-     *
-     * @return string 
-     */
-    public function getReportName() {
-        return $this->getSlug() . ".md";
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return Network
-     */
-    public function setCreatedAt($createdAt) {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime 
-     */
-    public function getCreatedAt() {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     * @return Network
-     */
-    public function setUpdatedAt($updatedAt) {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return \DateTime 
-     */
-    public function getUpdatedAt() {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Add incident
-     *
-     * @param \CertUnlp\NgenBundle\Entity\InternalIncident $incident
-     *
-     * @return IncidentReport
-     */
-    public function addIncident(\CertUnlp\NgenBundle\Entity\InternalIncident $incident) {
-        $this->incidents[] = $incident;
-
-        return $this;
-    }
-
-    /**
-     * Remove incident
-     *
-     * @param \CertUnlp\NgenBundle\Entity\InternalIncident $incident
-     */
-    public function removeIncident(\CertUnlp\NgenBundle\Entity\InternalIncident $incident) {
-        $this->incidents->removeElement($incident);
-    }
-
-    /**
-     * Get incidents
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getIncidents() {
-        return $this->incidents;
-    }
-
-    /**
-     * Set type
-     *
-     * @param \CertUnlp\NgenBundle\Entity\IncidentType $type
-     *
-     * @return IncidentReport
-     */
-    public function setType(\CertUnlp\NgenBundle\Entity\IncidentType $type = null) {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return \CertUnlp\NgenBundle\Entity\IncidentType
-     */
-    public function getType() {
-        return $this->type;
-    }
-
-    /**
-     * Set problem
-     *
-     * @param string $problem
-     *
-     * @return IncidentReport
-     */
-    public function setProblem($problem) {
-        $this->problem = $problem;
-
-        return $this;
-    }
-
-    /**
-     * Get problem
-     *
-     * @return string
-     */
-    public function getProblem() {
-        return $this->problem;
-    }
-
-    /**
-     * Set derivatedProblem
-     *
-     * @param string $derivatedProblem
-     *
-     * @return IncidentReport
-     */
-    public function setDerivatedProblem($derivatedProblem) {
-        $this->derivated_problem = $derivatedProblem;
-
-        return $this;
-    }
-
-    /**
-     * Get derivatedProblem
-     *
-     * @return string
-     */
-    public function getDerivatedProblem() {
-        return $this->derivated_problem;
-    }
-
-    /**
-     * Set verification
-     *
-     * @param string $verification
-     *
-     * @return IncidentReport
-     */
-    public function setVerification($verification) {
-        $this->verification = $verification;
-
-        return $this;
-    }
-
-    /**
-     * Get verification
-     *
-     * @return string
-     */
-    public function getVerification() {
-        return $this->verification;
-    }
-
-    /**
-     * Set recomendations
-     *
-     * @param string $recomendations
-     *
-     * @return IncidentReport
-     */
-    public function setRecomendations($recomendations) {
-        $this->recomendations = $recomendations;
-
-        return $this;
-    }
-
-    /**
-     * Get recomendations
-     *
-     * @return string
-     */
-    public function getRecomendations() {
-        return $this->recomendations;
-    }
-
-    /**
-     * Set moreInformation
-     *
-     * @param string $moreInformation
-     *
-     * @return IncidentReport
-     */
-    public function setMoreInformation($moreInformation) {
-        $this->more_information = $moreInformation;
-
-        return $this;
-    }
-
-    /**
-     * Get moreInformation
-     *
-     * @return string
-     */
-    public function getMoreInformation() {
-        return $this->more_information;
-    }
 
     /**
      * Set lang
@@ -427,19 +191,64 @@ class IncidentReport {
      *
      * @return IncidentReport
      */
-    public function setLang($lang) {
+    public function setLang($lang)
+    {
         $this->lang = $lang;
 
         return $this;
     }
 
     /**
-     * Get lang
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->lang;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return IncidentReport
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get evidence_file
      *
      * @return string
      */
-    public function getLang() {
-        return $this->lang;
+    public function getReportName()
+    {
+        return $this->getSlug() . ".md";
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**
@@ -449,19 +258,177 @@ class IncidentReport {
      *
      * @return IncidentReport
      */
-    public function setSlug($slug) {
+    public function setSlug($slug)
+    {
         $this->slug = $slug;
 
         return $this;
     }
 
     /**
-     * Get slug
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return IncidentReport
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return IncidentReport
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get problem
      *
      * @return string
      */
-    public function getSlug() {
-        return $this->slug;
+    public function getProblem()
+    {
+        return $this->problem;
+    }
+
+    /**
+     * Set problem
+     *
+     * @param string $problem
+     *
+     * @return IncidentReport
+     */
+    public function setProblem($problem)
+    {
+        $this->problem = $problem;
+
+        return $this;
+    }
+
+    /**
+     * Get derivatedProblem
+     *
+     * @return string
+     */
+    public function getDerivatedProblem()
+    {
+        return $this->derivated_problem;
+    }
+
+    /**
+     * Set derivatedProblem
+     *
+     * @param string $derivatedProblem
+     *
+     * @return IncidentReport
+     */
+    public function setDerivatedProblem($derivatedProblem)
+    {
+        $this->derivated_problem = $derivatedProblem;
+
+        return $this;
+    }
+
+    /**
+     * Get verification
+     *
+     * @return string
+     */
+    public function getVerification()
+    {
+        return $this->verification;
+    }
+
+    /**
+     * Set verification
+     *
+     * @param string $verification
+     *
+     * @return IncidentReport
+     */
+    public function setVerification($verification)
+    {
+        $this->verification = $verification;
+
+        return $this;
+    }
+
+    /**
+     * Get recomendations
+     *
+     * @return string
+     */
+    public function getRecomendations()
+    {
+        return $this->recomendations;
+    }
+
+    /**
+     * Set recomendations
+     *
+     * @param string $recomendations
+     *
+     * @return IncidentReport
+     */
+    public function setRecomendations($recomendations)
+    {
+        $this->recomendations = $recomendations;
+
+        return $this;
+    }
+
+    /**
+     * Get moreInformation
+     *
+     * @return string
+     */
+    public function getMoreInformation()
+    {
+        return $this->more_information;
+    }
+
+    /**
+     * Set moreInformation
+     *
+     * @param string $moreInformation
+     *
+     * @return IncidentReport
+     */
+    public function setMoreInformation($moreInformation)
+    {
+        $this->more_information = $moreInformation;
+
+        return $this;
     }
 
 }

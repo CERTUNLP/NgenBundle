@@ -18,7 +18,8 @@ use FOS\CommentBundle\Entity\Thread as BaseThread;
  * @ORM\Entity
  * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
  */
-class IncidentCommentThread extends BaseThread {
+class IncidentCommentThread extends BaseThread
+{
 
     /**
      * @var string $id
@@ -29,11 +30,21 @@ class IncidentCommentThread extends BaseThread {
     protected $id;
 
     /**
-     * @var string
+     * @var Incident
      * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident", inversedBy="comment_thread")
-     * 
+     *
      * */
     protected $incident;
+
+    /**
+     * Get id
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set id
@@ -41,39 +52,33 @@ class IncidentCommentThread extends BaseThread {
      * @param string $id
      * @return IncidentCommentThread
      */
-    public function setId($id) {
+    public function setId($id)
+    {
         $this->id = $id;
         return $this;
     }
 
     /**
-     * Get id
+     * Get incident
      *
-     * @return string 
+     * @return Incident
      */
-    public function getId() {
-        return $this->id;
+    public function getIncident()
+    {
+        return $this->incident;
     }
 
     /**
      * Set incident
      *
-     * @param \CertUnlp\NgenBundle\Entity\Incident $incident
+     * @param Incident $incident
      * @return IncidentCommentThread
      */
-    public function setIncident(\CertUnlp\NgenBundle\Entity\Incident $incident = null) {
+    public function setIncident(Incident $incident = null)
+    {
         $this->incident = $incident;
 
         return $this;
-}
-
-    /**
-     * Get incident
-     *
-     * @return \CertUnlp\NgenBundle\Entity\Incident 
-     */
-    public function getIncident() {
-        return $this->incident;
     }
 
 }

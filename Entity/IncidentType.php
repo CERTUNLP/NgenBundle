@@ -12,10 +12,11 @@
 namespace CertUnlp\NgenBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-//use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
+
+//use Doctrine\Common\Collections\Collection;
 
 /**
  * IncidentType
@@ -24,7 +25,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Entity\IncidentTypeRepository")
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentType {
+class IncidentType
+{
 
     /**
      * @var string
@@ -39,7 +41,7 @@ class IncidentType {
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
-     * @JMS\Expose 
+     * @JMS\Expose
      */
     private $slug;
 
@@ -72,9 +74,9 @@ class IncidentType {
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="type", cascade={"persist","remove"}, fetch="EAGER")) */
     private $incidents;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\IncidentReport",mappedBy="type",indexBy="lang", cascade={"persist","remove"}, fetch="EAGER")) 
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\IncidentReport",mappedBy="type",indexBy="lang", cascade={"persist","remove"}, fetch="EAGER"))
      *
-     *  @Assert\Count(
+     * @Assert\Count(
      *      min = 1,
      *      minMessage = "This type needs at least one report to be used",
      * )
@@ -84,21 +86,24 @@ class IncidentType {
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getName();
     }
 
     /**
-     * Get id
+     * Get name
      *
-     * @return integer 
+     * @return string
      */
-    public function getId() {
-        return $this->getSlug();
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
@@ -107,19 +112,31 @@ class IncidentType {
      * @param string $name
      * @return IncidentType
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get id
      *
-     * @return string 
+     * @return integer
      */
-    public function getName() {
-        return $this->name;
+    public function getId()
+    {
+        return $this->getSlug();
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**
@@ -128,29 +145,9 @@ class IncidentType {
      * @param string $slug
      * @return IncidentType
      */
-    public function setSlug($slug) {
+    public function setSlug($slug)
+    {
         $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string 
-     */
-    public function getSlug() {
-        return $this->slug;
-    }
-
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return Network
-     */
-    public function setIsActive($isActive) {
-        $this->isActive = $isActive;
 
         return $this;
     }
@@ -158,50 +155,55 @@ class IncidentType {
     /**
      * Get isActive
      *
-     * @return boolean 
+     * @return boolean
      */
-    public function getIsActive() {
+    public function getIsActive()
+    {
         return $this->isActive;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return IncidentType
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
     }
 
     /**
      * Get evidence_file
      *
-     * @return string 
+     * @return string
      */
-    public function getReportName() {
+    public function getReportName()
+    {
         return $this->getSlug() . ".md";
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 
     /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return Network
+     * @return IncidentType
      */
-    public function setCreatedAt($createdAt) {
+    public function setCreatedAt($createdAt)
+    {
         $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime 
-     */
-    public function getCreatedAt() {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     * @return Network
-     */
-    public function setUpdatedAt($updatedAt) {
-        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -209,20 +211,35 @@ class IncidentType {
     /**
      * Get updatedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
-    public function getUpdatedAt() {
+    public function getUpdatedAt()
+    {
         return $this->updatedAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return IncidentType
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     /**
      * Add incident
      *
-     * @param \CertUnlp\NgenBundle\Entity\InternalIncident $incident
+     * @param InternalIncident $incident
      *
      * @return IncidentType
      */
-    public function addIncident(\CertUnlp\NgenBundle\Entity\InternalIncident $incident) {
+    public function addIncident(InternalIncident $incident)
+    {
         $this->incidents[] = $incident;
 
         return $this;
@@ -231,9 +248,10 @@ class IncidentType {
     /**
      * Remove incident
      *
-     * @param \CertUnlp\NgenBundle\Entity\InternalIncident $incident
+     * @param InternalIncident $incident
      */
-    public function removeIncident(\CertUnlp\NgenBundle\Entity\InternalIncident $incident) {
+    public function removeIncident(InternalIncident $incident)
+    {
         $this->incidents->removeElement($incident);
     }
 
@@ -242,18 +260,20 @@ class IncidentType {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getIncidents() {
+    public function getIncidents()
+    {
         return $this->incidents;
     }
 
     /**
      * Add report
      *
-     * @param \CertUnlp\NgenBundle\Entity\IncidentReport $report
+     * @param IncidentReport $report
      *
      * @return IncidentType
      */
-    public function addReport(\CertUnlp\NgenBundle\Entity\IncidentReport $report) {
+    public function addReport(IncidentReport $report)
+    {
         $this->reports[] = $report;
 
         return $this;
@@ -262,9 +282,10 @@ class IncidentType {
     /**
      * Remove report
      *
-     * @param \CertUnlp\NgenBundle\Entity\IncidentReport $report
+     * @param IncidentReport $report
      */
-    public function removeReport(\CertUnlp\NgenBundle\Entity\IncidentReport $report) {
+    public function removeReport(IncidentReport $report)
+    {
         $this->reports->removeElement($report);
     }
 
@@ -273,19 +294,22 @@ class IncidentType {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getReports() {
+    public function getReports()
+    {
         return $this->reports;
     }
 
     /**
      * Get report
      *
-     * @return \CertUnlp\NgenBundle\Entity\IncidentReport
+     * @param null $lang
+     * @return IncidentReport
      */
-    public function getReport($lang = null) {
-        return $this->reports->filter(function($report)use ($lang) {
-                    return $report->getLang() == $lang;
-                })->first();
+    public function getReport($lang = null)
+    {
+        return $this->reports->filter(function ($report) use ($lang) {
+            return $report->getLang() == $lang;
+        })->first();
     }
 
 }

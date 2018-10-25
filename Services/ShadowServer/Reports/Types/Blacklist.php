@@ -16,9 +16,11 @@ namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types;
  *
  * @author demyen
  */
-class Blacklist extends ShadowServerReport {
+class Blacklist extends ShadowServerReport
+{
 
-    public function getType() {
+    public function getType()
+    {
         return "blacklist";
     }
 

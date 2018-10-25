@@ -11,17 +11,24 @@
 
 namespace CertUnlp\NgenBundle\Event;
 
+use CertUnlp\NgenBundle\Services\Converter\IncidentConvertible;
 use Symfony\Component\EventDispatcher\Event;
 
-class ConvertToIncidentEvent extends Event {
+class ConvertToIncidentEvent extends Event
+{
 
     protected $convertible;
 
-    public function __construct($convertible) {
+    public function __construct(IncidentConvertible $convertible)
+    {
         $this->convertible = $convertible;
     }
 
-    public function getConvertible() {
+    /**
+     * @return IncidentConvertible
+     */
+    public function getConvertible()
+    {
         return $this->convertible;
     }
 

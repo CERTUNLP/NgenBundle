@@ -15,9 +15,14 @@ namespace CertUnlp\NgenBundle\Services\Rdap;
  *
  * @author dam
  */
-class Entity {
+class Entity
+{
 
-    public function __construct($entity_object) {
+    private $object;
+    private $entities;
+
+    public function __construct($entity_object)
+    {
         $this->object = $entity_object;
         if (isset($this->object->entities)) {
             foreach ($this->object->entities as $entity) {
@@ -29,42 +34,41 @@ class Entity {
         }
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->object->name . "( " . $this->object->handle . " )";
     }
 
-    public function getVcard() {
-        if (isset($this->object->vcardArray)) {
-            return $this->object->vcardArray[1];
+    public function getSelfLink()
+    {
+        if ($this->getLinks()) {
+            return array_filter(
+                $this->getLinks(), function ($e) {
+                return $e->rel == "self";
+            }
+            )[0]->href;
         }
         return [];
     }
 
-    public function getLinks() {
+    public function getLinks()
+    {
         if (isset($this->object->links)) {
             return $this->object->links;
         }
-    }
-
-    public function getSelfLink() {
-        if ($this->getLinks()) {
-            return array_filter(
-                            $this->getLinks(), function ($e) {
-                        return $e->rel == "self";
-                    }
-                    )[0]->href;
-        }
         return [];
     }
 
-    public function getRoles() {
+    public function getRoles()
+    {
         if (isset($this->object->roles)) {
             return $this->object->roles;
         }
         return [];
     }
 
-    public function getRolesAsString() {
+    public function getRolesAsString()
+    {
         $string = "";
         if (isset($this->object->roles)) {
             foreach ($this->object->roles as $role) {
@@ -74,13 +78,21 @@ class Entity {
         return $string;
     }
 
-    public function getHandle() {
+    public function getHandle()
+    {
         if (isset($this->object->handle)) {
             return $this->object->handle;
         }
+        return [];
     }
 
-    public function getVcardElement($element) {
+    public function getEmails()
+    {
+        return $this->getVcardElement('email');
+    }
+
+    public function getVcardElement($element)
+    {
         $elements = [];
         foreach ($this->getVcard() as $vcard) {
             if ($vcard[0] == $element) {
@@ -90,23 +102,31 @@ class Entity {
         return $elements;
     }
 
-    public function getEmails() {
-        return $this->getVcardElement('email');
+    public function getVcard()
+    {
+        if (isset($this->object->vcardArray)) {
+            return $this->object->vcardArray[1];
+        }
+        return [];
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->getVcardElement('fn')[0];
     }
 
-    public function getOrganization() {
+    public function getOrganization()
+    {
         return $this->getVcardElement('org');
     }
 
-    public function getPhone() {
+    public function getPhone()
+    {
         return $this->getVcardElement('tel');
     }
 
-    public function getEntities($callback = null) {
+    public function getEntities($callback = '')
+    {
         $entities = [];
         if ($callback) {
             $entities[] = $callback($this);

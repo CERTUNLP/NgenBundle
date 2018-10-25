@@ -11,9 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Services\Frontend\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController;
+class UserFrontendController extends FrontendController
+{
 
-class UserFrontendController extends FrontendController {
-    
 }

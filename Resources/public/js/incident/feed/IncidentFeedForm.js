@@ -14,13 +14,13 @@ var IncidentFeedForm = Form.extend({
         return 'incident/feed';
     },
     getObjectId: function () {
-        return  this.getIncidentFeedId();
+        return this.getIncidentFeedId();
     },
     setIncidentFeedId: function () {
         this.incident_feed_id = (($('#name').val().replace(' ', '_'))).toLowerCase();
     },
     getIncidentFeedId: function () {
-        return  this.incident_feed_id;
+        return this.incident_feed_id;
     },
     handleExtraErrors: function (jqXHR) {
 //        $.each(jqXHR.responseJSON.errors.errors, function (k, v) {

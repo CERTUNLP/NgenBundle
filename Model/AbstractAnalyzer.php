@@ -11,17 +11,20 @@
 
 namespace CertUnlp\NgenBundle\Model;
 
-abstract class AbstractAnalyzer {
+abstract class AbstractAnalyzer
+{
 
-    public function analyze($params = null) {
+    public function analyze($params = null)
+    {
         $this->output($this->doAnalysis($this->input($params)));
     }
 
-    abstract public function input($params = null);
+    abstract public function output($analyze_output = null);
 
-    public function doAnalysis($input = null) {
+    public function doAnalysis($input = null)
+    {
         return $input;
     }
 
-    abstract public function output($analyze_output = null);
+    abstract public function input($params = null);
 }

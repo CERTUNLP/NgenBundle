@@ -11,7 +11,14 @@
 
 namespace CertUnlp\NgenBundle\Model;
 
+use CertUnlp\NgenBundle\Entity\Incident;
+use CertUnlp\NgenBundle\Entity\IncidentFeed;
+use CertUnlp\NgenBundle\Entity\IncidentState;
+use CertUnlp\NgenBundle\Entity\NetworkAdmin;
+use DateTime;
+use FOS\CommentBundle\Model\Thread;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,87 +30,102 @@ use Symfony\Component\HttpFoundation\File\File;
  *
  * @author demyen
  */
-interface IncidentInterface {
+interface IncidentInterface
+{
+
+    /**
+     * get id
+     *
+     * @return int|string
+     */
+    public function getId();
+
+    /**
+     * Set hostAddress
+     *
+     * @param IncidentFeed $feed
+     * @return Incident
+     */
+    public function setFeed(IncidentFeed $feed);
+
+    /**
+     * Get $state
+     *
+     * @return IncidentFeed
+     */
+    public function getFeed();
+
+    /**
+     * Set IncidentState
+     *
+     * @param $state
+     * @return Incident
+     */
+    public function setState(IncidentState $state);
+
+    /**
+     * Get $state
+     *
+     * @return IncidentState
+     */
+    public function getState();
 
     /**
      * Set hostAddress
      *
      * @param string $hostAddress
-     * @return InternalIncident
+     * @return Incident
      */
     public function setHostAddress($hostAddress);
 
     /**
      * Get hostAddress
      *
-     * @return string 
+     * @return string
      */
     public function getHostAddress();
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return InternalIncident
-     */
-//    public function setCreatedAt($createdAt);
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime 
-     */
-//    public function getCreatedAt();
-
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     * @return InternalIncident
-     */
-//    public function setUpdatedAt($updatedAt);
-
-    /**
-     * Get updatedAt
-     *
-     * @return \DateTime 
-     */
-//    public function getUpdatedAt();
 
     /**
      * Set isClosed
      *
      * @param boolean $isClosed
-     * @return InternalIncident
+     * @return Incident
      */
     public function setIsClosed($isClosed);
 
     /**
      * Get isClosed
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsClosed();
 
     /**
      * Get isClosed
      *
-     * @return boolean 
+     * @return boolean
+     */
+    public function isClosed();
+
+    /**
+     * Get isClosed
+     *
+     * @return boolean
      */
     public function close();
 
     /**
      * Set network
      *
-     * @param \CertUnlp\NgenBundle\Model\NetworkInterface $network
-     * @return InternalIncident
+     * @param NetworkInterface $network
+     * @return Incident
      */
-    public function setNetwork(\CertUnlp\NgenBundle\Model\NetworkInterface $network = null);
+    public function setNetwork(NetworkInterface $network = null);
 
     /**
      * Get network
      *
-     * @return \CertUnlp\NgenBundle\Model\NetworkInterface
+     * @return NetworkInterface
      */
     public function getNetwork();
 
@@ -111,29 +133,29 @@ interface IncidentInterface {
      * Set type
      *
      * @param \CertUnlp\NgenBundle\Entity\IncidentType $type
-     * @return InternalIncident
+     * @return Incident
      */
     public function setType(\CertUnlp\NgenBundle\Entity\IncidentType $type = null);
 
     /**
      * Get type
      *
-     * @return \CertUnlp\NgenBundle\Entity\IncidentType 
+     * @return \CertUnlp\NgenBundle\Entity\IncidentType
      */
     public function getType();
 
     /**
      * Set date
      *
-     * @param \DateTime $date
-     * @return InternalIncident
+     * @param DateTime $date
+     * @return Incident
      */
-    public function setDate($date);
+    public function setDate(DateTime $date);
 
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate();
 
@@ -143,29 +165,29 @@ interface IncidentInterface {
      * Set reporter
      *
      * @param \CertUnlp\NgenBundle\Model\ReporterInterface $reporter
-     * @return InternalIncident
+     * @return Incident
      */
     public function setReporter(ReporterInterface $reporter = null);
 
     /**
      * Get reporter
      *
-     * @return \CertUnlp\NgenBundle\Model\ReporterInterface 
+     * @return \CertUnlp\NgenBundle\Model\ReporterInterface
      */
     public function getReporter();
 
     /**
      * Set evidence_file
      *
-     * @param string $evidenceFile
-     * @return InternalIncident
+     * @param File $evidenceFile
+     * @return Incident
      */
     public function setEvidenceFile(File $evidenceFile = null);
 
     /**
      * Get evidence_file
      *
-     * @return string 
+     * @return UploadedFile
      */
     public function getEvidenceFile();
 
@@ -173,21 +195,22 @@ interface IncidentInterface {
      * Set evidence_file_path
      *
      * @param string $evidenceFilePath
-     * @return InternalIncident
+     * @return Incident
      */
-    public function setEvidenceFilePath($evidenceFilePath);
+    public function setEvidenceFilePath(string $evidenceFilePath);
 
     /**
      * Get evidence_file_path
      *
-     * @return string 
+     * @param string $fullPath
+     * @return string
      */
-    public function getEvidenceFilePath();
+    public function getEvidenceFilePath(string $fullPath = '');
 
     /**
      * Get evidence sub directory
      *
-     * @return string 
+     * @return string
      */
     public function getEvidenceSubDirectory();
 
@@ -195,21 +218,21 @@ interface IncidentInterface {
      * Set evidence_file_temp
      *
      * @param string $evidenceFileTemp
-     * @return InternalIncident
+     * @return Incident
      */
-    public function setEvidenceFileTemp($evidenceFileTemp);
+    public function setEvidenceFileTemp(string $evidenceFileTemp);
 
     /**
      * Get evidence_file_temp
      *
-     * @return string 
+     * @return string
      */
     public function getEvidenceFileTemp();
 
     /**
      * Get an array with emails
      *
-     * @return array 
+     * @return array
      */
     public function getEmails();
 
@@ -217,14 +240,49 @@ interface IncidentInterface {
      * Set report_sent
      *
      * @param boolean $sendReport
-     * @return InternalIncident
+     * @return Incident
      */
-    public function setSendReport($sendReport);
+    public function setSendReport(bool $sendReport);
 
     /**
      * Get sendReport
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getSendReport();
+
+    /**
+     * @return string
+     */
+    public function getReportMessageId();
+
+    /**
+     * @param string $reportMessageId
+     * @return string
+     */
+    public function setReportMessageId(string $reportMessageId);
+
+    /**
+     * @param string $slug
+     * @return mixed
+     */
+    public function setSlug(string $slug);
+
+    /**
+     * @param NetworkAdmin $networkAdmin
+     * @return mixed
+     */
+    public function setNetworkAdmin(NetworkAdmin $networkAdmin);
+
+    /**
+     * @param Thread $thread
+     * @return mixed
+     */
+    public function setCommentThread(Thread $thread);
+
+    /**
+     * @return NetworkAdmin
+     */
+    public function getNetworkAdmin();
+
 }

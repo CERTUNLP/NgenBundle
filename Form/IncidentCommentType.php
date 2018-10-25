@@ -20,11 +20,13 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  *
  * @author dam
  */
-class IncidentCommentType extends AbstractType {
+class IncidentCommentType extends AbstractType
+{
 
     private $commentClass;
 
-    public function __construct($commentClass) {
+    public function __construct($commentClass)
+    {
         $this->commentClass = $commentClass;
     }
 
@@ -32,23 +34,24 @@ class IncidentCommentType extends AbstractType {
      * Configures a Comment form.
      *
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder->add('body', 'textarea')
-                ->add('notify_to_admin', 'checkbox', array('data' => false, 'mapped' => true, 'attr' => array(), 'required' => false, 'label' => 'Notify to admin'))
-
-        ;
+            ->add('notify_to_admin', 'checkbox', array('data' => false, 'mapped' => true, 'attr' => array(), 'required' => false, 'label' => 'Notify to admin'));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver) {
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
         parent::setDefaultOptions($resolver);
         $resolver->setDefaults(array(
             'data_class' => $this->commentClass,
         ));
     }
 
-    public function getName() {
+    public function getName()
+    {
         return "fos_comment_comment";
     }
 

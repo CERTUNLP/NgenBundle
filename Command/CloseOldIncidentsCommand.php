@@ -12,23 +12,23 @@
 namespace CertUnlp\NgenBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CloseOldIncidentsCommand extends ContainerAwareCommand {
+class CloseOldIncidentsCommand extends ContainerAwareCommand
+{
 
-    protected function configure() {
+    protected function configure()
+    {
         $this
-                ->setName('cert_unlp:incidents:close-old')
-                ->setDescription('Walk through incidents that have a date of 6 day ago or more and closes them.')
-                ->addOption('days', '-d', InputOption::VALUE_OPTIONAL, 'Close incidents of days ago', 10)
-
-        ;
+            ->setName('cert_unlp:incidents:close-old')
+            ->setDescription('Walk through incidents that have a date of 6 day ago or more and closes them.')
+            ->addOption('days', '-d', InputOption::VALUE_OPTIONAL, 'Close incidents of days ago', 10);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $output->writeln('[incidents]: Starting.');
         $output->writeln('[incidents]: Closing old incidents...');
         $output->writeln('[incidents]: Internals...');

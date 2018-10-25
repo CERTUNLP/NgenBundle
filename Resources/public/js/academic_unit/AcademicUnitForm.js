@@ -14,13 +14,13 @@ var AcademicUnitForm = Form.extend({
         return 'academic_unit';
     },
     getObjectId: function () {
-        return  this.getAcademicUnitId();
+        return this.getAcademicUnitId();
     },
     setAcademicUnitId: function () {
         this.academic_unit_id = (($('#name').val().replace(' ', '_'))).toLowerCase();
     },
     getAcademicUnitId: function () {
-        return  this.academic_unit_id;
+        return this.academic_unit_id;
     },
     handleExtraErrors: function (jqXHR) {
 //        $.each(jqXHR.responseJSON.errors.errors, function (k, v) {

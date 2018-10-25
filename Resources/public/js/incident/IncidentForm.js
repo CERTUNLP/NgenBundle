@@ -20,7 +20,7 @@ var IncidentForm = Form.extend({
         return 'incident';
     },
     getObjectId: function () {
-        return  this.incidentId;
+        return this.incidentId;
     },
     handleExtraErrors: function () {
     },
@@ -42,8 +42,8 @@ var IncidentForm = Form.extend({
     editReportChangeText: function (data, response) {
         if (!$("#reportEdit").hasClass('hidden')) {
             $.publish('/cert_unlp/incident/report/html', [$('#type').val(), function (data, response) {
-                    tinymce.activeEditor.setContent(response.responseText);
-                }]);
+                tinymce.activeEditor.setContent(response.responseText);
+            }]);
         }
     },
     editReport: function (event) {

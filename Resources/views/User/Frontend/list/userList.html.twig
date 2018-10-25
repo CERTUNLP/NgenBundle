@@ -8,12 +8,12 @@
 #}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong>{{icon('share-alt fa-fw')}} Users</strong>
-        <strong>({{objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount}})</strong>
+        <strong>{{ icon('share-alt fa-fw') }} Users</strong>
+        <strong>({{ objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount }})</strong>
         <div class="pull-right">
             <div class="btn-group">
-                <a class="btn btn-default btn-xs" href="{{path('cert_unlp_ngen_user_new_user')}}">
-                    {{icon('plus-circle fa-fw')}}add user
+                <a class="btn btn-default btn-xs" href="{{ path('cert_unlp_ngen_user_new_user') }}">
+                    {{ icon('plus-circle fa-fw') }}add user
                 </a>
             </div>
         </div>
@@ -28,9 +28,9 @@
             <th>Action</th>
         </tr>
         <tbody>
-            {% for user in users %}
-                {% include 'CertUnlpNgenBundle:User:Frontend/list/userListRow.html.twig' with {'user': user} %}
-            {% endfor %}
+        {% for user in users %}
+            {% include 'CertUnlpNgenBundle:User:Frontend/list/userListRow.html.twig' with {'user': user} %}
+        {% endfor %}
         </tbody>
 
     </table>

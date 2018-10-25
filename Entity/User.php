@@ -11,13 +11,12 @@
 
 namespace CertUnlp\NgenBundle\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface;
-use Doctrine\ORM\Mapping as ORM;
-use CertUnlp\NgenBundle\Model\ReporterInterface;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
+use CertUnlp\NgenBundle\Model\ReporterInterface;
+use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
-use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * User
@@ -27,7 +26,8 @@ use FOS\UserBundle\Model\User as BaseUser;
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
  */
-class User extends BaseUser implements ReporterInterface {
+class User extends BaseUser implements ReporterInterface
+{
 
     /**
      * @var integer
@@ -37,7 +37,10 @@ class User extends BaseUser implements ReporterInterface {
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
+    /**
+     * @ORM\Column(name="api_key", type="string", length=255, nullable=true)
+     */
+    protected $apiKey;
     /**
      * @var string
      *
@@ -45,105 +48,51 @@ class User extends BaseUser implements ReporterInterface {
      * @JMS\Expose
      */
     private $name;
-
     /**
      * @var string
      *
      * @ORM\Column(name="lastname", type="string", length=50)
      */
     private $lastname;
-
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
-
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime")
      */
     private $updatedAt;
-
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="reporter") */
     private $incidents;
-
-    /**
-     * @ORM\Column(name="api_key", type="string", length=255, nullable=true)
-     */
-    protected $apiKey;
-
     /**
      * @var string
-     * 
+     *
      * @Gedmo\Slug(fields={"name","lastname"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
      * */
     private $slug;
 
     /**
-     * Set name
-     *
-     * @param string $name
-     * @return User
+     * Constructor
      */
-    public function setName($name) {
-        $this->name = $name;
-
-        return $this;
+    public function __construct()
+    {
+        parent::__construct();
+        $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Get name
+     * Get updatedAt
      *
-     * @return string 
+     * @return \DateTime
      */
-    public function getName() {
-        return $this->name;
-    }
-
-    /**
-     * Set lastname
-     *
-     * @param string $lastname
-     * @return User
-     */
-    public function setLastname($lastname) {
-        $this->lastname = $lastname;
-
-        return $this;
-    }
-
-    /**
-     * Get lastname
-     *
-     * @return string 
-     */
-    public function getLastname() {
-        return $this->lastname;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return User
-     */
-    public function setCreatedAt($createdAt) {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime 
-     */
-    public function getCreatedAt() {
-        return $this->createdAt;
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 
     /**
@@ -152,31 +101,20 @@ class User extends BaseUser implements ReporterInterface {
      * @param \DateTime $updatedAt
      * @return User
      */
-    public function setUpdatedAt($updatedAt) {
+    public function setUpdatedAt($updatedAt)
+    {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
     /**
-     * Get updatedAt
-     *
-     * @return \DateTime 
-     */
-    public function getUpdatedAt() {
-        return $this->updatedAt;
-    }
-
-//    function getRoles() {
-//        return array('ROLE_USER', 'ROLE_API');
-//    }
-
-    /**
      *
      * @ORM\PrePersist
      * @ORM\PreUpdate
      */
-    public function timestampsUpdate() {
+    public function timestampsUpdate()
+    {
         $this->setUpdatedAt(new \DateTime('now'));
 
         if ($this->getCreatedAt() == null) {
@@ -185,11 +123,26 @@ class User extends BaseUser implements ReporterInterface {
     }
 
     /**
-     * Constructor
+     * Get createdAt
+     *
+     * @return \DateTime
      */
-    public function __construct() {
-        parent::__construct();
-        $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return User
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     /**
@@ -198,7 +151,8 @@ class User extends BaseUser implements ReporterInterface {
      * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
      * @return User
      */
-    public function addIncident(IncidentInterface $incidents) {
+    public function addIncident(IncidentInterface $incidents)
+    {
         $this->incidents[] = $incidents;
 
         return $this;
@@ -209,21 +163,84 @@ class User extends BaseUser implements ReporterInterface {
      *
      * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
      */
-    public function removeIncident(IncidentInterface $incidents) {
+    public function removeIncident(IncidentInterface $incidents)
+    {
         $this->incidents->removeElement($incidents);
     }
+
+//    function getRoles() {
+//        return array('ROLE_USER', 'ROLE_API');
+//    }
 
     /**
      * Get incidents
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getIncidents() {
+    public function getIncidents()
+    {
         return $this->incidents;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getName() . ' ' . $this->getLastname();
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return User
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get lastname
+     *
+     * @return string
+     */
+    public function getLastname()
+    {
+        return $this->lastname;
+    }
+
+    /**
+     * Set lastname
+     *
+     * @param string $lastname
+     * @return User
+     */
+    public function setLastname($lastname)
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    /**
+     * Get apiKey
+     *
+     * @return string
+     */
+    public function getApiKey()
+    {
+        return $this->apiKey;
     }
 
     /**
@@ -232,19 +249,21 @@ class User extends BaseUser implements ReporterInterface {
      * @param string $apiKey
      * @return User
      */
-    public function setApiKey($apiKey) {
+    public function setApiKey($apiKey)
+    {
         $this->apiKey = $apiKey;
 
         return $this;
     }
 
     /**
-     * Get apiKey
+     * Get slug
      *
-     * @return string 
+     * @return string
      */
-    public function getApiKey() {
-        return $this->apiKey;
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**
@@ -253,19 +272,11 @@ class User extends BaseUser implements ReporterInterface {
      * @param string $slug
      * @return User
      */
-    public function setSlug($slug) {
+    public function setSlug($slug)
+    {
         $this->slug = $slug;
 
         return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string 
-     */
-    public function getSlug() {
-        return $this->slug;
     }
 
 }

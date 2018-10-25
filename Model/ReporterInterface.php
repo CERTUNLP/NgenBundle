@@ -17,23 +17,26 @@ namespace CertUnlp\NgenBundle\Model;
  * and open the template in the editor.
  */
 
+use CertUnlp\NgenBundle\Entity\User;
+
 /**
  *
  * @author demyen
  */
-interface ReporterInterface {
+interface ReporterInterface
+{
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName();
 
     /**
      * Get lastname
      *
-     * @return string 
+     * @return string
      */
     public function getLastname();
 
@@ -64,7 +67,7 @@ interface ReporterInterface {
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail();
 }

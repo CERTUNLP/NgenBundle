@@ -11,10 +11,10 @@
 {% block title %}Network admins{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{icon('users fa-fw')}} Academic Units</h1>
+    <h1 class="page-header">{{ icon('users fa-fw') }} Academic Units</h1>
 {% endblock %}
 
-{% block sideBar_search_path %}{{path('cert_unlp_ngen_academic_unit_search')}}{% endblock %}
+{% block sideBar_search_path %}{{ path('cert_unlp_ngen_academic_unit_search') }}{% endblock %}
 
 {% block content_body %}
     {% include 'CertUnlpNgenBundle:AcademicUnit:Frontend/list/academicUnitList.html.twig' with {'academicUnits': objects  } %}
@@ -25,13 +25,12 @@
     {{ parent() }}
 
     {% javascripts
-    '@CertUnlpNgenBundle/Resources/public/js/academic_unit/AcademicUnit.js'
-    '@CertUnlpNgenBundle/Resources/public/js/academic_unit/AcademicUnitApi.js'
-    %}
-    <script src="{{ asset_url }}"></script>
+        '@CertUnlpNgenBundle/Resources/public/js/academic_unit/AcademicUnit.js'
+        '@CertUnlpNgenBundle/Resources/public/js/academic_unit/AcademicUnitApi.js' %}
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
         var academic_unit = new AcademicUnit();
-        var academic_unit_api = new AcademicUnitApi("{{path("api_2_get")}}/", "{{app.user.apiKey}}");
+        var academic_unit_api = new AcademicUnitApi("{{ path("api_2_get") }}/", "{{ app.user.apiKey }}");
     </script>
 {% endblock %}

@@ -40,9 +40,10 @@ class UserRegistrationFrontendController extends RegistrationController
 
     /**
      * @Route("/", name="fos_user_registration_register", methods="GET|POST")
+     * @param Request $request
+     * @return null|RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public
-    function registerAction(Request $request)
+    public function registerAction(Request $request)
     {
         /** @var $formFactory FactoryInterface */
         $formFactory = $this->get('fos_user.registration.form.factory');
@@ -100,8 +101,7 @@ class UserRegistrationFrontendController extends RegistrationController
     /**
      * @Route("/check-email", name="fos_user_registration_check_email", methods="GET|POST")
      */
-    public
-    function checkEmailAction()
+    public function checkEmailAction()
     {
         $email = $this->get('session')->get('fos_user_send_confirmation_email/email');
 
@@ -123,9 +123,11 @@ class UserRegistrationFrontendController extends RegistrationController
 
     /**
      * @Route("/confirm/{token}", name="fos_user_registration_confirm", methods="GET")
+     * @param Request $request
+     * @param $token
+     * @return null|RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public
-    function confirmAction(Request $request, $token)
+    public function confirmAction(Request $request, $token)
     {
 
         /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
@@ -161,8 +163,7 @@ class UserRegistrationFrontendController extends RegistrationController
     /**
      * @Route("/confirmed", name="fos_user_registration_confirmed", methods="GET")
      */
-    public
-    function confirmedAction()
+    public function confirmedAction()
     {
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
@@ -178,8 +179,7 @@ class UserRegistrationFrontendController extends RegistrationController
     /**
      * @return mixed
      */
-    private
-    function getTargetUrlFromSession()
+    private function getTargetUrlFromSession()
     {
         $key = sprintf('_security.%s.target_path', $this->get('security.token_storage')->getToken()->getProviderKey());
 

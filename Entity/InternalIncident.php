@@ -11,12 +11,11 @@
 
 namespace CertUnlp\NgenBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
-use JMS\Serializer\Annotation as JMS;
-use CertUnlp\NgenBundle\Entity\Incident;
-use Gedmo\Mapping\Annotation as Gedmo;
 use CertUnlp\NgenBundle\Validator\Constraints as NetworkAssert;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Description of InternalIncident
@@ -24,11 +23,10 @@ use CertUnlp\NgenBundle\Validator\Constraints as NetworkAssert;
  * @author dam
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Entity\InternalIncidentRepository")
  * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Listener\InternalIncidentListener" })
-
- * 
+ *
  */
-class InternalIncident extends Incident {
-
+class InternalIncident extends Incident
+{
     /**
      * @var string
      *
@@ -39,37 +37,65 @@ class InternalIncident extends Incident {
      * @JMS\Groups({"api"})
      */
     protected $hostAddress;
-
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Model\NetworkInterface", inversedBy="incidents") 
+     * @var string
+     *
+     * @Gedmo\Slug(fields={"hostAddress"},separator="_")
+     * @ORM\Column(name="slug", type="string", length=100,nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     * */
+    protected $slug;
+    /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Model\NetworkInterface", inversedBy="incidents")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     private $network;
-
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\NetworkAdmin", inversedBy="incidents")    
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\NetworkAdmin", inversedBy="incidents")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     private $network_admin;
-
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\AcademicUnit", inversedBy="incidents") 
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\AcademicUnit", inversedBy="incidents")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     private $academic_unit;
 
     /**
-     * @var string
-     * 
-     * @Gedmo\Slug(fields={"hostAddress"},separator="_")     
-     * @ORM\Column(name="slug", type="string", length=100,nullable=true)
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     * */
-    protected $slug;
+     * Get hostAddress
+     *
+     * @return string
+     */
+    public function getHostAddress()
+    {
+        return $this->hostAddress;
+    }
+
+    /**
+     * Set hostAddress
+     *
+     * @param string $hostAddress
+     * @return Incident
+     */
+    public function setHostAddress($hostAddress)
+    {
+        $this->hostAddress = $hostAddress;
+        return $this;
+    }
+
+    /**
+     * Get network
+     *
+     * @return \CertUnlp\NgenBundle\Model\NetworkInterface}
+     */
+    public function getNetwork()
+    {
+        return $this->network;
+    }
 
     /**
      * Set network
@@ -77,7 +103,8 @@ class InternalIncident extends Incident {
      * @param \CertUnlp\NgenBundle\Model\NetworkInterface $network
      * @return Incident
      */
-    public function setNetwork(NetworkInterface $network = null) {
+    public function setNetwork(NetworkInterface $network = null)
+    {
         $this->network = $network;
         $this->setNetworkAdmin($network->getNetworkAdmin());
         $this->setAcademicUnit($network->getAcademicUnit());
@@ -86,67 +113,65 @@ class InternalIncident extends Incident {
     }
 
     /**
-     * Get network
+     * Get academicUnit
      *
-     * @return \CertUnlp\NgenBundle\Model\NetworkInterface} 
+     * @return AcademicUnit
      */
-    public function getNetwork() {
-        return $this->network;
-    }
-
-    /**
-     * Set networkAdmin
-     *
-     * @param \CertUnlp\NgenBundle\Entity\NetworkAdmin $networkAdmin
-     *
-     * @return InternalIncident
-     */
-    public function setNetworkAdmin(\CertUnlp\NgenBundle\Entity\NetworkAdmin $networkAdmin = null) {
-        $this->network_admin = $networkAdmin;
-
-        return $this;
-    }
-
-    /**
-     * Get networkAdmin
-     *
-     * @return \CertUnlp\NgenBundle\Entity\NetworkAdmin
-     */
-    public function getNetworkAdmin() {
-        return $this->network_admin;
+    public function getAcademicUnit()
+    {
+        return $this->academic_unit;
     }
 
     /**
      * Set academicUnit
      *
-     * @param \CertUnlp\NgenBundle\Entity\AcademicUnit $academicUnit
+     * @param AcademicUnit $academicUnit
      *
      * @return InternalIncident
      */
-    public function setAcademicUnit(\CertUnlp\NgenBundle\Entity\AcademicUnit $academicUnit = null) {
+    public function setAcademicUnit(AcademicUnit $academicUnit = null)
+    {
         $this->academic_unit = $academicUnit;
 
         return $this;
     }
 
-    /**
-     * Get academicUnit
-     *
-     * @return \CertUnlp\NgenBundle\Entity\AcademicUnit
-     */
-    public function getAcademicUnit() {
-        return $this->academic_unit;
-    }
-
-    public function getEmails() {
+    public function getEmails()
+    {
         return [$this->getNetworkAdmin()->getEmail()];
     }
 
-    public function isInternal() {
+    /**
+     * Get networkAdmin
+     *
+     * @return NetworkAdmin
+     */
+    public function getNetworkAdmin()
+    {
+        return $this->network_admin;
+    }
+
+    /**
+     * Set networkAdmin
+     *
+     * @param NetworkAdmin $networkAdmin
+     *
+     * @return InternalIncident
+     */
+    public function setNetworkAdmin(NetworkAdmin $networkAdmin = null)
+    {
+        $this->network_admin = $networkAdmin;
+
+        return $this;
+    }
+
+    public function isInternal()
+    {
         return true;
     }
 
-    public function isExternal() {
+    public function isExternal()
+    {
         return false;
     }
 

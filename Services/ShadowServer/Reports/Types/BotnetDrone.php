@@ -16,6 +16,7 @@ namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types;
  *
  * @author demyen
  */
-class BotnetDrone extends ShadowServerReport {
+class BotnetDrone extends ShadowServerReport
+{
     //put your code here
 }

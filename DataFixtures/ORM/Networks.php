@@ -11,21 +11,23 @@
 
 namespace CertUnlp\NgenBundle\DataFixtures\ORM;
 
+use CertUnlp\NgenBundle\Entity\AcademicUnit;
+use CertUnlp\NgenBundle\Entity\Network;
+use CertUnlp\NgenBundle\Entity\NetworkAdmin;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use CertUnlp\NgenBundle\Entity\Network;
-use ArrayObject;
-use CertUnlp\NgenBundle\Entity\AcademicUnit;
-use CertUnlp\NgenBundle\Entity\NetworkAdmin;
 
-class Networks extends AbstractFixture implements OrderedFixtureInterface {
+class Networks extends AbstractFixture implements OrderedFixtureInterface
+{
 
-    public function getOrder() {
+    public function getOrder()
+    {
         return 2;
     }
 
-    public function load(ObjectManager $manager) {
+    public function load(ObjectManager $manager)
+    {
         $data = array(
             array('ip_mask' => '192.168.0.0/16', 'academic_unit_name' => 'Test', 'admin_name' => 'Support Test', 'admin_email' => 'support@organization.test'));
         $NetworkAdminRepository = $manager->getRepository('CertUnlpNgenBundle:NetworkAdmin');

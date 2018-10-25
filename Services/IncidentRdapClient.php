@@ -11,14 +11,17 @@
 
 namespace CertUnlp\NgenBundle\Services;
 
-use CertUnlp\NgenBundle\Services\Rdap\RdapClient;
 use CertUnlp\NgenBundle\Entity\ExternalIncident;
+use CertUnlp\NgenBundle\Services\Rdap\RdapClient;
+use Exception;
 
-class IncidentRdapClient extends RdapClient {
+class IncidentRdapClient extends RdapClient
+{
 
-    public function prePersistDelegation(ExternalIncident $incident) {
+    public function prePersistDelegation(ExternalIncident $incident)
+    {
         try {
-            $this->response = $this->requestIp($incident->getHostAddress());
+            $this->setResponse($this->requestIp($incident->getHostAddress()));
             $this->seachForAbuseEntities();
             $incident->setAbuseEntity($this->getAbuseEntity());
             $incident->setAbuseEntityEmails($this->getAbuseEntityEmails());
@@ -31,9 +34,10 @@ class IncidentRdapClient extends RdapClient {
         }
     }
 
-    public function seachForAbuseEntities() {
-        if ($this->response->getAbuseEntities()) {
-            foreach ($this->response->getAbuseEntities() as $index => $abuse) {
+    public function seachForAbuseEntities()
+    {
+        if ($this->getResponse()->getAbuseEntities()) {
+            foreach ($this->getResponse()->getAbuseEntities() as $index => $abuse) {
                 if (!$abuse->getEmails()) {
                     $new_entity = $this->requestEntity($abuse->getSelfLink());
                     if ($new_entity->getEmails()) {
@@ -44,28 +48,34 @@ class IncidentRdapClient extends RdapClient {
         }
     }
 
-    public function getAbuseEntity() {
-        return $this->response->getAbuseEntity()->getName();
+    public function getAbuseEntity()
+    {
+        return $this->getResponse()->getAbuseEntity()->getName();
     }
 
-    public function getAbuseEntityEmails() {
-        return $this->response->getAbuseEntity()->getEmails('fn');
+    public function getAbuseEntityEmails()
+    {
+        return $this->getResponse()->getAbuseEntity()->getEmails('fn');
     }
 
-    public function getNetworkEntity() {
-        return $this->response->getName() . " (" . $this->response->getHandle() . ")";
+    public function getNetworkEntity()
+    {
+        return $this->getResponse()->getName() . " (" . $this->getResponse()->getHandle() . ")";
     }
 
-    public function getStartAddress() {
-        return $this->response->getStartAddress();
+    public function getStartAddress()
+    {
+        return $this->getResponse()->getStartAddress();
     }
 
-    public function getEndAddress() {
-        return $this->response->getEndAddress();
+    public function getEndAddress()
+    {
+        return $this->getResponse()->getEndAddress();
     }
 
-    public function getCountry() {
-        return $this->response->getCountry();
+    public function getCountry()
+    {
+        return $this->getResponse()->getCountry();
     }
 
 }

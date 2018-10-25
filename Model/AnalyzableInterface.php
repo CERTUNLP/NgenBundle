@@ -15,6 +15,7 @@ namespace CertUnlp\NgenBundle\Model;
  *
  * @author demyen
  */
-interface AnalyzableInterface {
+interface AnalyzableInterface
+{
     //put your code here
 }

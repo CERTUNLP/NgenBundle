@@ -14,13 +14,13 @@ var IncidentStateForm = Form.extend({
         return 'incident/state';
     },
     getObjectId: function () {
-        return  this.getIncidentStateId();
+        return this.getIncidentStateId();
     },
     setIncidentStateId: function () {
         this.incident_state_id = (($('#name').val().replace(' ', '_'))).toLowerCase();
     },
     getIncidentStateId: function () {
-        return  this.incident_state_id;
+        return this.incident_state_id;
     },
     handleExtraErrors: function (jqXHR) {
 //        $.each(jqXHR.responseJSON.errors.errors, function (k, v) {

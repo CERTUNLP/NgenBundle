@@ -11,7 +11,6 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-use CertUnlp\NgenBundle\Form\Model\UserChangePassword;
 use FOS\UserBundle\Controller\ResettingController;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Event\FormEvent;
@@ -39,6 +38,8 @@ class UserResettingFrontendController extends ResettingController
 
     /**
      * @Route("/send-email", name="fos_user_resetting_send_email", methods="POST")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function sendEmailAction(Request $request)
     {
@@ -47,6 +48,8 @@ class UserResettingFrontendController extends ResettingController
 
     /**
      * @Route("/check-email", name="fos_user_resetting_check_email", methods="GET")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function checkEmailAction(Request $request)
     {
@@ -58,6 +61,9 @@ class UserResettingFrontendController extends ResettingController
     /**
      * @Route("/reset/{token}", name="fos_user_resetting_reset")
      * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param $token
+     * @return null|RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function resetAction(Request $request, $token)
     {
@@ -65,7 +71,6 @@ class UserResettingFrontendController extends ResettingController
         $formFactory = $this->get('fos_user.resetting.form.factory');
         /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
         $userManager = $this->get('fos_user.user_manager');
-        /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
         $dispatcher = $this->get('event_dispatcher');
 
         $user = $userManager->findUserByConfirmationToken($token);

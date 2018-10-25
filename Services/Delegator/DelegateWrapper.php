@@ -11,60 +11,69 @@
 
 namespace CertUnlp\NgenBundle\Services\Delegator;
 
-use CertUnlp\NgenBundle\Services\Delegator\DelegateInterface;
-
 /**
  * Description of Delegate
  *
  * @author demyen
  */
-class DelegateWrapper implements DelegateInterface {
+class DelegateWrapper implements DelegateInterface
+{
 
     private $delegateKey;
     private $delegate;
     private $alias;
     private $priority;
 
-    public function __construct($delegate, $alias = null, $priority = null) {
+    public function __construct($delegate, $alias = null, $priority = null)
+    {
         $this->setDelegate($delegate);
         $this->setAlias($alias);
         $this->setPriority($priority);
     }
 
-    public function getDelegate() {
+    public function getDelegate()
+    {
         return $this->delegate;
     }
 
-    public function setDelegate($delegate) {
+    public function setDelegate($delegate)
+    {
         $this->setDelegateKey(get_class($delegate));
         $this->delegate = $delegate;
     }
 
-    public function getAlias() {
-        return $this->alias;
-    }
-
-    public function setAlias($alias) {
-        $this->alias = $alias;
-    }
-
-    public function getPriority() {
+    public function getPriority()
+    {
         return $this->priority;
     }
 
-    public function setPriority($priority) {
+    public function setPriority($priority)
+    {
         $this->priority = $priority;
     }
 
-    public function getDelegateKey() {
+    public function getDelegateKey()
+    {
         return $this->delegateKey . ($this->getAlias() ? ('.' . $this->getAlias()) : '');
     }
 
-    public function setDelegateKey($delegateKey) {
+    public function setDelegateKey($delegateKey)
+    {
         $this->delegateKey = $delegateKey;
     }
 
-    public function doDelegation($function, $arguments) {
+    public function getAlias()
+    {
+        return $this->alias;
+    }
+
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
+    }
+
+    public function doDelegation($function, $arguments)
+    {
         if (is_callable(array($this->delegate, $function))) {
             call_user_func(array($this->delegate, $function), $arguments);
         }

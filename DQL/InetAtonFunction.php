@@ -11,20 +11,23 @@
 
 namespace CertUnlp\NgenBundle\DQL;
 
-use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
+use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 
-class InetAtonFunction extends FunctionNode {
+class InetAtonFunction extends FunctionNode
+{
 
     public $ip;
 
-    public function getSql(SqlWalker $sqlWalker) {
+    public function getSql(SqlWalker $sqlWalker)
+    {
         return 'INET_ATON(' . $sqlWalker->walkStringPrimary($this->ip) . ')';
     }
 
-    public function parse(Parser $parser) {
+    public function parse(Parser $parser)
+    {
         $parser->match(Lexer::T_IDENTIFIER);
         $parser->match(Lexer::T_OPEN_PARENTHESIS);
 

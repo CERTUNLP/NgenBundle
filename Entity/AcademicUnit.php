@@ -11,6 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Entity;
 
+use CertUnlp\NgenBundle\Model\IncidentInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -22,7 +24,8 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
-class AcademicUnit {
+class AcademicUnit
+{
 
     /**
      * @var integer
@@ -43,7 +46,7 @@ class AcademicUnit {
 
     /**
      * @var string
-     * 
+     *
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
      * @JMS\Expose
@@ -83,16 +86,39 @@ class AcademicUnit {
     private $isActive = true;
 
     /**
+     * Constructor
+     * @param null $name
+     */
+    public function __construct($name = null)
+    {
+        $this->setName($name);
+        $this->networks = new ArrayCollection();
+        $this->incidents = new ArrayCollection();
+    }
+
+    /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getName();
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
@@ -101,36 +127,21 @@ class AcademicUnit {
      * @param string $name
      * @return AcademicUnit
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName() {
-        return $this->name;
-    }
-
-    /**
-     * Constructor
-     */
-    public function __construct($name = null) {
-        $this->setName($name);
-        $this->networks = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
      * Add networks
      *
-     * @param \CertUnlp\NgenBundle\Entity\Network $networks
+     * @param Network $networks
      * @return AcademicUnit
      */
-    public function addNetwork(\CertUnlp\NgenBundle\Entity\Network $networks) {
+    public function addNetwork(Network $networks)
+    {
         $this->networks[] = $networks;
 
         return $this;
@@ -139,19 +150,31 @@ class AcademicUnit {
     /**
      * Remove networks
      *
-     * @param \CertUnlp\NgenBundle\Entity\Network $networks
+     * @param Network $networks
      */
-    public function removeNetwork(\CertUnlp\NgenBundle\Entity\Network $networks) {
+    public function removeNetwork(Network $networks)
+    {
         $this->networks->removeElement($networks);
     }
 
     /**
      * Get networks
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getNetworks() {
+    public function getNetworks()
+    {
         return $this->networks;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**
@@ -160,29 +183,22 @@ class AcademicUnit {
      * @param string $slug
      * @return AcademicUnit
      */
-    public function setSlug($slug) {
+    public function setSlug($slug)
+    {
         $this->slug = $slug;
 
         return $this;
     }
 
     /**
-     * Get slug
-     *
-     * @return string 
-     */
-    public function getSlug() {
-        return $this->slug;
-    }
-
-    /**
      * Add incidents
      *
-     * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
+     * @param IncidentInterface $incident
      * @return AcademicUnit
      */
-    public function addIncident(\CertUnlp\NgenBundle\Model\IncidentInterface $incidents) {
-        $this->incidents[] = $incidents;
+    public function addIncident(IncidentInterface $incident)
+    {
+        $this->incidents[] = $incident;
 
         return $this;
     }
@@ -190,19 +206,31 @@ class AcademicUnit {
     /**
      * Remove incidents
      *
-     * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
+     * @param IncidentInterface $incident
      */
-    public function removeIncident(\CertUnlp\NgenBundle\Model\IncidentInterface $incidents) {
-        $this->incidents->removeElement($incidents);
+    public function removeIncident(IncidentInterface $incident)
+    {
+        $this->incidents->removeElement($incident);
     }
 
     /**
      * Get incidents
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getIncidents() {
+    public function getIncidents()
+    {
         return $this->incidents;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 
     /**
@@ -212,30 +240,9 @@ class AcademicUnit {
      *
      * @return AcademicUnit
      */
-    public function setCreatedAt($createdAt) {
+    public function setCreatedAt($createdAt)
+    {
         $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt() {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return AcademicUnit
-     */
-    public function setUpdatedAt($updatedAt) {
-        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -245,19 +252,21 @@ class AcademicUnit {
      *
      * @return \DateTime
      */
-    public function getUpdatedAt() {
+    public function getUpdatedAt()
+    {
         return $this->updatedAt;
     }
 
     /**
-     * Set isActive
+     * Set updatedAt
      *
-     * @param boolean $isActive
+     * @param \DateTime $updatedAt
      *
      * @return AcademicUnit
      */
-    public function setIsActive($isActive) {
-        $this->isActive = $isActive;
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -267,8 +276,23 @@ class AcademicUnit {
      *
      * @return boolean
      */
-    public function getIsActive() {
+    public function getIsActive()
+    {
         return $this->isActive;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return AcademicUnit
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
     }
 
 }

@@ -10,7 +10,7 @@
 #    prefix: /v2/incidents/internals
 #    resource: 'CertUnlp\NgenBundle\Controller\IncidentReportController'
 #    name_prefix:  api_1_
-    
+
 #cert_ngen_incident_api:
 #    type: rest
 #    prefix: /v1
@@ -52,7 +52,7 @@ cert_ngen_incident_report_api:
     parent: cert_ngen_incident_type_api
     resource: 'CertUnlp\NgenBundle\Controller\IncidentReportController'
     name_prefix:  api_2_
-    
+
 cert_ngen_user_api:
     type: rest
     prefix: /v1

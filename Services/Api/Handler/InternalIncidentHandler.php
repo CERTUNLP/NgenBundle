@@ -11,11 +11,36 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
-use CertUnlp\NgenBundle\Services\Api\Handler\IncidentHandler;
+class InternalIncidentHandler extends IncidentHandler
+{
 
-class InternalIncidentHandler extends IncidentHandler {
+    public function closeOldIncidents($days = 10)
+    {
+        $incidents = $this->all(['isClosed' => false]);
+        $state = $this->om->getRepository('CertUnlp\NgenBundle\Entity\IncidentState')->findOneBySlug('closed_by_inactivity');
+        $closedIncidents = [];
+        foreach ($incidents as $incident) {
+            if ($incident->getOpenDays(true) >= $days) {
+                $incident->setState($state);
+                $this->om->persist($incident);
+                $closedIncidents[$incident->getId()] = ['hostAddress' => $incident->getHostAddress(),
+                    'type' => $incident->getType(),
+                    'date' => getDate(),
+                    'lastTimeDetected' => $incident->getLastTimeDetected(),
+                    'openDays' => $incident->getOpenDays(true)];
+            }
+            $this->om->flush();
+        }
+        return $closedIncidents;
+    }
 
-    protected function checkIfExists($incident, $method) {
+    public function renotificateIncidents()
+    {
+        return $this->repository->findRenotificables();
+    }
+
+    protected function checkIfExists($incident, $method)
+    {
         $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'hostAddress' => $incident->getHostAddress(), 'type' => $incident->getType()]);
         if ($incidentDB && $method == 'POST') {
             if ($incident->getFeed()->getSlug() == "shadowserver") {
@@ -32,29 +57,6 @@ class InternalIncidentHandler extends IncidentHandler {
             $incident->setLastTimeDetected(new \DateTime('now'));
         }
         return $incident;
-    }
-
-    public function closeOldIncidents($days = 10) {
-        $incidents = $this->all(['isClosed' => false]);
-        $state = $this->om->getRepository('CertUnlp\NgenBundle\Entity\IncidentState')->findOneBySlug('closed_by_inactivity');
-        $closedIncidents = [];
-        foreach ($incidents as $incident) {
-            if ($incident->getOpenDays(true) >= $days) {
-                $incident->setState($state);
-                $this->om->persist($incident);
-                $closedIncidents[$incident->getId()] = ['hostAddress' => $incident->getHostAddress(),
-                    'type' => $incident->getType(),
-                    'date' => getDate(),
-                    'lastTimeDetected' => $incident->getLastTimeDetected(),
-                    'openDays' => $incident->getOpenDays(true)];
-            }
-            $this->om->flush($incident);
-        }
-        return $closedIncidents;
-    }
-
-    public function renotificateIncidents() {
-        return $this->repository->findRenotificables();
     }
 
 }

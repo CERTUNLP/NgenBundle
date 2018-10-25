@@ -2,7 +2,7 @@
 
 <phpunit bootstrap="./Tests/bootstrap.php" color="true">
     <php>
-        <ini name="xdebug.max_nesting_level" value="200" />
+        <ini name="xdebug.max_nesting_level" value="200"/>
     </php>
     <testsuites>
         <testsuite name="CertUnlpNgenBundle">

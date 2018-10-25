@@ -9,7 +9,7 @@
 
 {% extends 'CertUnlpNgenBundle::IncidentReport/Frontend/frontend.html.twig' %}
 {% block content_header %}
-    <h1 class="page-header"> {{object}} {%include "CertUnlpNgenBundle:IncidentReport:Frontend/list/stateLabel.html.twig" with {'incidentReport': object}%}
+    <h1 class="page-header"> {{ object }} {% include "CertUnlpNgenBundle:IncidentReport:Frontend/list/stateLabel.html.twig" with {'incidentReport': object} %}
     </h1>
 {% endblock %}
 {% block content_body %}
@@ -27,7 +27,7 @@
                                     Sistem Id
                                 </td>
                                 <td class="">
-                                    {{object.lang}}
+                                    {{ object.lang }}
                                 </td>
                             </tr>
                             <tr>
@@ -35,15 +35,15 @@
                                     Type
                                 </td>
                                 <td class="">
-                                    {{object.type}}
+                                    {{ object.type }}
                                 </td>
                             </tr>
                             <tr>
                                 <td class="">
-                                    Created at 
+                                    Created at
                                 </td>
                                 <td class="">
-                                    {{object.createdAt|date('Y-m-d')}}
+                                    {{ object.createdAt|date('Y-m-d') }}
                                 </td>
                             </tr>
 
@@ -52,7 +52,7 @@
                                     Last Update
                                 </td>
                                 <td class="">
-                                    {{object.updatedAt|date('Y-m-d')}}
+                                    {{ object.updatedAt|date('Y-m-d') }}
                                 </td>
                             </tr>
                             <tr>
@@ -60,7 +60,7 @@
                                     Active
                                 </td>
                                 <td class="">
-                                    {%include "CertUnlpNgenBundle:IncidentReport:Frontend/list/stateLabel.html.twig" with {'incidentReport': object}%}
+                                    {% include "CertUnlpNgenBundle:IncidentReport:Frontend/list/stateLabel.html.twig" with {'incidentReport': object} %}
                                 </td>
                             </tr>
                             <tr>
@@ -69,7 +69,7 @@
                                 </td>
                                 <td class="">
                                     {#                                    <a target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~object.name~'"'~ "&&" ~'"'~object.email~'"'})}}">#}
-                                    <span>{{label_info(object.type.incidents.count)}} </span>
+                                    <span>{{ label_info(object.type.incidents.count) }} </span>
                                     {#                                    </a>#}
                                 </td>
                             </tr>
@@ -93,7 +93,7 @@
                                     Problem
                                 </td>
                                 <td class="">
-                                    {{object.problem|striptags('<div>,<a>,<pre>,<code>')|raw}}
+                                    {{ object.problem|striptags('<div>,<a>,<pre>,<code>')|raw }}
                                 </td>
                             </tr>
                             <tr>
@@ -101,7 +101,7 @@
                                     Derivated problem
                                 </td>
                                 <td class="">
-                                    {{object.derivatedProblem|striptags('<div>,<a>,<pre>,<code>')|raw}}
+                                    {{ object.derivatedProblem|striptags('<div>,<a>,<pre>,<code>')|raw }}
                                 </td>
                             </tr>
 
@@ -110,7 +110,7 @@
                                     Verification
                                 </td>
                                 <td class="">
-                                    {{object.verification|striptags('<div>,<a>,<pre>,<code>')|raw}}
+                                    {{ object.verification|striptags('<div>,<a>,<pre>,<code>')|raw }}
                                 </td>
                             </tr>
 
@@ -119,7 +119,7 @@
                                     Recomendations
                                 </td>
                                 <td class="">
-                                    {{object.recomendations|striptags('<div>,<a>,<pre>,<code>')|raw}}
+                                    {{ object.recomendations|striptags('<div>,<a>,<pre>,<code>')|raw }}
                                 </td>
                             </tr>
 
@@ -128,7 +128,7 @@
                                     More information
                                 </td>
                                 <td class="">
-                                    {{object.moreInformation|striptags('<div>,<a>,<pre>,<code>')|raw}}
+                                    {{ object.moreInformation|striptags('<div>,<a>,<pre>,<code>')|raw }}
                                 </td>
                             </tr>
 

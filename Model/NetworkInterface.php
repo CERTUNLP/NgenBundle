@@ -11,10 +11,9 @@
 
 namespace CertUnlp\NgenBundle\Model;
 
-use CertUnlp\NgenBundle\Model\IncidentInterface;
-use CertUnlp\NgenBundle\Entity\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\AcademicUnit;
 use CertUnlp\NgenBundle\Entity\Network;
+use CertUnlp\NgenBundle\Entity\NetworkAdmin;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -26,7 +25,13 @@ use CertUnlp\NgenBundle\Entity\Network;
  *
  * @author demyen
  */
-interface NetworkInterface {
+interface NetworkInterface
+{
+
+    /**
+     * Constructor
+     */
+    public function __construct();
 
     /**
      * Set ipMask
@@ -39,7 +44,7 @@ interface NetworkInterface {
     /**
      * Get ipMask
      *
-     * @return string 
+     * @return string
      */
     public function getIpMask();
 
@@ -54,7 +59,7 @@ interface NetworkInterface {
     /**
      * Get isActive
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsActive();
 
@@ -69,7 +74,7 @@ interface NetworkInterface {
     /**
      * Get networkAdmin
      *
-     * @return \CertUnlp\NgenBundle\Entity\NetworkAdmin 
+     * @return \CertUnlp\NgenBundle\Entity\NetworkAdmin
      */
     public function getNetworkAdmin();
 
@@ -84,14 +89,9 @@ interface NetworkInterface {
     /**
      * Get academicUnit
      *
-     * @return \CertUnlp\NgenBundle\Entity\AcademicUnit 
+     * @return \CertUnlp\NgenBundle\Entity\AcademicUnit
      */
     public function getAcademicUnit();
-
-    /**
-     * Constructor
-     */
-    public function __construct();
 
     /**
      * Add incidents
@@ -111,7 +111,7 @@ interface NetworkInterface {
     /**
      * Get incidents
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getIncidents();
 
@@ -126,7 +126,7 @@ interface NetworkInterface {
     /**
      * Get ip
      *
-     * @return string 
+     * @return string
      */
     public function getIp();
 
@@ -141,7 +141,7 @@ interface NetworkInterface {
     /**
      * Get numericIp
      *
-     * @return integer 
+     * @return integer
      */
     public function getNumericIp();
 
@@ -156,7 +156,7 @@ interface NetworkInterface {
     /**
      * Get numericIpMask
      *
-     * @return integer 
+     * @return integer
      */
     public function getNumericIpMask();
 

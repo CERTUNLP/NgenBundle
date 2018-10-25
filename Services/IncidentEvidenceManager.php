@@ -18,31 +18,24 @@ use CertUnlp\NgenBundle\Model\IncidentInterface;
  *
  * @author demyen
  */
-class IncidentEvidenceManager {
+class IncidentEvidenceManager
+{
 
-    public function __construct($upload_directory) {
+    private $upload_directory;
+
+    public function __construct($upload_directory)
+    {
         $this->upload_directory = $upload_directory;
     }
 
-    public function prePersistDelegation(IncidentInterface $incident) {
+    public function prePersistDelegation(IncidentInterface $incident)
+    {
         $this->setFilename($incident);
         $this->uploadEvidenceFile($incident);
     }
 
-    public function preUpdateDelegation(IncidentInterface $incident) {
-        $this->setFilename($incident);
-        $this->uploadEvidenceFile($incident);
-    }
-
-//    public function postPersistDelegation(IncidentInterface $incident) {
-//        $this->uploadEvidenceFile($incident);
-//    }
-//
-//    public function postUpdateDelegation(IncidentInterface $incident) {
-//        $this->uploadEvidenceFile($incident);
-//    }
-
-    public function setFilename(IncidentInterface $incident) {
+    public function setFilename(IncidentInterface $incident)
+    {
         if ($incident->getEvidenceFile()) {
             $ext = "_" . sha1(uniqid(mt_rand(), true));
             if (is_callable(array($incident->getEvidenceFile(), 'getClientOriginalExtension'))) {
@@ -55,7 +48,16 @@ class IncidentEvidenceManager {
         }
     }
 
-    public function uploadEvidenceFile(IncidentInterface $incident) {
+//    public function postPersistDelegation(IncidentInterface $incident) {
+//        $this->uploadEvidenceFile($incident);
+//    }
+//
+//    public function postUpdateDelegation(IncidentInterface $incident) {
+//        $this->uploadEvidenceFile($incident);
+//    }
+
+    public function uploadEvidenceFile(IncidentInterface $incident)
+    {
 
 //        if (null === $incident->getEvidenceFile()) {
 //            return;
@@ -82,10 +84,17 @@ class IncidentEvidenceManager {
 //        }
     }
 
-    protected function getUploadDirectory() {
+    protected function getUploadDirectory()
+    {
         // the absolute directory path where uploaded
         // documents should be saved
         return $this->upload_directory;
+    }
+
+    public function preUpdateDelegation(IncidentInterface $incident)
+    {
+        $this->setFilename($incident);
+        $this->uploadEvidenceFile($incident);
     }
 
 }

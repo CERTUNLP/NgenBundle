@@ -16,22 +16,30 @@ namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports;
  *
  * @author demyen
  */
-class ShadowServerCsvRow {
+class ShadowServerCsvRow
+{
 
-    public function __construct($csv_row, $report_file) {
+    private $report_file;
+    private $csv_row;
+
+    public function __construct($csv_row, $report_file)
+    {
         $this->csv_row = $csv_row;
         $this->report_file = $report_file;
     }
 
-    public function getCsvRow() {
+    public function getCsvRow()
+    {
         return $this->csv_row;
     }
 
-    public function getReportFile() {
+    public function getReportFile()
+    {
         return $this->report_file;
     }
 
-    public function getIp() {
+    public function getIp()
+    {
         return $this->csv_row['ip'];
     }
 

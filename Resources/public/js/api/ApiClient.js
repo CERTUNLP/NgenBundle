@@ -11,21 +11,21 @@ var ApiClient = Class.extend({
     init: function (apiUrl, apiKey) {
         this.apiKey = apiKey;
         this.apiUrl = apiUrl;
-        this.api = new $.RestClient(apiUrl, {verbs: {
+        this.api = new $.RestClient(apiUrl, {
+            verbs: {
                 'create': 'POST',
                 'read': 'GET',
                 'update': 'PATCH',
                 'destroy': 'DELETE'
-            }});
+            }
+        });
         this.addDefaultChannel();
         this.config();
     },
     doRequest: function (request, callback) {
-        request.done($.proxy(function (data, text, jqXHR)
-        {
+        request.done($.proxy(function (data, text, jqXHR) {
             callback(this.getResponse(jqXHR), jqXHR);
-        }, this)).fail($.proxy(function (jqXHR)
-        {
+        }, this)).fail($.proxy(function (jqXHR) {
             callback(this.getResponse(jqXHR), jqXHR);
         }, this));
     },
@@ -47,8 +47,7 @@ var ApiClient = Class.extend({
 });
 
 
-$.fn.serializeObject = function ()
-{
+$.fn.serializeObject = function () {
     var o = {};
     var a = this.serializeArray();
     $.each(a, function () {

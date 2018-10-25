@@ -11,16 +11,20 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Controller;
 
+use CertUnlp\NgenBundle\Exception\InvalidFormException;
+use CertUnlp\NgenBundle\Services\Mailer\IncidentMailer;
+use FOS\RestBundle\View\View;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\FormTypeInterface;
-use CertUnlp\NgenBundle\Exception\InvalidFormException;
-use CertUnlp\NgenBundle\Services\Api\Controller\ApiController;
-use CertUnlp\NgenBundle\Entity\IncidentType;
 
-class IncidentApiController extends ApiController {
+class IncidentApiController extends ApiController
+{
 
-    public function __construct($handler, $viewHandler, $view, $mailer) {
+    private $mailer;
+
+    public function __construct($handler, $viewHandler, $view, IncidentMailer $mailer)
+    {
         parent::__construct($handler, $viewHandler, $view);
         $this->mailer = $mailer;
     }
@@ -32,7 +36,8 @@ class IncidentApiController extends ApiController {
      *
      * @return FormTypeInterface|View
      */
-    public function post(Request $request) {
+    public function post(Request $request)
+    {
         //TODO: refactoring aca o algo, poqnomegusta
 
         try {
@@ -61,11 +66,11 @@ class IncidentApiController extends ApiController {
     /**
      * Prints a mail template for the given incident.
      *
-     * @param int     $id      the incident id
-     *
-     * @return array
+     * @param $slug
+     * @return Response
      */
-    public function reportHtmlAction($slug) {
+    public function reportHtmlAction($slug)
+    {
         $data = array('state' => $slug);
         $this->getView()->setTemplate('CertUnlpNgenBundle:Incident:Report/Twig/incidentReportHtml.html.twig');
         $this->getView()->setTemplateData($data);
@@ -78,11 +83,11 @@ class IncidentApiController extends ApiController {
 
     /**
      * Prints a mail template for the given incident.
-     * @param int     $id      the incident id
-     *
-     * @return array
+     * @param $incident
+     * @return Response
      */
-    public function reportMailAction($incident) {
+    public function reportMailAction($incident)
+    {
         return new Response($this->mailer->send_report($incident, null, true));
     }
 

@@ -11,24 +11,26 @@
 
 namespace CertUnlp\NgenBundle\Security;
 
-use Symfony\Component\Security\Http\Authentication\SimplePreAuthenticatorInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
-use CertUnlp\NgenBundle\Security\ApiKeyUserProvider;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Http\Authentication\SimplePreAuthenticatorInterface;
 
-class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface {
+class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface
+{
 
     protected $userProvider;
 
-    public function __construct(ApiKeyUserProvider $userProvider) {
+    public function __construct(ApiKeyUserProvider $userProvider)
+    {
         $this->userProvider = $userProvider;
     }
 
-    public function createToken(Request $request, $providerKey) {
+    public function createToken(Request $request, $providerKey)
+    {
         // look for an apikey query parameter
 
         if ($request->headers->get('apikey')) {
@@ -49,28 +51,30 @@ class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface {
         }
 
         return new PreAuthenticatedToken(
-                'anon.', $apiKey, $providerKey
+            'anon.', $apiKey, $providerKey
         );
     }
 
-    public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey) {
+    public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey)
+    {
         $apiKey = $token->getCredentials();
         $username = $this->userProvider->getUsernameForApiKey($apiKey);
 
         if (!$username) {
             throw new AuthenticationException(
-            sprintf('API Key "%s" does not exist.', $apiKey)
+                sprintf('API Key "%s" does not exist.', $apiKey)
             );
         }
 
         $user = $this->userProvider->loadUserByUsername($username);
 
         return new PreAuthenticatedToken(
-                $user, $apiKey, $providerKey, $user->getRoles()
+            $user, $apiKey, $providerKey, $user->getRoles()
         );
     }
 
-    public function supportsToken(TokenInterface $token, $providerKey) {
+    public function supportsToken(TokenInterface $token, $providerKey)
+    {
         return $token instanceof PreAuthenticatedToken && $token->getProviderKey() === $providerKey;
     }
 

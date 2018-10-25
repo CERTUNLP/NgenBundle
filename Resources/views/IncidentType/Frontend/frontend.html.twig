@@ -11,10 +11,10 @@
 {% block title %}Incident Types{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{icon('cubes fa-fw')}} Incident Types</h1>
+    <h1 class="page-header">{{ icon('cubes fa-fw') }} Incident Types</h1>
 {% endblock %}
 
-{% block sideBar_search_path %}{{path('cert_unlp_ngen_incident_type_search')}}{% endblock %}
+{% block sideBar_search_path %}{{ path('cert_unlp_ngen_incident_type_search') }}{% endblock %}
 
 {% block content_body %}
     {% include 'CertUnlpNgenBundle:IncidentType:Frontend/list/incidentTypeList.html.twig' with {'incidentTypes': objects  } %}

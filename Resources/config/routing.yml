@@ -34,17 +34,17 @@ cert_ngen_user_change_password:
     resource: '@CertUnlpNgenBundle/Controller/UserChangePasswordFrontendController.php'
     type:     annotation
     prefix:   /users/profile
-    
+
 cert_ngen_network_admin:
     resource: '@CertUnlpNgenBundle/Controller/NetworkAdminFrontendController.php'
     type:     annotation
     prefix:   /networks/admins
-    
+
 cert_ngen_network:
     resource: '@CertUnlpNgenBundle/Controller/NetworkFrontendController.php'
     type:     annotation
-    prefix:   /networks    
-    
+    prefix:   /networks
+
 cert_ngen_internal_incident:
     resource: '@CertUnlpNgenBundle/Controller/InternalIncidentFrontendController.php'
     type:     annotation
@@ -84,7 +84,7 @@ cert_ngen_root:
     resource: '@CertUnlpNgenBundle/Controller/DashboardController.php'
     type:     annotation
     prefix:   /
-    
+
 fos_comment_api:
     type: rest
     resource: '@FOSCommentBundle/Resources/config/routing.yml'

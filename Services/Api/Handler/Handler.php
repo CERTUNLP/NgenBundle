@@ -11,20 +11,22 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
+use CertUnlp\NgenBundle\Exception\InvalidFormException;
+use CertUnlp\NgenBundle\Model\ApiHandlerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
-use \CertUnlp\NgenBundle\Exception\InvalidFormException;
-use Symfony\Component\Security\Core\SecurityContext;
-use CertUnlp\NgenBundle\Model\ApiHandlerInterface;
 
-abstract class Handler implements ApiHandlerInterface {
+abstract class Handler implements ApiHandlerInterface
+{
 
     protected $om;
     protected $entityClass;
     protected $repository;
     protected $formFactory;
+    private $entityType;
 
-    public function __construct(ObjectManager $om, $entityClass, $entityType, FormFactoryInterface $formFactory) {
+    public function __construct(ObjectManager $om, $entityClass, $entityType, FormFactoryInterface $formFactory)
+    {
         $this->om = $om;
         $this->entityClass = $entityClass;
         $this->repository = $this->om->getRepository($this->entityClass);
@@ -35,23 +37,26 @@ abstract class Handler implements ApiHandlerInterface {
     /**
      * Get a Entity by id.
      *
-     * @param mixed $id
-     *
-     * @return Entity
+     * @param array $parameters
+     * @return object
      */
-    public function get(array $parameters) {
+    public function get(array $parameters)
+    {
         return $this->repository->findOneBy($parameters);
     }
 
     /**
      * Get a list of entities.
      *
-     * @param int $limit  the limit of the result
+     * @param array $params
+     * @param array $order
+     * @param int $limit the limit of the result
      * @param int $offset starting from the offset
      *
      * @return array
      */
-    public function all(array $params = array(), $order = array(), $limit = null, $offset = null) {
+    public function all(array $params = array(), $order = array(), $limit = null, $offset = null)
+    {
         return $this->repository->findBy($params, $order, $limit, $offset);
     }
 
@@ -60,75 +65,35 @@ abstract class Handler implements ApiHandlerInterface {
      *
      * @param array $parameters
      *
-     * @return Entity
+     * @param bool $csrf_protection
+     * @return object
      */
-    public function post(array $parameters, $csrf_protection = false) {
+    public function post(array $parameters, $csrf_protection = false)
+    {
         $entity_class_instance = $this->createEntityInstance();
 
         return $this->processForm($entity_class_instance, $parameters, 'POST', $csrf_protection);
     }
 
-    /**
-     * Edit a Entity.
-     *
-     * @param Entity $entity_class_instance
-     * @param array         $parameters
-     *
-     * @return Entity
-     */
-    public function put($entity_class_instance, array $parameters) {
-        return $this->processForm($entity_class_instance, $parameters, 'PUT', false);
+    private function createEntityInstance()
+    {
+
+        return new $this->entityClass();
     }
-
-    /**
-     * Partially update a Entity.
-     *
-     * @param Entity $entity_class_instance
-     * @param array         $parameters
-     *
-     * @return Entity
-     */
-    public function patch($entity_class_instance, array $parameters = null) {
-        return $this->processForm($entity_class_instance, $parameters, 'PATCH', false);
-    }
-
-    /**
-     * Delete a Entity.
-     *
-     * @param Entity $entity_class_instance
-     * @param array $parameters
-     *
-     * @return Entity
-     */
-    public function delete($entity_class_instance, array $parameters = null) {
-        $this->prepareToDeletion($entity_class_instance, $parameters);
-        return $this->patch($entity_class_instance, $parameters);
-    }
-
-    /**
-     * Prepare to delete a Entity.
-     *
-     * @param Entity $entity_class_instance
-     * @param array $parameters
-     *
-     * @return Entity
-     */
-    abstract protected function prepareToDeletion($entity_class_instance, array $parameters);
-
-    abstract protected function checkIfExists($entity_class_instance, $method);
 
     /**
      * Processes the form.
      *
-     * @param Entity $entity_class_instance
-     * @param array         $parameters
-     * @param String        $method
+     * @param object $entity_class_instance
+     * @param array $parameters
+     * @param String $method
      *
-     * @return Entity
+     * @param bool $csrf_protection
+     * @return object
      *
-     * @throws \CertUnlp\NgenBundle\Exception\InvalidFormException
      */
-    protected function processForm($entity_class_instance, $parameters, $method = "PUT", $csrf_protection = true) {
+    protected function processForm($entity_class_instance, $parameters, $method = "PUT", $csrf_protection = true)
+    {
 
         $form = $this->formFactory->create(new $this->entityType(), $entity_class_instance, array('csrf_protection' => $csrf_protection, 'method' => $method));
         $form->submit($parameters, 'PATCH' !== $method);
@@ -137,7 +102,7 @@ abstract class Handler implements ApiHandlerInterface {
 
             $entity_class_instance = $this->checkIfExists($entity_class_instance, $method);
             $this->om->persist($entity_class_instance);
-            $this->om->flush($entity_class_instance);
+            $this->om->flush();
 
             return $entity_class_instance;
         }
@@ -145,34 +110,83 @@ abstract class Handler implements ApiHandlerInterface {
         ('Invalid submitted data', $form);
     }
 
-    private function createEntityInstance() {
+    abstract protected function checkIfExists($entity_class_instance, $method);
 
-        return new $this->entityClass();
+    /**
+     * Edit a Entity.
+     *
+     * @param object $entity_class_instance
+     * @param array $parameters
+     *
+     * @return object
+     */
+    public function put($entity_class_instance, array $parameters)
+    {
+        return $this->processForm($entity_class_instance, $parameters, 'PUT', false);
     }
 
     /**
      * Delete a Network.
      *
-     * @param NetworkInterface $network
+     * @param object
      * @param array $parameters
      *
-     * @return NetworkInterface
+     * @return object
      */
-    public function desactivate($network, array $parameters = null) {
-        return $this->delete($network, $parameters);
+    public function desactivate($entity, array $parameters = null)
+    {
+        return $this->delete($entity, $parameters);
+    }
+
+    /**
+     * Delete a Entity.
+     *
+     * @param object $entity_class_instance
+     * @param array $parameters
+     *
+     * @return object
+     */
+    public function delete($entity_class_instance, array $parameters = null)
+    {
+        $this->prepareToDeletion($entity_class_instance, $parameters);
+        return $this->patch($entity_class_instance, $parameters);
+    }
+
+    /**
+     * Prepare to delete a Entity.
+     *
+     * @param object $entity_class_instance
+     * @param array $parameters
+     *
+     * @return object
+     */
+    abstract protected function prepareToDeletion($entity_class_instance, array $parameters);
+
+    /**
+     * Partially update a Entity.
+     *
+     * @param object $entity_class_instance
+     * @param array $parameters
+     *
+     * @return object
+     */
+    public function patch($entity_class_instance, array $parameters = null)
+    {
+        return $this->processForm($entity_class_instance, $parameters, 'PATCH', false);
     }
 
     /**
      * Delete a Network.
      *
-     * @param NetworkInterface $network
+     * @param object $entity
      * @param array $parameters
      *
-     * @return NetworkInterface
+     * @return object
      */
-    public function activate($network, array $parameters = null) {
-        $network->setIsActive(TRUE);
-        return $this->patch($network, $parameters);
+    public function activate($entity, array $parameters = null)
+    {
+        $entity->setIsActive(TRUE);
+        return $this->patch($entity, $parameters);
     }
 
 }

@@ -13,6 +13,7 @@ class Version20160822145701 extends AbstractMigration
 {
     /**
      * @param Schema $schema
+     * @throws \Doctrine\DBAL\Migrations\AbortMigrationException
      */
     public function up(Schema $schema)
     {
@@ -24,6 +25,7 @@ class Version20160822145701 extends AbstractMigration
 
     /**
      * @param Schema $schema
+     * @throws \Doctrine\DBAL\Migrations\AbortMigrationException
      */
     public function down(Schema $schema)
     {

@@ -11,12 +11,20 @@
 
 namespace CertUnlp\NgenBundle\Services;
 
+use FOS\RestBundle\View\View;
+use FOS\RestBundle\View\ViewHandler;
+use Symfony\Component\HttpFoundation\Response;
+use Twig_Environment;
+
 class IncidentReportFactory
 {
 
     protected $templating;
+    private $viewHandler;
+    private $view;
+    private $custom_handler;
 
-    public function __construct($templating, $viewHandler, $view)
+    public function __construct(Twig_Environment $templating, ViewHandler $viewHandler, View $view)
     {
         $this->templating = $templating;
         $this->viewHandler = $viewHandler;
@@ -58,7 +66,7 @@ class IncidentReportFactory
     /**
      * @param View $view
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function handle($view = null)
     {
@@ -67,7 +75,9 @@ class IncidentReportFactory
     }
 
     /**
-     * @param  array $data
+     * @param array $parameters
+     * @param $statusCode
+     * @param array $headers
      * @return View
      */
     public function response(array $parameters = array(), $statusCode = Response::HTTP_CREATED, array $headers = array())
@@ -87,7 +97,7 @@ class IncidentReportFactory
     }
 
     /**
-     * @param  array $data
+     * @param $statusCode
      * @return View
      */
     public function setStatusCode($statusCode)

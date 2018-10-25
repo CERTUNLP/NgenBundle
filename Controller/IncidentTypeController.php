@@ -11,26 +11,17 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use FOS\RestBundle\View\View;
+use CertUnlp\NgenBundle\Entity\IncidentType;
+use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
-use Symfony\Component\Form\FormTypeInterface;
+use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use CertUnlp\NgenBundle\Form\IncidentTypeType;
-use CertUnlp\NgenBundle\Entity\IncidentType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use FOS\RestBundle\Controller\Annotations as FOS;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use CertUnlp\NgenBundle\Exception\InvalidFormException;
+use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-class IncidentTypeController extends FOSRestController {
-
-    public function getApiController() {
-
-        return $this->container->get('cert_unlp.ngen.incident.type.api.controller');
-    }
+class IncidentTypeController extends FOSRestController
+{
 
     /**
      * List all networks.
@@ -43,12 +34,13 @@ class IncidentTypeController extends FOSRestController {
      * )
      *
      *
-     * @param Request               $request      the request object
+     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
      * @return array
      */
-    public function getAction(Request $request, ParamFetcherInterface $paramFetcher) {
+    public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
 
         return null;
     }
@@ -70,13 +62,20 @@ class IncidentTypeController extends FOSRestController {
      *  templateVar="incident_types"
      * )
      *
-     * @param Request               $request      the request object
+     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
      * @return array
      */
-    public function getIncidentTypesAction(Request $request, ParamFetcherInterface $paramFetcher) {
+    public function getIncidentTypesAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
         return $this->getApiController()->getAll($request, $paramFetcher);
+    }
+
+    public function getApiController()
+    {
+
+        return $this->container->get('cert_unlp.ngen.incident.type.api.controller');
     }
 
     /**
@@ -92,16 +91,14 @@ class IncidentTypeController extends FOSRestController {
      *   }
      * )
      *
-     * @param int     $id      the network id
-     *
-     * @return array
+     * @param IncidentType $incident_type
+     * @return IncidentType
      * @FOS\View(
      *  templateVar="incident_type"
      * )
-     * @throws NotFoundHttpException when network not exist
-     *         
      */
-    public function getTypeAction(IncidentType $incident_type) {
+    public function getTypeAction(IncidentType $incident_type)
+    {
         return $incident_type;
     }
 
@@ -119,12 +116,12 @@ class IncidentTypeController extends FOSRestController {
      * )
      *
      * @FOS\Post("/types")
-
      * @param Request $request the request object
      *
      * @return FormTypeInterface|View
      */
-    public function postIncidentTypeAction(Request $request) {
+    public function postIncidentTypeAction(Request $request)
+    {
         return $this->getApiController()->post($request);
     }
 
@@ -141,13 +138,12 @@ class IncidentTypeController extends FOSRestController {
      * )
      * @FOS\Patch("/types/{slug}")
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param IncidentType $incident_type
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
      */
-    public function patchIncidentTypeAction(Request $request, IncidentType $incident_type) {
+    public function patchIncidentTypeAction(Request $request, IncidentType $incident_type)
+    {
         return $this->getApiController()->patch($request, $incident_type, true);
     }
 
@@ -164,14 +160,13 @@ class IncidentTypeController extends FOSRestController {
      * )
      * @FOS\Patch("/types/{slug}")
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param IncidentType $incident_type
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
      */
-    public function patchIncidentTypeBySlugAction(Request $request, IncidentType $incident_type) {
-        return $this->getApiController()->patch($request, $incident_type,true);
+    public function patchIncidentTypeBySlugAction(Request $request, IncidentType $incident_type)
+    {
+        return $this->getApiController()->patch($request, $incident_type, true);
     }
 
     /**
@@ -188,14 +183,13 @@ class IncidentTypeController extends FOSRestController {
      *
      *
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param IncidentType $incident_type
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
      * @FOS\Patch("/types/{slug}/activate")
      */
-    public function patchIncidentTypeActivateAction(Request $request, IncidentType $incident_type) {
+    public function patchIncidentTypeActivateAction(Request $request, IncidentType $incident_type)
+    {
 
         return $this->getApiController()->activate($request, $incident_type);
     }
@@ -214,14 +208,13 @@ class IncidentTypeController extends FOSRestController {
      *
      *
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param IncidentType $incident_type
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
      * @FOS\Patch("/types/{slug}/desactivate")
      */
-    public function patchIncidentTypeDesactivateAction(Request $request, IncidentType $incident_type) {
+    public function patchIncidentTypeDesactivateAction(Request $request, IncidentType $incident_type)
+    {
 
         return $this->getApiController()->desactivate($request, $incident_type);
     }

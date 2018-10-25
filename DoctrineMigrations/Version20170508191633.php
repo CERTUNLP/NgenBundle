@@ -12,6 +12,7 @@ class Version20170508191633 extends AbstractMigration
 {
     /**
      * @param Schema $schema
+     * @throws \Doctrine\DBAL\Migrations\AbortMigrationException
      */
     public function up(Schema $schema)
     {
@@ -22,7 +23,7 @@ class Version20170508191633 extends AbstractMigration
         $this->addSql('UPDATE user SET username_canonical = username');
         $this->addSql('UPDATE user SET email_canonical = email');
         $this->addSql('UPDATE user SET roles = "a:1:{i:0;s:8:\"ROLE_API\";}"');
-        
+
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D64992FC23A8 ON user (username_canonical)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649A0D96FBF ON user (email_canonical)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649C05FB297 ON user (confirmation_token)');
@@ -34,6 +35,7 @@ class Version20170508191633 extends AbstractMigration
 
     /**
      * @param Schema $schema
+     * @throws \Doctrine\DBAL\Migrations\AbortMigrationException
      */
     public function down(Schema $schema)
     {

@@ -7,44 +7,54 @@
  with this source code in the file LICENSE.
 #}
 
-<tr data-id="{{user.username}}">
+<tr data-id="{{ user.username }}">
     <td class="col-md-1">
-        {{user.username}}
+        {{ user.username }}
     </td>
     <td class="col-md-1">
-        {{user.name ~" "~ user.lastname}}
+        {{ user.name ~" "~ user.lastname }}
     </td>
     <td class="col-md-1">
-        {{user.email}}
+        {{ user.email }}
     </td>
     <td class="col-md-1">
-        {{user.lastLogin | date('Y-m-d')}}
+        {{ user.lastLogin | date('Y-m-d') }}
     </td>
     <td id="state_label_holder" class="col-md-1">
         <div class="label-holder">
-            {%include "CertUnlpNgenBundle:User:Frontend/list/stateLabel.html.twig" with {'user': user}%}
+            {% include "CertUnlpNgenBundle:User:Frontend/list/stateLabel.html.twig" with {'user': user} %}
         </div>
     </td>
     <td class="col-sm-1">
 
         <div class="btn-group inline pull-left dropdown action-dropdown">
-            <a   class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_user_detail_user',{'username': user.username})}}">
+            <a class="btn btn-sm btn-primary" role="button"
+               href="{{ path('cert_unlp_ngen_user_detail_user',{'username': user.username}) }}">
                 Details
             </a>
-            <button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+            <button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" type="button"
+                    id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
                 Actions
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                 <li role="presentation">
-                    <a  role="menuitem" tabindex="-1" href="{{path('cert_unlp_ngen_user_edit_user',{'username': user.username})}}">{{ icon('edit alert-info')}} <span class="action-text">Edit</span></a>
+                    <a role="menuitem" tabindex="-1"
+                       href="{{ path('cert_unlp_ngen_user_edit_user',{'username': user.username}) }}">{{ icon('edit alert-info') }}
+                        <span class="action-text">Edit</span></a>
                 </li>
                 <li role="presentation">
-                    <a {% if user.isEnabled %}style="display: none;"{% endif %} class="state-label" data-action="reactivate" data-state-name="active" data-state-slug="active" role="menuitem" tabindex="-1" href="#">{{ icon('repeat alert-info')}} <span class="action-text">Reactivate</span></a>
+                    <a {% if user.isEnabled %}style="display: none;"{% endif %} class="state-label"
+                       data-action="reactivate" data-state-name="active" data-state-slug="active" role="menuitem"
+                       tabindex="-1" href="#">{{ icon('repeat alert-info') }} <span
+                                class="action-text">Reactivate</span></a>
                 </li>
 
                 <li role="presentation">
-                    <a {% if not user.isEnabled %}style="display: none;"{% endif %} class="state-label" data-action="desactivate"  data-state-name="innactive" data-state-slug="innactive" role="menuitem" tabindex="-1" href="#">{{ icon('lock alert-success') }} <span class="action-text">Desactivate</span></a>
+                    <a {% if not user.isEnabled %}style="display: none;"{% endif %} class="state-label"
+                       data-action="desactivate" data-state-name="innactive" data-state-slug="innactive" role="menuitem"
+                       tabindex="-1" href="#">{{ icon('lock alert-success') }} <span
+                                class="action-text">Desactivate</span></a>
                 </li>
             </ul>
         </div>

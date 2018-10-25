@@ -16,6 +16,7 @@ namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types;
  *
  * @author demyen
  */
-class ScanQotd extends ShadowServerReport {
+class ScanQotd extends ShadowServerReport
+{
     //put your code here
 }

@@ -16,9 +16,11 @@ namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types;
  *
  * @author demyen
  */
-class DnsOpenresolver extends ShadowServerReport {
+class DnsOpenresolver extends ShadowServerReport
+{
 
-    public function getType() {
+    public function getType()
+    {
         return "open_dns";
     }
 

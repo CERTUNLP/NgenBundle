@@ -15,23 +15,25 @@ namespace CertUnlp\NgenBundle\Model;
  *
  * @author dam
  */
-interface ApiHandlerInterface {
+interface ApiHandlerInterface
+{
 
     /**
      * Get a Entity given the identifier
      *
      * @api
      *
-     * @param mixed $id
-     *
-     * @return EntityInterface
+     * @param array $parameters
+     * @return object
      */
     public function get(array $parameters);
 
     /**
      * Get a list of Entities.
      *
-     * @param int $limit  the limit of the result
+     * @param array $params
+     * @param array $order
+     * @param int $limit the limit of the result
      * @param int $offset starting from the offset
      *
      * @return array
@@ -45,7 +47,8 @@ interface ApiHandlerInterface {
      *
      * @param array $parameters
      *
-     * @return EntityInterface
+     * @param bool $csrf_protection
+     * @return object
      */
     public function post(array $parameters, $csrf_protection = false);
 
@@ -54,10 +57,10 @@ interface ApiHandlerInterface {
      *
      * @api
      *
-     * @param EntityInterface   $entity
-     * @param array           $parameters
+     * @param object $entity
+     * @param array $parameters
      *
-     * @return EntityInterface
+     * @return object
      */
     public function put($entity, array $parameters);
 
@@ -66,20 +69,20 @@ interface ApiHandlerInterface {
      *
      * @api
      *
-     * @param EntityInterface   $entity
-     * @param array           $parameters
+     * @param object $entity
+     * @param array $parameters
      *
-     * @return EntityInterface
+     * @return object
      */
     public function patch($entity, array $parameters);
 
     /**
      * Delete a Entity.
      *
-     * @param EntityInterface $entity
+     * @param object $entity
      * @param array $parameters
      *
-     * @return EntityInterface
+     * @return object
      */
     public function delete($entity, array $parameters);
 }

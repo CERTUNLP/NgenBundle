@@ -11,57 +11,54 @@
 
 namespace CertUnlp\NgenBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class IncidentReportType extends AbstractType {
+class IncidentReportType extends AbstractType
+{
 
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
 
         $builder
-                ->add('lang', ChoiceType::class, array(
-                    'choices' => array(
-                        'Spanish' => 'es',
-                        'English' => 'en',
-                    ),
-                    'required' => true,
-                    'choices_as_values' => true
-                ))
-                ->add('type', EntityType::class, array(
-                    'class' => 'CertUnlpNgenBundle:IncidentType',
-                    'required' => true,
-                    'description' => "The administrator responsible for the network"
-                ))
-                ->add('problem', null, array(
-                    'required' => true,
-                ))
-                ->add('derivated_problem', null, array(
-                    'required' => false,
-                ))
-                ->add('verification', null, array(
-                    'required' => false,
-                ))
-                ->add('recomendations', null, array(
-                    'required' => false,
-                ))
-                ->add('more_information', null, array(
-                    'required' => false,
-                ))
-                ->add('save', 'submit', array('attr' =>
-                    array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => "slide-down"),
-        ));
-
+            ->add('lang', ChoiceType::class, array(
+                'choices' => array(
+                    'Spanish' => 'es',
+                    'English' => 'en',
+                ),
+                'required' => true,
+                'choices_as_values' => true
+            ))
+            ->add('type', EntityType::class, array(
+                'class' => 'CertUnlpNgenBundle:IncidentType',
+                'required' => true,
+                'description' => "The administrator responsible for the network"
+            ))
+            ->add('problem', null, array(
+                'required' => true,
+            ))
+            ->add('derivated_problem', null, array(
+                'required' => false,
+            ))
+            ->add('verification', null, array(
+                'required' => false,
+            ))
+            ->add('recomendations', null, array(
+                'required' => false,
+            ))
+            ->add('more_information', null, array(
+                'required' => false,
+            ))
+            ->add('save', 'submit', array('attr' =>
+                array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => "slide-down"),
+            ));
 
 
 //        if ($builder->getData()) {
@@ -82,7 +79,8 @@ class IncidentReportType extends AbstractType {
     /**
      * @param OptionsResolverInterface $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver) {
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
         $resolver->setDefaults(array(
             'data_class' => 'CertUnlp\NgenBundle\Entity\IncidentReport',
             'csrf_protection' => false,
@@ -92,7 +90,8 @@ class IncidentReportType extends AbstractType {
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return '';
     }
 

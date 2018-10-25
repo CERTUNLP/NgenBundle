@@ -11,15 +11,15 @@
 
 namespace CertUnlp\NgenBundle\Services;
 
-use Redmine\Client;
-use Gedmo\Sluggable\Util as Sluggable;
-use CertUnlp\NgenBundle\Model\ReporterInterface;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
-use CertUnlp\NgenBundle\Services\Delegator\DelegateInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use CertUnlp\NgenBundle\Model\ReporterInterface;
+use Gedmo\Sluggable\Util as Sluggable;
+use Redmine\Client;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class IncidentRedmine implements ContainerAwareInterface {
+class IncidentRedmine implements ContainerAwareInterface
+{
 
     private $client;
     private $project_id = "cert";
@@ -27,31 +27,33 @@ class IncidentRedmine implements ContainerAwareInterface {
 
     /** @var \Symfony\Component\DependencyInjection\ContainerInterface */
     private $container;
+    private $evidence_directory;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null) {
-        $this->container = $container;
-    }
-
-    function __construct($redmine_url, $redmine_key, $evidence_directory, ContainerInterface $container) {
+    function __construct($redmine_url, $redmine_key, $evidence_directory, ContainerInterface $container)
+    {
         $this->client = new Client($redmine_url, $redmine_key);
         $this->evidence_directory = $evidence_directory;
         $this->setContainer($container);
     }
 
-    public function getClient() {
-        return $this->client;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
     }
 
-    public function addUsers($users) {
+    public function addUsers($users)
+    {
         foreach ($users as $reporter) {
             $this->createUser($reporter);
         }
     }
 
-    public function createUser(ReporterInterface $reporter) {
+    public function createUser(ReporterInterface $reporter)
+    {
         $this->getClient()->api('user')->create(array(
             'login' => $reporter->getUsername(),
             'firstname' => $reporter->getName(),
@@ -60,7 +62,13 @@ class IncidentRedmine implements ContainerAwareInterface {
         ));
     }
 
-    public function createProject($name) {
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    public function createProject($name)
+    {
         $this->getClient()->api('project')->create(array(
             'name' => $name,
             'identifier' => Sluggable\Urlizer::urlize($name, '_'),
@@ -68,13 +76,15 @@ class IncidentRedmine implements ContainerAwareInterface {
         ));
     }
 
-    public function addIssueCategory($category_name) {
+    public function addIssueCategory($category_name)
+    {
         $this->getClient()->api('issue_category')->create($this->project_id, array(
             'name' => $category_name,
         ));
     }
 
-    public function addIssueCategories($category_names) {
+    public function addIssueCategories($category_names)
+    {
         foreach ($category_names as $category_name) {
             $this->getClient()->api('issue_category')->create('cert', array(
                 'name' => $category_name,
@@ -82,7 +92,25 @@ class IncidentRedmine implements ContainerAwareInterface {
         }
     }
 
-    public function createIssue(IncidentInterface $incident) {
+    public function prePersistDelegation(IncidentInterface $incident)
+    {
+        if (!in_array($this->container->get('kernel')->getEnvironment(), array('test', 'dev'))) {
+            $this->addIssue($incident);
+        }
+    }
+
+    public function addIssue(IncidentInterface $incident)
+    {
+
+
+        $this->getClient()->setImpersonateUser($incident->getReporter()->getUsername());
+        $this->createIssue($incident);
+        $this->addTimeEntry($incident);
+        $this->getClient()->setImpersonateUser(null);
+    }
+
+    public function createIssue(IncidentInterface $incident)
+    {
         $description = 'Se nos informó que el host %s fue detectado en un incidente del tipo "%s".';
         $uploadFile = array();
         if (file_exists($this->evidence_directory . $incident->getEvidenceFilePath(true))) {
@@ -93,7 +121,7 @@ class IncidentRedmine implements ContainerAwareInterface {
                     'filename' => $incident->getEvidenceFilePath(),
                     'description' => 'Evidence file: ' . $incident->getEvidenceFilePath(),
                     'content_type' => mime_content_type($this->evidence_directory . $incident->getEvidenceFilePath(true)),
-            ));
+                ));
         }
         $issue = $this->getClient()->api('issue')->create(array(
             'project_id' => $this->project_id,
@@ -109,7 +137,8 @@ class IncidentRedmine implements ContainerAwareInterface {
         return $issue;
     }
 
-    public function addTimeEntry(IncidentInterface $incident) {
+    public function addTimeEntry(IncidentInterface $incident)
+    {
         $this->getClient()->api('time_entry')->create(array(
 //            'project_id' => $this->project_id,
             'issue_id' => $incident->getRedmineIssueId(),
@@ -120,32 +149,19 @@ class IncidentRedmine implements ContainerAwareInterface {
         ));
     }
 
-    public function addIssue(IncidentInterface $incident) {
-
-
-        $this->getClient()->setImpersonateUser($incident->getReporter()->getUsername());
-        $this->createIssue($incident);
-        $this->addTimeEntry($incident);
-        $this->getClient()->setImpersonateUser(null);
+    public function postUpdateDelegation(IncidentInterface $incident)
+    {
+        if (!in_array($this->container->get('kernel')->getEnvironment(), array('test', 'dev'))) {
+            $this->updateIssue($incident);
+        }
     }
 
-    public function updateIssue(IncidentInterface $incident) {
+    public function updateIssue(IncidentInterface $incident)
+    {
 
         $this->getClient()->setImpersonateUser($incident->getReporter()->getUsername());
         $this->getClient()->api('issue')->setIssueStatus($incident->getRedmineIssueId(), $incident->getState()->getName());
         $this->getClient()->setImpersonateUser(null);
-    }
-
-    public function prePersistDelegation(IncidentInterface $incident) {
-        if (!in_array($this->container->get('kernel')->getEnvironment(), array('test', 'dev'))) {
-            $this->addIssue($incident);
-        }
-    }
-
-    public function postUpdateDelegation(IncidentInterface $incident) {
-        if (!in_array($this->container->get('kernel')->getEnvironment(), array('test', 'dev'))) {
-            $this->updateIssue($incident);
-        }
     }
 
 }

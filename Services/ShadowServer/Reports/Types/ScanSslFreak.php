@@ -16,6 +16,7 @@ namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types;
  *
  * @author demyen
  */
-class ScanSslFreak extends ShadowServerReport {
+class ScanSslFreak extends ShadowServerReport
+{
     //put your code here
 }

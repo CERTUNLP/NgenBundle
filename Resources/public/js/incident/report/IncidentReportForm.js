@@ -19,10 +19,10 @@ var IncidentReportForm = Form.extend({
         return 'incident/type/report';
     },
     getObjectId: function () {
-        return  this.getIncidentReportId();
+        return this.getIncidentReportId();
     },
     getParentObjectId: function () {
-        return  this.incident_type_id;
+        return this.incident_type_id;
     },
     setParentObjectId: function () {
         this.incident_type_id = (($('#type').val().replace(' ', '_'))).toLowerCase();
@@ -31,11 +31,11 @@ var IncidentReportForm = Form.extend({
         this.incident_report_id = (($('#lang').val().replace(' ', '_'))).toLowerCase();
     },
     getIncidentReportId: function () {
-        return  this.incident_report_id;
+        return this.incident_report_id;
     },
     doRequest: function (event) {
         if (this.form.attr('method') == 'post' && !$('input[name="_method"]').val()) {
-            $.publish('/cert_unlp/' + this.getObjectBrief() + '/new', [this.getParentObjectId(),this.getFormData(), $.proxy(this.postRequest, this)]);
+            $.publish('/cert_unlp/' + this.getObjectBrief() + '/new', [this.getParentObjectId(), this.getFormData(), $.proxy(this.postRequest, this)]);
         } else {
             $.publish('/cert_unlp/' + this.getObjectBrief() + '/update', [this.getParentObjectId(), this.getObjectId(), this.getFormData(), $.proxy(this.postRequest, this)]);
         }

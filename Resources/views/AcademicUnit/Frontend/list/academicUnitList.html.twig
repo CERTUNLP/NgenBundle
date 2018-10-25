@@ -8,12 +8,12 @@
 #}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong>{{icon('users fa-fw')}} Network admins</strong>
-        <strong>({{objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount}})</strong>
+        <strong>{{ icon('users fa-fw') }} Network admins</strong>
+        <strong>({{ objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount }})</strong>
         <div class="pull-right">
             <div class="btn-group">
-                <a class="btn btn-default btn-xs" href="{{path('cert_unlp_ngen_academic_unit_new')}}">
-                    {{icon('plus-circle fa-fw')}}add network admins
+                <a class="btn btn-default btn-xs" href="{{ path('cert_unlp_ngen_academic_unit_new') }}">
+                    {{ icon('plus-circle fa-fw') }}add network admins
                 </a>
             </div>
         </div>
@@ -25,9 +25,9 @@
             <th>Action</th>
         </tr>
         <tbody>
-            {% for academicUnit in academicUnits %}
-                {% include 'CertUnlpNgenBundle:AcademicUnit:Frontend/list/academicUnitListRow.html.twig' with {'academicUnit': academicUnit} %}
-            {% endfor %}
+        {% for academicUnit in academicUnits %}
+            {% include 'CertUnlpNgenBundle:AcademicUnit:Frontend/list/academicUnitListRow.html.twig' with {'academicUnit': academicUnit} %}
+        {% endfor %}
         </tbody>
 
     </table>

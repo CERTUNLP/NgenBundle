@@ -11,11 +11,27 @@
 
 namespace CertUnlp\NgenBundle\Services\Frontend\Controller;
 
+use CertUnlp\NgenBundle\Model\IncidentInterface;
+use FOS\CommentBundle\Model\CommentManagerInterface;
+use FOS\CommentBundle\Model\ThreadManagerInterface;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
+use Knp\Component\Pager\Paginator;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
-class FrontendController {
+class FrontendController
+{
 
-    public function __construct($doctrine, $formFactory, $entityType, $paginator, $finder, $comment_manager, $thread_manager) {
+    private $doctrine;
+    private $paginator;
+    private $finder;
+    private $entityType;
+    private $formFactory;
+    private $comment_manager;
+    private $thread_manager;
+
+    public function __construct($doctrine, FormFactory $formFactory, $entityType, Paginator $paginator, PaginatedFinderInterface $finder, CommentManagerInterface $comment_manager, ThreadManagerInterface $thread_manager)
+    {
         $this->doctrine = $doctrine;
         $this->paginator = $paginator;
         $this->finder = $finder;
@@ -25,31 +41,26 @@ class FrontendController {
         $this->thread_manager = $thread_manager;
     }
 
-    public function getDoctrine() {
+    public function getDoctrine()
+    {
         return $this->doctrine;
     }
 
-    public function getFinder() {
-        return $this->finder;
-    }
-
-    public function getPaginator() {
-        return $this->paginator;
-    }
-
-    public function homeEntity(Request $request, $term = '') {
+    public function homeEntity(Request $request, $term = '')
+    {
         return $this->searchEntity($request, $term);
     }
 
-    public function searchEntity(Request $request, $term = null) {
+    public function searchEntity(Request $request, $term = null)
+    {
         if (!$term) {
             $term = $request->get('term') ? $request->get('term') : '*';
         }
         $results = $this->getFinder()->createPaginatorAdapter($term);
 
         $pagination = $this->getPaginator()->paginate(
-                $results, $request->query->get('page', 1), 7
-                , array('defaultSortFieldName' => 'createdAt', 'defaultSortDirection' => 'desc')
+            $results, $request->query->get('page', 1), 7
+            , array('defaultSortFieldName' => 'createdAt', 'defaultSortDirection' => 'desc')
         );
 
         $pagination->setParam('term', $term);
@@ -57,20 +68,42 @@ class FrontendController {
         return array('objects' => $pagination, 'term' => $term);
     }
 
-    public function newEntity(Request $request) {
+    /**
+     * @return PaginatedFinderInterface
+     */
+    public function getFinder()
+    {
+        return $this->finder;
+    }
+
+    public function getPaginator()
+    {
+        return $this->paginator;
+    }
+
+    public function newEntity(Request $request)
+    {
         return array('form' => $this->formFactory->create(new $this->entityType())->createView(), 'method' => 'POST');
     }
 
-    public function editEntity($object) {
+    public function editEntity($object)
+    {
 
         return array('form' => $this->formFactory->create(new $this->entityType(), $object)->createView(), 'method' => 'patch');
     }
 
-    public function detailEntity($object) {
+    public function detailEntity($object)
+    {
         return array('object' => $object);
     }
 
-    public function commentsEntity($object, Request $request) {
+    /**
+     * @param IncidentInterface $object
+     * @param Request $request
+     * @return array
+     */
+    public function commentsEntity(IncidentInterface $object, Request $request)
+    {
         $id = $object->getId();
         $thread = $this->thread_manager->findThreadById($id);
         if (null === $thread) {

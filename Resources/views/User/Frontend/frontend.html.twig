@@ -11,10 +11,10 @@
 {% block title %}Users{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{icon('user fa-fw')}} Users</h1>
+    <h1 class="page-header">{{ icon('user fa-fw') }} Users</h1>
 {% endblock %}
 
-{% block sideBar_search_path %}{{path('cert_unlp_ngen_user_search_user')}}{% endblock %}
+{% block sideBar_search_path %}{{ path('cert_unlp_ngen_user_search_user') }}{% endblock %}
 
 {% block content_body %}
     {% include 'CertUnlpNgenBundle:User:Frontend/list/userList.html.twig' with {'users': objects} %}
@@ -25,13 +25,12 @@
     {{ parent() }}
 
     {% javascripts
-    '@CertUnlpNgenBundle/Resources/public/js/user/User.js'
-    '@CertUnlpNgenBundle/Resources/public/js/user/UserApi.js'
-    %}
-    <script src="{{ asset_url }}"></script>
+        '@CertUnlpNgenBundle/Resources/public/js/user/User.js'
+        '@CertUnlpNgenBundle/Resources/public/js/user/UserApi.js' %}
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
         var user = new User();
-        var user_api = new UserApi("{{path("api_1_get")}}/", "{{app.user.apiKey}}");
+        var user_api = new UserApi("{{ path("api_1_get") }}/", "{{ app.user.apiKey }}");
     </script>
 {% endblock %}

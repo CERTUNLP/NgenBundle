@@ -11,32 +11,21 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-//use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use FOS\RestBundle\Util\Codes;
-use FOS\RestBundle\View\View;
+use CertUnlp\NgenBundle\Entity\IncidentState;
+use CertUnlp\NgenBundle\Entity\IncidentType;
+use CertUnlp\NgenBundle\Entity\InternalIncident;
+use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
-use Symfony\Component\Form\FormTypeInterface;
+use FOS\RestBundle\Util\Codes;
+use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use CertUnlp\NgenBundle\Entity\InternalIncident;
-use CertUnlp\NgenBundle\Entity\IncidentState;
-use CertUnlp\NgenBundle\Exception\InvalidFormException;
-use Symfony\Component\HttpFoundation\File\File;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use FOS\RestBundle\Controller\Annotations as FOS;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use CertUnlp\NgenBundle\Entity\IncidentType;
+use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-class InternalIncidentController extends FOSRestController {
-
-    public function getApiController() {
-
-        return $this->container->get('cert_unlp.ngen.incident.internal.api.controller');
-    }
+class InternalIncidentController extends FOSRestController
+{
 
     /**
      * List all incidents.
@@ -49,12 +38,13 @@ class InternalIncidentController extends FOSRestController {
      * )
      *
      *
-     * @param Request               $request      the request object
+     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
      * @return array
      */
-    public function getAction(Request $request, ParamFetcherInterface $paramFetcher) {
+    public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
 
         return null;
     }
@@ -70,13 +60,19 @@ class InternalIncidentController extends FOSRestController {
      *     404 = "Returned when the incident is not found"
      *   }
      * )
-     * @param int     $id      the incident id
-     *
+     * @param IncidentType $incidentType
      * @return array
      */
-    public function getInternalReportHtmlAction(IncidentType $incidentType) {
+    public function getInternalReportHtmlAction(IncidentType $incidentType)
+    {
 
         return $this->getApiController()->reportHtmlAction($incidentType->getSlug());
+    }
+
+    public function getApiController()
+    {
+
+        return $this->container->get('cert_unlp.ngen.incident.internal.api.controller');
     }
 
     /**
@@ -93,11 +89,11 @@ class InternalIncidentController extends FOSRestController {
      *
      * @Fos\View()
      *
-     * @param int     $id      the incident id
-     *
+     * @param InternalIncident $incident
      * @return array
      */
-    public function getInternalReportMailAction(InternalIncident $incident) {
+    public function getInternalReportMailAction(InternalIncident $incident)
+    {
 
         return $this->getApiController()->reportMailAction($incident);
     }
@@ -116,12 +112,13 @@ class InternalIncidentController extends FOSRestController {
      * @FOS\View(
      *  templateVar="incidents"
      * )
-     * @param Request               $request      the request object
+     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
      * @return array
      */
-    public function getInternalsAction(Request $request, ParamFetcherInterface $paramFetcher) {
+    public function getInternalsAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
 
         return $this->getApiController()->getAll($request, $paramFetcher);
     }
@@ -140,14 +137,12 @@ class InternalIncidentController extends FOSRestController {
      * @FOS\View(
      *  templateVar="incident"
      * )
-     * @param int     $id      the incident id
+     * @param InternalIncident $incident
+     * @return InternalIncident
      *
-     * @return array
-     *
-     * @throws NotFoundHttpException when page not exist
-     * 
      */
-    public function getInternalAction(InternalIncident $incident) {
+    public function getInternalAction(InternalIncident $incident)
+    {
         return $incident;
     }
 
@@ -170,7 +165,8 @@ class InternalIncidentController extends FOSRestController {
      *
      * @return FormTypeInterface|View
      */
-    public function postInternalAction(Request $request) {
+    public function postInternalAction(Request $request)
+    {
 
         return $this->getApiController()->post($request);
     }
@@ -189,15 +185,15 @@ class InternalIncidentController extends FOSRestController {
      * )
      *
      * @param Request $request the request object
-     * @param int     $id      the incident id
+     * @param InternalIncident $incident
+     * @return FormTypeInterface|View
      * @FOS\View(
      *  templateVar="incidents"
      * )
-     * @return FormTypeInterface|View
      * @FOS\Put("/internals/{hostAddress}/{date}/{type}")
-     * @throws NotFoundHttpException when incident not exist
      */
-    public function putInternalAction(Request $request) {
+    public function putInternalAction(Request $request, InternalIncident $incident)
+    {
         return $this->getApiController()->put($request, $incident);
     }
 
@@ -215,13 +211,13 @@ class InternalIncidentController extends FOSRestController {
      *  templateVar="incidents"
      * )
      * @param Request $request the request object
-     * @param int     $id      the incident id
-     *
+     * @param InternalIncident $incident
+     * @param IncidentState $state
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when incident not exist
      */
-    public function patchInternalStateAction(Request $request, InternalIncident $incident, IncidentState $state) {
+    public function patchInternalStateAction(Request $request, InternalIncident $incident, IncidentState $state)
+    {
 
         return $this->getApiController()->patchState($request, $incident, $state);
     }
@@ -238,23 +234,22 @@ class InternalIncidentController extends FOSRestController {
      * )
      *
      * @param Request $request the request object
-     * @param int     $id      the incident id
-     *
+     * @param InternalIncident $incident
+     * @param IncidentState $state
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when incident not exist
-     * 
      * @FOS\Patch("/internals/{hostAddress}/{date}/{type}/states/{state}")
      * @ParamConverter("incident", class="CertUnlpNgenBundle:InternalIncident", options={"repository_method" = "findByHostDateType"})
      * @FOS\View(
      *  templateVar="incidents"
-     * )   
+     * )
      * @FOS\QueryParam(name="state",strict=true ,requirements="open|closed|closed_by_inactivity|removed|unresolved|stand_by")
      * @FOS\QueryParam(name="date",strict=true ,requirements="yyyy-MM-dd", description="If no date is selected, the date will be today.")
      * @FOS\QueryParam(name="type",strict=true ,requirements="blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|open_ssdp|phishing|poodle|scan|shellshock|spam", description="The incident type")
      * @FOS\QueryParam(name="hostAddress",strict=true ,requirements="[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", description="The host IP.")
      */
-    public function patchInternalStateWithParamsAction(Request $request, InternalIncident $incident, IncidentState $state) {
+    public function patchInternalStateWithParamsAction(Request $request, InternalIncident $incident, IncidentState $state)
+    {
         return $this->getApiController()->patchState($request, $incident, $state);
     }
 
@@ -270,11 +265,9 @@ class InternalIncidentController extends FOSRestController {
      *   }
      * )
      *
-     * @param int     $id      the incident id
+     * @param InternalIncident $incident
+     * @return InternalIncident
      *
-     * @return array
-     *
-     * @throws NotFoundHttpException when page not exist
      * @Fos\Get("/internals/{hostAddress}/{date}/{type}")
      * @FOS\View(
      *  templateVar="incidents"
@@ -284,7 +277,8 @@ class InternalIncidentController extends FOSRestController {
      * @FOS\QueryParam(name="type",strict=true ,requirements="blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|open_ssdp|phishing|poodle|scan|shellshock|spam", description="The incident type")
      * @FOS\QueryParam(name="hostAddress",strict=true ,requirements="[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", description="The host IP.")
      */
-    public function getInternalWithParamsAction(InternalIncident $incident) {
+    public function getInternalWithParamsAction(InternalIncident $incident)
+    {
         return $incident;
     }
 
@@ -304,13 +298,12 @@ class InternalIncidentController extends FOSRestController {
      *  templateVar="incidents"
      * )
      * @param Request $request the request object
-     * @param int     $id      the incident id
-     *
+     * @param InternalIncident $incident
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when incident not exist
      */
-    public function patchInternalAction(Request $request, InternalIncident $incident) {
+    public function patchInternalAction(Request $request, InternalIncident $incident)
+    {
         return $this->getApiController()->patch($request, $incident);
     }
 
@@ -328,11 +321,9 @@ class InternalIncidentController extends FOSRestController {
      *
      *
      * @param Request $request the request object
-     * @param int     $id      the incident id
-     *
+     * @param InternalIncident $incident
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when incident not exist
      * @FOS\Patch("/internals/{hostAddress}/{date}/{type}")
      * @FOS\View(
      *  templateVar="incidents"
@@ -342,7 +333,8 @@ class InternalIncidentController extends FOSRestController {
      * @FOS\QueryParam(name="type",strict=true ,requirements="blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|open_ssdp|phishing|poodle|scan|shellshock|spam", description="The incident type")
      * @FOS\QueryParam(name="hostAddress",strict=true ,requirements="[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", description="The host IP.")
      */
-    public function patchInternalWithParamsAction(Request $request, InternalIncident $incident) {
+    public function patchInternalWithParamsAction(Request $request, InternalIncident $incident)
+    {
 
         return $this->getApiController()->patch($request, $incident);
     }
@@ -362,13 +354,13 @@ class InternalIncidentController extends FOSRestController {
      *  templateVar="incidents"
      * )
      * @param Request $request the request object
-     * @param int     $incident      the incident id
+     * @param InternalIncident $incident the incident id
      *
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when incident not exist
      */
-    public function deleteInternalAction(Request $request, InternalIncident $incident) {
+    public function deleteInternalAction(Request $request, InternalIncident $incident)
+    {
         return $this->getApiController()->delete($request, $incident);
     }
 

@@ -15,7 +15,8 @@ namespace CertUnlp\NgenBundle\Services\Mailer\OpenPGP;
  *
  * @author Artem Zhuravlev <infzanoza@gmail.com>
  */
-class OpenPGPSigner implements \Swift_Signers_BodySigner {
+class OpenPGPSigner implements \Swift_Signers_BodySigner
+{
 
     protected $gnupg = null;
 
@@ -73,42 +74,84 @@ class OpenPGPSigner implements \Swift_Signers_BodySigner {
      */
     protected $encrypt = true;
 
-    public function __construct($signingKey = null, $recipientKeys = array(), $gnupgHome = null) {
+    public function __construct($signingKey = null, $recipientKeys = array(), $gnupgHome = null)
+    {
         $this->gnupgHome = $gnupgHome;
         $this->initGNUPG();
         $this->signingKey = $signingKey;
         $this->recipientKeys = $recipientKeys;
     }
 
-    public static function newInstance($signingKey = null, $recipientKeys = array(), $gnupgHome = null) {
+    /**
+     * @throws \Swift_SwiftException
+     */
+    protected function initGNUPG()
+    {
+        if (!class_exists('gnupg')) {
+            throw new \Swift_SwiftException('PHPMailerPGP requires the GnuPG class');
+        }
+
+        if (!$this->gnupgHome && isset($_SERVER['HOME'])) {
+            $this->gnupgHome = $_SERVER['HOME'] . '/.gnupg';
+        }
+
+        if (!$this->gnupgHome && getenv('HOME')) {
+            $this->gnupgHome = getenv('HOME') . '/.gnupg';
+        }
+
+        if (!$this->gnupgHome) {
+            throw new \Swift_SwiftException('Unable to detect GnuPG home path, please call PHPMailerPGP::setGPGHome()');
+        }
+
+        if (!file_exists($this->gnupgHome)) {
+            throw new \Swift_SwiftException('GnuPG home path does not exist');
+        }
+
+        putenv("GNUPGHOME=" . escapeshellcmd($this->gnupgHome));
+
+        if (!$this->gnupg) {
+            $this->gnupg = new \gnupg();
+        }
+
+        $this->gnupg->seterrormode(\gnupg::ERROR_EXCEPTION);
+    }
+
+    public static function newInstance($signingKey = null, $recipientKeys = array(), $gnupgHome = null)
+    {
         return new self($signingKey, $recipientKeys, $gnupgHome);
     }
 
     /**
      * @param boolean $encrypt
      */
-    public function setEncrypt($encrypt) {
+    public function setEncrypt($encrypt)
+    {
         $this->encrypt = $encrypt;
     }
 
     /**
      * @param string $gnupgHome
      */
-    public function setGnupgHome($gnupgHome) {
+    public function setGnupgHome($gnupgHome)
+    {
         $this->gnupgHome = $gnupgHome;
     }
 
     /**
-     * @param string $gnupgHome
+     * @param $key
+     * @return mixed
+     * @return mixed
      */
-    public function import($key) {
+    public function import($key)
+    {
         return $this->gnupg->import($key);
     }
 
     /**
      * @param string $micalg
      */
-    public function setMicalg($micalg) {
+    public function setMicalg($micalg)
+    {
         $this->micalg = $micalg;
     }
 
@@ -116,9 +159,10 @@ class OpenPGPSigner implements \Swift_Signers_BodySigner {
      * @param $identifier
      * @param null $passPhrase
      *
-     * @throws Swift_SwiftException
+     * @throws \Swift_SwiftException
      */
-    public function addSignature($identifier, $passPhrase = null) {
+    public function addSignature($identifier, $passPhrase = null)
+    {
         $keyFingerprint = $this->getKey($identifier, 'sign');
         $this->signingKey = $keyFingerprint;
 
@@ -129,43 +173,65 @@ class OpenPGPSigner implements \Swift_Signers_BodySigner {
 
     /**
      * @param $identifier
+     * @param $purpose
+     *
+     * @return string
+     *
+     * @throws \Swift_SwiftException
+     */
+    protected function getKey($identifier, $purpose)
+    {
+        $keys = $this->gnupg->keyinfo($identifier);
+        $fingerprints = array();
+
+        foreach ($keys as $key) {
+            if ($this->isValidKey($key, $purpose)) {
+                foreach ($key['subkeys'] as $subKey) {
+                    if ($this->isValidKey($subKey, $purpose)) {
+                        $fingerprints[] = $subKey['fingerprint'];
+                    }
+                }
+            }
+        }
+
+        if (count($fingerprints) === 1) {
+            return $fingerprints[0];
+        }
+
+        if (count($fingerprints) > 1) {
+            throw new \Swift_SwiftException(sprintf('Found more than one active key for %s use addRecipient() or addSignature()', $identifier));
+        }
+
+        throw new \Swift_SwiftException(sprintf('Unable to find an active key to %s for %s,try importing keys first', $purpose, $identifier));
+    }
+
+    protected function isValidKey($key, $purpose)
+    {
+        return !($key['disabled'] || $key['expired'] || $key['revoked'] || ($purpose == 'sign' && !$key['can_sign']) || ($purpose == 'encrypt' && !$key['can_encrypt']));
+    }
+
+    /**
+     * @param $identifier
      * @param $passPhrase
      *
-     * @throws Swift_SwiftException
+     * @throws \Swift_SwiftException
      */
-    public function addKeyPassphrase($identifier, $passPhrase) {
+    public function addKeyPassphrase($identifier, $passPhrase)
+    {
         $keyFingerprint = $this->getKey($identifier, 'sign');
         $this->keyPassphrases[$keyFingerprint] = $passPhrase;
     }
 
     /**
-     * Adds a recipient to encrypt a copy of the email for. If you exclude a key fingerprint, we
-     * will try to find a matching key based on the identifier. However if no match is found, or
-     * if multiple valid keys are found, this will fail. Specifying a key fingerprint avoids these
-     * issues.
-     *
-     * @param string $identifier
-     * an email address, but could be a key fingerprint, key ID, name, etc.
-     *
-     * @param string $keyFingerprint
-     */
-    public function addRecipient($identifier, $keyFingerprint = null) {
-        if (!$keyFingerprint) {
-            $keyFingerprint = $this->getKey($identifier, 'encrypt');
-        }
-
-        $this->recipientKeys[$identifier] = $keyFingerprint;
-    }
-
-    /**
-     * @param Swift_Message $message
+     * @param \Swift_Message $message
      *
      * @return $this
      *
-     * @throws Swift_DependencyException
-     * @throws Swift_SwiftException
+     * @throws \Swift_DependencyException
+     * @throws \Swift_SwiftException
      */
-    public function signMessage(\Swift_Message $message) {
+    public function signMessage(\Swift_Message $message)
+    {
         $originalMessage = $this->createMessage($message);
         $message->setChildren(array());
 
@@ -221,8 +287,7 @@ class OpenPGPSigner implements \Swift_Signers_BodySigner {
         if ($this->encrypt) {
 
 //            $signed = sprintf("%s\r\n%s", $message->getHeaders()->get('Content-Type')->toString(), $signedBody);
-            $signed = $originalMessage->toString();
-            ;
+            $signed = $originalMessage->toString();;
 //            var_dump($signedBody, $signature, $body);
 //            die;
             if (!$this->recipientKeys) {
@@ -277,21 +342,8 @@ EOT;
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getAlteredHeaders() {
-        return array('Content-Type', 'Content-Transfer-Encoding', 'Content-Disposition', 'Content-Description');
-    }
-
-    /**
-     * @return $this
-     */
-    public function reset() {
-        return $this;
-    }
-
-    protected function createMessage(\Swift_Message $message) {
+    protected function createMessage(\Swift_Message $message)
+    {
         $mimeEntity = new \Swift_Message('', $message->getBody(), $message->getContentType(), $message->getCharset());
         $mimeEntity->setChildren($message->getChildren());
 
@@ -307,65 +359,26 @@ EOT;
     }
 
     /**
-     * @throws Swift_SwiftException
-     */
-    protected function initGNUPG() {
-        if (!class_exists('gnupg')) {
-            throw new \Swift_SwiftException('PHPMailerPGP requires the GnuPG class');
-        }
-
-        if (!$this->gnupgHome && isset($_SERVER['HOME'])) {
-            $this->gnupgHome = $_SERVER['HOME'] . '/.gnupg';
-        }
-
-        if (!$this->gnupgHome && getenv('HOME')) {
-            $this->gnupgHome = getenv('HOME') . '/.gnupg';
-        }
-
-        if (!$this->gnupgHome) {
-            throw new \Swift_SwiftException('Unable to detect GnuPG home path, please call PHPMailerPGP::setGPGHome()');
-        }
-
-        if (!file_exists($this->gnupgHome)) {
-            throw new \Swift_SwiftException('GnuPG home path does not exist');
-        }
-
-        putenv("GNUPGHOME=" . escapeshellcmd($this->gnupgHome));
-
-        if (!$this->gnupg) {
-            $this->gnupg = new \gnupg();
-        }
-
-        $this->gnupg->seterrormode(\gnupg::ERROR_EXCEPTION);
-    }
-
-    /**
-     * @param $plaintext
-     * @param $keyFingerprint
+     * Adds a recipient to encrypt a copy of the email for. If you exclude a key fingerprint, we
+     * will try to find a matching key based on the identifier. However if no match is found, or
+     * if multiple valid keys are found, this will fail. Specifying a key fingerprint avoids these
+     * issues.
      *
-     * @return string
+     * @param string $identifier
+     * an email address, but could be a key fingerprint, key ID, name, etc.
      *
-     * @throws Swift_SwiftException
+     * @param string $keyFingerprint
      */
-    protected function pgpSignString($plaintext, $keyFingerprint) {
-        if (isset($this->keyPassphrases[$keyFingerprint]) && !$this->keyPassphrases[$keyFingerprint]) {
-            $passPhrase = $this->keyPassphrases[$keyFingerprint];
-        } else {
-            $passPhrase = null;
+    public function addRecipient($identifier, $keyFingerprint = null)
+    {
+        if (!$keyFingerprint) {
+            try {
+                $keyFingerprint = $this->getKey($identifier, 'encrypt');
+            } catch (\Swift_SwiftException $e) {
+            }
         }
 
-        $this->gnupg->clearsignkeys();
-        $this->gnupg->addsignkey($keyFingerprint, $passPhrase);
-        $this->gnupg->setsignmode(\gnupg::SIG_MODE_DETACH);
-        $this->gnupg->setarmor(1);
-
-        $signed = $this->gnupg->sign($plaintext);
-
-        if ($signed) {
-            return $signed;
-        }
-
-        throw new \Swift_SwiftException('Unable to sign message (perhaps the secret key is encrypted with a passphrase?)');
+        $this->recipientKeys[$identifier] = $keyFingerprint;
     }
 
     /**
@@ -374,9 +387,10 @@ EOT;
      *
      * @return string
      *
-     * @throws Swift_SwiftException
+     * @throws \Swift_SwiftException
      */
-    protected function pgpEncryptString($plaintext, $keyFingerprints) {
+    protected function pgpEncryptString($plaintext, $keyFingerprints)
+    {
 
         $this->gnupg->clearencryptkeys();
 
@@ -396,40 +410,49 @@ EOT;
     }
 
     /**
-     * @param $identifier
-     * @param $purpose
+     * @return array
+     */
+    public function getAlteredHeaders()
+    {
+        return array('Content-Type', 'Content-Transfer-Encoding', 'Content-Disposition', 'Content-Description');
+    }
+
+    /**
+     * @return $this
+     */
+    public function reset()
+    {
+        return $this;
+    }
+
+    /**
+     * @param $plaintext
+     * @param $keyFingerprint
      *
      * @return string
      *
-     * @throws Swift_SwiftException
+     * @throws \Swift_SwiftException
      */
-    protected function getKey($identifier, $purpose) {
-        $keys = $this->gnupg->keyinfo($identifier);
-        $fingerprints = array();
-
-        foreach ($keys as $key) {
-            if ($this->isValidKey($key, $purpose)) {
-                foreach ($key['subkeys'] as $subKey) {
-                    if ($this->isValidKey($subKey, $purpose)) {
-                        $fingerprints[] = $subKey['fingerprint'];
-                    }
-                }
-            }
+    protected function pgpSignString($plaintext, $keyFingerprint)
+    {
+        if (isset($this->keyPassphrases[$keyFingerprint]) && !$this->keyPassphrases[$keyFingerprint]) {
+            $passPhrase = $this->keyPassphrases[$keyFingerprint];
+        } else {
+            $passPhrase = null;
         }
 
-        if (count($fingerprints) === 1) {
-            return $fingerprints[0];
+        $this->gnupg->clearsignkeys();
+        $this->gnupg->addsignkey($keyFingerprint, $passPhrase);
+        $this->gnupg->setsignmode(\gnupg::SIG_MODE_DETACH);
+        $this->gnupg->setarmor(1);
+
+        $signed = $this->gnupg->sign($plaintext);
+
+        if ($signed) {
+            return $signed;
         }
 
-        if (count($fingerprints) > 1) {
-            throw new \Swift_SwiftException(sprintf('Found more than one active key for %s use addRecipient() or addSignature()', $identifier));
-        }
-
-        throw new \Swift_SwiftException(sprintf('Unable to find an active key to %s for %s,try importing keys first', $purpose, $identifier));
-    }
-
-    protected function isValidKey($key, $purpose) {
-        return !($key['disabled'] || $key['expired'] || $key['revoked'] || ($purpose == 'sign' && !$key['can_sign']) || ($purpose == 'encrypt' && !$key['can_encrypt']));
+        throw new \Swift_SwiftException('Unable to sign message (perhaps the secret key is encrypted with a passphrase?)');
     }
 
 }

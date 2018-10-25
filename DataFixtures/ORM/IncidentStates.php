@@ -11,23 +11,26 @@
 
 namespace CertUnlp\NgenBundle\DataFixtures\ORM;
 
+use CertUnlp\NgenBundle\Entity\IncidentState;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use CertUnlp\NgenBundle\Entity\IncidentState;
 
 /**
  * Description of IncidentClosingTypes
  *
  * @author dam
  */
-class IncidentStates extends AbstractFixture implements OrderedFixtureInterface {
+class IncidentStates extends AbstractFixture implements OrderedFixtureInterface
+{
 
-    public function getOrder() {
+    public function getOrder()
+    {
         return 1;
     }
 
-    public function load(ObjectManager $manager) {
+    public function load(ObjectManager $manager)
+    {
         $incident_closing_types = array(
             array('name' => "Open"),
             array('name' => "Closed"),

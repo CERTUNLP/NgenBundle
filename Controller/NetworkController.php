@@ -11,26 +11,18 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use FOS\RestBundle\View\View;
+use CertUnlp\NgenBundle\Entity\Network;
+use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
-use Symfony\Component\Form\FormTypeInterface;
+use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use CertUnlp\NgenBundle\Form\NetworkType;
-use CertUnlp\NgenBundle\Entity\Network;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use FOS\RestBundle\Controller\Annotations as FOS;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use CertUnlp\NgenBundle\Exception\InvalidFormException;
+use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-class NetworkController extends FOSRestController {
-
-    public function getApiController() {
-
-        return $this->container->get('cert_unlp.ngen.network.api.controller');
-    }
+class NetworkController extends FOSRestController
+{
 
     /**
      * List all networks.
@@ -43,12 +35,13 @@ class NetworkController extends FOSRestController {
      * )
      *
      *
-     * @param Request               $request      the request object
+     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
      * @return array
      */
-    public function getAction(Request $request, ParamFetcherInterface $paramFetcher) {
+    public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
 
         return null;
     }
@@ -70,13 +63,20 @@ class NetworkController extends FOSRestController {
      *  templateVar="networks"
      * )
      *
-     * @param Request               $request      the request object
+     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
      * @return array
      */
-    public function getNetworksAction(Request $request, ParamFetcherInterface $paramFetcher) {
+    public function getNetworksAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
         return $this->getApiController()->getAll($request, $paramFetcher);
+    }
+
+    public function getApiController()
+    {
+
+        return $this->container->get('cert_unlp.ngen.network.api.controller');
     }
 
     /**
@@ -92,20 +92,18 @@ class NetworkController extends FOSRestController {
      *   }
      * )
      *
-     * @param int     $id      the network id
-     *
-     * @return array
-     *
-     * @throws NotFoundHttpException when network not exist
+     * @param Network $network
+     * @return Network
      *
      * @FOS\Get("/networks/host/{ip}",requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"} )
-     * 
+     *
      * @FOS\View(
      *  templateVar="network"
-     * )     
-     *  @ParamConverter("network", class="CertUnlpNgenBundle:Network", options={"repository_method" = "findByHostAddress"})
+     * )
+     * @ParamConverter("network", class="CertUnlpNgenBundle:Network", options={"repository_method" = "findByHostAddress"})
      */
-    public function getNetworkHostAction(Network $network) {
+    public function getNetworkHostAction(Network $network)
+    {
         return $network;
     }
 
@@ -122,20 +120,18 @@ class NetworkController extends FOSRestController {
      *   }
      * )
      *
-     * @param int     $id      the network id
-     *
-     * @return array
-     *
-     * @throws NotFoundHttpException when network not exist
+     * @param Network $network
+     * @return Network
      *
      * @FOS\Get("/networks/{ip}/{ipMask}",requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ipMask"="^[1-3]?[0-9]$"} )
-     * 
+     *
      * @FOS\View(
      *  templateVar="network"
-     * )     
-     *  @ParamConverter("network", class="CertUnlpNgenBundle:Network", options={"repository_method" = "findOneBy"})
+     * )
+     * @ParamConverter("network", class="CertUnlpNgenBundle:Network", options={"repository_method" = "findOneBy"})
      */
-    public function getNetworkAction(Network $network) {
+    public function getNetworkAction(Network $network)
+    {
         return $network;
     }
 
@@ -159,7 +155,8 @@ class NetworkController extends FOSRestController {
      *
      * @return FormTypeInterface|View
      */
-    public function postNetworkAction(Request $request) {
+    public function postNetworkAction(Request $request)
+    {
         return $this->getApiController()->post($request);
     }
 
@@ -180,16 +177,15 @@ class NetworkController extends FOSRestController {
      * )
      *
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param Network $network
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
      * @FOS\Patch("/networks/{ip}/{ipMask}", requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ipMask"="^[1-3]?[0-9]$"} )
      *
      * @ParamConverter("network", class="CertUnlpNgenBundle:Network", options={"repository_method" = "findOneBy"})
      */
-    public function patchNetworkAction(Request $request, Network $network) {
+    public function patchNetworkAction(Request $request, Network $network)
+    {
         return $this->getApiController()->patch($request, $network, true);
     }
 
@@ -207,19 +203,17 @@ class NetworkController extends FOSRestController {
      *
      *
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param Network $network
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
-     * 
      * @FOS\Patch("/networks/{ip}/{ipMask}/activate", requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ipMask"="^[1-3]?[0-9]$"} )
      * @FOS\View(
      *  templateVar = "network"
      * )
      * @ParamConverter("network", class="CertUnlpNgenBundle:Network", options={"repository_method" = "findOneBy"})
      */
-    public function patchNetworkActivateAction(Request $request, Network $network) {
+    public function patchNetworkActivateAction(Request $request, Network $network)
+    {
 
         return $this->getApiController()->activate($request, $network);
     }
@@ -238,19 +232,17 @@ class NetworkController extends FOSRestController {
      *
      *
      * @param Request $request the request object
-     * @param int     $id      the network id
-     *
+     * @param Network $network
      * @return FormTypeInterface|View
      *
-     * @throws NotFoundHttpException when network not exist
-     * 
      * @FOS\Patch("/networks/{ip}/{ipMask}/desactivate", requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ipMask"="^[1-3]?[0-9]$"} )
      * @FOS\View(
      *  templateVar = "network"
      * )
      * @ParamConverter("network", class="CertUnlpNgenBundle:Network", options={"repository_method" = "findOneBy"})
      */
-    public function patchNetworkDesactivateAction(Request $request, Network $network) {
+    public function patchNetworkDesactivateAction(Request $request, Network $network)
+    {
 
         return $this->getApiController()->desactivate($request, $network);
     }

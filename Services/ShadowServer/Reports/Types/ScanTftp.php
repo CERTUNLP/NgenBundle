@@ -16,6 +16,7 @@ namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types;
  *
  * @author demyen
  */
-class ScanTftp extends ShadowServerReport {
-    
+class ScanTftp extends ShadowServerReport
+{
+
 }

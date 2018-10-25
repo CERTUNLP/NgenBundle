@@ -11,16 +11,16 @@
 
 namespace CertUnlp\NgenBundle\Services\Delegator;
 
-use CertUnlp\NgenBundle\Services\Delegator\DelegatorChain;
-
 /**
  * Description of IncidentDelegatorChain
  *
  * @author demyen
  */
-class ExternalIncidentDelegatorChain extends DelegatorChain {
+class ExternalIncidentDelegatorChain extends DelegatorChain
+{
 
-    public function doDelegation($function, $arguments) {
+    public function doDelegation($function, $arguments)
+    {
         parent::doDelegation($function, $arguments[0]);
     }
 

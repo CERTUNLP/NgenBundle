@@ -18,13 +18,13 @@ fos_elastica:
                             type: integer
                         hostAddress:
                             type: ip
-                        date: 
+                        date:
                             type: date
                         lastTimeDetected:
                             type: date
-                        createdAt: 
+                        createdAt:
                             type: date
-                        updatedAt: 
+                        updatedAt:
                             type: date
                         isClosed:
                             type: boolean
@@ -33,7 +33,7 @@ fos_elastica:
                         network:
                             type: "object"
                             properties:
-                                ip: 
+                                ip:
                                     type: ip
                                 ipMask:
                                     type: integer
@@ -44,9 +44,9 @@ fos_elastica:
                                     properties:
                                         slug:
                                             type: keyword
-                                        email: 
+                                        email:
                                             type: keyword
-                                        name: 
+                                        name:
                                             type: keyword
                                         isActive:
                                             type: boolean
@@ -55,19 +55,19 @@ fos_elastica:
                                     properties:
                                         slug:
                                             type: keyword
-                                        name: 
-                                            type: keyword
-                        networkAdmin:
-                                    type: "object"
-                                    properties:
-                                        slug:
-                                            type: keyword
-                                        email:
-                                            type: keyword
                                         name:
                                             type: keyword
-                                        isActive:
-                                            type: boolean
+                        networkAdmin:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: keyword
+                                email:
+                                    type: keyword
+                                name:
+                                    type: keyword
+                                isActive:
+                                    type: boolean
                         state:
                             type: "object"
                             properties:
@@ -115,20 +115,20 @@ fos_elastica:
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\InternalIncident
                         provider: ~
-                        finder: ~       
+                        finder: ~
                 external:
                     properties:
                         id:
                             type: integer
                         hostAddress:
                             type: ip
-                        date: 
+                        date:
                             type: date
                         lastTimeDetected:
                             type: date
-                        createdAt: 
+                        createdAt:
                             type: date
-                        updatedAt: 
+                        updatedAt:
                             type: date
                         isClosed:
                             type: boolean
@@ -197,7 +197,7 @@ fos_elastica:
         networks:
             index_name: networks_%kernel.environment%
             types:
-    
+
                 network:
                     properties:
                         id:
@@ -206,9 +206,9 @@ fos_elastica:
                             type: ip
                         ipMask:
                             type: integer
-                        createdAt: 
+                        createdAt:
                             type: date
-                        updatedAt: 
+                        updatedAt:
                             type: date
                         isActive:
                             type: boolean

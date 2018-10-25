@@ -9,10 +9,10 @@
 
 {% extends 'CertUnlpNgenBundle::IncidentState/Frontend/frontend.html.twig' %}
 {% block content_header %}
-    <h1 class="page-header">{{icon('plus-circle fa-fw')}}state</h1>
+    <h1 class="page-header">{{ icon('plus-circle fa-fw') }}state</h1>
 {% endblock %}
 {% block content_body %}
-    {%  if (form is not null) %}
+    {% if (form is not null) %}
         {{ form_errors(form, { 'global_errors': true }) }}
         {{ form(form, {'attr': {'id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal', 'col_size': 'sm' }) }}
     {% endif %}
@@ -22,9 +22,8 @@
     {{ parent() }}
 
     {% javascripts
-    '@CertUnlpNgenBundle/Resources/public/js/incident/state/IncidentStateForm.js'
-    %}
-    <script src="{{ asset_url }}"></script>
+        '@CertUnlpNgenBundle/Resources/public/js/incident/state/IncidentStateForm.js' %}
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
         var incident_state_form = new IncidentStateForm();

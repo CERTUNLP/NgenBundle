@@ -8,18 +8,17 @@
 #}
 
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/incidentForm.html.twig' %}
-{% block sideBar_search_path %}{{path('cert_unlp_ngen_external_incident_search_incident')}}{% endblock %}
+{% block sideBar_search_path %}{{ path('cert_unlp_ngen_external_incident_search_incident') }}{% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}    
+    {{ parent() }}
     {% javascripts
-    '@CertUnlpNgenBundle/Resources/public/js/incident/ExternalIncident.js'
-    '@CertUnlpNgenBundle/Resources/public/js/incident/ExternalIncidentApi.js'
-    %}
-    <script src="{{ asset_url }}"></script>
+        '@CertUnlpNgenBundle/Resources/public/js/incident/ExternalIncident.js'
+        '@CertUnlpNgenBundle/Resources/public/js/incident/ExternalIncidentApi.js' %}
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
-        var externalIncidentApi = new ExternalIncidentApi("{{path("api_2_get")}}/", "{{app.user.apiKey}}");
+        var externalIncidentApi = new ExternalIncidentApi("{{ path("api_2_get") }}/", "{{ app.user.apiKey }}");
         var externalIncident = new ExternalIncident();
     </script>
 {% endblock %}

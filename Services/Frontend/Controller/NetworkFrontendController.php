@@ -11,10 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Services\Frontend\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController;
-
-class NetworkFrontendController extends FrontendController {
+class NetworkFrontendController extends FrontendController
+{
 
 //    public function homeEntity(Request $request, $entity = 'Network') {
 //        $em = $this->getDoctrine();

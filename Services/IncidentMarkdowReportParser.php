@@ -14,9 +14,13 @@ namespace CertUnlp\NgenBundle\Services;
 use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 use Michelf\MarkdownExtra;
 
-class IncidentMarkdowReportParser extends MarkdownExtra implements MarkdownParserInterface {
+class IncidentMarkdowReportParser extends MarkdownExtra implements MarkdownParserInterface
+{
 
-    public function __construct() {
+    private $mappingIncidentVariables;
+
+    public function __construct()
+    {
         parent::__construct();
         $this->span_gamut['doParseIncidentVariables'] = 7;
         $this->mappingIncidentVariables = ['{{IP}}' => '{{incident.hostAddress}}',
@@ -29,7 +33,15 @@ class IncidentMarkdowReportParser extends MarkdownExtra implements MarkdownParse
         ];
     }
 
-    protected function _doCodeBlocks_callback($matches) {
+    public function transformMarkdown($text, $appendHead = true)
+    {
+        $html = parent::transform($text);
+
+        return $html;
+    }
+
+    protected function _doCodeBlocks_callback($matches)
+    {
         $codeblock = $matches[1];
 
         $codeblock = $this->outdent($codeblock);
@@ -42,7 +54,8 @@ class IncidentMarkdowReportParser extends MarkdownExtra implements MarkdownParse
         return "\n\n" . $this->hashBlock($codeblock) . "\n\n";
     }
 
-    public function doParseIncidentVariables($text) {
+    public function doParseIncidentVariables($text)
+    {
 
         foreach ($this->mappingIncidentVariables as $template_var => $incident_var) {
             $text = str_replace($template_var, $incident_var, $text);
@@ -50,13 +63,8 @@ class IncidentMarkdowReportParser extends MarkdownExtra implements MarkdownParse
         return $text;
     }
 
-    public function transformMarkdown($text, $appendHead = true) {
-        $html = parent::transform($text);
-
-        return $html;
-    }
-
-    protected function _doHeaders_callback_setext($matches) {
+    protected function _doHeaders_callback_setext($matches)
+    {
 
         $reportBlock = $this->getReportBlock($matches[2]);
         if ($reportBlock) {
@@ -69,7 +77,8 @@ class IncidentMarkdowReportParser extends MarkdownExtra implements MarkdownParse
         }
     }
 
-    protected function getReportBlock($text) {
+    protected function getReportBlock($text)
+    {
         $patt_open = "#\[([^\/].+)\]#";
         $patt_close = "#\[\/(.+)\]#";
 
@@ -93,7 +102,8 @@ class IncidentMarkdowReportParser extends MarkdownExtra implements MarkdownParse
         return false;
     }
 
-    protected function _doHeaders_callback_atx($matches) {
+    protected function _doHeaders_callback_atx($matches)
+    {
         $reportBlock = $this->getReportBlock($matches[2]);
         if ($reportBlock) {
             return $reportBlock;
@@ -103,12 +113,13 @@ class IncidentMarkdowReportParser extends MarkdownExtra implements MarkdownParse
         }
     }
 
-    protected function formParagraphs($text, $wrap_in_p = true) {
+    protected function formParagraphs($text, $wrap_in_p = true)
+    {
         #
         #	Params:
         #		$text - string to process with html <p> tags
         #
-		# Strip leading and trailing lines:
+        # Strip leading and trailing lines:
         $text = preg_replace('/\A\n+|\n+\z/', '', $text);
 
         $grafs = preg_split('/\n {
@@ -117,7 +128,7 @@ class IncidentMarkdowReportParser extends MarkdownExtra implements MarkdownParse
         #
         # Wrap <p> tags and unhashify HTML blocks
         #
-		foreach ($grafs as $key => $value) {
+        foreach ($grafs as $key => $value) {
             $value = trim($this->runSpanGamut($value));
 
             # Check if this should be enclosed in a paragraph.

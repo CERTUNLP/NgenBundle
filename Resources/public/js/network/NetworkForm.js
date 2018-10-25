@@ -14,13 +14,13 @@ var NetworkForm = Form.extend({
         return 'network';
     },
     getObjectId: function () {
-        return  this.getNetworkId();
+        return this.getNetworkId();
     },
     setNetworkId: function () {
         this.networkId = $('#ip').val();
     },
     getNetworkId: function () {
-        return  this.networkId;
+        return this.networkId;
     },
     handleExtraErrors: function (jqXHR) {
         $.each(jqXHR.responseJSON.errors.errors, function (k, v) {
