@@ -1,0 +1,160 @@
+# This file is part of the Ngen - CSIRT Incident Report System.
+# 
+# (c) CERT UNLP <support@cert.unlp.edu.ar>
+# 
+# This source file is subject to the GPL v3.0 license that is bundled
+# with this source code in the file LICENSE.
+imports:
+    - { resource: elastica_config.yml }
+    
+framework:
+    http_method_override: true
+    translator: ~
+    
+assetic:
+    filters:
+        less:
+            node: /usr/bin/node
+            node_paths: [/usr/lib/node_modules]
+            apply_to: "\.less$"
+        cssrewrite: ~
+    bundles:
+        - CertUnlpNgenBundle
+        - FOSCommentBundle
+        
+swiftmailer:
+    mailers:
+        cert_unlp.ngen.incident.mailer:
+#            transport: "%cert_unlp.ngen.incident.mailer.transport%"
+            host:      "%cert_unlp.ngen.incident.mailer.host%"
+            sender_address: "%cert_unlp.ngen.incident.mailer.sender_address%"
+            username:  "%cert_unlp.ngen.incident.mailer.username%"
+            password:  "%cert_unlp.ngen.incident.mailer.password%"
+            encryption: tls            
+doctrine:
+    orm:
+        auto_mapping: true
+#        query_cache_driver:    apc
+#        metadata_cache_driver: apc
+        entity_listener_resolver: cert_unlp.ngen.doctrine.entity_listener_resolver
+        resolve_target_entities:
+            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\InternalIncident 
+            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\ExternalIncident 
+            CertUnlp\NgenBundle\Model\ReporterInterface: CertUnlp\NgenBundle\Entity\User 
+            CertUnlp\NgenBundle\Model\NetworkInterface: CertUnlp\NgenBundle\Entity\Network 
+        dql:
+            string_functions:
+                INET_ATON: CertUnlp\NgenBundle\DQL\InetAtonFunction  
+
+sensio_framework_extra:
+    view: { annotations: true }
+    router: { annotations: true }
+    request: { converters: true }
+
+fos_rest:
+    param_fetcher_listener: true
+    allowed_methods_listener: true
+#    access_denied_listener:
+#        json: true
+    body_listener: true
+    view:
+        view_response_listener: force
+        formats:
+            xml:  true
+            json: true
+#            html: true
+#        templating_formats:
+#            html: true
+        
+    routing_loader:
+        default_format: json
+#        include_format: true
+    format_listener:
+        rules:
+            - { path: ^/api/v2/incidents/internals/(.*)/report/html, priorities: [html], fallback_format: ~ ,prefer_extension: true}
+            - { path: ^/api/v2/incidents/externals/(.*)/report/html, priorities: [html], fallback_format: ~ ,prefer_extension: true}
+            - { path: ^/api/v2/, priorities: json, fallback_format: ~ , prefer_extension: true}
+            - { path: ^/api/v1/, priorities: json, fallback_format: ~ , prefer_extension: true}
+            - { path: '^/', stop: true }
+    exception:
+        codes:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
+            'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
+        messages:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
+    disable_csrf_role: ROLE_API
+
+
+nelmio_api_doc:
+    name: Page API
+                            
+
+
+braincrafted_bootstrap:
+    assets_dir: %kernel.root_dir%/../vendor/twbs/bootstrap
+    jquery_path: %kernel.root_dir%/../vendor/components/jquery/jquery.min.js
+#    less_filter: less
+    fonts_dir: %kernel.root_dir%/../web/fonts
+    icon_prefix: fa
+    auto_configure:
+        assetic: true
+        twig: true
+        knp_menu: true
+        knp_paginator: true
+    customize:
+        variables_file: ~
+        bootstrap_output: %kernel.root_dir%/Resources/less/bootstrap.less
+        bootstrap_template: BraincraftedBootstrapBundle:Bootstrap:bootstrap.less.twig
+
+knp_markdown:
+    parser:
+        service: cert_unlp.ngen.incident.report.markdown.parser 
+        
+fos_comment:
+    db_driver: orm
+    class:
+        model:
+            comment: CertUnlp\NgenBundle\Entity\IncidentComment
+            thread: CertUnlp\NgenBundle\Entity\IncidentCommentThread
+    form:
+        comment:
+            type: fos_comment_comment
+    acl: true
+    service:
+        acl:
+            thread:  fos_comment.acl.thread.roles
+            comment: fos_comment.acl.comment.roles
+            vote:    fos_comment.acl.vote.roles
+        manager:
+            thread:  fos_comment.manager.thread.acl
+            comment: fos_comment.manager.comment.acl
+            vote:    fos_comment.manager.vote.acl
+    acl_roles:
+        comment:
+            create: ROLE_USER
+            view: ROLE_USER
+        thread:
+            create: ROLE_USER
+            view: ROLE_USER
+
+stfalcon_tinymce:
+        theme:
+            simple:
+                mode: "textareas"
+                theme: "advanced"
+                force_br_newlines: false
+                force_p_newlines: false
+                forced_root_block: ''
+
+fos_user:
+    db_driver: orm # other valid values are 'mongodb' and 'couchdb'
+    firewall_name: frontend
+    user_class: CertUnlp\NgenBundle\Entity\User
+    from_email:
+        address: "%cert_unlp.ngen.incident.mailer.sender_address%"
+        sender_name: "%cert_unlp.ngen.incident.mailer.sender_address%"
+    registration:
+        confirmation:
+            enabled: true
+        form:
+            type: CertUnlp\NgenBundle\Form\UserRegistrationType
