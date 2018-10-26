@@ -12,7 +12,6 @@
 namespace CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types;
 
 use CertUnlp\NgenBundle\Services\ShadowServer\Reports\ShadowServerCsvRow;
-use CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types\ShadowServerReport;
 
 /**
  * Description of TypeFactory
