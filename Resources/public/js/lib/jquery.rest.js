@@ -34,7 +34,8 @@
 
     inheritExtend = function (a, b) {
         var F;
-        F = function () {};
+        F = function () {
+        };
         F.prototype = a;
         return $.extend(true, new F(), b);
     };
@@ -356,7 +357,7 @@
                 var urlEnd = url.indexOf("?");
                 if (urlEnd == -1) {
                     urlEnd = url.length;
-            }
+                }
 
                 // Don't bother doing anything if the URL is empty
                 if (urlEnd > 0) {

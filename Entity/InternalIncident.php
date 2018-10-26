@@ -175,12 +175,4 @@ class InternalIncident extends Incident
         return false;
     }
 
-    public function isInternal() {
-        return true;
-    }
-
-    public function isExternal() {
-        return false;
-    }
-
 }
