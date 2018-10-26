@@ -68,24 +68,23 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-
 cert_unlp_ngen:
     team:
-        mail: soporte@cert.unlp.edu.ar
+        mail: '%team_mail%'
     incidents:
         mailer:
-            transport: smtp
-            host:      mail.cert.unlp.edu.ar
-            sender_address: soporte@cert.unlp.edu.ar # optional cert.ngen.team.mail by default
-            username:  cert
-            password:  C3rT_e=mc**2SMR
+          transport: '%mailer_transport%'
+          host: '%mailer_host%'
+          username: '%mailer_user%'
+          password: '%mailer_password%'
+          sender_address: '%mailer_sender%'
     networks:
-        default_network: 163.10.0.0
-    feeds:
-        shadowserver:
-            client:
-                user: soporte@cert.unlp.edu.ar
-                password: ovpepeek
+        default_network: '%default_network%'
+    #feeds:
+    #    shadowserver:
+    #        client:
+    #            user: mail@cert.example.com
+    #            password: mail@cert.example.com
 
 doctrine_migrations:
     dir_name: "%kernel.root_dir%/../src/CertUnlp/NgenBundle/DoctrineMigrations"
