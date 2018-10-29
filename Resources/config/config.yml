@@ -157,3 +157,10 @@ fos_user:
             enabled: true
         form:
             type: CertUnlp\NgenBundle\Form\UserRegistrationType
+
+jms_serializer:
+    metadata:
+        directories:
+            FOSUB:
+                namespace_prefix: "FOS\\UserBundle"
+                path: "%kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/config/serializer"
