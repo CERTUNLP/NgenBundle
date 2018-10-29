@@ -53,10 +53,10 @@ class AcademicUnit
      * */
     private $slug;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network",mappedBy="academic_unit", cascade={"persist","remove"}, fetch="EAGER")) */
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network",mappedBy="academic_unit", cascade={"persist","remove"})) */
     private $networks;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="academic_unit", cascade={"persist","remove"}, fetch="EAGER")) */
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="academic_unit", cascade={"persist","remove"})) */
     private $incidents;
 
     /**
