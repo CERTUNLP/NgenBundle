@@ -79,4 +79,11 @@ class UserHandler extends Handler
         return $user;
     }
 
+    protected function createEntityInstance()
+    {
+        $user = new $this->entityClass();
+        $user->setEnabled(true);
+        $user->setApiKey(sha1($user->getUsername() . time() . $user->getSalt()));
+        return $user;
+    }
 }
