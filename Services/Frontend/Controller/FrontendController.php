@@ -25,8 +25,8 @@ class FrontendController
     private $doctrine;
     private $paginator;
     private $finder;
-    private $entityType;
-    private $formFactory;
+    protected $entityType;
+    protected $formFactory;
     private $comment_manager;
     private $thread_manager;
 
