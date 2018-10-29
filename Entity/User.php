@@ -45,13 +45,14 @@ class User extends BaseUser implements ReporterInterface
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=50)
-     * @JMS\Expose
+     * @JMS\Expose()
      */
     private $name;
     /**
      * @var string
      *
      * @ORM\Column(name="lastname", type="string", length=50)
+     * @JMS\Expose()
      */
     private $lastname;
     /**
@@ -66,6 +67,7 @@ class User extends BaseUser implements ReporterInterface
      * @ORM\Column(name="updated_at", type="datetime")
      */
     private $updatedAt;
+
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="reporter") */
     private $incidents;
     /**
@@ -168,10 +170,6 @@ class User extends BaseUser implements ReporterInterface
         $this->incidents->removeElement($incidents);
     }
 
-//    function getRoles() {
-//        return array('ROLE_USER', 'ROLE_API');
-//    }
-
     /**
      * Get incidents
      *
@@ -231,6 +229,19 @@ class User extends BaseUser implements ReporterInterface
         $this->lastname = $lastname;
 
         return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     * @JMS\VirtualProperty()
+     * @JMS\Expose()
+     *
+     */
+    public function getFullName()
+    {
+        return $this->getName() . ' ' . $this->getLastname();
     }
 
     /**
