@@ -71,10 +71,10 @@ class IncidentType
      */
     private $updatedAt;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="type", cascade={"persist","remove"}, fetch="EAGER")) */
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="type", cascade={"persist","remove"})) */
     private $incidents;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\IncidentReport",mappedBy="type",indexBy="lang", cascade={"persist","remove"}, fetch="EAGER"))
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\IncidentReport",mappedBy="type",indexBy="lang", cascade={"persist","remove"}))
      *
      * @Assert\Count(
      *      min = 1,
