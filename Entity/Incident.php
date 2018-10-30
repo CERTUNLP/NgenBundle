@@ -46,7 +46,7 @@ class Incident implements IncidentInterface
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="date")
+     * @ORM\Column(name="date", type="datetime")
      * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      * @JMS\Groups({"api"})

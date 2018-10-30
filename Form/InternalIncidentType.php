@@ -64,12 +64,15 @@ class InternalIncidentType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
-            ->add('date', 'date', array(
+            ->add('date', 'datetime', array(
                 'required' => false,
-                'html5' => true,
-                'widget' => 'single_text', 'input' => 'datetime',
+                'input' => 'datetime',
                 'attr' => array('help_text' => 'If no date is selected, the date will be today.'),
-                'description' => "If no date is selected, the date will be today."))
+                'description' => "If no date is selected, the date will be today.",
+                'placeholder' => array(
+                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+                    'hour' => 'Hour', 'minute' => 'Minute', 'second' => 'Second',)
+                ))
             ->add('sendReport', 'checkbox', array(
                 'data' => true,
                 'mapped' => true,
