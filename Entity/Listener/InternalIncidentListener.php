@@ -77,7 +77,7 @@ class InternalIncidentListener
 
     public function slugUpdate(IncidentInterface $incident)
     {
-        $incident->setSlug(Sluggable\Urlizer::urlize($incident->getHostAddress() . " " . $incident->getType()->getSlug() . " " . $incident->getDate()->format('Y-m-d'), '_'));
+        $incident->setSlug(Sluggable\Urlizer::urlize($incident->getHostAddress() . " " . $incident->getType()->getSlug() . " " . $incident->getDate()->format('Y-m-d-H-i-s'), '_'));
     }
 
     public function networkUpdate(IncidentInterface $incident)
@@ -183,9 +183,7 @@ class InternalIncidentListener
             $incident->setCommentThread($thread);
             $thread->setIncident($incident);
             $uri = $this->router->generate('cert_unlp_ngen_internal_incident_frontend_edit_incident', array(
-                'hostAddress' => $incident->getHostAddress(),
-                'date' => $incident->getDate()->format('Y-m-d'),
-                'type' => $incident->getType()->getSlug()
+                'slug' => $incident->getSlug(),
             ));
             $thread->setPermalink($uri);
 

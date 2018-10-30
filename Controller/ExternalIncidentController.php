@@ -159,7 +159,7 @@ class ExternalIncidentController extends FOSRestController
      * @param Request $request the request object
      * @param ExternalIncident $incident
      * @return FormTypeInterface|View
-     * @FOS\Put("/externals/{hostAddress}/{date}/{type}")
+     * @FOS\Put("/externals/{slug}")
      */
     public function putExternalAction(Request $request, ExternalIncident $incident)
     {
@@ -205,13 +205,7 @@ class ExternalIncidentController extends FOSRestController
      * @param IncidentState $state
      * @return FormTypeInterface|View
      *
-     * @FOS\Patch("/externals/{hostAddress}/{date}/{type}/states/{state}")
-     * @ParamConverter("incident", class="CertUnlpNgenBundle:ExternalIncident", options={"repository_method" = "findByHostDateType"})
-     *
-     * @FOS\QueryParam(name="state",strict=true ,requirements="open|closed|closed_by_inactivity|removed|unresolved|stand_by")
-     * @FOS\QueryParam(name="date",strict=true ,requirements="yyyy-MM-dd", description="If no date is selected, the date will be today.")
-     * @FOS\QueryParam(name="type",strict=true ,requirements="blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|open_ssdp|phishing|poodle|scan|shellshock|spam", description="The incident type")
-     * @FOS\QueryParam(name="hostAddress",strict=true ,requirements="[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", description="The host IP.")
+     * @FOS\Patch("/externals/{slug}/states/{state}")
      */
     public function patchExternalStateWithParamsAction(Request $request, ExternalIncident $incident, IncidentState $state)
     {
@@ -233,12 +227,7 @@ class ExternalIncidentController extends FOSRestController
      * @param ExternalIncident $incident
      * @return ExternalIncident
      *
-     * @Fos\Get("/externals/{hostAddress}/{date}/{type}")
-     *
-     * @ParamConverter("incident", class="CertUnlpNgenBundle:ExternalIncident", options={"repository_method" = "findByHostDateType"})
-     * @FOS\QueryParam(name="date",strict=true ,requirements="yyyy-MM-dd", description="If no date is selected, the date will be today.")
-     * @FOS\QueryParam(name="type",strict=true ,requirements="blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|open_ssdp|phishing|poodle|scan|shellshock|spam", description="The incident type")
-     * @FOS\QueryParam(name="hostAddress",strict=true ,requirements="[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", description="The host IP.")
+     * @Fos\Get("/externals/{slug}")
      */
     public function getExternalWithParamsAction(ExternalIncident $incident)
     {
@@ -285,12 +274,7 @@ class ExternalIncidentController extends FOSRestController
      * @param ExternalIncident $incident
      * @return FormTypeInterface|View
      *
-     * @FOS\Patch("/externals/{hostAddress}/{date}/{type}")
-     *
-     * @ParamConverter("incident", class="CertUnlpNgenBundle:ExternalIncident", options={"repository_method" = "findByHostDateType"})
-     * @FOS\QueryParam(name="date",strict=true ,requirements="yyyy-MM-dd", description="If no date is selected, the date will be today.")
-     * @FOS\QueryParam(name="type",strict=true ,requirements="blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|open_ssdp|phishing|poodle|scan|shellshock|spam", description="The incident type")
-     * @FOS\QueryParam(name="hostAddress",strict=true ,requirements="[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", description="The host IP.")
+     * @FOS\Patch("/externals/{slug}")
      */
     public function patchExternalWithParamsAction(Request $request, ExternalIncident $incident)
     {

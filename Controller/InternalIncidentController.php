@@ -107,8 +107,6 @@ class InternalIncidentController extends FOSRestController
      *     200 = "Returned when successful"
      *   }
      * )
-     * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incidents.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many incidents to return.")
      * @FOS\View(
      *  templateVar="incidents"
      * )
@@ -190,7 +188,7 @@ class InternalIncidentController extends FOSRestController
      * @FOS\View(
      *  templateVar="incidents"
      * )
-     * @FOS\Put("/internals/{hostAddress}/{date}/{type}")
+     * @FOS\Put("/internals/{slug}")
      */
     public function putInternalAction(Request $request, InternalIncident $incident)
     {
@@ -238,15 +236,10 @@ class InternalIncidentController extends FOSRestController
      * @param IncidentState $state
      * @return FormTypeInterface|View
      *
-     * @FOS\Patch("/internals/{hostAddress}/{date}/{type}/states/{state}")
-     * @ParamConverter("incident", class="CertUnlpNgenBundle:InternalIncident", options={"repository_method" = "findByHostDateType"})
+     * @FOS\Patch("/internals/{slug}/states/{state}")
      * @FOS\View(
      *  templateVar="incidents"
      * )
-     * @FOS\QueryParam(name="state",strict=true ,requirements="open|closed|closed_by_inactivity|removed|unresolved|stand_by")
-     * @FOS\QueryParam(name="date",strict=true ,requirements="yyyy-MM-dd", description="If no date is selected, the date will be today.")
-     * @FOS\QueryParam(name="type",strict=true ,requirements="blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|open_ssdp|phishing|poodle|scan|shellshock|spam", description="The incident type")
-     * @FOS\QueryParam(name="hostAddress",strict=true ,requirements="[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", description="The host IP.")
      */
     public function patchInternalStateWithParamsAction(Request $request, InternalIncident $incident, IncidentState $state)
     {
@@ -268,14 +261,10 @@ class InternalIncidentController extends FOSRestController
      * @param InternalIncident $incident
      * @return InternalIncident
      *
-     * @Fos\Get("/internals/{hostAddress}/{date}/{type}")
+     * @Fos\Get("/internals/{slug}")
      * @FOS\View(
      *  templateVar="incidents"
      * )
-     * @ParamConverter("incident", class="CertUnlpNgenBundle:InternalIncident", options={"repository_method" = "findByHostDateType"})
-     * @FOS\QueryParam(name="date",strict=true ,requirements="yyyy-MM-dd", description="If no date is selected, the date will be today.")
-     * @FOS\QueryParam(name="type",strict=true ,requirements="blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|open_ssdp|phishing|poodle|scan|shellshock|spam", description="The incident type")
-     * @FOS\QueryParam(name="hostAddress",strict=true ,requirements="[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", description="The host IP.")
      */
     public function getInternalWithParamsAction(InternalIncident $incident)
     {
@@ -324,14 +313,10 @@ class InternalIncidentController extends FOSRestController
      * @param InternalIncident $incident
      * @return FormTypeInterface|View
      *
-     * @FOS\Patch("/internals/{hostAddress}/{date}/{type}")
+     * @FOS\Patch("/internals/{slug}")
      * @FOS\View(
      *  templateVar="incidents"
      * )
-     * @ParamConverter("incident", class="CertUnlpNgenBundle:InternalIncident", options={"repository_method" = "findByHostDateType"})
-     * @FOS\QueryParam(name="date",strict=true ,requirements="yyyy-MM-dd", description="If no date is selected, the date will be today.")
-     * @FOS\QueryParam(name="type",strict=true ,requirements="blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|open_ssdp|phishing|poodle|scan|shellshock|spam", description="The incident type")
-     * @FOS\QueryParam(name="hostAddress",strict=true ,requirements="[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", description="The host IP.")
      */
     public function patchInternalWithParamsAction(Request $request, InternalIncident $incident)
     {

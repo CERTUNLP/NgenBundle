@@ -28,7 +28,7 @@
     <td>
         <div class="btn-group inline pull-left dropdown action-dropdown">
             <a class="btn btn-sm btn-primary" role="button"
-               href="{{ path('cert_unlp_ngen_internal_incident_frontend_detail_incident',{'hostAddress': incident.hostAddress,'date':incident.date.format('Y-m-d'),'type':incident.type.slug}) }}">
+               href="{{ path('cert_unlp_ngen_internal_incident_frontend_detail_incident',{'slug':incident.slug}) }}">
                 Details
             </a>
             <button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" type="button"
@@ -46,7 +46,7 @@
 
                 <li role="presentation">
                     <a role="menuitem" tabindex="-1"
-                       href="{{ path('cert_unlp_ngen_internal_incident_frontend_edit_incident',{'hostAddress': incident.hostAddress,'date':incident.date.format('Y-m-d'),'type':incident.type.slug}) }}">{{ icon('edit alert-info') }}
+                       href="{{ path('cert_unlp_ngen_internal_incident_frontend_edit_incident',{'slug': incident.slug}) }}">{{ icon('edit alert-info') }}
                         <span class="action-text">Edit</span></a>
                 </li>
 
