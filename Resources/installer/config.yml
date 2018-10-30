@@ -78,6 +78,12 @@ cert_unlp_ngen:
             username: '%mailer_user%'
             password: '%mailer_password%'
             sender_address: '%mailer_sender%'
+        internal:
+            mailer:
+              sender_adress: '%mailer_sender%'
+        external:
+            mailer:
+              sender_adress: '%mailer_sender%'
     networks:
         default_network: '%default_network%'
     #feeds:
