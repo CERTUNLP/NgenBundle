@@ -211,7 +211,7 @@ class ApiController
     public function doPatchAndReactivate(Request $request, $object)
     {
         try {
-            $parameters = $request->request->all();
+            $parameters = array_merge($request->request->all(), $request->files->all());;
             unset($parameters['_method'], $parameters['force_edit'], $parameters['reactivate']);
 
             $db_object = $this->findObjectBy($parameters);
@@ -255,7 +255,8 @@ class ApiController
     public function doPatch(Request $request, $object)
     {
         try {
-            $parameters = $request->request->all();
+            $parameters = array_merge($request->request->all(), $request->files->all());
+
             unset($parameters['_method']);
             $object = $this->getCustomHandler()->patch(
                 $object, $parameters
