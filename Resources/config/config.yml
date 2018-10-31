@@ -163,4 +163,4 @@ jms_serializer:
         directories:
             FOSUB:
                 namespace_prefix: "FOS\\UserBundle"
-                path: "%kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/config/serializer"
+                path: "@CertUnlpNgenBundle/Resources/config/serializer"
