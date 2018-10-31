@@ -29,6 +29,16 @@
 
 ![estructuraNGEN](imagenes/ngen.png)
 
+### Nota:
+los componentes indicados como ser Apache, HAProxy o MySQL son los que se sugieren para el instalador automático, aunque usted puede elegir aquellos que desee.
 
 ## ¿Y la automatización?
 
+Los Feeds de NGEN son los que alimentan de incidentes al sistema, para lograr esto hay una seria de scripts que consultan los feeds y mediante la API de NGEN introducen los nuevos incidentes. Los scripts de consulta a los feeds también los publicamos como Software Libre y los pueden descargar de https://github.com/CERTUNLP/Scripts 
+De acuerdo a la credibilidad y las formas de funcionar de los feeds en ocasiones se requiere una confirmación de la información recibida, que también puede realizarse de forma automática, allí es donde entra KINTUN, el otro proyecto libre desarrollado por CERTUNLP, https://github.com/CERTUNLP/Kintun.
+
+Entre los feeds que actualmente consume podemos mencionar:
+    * Shadowserver	
+    * Team Cymru	
+    * Bro IDS
+    * SpamPot CERT.br

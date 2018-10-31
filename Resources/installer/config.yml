@@ -93,4 +93,4 @@ cert_unlp_ngen:
     #            password: mail@cert.example.com
 
 doctrine_migrations:
-    dir_name: "%kernel.root_dir%/../src/CertUnlp/NgenBundle/DoctrineMigrations"
+    dir_name: "%kernel.root_dir%/../vendor/certunlp/ngen-bundle/DoctrineMigrations"
