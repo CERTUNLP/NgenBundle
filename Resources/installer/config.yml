@@ -1,7 +1,6 @@
 imports:
     - { resource: parameters.yml }
     - { resource: services.yml }
-
     - { resource: "@CertUnlpNgenBundle/Resources/config/security.yml" }
     - { resource: "@CertUnlpNgenBundle/Resources/config/config.yml" }
 
@@ -91,6 +90,17 @@ cert_unlp_ngen:
     #        client:
     #            user: mail@cert.example.com
     #            password: mail@cert.example.com
-
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      nested
+        nested:
+            type:  stream
+            path:  "php://stderr"
+            level: debug
+        console:
+            type:  console
 doctrine_migrations:
     dir_name: "%kernel.root_dir%/../vendor/certunlp/ngen-bundle/DoctrineMigrations"
