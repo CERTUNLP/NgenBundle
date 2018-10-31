@@ -77,7 +77,7 @@ class InternalIncidentListener
 
     public function slugUpdate(IncidentInterface $incident)
     {
-        $incident->setSlug(Sluggable\Urlizer::urlize($incident->getHostAddress() . " " . $incident->getType()->getSlug() . " " . $incident->getDate()->format('Y-m-d-H-i-s'), '_'));
+        $incident->setSlug(Sluggable\Urlizer::urlize($incident->getHostAddress() . " " . $incident->getType()->getSlug() . " " . $incident->getDate()->format('Y-m-d-H-i'), '_'));
     }
 
     public function networkUpdate(IncidentInterface $incident)

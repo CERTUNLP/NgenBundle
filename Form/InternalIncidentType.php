@@ -92,6 +92,9 @@ class InternalIncidentType extends AbstractType
                 'attr' => array('class' => 'hidden', 'data-theme' => 'simple'),
                 'description' => "JS textarea. Only works in frontend."
             ))
+            ->add('slug', 'hidden', array(
+                'required' => false,
+            ))
             ->add('evidence_file', 'file', array(
                 'label' => 'Report attachment',
                 'required' => false,
