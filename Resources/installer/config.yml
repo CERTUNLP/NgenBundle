@@ -79,10 +79,10 @@ cert_unlp_ngen:
             sender_address: '%mailer_sender%'
         internal:
             mailer:
-              sender_adress: '%mailer_sender%'
+                sender_address: '%mailer_sender%'
         external:
             mailer:
-              sender_adress: '%mailer_sender%'
+                sender_address: '%mailer_sender%'
     networks:
         default_network: '%default_network%'
     #feeds:
