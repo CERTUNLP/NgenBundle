@@ -114,7 +114,8 @@ class ExternalIncidentController extends FOSRestController
      *
      * @param ExternalIncident $incident
      * @return ExternalIncident
-     *
+     * @FOS\Get("/externals/{id}", name="api_2_get_external_id",requirements={"id"="\d+"}))
+     * @FOS\Get("/externals/{slug}")
      */
     public function getExternalAction(ExternalIncident $incident)
     {
@@ -159,6 +160,7 @@ class ExternalIncidentController extends FOSRestController
      * @param Request $request the request object
      * @param ExternalIncident $incident
      * @return FormTypeInterface|View
+     * @FOS\Put("/externals/{id}", name="api_2_put_external_id",requirements={"id"="\d+"}))
      * @FOS\Put("/externals/{slug}")
      */
     public function putExternalAction(Request $request, ExternalIncident $incident)
@@ -181,6 +183,8 @@ class ExternalIncidentController extends FOSRestController
      * @param ExternalIncident $incident
      * @param IncidentState $state
      * @return FormTypeInterface|View
+     * @FOS\Patch("/externals/{id}/states/{state}", name="api_2_patch_external_state_id",requirements={"id"="\d+"}))
+     * @FOS\Patch("/externals/{slug}/states/{state}")
      *
      */
     public function patchExternalStateAction(Request $request, ExternalIncident $incident, IncidentState $state)
@@ -190,51 +194,6 @@ class ExternalIncidentController extends FOSRestController
     }
 
     /**
-     * Update existing incident from the submitted data or create a new incident at a specific location.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
-     * )
-     *
-     * @param Request $request the request object
-     * @param ExternalIncident $incident
-     * @param IncidentState $state
-     * @return FormTypeInterface|View
-     *
-     * @FOS\Patch("/externals/{slug}/states/{state}")
-     */
-    public function patchExternalStateWithParamsAction(Request $request, ExternalIncident $incident, IncidentState $state)
-    {
-        return $this->getApiController()->patchState($request, $incident, $state);
-    }
-
-    /**
-     * Get single .
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   output = "CertUnlp\NgenBundle\Entity\Incident",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     404 = "Returned when the incident is not found"
-     *   }
-     * )
-     *
-     * @param ExternalIncident $incident
-     * @return ExternalIncident
-     *
-     * @Fos\Get("/externals/{slug}")
-     */
-    public function getExternalWithParamsAction(ExternalIncident $incident)
-    {
-        return $incident;
-    }
-
-    /**
      * Update existing incident from the submitted data.
      *
      * @ApiDoc(
@@ -250,35 +209,11 @@ class ExternalIncidentController extends FOSRestController
      * @param Request $request the request object
      * @param ExternalIncident $incident
      * @return FormTypeInterface|View
-     *
+     * @FOS\Patch("/externals/{id}", name="api_2_patch_external_id",requirements={"id"="\d+"}))
+     * @FOS\Patch("/externals/{slug}")
      */
     public function patchExternalAction(Request $request, ExternalIncident $incident)
     {
-        return $this->getApiController()->patch($request, $incident);
-    }
-
-    /**
-     * Update existing incident from the submitted data.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\IncidentType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
-     * )
-     *
-     *
-     * @param Request $request the request object
-     * @param ExternalIncident $incident
-     * @return FormTypeInterface|View
-     *
-     * @FOS\Patch("/externals/{slug}")
-     */
-    public function patchExternalWithParamsAction(Request $request, ExternalIncident $incident)
-    {
-
         return $this->getApiController()->patch($request, $incident);
     }
 
@@ -303,7 +238,8 @@ class ExternalIncidentController extends FOSRestController
      * @param ExternalIncident $incident the incident id
      *
      * @return FormTypeInterface|View
-     *
+     * @FOS\Delete("/externals/{id}", name="api_2_delete_external_id",requirements={"id"="\d+"}))
+     * @FOS\Delete("/externals/{slug}")
      */
     public function deleteExternalAction(Request $request, ExternalIncident $incident)
     {

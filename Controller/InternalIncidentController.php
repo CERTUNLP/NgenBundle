@@ -107,6 +107,8 @@ class InternalIncidentController extends FOSRestController
      *     200 = "Returned when successful"
      *   }
      * )
+     * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incidents.")
+     * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many incidents to return.")
      * @FOS\View(
      *  templateVar="incidents"
      * )
@@ -137,6 +139,8 @@ class InternalIncidentController extends FOSRestController
      * )
      * @param InternalIncident $incident
      * @return InternalIncident
+     * @FOS\Get("/internals/{id}", name="api_2_get_internal_id",requirements={"id"="\d+"}))
+     * @FOS\Get("/internals/{slug}")
      *
      */
     public function getInternalAction(InternalIncident $incident)
@@ -188,6 +192,7 @@ class InternalIncidentController extends FOSRestController
      * @FOS\View(
      *  templateVar="incidents"
      * )
+     * @FOS\Put("/internals/{id}", name="api_2_put_internal_id",requirements={"id"="\d+"}))
      * @FOS\Put("/internals/{slug}")
      */
     public function putInternalAction(Request $request, InternalIncident $incident)
@@ -212,6 +217,8 @@ class InternalIncidentController extends FOSRestController
      * @param InternalIncident $incident
      * @param IncidentState $state
      * @return FormTypeInterface|View
+     * @FOS\Patch("/internals/{id}/states/{state}", name="api_2_patch_internal_state_id", requirements={"id"="\d+"})
+     * @FOS\Patch("/internals/{slug}/states/{state}", requirements={"id"="\w+"})
      *
      */
     public function patchInternalStateAction(Request $request, InternalIncident $incident, IncidentState $state)
@@ -221,57 +228,6 @@ class InternalIncidentController extends FOSRestController
     }
 
     /**
-     * Update existing incident from the submitted data or create a new incident at a specific location.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
-     * )
-     *
-     * @param Request $request the request object
-     * @param InternalIncident $incident
-     * @param IncidentState $state
-     * @return FormTypeInterface|View
-     *
-     * @FOS\Patch("/internals/{slug}/states/{state}")
-     * @FOS\View(
-     *  templateVar="incidents"
-     * )
-     */
-    public function patchInternalStateWithParamsAction(Request $request, InternalIncident $incident, IncidentState $state)
-    {
-        return $this->getApiController()->patchState($request, $incident, $state);
-    }
-
-    /**
-     * Get single .
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   output = "CertUnlp\NgenBundle\Entity\Incident",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     404 = "Returned when the incident is not found"
-     *   }
-     * )
-     *
-     * @param InternalIncident $incident
-     * @return InternalIncident
-     *
-     * @Fos\Get("/internals/{slug}")
-     * @FOS\View(
-     *  templateVar="incidents"
-     * )
-     */
-    public function getInternalWithParamsAction(InternalIncident $incident)
-    {
-        return $incident;
-    }
-
-    /**
      * Update existing incident from the submitted data.
      *
      * @ApiDoc(
@@ -289,38 +245,12 @@ class InternalIncidentController extends FOSRestController
      * @param Request $request the request object
      * @param InternalIncident $incident
      * @return FormTypeInterface|View
+     * @FOS\Patch("/internals/{id}", name="api_2_get_internal_id",requirements={"id"="\d+"}))
+     * @FOS\Patch("/internals/{slug}")
      *
      */
     public function patchInternalAction(Request $request, InternalIncident $incident)
     {
-        return $this->getApiController()->patch($request, $incident);
-    }
-
-    /**
-     * Update existing incident from the submitted data.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\IncidentType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
-     * )
-     *
-     *
-     * @param Request $request the request object
-     * @param InternalIncident $incident
-     * @return FormTypeInterface|View
-     *
-     * @FOS\Patch("/internals/{slug}")
-     * @FOS\View(
-     *  templateVar="incidents"
-     * )
-     */
-    public function patchInternalWithParamsAction(Request $request, InternalIncident $incident)
-    {
-
         return $this->getApiController()->patch($request, $incident);
     }
 
@@ -342,6 +272,8 @@ class InternalIncidentController extends FOSRestController
      * @param InternalIncident $incident the incident id
      *
      * @return FormTypeInterface|View
+     * @FOS\Delete("/internals/{id}", name="api_2_get_internal_id",requirements={"id"="\d+"}))
+     * @FOS\Delete("/internals/{slug}")
      *
      */
     public function deleteInternalAction(Request $request, InternalIncident $incident)
