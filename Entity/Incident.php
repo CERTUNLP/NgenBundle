@@ -164,6 +164,12 @@ class Incident implements IncidentInterface
     protected $slug;
 
     /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     */
+    protected $comments;
+
+
+    /**
      * Get id
      *
      * @return integer
@@ -729,4 +735,26 @@ class Incident implements IncidentInterface
         return false;
     }
 
+    /**
+     * Get comments
+     *
+     * @return string
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Set comments
+     *
+     * @param string $comments
+     * @return Incident
+     */
+
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+        return $this;
+    }
 }

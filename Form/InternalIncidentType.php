@@ -48,14 +48,6 @@ class InternalIncidentType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.enabled = TRUE');
                 }))
-            ->add('state', null, array(
-                'empty_value' => 'Choose an incident state',
-                'attr' => array('help_text' => 'If none is selected, the state will be \'open\'.'),
-                'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
-                }))
             ->add('feed', 'entity', array(
                 'class' => 'CertUnlpNgenBundle:IncidentFeed',
                 'required' => true,
@@ -64,6 +56,23 @@ class InternalIncidentType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
+            ->add('sendReport', 'checkbox', array(
+                'data' => true,
+                'mapped' => true,
+                'attr' => array('align_with_widget' => true),
+                'required' => false,
+                'label' => 'Send mail report(if available)',
+                'description' => "Send a mail report to the host administrator."))
+            ->add('evidence_file', 'file', array(
+                'label' => 'Report attachment',
+                'required' => false,
+                'description' => "Evidence file that will be attached to the report "))
+            ->add('comments', 'textarea', array(
+                'required' => false,
+                'label' => 'Comments',
+                'attr' => array('data-theme' => 'simple', 'help_text' => 'Add some notes/evidence in text format, it will be attached to the mail report.'),
+                'description' => "Add some notes/evidence in text format, it will be attached to the mail report."
+            ))
             ->add('date', 'datetime', array(
                 'required' => false,
                 'input' => 'datetime',
@@ -73,36 +82,34 @@ class InternalIncidentType extends AbstractType
                     'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
                     'hour' => 'Hour', 'minute' => 'Minute', 'second' => 'Second',)
                 ))
-            ->add('sendReport', 'checkbox', array(
-                'data' => true,
-                'mapped' => true,
-                'attr' => array('align_with_widget' => true),
-                'required' => false,
-                'label' => 'Send mail report(if available)',
-                'description' => "Send a mail report to the host administrator."))
-            ->add('editReport', 'button', array(
-                'label' => 'Edit the report',
-                'attr' => array('class' => 'save ladda-button btn btn-primary', 'data-style' => "slide-down"),
+            ->add('state', null, array(
+                'empty_value' => 'Choose an incident state',
+                'attr' => array('help_text' => 'If none is selected, the state will be \'open\'.'),
+                'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('it')
+                        ->where('it.isActive = TRUE');
+                }))
+//           ->add('editReport', 'button', array(
+//                'label' => 'Edit the report',
+//               'attr' => array('class' => 'save ladda-button btn btn-primary', 'data-style' => "slide-down"),
 //                    'description' => "JS button. Only works in frontend."
-            ))
-            ->add('reportEdit', 'textarea', array(
-                'required' => false,
-                'label' => 'Edit the report',
-                'label_attr' => array('class' => 'hidden'),
-                'attr' => array('class' => 'hidden', 'data-theme' => 'simple'),
-                'description' => "JS textarea. Only works in frontend."
-            ))
+//            ))
+//           ->add('reportEdit', 'textarea', array(
+//                'required' => false,
+//                'label' => 'Edit the report',
+//                'label_attr' => array('class' => 'hidden'),
+//                'attr' => array('class' => 'hidden', 'data-theme' => 'simple'),
+//                'description' => "JS textarea. Only works in frontend."
+//            ))
             ->add('slug', 'hidden', array(
                 'required' => false,
             ))
-            ->add('evidence_file', 'file', array(
-                'label' => 'Report attachment',
-                'required' => false,
-                'description' => "Evidence file that will be attached to the report "))
             ->add('save', 'submit', array(
                 'attr' => array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => "slide-down"),
 //                    'description' => "Evidence file that will be attached to the report "
             ));
+
     }
 
     /**
