@@ -18,11 +18,11 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ExternalIncidentType extends AbstractType
 {
-
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
+    /*
+    **
+    * @param FormBuilderInterface $builder
+    * @param array $options
+    */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -40,47 +40,32 @@ class ExternalIncidentType extends AbstractType
             ->add('hostAddress', null, array(
                 'attr' => array('maxlength' => '300', 'help_text' => 'Add more than one address separating them with a comma.'),
                 'description' => "The host IP. (Add more than one address separating them with a comma.)"))
-            ->add('reporter', null, array(
-                'empty_value' => 'Choose a reporter',
-                'attr' => array('help_text' => 'If none is selected, the reporter will be the logged user.'),
-                'description' => "The reporter ID. If none was selected, the reporter will be the logged user or the apikey user.",
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.enabled = TRUE');
-                }))
             ->add('feed', 'entity', array(
                 'class' => 'CertUnlpNgenBundle:IncidentFeed',
                 'required' => true,
-                'description' => "(bro|external_report|netflow|shadowserver)", 'query_builder' => function (EntityRepository $er) {
+                'description' => "(bro|external_report|netflow|shadowserver)",
+                'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
-            ->add('sendReport', 'checkbox', array(
-                'data' => true,
-                'mapped' => true,
-                'attr' => array('align_with_widget' => true),
+            ->add('notes', 'textarea', array(
                 'required' => false,
-                'label' => 'Send mail report(if available)',
-                'description' => "Send a mail report to the host administrator."))
+                'label' => 'Notes',
+                'attr' => array('data-theme' => 'simple', 'help_text' => 'Add some notes/evidence in text format, it will be attached to the mail report.'),
+                'description' => "Add some notes/evidence in text format, it will be attached to the mail report."
+            ))
             ->add('evidence_file', 'file', array(
                 'label' => 'Report attachment',
                 'required' => false,
                 'description' => "Evidence file that will be attached to the report "))
-            ->add('comments', 'textarea', array(
-                'required' => false,
-                'label' => 'Comments',
-                'attr' => array('data-theme' => 'simple', 'help_text' => 'Add some notes/evidence in text format, it will be attached to the mail report.'),
-                'description' => "Add some notes/evidence in text format, it will be attached to the mail report."
-            ))
             ->add('date', 'datetime', array(
                 'required' => false,
+                'html5' => true,
                 'input' => 'datetime',
-                'attr' => array('help_text' => 'If no date is selected, the date will be today.'),
+                'widget' => 'single_text',
+                'attr' => array('type' => 'datetime-local', 'help_text' => 'If no date is selected, the date will be today.'),
                 'description' => "If no date is selected, the date will be today.",
-                'placeholder' => array(
-                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-                    'hour' => 'Hour', 'minute' => 'Minute', 'second' => 'Second',
-                )))
+            ))
             ->add('state', null, array(
                 'empty_value' => 'Choose an incident state',
                 'attr' => array('help_text' => 'If none is selected, the state will be \'open\'.'),
@@ -89,12 +74,27 @@ class ExternalIncidentType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
-//            ->add('editReport', 'button', array(
+            ->add('reporter', null, array(
+                'empty_value' => 'Choose a reporter',
+                'attr' => array('help_text' => 'If none is selected, the reporter will be the logged user.'),
+                'description' => "The reporter ID. If none was selected, the reporter will be the logged user or the apikey user.",
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('it')
+                        ->where('it.enabled = TRUE');
+                }))
+            ->add('sendReport', 'checkbox', array(
+                'data' => true,
+                'mapped' => true,
+                'attr' => array('align_with_widget' => true),
+                'required' => false,
+                'label' => 'Send mail report(if available)',
+                'description' => "Send a mail report to the host administrator."))
+//           ->add('editReport', 'button', array(
 //                'label' => 'Edit the report',
-//                'attr' => array('class' => 'save ladda-button btn btn-primary', 'data-style' => "slide-down"),
-////                    'description' => "JS button. Only works in frontend."
+//               'attr' => array('class' => 'save ladda-button btn btn-primary', 'data-style' => "slide-down"),
+//                    'description' => "JS button. Only works in frontend."
 //            ))
-//            ->add('reportEdit', 'textarea', array(
+//           ->add('reportEdit', 'textarea', array(
 //                'required' => false,
 //                'label' => 'Edit the report',
 //                'label_attr' => array('class' => 'hidden'),
@@ -108,6 +108,7 @@ class ExternalIncidentType extends AbstractType
                 'attr' => array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => "slide-down"),
 //                    'description' => "Evidence file that will be attached to the report "
             ));
+
     }
 
     /**
