@@ -45,6 +45,15 @@
                                                         <td class="expander"></td>
                                                     </tr>
                                                 {% endif %}
+                                                {% if(incident.comments) %}
+                                                    <tr>
+                                                        <td>
+                                                            {{ incident.comments|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                        </td>
+                                                        <td class="expander"></td>
+                                                    </tr>
+
+                                                {% endif %}
                                                 {% if(report.derivatedProblem) %}
                                                     <tr>
                                                         <td>

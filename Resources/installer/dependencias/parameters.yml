@@ -11,3 +11,9 @@ parameters:
     mailer_password: MAILER_PASSWORD
     mailer_sender: MAILER_SENDER
     secret: SECRET_KEY
+    default_network: DEFAULT_NETWORK
+    team_mail: TEAM_MAIL
+    session_max_idle_time: SESSION_TIMEOUT
+    elastic_host: ELASTIC_HOST
+    elastic_port: ELASTIC_PORT
+	
