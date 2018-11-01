@@ -67,9 +67,9 @@ class InternalIncidentType extends AbstractType
                 'label' => 'Report attachment',
                 'required' => false,
                 'description' => "Evidence file that will be attached to the report "))
-            ->add('comments', 'textarea', array(
+            ->add('notes', 'textarea', array(
                 'required' => false,
-                'label' => 'Comments',
+                'label' => 'Notes',
                 'attr' => array('data-theme' => 'simple', 'help_text' => 'Add some notes/evidence in text format, it will be attached to the mail report.'),
                 'description' => "Add some notes/evidence in text format, it will be attached to the mail report."
             ))
