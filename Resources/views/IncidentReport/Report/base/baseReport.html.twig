@@ -45,10 +45,15 @@
                                                         <td class="expander"></td>
                                                     </tr>
                                                 {% endif %}
-                                                {% if(incident.comments) %}
+
+                                                {% if(incident.notes) %}
                                                     <tr>
                                                         <td>
-                                                            {{ incident.comments|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                            <p class="lead">
+                                                                {% block incident_notes_title %}
+                                                                {% endblock %}
+                                                            </p>
+                                                            {{ incident.notes|striptags('<div>,<a>,<pre>,<code>')|raw }}
                                                         </td>
                                                         <td class="expander"></td>
                                                     </tr>

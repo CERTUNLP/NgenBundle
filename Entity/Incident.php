@@ -166,7 +166,7 @@ class Incident implements IncidentInterface
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
      */
-    protected $comments;
+    protected $notes;
 
 
     /**
@@ -736,25 +736,25 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * Get comments
+     * Get notes
      *
      * @return string
      */
-    public function getComments()
+    public function getNotes()
     {
-        return $this->comments;
+        return $this->notes;
     }
 
     /**
-     * Set comments
+     * Set notes
      *
-     * @param string $comments
+     * @param string $notes
      * @return Incident
      */
 
-    public function setComments($comments)
+    public function setNotes($notes)
     {
-        $this->comments = $comments;
+        $this->notes = $notes;
         return $this;
     }
 }
