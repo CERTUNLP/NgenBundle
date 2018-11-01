@@ -266,3 +266,8 @@ services:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
             - [ setAnnotationReader, [ "@annotation_reader" ] ]
+
+    app.image_type_extension:
+        class: CertUnlp\NgenBundle\Form\Extension\DateTimeTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\DateTimeType }
