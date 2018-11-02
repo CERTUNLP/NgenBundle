@@ -11,6 +11,9 @@ fos_elastica:
     indexes:
         incidents:
             index_name: incidents_%kernel.environment%
+            settings:
+                index:
+                    max_result_window: 50000
             types:
                 internal:
                     properties:
@@ -196,6 +199,9 @@ fos_elastica:
                         finder: ~
         networks:
             index_name: networks_%kernel.environment%
+            settings:
+                index:
+                    max_result_window: 50000
             types:
 
                 network:
@@ -240,6 +246,9 @@ fos_elastica:
                         finder: ~
         network_admins:
             index_name: network_admins_%kernel.environment%
+            settings:
+                index:
+                    max_result_window: 50000
             types:
                 network_admin:
                     properties:
@@ -267,6 +276,9 @@ fos_elastica:
                         finder: ~
         academic_units:
             index_name: academic_units_%kernel.environment%
+            settings:
+                index:
+                    max_result_window: 50000
             types:
                 academic_unit:
                     properties:
@@ -292,6 +304,9 @@ fos_elastica:
                         finder: ~
         feeds:
             index_name: feeds_%kernel.environment%
+            settings:
+                index:
+                    max_result_window: 50000
             types:
                 feeds:
                     properties:
@@ -316,6 +331,9 @@ fos_elastica:
                         finder: ~
         states:
             index_name: states_%kernel.environment%
+            settings:
+                index:
+                    max_result_window: 50000
             types:
                 states:
                     properties:
@@ -340,6 +358,9 @@ fos_elastica:
                         finder: ~
         types:
             index_name: types_%kernel.environment%
+            settings:
+                index:
+                    max_result_window: 50000
             types:
                 types:
                     properties:
@@ -371,6 +392,9 @@ fos_elastica:
                         finder: ~
         reports:
             index_name: reports_%kernel.environment%
+            settings:
+                index:
+                    max_result_window: 50000
             types:
                 reports:
                     properties:
@@ -405,6 +429,9 @@ fos_elastica:
                         finder: ~
         users:
             index_name: users_%kernel.environment%
+            settings:
+                index:
+                    max_result_window: 50000
             types:
                 users:
                     properties:
