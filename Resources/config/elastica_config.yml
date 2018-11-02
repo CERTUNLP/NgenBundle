@@ -7,7 +7,7 @@
 
 fos_elastica:
     clients:
-        default: { host: %elastic_host%, port: %elastic_port% }
+        default: { host: ngen-elastic, port: 9200 }
     indexes:
         incidents:
             index_name: incidents_%kernel.environment%
@@ -58,16 +58,16 @@ fos_elastica:
                                         name:
                                             type: keyword
                         networkAdmin:
-                            type: "object"
-                            properties:
-                                slug:
-                                    type: keyword
-                                email:
-                                    type: keyword
-                                name:
-                                    type: keyword
-                                isActive:
-                                    type: boolean
+                                    type: "object"
+                                    properties:
+                                        slug:
+                                            type: keyword
+                                        email:
+                                            type: keyword
+                                        name:
+                                            type: keyword
+                                        isActive:
+                                            type: boolean
                         state:
                             type: "object"
                             properties:
@@ -116,10 +116,6 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\InternalIncident
                         provider: ~
                         finder: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
                 external:
                     properties:
                         id:
@@ -198,13 +194,10 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\ExternalIncident
                         provider: ~
                         finder: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
         networks:
             index_name: networks_%kernel.environment%
             types:
+
                 network:
                     properties:
                         id:
@@ -245,10 +238,6 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\Network
                         provider: ~
                         finder: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
         network_admins:
             index_name: network_admins_%kernel.environment%
             types:
@@ -276,10 +265,6 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\NetworkAdmin
                         provider: ~
                         finder: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
         academic_units:
             index_name: academic_units_%kernel.environment%
             types:
@@ -305,10 +290,6 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\AcademicUnit
                         provider: ~
                         finder: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
         feeds:
             index_name: feeds_%kernel.environment%
             types:
@@ -333,10 +314,6 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\IncidentFeed
                         provider: ~
                         finder: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
         states:
             index_name: states_%kernel.environment%
             types:
@@ -361,10 +338,6 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\IncidentState
                         provider: ~
                         finder: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
         types:
             index_name: types_%kernel.environment%
             types:
@@ -396,10 +369,6 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\IncidentType
                         provider: ~
                         finder: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
         reports:
             index_name: reports_%kernel.environment%
             types:
@@ -434,10 +403,6 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\IncidentReport
                         provider: ~
                         finder: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
         users:
             index_name: users_%kernel.environment%
             types:
@@ -470,7 +435,3 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\User
                         provider: ~
                         finder: ~
-                        listener:
-                            insert: true
-                            update: true
-                            delete: true
