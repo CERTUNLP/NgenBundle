@@ -7,7 +7,7 @@
 
 fos_elastica:
     clients:
-        default: { host: ngen-elastic, port: 9200 }
+        default: { host: %elastic_host%, port: %elastic_port% }
     indexes:
         incidents:
             index_name: incidents_%kernel.environment%
