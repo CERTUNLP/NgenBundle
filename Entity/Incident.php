@@ -132,6 +132,17 @@ class Incident implements IncidentInterface
      * @JMS\Groups({"api"})
      */
     protected $state;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Tlp", inversedBy="incidents")
+     * @ORM\JoinColumn(name="tlp_state", referencedColumnName="name")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+
+    protected $tlp_state;
+
+
     /**
      * @Assert\File(maxSize = "500k")
      */
