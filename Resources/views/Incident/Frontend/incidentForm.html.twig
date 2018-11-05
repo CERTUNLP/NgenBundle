@@ -10,7 +10,9 @@
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
 
 {% block content_header %}
-    <h1 class="page-header">{{ icon('plus-circle fa-fw') }}Add incident</h1>
+    <h1 class="page-header">{{ icon('plus-circle fa-fw') }}Add incident
+        <span class="tlp-green" id="tlp">&nbsp;TLP:GREEN&nbsp;</span>
+    </h1>
 {% endblock %}
 
 {% block content_body %}

@@ -1,0 +1,23 @@
+.tlp-red {
+    color: #ff0033;
+    background: #000;
+    float:right;
+}
+
+.tlp-amber {
+    color: #ffc000;
+    background: #000;
+    float:right;
+}
+
+.tlp-green {
+    color: #33ff00;
+    background: #000;
+    float:right;
+}
+
+.tlp-white {
+    color: #fff;
+    background: #000;
+    float:right;
+}

@@ -83,13 +83,13 @@ class FrontendController
 
     public function newEntity(Request $request)
     {
-        return array('form' => $this->formFactory->create(new $this->entityType())->createView(), 'method' => 'POST');
+        return array('form' => $this->formFactory->create(new $this->entityType($this->doctrine))->createView(), 'method' => 'POST');
     }
 
     public function editEntity($object)
     {
 
-        return array('form' => $this->formFactory->create(new $this->entityType(), $object)->createView(), 'method' => 'patch');
+        return array('form' => $this->formFactory->create(new $this->entityType($this->doctrine), $object)->createView(), 'method' => 'patch');
     }
 
     public function detailEntity($object)

@@ -79,6 +79,7 @@ services:
        - cluster.name=docker-cluster
        - discovery.type=single-node
        - xpack.security.enabled=false
+       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       volumes:
         - ngen-elastic-data:/usr/share/elasticsearch/data
       ports:

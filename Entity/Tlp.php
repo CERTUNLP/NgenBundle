@@ -70,6 +70,10 @@ class Tlp
      */
     private $description;
 
+    public function __toString()
+    {
+        return $this->name;
+    }
 
 }
 

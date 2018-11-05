@@ -10,8 +10,14 @@ var IncidentForm = Form.extend({
     config: function (params) {
         this.setIncidentId();
         $("#sendReport").on("change", $.proxy(this.editReportDisable, this));
+        $("#tlp_state").on("change", $.proxy(this.changeTLP, this));
         $("#type").on("change", $.proxy(this.editReportChangeText, this));
         $("#editReport").on("click", $.proxy(this.editReport, this));
+    },
+    changeTLP: function (){
+        var $valor=$("#tlp_state option:selected").text()
+        $("#tlp").first().html("TLP:"+$valor.toUpperCase());
+        $("#tlp").attr('class',"tlp-"+$valor);
     },
     setIncidentId: function () {
         this.incidentId = $('#slug').val();
