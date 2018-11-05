@@ -26,4 +26,8 @@ class TypeHasReport extends Constraint
         return 'type.has.report.validator';
     }
 
+    public function getTargets()
+    {
+        return self::CLASS_CONSTRAINT;
+    }
 }
