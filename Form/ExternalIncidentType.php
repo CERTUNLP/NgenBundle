@@ -18,6 +18,10 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ExternalIncidentType extends AbstractType
 {
+    public function __construct($doctrine=null) {
+        $this->doctrine = $doctrine;
+    }
+
     /*
     **
     * @param FormBuilderInterface $builder
@@ -74,6 +78,12 @@ class ExternalIncidentType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
+            ->add('tlp_state', null, array(
+                'empty_value' => 'Choose an incident tlp',
+                'attr' => array('help_text' => 'If none is selected, the state will be \'green\'.'),
+                'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
+                'data' =>  $this->doctrine->getReference("CertUnlpNgenBundle:Tlp", 3)
+                ))
             ->add('reporter', null, array(
                 'empty_value' => 'Choose a reporter',
                 'attr' => array('help_text' => 'If none is selected, the reporter will be the logged user.'),
