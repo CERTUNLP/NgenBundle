@@ -29,6 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"incident"="incident","internal" = "InternalIncident", "external" = "ExternalIncident"})
+ * @CustomAssert\TypeHasReport
  */
 class Incident implements IncidentInterface
 {
@@ -112,7 +113,6 @@ class Incident implements IncidentInterface
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
-     * @CustomAssert\TypeHasReport
      */
     protected $type;
 
@@ -121,7 +121,7 @@ class Incident implements IncidentInterface
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
-     * @@Assert\NotNull
+     * @Assert\NotNull
      */
     protected $feed;
 

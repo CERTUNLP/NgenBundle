@@ -19,21 +19,29 @@ class TypeHasReportValidator extends ConstraintValidator
 {
 
     private $type_handler;
-    private $lang;
+    private $external_lang;
+    private $internal_lang;
 
-    public function __construct(IncidentTypeHandler $networkHandler, $lang)
+    public function __construct(IncidentTypeHandler $networkHandler, $internal_lang, $external_lang)
     {
         $this->type_handler = $networkHandler;
-        $this->lang = $lang;
+        $this->internal_lang = $internal_lang;
+        $this->external_lang = $external_lang;
     }
 
     public function validate($value, Constraint $constraint)
     {
-        $type = $this->type_handler->get(['slug' => $value]);
-        if ($type && !$type->getReport($this->lang)) {
+        if ($value->isInternal()) {
+            $lang = $this->internal_lang;
+        } else {
+            $lang = $this->external_lang;
+        }
+        $type = $value->getType();
+
+        if ($type && !$type->getReport($lang)) {
             if (!empty($constraint->message)) {
                 $this->context->addViolation(
-                    $constraint->message, array('%string%' => $this->lang)
+                    $constraint->message, array('%string%' => $lang)
                 );
             }
         }
