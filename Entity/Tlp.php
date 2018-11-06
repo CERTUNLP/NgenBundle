@@ -24,9 +24,9 @@ class Tlp
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=45, nullable=true)
+     * @ORM\Column(name="slug", type="string", length=45, nullable=true)
      */
-    private $name;
+    private $slug;
 
     /**
      * @var string
@@ -75,5 +75,27 @@ class Tlp
         return $this->name;
     }
 
-}
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
 
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return IncidentState
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+}
