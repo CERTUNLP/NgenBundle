@@ -45,8 +45,7 @@ class InternalIncidentFrontendController extends Controller
      */
     public function newIncidentAction(Request $request)
     {
-        echo "gato"; die();
-return $this->getFrontendController()->newEntity($request);
+        return $this->getFrontendController()->newEntity($request);
     }
 
     /**
