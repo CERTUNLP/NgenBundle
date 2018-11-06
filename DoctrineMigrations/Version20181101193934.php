@@ -16,7 +16,7 @@ class Version20181101193934 extends AbstractMigration
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE `tlp` (    `idtlp` int(11) NOT NULL,  `name` varchar(45) DEFAULT NULL,  `rgb` varchar(45) DEFAULT NULL,  `when` varchar(500) DEFAULT NULL,  `encrypt` tinyint(1) DEFAULT NULL,  `why` varchar(500) DEFAULT NULL,  `information` varchar(10) DEFAULT NULL,  `description` varchar(150) DEFAULT NULL,  PRIMARY KEY (`idtlp`)) ENGINE=InnoDB DEFAULT CHARSET=latin1");
+        $this->addSql('CREATE TABLE tlp (idtlp INT AUTO_INCREMENT NOT NULL, slug VARCHAR(45) DEFAULT NULL, rgb VARCHAR(45) DEFAULT NULL, `when` VARCHAR(500) DEFAULT NULL, encrypt TINYINT(1) DEFAULT NULL, why VARCHAR(500) DEFAULT NULL, information VARCHAR(10) DEFAULT NULL, description VARCHAR(45) DEFAULT NULL, PRIMARY KEY(idtlp)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
         $this->addSql('ALTER TABLE incident ADD tlp_state VARCHAR(45) DEFAULT NULL');
 #       $this->addSql('ALTER TABLE incident ADD CONSTRAINT FK_3D03A11AB8037C6C FOREIGN KEY (tlp_state) REFERENCES tlp (name)');
