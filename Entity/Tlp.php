@@ -72,7 +72,7 @@ class Tlp
 
     public function __toString()
     {
-        return $this->name;
+        return $this->slug;
     }
 
     /**
