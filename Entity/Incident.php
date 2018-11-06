@@ -135,7 +135,7 @@ class Incident implements IncidentInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Tlp", inversedBy="incidents")
-     * @ORM\JoinColumn(name="tlp_state", referencedColumnName="name")
+     * @ORM\JoinColumn(name="tlp_state", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
