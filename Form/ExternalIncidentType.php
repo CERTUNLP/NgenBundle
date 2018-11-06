@@ -82,7 +82,7 @@ class ExternalIncidentType extends AbstractType
                 'empty_value' => 'Choose an incident tlp',
                 'attr' => array('help_text' => 'If none is selected, the state will be \'green\'.'),
                 'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
-                'data' =>  $this->doctrine->getReference("CertUnlpNgenBundle:Tlp", 3)
+                'data' =>  $this->doctrine->getReference("CertUnlpNgenBundle:Tlp", "green")
                 ))
             ->add('reporter', null, array(
                 'empty_value' => 'Choose a reporter',
