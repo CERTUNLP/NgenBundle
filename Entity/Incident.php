@@ -141,8 +141,6 @@ class Incident implements IncidentInterface
      */
 
     protected $tlp_state;
-
-
     /**
      * @Assert\File(maxSize = "500k")
      */
@@ -173,12 +171,28 @@ class Incident implements IncidentInterface
     protected $comment_thread;
     protected $hostAddress;
     protected $slug;
-
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
      */
     protected $notes;
 
+    /**
+     * @return mixed
+     */
+    public function getTlpState()
+    {
+        return $this->tlp_state;
+    }
+
+    /**
+     * @param mixed $tlp_state
+     * @return Incident
+     */
+    public function setTlpState($tlp_state)
+    {
+        $this->tlp_state = $tlp_state;
+        return $this;
+    }
 
     /**
      * Get id
