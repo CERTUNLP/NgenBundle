@@ -15,11 +15,7 @@ var IncidentApi = ApiClient.extend({
         $.subscribe('/cert_unlp/incident/state/change', $.proxy(this.changeState, this));
         $.subscribe('/cert_unlp/incident/new', $.proxy(this.create, this));
         $.subscribe('/cert_unlp/incident/update', $.proxy(this.update, this));
-        $.subscribe('/cert_unlp/incident/report/html', $.proxy(this.getReportHtml, this));
-    },
-    getReportHtml: function (state, callback) {
-        var request = this.defaultChannel.report.read(state, 'html.html', {}, {apikey: this.apiKey});
-        this.doRequest(request, callback);
+
     },
     changeState: function (incidentId, state, callback) {
         var request = this.defaultChannel.states.update(incidentId, state, {}, {apikey: this.apiKey});

@@ -26,6 +26,9 @@
         {% include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incdent': incident,'lastTimeDetected':incident.lastTimeDetected} %}
     </td>
     <td>
+        {{ incident.tlpState }}
+    </td>
+    <td>
         <div class="btn-group inline pull-left dropdown action-dropdown">
             <a class="btn btn-sm btn-primary" role="button"
                href="{{ path('cert_unlp_ngen_external_incident_frontend_detail_incident',{'slug': incident.slug}) }}">
