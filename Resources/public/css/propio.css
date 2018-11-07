@@ -2,11 +2,13 @@
     color: #ff0033;
     background: #000;
     float:right;
+    border-radius: 10px;
 }
 
 .tlp-amber {
     color: #ffc000;
     background: #000;
+    border-radius: 10px;
     float:right;
 }
 
@@ -14,10 +16,28 @@
     color: #33ff00;
     background: #000;
     float:right;
+    border-radius: 10px;
 }
 
 .tlp-white {
     color: #fff;
     background: #000;
     float:right;
+    border-radius: 10px;
+}
+
+.rigth {
+    float:right;
+}
+
+.left {
+    float:left;
+}
+
+.center {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: auto;
+    float: none!important;
 }

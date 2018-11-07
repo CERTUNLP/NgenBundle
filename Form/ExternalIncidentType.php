@@ -78,11 +78,11 @@ class ExternalIncidentType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
-            ->add('tlp_state', null, array(
+            ->add('tlpState', null, array(
                 'empty_value' => 'Choose an incident tlp',
                 'attr' => array('help_text' => 'If none is selected, the state will be \'green\'.'),
                 'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
-                'data' =>  $this->doctrine->getReference("CertUnlpNgenBundle:Tlp", "green")
+                'data' =>  $this->doctrine->getReference("CertUnlpNgenBundle:IncidentTlp", "green")
                 ))
             ->add('reporter', null, array(
                 'empty_value' => 'Choose a reporter',
@@ -92,6 +92,34 @@ class ExternalIncidentType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.enabled = TRUE');
                 }))
+            ->add('reporter', null, array(
+                'empty_value' => 'Choose a reporter',
+                'attr' => array('help_text' => 'If none is selected, the reporter will be the logged user.'),
+                'description' => "The reporter ID. If none was selected, the reporter will be the logged user or the apikey user.",
+                'data' => $this->doctrine->getReference("CertUnlpNgenBundle:User", $this->userLogged),
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('it')
+                        ->where('it.enabled = TRUE');
+                }))
+            ->add('assigned', null, array(
+                'empty_value' => 'Choose a responsable',
+                'attr' => array('help_text' => 'If none is selected, the assigned will be empty.'),
+                'description' => "If none was selected, the incident will remain unassigned.",
+                'data' => $this->doctrine->getReference("CertUnlpNgenBundle:User", $this->userLogged),
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('it')
+                        ->where('it.enabled = TRUE');
+                }))
+            ->add('impact', null, array(
+                'empty_value' => 'Choose a impact level',
+                'attr' => array('help_text' => 'If none is selected, the assigned impact will be Low.'),
+                'description' => "If none is selected, the assigned impact will be Low",
+            ))
+            ->add('urgency', null, array(
+                'empty_value' => 'Choose a responsable',
+                'attr' => array('help_text' => 'If none is selected, the assigned urgency will be Low'),
+                'description' => 'If none is selected, the assigned urgency will be Low',
+            ))
             ->add('sendReport', 'checkbox', array(
                 'data' => true,
                 'mapped' => true,
