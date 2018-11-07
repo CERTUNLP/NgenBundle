@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Tlp
+ * IncidentTlp
  *
- * @ORM\Table(name="tlp")
+ * @ORM\Table(name="incident_tlp")
  * @ORM\Entity
  */
-class Tlp
+class IncidentTlp
 {
     /**
      * @var string
@@ -66,7 +66,7 @@ class Tlp
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=45, nullable=true)
+     * @ORM\Column(name="description", type="string", length=150, nullable=true)
      */
     private $description;
 
@@ -80,9 +80,9 @@ class Tlp
 
     /**
      * @param string $name
-     * @return Tlp
+     * @return IncidentTlp
      */
-    public function setName(string $name): Tlp
+    public function setName(string $name): IncidentTlp
     {
         $this->name = $name;
         return $this;
@@ -98,9 +98,9 @@ class Tlp
 
     /**
      * @param string $rgb
-     * @return Tlp
+     * @return IncidentTlp
      */
-    public function setRgb(string $rgb): Tlp
+    public function setRgb(string $rgb): IncidentTlp
     {
         $this->rgb = $rgb;
         return $this;
@@ -116,9 +116,9 @@ class Tlp
 
     /**
      * @param string $when
-     * @return Tlp
+     * @return IncidentTlp
      */
-    public function setWhen(string $when): Tlp
+    public function setWhen(string $when): IncidentTlp
     {
         $this->when = $when;
         return $this;
@@ -134,9 +134,9 @@ class Tlp
 
     /**
      * @param bool $encrypt
-     * @return Tlp
+     * @return IncidentTlp
      */
-    public function setEncrypt(bool $encrypt): Tlp
+    public function setEncrypt(bool $encrypt): IncidentTlp
     {
         $this->encrypt = $encrypt;
         return $this;
@@ -152,9 +152,9 @@ class Tlp
 
     /**
      * @param string $why
-     * @return Tlp
+     * @return IncidentTlp
      */
-    public function setWhy(string $why): Tlp
+    public function setWhy(string $why): IncidentTlp
     {
         $this->why = $why;
         return $this;
@@ -170,9 +170,9 @@ class Tlp
 
     /**
      * @param string $information
-     * @return Tlp
+     * @return IncidentTlp
      */
-    public function setInformation(string $information): Tlp
+    public function setInformation(string $information): IncidentTlp
     {
         $this->information = $information;
         return $this;
@@ -188,9 +188,9 @@ class Tlp
 
     /**
      * @param string $description
-     * @return Tlp
+     * @return IncidentTlp
      */
-    public function setDescription(string $description): Tlp
+    public function setDescription(string $description): IncidentTlp
     {
         $this->description = $description;
         return $this;
@@ -215,7 +215,7 @@ class Tlp
      * Set slug
      *
      * @param string $slug
-     * @return Tlp
+     * @return IncidentTlp
      */
     public function setSlug($slug)
     {

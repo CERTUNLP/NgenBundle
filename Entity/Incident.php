@@ -85,6 +85,22 @@ class Incident implements IncidentInterface
     protected $createdAt;
 
     /**
+     * @return mixed
+     */
+    public function getAssigned()
+    {
+        return $this->assigned;
+    }
+
+    /**
+     * @param mixed $assigned
+     */
+    public function setAssigned($assigned)
+    {
+        $this->assigned = $assigned;
+    }
+
+    /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
@@ -95,9 +111,14 @@ class Incident implements IncidentInterface
     protected $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Model\ReporterInterface", inversedBy="incidents")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="incidents")
      */
     protected $reporter;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="$assignedIncidents")
+     */
+    protected $assigned;
 
     /**
      * @var boolean
@@ -133,17 +154,35 @@ class Incident implements IncidentInterface
      */
     protected $state;
 
+
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Tlp", inversedBy="incidents")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentTlp", inversedBy="incidents")
      * @ORM\JoinColumn(name="tlp_state", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
+    protected $tlpState;
 
-    protected $tlp_state;
+    /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentUrgency", inversedBy="incidents")
+     * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    protected $urgency;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentImpact", inversedBy="incidents")
+     * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    protected $impact;
+
     /**
      * @Assert\File(maxSize = "500k")
      */
+
     protected $evidence_file;
     /**
      * @ORM\Column(name="evidence_file_path", type="string",nullable=true)
@@ -181,16 +220,16 @@ class Incident implements IncidentInterface
      */
     public function getTlpState()
     {
-        return $this->tlp_state;
+        return $this->tlpState;
     }
 
     /**
      * @param mixed $tlp_state
      * @return Incident
      */
-    public function setTlpState($tlp_state)
+    public function setTlpState($tlpState)
     {
-        $this->tlp_state = $tlp_state;
+        $this->tlpState = $tlpState;
         return $this;
     }
 
@@ -203,6 +242,7 @@ class Incident implements IncidentInterface
     {
         return $this->id;
     }
+
 
     /**
      * Get hostAddress

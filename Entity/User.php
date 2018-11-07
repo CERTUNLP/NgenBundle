@@ -70,6 +70,27 @@ class User extends BaseUser implements ReporterInterface
 
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="reporter") */
     private $incidents;
+
+    /**
+     * @return mixed
+     */
+    public function getAssignedIncidents()
+    {
+        return $this->assignedIncidents;
+    }
+
+    /**
+     * @param mixed $assignedIncidents
+     */
+    public function setAssignedIncidents($assignedIncidents)
+    {
+        $this->assignedIncidents = $assignedIncidents;
+    }
+
+
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="assigned") */
+    private $assignedIncidents;
+
     /**
      * @var string
      *
@@ -85,6 +106,7 @@ class User extends BaseUser implements ReporterInterface
     {
         parent::__construct();
         $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->assignedIncidents = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
