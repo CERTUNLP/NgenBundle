@@ -49,8 +49,6 @@ class IncidentApiController extends ApiController
                     $object_data['hostAddress'] = $hostAddress;
                     $new_incidents[] = $this->getCustomHandler()->post($object_data);
                 }
-
-
                 return $this->response([$new_incidents], Response::HTTP_CREATED);
             } else {
 
@@ -74,10 +72,6 @@ class IncidentApiController extends ApiController
         $data = array('state' => $slug);
         $this->getView()->setTemplate('CertUnlpNgenBundle:Incident:Report/Twig/incidentReportHtml.html.twig');
         $this->getView()->setTemplateData($data);
-//        $this->getView()->setData($data);
-//        $data['html'] = $this->viewHandler->renderTemplate($this->getView(), 'html');
-//        var_dump($this->getView());die;
-//        die;
         return $this->handle();
     }
 

@@ -101,8 +101,16 @@ abstract class Handler implements ApiHandlerInterface
             $entity_class_instance = $form->getData();
 
             $entity_class_instance = $this->checkIfExists($entity_class_instance, $method);
-            $this->om->persist($entity_class_instance);
-            $this->om->flush();
+            //try {
+
+               $this->om->persist($entity_class_instance);
+               $this->om->flush();
+            //}
+            //catch(\Swift_TransportException $e) {
+             //  var_dump($e);
+              // die;
+              //  throw new InvalidFormException($e->getMessage(), $form);
+            //}
 
             return $entity_class_instance;
         }
