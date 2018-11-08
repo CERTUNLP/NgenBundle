@@ -70,6 +70,18 @@ class IncidentTlp
      */
     private $description;
 
+
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="$tlpState", cascade={"persist","remove"})) */
+    private $incidents;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     /**
      * @return string
      */
