@@ -31,6 +31,9 @@ swiftmailer:
             username:  "%cert_unlp.ngen.incident.mailer.username%"
             password:  "%cert_unlp.ngen.incident.mailer.password%"
             encryption: tls
+            spool:
+                type: file
+                path: "%kernel.root_dir%/Resources/incident/mails"
 doctrine:
     orm:
         auto_mapping: true
