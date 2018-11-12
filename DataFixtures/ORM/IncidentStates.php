@@ -33,6 +33,7 @@ class IncidentStates extends AbstractFixture implements OrderedFixtureInterface
     {
         $incident_closing_types = array(
             array('name' => "Open"),
+            array('name' => "Staging"),
             array('name' => "Closed"),
             array('name' => "Closed by inactivity"),
             array('name' => "Stand by"),
