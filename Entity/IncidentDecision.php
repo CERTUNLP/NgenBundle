@@ -37,7 +37,7 @@ class IncidentDecision
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network",inversedBy="incidentsDecisions")
-     * @ORM\JoinColumn(name="network", referencedColumnName="slug")
+     * @ORM\JoinColumn(name="network", referencedColumnName="id")
      */
     protected $network;
 
@@ -55,10 +55,11 @@ class IncidentDecision
     protected $urgency;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentPriority", inversedBy="incidentsDecisions")
-     * @ORM\JoinColumn(name="priority", referencedColumnName="slug")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentTlp", inversedBy="incidentsDecisions")
+     * @ORM\JoinColumn(name="tlp", referencedColumnName="slug")
      */
-    protected $priority;
+
+    protected $tlp;
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentState", inversedBy="incidentsDecisions")

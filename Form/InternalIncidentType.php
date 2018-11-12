@@ -36,6 +36,7 @@ class InternalIncidentType extends AbstractType
         $builder
             ->add('type', null, array(
                 'empty_value' => 'Choose an incident type',
+                'data' => $this->doctrine->getReference("CertUnlpNgenBundle:IncidentType", "undefined"),
                 'required' => true,
                 'description' => "(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|"
                     . "dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|"
@@ -51,6 +52,7 @@ class InternalIncidentType extends AbstractType
             ->add('feed', 'entity', array(
                 'class' => 'CertUnlpNgenBundle:IncidentFeed',
                 'required' => true,
+                'data' => $this->doctrine->getReference("CertUnlpNgenBundle:IncidentFeed", "undefined"),
                 'description' => "(bro|external_report|netflow|shadowserver)",
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
