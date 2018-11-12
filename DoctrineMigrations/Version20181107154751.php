@@ -18,7 +18,7 @@ class Version20181107154751 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE incident_impact (slug VARCHAR(45) NOT NULL, name VARCHAR(45) DEFAULT NULL, description VARCHAR(255) DEFAULT NULL, PRIMARY KEY(slug)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE incident_impact (slug VARCHAR(45) NOT NULL, name VARCHAR(45) DEFAULT NULL, description VARCHAR(512) DEFAULT NULL, PRIMARY KEY(slug)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE incident_urgency (slug VARCHAR(45) NOT NULL, name VARCHAR(45) DEFAULT NULL, description VARCHAR(255) DEFAULT NULL, PRIMARY KEY(slug)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE tlp RENAME TO incident_tlp ;');
         $this->addSql('ALTER TABLE incident ADD asigned_id INT DEFAULT NULL, ADD urgency VARCHAR(45) DEFAULT NULL, ADD impact VARCHAR(45) DEFAULT NULL');

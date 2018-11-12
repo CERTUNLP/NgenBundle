@@ -10,4 +10,25 @@ namespace CertUnlp\NgenBundle\Repository;
  */
 class IncidentDecisionRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findOneBy($array)
+    {
+        $incidentDecisionDB = parent.findOneBy($array);
+        if ($incidentDecisionDB) {
+            return $incidentDecisionDB;
+        } else {
+            $incidentDecisionDB = parent.findOneBy(array('feed' => "undefined", 'type' => $array['type']));
+            if ($incidentDecisionDB) {
+                return $incidentDecisionDB;
+            } else {
+                $incidentDecisionDB = parent.findOneBy(array('feed' => $array['feed'], 'type' => 'undefined'));
+                if ($incidentDecisionDB) {
+                    return $incidentDecisionDB;
+                } else {
+                    $incidentDecisionDB = parent.findOneBy(array('feed' => 'undefined', 'type' => 'undefined'));
+
+                    return $incidentDecisionDB;
+                }
+            }
+        }
+    }
 }

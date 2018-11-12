@@ -125,6 +125,10 @@ services:
         class:        "%cert_unlp.ngen.academic_unit.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.academic_unit.class%","%cert_unlp.ngen.academic_unit.form_type.class%","@form.factory"]
 
+    cert_unlp.ngen.incident_decision.handler:
+        class:        "%cert_unlp.ngen.incident_decision.handler.class%"
+        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident_decision.class%","%cert_unlp.ngen.incident_decision.form_type.class%","@form.factory"]
+
 
     cert_unlp.ngen.incident.internal.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentApiController
