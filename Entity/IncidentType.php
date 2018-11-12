@@ -28,6 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class IncidentType
 {
 
+
     /**
      * @var string
      *
@@ -71,6 +72,9 @@ class IncidentType
      */
     private $updatedAt;
 
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\IncidentDecision",mappedBy="type", cascade={"persist","remove"})) */
+    private $incidentsDecisions;
+
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="type", cascade={"persist","remove"})) */
     private $incidents;
 
@@ -82,7 +86,7 @@ class IncidentType
      * )
      */
     private $reports;
-
+   
     /**
      * Constructor
      */

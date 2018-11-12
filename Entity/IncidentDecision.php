@@ -69,9 +69,9 @@ class IncidentDecision
     /**
      * @var boolean
      *
-     * @ORM\Column(name="auto", type="boolean", nullable=true)
+     * @ORM\Column(name="autoSaved", type="boolean", nullable=true)
      */
-    private $encrypt;
+    private $autoSaved;
 
 
     /**
