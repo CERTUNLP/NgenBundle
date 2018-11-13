@@ -30,6 +30,6 @@
     {% endjavascripts %}
     <script>
         var incident_report = new IncidentReport();
-        var incident_report_api = new IncidentReportApi("{{ path("api_2_get") }}/", "{{ app.user.apiKey }}");
+        var incident_report_api = new IncidentReportApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
     </script>
 {% endblock %}

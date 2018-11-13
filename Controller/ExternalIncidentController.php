@@ -14,69 +14,14 @@ namespace CertUnlp\NgenBundle\Controller;
 //use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 //use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 //use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use CertUnlp\NgenBundle\Entity\ExternalIncident;
-use CertUnlp\NgenBundle\Entity\IncidentState;
-use CertUnlp\NgenBundle\Entity\IncidentType;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
-use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class ExternalIncidentController extends FOSRestController
 {
-
-    /**
-     * Prints a mail template for the given incident.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Prints a mail twig template for the given incident type.",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     404 = "Returned when the incident is not found"
-     *   }
-     * )
-     * @param IncidentType $incidentType
-     * @return array
-     */
-    public function getExternalReportHtmlAction(IncidentType $incidentType)
-    {
-
-        return $this->getApiController()->reportHtmlAction($incidentType->getSlug());
-    }
-
-    public function getApiController()
-    {
-
-        return $this->container->get('cert_unlp.ngen.incident.external.api.controller');
-    }
-
-    /**
-     * Prints a mail template for the given incident.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Prints a mail html template for the given incident.",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     404 = "Returned when the incident is not found"
-     *   }
-     * )
-     *
-     * @Fos\View()
-     *
-     * @param ExternalIncident $incident
-     * @return array
-     */
-    public function getExternalReportMailAction(ExternalIncident $incident)
-    {
-
-        return $this->getApiController()->reportMailAction($incident);
-    }
 
     /**
      * List all incidents.
@@ -100,150 +45,11 @@ class ExternalIncidentController extends FOSRestController
         return $this->getApiController()->getAll($request, $paramFetcher);
     }
 
-    /**
-     * Get single ExternalIncident.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   output = "CertUnlp\NgenBundle\Entity\Incident",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     404 = "Returned when the incident is not found"
-     *   }
-     * )
-     *
-     * @param ExternalIncident $incident
-     * @return ExternalIncident
-     * @FOS\Get("/externals/{id}", name="api_2_get_external_id",requirements={"id"="\d+"}))
-     * @FOS\Get("/externals/{slug}")
-     */
-    public function getExternalAction(ExternalIncident $incident)
-    {
-        return $incident;
-    }
-
-    /**
-     * Create a ExternalIncident from the submitted data.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Creates a new incident from the submitted data.",
-     *   input = "CertUnlp\NgenBundle\Form\IncidentType",
-     *   statusCodes = {
-     *     201 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
-     * )
-     *
-     * @param Request $request the request object
-     *
-     * @return FormTypeInterface|View
-     */
-    public function postExternalAction(Request $request)
-    {
-        return $this->getApiController()->post($request);
-    }
-
-    /**
-     * Update existing incident from the submitted data or create a new incident at a specific location.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\IncidentType",
-     *   statusCodes = {
-     *     201 = "Returned when the IncidentInterface is created",
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
-     * )
-     *
-     * @param Request $request the request object
-     * @param ExternalIncident $incident
-     * @return FormTypeInterface|View
-     * @FOS\Put("/externals/{id}", name="api_2_put_external_id",requirements={"id"="\d+"}))
-     * @FOS\Put("/externals/{slug}")
-     */
-    public function putExternalAction(Request $request, ExternalIncident $incident)
-    {
-        return $this->getApiController()->put($request, $incident);
-    }
-
-    /**
-     * Update existing incident from the submitted data or create a new incident at a specific location.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
-     * )
-     *
-     * @param Request $request the request object
-     * @param ExternalIncident $incident
-     * @param IncidentState $state
-     * @return FormTypeInterface|View
-     * @FOS\Patch("/externals/{id}/states/{state}", name="api_2_patch_external_state_id",requirements={"id"="\d+"}))
-     * @FOS\Patch("/externals/{slug}/states/{state}")
-     *
-     */
-    public function patchExternalStateAction(Request $request, ExternalIncident $incident, IncidentState $state)
+    public function getApiController()
     {
 
-        return $this->getApiController()->patchState($request, $incident, $state);
+        return $this->container->get('cert_unlp.ngen.incident.external.api.controller');
     }
 
-    /**
-     * Update existing incident from the submitted data.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\IncidentType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
-     * )
-     *
-     *
-     * @param Request $request the request object
-     * @param ExternalIncident $incident
-     * @return FormTypeInterface|View
-     * @FOS\Patch("/externals/{id}", name="api_2_patch_external_id",requirements={"id"="\d+"}))
-     * @FOS\Patch("/externals/{slug}")
-     */
-    public function patchExternalAction(Request $request, ExternalIncident $incident)
-    {
-        return $this->getApiController()->patch($request, $incident);
-    }
-
-    /**
-     * Update existing incident from the submitted data or create a new incident at a specific location.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\IncidentType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
-     * )
-     *
-     * @FOS\View(
-     *  template = "CertUnlpNgenBundle:Incident:editIncident.html.twig",
-     *  templateVar = "form"
-     * )
-     *
-     * @param Request $request the request object
-     * @param ExternalIncident $incident the incident id
-     *
-     * @return FormTypeInterface|View
-     * @FOS\Delete("/externals/{id}", name="api_2_delete_external_id",requirements={"id"="\d+"}))
-     * @FOS\Delete("/externals/{slug}")
-     */
-    public function deleteExternalAction(Request $request, ExternalIncident $incident)
-    {
-        return $this->getApiController()->delete($request, $incident);
-    }
 
 }

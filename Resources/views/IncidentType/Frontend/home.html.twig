@@ -21,6 +21,6 @@
     {% endjavascripts %}
     <script>
         var incident_type = new IncidentType();
-        var incident_type_api = new IncidentTypeApi("{{ path("api_2_get") }}/", "{{ app.user.apiKey }}");
+        var incident_type_api = new IncidentTypeApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
     </script>
 {% endblock %}

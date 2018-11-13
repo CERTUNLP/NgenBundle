@@ -18,7 +18,7 @@
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
-        var externalIncidentApi = new ExternalIncidentApi("{{ path("api_2_get") }}/", "{{ app.user.apiKey }}");
+        var externalIncidentApi = new ExternalIncidentApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
         var externalIncident = new ExternalIncident();
     </script>
 {% endblock %}

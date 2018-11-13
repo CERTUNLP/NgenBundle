@@ -31,6 +31,6 @@
     {% endjavascripts %}
     <script>
         var network_admin = new NetworkAdmin();
-        var network_admin_api = new NetworkAdminApi("{{ path("api_2_get") }}/", "{{ app.user.apiKey }}");
+        var network_admin_api = new NetworkAdminApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
     </script>
 {% endblock %}
