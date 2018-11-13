@@ -31,6 +31,6 @@
     {% endjavascripts %}
     <script>
         var academic_unit = new AcademicUnit();
-        var academic_unit_api = new AcademicUnitApi("{{ path("api_2_get") }}/", "{{ app.user.apiKey }}");
+        var academic_unit_api = new AcademicUnitApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
     </script>
 {% endblock %}
