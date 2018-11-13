@@ -1,0 +1,36 @@
+{# 
+ This file is part of the Ngen - CSIRT Network Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
+
+{% block title %}Incident Decisionss{% endblock %}
+
+{% block content_header %}
+    <h1 class="page-header">{{ icon('unlock-alt fa-fw') }} Incident Decisions</h1>
+{% endblock %}
+
+{% block sideBar_search_path %}{{ path('cert_unlp_ngen_incident_decision_search') }}{% endblock %}
+
+{% block content_body %}
+    {% include 'CertUnlpNgenBundle:IncidentDecision:Frontend/list/IncidentDecisionList.html.twig' with {'IncidentDecisions': objects  } %}
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+        '@CertUnlpNgenBundle/Resources/public/js/incident/decision/IncidentDecision.js'
+        '@CertUnlpNgenBundle/Resources/public/js/incident/decision/IncidentDecisionApi.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        var incident_decision = new IncidentDecision();
+        var incident_decision_api = new IncidentDecisionApi("{{ path("api_2_get") }}/", "{{ app.user.apiKey }}");
+    </script>
+{% endblock %}

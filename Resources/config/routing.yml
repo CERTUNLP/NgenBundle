@@ -70,6 +70,11 @@ cert_ngen_incident_type:
     type:     annotation
     prefix:   /incidents/types
 
+cert_ngen_incident_decision:
+    resource: '@CertUnlpNgenBundle/Controller/IncidentDecisionFrontendController.php'
+    type:     annotation
+    prefix:   /incidents/decisions
+
 cert_ngen_incident_type_reports:
     resource: '@CertUnlpNgenBundle/Controller/IncidentReportFrontendController.php'
     type:     annotation

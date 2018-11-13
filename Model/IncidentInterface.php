@@ -56,7 +56,7 @@ interface IncidentInterface
     public function getFeed();
 
     /**
-     * Set IncidentState
+     * Set IncidentDecision
      *
      * @param $state
      * @return Incident

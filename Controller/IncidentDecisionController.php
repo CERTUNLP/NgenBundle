@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Controller;
 
-use CertUnlp\NgenBundle\Entity\IncidentState;
+use CertUnlp\NgenBundle\Entity\IncidentDecision;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -21,7 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class IncidentStateController extends FOSRestController
+class IncidentDecisionController extends FOSRestController
 {
 
     /**
@@ -47,7 +47,7 @@ class IncidentStateController extends FOSRestController
     }
 
     /**
-     * List all incident states.
+     * List all incident decisions.
      *
      * @ApiDoc(
      *   resource = true,
@@ -56,12 +56,12 @@ class IncidentStateController extends FOSRestController
      *   }
      * )
      *
-     * @FOS\Get("/states")
-     * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident states.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many incident states to return.")
+     * @FOS\Get("/decisions")
+     * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident decisions.")
+     * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many incident decisions to return.")
      *
      * @FOS\View(
-     *  templateVar="incident_states"
+     *  templateVar="incident_decisions"
      * )
      *
      * @param Request $request the request object
@@ -69,7 +69,7 @@ class IncidentStateController extends FOSRestController
      *
      * @return array
      */
-    public function getIncidentStatesAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getIncidentDecisionsAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
         return $this->getApiController()->getAll($request, $paramFetcher);
     }
@@ -77,7 +77,7 @@ class IncidentStateController extends FOSRestController
     public function getApiController()
     {
 
-        return $this->container->get('cert_unlp.ngen.incident.state.api.controller');
+        return $this->container->get('cert_unlp.ngen.incident.decision.api.controller');
     }
 
     /**
@@ -93,17 +93,17 @@ class IncidentStateController extends FOSRestController
      *   }
      * )
      *
-     * @param IncidentState $incident_state
-     * @return IncidentState
+     * @param IncidentDecision $incident_decision
+     * @return IncidentDecision
      * @FOS\View(
-     *  templateVar="incident_state"
+     *  templateVar="incident_decision"
      * )
-     * @ParamConverter("incident_state", class="CertUnlpNgenBundle:IncidentDecision")
-     * @FOS\Get("/states/{slug}")
+     * @ParamConverter("incident_decision", class="CertUnlpNgenBundle:IncidentDecision")
+     * @FOS\Get("/decisions/{slug}")
      */
-    public function getIncidentStateAction(IncidentState $incident_state)
+    public function getIncidentDecisionAction(IncidentDecision $incident_decision)
     {
-        return $incident_state;
+        return $incident_decision;
     }
 
     /**
@@ -119,12 +119,12 @@ class IncidentStateController extends FOSRestController
      *   }
      * )
      *
-     * @FOS\Post("/states")
+     * @FOS\Post("/decisions")
      * @param Request $request the request object
      *
      * @return FormTypeInterface|View
      */
-    public function postIncidentStateAction(Request $request)
+    public function postIncidentDecisionAction(Request $request)
     {
         return $this->getApiController()->post($request);
     }
@@ -140,15 +140,15 @@ class IncidentStateController extends FOSRestController
      *     400 = "Returned when the form has errors"
      *   }
      * )
-     * @FOS\Patch("/states/{slug}")
+     * @FOS\Patch("/decisions/{slug}")
      * @param Request $request the request object
-     * @param IncidentState $incident_state
+     * @param IncidentDecision $incident_decision
      * @return FormTypeInterface|View
      *
      */
-    public function patchIncidentStateAction(Request $request, IncidentState $incident_state)
+    public function patchIncidentDecisionAction(Request $request, IncidentDecision $incident_decision)
     {
-        return $this->getApiController()->patch($request, $incident_state, true);
+        return $this->getApiController()->patch($request, $incident_decision, true);
     }
 
     /**
@@ -162,40 +162,15 @@ class IncidentStateController extends FOSRestController
      *     400 = "Returned when the form has errors"
      *   }
      * )
-     * @FOS\Patch("/states/{slug}")
+     * @FOS\Patch("/decisions/{slug}")
      * @param Request $request the request object
-     * @param IncidentState $incident_state
+     * @param IncidentDecision $incident_decision
      * @return FormTypeInterface|View
      *
      */
-    public function patchIncidentStateBySlugAction(Request $request, IncidentState $incident_state)
+    public function patchIncidentDecisionBySlugAction(Request $request, IncidentDecision $incident_decision)
     {
-        return $this->getApiController()->patch($request, $incident_state);
-    }
-
-    /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
-     * )
-     *
-     *
-     * @param Request $request the request object
-     * @param IncidentState $incident_state
-     * @return FormTypeInterface|View
-     *
-     * @FOS\Patch("/states/{slug}/activate")
-     */
-    public function patchIncidentStateActivateAction(Request $request, IncidentState $incident_state)
-    {
-
-        return $this->getApiController()->activate($request, $incident_state);
+        return $this->getApiController()->patch($request, $incident_decision);
     }
 
     /**
@@ -212,15 +187,40 @@ class IncidentStateController extends FOSRestController
      *
      *
      * @param Request $request the request object
-     * @param IncidentState $incident_state
+     * @param IncidentDecision $incident_decision
      * @return FormTypeInterface|View
      *
-     * @FOS\Patch("/states/{slug}/desactivate")
+     * @FOS\Patch("/decisions/{slug}/activate")
      */
-    public function patchIncidentStateDesactivateAction(Request $request, IncidentState $incident_state)
+    public function patchIncidentDecisionActivateAction(Request $request, IncidentDecision $incident_decision)
     {
 
-        return $this->getApiController()->desactivate($request, $incident_state);
+        return $this->getApiController()->activate($request, $incident_decision);
+    }
+
+    /**
+     * Update existing network from the submitted data or create a new network at a specific location.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
+     *   statusCodes = {
+     *     204 = "Returned when successful",
+     *     400 = "Returned when the form has errors"
+     *   }
+     * )
+     *
+     *
+     * @param Request $request the request object
+     * @param IncidentDecision $incident_decision
+     * @return FormTypeInterface|View
+     *
+     * @FOS\Patch("/decisions/{slug}/desactivate")
+     */
+    public function patchIncidentDecisionDesactivateAction(Request $request, IncidentDecision $incident_decision)
+    {
+
+        return $this->getApiController()->desactivate($request, $incident_decision);
     }
 
 }

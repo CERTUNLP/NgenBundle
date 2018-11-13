@@ -126,8 +126,8 @@ services:
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.academic_unit.class%","%cert_unlp.ngen.academic_unit.form_type.class%","@form.factory"]
 
     cert_unlp.ngen.incident_decision.handler:
-        class:        "%cert_unlp.ngen.incident_decision.handler.class%"
-        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident_decision.class%","%cert_unlp.ngen.incident_decision.form_type.class%","@form.factory"]
+        class:        "%cert_unlp.ngen.incident.decision.handler.class%"
+        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.decision.class%","%cert_unlp.ngen.incident.decision.form_type.class%","@form.factory"]
 
 
     cert_unlp.ngen.incident.internal.api.controller:
@@ -170,6 +170,7 @@ services:
         class: CertUnlp\NgenBundle\Services\Api\Controller\AcademicUnitApiController
         arguments: ["@cert_unlp.ngen.academic_unit.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
 
+
     cert_unlp.ngen.incident.internal.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.internal.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.internal","@fos_comment.manager.comment","@fos_comment.manager.thread","@security.token_storage",%cert_unlp.ngen.incident.evidence.path%"]
@@ -209,6 +210,11 @@ services:
     cert_unlp.ngen.academic_unit.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.academic_unit.form_type.class%","@knp_paginator","@fos_elastica.finder.academic_units.academic_unit","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+
+    cert_unlp.ngen.incident.decision.frontend.controller:
+        class:        CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentDecisionFrontendController
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.decision.form_type.class%","@knp_paginator","@fos_elastica.finder.decisions.decisions","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+
 
     cert_unlp.ngen.incident.report.markdown.parser:
         class: CertUnlp\NgenBundle\Services\IncidentMarkdowReportParser

@@ -62,7 +62,7 @@ class IncidentDecision
     protected $tlp;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentState", inversedBy="incidentsDecisions")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentDecision", inversedBy="incidentsDecisions")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      */
     protected $state;
