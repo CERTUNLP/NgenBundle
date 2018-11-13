@@ -147,7 +147,7 @@ class Incident implements IncidentInterface
     protected $feed;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentState", inversedBy="incidents")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentDecision", inversedBy="incidents")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})

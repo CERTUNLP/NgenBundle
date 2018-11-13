@@ -9,7 +9,7 @@
 
 {% extends 'CertUnlpNgenBundle::IncidentDecision/Frontend/frontend.html.twig' %}
 {% block content_header %}
-    <h1 class="page-header">{{ icon('plus-circle fa-fw') }}state</h1>
+    <h1 class="page-header">{{ icon('plus-circle fa-fw') }}decision</h1>
 {% endblock %}
 {% block content_body %}
     {% if (form is not null) %}
@@ -22,10 +22,10 @@
     {{ parent() }}
 
     {% javascripts
-        '@CertUnlpNgenBundle/Resources/public/js/incident/state/IncidentDecisionFormorm.js' %}
+        '@CertUnlpNgenBundle/Resources/public/js/incident/decision/IncidentDecisionForm.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
-        var incident_state_form = new IncidentDecisionForm();
+        var incident_decision_form = new IncidentDecisionForm();
     </script>
 {% endblock %}
