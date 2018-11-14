@@ -7,7 +7,7 @@
  with this source code in the file LICENSE.
 #}
 
-{% extends 'CertUnlpNgenBundle::IncidentDecision/Frontend/frontend.html.twig' %}
+{% extends 'CertUnlpNgenBundle::IncidentState/Frontend/frontend.html.twig' %}
 {% block content_header %}
     <h1 class="page-header">{{ icon('plus-circle fa-fw') }}state</h1>
 {% endblock %}
@@ -22,10 +22,10 @@
     {{ parent() }}
 
     {% javascripts
-        '@CertUnlpNgenBundle/Resources/public/js/incident/state/IncidentDecisionFormorm.js' %}
+        '@CertUnlpNgenBundle/Resources/public/js/incident/state/IncidentStateForm.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
-        var incident_state_form = new IncidentDecisionForm();
+        var incident_state_form = new IncidentStateForm();
     </script>
 {% endblock %}

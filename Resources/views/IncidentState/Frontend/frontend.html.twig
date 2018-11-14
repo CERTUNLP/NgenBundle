@@ -17,7 +17,7 @@
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_incident_state_search') }}{% endblock %}
 
 {% block content_body %}
-    {% include 'CertUnlpNgenBundle:IncidentDecision:Frontend/list/incidentStateList.html.twig' with {'incidentStates': objects  } %}
+    {% include 'CertUnlpNgenBundle:IncidentState:Frontend/list/incidentStateList.html.twig' with {'incidentStates': objects  } %}
 {% endblock %}
 
 
@@ -25,12 +25,12 @@
     {{ parent() }}
 
     {% javascripts
-        '@CertUnlpNgenBundle/Resources/public/js/incident/state/IncidentDecision.js.js'
-        '@CertUnlpNgenBundle/Resources/public/js/incident/state/IncidentDecisionApi.js' %}
+        '@CertUnlpNgenBundle/Resources/public/js/incident/state/IncidentState.js'
+        '@CertUnlpNgenBundle/Resources/public/js/incident/state/IncidentStateApi.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
-        var incident_state = new IncidentDecision();
+        var incident_state = new IncidentState();
         var incident_state_api = new IncidentStateApi("{{ path("api_2_get") }}/", "{{ app.user.apiKey }}");
     </script>
 {% endblock %}
