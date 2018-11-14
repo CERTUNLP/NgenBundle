@@ -212,7 +212,7 @@ services:
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.academic_unit.form_type.class%","@knp_paginator","@fos_elastica.finder.academic_units.academic_unit","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.incident.decision.frontend.controller:
-        class:        CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentDecisionFrontendController
+        class:     CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.decision.form_type.class%","@knp_paginator","@fos_elastica.finder.decisions.decisions","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
 

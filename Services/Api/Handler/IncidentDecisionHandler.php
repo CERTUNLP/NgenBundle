@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\IncidentFeed;
+use CertUnlp\NgenBundle\Entity\IncidentDecision;
 
 class IncidentDecisionHandler extends Handler
 {
@@ -19,14 +19,14 @@ class IncidentDecisionHandler extends Handler
     /**
      * Delete a Network.
      *
-     * @param IncidentFeed $incident_feed
+     * @param IncidentDecision $incident_decision
      * @param array $parameters
      *
      * @return void
      */
-    public function prepareToDeletion($incident_feed, array $parameters = null)
+    public function prepareToDeletion($incidentDecision, array $parameters = null)
     {
-        $incident_feed->setIsActive(FALSE);
+        $incidentDdecision->setIsActive(FALSE);
     }
 
     protected function checkIfExists($incidentDecision, $method)

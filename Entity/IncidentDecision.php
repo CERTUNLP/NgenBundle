@@ -3,6 +3,7 @@
 namespace CertUnlp\NgenBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * IncidentDecision
@@ -22,6 +23,180 @@ class IncidentDecision
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    protected $createdAt;
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt(\DateTime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFeed()
+    {
+        return $this->feed;
+    }
+
+    /**
+     * @param mixed $feed
+     */
+    public function setFeed($feed)
+    {
+        $this->feed = $feed;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNetwork()
+    {
+        return $this->network;
+    }
+
+    /**
+     * @param mixed $network
+     */
+    public function setNetwork($network)
+    {
+        $this->network = $network;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImpact()
+    {
+        return $this->impact;
+    }
+
+    /**
+     * @param mixed $impact
+     */
+    public function setImpact($impact)
+    {
+        $this->impact = $impact;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUrgency()
+    {
+        return $this->urgency;
+    }
+
+    /**
+     * @param mixed $urgency
+     */
+    public function setUrgency($urgency)
+    {
+        $this->urgency = $urgency;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTlp()
+    {
+        return $this->tlp;
+    }
+
+    /**
+     * @param mixed $tlp
+     */
+    public function setTlp($tlp)
+    {
+        $this->tlp = $tlp;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param mixed $state
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAutoSaved(): bool
+    {
+        return $this->autoSaved;
+    }
+
+    /**
+     * @param bool $autoSaved
+     */
+    public function setAutoSaved(bool $autoSaved)
+    {
+        $this->autoSaved = $autoSaved;
+    }
+
+    /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="updated_at", type="datetime")
+     */
+    protected $updatedAt;
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt(\DateTime $updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentType",inversedBy="incidentsDecisions")
@@ -62,17 +237,40 @@ class IncidentDecision
     protected $tlp;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentDecision", inversedBy="incidentsDecisions")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentState", inversedBy="incidentsDecisions")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      */
     protected $state;
 
     /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param bool $isActive
+     */
+    public function setIsActive(bool $isActive)
+    {
+        $this->isActive = $isActive;
+    }
+
+    /**
      * @var boolean
      *
-     * @ORM\Column(name="autoSaved", type="boolean", nullable=true)
+     * @ORM\Column(name="auto_saved", type="boolean")
      */
-    private $autoSaved;
+    private $autoSaved=false;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive=true;
 
 
     /**
@@ -91,6 +289,13 @@ class IncidentDecision
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->id;
+    }
 
     /**
      * Get id

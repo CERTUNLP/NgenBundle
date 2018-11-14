@@ -9,7 +9,7 @@
 
 {% extends 'CertUnlpNgenBundle::IncidentDecision/Frontend/frontend.html.twig' %}
 {% block content_header %}
-    <h1 class="page-header"> {{ object }} {% include "CertUnlpNgenBundle:IncidentDecision:Frontend/list/decisionLabel.html.twig" with {'incidentdecision': object} %}
+    <h1 class="page-header"> {{ object }} {% include "CertUnlpNgenBundle:IncidentDecision:Frontend/list/incidentDecisionLabel.html.twig" with {'incidentdecision': object} %}
     </h1>
 {% endblock %}
 {% block content_body %}
@@ -60,7 +60,7 @@
                                     Active
                                 </td>
                                 <td class="">
-                                    {% include "CertUnlpNgenBundle:IncidentDecision:Frontend/list/decisionLabel.html.twig" with {'IncidentDecision': object} %}
+                                    {% include "CertUnlpNgenBundle:IncidentDecision:Frontend/list/incidentDecisionLabel.html.twig" with {'IncidentDecision': object} %}
                                 </td>
                             </tr>
                             <tr>
