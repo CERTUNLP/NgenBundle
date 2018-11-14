@@ -2,9 +2,9 @@
 
 /*
  * This file is part of the Ngen - CSIRT Incident Report System.
- * 
+ *
  * (c) CERT UNLP <support@cert.unlp.edu.ar>
- * 
+ *
  * This source file is subject to the GPL v3.0 license that is bundled
  * with this source code in the file LICENSE.
  */
@@ -54,7 +54,7 @@ class IncidentDecisionFrontendController extends Controller
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/IncidentDecisionForm.html.twig")
+     * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/incidentDecisionForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_incident_decision_new")
      * @param Request $request
      * @return array
@@ -65,7 +65,7 @@ class IncidentDecisionFrontendController extends Controller
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/IncidentDecisionForm.html.twig")
+     * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/incidentDecisionForm.html.twig")
      * @Route("{slug}/edit", name="cert_unlp_ngen_incident_decision_edit")
      * @param IncidentDecision $IncidentDecision
      * @return array

@@ -13,6 +13,8 @@ namespace CertUnlp\NgenBundle\Form;
 
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -57,7 +59,7 @@ class IncidentDecisionType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
-            ->add('tlpState', null, array(
+            ->add('tlp', null, array(
                 'empty_value' => 'Choose an incident tlp',
                 'attr' => array('help_text' => 'If none is selected, the state will be \'green\'.'),
                 'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
