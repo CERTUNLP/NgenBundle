@@ -21,6 +21,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use DateTime;
 
 /**
  * @ORM\Entity()
@@ -147,7 +148,7 @@ class Incident implements IncidentInterface
     protected $feed;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentDecision", inversedBy="incidents")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentState", inversedBy="incidents")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
@@ -389,7 +390,7 @@ class Incident implements IncidentInterface
      * @param string $slug
      * @return Incident
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug)
     {
         $this->slug = $slug;
 
@@ -455,7 +456,7 @@ class Incident implements IncidentInterface
      * @param bool $fullPath
      * @return string
      */
-    public function getEvidenceFilePath($fullPath = false)
+    public function getEvidenceFilePath(string $fullPath = null)
     {
 
         if ($this->evidence_file_path) {
@@ -477,7 +478,7 @@ class Incident implements IncidentInterface
      * @param string $evidenceFilePath
      * @return Incident
      */
-    public function setEvidenceFilePath($evidenceFilePath)
+    public function setEvidenceFilePath(string $evidenceFilePath)
     {
         $this->evidence_file_path = $evidenceFilePath;
 
@@ -510,7 +511,8 @@ class Incident implements IncidentInterface
      * @param \DateTime $date
      * @return Incident
      */
-    public function setDate($date)
+
+    public function setDate(DateTime $date)
     {
         $this->date = $date;
 
@@ -533,7 +535,7 @@ class Incident implements IncidentInterface
      * @param string $evidenceFileTemp
      * @return Incident
      */
-    public function setEvidenceFileTemp($evidenceFileTemp)
+    public function setEvidenceFileTemp(string $evidenceFileTemp)
     {
         $this->evidence_file_temp = $evidenceFileTemp;
 
@@ -628,7 +630,7 @@ class Incident implements IncidentInterface
      * @param boolean $sendReport
      * @return Incident
      */
-    public function setSendReport($sendReport)
+    public function setSendReport(bool $sendReport)
     {
         $this->sendReport = $sendReport;
 
@@ -719,7 +721,7 @@ class Incident implements IncidentInterface
      * @param string $reportMessageId
      * @return Incident
      */
-    public function setReportMessageId($reportMessageId)
+    public function setReportMessageId(string $reportMessageId)
     {
         $this->report_message_id = $reportMessageId;
 

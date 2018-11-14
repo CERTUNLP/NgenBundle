@@ -366,6 +366,10 @@ fos_elastica:
                     properties:
                         id:
                             type: integer
+                        createdAt:
+                            type: date
+                        updatedAt:
+                            type: date
                         state:
                             type: "object"
                             properties:

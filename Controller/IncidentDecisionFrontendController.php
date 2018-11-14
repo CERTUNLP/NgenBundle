@@ -12,7 +12,7 @@
 /**
  * Description of IncidentDecisionFrontendController
  *
- * @author dam
+ * @author einar
  */
 
 namespace CertUnlp\NgenBundle\Controller;
