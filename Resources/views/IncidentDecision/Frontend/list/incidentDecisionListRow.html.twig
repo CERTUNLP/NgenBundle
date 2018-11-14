@@ -7,20 +7,17 @@
  with this source code in the file LICENSE.
 #}
 
-<tr data-id="{{ incidentState.slug }}">
-    <td class="col-md-1">
-        {{ incidentState.name }}
-    </td>
-    <td id="state_label_holder" class="col-md-1">
+<tr>
+    <td id="decision_label_holder" class="col-md-1">
         <div class="label-holder">
-            {% include "CertUnlpNgenBundle:IncidentState:Frontend/list/stateLabel.html.twig" with {'incidentState': incidentState} %}
+            {% include "CertUnlpNgenBundle:IncidentDecision:Frontend/list/incidentDecisionLabel.html.twig" with {'IncidentDecision': IncidentDecision} %}
         </div>
     </td>
     <td class="col-sm-1">
 
         <div class="btn-group inline pull-left dropdown action-dropdown">
             <a class="btn btn-sm btn-primary" role="button"
-               href="{{ path('cert_unlp_ngen_incident_state_detail',{'slug': incidentState.slug}) }}">
+               href="{{ path('cert_unlp_ngen_incident_decision_detail',{'slug': IncidentDecision.slug}) }}">
                 Details
             </a>
             <button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" type="button"
@@ -31,19 +28,19 @@
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                 <li role="presentation">
                     <a role="menuitem" tabindex="-1"
-                       href="{{ path('cert_unlp_ngen_incident_state_edit',{'slug': incidentState.slug}) }}">{{ icon('edit alert-info') }}
+                       href="{{ path('cert_unlp_ngen_incident_decision_edit',{'slug': IncidentDecision.slug}) }}">{{ icon('edit alert-info') }}
                         <span class="action-text">Edit</span></a>
                 </li>
 
                 <li role="presentation">
-                    <a {% if incidentState.isActive %}style="display: none;"{% endif %} class="state-label"
+                    <a {% if IncidentDecision.isActive %}style="display: none;"{% endif %} class="decision-label"
                        data-action="reactivate" data-state-slug="active" data-state-name="active" role="menuitem"
                        tabindex="-1" href="#">{{ icon('repeat alert-info') }} <span
                                 class="action-text">Reactivate</span></a>
                 </li>
 
                 <li role="presentation">
-                    <a {% if not incidentState.isActive %}style="display: none;"{% endif %} class="state-label"
+                    <a {% if not IncidentDecision.isActive %}style="display: none;"{% endif %} class="decision-label"
                        data-action="desactivate" data-state-slug="innactive" data-state-name="innactive" role="menuitem"
                        tabindex="-1" href="#">{{ icon('lock alert-success') }} <span
                                 class="action-text">Desactivate</span></a>

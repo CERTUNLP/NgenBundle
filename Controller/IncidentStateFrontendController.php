@@ -27,7 +27,7 @@ class IncidentStateFrontendController extends Controller
 {
 
     /**
-     * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/home.html.twig")
+     * @Template("CertUnlpNgenBundle:IncidentState:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_incident_state_frontend_home")
      * @param Request $request
      * @return array
@@ -43,7 +43,7 @@ class IncidentStateFrontendController extends Controller
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/home.html.twig")
+     * @Template("CertUnlpNgenBundle:IncidentState:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_incident_state_search")
      * @param Request $request
      * @return array
@@ -54,7 +54,7 @@ class IncidentStateFrontendController extends Controller
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/incidentDecisionForm.html.twig")
+     * @Template("CertUnlpNgenBundle:IncidentState:Frontend/incidentStateForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_incident_state_new")
      * @param Request $request
      * @return array
@@ -65,7 +65,7 @@ class IncidentStateFrontendController extends Controller
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/incidentDecisionForm.html.twig")
+     * @Template("CertUnlpNgenBundle:IncidentState:Frontend/incidentStateForm.html.twig")
      * @Route("{slug}/edit", name="cert_unlp_ngen_incident_state_edit")
      * @param IncidentState $incidentState
      * @return array
@@ -76,7 +76,7 @@ class IncidentStateFrontendController extends Controller
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/incidentDecisionDetail.html.twig")
+     * @Template("CertUnlpNgenBundle:IncidentState:Frontend/incidentStateDetail.html.twig")
      * @Route("{slug}/detail", name="cert_unlp_ngen_incident_state_detail")
      * @param IncidentState $incidentState
      * @return array
