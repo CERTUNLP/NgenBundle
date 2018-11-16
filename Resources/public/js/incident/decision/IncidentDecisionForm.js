@@ -17,7 +17,7 @@ var IncidentDecisionForm = Form.extend({
         return this.getIncidentDecisionId();
     },
     setIncidentDecisionId: function () {
-        this.incident_decision_id = (($('#name').val().replace(' ', '_'))).toLowerCase();
+        this.incident_decision_id = (($('#feed').val().replace(' ', '_'))).toLowerCase();
     },
     getIncidentDecisionId: function () {
         return this.incident_decision_id;

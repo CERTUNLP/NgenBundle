@@ -66,7 +66,7 @@ class IncidentDecisionFrontendController extends Controller
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/incidentDecisionForm.html.twig")
-     * @Route("{slug}/edit", name="cert_unlp_ngen_incident_decision_edit")
+     * @Route("{id}/edit", name="cert_unlp_ngen_incident_decision_edit")
      * @param IncidentDecision $IncidentDecision
      * @return array
      */
@@ -76,8 +76,8 @@ class IncidentDecisionFrontendController extends Controller
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/IncidentDecisionDetail.html.twig")
-     * @Route("{slug}/detail", name="cert_unlp_ngen_incident_decision_detail")
+     * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/incidentDecisionDetail.html.twig")
+     * @Route("{id}/detail", name="cert_unlp_ngen_incident_decision_detail")
      * @param IncidentDecision $IncidentDecision
      * @return array
      */

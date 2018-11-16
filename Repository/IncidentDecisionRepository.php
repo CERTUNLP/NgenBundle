@@ -13,22 +13,20 @@ class IncidentDecisionRepository extends \Doctrine\ORM\EntityRepository
     public function findOneBy(array $criteria, array $orderBy = null)
     {
         $incidentDecisionDB = parent::findOneBy($criteria, $orderBy);
-        if ($incidentDecisionDB) {
-            return $incidentDecisionDB;
-        } else {
-            $incidentDecisionDB = parent::findOneBy(array('feed' => "undefined", 'type' => $array['type']));
-            if ($incidentDecisionDB) {
-                return $incidentDecisionDB;
+        if (!$incidentDecisionDB) {
+            if (isset($criteria['type'])) {
+                if (!isset($criteria['feed'])) {
+                    $incidentDecisionDB = parent::findOneBy(array('feed' => "undefined", 'type' => $criteria['type']));
+                    return $incidentDecisionDB ? $incidentDecisionDB : parent::findOneBy(array('feed' => "undefined", 'type' => 'undefined'));
+                }
             } else {
-                $incidentDecisionDB = parent::findOneBy(array('feed' => $array['feed'], 'type' => 'undefined'));
-                if ($incidentDecisionDB) {
-                    return $incidentDecisionDB;
-                } else {
-                    $incidentDecisionDB = parent::findOneBy(array('feed' => 'undefined', 'type' => 'undefined'));
+                if (isset($criteria['feed'])) {
+                    $incidentDecisionDB = parent::findOneBy(array('feed' => $criteria['feed'], 'type' => 'undefined'));
+                    return $incidentDecisionDB ? $incidentDecisionDB : parent::findOneBy(array('feed' => "undefined", 'type' => 'undefined'));
 
-                    return $incidentDecisionDB;
                 }
             }
         }
+        return $incidentDecisionDB;
     }
 }

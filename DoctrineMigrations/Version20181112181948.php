@@ -20,14 +20,13 @@ class Version20181112181948 extends AbstractMigration
         $this->addSql('ALTER TABLE incident_decision ADD network INT DEFAULT NULL, ADD autoSaved TINYINT(1) DEFAULT NULL');
         $this->addSql('ALTER TABLE incident_decision ADD CONSTRAINT FK_7C69DA3B608487BC FOREIGN KEY (network) REFERENCES network (id)');
         $this->addSql('CREATE INDEX IDX_7C69DA3B608487BC ON incident_decision (network)');
-        $this->addSql("INSERT INTO `ngen`.`incident_state` (`slug`, `name`, `is_active`, `created_at`, `updated_at`) VALUES ('undefined', 'Undefined', '1', NOW(), NOW())");
-        $this->addSql("UPDATE `ngen`.`incident_urgency` SET `slug`='high' WHERE `slug`='High'");
-        $this->addSql("UPDATE `ngen`.`incident_urgency` SET `slug`='low' WHERE `slug`='Low'");
-        $this->addSql("UPDATE `ngen`.`incident_urgency` SET `slug`='medium' WHERE `slug`='Medium'");
-        $this->addSql("INSERT INTO `ngen`.`incident_type` (`slug`, `name`, `is_active`, `created_at`,`updated_at`) VALUES ('undefined', 'Undefined', '1', NOW(),NOW())");
-        $this->addSql("INSERT INTO `ngen`.`incident_feed` (`slug`, `name`, `is_active`, `created_at`, `updated_at`) VALUES ('undefined', 'Undefined', '1', NOW(),NOW())");
-        $this->addSql("INSERT INTO `ngen`.`incident_decision` (`type`, `feed`, `impact`, `urgency`, `tlp`, `state`) VALUES ('undefined', 'undefined', 'low', 'low', 'green', 'undefined')");
-
+        $this->addSql("INSERT INTO incident_state (`slug`, `name`, `is_active`, `created_at`, `updated_at`) VALUES ('undefined', 'Undefined', '1', NOW(), NOW())");
+        $this->addSql("UPDATE incident_urgency SET `slug`='high' WHERE `slug`='High'");
+        $this->addSql("UPDATE incident_urgency SET `slug`='low' WHERE `slug`='Low'");
+        $this->addSql("UPDATE incident_urgency SET `slug`='medium' WHERE `slug`='Medium'");
+        $this->addSql("INSERT INTO incident_type (`slug`, `name`, `is_active`, `created_at`,`updated_at`) VALUES ('undefined', 'Undefined', '1', NOW(),NOW())");
+        $this->addSql("INSERT INTO incident_feed (`slug`, `name`, `is_active`, `created_at`, `updated_at`) VALUES ('undefined', 'Undefined', '1', NOW(),NOW())");
+        $this->addSql("INSERT INTO incident_decision (`type`, `feed`, `impact`, `urgency`, `tlp`, `state`) VALUES ('undefined', 'undefined', 'low', 'low', 'green', 'undefined')");
 
 
     }
