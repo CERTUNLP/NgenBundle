@@ -23,29 +23,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class IncidentDecisionController extends FOSRestController
 {
-
-    /**
-     * List all networks.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
-     * )
-     *
-     *
-     * @param Request $request the request object
-     * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
-     * @return array
-     */
-    public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
-    {
-
-        return null;
-    }
-
     /**
      * List all incident decisions.
      *
@@ -58,7 +35,7 @@ class IncidentDecisionController extends FOSRestController
      *
      * @FOS\Get("/decisions")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident decisions.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many incident decisions to return.")
+     * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many incident decisions to return.")
      *
      * @FOS\View(
      *  templateVar="incident_decisions"
