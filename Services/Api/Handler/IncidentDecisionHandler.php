@@ -24,14 +24,15 @@ class IncidentDecisionHandler extends Handler
      *
      * @return void
      */
-    public function prepareToDeletion($incidentDecision, array $parameters = null)
+    public function prepareToDeletion(
+        $incident_decision, array $parameters = null)
     {
-        $incidentDdecision->setIsActive(FALSE);
+        $incident_decision->setIsActive(FALSE);
     }
 
     protected function checkIfExists($incidentDecision, $method)
     {
-        $incidentDecisionDB = $this->repository->findOneBy(array(feed' => $incidentDecision->getFeed(),'type'=> $incidentDecision->getType()));
+        $incidentDecisionDB = $this->repository->findOneBy(array('feed' => $incidentDecision->getFeed(), 'type' => $incidentDecision->getType()));
 
         if ($incidentDecisionDB && $method == 'GET') {
             $incidentDecision = $incidentDecisionDB;

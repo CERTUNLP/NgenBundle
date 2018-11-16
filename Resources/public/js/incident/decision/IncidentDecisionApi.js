@@ -11,14 +11,14 @@ var IncidentDecisionApi = ApiClient.extend({
     config: function () {
 //        this.api.add("networks", {stripTrailingSlash: true});
 //        this.api.networks.add("report", {stripTrailingSlash: true});
-        $.subscribe('/cert_unlp/incident/decisions/activate', $.proxy(this.activate, this));
-        $.subscribe('/cert_unlp/incident/decisions/desactivate', $.proxy(this.desactivate, this));
-        $.subscribe('/cert_unlp/incident/decisions/new', $.proxy(this.create, this));
-        $.subscribe('/cert_unlp/incident/decisions/update', $.proxy(this.update, this));
+        $.subscribe('/cert_unlp/incident/decision/activate', $.proxy(this.activate, this));
+        $.subscribe('/cert_unlp/incident/decision/desactivate', $.proxy(this.desactivate, this));
+        $.subscribe('/cert_unlp/incident/decision/new', $.proxy(this.create, this));
+        $.subscribe('/cert_unlp/incident/decision/update', $.proxy(this.update, this));
     },
     addDefaultChannel: function () {
-        this.api.add("descision", {stripTrailingSlash: true, url: 'incidents/decisions'});
-        this.defaultChannel = this.api.states;
+        this.api.add("descisions", {stripTrailingSlash: true, url: 'incidents/decisions'});
+        this.defaultChannel = this.api.descisions;
     },
     changeState: function (networkId, isActive, callback) {
 

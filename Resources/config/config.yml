@@ -108,9 +108,9 @@ braincrafted_bootstrap:
         bootstrap_output: "%kernel.root_dir%/Resources/less/bootstrap.less"
         bootstrap_template: BraincraftedBootstrapBundle:Bootstrap:bootstrap.less.twig
 
-knp_markdown:
-    parser:
-        service: cert_unlp.ngen.incident.report.markdown.parser
+#knp_markdown:
+#    parser:
+#        service: cert_unlp.ngen.incident.report.markdown.parser
 
 fos_comment:
     db_driver: orm

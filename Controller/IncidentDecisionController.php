@@ -76,7 +76,7 @@ class IncidentDecisionController extends FOSRestController
      *  templateVar="incident_decision"
      * )
      * @ParamConverter("incident_decision", class="CertUnlpNgenBundle:IncidentDecision")
-     * @FOS\Get("/decisions/{slug}")
+     * @FOS\Get("/decisions/{id}")
      */
     public function getIncidentDecisionAction(IncidentDecision $incident_decision)
     {
@@ -117,7 +117,7 @@ class IncidentDecisionController extends FOSRestController
      *     400 = "Returned when the form has errors"
      *   }
      * )
-     * @FOS\Patch("/decisions/{slug}")
+     * @FOS\Patch("/decisions/{id}")
      * @param Request $request the request object
      * @param IncidentDecision $incident_decision
      * @return FormTypeInterface|View
@@ -139,7 +139,7 @@ class IncidentDecisionController extends FOSRestController
      *     400 = "Returned when the form has errors"
      *   }
      * )
-     * @FOS\Patch("/decisions/{slug}")
+     * @FOS\Patch("/decisions/{id}")
      * @param Request $request the request object
      * @param IncidentDecision $incident_decision
      * @return FormTypeInterface|View
@@ -167,7 +167,7 @@ class IncidentDecisionController extends FOSRestController
      * @param IncidentDecision $incident_decision
      * @return FormTypeInterface|View
      *
-     * @FOS\Patch("/decisions/{slug}/activate")
+     * @FOS\Patch("/decisions/{id}/activate")
      */
     public function patchIncidentDecisionActivateAction(Request $request, IncidentDecision $incident_decision)
     {
@@ -192,7 +192,7 @@ class IncidentDecisionController extends FOSRestController
      * @param IncidentDecision $incident_decision
      * @return FormTypeInterface|View
      *
-     * @FOS\Patch("/decisions/{slug}/desactivate")
+     * @FOS\Patch("/decisions/{id}/desactivate")
      */
     public function patchIncidentDecisionDesactivateAction(Request $request, IncidentDecision $incident_decision)
     {

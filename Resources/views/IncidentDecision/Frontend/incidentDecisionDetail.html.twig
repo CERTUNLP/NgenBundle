@@ -9,7 +9,7 @@
 
 {% extends 'CertUnlpNgenBundle::IncidentDecision/Frontend/frontend.html.twig' %}
 {% block content_header %}
-    <h1 class="page-header"> {{ object }} {% include "CertUnlpNgenBundle:IncidentDecision:Frontend/list/incidentDecisionLabel.html.twig" with {'incidentdecision': object} %}
+    <h1 class="page-header"> {{ object }} {% include "CertUnlpNgenBundle:IncidentDecision:Frontend/list/incidentDecisionLabel.html.twig" with {'incidentDecision': object} %}
     </h1>
 {% endblock %}
 {% block content_body %}
@@ -27,7 +27,7 @@
                                     Sistem Id
                                 </td>
                                 <td class="">
-                                    {{ object.slug }}
+                                    {{ object.id }}
                                 </td>
                             </tr>
                             <tr>
@@ -35,7 +35,7 @@
                                     Name
                                 </td>
                                 <td class="">
-                                    {{ object.name }}
+                                    {{ object }}
                                 </td>
                             </tr>
                             <tr>
@@ -60,17 +60,7 @@
                                     Active
                                 </td>
                                 <td class="">
-                                    {% include "CertUnlpNgenBundle:IncidentDecision:Frontend/list/incidentDecisionLabel.html.twig" with {'IncidentDecision': object} %}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    Incidents
-                                </td>
-                                <td class="">
-                                    {#                                    <a target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~object.name~'"'~ "&&" ~'"'~object.email~'"'})}}">#}
-                                    <span>{{ label_info(object.incidents.count) }} </span>
-                                    {#                                    </a>#}
+                                    {% include "CertUnlpNgenBundle:IncidentDecision:Frontend/list/incidentDecisionLabel.html.twig" with {'incidentDecision': object} %}
                                 </td>
                             </tr>
                         </table>
