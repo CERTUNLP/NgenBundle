@@ -33,15 +33,19 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->addDefaultsIfNotSet()
-            ->children()
-            ->arrayNode('team')
-            ->children()
-            ->scalarNode('mail')
-            ->isRequired()
-            ->cannotBeEmpty()
-            ->end()
-            ->end()
-            ->end()
+                ->children()
+                    ->arrayNode('team')
+                    ->children()
+                        ->scalarNode('mail')
+                            ->isRequired()
+                            ->cannotBeEmpty()
+                        ->end()
+                        ->scalarNode('abuse')
+                            ->isRequired()
+                            ->cannotBeEmpty()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         $this->addIncidentSection($rootNode);
