@@ -9,9 +9,9 @@
 
 <tr data-id="{{ IncidentDecision.id }}">
     <td id="decision_label_holder" class="col-md-1">
-        {#<div class="label-holder">#}
-        {#{% include "CertUnlpNgenBundle:IncidentDecision:Frontend/list/incidentDecisionLabel.html.twig" with {'incidentDecision': IncidentDecision} %}#}
-        {#</div>#}
+        <div class="label-holder">
+        {{ IncidentDecision.slug }}
+        </div>
     </td>
     <td id="state_label_holder" class="col-md-1">
         <div class="label-holder">
