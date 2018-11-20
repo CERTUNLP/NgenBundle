@@ -15,6 +15,15 @@ class IncidentDecision
 {
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
@@ -41,16 +50,19 @@ class IncidentDecision
      * @ORM\JoinColumn(name="network", referencedColumnName="id")
      */
     protected $network;
+
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentImpact",inversedBy="incidentsDecisions")
      * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
      */
     protected $impact;
+
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentUrgency", inversedBy="incidentsDecisions")
      * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
      */
     protected $urgency;
+
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentTlp", inversedBy="incidentsDecisions")
      * @ORM\JoinColumn(name="tlp", referencedColumnName="slug")
@@ -62,20 +74,27 @@ class IncidentDecision
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      */
     protected $state;
+
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @var string
+     * @ORM\Column(name="slug", type="string", length=100)
+     * @Gedmo\Slug(handlers={
+     *      @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\RelativeSlugHandler", options={
+     *          @Gedmo\SlugHandlerOption(name="relationField", value="type"),
+     *          @Gedmo\SlugHandlerOption(name="relationSlugField", value="slug"),
+     *          @Gedmo\SlugHandlerOption(name="separator", value="_")
+     *      })
+     * }, fields={"id"})
      */
-    private $id;
+    protected $slug;
+
     /**
      * @var boolean
      *
      * @ORM\Column(name="auto_saved", type="boolean")
      */
     private $autoSaved = false;
+
     /**
      * @var boolean
      *
@@ -285,7 +304,17 @@ class IncidentDecision
      */
     public function getSlug(): string
     {
-        return $this->id;
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     * @return IncidentDecision
+     */
+    public function setSlug(string $slug): IncidentDecision
+    {
+        $this->slug = $slug;
+        return $this;
     }
 
     /**
