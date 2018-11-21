@@ -6,87 +6,87 @@
 # with this source code in the file LICENSE.
 
 cert_ngen_user:
-    resource: '@CertUnlpNgenBundle/Controller/UserFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/User/UserFrontendController.php'
     type:     annotation
     prefix:   /users
 
 cert_ngen_user_security:
-    resource: '@CertUnlpNgenBundle/Controller/UserSecurityFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/User/UserSecurityFrontendController.php'
     type:     annotation
     prefix:   /users
 
 cert_ngen_user_resetting:
-    resource: '@CertUnlpNgenBundle/Controller/UserResettingFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/User/UserResettingFrontendController.php'
     type:     annotation
     prefix:   /users/resetting
 
 cert_ngen_user_registration:
-    resource: '@CertUnlpNgenBundle/Controller/UserRegistrationFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/User/UserRegistrationFrontendController.php'
     type:     annotation
     prefix:   /users/register
 
 cert_ngen_user_profile:
-    resource: '@CertUnlpNgenBundle/Controller/UserProfileFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/User/UserProfileFrontendController.php'
     type:     annotation
     prefix:   /users/profile
 
 cert_ngen_user_change_password:
-    resource: '@CertUnlpNgenBundle/Controller/UserChangePasswordFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/User/UserChangePasswordFrontendController.php'
     type:     annotation
     prefix:   /users/profile
 
+cert_ngen_network_entity:
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Network/NetworkEntityFrontendController.php'
+    type:     annotation
+    prefix:   /networks/entities
+
 cert_ngen_network_admin:
-    resource: '@CertUnlpNgenBundle/Controller/NetworkAdminFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Network/NetworkAdminFrontendController.php'
     type:     annotation
     prefix:   /networks/admins
 
 cert_ngen_network:
-    resource: '@CertUnlpNgenBundle/Controller/NetworkFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Network/NetworkFrontendController.php'
     type:     annotation
     prefix:   /networks
 
 cert_ngen_internal_incident:
-    resource: '@CertUnlpNgenBundle/Controller/InternalIncidentFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/InternalIncidentFrontendController.php'
     type:     annotation
     prefix:   /incidents/internals
 
 cert_ngen_external_incident:
-    resource: '@CertUnlpNgenBundle/Controller/ExternalIncidentFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/ExternalIncidentFrontendController.php'
     type:     annotation
     prefix:   /incidents/externals
 
 cert_ngen_administration_feed:
-    resource: '@CertUnlpNgenBundle/Controller/IncidentFeedFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentFeedFrontendController.php'
     type:     annotation
     prefix:   /administration/feeds
 
 cert_ngen_administration_state:
-    resource: '@CertUnlpNgenBundle/Controller/IncidentStateFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentStateFrontendController.php'
     type:     annotation
     prefix:   /administration/states
 
 cert_ngen_administration_type:
-    resource: '@CertUnlpNgenBundle/Controller/IncidentTypeFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentTypeFrontendController.php'
     type:     annotation
     prefix:   /administration/types
 
 cert_ngen_administration_decision:
-    resource: '@CertUnlpNgenBundle/Controller/IncidentDecisionFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentDecisionFrontendController.php'
     type:     annotation
     prefix:   /administration/decisions
 
 cert_ngen_administration_type_reports:
-    resource: '@CertUnlpNgenBundle/Controller/IncidentReportFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentReportFrontendController.php'
     type:     annotation
     prefix:   /incidents/types
 
-cert_ngen_academic_unit:
-    resource: '@CertUnlpNgenBundle/Controller/AcademicUnitFrontendController.php'
-    type:     annotation
-    prefix:   /networks/entities
-
 cert_ngen_root:
-    resource: '@CertUnlpNgenBundle/Controller/DashboardController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/DashboardController.php'
     type:     annotation
     prefix:   /
 
@@ -96,7 +96,7 @@ fos_comment_api:
     defaults: { _format: html }
 
 cert_ngen_dashboard:
-    resource: '@CertUnlpNgenBundle/Controller/DashboardController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/DashboardController.php'
     type:     annotation
     prefix:   /
 

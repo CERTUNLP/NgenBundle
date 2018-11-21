@@ -36,7 +36,7 @@ class NetworkType extends AbstractType
                 'description' => "The network ip and mask",
             ))
             ->add('networkAdmin', EntityType::class, array(
-                'class' => 'CertUnlpNgenBundle:NetworkAdmin',
+                'class' => 'CertUnlpNgenBundle:Network\NetworkAdmin',
                 'required' => true,
                 'empty_value' => 'Choose an admin',
                 'attr' => array('help_text' => 'This will be the network admin'),
@@ -47,8 +47,8 @@ class NetworkType extends AbstractType
                         ->orderBy('na.name', 'ASC');
                 }
             ))
-            ->add('academicUnit', EntityType::class, array(
-                'class' => 'CertUnlpNgenBundle:AcademicUnit',
+            ->add('networkEntity', EntityType::class, array(
+                'class' => 'CertUnlpNgenBundle:Network\NetworkEntity',
                 'required' => true,
                 'empty_value' => 'Choose a unit',
                 'attr' => array('help_text' => 'The unit to which the network belongs'),
@@ -89,7 +89,7 @@ class NetworkType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'CertUnlp\NgenBundle\Entity\Network',
+            'data_class' => 'CertUnlp\NgenBundle\Entity\Network\Network',
             'csrf_protection' => false,
         ));
     }

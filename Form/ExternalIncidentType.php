@@ -45,7 +45,7 @@ class ExternalIncidentType extends AbstractType
                 'attr' => array('maxlength' => '300', 'help_text' => 'Add more than one address separating them with a comma.'),
                 'description' => "The host IP. (Add more than one address separating them with a comma.)"))
             ->add('feed', 'entity', array(
-                'class' => 'CertUnlpNgenBundle:IncidentFeed',
+                'class' => 'CertUnlpNgenBundle:Incident\IncidentFeed',
                 'required' => true,
                 'description' => "(bro|external_report|netflow|shadowserver)",
                 'query_builder' => function (EntityRepository $er) {
@@ -155,7 +155,7 @@ class ExternalIncidentType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'CertUnlp\NgenBundle\Entity\ExternalIncident',
+            'data_class' => 'CertUnlp\NgenBundle\Entity\Incident\ExternalIncident',
             'csrf_protection' => false,
         ));
     }

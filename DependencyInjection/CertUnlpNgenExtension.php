@@ -90,9 +90,9 @@ class CertUnlpNgenExtension extends Extension
         $container->setParameter('cert_unlp.ngen.incident.type.report.handler.class', $config['incidents']['types']['reports']['handler']['class']);
         $container->setParameter('cert_unlp.ngen.incident.type.report.form_type.class', $config['incidents']['types']['reports']['form_type']['class']);
 
-        $container->setParameter('cert_unlp.ngen.academic_unit.class', $config['academic_unit']['class']);
-        $container->setParameter('cert_unlp.ngen.academic_unit.handler.class', $config['academic_unit']['handler']['class']);
-        $container->setParameter('cert_unlp.ngen.academic_unit.form_type.class', $config['academic_unit']['form_type']['class']);
+        $container->setParameter('cert_unlp.ngen.network_entity.class', $config['network_entity']['class']);
+        $container->setParameter('cert_unlp.ngen.network_entity.handler.class', $config['network_entity']['handler']['class']);
+        $container->setParameter('cert_unlp.ngen.network_entity.form_type.class', $config['network_entity']['form_type']['class']);
 
         $container->setParameter('cert_unlp.ngen.incident.decision.class', $config['incident_decision']['class']);
         $container->setParameter('cert_unlp.ngen.incident.decision.handler.class', $config['incident_decision']['handler']['class']);

@@ -31,6 +31,6 @@
     {% endjavascripts %}
     <script>
         var network = new Network();
-        var network_api = new NetworkApi("{{ path("api_1_get") }}/", "{{ app.user.apiKey }}");
+        var network_api = new NetworkApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
     </script>
 {% endblock %}

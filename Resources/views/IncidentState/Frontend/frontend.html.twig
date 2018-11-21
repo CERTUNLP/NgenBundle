@@ -31,6 +31,6 @@
     {% endjavascripts %}
     <script>
         var incident_state = new IncidentState();
-        var incident_state_api = new IncidentStateApi("{{ path("api_2_get") }}/", "{{ app.user.apiKey }}");
+        var incident_state_api = new IncidentStateApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
     </script>
 {% endblock %}

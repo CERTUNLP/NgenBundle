@@ -50,7 +50,7 @@ class IncidentFeedType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'CertUnlp\NgenBundle\Entity\IncidentFeed',
+            'data_class' => 'CertUnlp\NgenBundle\Entity\Incident\IncidentFeed',
             'csrf_protection' => false,
         ));
     }
