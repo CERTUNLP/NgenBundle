@@ -38,7 +38,7 @@ services:
         - "8002:3306"
       networks: ['ngen']
     ngen-app:
-      image: einar1/ngen:0.6.6
+      image: einar1/ngen:0.6.7
       networks: ['ngen']
       depends_on: ['ngen-db','ngen-elastic']
       ports:
@@ -60,12 +60,14 @@ services:
         - DB_USER=ngenuser
         - DB_PASSWORD=ngenpass
         - MAILER_TRANSPORT=smtp
-        - MAILER_PORT=587
-        - MAILER_HOST=mail-app.info.unlp.edu.ar
+        - MAILER_PORT=25
+        - MAILER_HOST=mail.testing.unlp.edu.ar
         - MAILER_USER=null
         - MAILER_PASSWORD=null
         - MAILER_SENDER=pepe@localhost
-        - TEAM_MAIL=pepe@localhost 
+        - TEAM_MAIL=pepe@localhost
+        - TEAM_ABUSE=pepe@localhost
+        - TEAM_URL=http://www.cert.unlp.edu.ar
         - DEFAULT_NETWORK=10.0.0.0
         - ELASTIC_HOST=ngen-elastic
         - ELASTIC_PORT=9200

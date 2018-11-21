@@ -13,7 +13,9 @@ parameters:
     secret: SECRET_KEY
     default_network: DEFAULT_NETWORK
     team_mail: TEAM_MAIL
-    session_max_idle_time: SESSION_TIMEOUT
+    team_abuse: TEAM_ABUSE
+    team_url: TEAM_URL
+    session_max_idle_time:SESSION_TIMEOUT
     elastic_host: ELASTIC_HOST
     elastic_port: ELASTIC_PORT
 	

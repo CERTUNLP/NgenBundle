@@ -136,8 +136,10 @@
                                             <tr>
                                                 <td class="panel">
                                                     <p style="text-align:center;">
-                                                        {% block footer_generated_by %}
-                                                        {% endblock %}
+                                                        {%  if sign == true %}
+                                                            {% block footer_generated_by %}
+                                                            {% endblock %}
+                                                        {% endif %}
                                                     </p>
                                                 <td class="expander"></td>
                                                 </td>

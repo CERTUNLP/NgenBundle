@@ -70,6 +70,8 @@ swiftmailer:
 cert_unlp_ngen:
     team:
         mail: '%team_mail%'
+        abuse:  '%team_abuse%'
+        url: '%team_url%'
     incidents:
         mailer:
             transport: '%mailer_transport%'
@@ -85,6 +87,8 @@ cert_unlp_ngen:
                 sender_address: '%mailer_sender%'
     networks:
         default_network: '%default_network%'
+    global:
+        sign: false
     #feeds:
     #    shadowserver:
     #        client:
