@@ -31,11 +31,14 @@ class CertUnlpNgenExtension extends Extension
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-//        var_dump($config,$configs);die;
+
 
         $container->setParameter('cert_unlp.ngen.team.mail', $config['team']['mail']);
         $container->setParameter('cert_unlp.ngen.team.abuse', $config['team']['abuse']);
+        $container->setParameter('cert_unlp.ngen.team.url', $config['team']['url']);
         $container->setParameter('cert_unlp.ngen.resources.path', '%kernel.root_dir%/Resources/');
+//        var_dump($config);die;
+        $container->setParameter('cert_unlp.ngen.global.sign', $config['global']['sign']);
 
         $container->setParameter('cert_unlp.ngen.incident.internal.class', $config['incidents']['internal']['class']);
         $container->setParameter('cert_unlp.ngen.incident.external.class', $config['incidents']['external']['class']);

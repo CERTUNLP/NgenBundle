@@ -44,10 +44,15 @@ class Configuration implements ConfigurationInterface
                             ->isRequired()
                             ->cannotBeEmpty()
                         ->end()
+                        ->scalarNode('url')
+                            ->isRequired()
+                            ->cannotBeEmpty()
+                        ->end()
                     ->end()
-                ->end()
-            ->end();
+                    ->end()
+                ->end();
 
+        $this->addConfigGlobal($rootNode);
         $this->addIncidentSection($rootNode);
         $this->addUserSection($rootNode);
         $this->addNetworkSection($rootNode);
@@ -57,6 +62,24 @@ class Configuration implements ConfigurationInterface
         $this->addIncidentDecisionSection($rootNode);
         return $treeBuilder;
     }
+
+    private function addConfigGlobal(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('global')
+                  ->addDefaultsIfNotSet()
+                   ->children()
+                    ->scalarNode('sign')
+                        ->defaultValue('true')
+                    ->end()
+                   ->end()
+                ->end()
+            ->end();
+    }
+
+
+
 
     private function addIncidentSection(ArrayNodeDefinition $rootNode)
     {
