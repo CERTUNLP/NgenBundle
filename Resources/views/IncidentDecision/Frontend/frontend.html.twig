@@ -31,6 +31,6 @@
     {% endjavascripts %}
     <script>
         var incident_decision = new IncidentDecision();
-        var incident_decision_api = new IncidentDecisionApi("{{ path("api_2_get") }}/", "{{ app.user.apiKey }}");
+        var incident_decision_api = new IncidentDecisionApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
     </script>
 {% endblock %}

@@ -15,10 +15,10 @@ use CertUnlp\NgenBundle\Model\IncidentInterface;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\ThreadManagerInterface;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\Paginator;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class IncidentFrontendController extends FrontendController
@@ -31,7 +31,7 @@ class IncidentFrontendController extends FrontendController
     {
         parent::__construct($doctrine, $formFactory, $entityType, $paginator, $finder, $comment_manager, $thread_manager);
         $this->evidence_path = $evidence_path;
-        $this->userLogged=$securityContext->getToken()->getUser()->getId();
+        $this->userLogged = $securityContext->getToken()->getUser()->getId();
     }
 
     public function evidenceIncidentAction(IncidentInterface $incident)
@@ -59,9 +59,15 @@ class IncidentFrontendController extends FrontendController
         $response->headers->set('Content-Disposition', $disposition);
         return $response;
     }
+
     public function newEntity(Request $request)
     {
-        return array('form' => $this->formFactory->create(new $this->entityType($this->getDoctrine(),$this->userLogged))->createView(),  'method' => 'POST');
+        return array('form' => $this->formFactory->create(new $this->entityType($this->getDoctrine(), $this->userLogged))->createView(), 'method' => 'POST');
+    }
+
+    public function editEntity($object)
+    {
+        return array('form' => $this->formFactory->create(new $this->entityType($this->getDoctrine(), $this->userLogged), $object)->createView(), 'method' => 'patch');
     }
 
 }

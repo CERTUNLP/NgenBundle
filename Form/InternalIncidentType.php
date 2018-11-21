@@ -13,16 +13,18 @@ namespace CertUnlp\NgenBundle\Form;
 
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class InternalIncidentType extends AbstractType
 {
-    public function __construct($doctrine=null,$userLogged) {
+    private $userLogged;
+    private $doctrine;
+
+    public function __construct($doctrine = null, $userLogged = null)
+    {
         $this->doctrine = $doctrine;
-        $this->userLogged=$userLogged;
+        $this->userLogged = $userLogged;
     }
 
 
@@ -36,7 +38,7 @@ class InternalIncidentType extends AbstractType
         $builder
             ->add('type', null, array(
                 'empty_value' => 'Choose an incident type',
-                'data' => $this->doctrine->getReference("CertUnlpNgenBundle:IncidentType", "undefined"),
+                'data' => $this->doctrine->getReference("CertUnlpNgenBundle:Incident\IncidentType", "undefined"),
                 'required' => true,
                 'description' => "(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|"
                     . "dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|"
@@ -50,9 +52,9 @@ class InternalIncidentType extends AbstractType
                 'attr' => array('maxlength' => '300', 'help_text' => 'Add more than one address separating them with a comma.'),
                 'description' => "The host IP. (Add more than one address separating them with a comma.)"))
             ->add('feed', 'entity', array(
-                'class' => 'CertUnlpNgenBundle:IncidentFeed',
+                'class' => 'CertUnlpNgenBundle:Incident\IncidentFeed',
                 'required' => true,
-                'data' => $this->doctrine->getReference("CertUnlpNgenBundle:IncidentFeed", "undefined"),
+                'data' => $this->doctrine->getReference("CertUnlpNgenBundle:Incident\IncidentFeed", "undefined"),
                 'description' => "(bro|external_report|netflow|shadowserver)",
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
@@ -88,8 +90,8 @@ class InternalIncidentType extends AbstractType
                 'empty_value' => 'Choose an incident tlp',
                 'attr' => array('help_text' => 'If none is selected, the state will be \'green\'.'),
                 'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
-                'data' =>  $this->doctrine->getReference("CertUnlpNgenBundle:IncidentTlp", "green")
-                ))
+                'data' => $this->doctrine->getReference("CertUnlpNgenBundle:Incident\IncidentTlp", "green")
+            ))
             ->add('reporter', null, array(
                 'empty_value' => 'Choose a reporter',
                 'attr' => array('help_text' => 'If none is selected, the reporter will be the logged user.'),
@@ -153,7 +155,7 @@ class InternalIncidentType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'CertUnlp\NgenBundle\Entity\InternalIncident',
+            'data_class' => 'CertUnlp\NgenBundle\Entity\Incident\InternalIncident',
             'csrf_protection' => false,
         ));
     }

@@ -92,7 +92,7 @@
                                     Name
                                 </td>
                                 <td class="">
-                                    {{ object.academicUnit }}
+                                    {{ object.networkEntity }}
                                 </td>
                             </tr>
                             <tr>
@@ -100,8 +100,8 @@
                                     Incidents
                                 </td>
                                 <td class="">
-                                    {#                                    <a  target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~object.academicUnit.name~'"'})}}">#}
-                                    <span>{{ label_info(object.academicUnit.incidents.count) }} </span>
+                                    {#                                    <a  target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~object.networkEntity.name~'"'})}}">#}
+                                    <span>{{ label_info(object.networkEntity.incidents.count) }} </span>
                                     {#                                        <span>search</span>#}
                                     {#                                    </a>#}
                                 </td>
