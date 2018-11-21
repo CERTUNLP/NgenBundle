@@ -11,7 +11,7 @@ cert_ngen:
 
     indcidents:
         internal:
-            class: CertUnlp\NgenBundle\Entity\InternalIncident
+            class: CertUnlp\NgenBundle\Entity\Incident\InternalIncident
             handler:
                 class: CertUnlp\NgenBundle\Services\Api\Handler\InternalIncidentHandler
             delegator_chain:
@@ -27,7 +27,7 @@ cert_ngen:
                 class: CertUnlp\NgenBundle\Services\Mailer\InternalIncidentMailer
 
         external:
-            class: CertUnlp\NgenBundle\Entity\ExternalIncident
+            class: CertUnlp\NgenBundle\Entity\Incident\ExternalIncident
             handler:
                 class: CertUnlp\NgenBundle\Services\Api\Handler\ExternalIncidentHandler
             delegator_chain:
@@ -58,28 +58,28 @@ cert_ngen:
         reporter:
             class: CertUnlp\NgenBundle\Entity\User
                 feeds:
-            class: CertUnlp\NgenBundle\Entity\IncidentFeed
+            class: CertUnlp\NgenBundle\Entity\Incident\IncidentFeed
             handler:
                 class: CertUnlp\NgenBundle\Services\Api\Handler\IncidentFeedHandler
             form_type:
                 class: CertUnlp\NgenBundle\Form\IncidentFeedType
 
         states:
-            class: CertUnlp\NgenBundle\Entity\IncidentState
+            class: CertUnlp\NgenBundle\Entity\Incident\IncidentState
             handler:
                 class: CertUnlp\NgenBundle\Services\Api\Handler\IncidentStateHandler
             form_type:
                 class: CertUnlp\NgenBundle\Form\IncidentStateType
 
         types:
-            class: CertUnlp\NgenBundle\Entity\IncidentType
+            class: CertUnlp\NgenBundle\Entity\Incident\IncidentType
             handler:
                 class: CertUnlp\NgenBundle\Services\Api\Handler\IncidentTypeHandler
             form_type:
                 class: CertUnlp\NgenBundle\Form\IncidentTypeType
 
     networks:
-        class: CertUnlp\NgenBundle\Entity\Network
+        class: CertUnlp\NgenBundle\Entity\Network\Network
         default_network: ~
         handler:
             class: CertUnlp\NgenBundle\Services\Api\Handler\NetworkHandler
@@ -88,7 +88,7 @@ cert_ngen:
         form_type:
             class: CertUnlp\NgenBundle\Form\NetworkType
         admin:
-            class: CertUnlp\NgenBundle\Entity\NetworkAdmin
+            class: CertUnlp\NgenBundle\Entity\Network\NetworkAdmin
             handler:
                 class: CertUnlp\NgenBundle\Services\Api\Handler\NetworkAdminHandler
             form_type:

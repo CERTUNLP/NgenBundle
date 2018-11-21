@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\IncidentDecision;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
 
 class IncidentDecisionHandler extends Handler
 {

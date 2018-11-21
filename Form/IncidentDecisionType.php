@@ -44,7 +44,7 @@ class IncidentDecisionType extends AbstractType
                         ->where('it.isActive = TRUE');
                 }))
             ->add('feed', 'entity', array(
-                'class' => 'CertUnlpNgenBundle:IncidentFeed',
+                'class' => 'CertUnlpNgenBundle:Incident\IncidentFeed',
                 'required' => true,
                 'description' => "(bro|external_report|netflow|shadowserver)",
                 'query_builder' => function (EntityRepository $er) {
@@ -63,7 +63,7 @@ class IncidentDecisionType extends AbstractType
                 'empty_value' => 'Choose an incident tlp',
                 'attr' => array('help_text' => 'If none is selected, the state will be \'green\'.'),
                 'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
-                'data' =>  $this->doctrine->getReference("CertUnlpNgenBundle:IncidentTlp", "green")
+                'data' =>  $this->doctrine->getReference("CertUnlpNgenBundle:Incident\IncidentTlp", "green")
                 ))
             ->add('impact', null, array(
                 'empty_value' => 'Choose a impact level',
@@ -88,7 +88,7 @@ class IncidentDecisionType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'CertUnlp\NgenBundle\Entity\IncidentDecision',
+            'data_class' => 'CertUnlp\NgenBundle\Entity\Incident\IncidentDecision',
             'csrf_protection' => false,
         ));
     }

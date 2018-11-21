@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\IncidentState;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
 
 class IncidentStateHandler extends Handler
 {

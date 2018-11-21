@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\DataFixtures\ORM;
 
-use CertUnlp\NgenBundle\Entity\IncidentFeed;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;

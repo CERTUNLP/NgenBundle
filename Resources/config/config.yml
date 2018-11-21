@@ -41,10 +41,10 @@ doctrine:
         #        metadata_cache_driver: apc
         entity_listener_resolver: cert_unlp.ngen.doctrine.entity_listener_resolver
         resolve_target_entities:
-            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\InternalIncident
-            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\ExternalIncident
+            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\Incident\InternalIncident
+            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\Incident\ExternalIncident
             CertUnlp\NgenBundle\Model\ReporterInterface: CertUnlp\NgenBundle\Entity\User
-            CertUnlp\NgenBundle\Model\NetworkInterface: CertUnlp\NgenBundle\Entity\Network
+            CertUnlp\NgenBundle\Model\NetworkInterface: CertUnlp\NgenBundle\Entity\Network\Network
         dql:
             string_functions:
                 INET_ATON: CertUnlp\NgenBundle\DQL\InetAtonFunction
@@ -116,8 +116,8 @@ fos_comment:
     db_driver: orm
     class:
         model:
-            comment: CertUnlp\NgenBundle\Entity\IncidentComment
-            thread: CertUnlp\NgenBundle\Entity\IncidentCommentThread
+            comment: CertUnlp\NgenBundle\Entity\Incident\IncidentComment
+            thread: CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread
     form:
         comment:
             type: fos_comment_comment

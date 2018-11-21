@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\IncidentType;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 

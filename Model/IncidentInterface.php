@@ -11,10 +11,10 @@
 
 namespace CertUnlp\NgenBundle\Model;
 
-use CertUnlp\NgenBundle\Entity\Incident;
-use CertUnlp\NgenBundle\Entity\IncidentFeed;
-use CertUnlp\NgenBundle\Entity\IncidentState;
-use CertUnlp\NgenBundle\Entity\NetworkAdmin;
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
+use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use DateTime;
 use FOS\CommentBundle\Model\Thread;
 use Symfony\Component\HttpFoundation\File\File;
@@ -132,15 +132,15 @@ interface IncidentInterface
     /**
      * Set type
      *
-     * @param \CertUnlp\NgenBundle\Entity\IncidentType $type
+     * @param \CertUnlp\NgenBundle\Entity\Incident\IncidentType $type
      * @return Incident
      */
-    public function setType(\CertUnlp\NgenBundle\Entity\IncidentType $type = null);
+    public function setType(\CertUnlp\NgenBundle\Entity\Incident\IncidentType $type = null);
 
     /**
      * Get type
      *
-     * @return \CertUnlp\NgenBundle\Entity\IncidentType
+     * @return \CertUnlp\NgenBundle\Entity\Incident\IncidentType
      */
     public function getType();
 

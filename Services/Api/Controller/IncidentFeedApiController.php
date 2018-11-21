@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Controller;
 
-use CertUnlp\NgenBundle\Entity\IncidentFeed;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 
 class IncidentFeedApiController extends ApiController
 {
