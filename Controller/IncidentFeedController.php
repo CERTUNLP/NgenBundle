@@ -58,7 +58,7 @@ class IncidentFeedController extends FOSRestController
      *
      * @FOS\Get("/feeds")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident feeds.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many incident feeds to return.")
+     * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many incident feeds to return.")
      *
      * @FOS\View(
      *  templateVar="incident_feeds"

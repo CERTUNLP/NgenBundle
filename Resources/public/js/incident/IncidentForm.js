@@ -10,9 +10,18 @@ var IncidentForm = Form.extend({
     config: function (params) {
         this.setIncidentId();
         $("#tlp_state").on("change", $.proxy(this.changeTLP, this));
+        $("#type").on("change", $.proxy(this.changeDefaults, this));
+        $("#feed").on("change", $.proxy(this.changeDefaults, this));
     },
     changeTLP: function (){
-        var $valor=$("#tlp_state option:selected").text()
+        var $type=$("#state option:selected").text()
+        var $feed=$("#type option:selected").text()
+        $.get
+        $("#tlp").first().html("TLP:"+$valor.toUpperCase());
+        $("#tlp").attr('class',"tlp-"+$valor);
+    },
+    changeDefaults: function (){
+        var $type=$("#tlp_state option:selected").text()
         $("#tlp").first().html("TLP:"+$valor.toUpperCase());
         $("#tlp").attr('class',"tlp-"+$valor);
     },

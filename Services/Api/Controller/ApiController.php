@@ -62,7 +62,6 @@ class ApiController
     public function getAll(Request $request, $paramFetcher)
     {
         $offset = $paramFetcher->get('offset');
-        $offset = null == $offset ? 0 : $offset;
         $limit = $paramFetcher->get('limit');
 
         return $this->getCustomHandler()->all([], [], $limit, $offset);

@@ -72,10 +72,16 @@
                                 {{ object.feed }}
                             </td>
                         </tr>
-                        <td>
-                            {{ incident.tlpState }}
-                        </td>
-
+                        <tr>
+                            <td class="">
+                                TLP
+                            </td>
+                            <td>
+                            <span class="tlp-{{ object.tlpState }} left">
+                            TLP-{{ object.tlpState|upper }}
+                            </span>
+                            </td>
+                        </tr>
                         <tr>
                             <td class="">
                                 Date

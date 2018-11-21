@@ -58,7 +58,7 @@ class AcademicUnitController extends FOSRestController
      *
      * @FOS\Get("/academic_unit")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing academic unit academic_unit.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many academic unit academic_unit to return.")
+     * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many academic unit academic_unit to return.")
      *
      * @FOS\View(
      *  templateVar="academic_units"

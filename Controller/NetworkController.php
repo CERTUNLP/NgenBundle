@@ -57,7 +57,7 @@ class NetworkController extends FOSRestController
      * )
      *
      * @FOS\RequestParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing networks.")
-     * @FOS\RequestParam(name="limit", requirements="\d+", default="5", description="How many networks to return.")
+     * @FOS\RequestParam(name="limit", requirements="\d+", nullable=true, description="How many networks to return.")
      *
      * @FOS\View(
      *  templateVar="networks"

@@ -58,7 +58,7 @@ class IncidentStateController extends FOSRestController
      *
      * @FOS\Get("/states")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident states.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many incident states to return.")
+     * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many incident states to return.")
      *
      * @FOS\View(
      *  templateVar="incident_states"
@@ -86,7 +86,7 @@ class IncidentStateController extends FOSRestController
      * @ApiDoc(
      *   resource = true,
      *   description = "Gets a network admin for a given id",
-     *   output = "CertUnlp\NgenBundle\Entity\IncidentState",
+     *   output = "CertUnlp\NgenBundle\Entity\IncidentDecision",
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     404 = "Returned when the network is not found"
@@ -98,7 +98,7 @@ class IncidentStateController extends FOSRestController
      * @FOS\View(
      *  templateVar="incident_state"
      * )
-     * @ParamConverter("incident_state", class="CertUnlpNgenBundle:IncidentState")
+     * @ParamConverter("incident_state", class="CertUnlpNgenBundle:IncidentDecision")
      * @FOS\Get("/states/{slug}")
      */
     public function getIncidentStateAction(IncidentState $incident_state)

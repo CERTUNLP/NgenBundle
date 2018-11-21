@@ -125,6 +125,14 @@ services:
         class:        "%cert_unlp.ngen.academic_unit.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.academic_unit.class%","%cert_unlp.ngen.academic_unit.form_type.class%","@form.factory"]
 
+    cert_unlp.ngen.incident.decision.handler:
+        class:        "%cert_unlp.ngen.incident.decision.handler.class%"
+        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.decision.class%","%cert_unlp.ngen.incident.decision.form_type.class%","@form.factory"]
+
+
+    cert_unlp.ngen.incident.decision.api.controller:
+        class: CertUnlp\NgenBundle\Services\Api\Controller\ApiController
+        arguments: ["@cert_unlp.ngen.incident.decision.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view","@cert_unlp.ngen.internal.incident.mailer" ]
 
     cert_unlp.ngen.incident.internal.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentApiController
@@ -166,9 +174,10 @@ services:
         class: CertUnlp\NgenBundle\Services\Api\Controller\AcademicUnitApiController
         arguments: ["@cert_unlp.ngen.academic_unit.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
 
+
     cert_unlp.ngen.incident.internal.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController
-        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.internal.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.internal","@fos_comment.manager.comment","@fos_comment.manager.thread","%cert_unlp.ngen.incident.evidence.path%"]
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.internal.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.internal","@fos_comment.manager.comment","@fos_comment.manager.thread","@security.token_storage",%cert_unlp.ngen.incident.evidence.path%"]
 
     cert_unlp.ngen.incident.external.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController
@@ -205,6 +214,11 @@ services:
     cert_unlp.ngen.academic_unit.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.academic_unit.form_type.class%","@knp_paginator","@fos_elastica.finder.academic_units.academic_unit","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+
+    cert_unlp.ngen.incident.decision.frontend.controller:
+        class:     CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.decision.form_type.class%","@knp_paginator","@fos_elastica.finder.decisions.decisions","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+
 
     cert_unlp.ngen.incident.report.markdown.parser:
         class: CertUnlp\NgenBundle\Services\IncidentMarkdowReportParser
@@ -268,6 +282,6 @@ services:
             - [ setAnnotationReader, [ "@annotation_reader" ] ]
 
     app.image_type_extension:
-        class: CertUnlp\NgenBundle\Form\Extension\DateTimeTypeExtension
-        tags:
-            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\DateTimeType }
+            class: CertUnlp\NgenBundle\Form\Extension\DateTimeTypeExtension
+            tags:
+                - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\DateTimeType }

@@ -58,7 +58,7 @@ class NetworkAdminController extends FOSRestController
      *
      * @FOS\Get("/networks/admins")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing network admins.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many network admins to return.")
+     * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many network admins to return.")
      *
      * @FOS\View(
      *  templateVar="network_admins"
