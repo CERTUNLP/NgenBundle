@@ -77,13 +77,13 @@ cert_ngen_network_api:
 cert_ngen_network_admin_api:
     type: rest
     resource: 'CertUnlp\NgenBundle\Controller\NetworkAdminController'
-    name_prefix:  api_2_
+    name_prefix:  api_
 
 cert_ngen_administration_decision_api:
     type: rest
-    prefix: /v2/incidents
+    prefix: /incidents
     resource: 'CertUnlp\NgenBundle\Controller\IncidentDecisionController'
-    name_prefix:  api_2_
+    name_prefix:  api_
 #
 #NelmioApiDocBundle:
 #    resource: '@NelmioApiDocBundle/Resources/config/routing.yml'
