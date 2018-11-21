@@ -34,6 +34,7 @@ class CertUnlpNgenExtension extends Extension
 //        var_dump($config,$configs);die;
 
         $container->setParameter('cert_unlp.ngen.team.mail', $config['team']['mail']);
+        $container->setParameter('cert_unlp.ngen.team.abuse', $config['team']['abuse']);
         $container->setParameter('cert_unlp.ngen.resources.path', '%kernel.root_dir%/Resources/');
 
         $container->setParameter('cert_unlp.ngen.incident.internal.class', $config['incidents']['internal']['class']);
@@ -89,6 +90,10 @@ class CertUnlpNgenExtension extends Extension
         $container->setParameter('cert_unlp.ngen.academic_unit.class', $config['academic_unit']['class']);
         $container->setParameter('cert_unlp.ngen.academic_unit.handler.class', $config['academic_unit']['handler']['class']);
         $container->setParameter('cert_unlp.ngen.academic_unit.form_type.class', $config['academic_unit']['form_type']['class']);
+
+        $container->setParameter('cert_unlp.ngen.incident.decision.class', $config['incident_decision']['class']);
+        $container->setParameter('cert_unlp.ngen.incident.decision.handler.class', $config['incident_decision']['handler']['class']);
+        $container->setParameter('cert_unlp.ngen.incident.decision.form_type.class', $config['incident_decision']['form_type']['class']);
 
         if (isset($config['incidents']['mailer']['sender_address'])) {
             $container->setParameter('cert_unlp.ngen.incident.mailer.sender_address', $config['incidents']['mailer']['sender_address']);

@@ -28,7 +28,7 @@ class IncidentTypeFrontendController extends Controller
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentType:Frontend/home.html.twig")
-     * @Route("/", name="cert_unlp_ngen_incident_type_frontend_home")
+     * @Route("/", name="cert_unlp_ngen_administration_type_frontend_home")
      * @param Request $request
      * @return array
      */

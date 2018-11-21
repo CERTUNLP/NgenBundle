@@ -28,7 +28,7 @@ class IncidentStateFrontendController extends Controller
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentState:Frontend/home.html.twig")
-     * @Route("/", name="cert_unlp_ngen_incident_state_frontend_home")
+     * @Route("/", name="cert_unlp_ngen_administration_state_frontend_home")
      * @param Request $request
      * @return array
      */

@@ -74,7 +74,7 @@ class ExternalIncidentListener implements ContainerAwareInterface
     public function stateUpdate(IncidentInterface $incident, $event)
     {
         $entityManager = $event->getEntityManager();
-        $repository = $entityManager->getRepository('CertUnlpNgenBundle:IncidentState');
+        $repository = $entityManager->getRepository('CertUnlpNgenBundle:IncidentDecision');
         $state = $incident->getState();
         $newState = $repository->findOneBySlug('open');
         if ($state == null) {

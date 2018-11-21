@@ -38,7 +38,7 @@ class InternalIncidentController extends FOSRestController
      *   }
      * )
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incidents.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many incidents to return.")
+     * @FOS\QueryParam(name="limit", requirements="\d+", default="100", description="How many incidents to return.")
      * @FOS\View(
      *  templateVar="incidents"
      * )

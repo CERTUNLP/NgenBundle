@@ -120,6 +120,9 @@ class Network implements NetworkInterface
      */
     private $updatedAt;
 
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\IncidentDecision",mappedBy="network", cascade={"persist","remove"})) */
+    private $incidentsDecisions;
+
     /**
      * Constructor
      */

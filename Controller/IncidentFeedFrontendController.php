@@ -2,9 +2,9 @@
 
 /*
  * This file is part of the Ngen - CSIRT Incident Report System.
- * 
+ *
  * (c) CERT UNLP <support@cert.unlp.edu.ar>
- * 
+ *
  * This source file is subject to the GPL v3.0 license that is bundled
  * with this source code in the file LICENSE.
  */
@@ -28,7 +28,7 @@ class IncidentFeedFrontendController extends Controller
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentFeed:Frontend/home.html.twig")
-     * @Route("/", name="cert_unlp_ngen_incident_feed_frontend_home")
+     * @Route("/", name="cert_unlp_ngen_administration_feed_frontend_home")
      * @param Request $request
      * @return array
      */

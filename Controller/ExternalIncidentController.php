@@ -33,7 +33,7 @@ class ExternalIncidentController extends FOSRestController
      *   }
      * )
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incidents.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", default="5", description="How many incidents to return.")
+     * @FOS\QueryParam(name="limit", requirements="\d+", default="100", description="How many incidents to return.")
      *
      * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service

@@ -33,15 +33,19 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->addDefaultsIfNotSet()
-            ->children()
-            ->arrayNode('team')
-            ->children()
-            ->scalarNode('mail')
-            ->isRequired()
-            ->cannotBeEmpty()
-            ->end()
-            ->end()
-            ->end()
+                ->children()
+                    ->arrayNode('team')
+                    ->children()
+                        ->scalarNode('mail')
+                            ->isRequired()
+                            ->cannotBeEmpty()
+                        ->end()
+                        ->scalarNode('abuse')
+                            ->isRequired()
+                            ->cannotBeEmpty()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         $this->addIncidentSection($rootNode);
@@ -50,6 +54,7 @@ class Configuration implements ConfigurationInterface
         $this->addFeedSection($rootNode);
         $this->addSeedSection($rootNode);
         $this->addAcademicUnitSection($rootNode);
+        $this->addIncidentDecisionSection($rootNode);
         return $treeBuilder;
     }
 
@@ -527,6 +532,35 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->scalarNode('class')
             ->defaultValue('CertUnlp\NgenBundle\Form\AcademicUnitType')
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end();
+    }
+    private function addIncidentDecisionSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+            ->arrayNode('incident_decision')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('class')
+            ->defaultValue('CertUnlp\NgenBundle\Entity\IncidentDecision')
+            ->end()
+            ->arrayNode('handler')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('class')
+            ->defaultValue('CertUnlp\NgenBundle\Services\Api\Handler\IncidentDecisionHandler')
+            ->end()
+            ->end()
+            ->end()
+            ->arrayNode('form_type')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('class')
+            ->defaultValue('CertUnlp\NgenBundle\Form\IncidentDecisionType')
             ->end()
             ->end()
             ->end()

@@ -21,6 +21,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use DateTime;
 
 /**
  * @ORM\Entity()
@@ -85,6 +86,22 @@ class Incident implements IncidentInterface
     protected $createdAt;
 
     /**
+     * @return mixed
+     */
+    public function getAssigned()
+    {
+        return $this->assigned;
+    }
+
+    /**
+     * @param mixed $assigned
+     */
+    public function setAssigned($assigned)
+    {
+        $this->assigned = $assigned;
+    }
+
+    /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
@@ -95,9 +112,14 @@ class Incident implements IncidentInterface
     protected $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Model\ReporterInterface", inversedBy="incidents")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="incidents")
      */
     protected $reporter;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="$assignedIncidents")
+     */
+    protected $assigned;
 
     /**
      * @var boolean
@@ -133,17 +155,35 @@ class Incident implements IncidentInterface
      */
     protected $state;
 
+
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Tlp", inversedBy="incidents")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentTlp", inversedBy="incidents")
      * @ORM\JoinColumn(name="tlp_state", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
+    protected $tlpState;
 
-    protected $tlp_state;
+    /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentUrgency", inversedBy="incidents")
+     * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    protected $urgency;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentImpact", inversedBy="incidents")
+     * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    protected $impact;
+
     /**
      * @Assert\File(maxSize = "500k")
      */
+
     protected $evidence_file;
     /**
      * @ORM\Column(name="evidence_file_path", type="string",nullable=true)
@@ -181,16 +221,16 @@ class Incident implements IncidentInterface
      */
     public function getTlpState()
     {
-        return $this->tlp_state;
+        return $this->tlpState;
     }
 
     /**
      * @param mixed $tlp_state
      * @return Incident
      */
-    public function setTlpState($tlp_state)
+    public function setTlpState($tlpState)
     {
-        $this->tlp_state = $tlp_state;
+        $this->tlpState = $tlpState;
         return $this;
     }
 
@@ -203,6 +243,7 @@ class Incident implements IncidentInterface
     {
         return $this->id;
     }
+
 
     /**
      * Get hostAddress
@@ -349,7 +390,7 @@ class Incident implements IncidentInterface
      * @param string $slug
      * @return Incident
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug)
     {
         $this->slug = $slug;
 
@@ -415,7 +456,7 @@ class Incident implements IncidentInterface
      * @param bool $fullPath
      * @return string
      */
-    public function getEvidenceFilePath($fullPath = false)
+    public function getEvidenceFilePath(string $fullPath = null)
     {
 
         if ($this->evidence_file_path) {
@@ -437,7 +478,7 @@ class Incident implements IncidentInterface
      * @param string $evidenceFilePath
      * @return Incident
      */
-    public function setEvidenceFilePath($evidenceFilePath)
+    public function setEvidenceFilePath(string $evidenceFilePath)
     {
         $this->evidence_file_path = $evidenceFilePath;
 
@@ -470,7 +511,8 @@ class Incident implements IncidentInterface
      * @param \DateTime $date
      * @return Incident
      */
-    public function setDate($date)
+
+    public function setDate(DateTime $date)
     {
         $this->date = $date;
 
@@ -493,7 +535,7 @@ class Incident implements IncidentInterface
      * @param string $evidenceFileTemp
      * @return Incident
      */
-    public function setEvidenceFileTemp($evidenceFileTemp)
+    public function setEvidenceFileTemp(string $evidenceFileTemp)
     {
         $this->evidence_file_temp = $evidenceFileTemp;
 
@@ -588,7 +630,7 @@ class Incident implements IncidentInterface
      * @param boolean $sendReport
      * @return Incident
      */
-    public function setSendReport($sendReport)
+    public function setSendReport(bool $sendReport)
     {
         $this->sendReport = $sendReport;
 
@@ -679,7 +721,7 @@ class Incident implements IncidentInterface
      * @param string $reportMessageId
      * @return Incident
      */
-    public function setReportMessageId($reportMessageId)
+    public function setReportMessageId(string $reportMessageId)
     {
         $this->report_message_id = $reportMessageId;
 
