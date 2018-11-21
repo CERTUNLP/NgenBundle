@@ -80,7 +80,7 @@ class NetworkHandler extends Handler
             if (!$networkDB->getIsActive()) {
                 $networkDB->setIsActive(TRUE);
                 $networkDB->setNetworkAdmin($network->getNetworkAdmin());
-                $networkDB->setAcademicUnit($network->getAcademicUnit());
+                $networkDB->setNetworkEntity($network->getNetworkEntity());
             }
             $network = $networkDB;
         }

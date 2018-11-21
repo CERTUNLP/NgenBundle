@@ -17,7 +17,7 @@ class NetworkFrontendController extends FrontendController
 //    public function homeEntity(Request $request, $entity = 'Network') {
 //        $em = $this->getDoctrine();
 //        $dql = "SELECT n,au,na "
-//                . "FROM CertUnlpNgenBundle:Network n join n.academic_unit au join n.network_admin na";
+//                . "FROM CertUnlpNgenBundle:Network n join n.network_entity au join n.network_admin na";
 //        $query = $em->createQuery($dql);
 //
 //        $pagination = $this->getPaginator()->paginate(

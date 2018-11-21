@@ -45,7 +45,7 @@ abstract class IncidentHandler extends Handler
     public function closeOldIncidents($days = 10)
     {
         $incidents = $this->all(['isClosed' => false]);
-        $state = $this->om->getRepository('CertUnlp\NgenBundle\Entity\IncidentState')->findOneBySlug('closed_by_inactivity');
+        $state = $this->om->getRepository('CertUnlp\NgenBundle\Entity\Incident\IncidentState')->findOneBySlug('closed_by_inactivity');
         $closedIncidents = [];
         foreach ($incidents as $incident) {
             if ($incident->getOpenDays(true) >= $days) {

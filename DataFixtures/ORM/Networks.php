@@ -11,9 +11,9 @@
 
 namespace CertUnlp\NgenBundle\DataFixtures\ORM;
 
-use CertUnlp\NgenBundle\Entity\AcademicUnit;
-use CertUnlp\NgenBundle\Entity\Network;
-use CertUnlp\NgenBundle\Entity\NetworkAdmin;
+use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
+use CertUnlp\NgenBundle\Entity\Network\Network;
+use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -29,14 +29,14 @@ class Networks extends AbstractFixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         $data = array(
-            array('ip_mask' => '192.168.0.0/16', 'academic_unit_name' => 'Test', 'admin_name' => 'Support Test', 'admin_email' => 'support@organization.test'));
+            array('ip_mask' => '192.168.0.0/16', 'network_entity_name' => 'Test', 'admin_name' => 'Support Test', 'admin_email' => 'support@organization.test'));
         $NetworkAdminRepository = $manager->getRepository('CertUnlpNgenBundle:NetworkAdmin');
-        $AcademicUnitRepository = $manager->getRepository('CertUnlpNgenBundle:AcademicUnit');
+        $NetworkEntityRepository = $manager->getRepository('CertUnlpNgenBundle:NetworkEntity');
         foreach ($data as $network_data) {
             $Network = new Network();
             $Network->setIp($network_data['ip_mask']);
             $na = $NetworkAdminRepository->findOneByName($network_data['admin_name']);
-            $au = $AcademicUnitRepository->findOneByName($network_data['academic_unit_name']);
+            $au = $NetworkEntityRepository->findOneByName($network_data['network_entity_name']);
             if ($na) {
                 $Network->setNetworkAdmin($na);
             } else {
@@ -44,9 +44,9 @@ class Networks extends AbstractFixture implements OrderedFixtureInterface
             }
 
             if ($au) {
-                $Network->setAcademicUnit($au);
+                $Network->setNetworkEntity($au);
             } else {
-                $Network->setAcademicUnit(new AcademicUnit($network_data['academic_unit_name']));
+                $Network->setNetworkEntity(new NetworkEntity($network_data['network_entity_name']));
             }
             $manager->persist($Network);
             $manager->flush();
