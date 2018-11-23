@@ -10,6 +10,8 @@ parameters:
     mailer_user: MAILER_USER
     mailer_password: MAILER_PASSWORD
     mailer_sender: MAILER_SENDER
+    mailer_port: MAILER_PORT
+    mailer_encryption: MAILER_ENCRYPTION
     secret: SECRET_KEY
     default_network: DEFAULT_NETWORK
     team_mail: TEAM_MAIL
