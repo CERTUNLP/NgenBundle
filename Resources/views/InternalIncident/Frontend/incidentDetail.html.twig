@@ -73,5 +73,5 @@
     </div>
 {% endblock %}
 {% block comments_body %}
-    {{ render(controller('CertUnlpNgenBundle:InternalIncidentFrontend:incidentComments', {'incident': object, 'request': app.request})) }}
+    {{ render(controller('CertUnlpNgenBundle:Frontend\Incident\InternalIncidentFrontend:incidentComments', {'incident': object, 'request': app.request})) }}
 {% endblock %}
