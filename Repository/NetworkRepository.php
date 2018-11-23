@@ -27,7 +27,7 @@ class NetworkRepository extends EntityRepository
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
         $qb->select('n')
-            ->from('CertUnlpNgenBundle:Network', 'n')
+            ->from('CertUnlpNgenBundle:Network\Network', 'n')
             ->where($qb->expr()->eq("BIT_AND(INET_ATON(:address),n.numericIpMask)", "n.numericIp"))
             ->andWhere('n.isActive = true')
             ->orderBy("n.ipMask", "DESC");
