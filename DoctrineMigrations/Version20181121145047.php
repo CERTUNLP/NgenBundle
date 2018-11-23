@@ -18,7 +18,7 @@ class Version20181121145047 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE academic_unit RENAME TO network_entity;');
+        $this->addSql('ALTER TABLE academic_unit RENAME TO network_entity');
         $this->addSql('ALTER TABLE incident CHANGE academic_unit_id network_entity_id INT DEFAULT NULL');
         $this->addSql('CREATE INDEX IDX_3D03A11A6801DB4 ON incident (network_entity_id)');
         $this->addSql('ALTER TABLE incident_tlp CHANGE description description VARCHAR(150) DEFAULT NULL');

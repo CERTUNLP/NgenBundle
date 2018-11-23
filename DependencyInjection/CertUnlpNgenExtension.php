@@ -71,6 +71,8 @@ class CertUnlpNgenExtension extends Extension
 
         $container->setParameter('cert_unlp.ngen.incident.mailer.host', $config['incidents']['mailer']['host']);
         $container->setParameter('cert_unlp.ngen.incident.mailer.transport', $config['incidents']['mailer']['transport']);
+        $container->setParameter('cert_unlp.ngen.incident.mailer.encryption', $config['incidents']['mailer']['encryption']);
+        $container->setParameter('cert_unlp.ngen.incident.mailer.port', $config['incidents']['mailer']['port']);
         $container->setParameter('cert_unlp.ngen.incident.mailer.username', $config['incidents']['mailer']['username']);
         $container->setParameter('cert_unlp.ngen.incident.mailer.password', $config['incidents']['mailer']['password']);
 
