@@ -18,11 +18,12 @@ class Version20181121145047 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE network_entity (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(50) NOT NULL, slug VARCHAR(100) DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, is_active TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE academic_unit RENAME TO network_entity;');
         $this->addSql('ALTER TABLE incident CHANGE academic_unit_id network_entity_id INT DEFAULT NULL');
         $this->addSql('CREATE INDEX IDX_3D03A11A6801DB4 ON incident (network_entity_id)');
         $this->addSql('ALTER TABLE incident_tlp CHANGE description description VARCHAR(150) DEFAULT NULL');
         $this->addSql('ALTER TABLE network CHANGE academic_unit_id network_entity_id INT DEFAULT NULL');
+
     }
 
     /**
@@ -37,8 +38,7 @@ class Version20181121145047 extends AbstractMigration
         $this->addSql('ALTER TABLE network DROP FOREIGN KEY FK_608487BC6801DB4');
         $this->addSql('ALTER TABLE container_config DROP FOREIGN KEY FK_C89BC17B812D5EB');
         $this->addSql('ALTER TABLE container_config DROP FOREIGN KEY FK_C89BC17B727ACA70');
-        $this->addSql('CREATE TABLE academic_unit (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(50) NOT NULL COLLATE utf8_unicode_ci, slug VARCHAR(100) DEFAULT NULL COLLATE utf8_unicode_ci, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, is_active TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('DROP TABLE network_entity');
+        $this->addSql('ALTER TABLE network_entity RENAME TO academic_unit;');
         $this->addSql('DROP TABLE container_extension');
         $this->addSql('DROP TABLE container_parameter');
         $this->addSql('DROP TABLE container_config');
