@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
+use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
 use CertUnlp\NgenBundle\Validator\Constraints as NetworkAssert;
 use Doctrine\ORM\Mapping as ORM;
