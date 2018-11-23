@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Controller;
 
-use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
+use CertUnlp\NgenBundle\Entity\Incident\Network\NetworkEntity;
 
 class NetworkEntityApiController extends ApiController
 {

@@ -79,7 +79,7 @@ cert_ngen:
                 class: CertUnlp\NgenBundle\Form\IncidentTypeType
 
     networks:
-        class: CertUnlp\NgenBundle\Entity\Network\Network
+        class: CertUnlp\NgenBundle\Entity\Incident\Network\Network
         default_network: ~
         handler:
             class: CertUnlp\NgenBundle\Services\Api\Handler\NetworkHandler
@@ -88,7 +88,7 @@ cert_ngen:
         form_type:
             class: CertUnlp\NgenBundle\Form\NetworkType
         admin:
-            class: CertUnlp\NgenBundle\Entity\Network\NetworkAdmin
+            class: CertUnlp\NgenBundle\Entity\Incident\Network\NetworkAdmin
             handler:
                 class: CertUnlp\NgenBundle\Services\Api\Handler\NetworkAdminHandler
             form_type:

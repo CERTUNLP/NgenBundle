@@ -53,7 +53,7 @@ class NetworkAdminType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'CertUnlp\NgenBundle\Entity\Network\NetworkAdmin',
+            'data_class' => 'CertUnlp\NgenBundle\Entity\Incident\Network\NetworkAdmin',
             'csrf_protection' => false,
         ));
     }

@@ -11,9 +11,9 @@
 
 namespace CertUnlp\NgenBundle\Model;
 
-use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
-use CertUnlp\NgenBundle\Entity\Network\Network;
-use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
+use CertUnlp\NgenBundle\Entity\Incident\Network\NetworkEntity;
+use CertUnlp\NgenBundle\Entity\Incident\Network\Network;
+use CertUnlp\NgenBundle\Entity\Incident\Network\NetworkAdmin;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -66,7 +66,7 @@ interface NetworkInterface
     /**
      * Set networkAdmin
      *
-     * @param \CertUnlp\NgenBundle\Entity\Network\NetworkAdmin $networkAdmin
+     * @param \CertUnlp\NgenBundle\Entity\Incident\Network\NetworkAdmin $networkAdmin
      * @return Network
      */
     public function setNetworkAdmin(NetworkAdmin $networkAdmin = null);
@@ -74,14 +74,14 @@ interface NetworkInterface
     /**
      * Get networkAdmin
      *
-     * @return \CertUnlp\NgenBundle\Entity\Network\NetworkAdmin
+     * @return \CertUnlp\NgenBundle\Entity\Incident\Network\NetworkAdmin
      */
     public function getNetworkAdmin();
 
     /**
      * Set networkEntity
      *
-     * @param \CertUnlp\NgenBundle\Entity\Network\NetworkEntity $networkEntity
+     * @param \CertUnlp\NgenBundle\Entity\Incident\Network\NetworkEntity $networkEntity
      * @return Network
      */
     public function setNetworkEntity(NetworkEntity $networkEntity = null);
@@ -89,7 +89,7 @@ interface NetworkInterface
     /**
      * Get networkEntity
      *
-     * @return \CertUnlp\NgenBundle\Entity\Network\NetworkEntity
+     * @return \CertUnlp\NgenBundle\Entity\Incident\Network\NetworkEntity
      */
     public function getNetworkEntity();
 

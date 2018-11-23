@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
+use CertUnlp\NgenBundle\Entity\Incident\Network\NetworkAdmin;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
 use CertUnlp\NgenBundle\Model\ReporterInterface;

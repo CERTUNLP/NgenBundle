@@ -44,7 +44,7 @@ doctrine:
             CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\Incident\InternalIncident
             CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\Incident\ExternalIncident
             CertUnlp\NgenBundle\Model\ReporterInterface: CertUnlp\NgenBundle\Entity\User
-            CertUnlp\NgenBundle\Model\NetworkInterface: CertUnlp\NgenBundle\Entity\Network\Network
+            CertUnlp\NgenBundle\Model\NetworkInterface: CertUnlp\NgenBundle\Entity\Incident\Network\Network
         dql:
             string_functions:
                 INET_ATON: CertUnlp\NgenBundle\DQL\InetAtonFunction

@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
+use CertUnlp\NgenBundle\Entity\Incident\Network\NetworkAdmin;
 
 class NetworkAdminHandler extends Handler
 {
