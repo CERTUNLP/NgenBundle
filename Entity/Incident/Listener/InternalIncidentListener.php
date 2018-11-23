@@ -74,7 +74,7 @@ class InternalIncidentListener
         #fix esto tiene que ir a INciddntDecision
         $entityManager = $event->getEntityManager();
         $repository = $entityManager->getRepository('CertUnlpNgenBundle:Incident\IncidentTlp');
-        $tlp = $incident->getTlp();
+        $tlp = $incident->getTlpState();
         $newTLP = $repository->findOneBySlug('white');
         if ($state == null) {
             $incident->setTlp($newTLP);
