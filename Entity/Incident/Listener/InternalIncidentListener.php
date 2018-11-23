@@ -76,7 +76,7 @@ class InternalIncidentListener
         $repository = $entityManager->getRepository('CertUnlpNgenBundle:Incident\IncidentTlp');
         $tlp = $incident->getTlpState();
         $newTLP = $repository->findOneBySlug('white');
-        if ($state == null) {
+        if ($tlp == null) {
             $incident->setTlp($newTLP);
         }
     }
