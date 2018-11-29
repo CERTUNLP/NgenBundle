@@ -98,7 +98,7 @@ class InternalIncidentListener
     public function stateUpdate(IncidentInterface $incident, LifecycleEventArgs $event)
     {
         $entityManager = $event->getEntityManager();
-        $repository = $entityManager->getRepository('CertUnlpNgenBundle:IncidentDecision');
+        $repository = $entityManager->getRepository('CertUnlpNgenBundle:Incident\IncidentState');
         $state = $incident->getState();
         $newState = $repository->findOneBySlug('open');
         if ($state == null) {
@@ -109,7 +109,7 @@ class InternalIncidentListener
     public function feedUpdate(IncidentInterface $incident, LifecycleEventArgs $event)
     {
         $entityManager = $event->getEntityManager();
-        $repository = $entityManager->getRepository('CertUnlpNgenBundle:IncidentFeed');
+        $repository = $entityManager->getRepository('CertUnlpNgenBundle:Incident\IncidentFeed');
         $state = $incident->getFeed();
         $newState = $repository->findOneBySlug('cert_unlp');
         if ($state == null) {

@@ -18,8 +18,6 @@ class Version20181122161904 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE incident DROP FOREIGN KEY FK_3D03A11A7D33BAAB');
-        $this->addSql('ALTER TABLE network DROP FOREIGN KEY FK_608487BC7D33BAAB');
         $this->addSql('DROP INDEX IDX_3D03A11A7D33BAAB ON incident');
         $this->addSql('ALTER TABLE incident ADD CONSTRAINT FK_3D03A11A6801DB4 FOREIGN KEY (network_entity_id) REFERENCES network_entity (id)');
         $this->addSql('ALTER TABLE incident_decision DROP FOREIGN KEY FK_7C69DA3B62A6DC27');
@@ -57,4 +55,4 @@ class Version20181122161904 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_608487BC7D33BAAB ON network (network_entity_id)');
         $this->addSql('ALTER TABLE network ADD CONSTRAINT FK_608487BC6801DB4 FOREIGN KEY (network_entity_id) REFERENCES network_entity (id)');
     }
-
+}
