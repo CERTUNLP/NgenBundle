@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Form;
 
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -75,6 +76,7 @@ class InternalIncidentType extends AbstractType
                 'html5' => true,
                 'input' => 'datetime',
                 'widget' => 'single_text',
+                'data' => new DateTime(),
                 'attr' => array('type' => 'datetime-local', 'help_text' => 'If no date is selected, the date will be today.'),
                 'description' => "If no date is selected, the date will be today.",
             ))
@@ -82,6 +84,7 @@ class InternalIncidentType extends AbstractType
                 'empty_value' => 'Choose an incident state',
                 'attr' => array('help_text' => 'If none is selected, the state will be \'open\'.'),
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
+                'data' => $this->doctrine->getReference("CertUnlpNgenBundle:Incident\IncidentState", "undefined"),
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
@@ -96,7 +99,7 @@ class InternalIncidentType extends AbstractType
                 'empty_value' => 'Choose a reporter',
                 'attr' => array('help_text' => 'If none is selected, the reporter will be the logged user.'),
                 'description' => "The reporter ID. If none was selected, the reporter will be the logged user or the apikey user.",
-                'data' => $this->doctrine->getReference("CertUnlpNgenBundle:User", $this->userLogged),
+                'data' => isset($this->userLogged)? $this->doctrine->getReference("CertUnlpNgenBundle:User", $this->userLogged):'null ' ,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.enabled = TRUE');
@@ -105,7 +108,7 @@ class InternalIncidentType extends AbstractType
                 'empty_value' => 'Choose a responsable',
                 'attr' => array('help_text' => 'If none is selected, the assigned will be empty.'),
                 'description' => "If none was selected, the incident will remain unassigned.",
-                'data' => $this->doctrine->getReference("CertUnlpNgenBundle:User", $this->userLogged),
+                'data' => isset($this->userLogged)? $this->doctrine->getReference("CertUnlpNgenBundle:User", $this->userLogged):'null ' ,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.enabled = TRUE');
@@ -127,18 +130,6 @@ class InternalIncidentType extends AbstractType
                 'required' => false,
                 'label' => 'Send mail report(if available)',
                 'description' => "Send a mail report to the host administrator."))
-//           ->add('editReport', 'button', array(
-//                'label' => 'Edit the report',
-//               'attr' => array('class' => 'save ladda-button btn btn-primary', 'data-style' => "slide-down"),
-//                    'description' => "JS button. Only works in frontend."
-//            ))
-//           ->add('reportEdit', 'textarea', array(
-//                'required' => false,
-//                'label' => 'Edit the report',
-//                'label_attr' => array('class' => 'hidden'),
-//                'attr' => array('class' => 'hidden', 'data-theme' => 'simple'),
-//                'description' => "JS textarea. Only works in frontend."
-//            ))
             ->add('slug', 'hidden', array(
                 'required' => false,
             ))
