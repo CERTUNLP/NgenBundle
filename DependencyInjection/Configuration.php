@@ -158,7 +158,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Entity\Incident\ExternalIncident')
+            ->defaultValue('CertUnlp\NgenBundle\Entity\Incident\NetworkExternal')
             ->end()
             ->arrayNode('handler')
             ->addDefaultsIfNotSet()

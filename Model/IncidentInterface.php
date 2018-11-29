@@ -14,6 +14,7 @@ namespace CertUnlp\NgenBundle\Model;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use DateTime;
 use FOS\CommentBundle\Model\Thread;
@@ -38,7 +39,7 @@ interface IncidentInterface
      *
      * @return int|string
      */
-    public function getId();
+    public function getId(): int;
 
     /**
      * Set hostAddress
@@ -46,14 +47,14 @@ interface IncidentInterface
      * @param IncidentFeed $feed
      * @return Incident
      */
-    public function setFeed(IncidentFeed $feed);
+    public function setFeed(IncidentFeed $feed): Incident;
 
     /**
      * Get $state
      *
      * @return IncidentFeed
      */
-    public function getFeed();
+    public function getFeed(): IncidentFeed;
 
     /**
      * Set IncidentDecision
@@ -61,14 +62,14 @@ interface IncidentInterface
      * @param $state
      * @return Incident
      */
-    public function setState(IncidentState $state);
+    public function setState(IncidentState $state): Incident;
 
     /**
      * Get $state
      *
      * @return IncidentState
      */
-    public function getState();
+    public function getState(): IncidentState;
 
     /**
      * Set hostAddress
@@ -76,43 +77,43 @@ interface IncidentInterface
      * @param string $hostAddress
      * @return Incident
      */
-    public function setHostAddress($hostAddress);
+    public function setHostAddress(string $hostAddress): Incident;
 
     /**
      * Get hostAddress
      *
      * @return string
      */
-    public function getHostAddress();
+    public function getHostAddress(): string;
 
     /**
      * Set isClosed
      *
-     * @param boolean $isClosed
+     * @param bool $isClosed
      * @return Incident
      */
-    public function setIsClosed($isClosed);
+    public function setIsClosed(bool $isClosed): Incident;
 
     /**
      * Get isClosed
      *
-     * @return boolean
+     * @return bool
      */
-    public function getIsClosed();
+    public function isClosed(): bool;
 
     /**
      * Get isClosed
      *
-     * @return boolean
+     * @return Incident
      */
-    public function isClosed();
+    public function close(): Incident;
 
     /**
      * Get isClosed
      *
-     * @return boolean
+     * @return Incident
      */
-    public function close();
+    public function open(): Incident;
 
     /**
      * Set network
@@ -120,29 +121,29 @@ interface IncidentInterface
      * @param NetworkInterface $network
      * @return Incident
      */
-    public function setNetwork(NetworkInterface $network = null);
+    public function setNetwork(NetworkInterface $network = null): Incident;
 
     /**
      * Get network
      *
      * @return NetworkInterface
      */
-    public function getNetwork();
+    public function getNetwork(): NetworkInterface;
 
     /**
      * Set type
      *
-     * @param \CertUnlp\NgenBundle\Entity\Incident\IncidentType $type
+     * @param IncidentType $type
      * @return Incident
      */
-    public function setType(\CertUnlp\NgenBundle\Entity\Incident\IncidentType $type = null);
+    public function setType(IncidentType $type = null): Incident;
 
     /**
      * Get type
      *
-     * @return \CertUnlp\NgenBundle\Entity\Incident\IncidentType
+     * @return IncidentType
      */
-    public function getType();
+    public function getType(): IncidentType;
 
     /**
      * Set date
@@ -150,31 +151,34 @@ interface IncidentInterface
      * @param DateTime $date
      * @return Incident
      */
-    public function setDate(DateTime $date);
+    public function setDate(DateTime $date): Incident;
 
     /**
      * Get date
      *
      * @return \DateTime
      */
-    public function getDate();
+    public function getDate(): \DateTime;
 
-    public function __toString();
+    /**
+     * @return string
+     */
+    public function __toString(): string;
 
     /**
      * Set reporter
      *
-     * @param \CertUnlp\NgenBundle\Model\ReporterInterface $reporter
+     * @param ReporterInterface $reporter
      * @return Incident
      */
-    public function setReporter(ReporterInterface $reporter = null);
+    public function setReporter(ReporterInterface $reporter = null): Incident;
 
     /**
      * Get reporter
      *
-     * @return \CertUnlp\NgenBundle\Model\ReporterInterface
+     * @return ReporterInterface
      */
-    public function getReporter();
+    public function getReporter(): ReporterInterface;
 
     /**
      * Set evidence_file
@@ -182,14 +186,14 @@ interface IncidentInterface
      * @param File $evidenceFile
      * @return Incident
      */
-    public function setEvidenceFile(File $evidenceFile = null);
+    public function setEvidenceFile(File $evidenceFile = null): Incident;
 
     /**
      * Get evidence_file
      *
      * @return UploadedFile
      */
-    public function getEvidenceFile();
+    public function getEvidenceFile(): UploadedFile;
 
     /**
      * Set evidence_file_path
@@ -197,7 +201,7 @@ interface IncidentInterface
      * @param string $evidenceFilePath
      * @return Incident
      */
-    public function setEvidenceFilePath(string $evidenceFilePath);
+    public function setEvidenceFilePath(string $evidenceFilePath): Incident;
 
     /**
      * Get evidence_file_path
@@ -205,14 +209,14 @@ interface IncidentInterface
      * @param string $fullPath
      * @return string
      */
-    public function getEvidenceFilePath(string $fullPath = '');
+    public function getEvidenceFilePath(string $fullPath = ''): string;
 
     /**
      * Get evidence sub directory
      *
      * @return string
      */
-    public function getEvidenceSubDirectory();
+    public function getEvidenceSubDirectory(): string;
 
     /**
      * Set evidence_file_temp
@@ -220,21 +224,21 @@ interface IncidentInterface
      * @param string $evidenceFileTemp
      * @return Incident
      */
-    public function setEvidenceFileTemp(string $evidenceFileTemp);
+    public function setEvidenceFileTemp(string $evidenceFileTemp): Incident;
 
     /**
      * Get evidence_file_temp
      *
      * @return string
      */
-    public function getEvidenceFileTemp();
+    public function getEvidenceFileTemp(): string;
 
     /**
      * Get an array with emails
      *
      * @return array
      */
-    public function getEmails();
+    public function getEmails(): array;
 
     /**
      * Set report_sent
@@ -242,47 +246,47 @@ interface IncidentInterface
      * @param boolean $sendReport
      * @return Incident
      */
-    public function setSendReport(bool $sendReport);
+    public function setSendReport(bool $sendReport): Incident;
 
     /**
      * Get sendReport
      *
-     * @return boolean
+     * @return bool
      */
-    public function getSendReport();
+    public function getSendReport(): bool;
 
     /**
      * @return string
      */
-    public function getReportMessageId();
+    public function getReportMessageId(): string;
 
     /**
      * @param string $reportMessageId
-     * @return string
+     * @return Incident
      */
-    public function setReportMessageId(string $reportMessageId);
+    public function setReportMessageId(string $reportMessageId): Incident;
 
     /**
      * @param string $slug
-     * @return mixed
+     * @return Incident
      */
-    public function setSlug(string $slug);
+    public function setSlug(string $slug): Incident;
 
     /**
      * @param NetworkAdmin $networkAdmin
-     * @return mixed
+     * @return Incident
      */
-    public function setNetworkAdmin(NetworkAdmin $networkAdmin);
+    public function setNetworkAdmin(NetworkAdmin $networkAdmin): Incident;
 
     /**
      * @param Thread $thread
-     * @return mixed
+     * @return Incident
      */
-    public function setCommentThread(Thread $thread);
+    public function setCommentThread(Thread $thread): Incident;
 
     /**
      * @return NetworkAdmin
      */
-    public function getNetworkAdmin();
+    public function getNetworkAdmin(): NetworkAdmin;
 
 }

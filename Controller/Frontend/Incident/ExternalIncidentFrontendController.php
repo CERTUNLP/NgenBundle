@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
-use CertUnlp\NgenBundle\Entity\Incident\ExternalIncident;
+use CertUnlp\NgenBundle\Entity\Incident\NetworkExternal;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -64,10 +64,10 @@ class ExternalIncidentFrontendController extends Controller
      * @Template("CertUnlpNgenBundle:ExternalIncident:Frontend/incidentForm.html.twig")
      * @Route("{id}/edit", name="cert_unlp_ngen_external_incident_frontend_edit_incident_id",requirements={"id"="\d+"})
      * @Route("{slug}/edit", name="cert_unlp_ngen_external_incident_frontend_edit_incident")
-     * @param ExternalIncident $incident
+     * @param NetworkExternal $incident
      * @return array
      */
-    public function editIncidentAction(ExternalIncident $incident)
+    public function editIncidentAction(NetworkExternal $incident)
     {
         return $this->getFrontendController()->editEntity($incident);
     }
@@ -76,10 +76,10 @@ class ExternalIncidentFrontendController extends Controller
      * @Template("CertUnlpNgenBundle:ExternalIncident:Frontend/incidentDetail.html.twig")
      * @Route("{id}/detail", name="cert_unlp_ngen_external_incident_frontend_detail_incident_id",requirements={"id"="\d+"})
      * @Route("{slug}/detail", name="cert_unlp_ngen_external_incident_frontend_detail_incident")
-     * @param ExternalIncident $incident
+     * @param NetworkExternal $incident
      * @return array
      */
-    public function datailIncidentAction(ExternalIncident $incident)
+    public function datailIncidentAction(NetworkExternal $incident)
     {
         return $this->getFrontendController()->detailEntity($incident);
     }
@@ -87,10 +87,10 @@ class ExternalIncidentFrontendController extends Controller
     /**
      * @Route("{id}/evidence", name="cert_unlp_ngen_external_incident_frontend_evidence_incident_id",requirements={"id"="\d+"})
      * @Route("{slug}/evidence", name="cert_unlp_ngen_external_incident_frontend_evidence_incident")
-     * @param ExternalIncident $incident
+     * @param NetworkExternal $incident
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function evidenceIncidentAction(ExternalIncident $incident)
+    public function evidenceIncidentAction(NetworkExternal $incident)
     {
 
         return $this->getFrontendController()->evidenceIncidentAction($incident);
@@ -98,11 +98,11 @@ class ExternalIncidentFrontendController extends Controller
 
     /**
      * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentComments.html.twig")
-     * @param ExternalIncident $incident
+     * @param NetworkExternal $incident
      * @param Request $request
      * @return array
      */
-    public function incidentCommentsAction(ExternalIncident $incident, Request $request)
+    public function incidentCommentsAction(NetworkExternal $incident, Request $request)
     {
         return $this->getFrontendController()->commentsEntity($incident, $request);
     }
