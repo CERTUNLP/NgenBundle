@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Entity\Incident\Network;
+namespace CertUnlp\NgenBundle\Entity\Network;
 
 use CertUnlp\NgenBundle\Model\IncidentInterface;
 use Doctrine\Common\Collections\ArrayCollection;

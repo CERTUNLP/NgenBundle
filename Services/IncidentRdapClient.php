@@ -15,7 +15,7 @@ use CertUnlp\NgenBundle\Entity\Incident\NetworkExternal;
 use CertUnlp\NgenBundle\Services\Rdap\RdapClient;
 use Exception;
 
-class IncidentRdapClient extends RdapClient
+class IncidentRdapClient extends RdapdClient
 {
 
     public function prePersistDelegation(NetworkExternal $incident)
