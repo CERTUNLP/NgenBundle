@@ -11,14 +11,14 @@
 
 namespace CertUnlp\NgenBundle\Services;
 
-use CertUnlp\NgenBundle\Entity\Incident\ExternalIncident;
+use CertUnlp\NgenBundle\Entity\Incident\NetworkExternal;
 use CertUnlp\NgenBundle\Services\Rdap\RdapClient;
 use Exception;
 
 class IncidentRdapClient extends RdapClient
 {
 
-    public function prePersistDelegation(ExternalIncident $incident)
+    public function prePersistDelegation(NetworkExternal $incident)
     {
         try {
             $this->setResponse($this->requestIp($incident->getHostAddress()));

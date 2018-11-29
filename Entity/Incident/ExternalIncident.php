@@ -191,7 +191,7 @@ class ExternalIncident extends Incident
      *
      * @param string $startAddress
      *
-     * @return ExternalIncident
+     * @return NetworkExternal
      */
     public function setStartAddress($startAddress)
     {
@@ -215,7 +215,7 @@ class ExternalIncident extends Incident
      *
      * @param string $endAddress
      *
-     * @return ExternalIncident
+     * @return NetworkExternal
      */
     public function setEndAddress($endAddress)
     {
@@ -239,7 +239,7 @@ class ExternalIncident extends Incident
      *
      * @param string $country
      *
-     * @return ExternalIncident
+     * @return NetworkExternal
      */
     public function setCountry($country)
     {
@@ -262,7 +262,7 @@ class ExternalIncident extends Incident
      * Set networkAdminEmails
      *
      * @param $abuse_entity_emails
-     * @return ExternalIncident
+     * @return NetworkExternal
      */
     public function setAbuseEntityEmails($abuse_entity_emails)
     {

@@ -486,55 +486,7 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * Get date
-     *
-     * @return \DateTime
-     */
-    public function getDate()
-    {
-        return $this->date;
-    }
-
-    /**
-     * Set date
-     *
-     * @param \DateTime $date
-     * @return Incident
-     */
-
-    public function setDate(DateTime $date=null)
-    {
-
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
-     * Get evidence_file_temp
-     *
-     * @return string
-     */
-    public function getEvidenceFileTemp()
-    {
-        return $this->evidence_file_temp;
-    }
-
-    /**
-     * Set evidence_file_temp
-     *
-     * @param string $evidenceFileTemp
-     * @return Incident
-     */
-    public function setEvidenceFileTemp(string $evidenceFileTemp)
-    {
-        $this->evidence_file_temp = $evidenceFileTemp;
-
-        return $this;
-    }
-
-    /**
-     * Get state
+     * Get an array with emails
      *
      * @return IncidentState
      */
