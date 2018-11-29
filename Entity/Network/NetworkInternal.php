@@ -20,11 +20,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Listener\ExternalIncidentListener" })
  */
-class NetworkExternal
+class NetworkInternal
 {
 
     public function isInternal(): bool
     {
-        return false;
+        return true;
     }
 }

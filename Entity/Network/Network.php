@@ -9,12 +9,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Entity\Incident\Network;
+namespace CertUnlp\NgenBundle\Entity\Network;
 
-use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
-use CertUnlp\NgenBundle\Validator\Constraints as NetworkAssert;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -26,6 +26,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\NetworkRepository")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"network"="Network","internal" = "NetworkInternal", "external" = "NetworkExternal", "rdap" = "NetworkRdap"})
  * @UniqueEntity(
  *     fields={"ip", "ipMask","isActive"},
  *     message="This network was already added!")
@@ -35,7 +38,7 @@ class Network implements NetworkInterface
 {
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -56,7 +59,7 @@ class Network implements NetworkInterface
     private $ipMask;
 
     /**
-     * @var string
+     * @var int
      *
      * @ORM\Column(name="numeric_ip_mask", type="bigint", options={"unsigned":true})
      */
@@ -64,32 +67,60 @@ class Network implements NetworkInterface
 
     /**
      * @var string
-     * @NetworkAssert\Ip
-     * @ORM\Column(name="ip", type="string", length=40)
+     *
+     * @ORM\Column(type="string", length=15)
      * @JMS\Expose
+     * @JMS\Groups({"api"})
+     * @Assert\Ip(version="4_no_priv")
      */
-    private $ip;
+    private $ip_v4;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=39)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     * @Assert\Ip(version="6_no_priv")
+     */
+    private $ip_v6;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=39)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     *
+     * @Assert\Url(
+     *    relativeProtocol = true
+     * )
+     */
+    private $url;
+
+    /**
+     * @var int
      *
      * @ORM\Column(name="numeric_ip", type="integer",options={"unsigned":true})
      */
     private $numericIp;
 
     /**
+     * @var NetworkAdmin
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Network\NetworkAdmin", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
      */
     private $network_admin;
 
     /**
+     * @var NetworkEntity
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Network\NetworkEntity", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
      */
     private $network_entity;
 
     /**
+     * @var Collection| IncidentInterface[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="network", cascade={"persist","remove"}))
      * @JMS\Expose
      */
@@ -121,7 +152,10 @@ class Network implements NetworkInterface
      */
     private $updatedAt;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDecision",mappedBy="network", cascade={"persist","remove"})) */
+    /**
+     * @var Collection| IncidentDecision[]
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDecision",mappedBy="network", cascade={"persist","remove"}))
+     */
     private $incidentsDecisions;
 
     /**
@@ -130,95 +164,53 @@ class Network implements NetworkInterface
     public function __construct()
     {
         $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->incidentsDecisions = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Get id
-     *
-     * @return integer
+     * @return string
      */
-    public function getId()
+    public function getIpV6(): string
     {
-        return $this->id;
+        return $this->ip_v6;
     }
 
     /**
-     * Get isActive
-     *
-     * @return boolean
-     */
-    public function getIsActive()
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
+     * @param string $ip_v6
      * @return Network
      */
-    public function setIsActive($isActive)
+    public function setIpV6(string $ip_v6): Network
     {
-        $this->isActive = $isActive;
-
+        $this->ip_v6 = $ip_v6;
         return $this;
     }
 
     /**
-     * Get network_admin
-     *
-     * @return NetworkAdmin
+     * @return string
      */
-    public function getNetworkAdmin()
+    public function getUrl(): string
     {
-        return $this->network_admin;
+        return $this->url;
     }
 
     /**
-     * Set network_admin
-     *
-     * @param NetworkAdmin $network_admin
+     * @param string $url
      * @return Network
      */
-    public function setNetworkAdmin(NetworkAdmin $network_admin = null)
+    public function setUrl(string $url): Network
     {
-        $this->network_admin = $network_admin;
-
+        $this->url = $url;
         return $this;
     }
 
-    /**
-     * Get network_entity
-     *
-     * @return NetworkEntity
-     */
-    public function getNetworkEntity()
-    {
-        return $this->network_entity;
-    }
-
-    /**
-     * Set network_entity
-     *
-     * @param NetworkEntity $network_entity
-     * @return Network
-     */
-    public function setNetworkEntity(NetworkEntity $network_entity = null)
-    {
-        $this->network_entity = $network_entity;
-
-        return $this;
-    }
-
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getIpAndMask();
     }
 
-    public function getIpAndMask()
+    public function getIpAndMask(): string
     {
-        return $this->getIp() . "/" . $this->getIpMask();
+        return $this->getIp() . '/' . $this->getIpMask();
     }
 
     /**
@@ -226,27 +218,26 @@ class Network implements NetworkInterface
      *
      * @return string
      */
-    public function getIp()
+    public function getIp(): string
     {
-        return $this->ip;
+        return $this->getIpV4();
     }
 
     /**
-     * Set ip
-     *
-     * @param string $ip
+     * @return string
+     */
+    public function getIpV4(): string
+    {
+        return $this->ip_v4;
+    }
+
+    /**
+     * @param string $ip_v4
      * @return Network
      */
-    public function setIp($ip)
+    public function setIpV4(string $ip_v4): Network
     {
-
-        $ip_and_mask = explode('/', $ip);
-
-        $this->ip = $ip_and_mask[0];
-        $this->setNumericIp(ip2long($ip_and_mask[0]));
-        if (isset($ip_and_mask[1])) {
-            $this->setIpMask($ip_and_mask[1]);
-        }
+        $this->ip_v4 = $ip_v4;
         return $this;
     }
 
@@ -255,7 +246,7 @@ class Network implements NetworkInterface
      *
      * @return string
      */
-    public function getIpMask()
+    public function getIpMask(): string
     {
         return $this->ipMask;
     }
@@ -266,11 +257,30 @@ class Network implements NetworkInterface
      * @param string $ipMask
      * @return Network
      */
-    public function setIpMask($ipMask)
+    public function setIpMask(string $ipMask): Network
     {
         $this->ipMask = $ipMask;
         $this->setNumericIpMask(0xffffffff << (32 - $ipMask));
 
+        return $this;
+    }
+
+    /**
+     * Set ip
+     *
+     * @param string $ip
+     * @return Network
+     */
+    public function setIp(string $ip): Network
+    {
+
+        $ip_and_mask = explode('/', $ip);
+
+        $this->setIpV4($ip_and_mask[0]);
+        $this->setNumericIp(ip2long($ip_and_mask[0]));
+        if (isset($ip_and_mask[1])) {
+            $this->setIpMask($ip_and_mask[1]);
+        }
         return $this;
     }
 
@@ -280,7 +290,7 @@ class Network implements NetworkInterface
      * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
      * @return Network
      */
-    public function addIncident(IncidentInterface $incidents)
+    public function addIncident(IncidentInterface $incidents): Network
     {
         $this->incidents[] = $incidents;
 
@@ -290,38 +300,42 @@ class Network implements NetworkInterface
     /**
      * Remove incidents
      *
-     * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
+     * @param IncidentInterface $incidents
+     * @return bool
      */
-    public function removeIncident(IncidentInterface $incidents)
+    public function removeIncident(IncidentInterface $incidents): bool
     {
-        $this->incidents->removeElement($incidents);
+        return $this->incidents->removeElement($incidents);
     }
 
     /**
      * Get incidents
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
-    public function getIncidents()
+    public function getIncidents(): Collection
     {
         return $this->incidents;
     }
 
-    public function equals(NetworkInterface $other = null)
+    /**
+     * {@inheritDoc}
+     */
+    public function equals(NetworkInterface $other = null): bool
     {
         if ($other) {
-            return ($this->getNumericIp() == $other->getNumericIp()) && ($this->getNumericIpMask() == $other->getNumericIpMask());
-        } else {
-            return false;
+            return ($this->getNumericIp() === $other->getNumericIp()) && ($this->getNumericIpMask() === $other->getNumericIpMask());
         }
+        return false;
+
     }
 
     /**
      * Get numericIp
      *
-     * @return integer
+     * @return int
      */
-    public function getNumericIp()
+    public function getNumericIp(): int
     {
         return $this->numericIp;
     }
@@ -332,7 +346,7 @@ class Network implements NetworkInterface
      * @param integer $numericIp
      * @return Network
      */
-    public function setNumericIp($numericIp)
+    public function setNumericIp(int $numericIp): Network
     {
         $this->numericIp = $numericIp;
 
@@ -342,9 +356,9 @@ class Network implements NetworkInterface
     /**
      * Get numericIpMask
      *
-     * @return integer
+     * @return int
      */
-    public function getNumericIpMask()
+    public function getNumericIpMask(): int
     {
         return $this->numericIpMask;
     }
@@ -352,10 +366,10 @@ class Network implements NetworkInterface
     /**
      * Set numericIpMask
      *
-     * @param integer $numericIpMask
+     * @param int $numericIpMask
      * @return Network
      */
-    public function setNumericIpMask($numericIpMask)
+    public function setNumericIpMask(int $numericIpMask): Network
     {
         $this->numericIpMask = $numericIpMask;
 
@@ -363,49 +377,130 @@ class Network implements NetworkInterface
     }
 
     /**
-     * Get createdAt
-     *
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return Network
+     */
+    public function setId(int $id): Network
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return NetworkAdmin
+     */
+    public function getNetworkAdmin(): NetworkAdmin
+    {
+        return $this->network_admin;
+    }
+
+    /**
+     * @param NetworkAdmin $network_admin
+     * @return Network
+     */
+    public function setNetworkAdmin(NetworkAdmin $network_admin = null): Network
+    {
+        $this->network_admin = $network_admin;
+        return $this;
+    }
+
+    /**
+     * @return NetworkEntity
+     */
+    public function getNetworkEntity(): NetworkEntity
+    {
+        return $this->network_entity;
+    }
+
+    /**
+     * @param NetworkEntity $network_entity
+     * @return Network
+     */
+    public function setNetworkEntity(NetworkEntity $network_entity = null): Network
+    {
+        $this->network_entity = $network_entity;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param bool $isActive
+     * @return Network
+     */
+    public function setIsActive(bool $isActive): Network
+    {
+        $this->isActive = $isActive;
+        return $this;
+    }
+
+    /**
      * @return \DateTime
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * Set createdAt
-     *
      * @param \DateTime $createdAt
      * @return Network
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt): Network
     {
         $this->createdAt = $createdAt;
-
         return $this;
     }
 
     /**
-     * Get updatedAt
-     *
      * @return \DateTime
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
 
     /**
-     * Set updatedAt
-     *
      * @param \DateTime $updatedAt
      * @return Network
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt): Network
     {
         $this->updatedAt = $updatedAt;
-
         return $this;
     }
+
+    /**
+     * @return IncidentDecision[]|Collection
+     */
+    public function getIncidentsDecisions(): Collection
+    {
+        return $this->incidentsDecisions;
+    }
+
+    /**
+     * @param IncidentDecision[]|Collection $incidentsDecisions
+     * @return Network
+     */
+    public function setIncidentsDecisions(Collection $incidentsDecisions): Network
+    {
+        $this->incidentsDecisions = $incidentsDecisions;
+        return $this;
+    }
+
 
 }

@@ -15,7 +15,6 @@ use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
-use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use DateTime;
 use FOS\CommentBundle\Model\Thread;
 use Symfony\Component\HttpFoundation\File\File;
@@ -29,7 +28,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  *
- * @author demyen
+ * @author drubio
  */
 interface IncidentInterface
 {
@@ -74,17 +73,17 @@ interface IncidentInterface
     /**
      * Set hostAddress
      *
-     * @param string $hostAddress
+     * @param string $ip
      * @return Incident
      */
-    public function setHostAddress(string $hostAddress): Incident;
+    public function setIp(string $ip): Incident;
 
     /**
      * Get hostAddress
      *
      * @return string
      */
-    public function getHostAddress(): string;
+    public function getIp(): string;
 
     /**
      * Set isClosed
@@ -253,7 +252,7 @@ interface IncidentInterface
      *
      * @return bool
      */
-    public function getSendReport(): bool;
+    public function isSendReport(): bool;
 
     /**
      * @return string
@@ -273,20 +272,32 @@ interface IncidentInterface
     public function setSlug(string $slug): Incident;
 
     /**
-     * @param NetworkAdmin $networkAdmin
-     * @return Incident
-     */
-    public function setNetworkAdmin(NetworkAdmin $networkAdmin): Incident;
-
-    /**
      * @param Thread $thread
      * @return Incident
      */
     public function setCommentThread(Thread $thread): Incident;
 
-    /**
-     * @return NetworkAdmin
-     */
-    public function getNetworkAdmin(): NetworkAdmin;
+//    /**
+//     * @param NetworkAdmin $networkAdmin
+//     * @return Incident
+//     */
+//    public function setNetworkAdmin(NetworkAdmin $networkAdmin): Incident;
+//
+//
+//    /**
+//     * @return NetworkAdmin
+//     */
+//    public function getNetworkAdmin(): NetworkAdmin;
+//
+//    /**
+//     * @return NetworkEntity
+//     */
+//    public function getNetworkEntity(): NetworkEntity;
+//
+//    /**
+//     * @param NetworkEntity $networkEntity
+//     * @return Incident
+//     */
+//    public function setNetworkEntity(NetworkEntity $networkEntity): Incident;
 
 }

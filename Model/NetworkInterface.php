@@ -62,7 +62,7 @@ interface NetworkInterface
      *
      * @return bool
      */
-    public function getIsActive(): bool;
+    public function isActive(): bool;
 
     /**
      * Set networkAdmin
