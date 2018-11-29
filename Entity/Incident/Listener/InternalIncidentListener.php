@@ -66,6 +66,19 @@ class InternalIncidentListener
         $this->networkUpdate($incident);
         $this->stateUpdate($incident, $event);
         $this->feedUpdate($incident, $event);
+        $this->tlpUpdate($incident, $event);
+    }
+
+    public function tlpUpdate(IncidentInterface $incident, LifecycleEventArgs $event)
+    {
+        #fix esto tiene que ir a INciddntDecision
+        $entityManager = $event->getEntityManager();
+        $repository = $entityManager->getRepository('CertUnlpNgenBundle:Incident\IncidentTlp');
+        $tlp = $incident->getTlpState();
+        $newTLP = $repository->findOneBySlug('white');
+        if ($tlp == null) {
+            $incident->setTlp($newTLP);
+        }
     }
 
     public function timestampsUpdate(IncidentInterface $incident)
