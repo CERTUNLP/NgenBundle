@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
-use CertUnlp\NgenBundle\Entity\Incident\NetworkExternal;
+use CertUnlp\NgenBundle\Entity\NetworkExternal;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

@@ -62,8 +62,7 @@ class Host
      * @JMS\Expose
      * @JMS\Groups({"api"})
      *
-     * @Assert\Url(
-     *    relativeProtocol = true
+     * @Assert\Url()
      * )
      */
     private $url;
@@ -91,7 +90,7 @@ class Host
     /**
      * @var string
      *
-     * @Gedmo\Slug(fields={"ip"},separator="_")
+     * @Gedmo\Slug(fields={"ip_v4"},separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
@@ -119,7 +118,7 @@ class Host
     private $incidents_as_destination;
     /**
      * @var IncidentCommentThread
-     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\IncidentCommentThread",mappedBy="incident",fetch="EXTRA_LAZY"))
+     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread",mappedBy="host",fetch="EXTRA_LAZY"))
      */
     private $comment_thread;
     /**

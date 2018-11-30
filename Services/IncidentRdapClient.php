@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Services;
 
-use CertUnlp\NgenBundle\Entity\Incident\NetworkExternal;
+use CertUnlp\NgenBundle\Entity\NetworkExternal;
 use CertUnlp\NgenBundle\Services\Rdap\RdapClient;
 use Exception;
 

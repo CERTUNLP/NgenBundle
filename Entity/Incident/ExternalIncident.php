@@ -16,10 +16,8 @@ use JMS\Serializer\Annotation as JMS;
  * Description of InternalIncident
  *
  * @author dam
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\ExternalIncidentRepository")
- * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Listener\ExternalIncidentListener" })
  */
-class ExternalIncident extends Incident
+class ExternalIncident
 {
 
     /**
