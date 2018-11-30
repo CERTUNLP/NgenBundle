@@ -11,8 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Incident\Network\NetworkAdmin;
-use CertUnlp\NgenBundle\Entity\Incident\Network\NetworkEntity;
+use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
+use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
 use CertUnlp\NgenBundle\Validator\Constraints as NetworkAssert;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,11 +23,9 @@ use JMS\Serializer\Annotation as JMS;
  * Description of InternalIncident
  *
  * @author dam
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\InternalIncidentRepository")
- * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Listener\InternalIncidentListener" })
  *
  */
-class InternalIncident extends Incident
+class InternalIncident
 {
     /**
      * @var string
@@ -55,13 +53,13 @@ class InternalIncident extends Incident
      */
     private $network;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Network\NetworkAdmin", inversedBy="incidents")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="incidents")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     private $network_admin;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Network\NetworkEntity", inversedBy="incidents")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkEntity", inversedBy="incidents")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */

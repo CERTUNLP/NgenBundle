@@ -46,7 +46,7 @@ class IncidentDecision
      */
     protected $feed;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Network\Network",inversedBy="incidentsDecisions")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network",inversedBy="incidentsDecisions")
      * @ORM\JoinColumn(name="network", referencedColumnName="id")
      */
     protected $network;

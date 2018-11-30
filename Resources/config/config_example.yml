@@ -17,7 +17,7 @@ cert_ngen:
             delegator_chain:
                 class: CertUnlp\NgenBundle\Services\Delegator\InternalIncidentDelegatorChain
             form_type:
-                class: CertUnlp\NgenBundle\Form\InternalIncidentType
+                class: CertUnlp\NgenBundle\Form\IncidentType
             reports:
                 markdown:
                     path: %kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/views/InternalIncident/Report/Markdown
@@ -79,7 +79,7 @@ cert_ngen:
                 class: CertUnlp\NgenBundle\Form\IncidentTypeType
 
     networks:
-        class: CertUnlp\NgenBundle\Entity\Incident\Network\Network
+        class: CertUnlp\NgenBundle\Entity\Network\Network
         default_network: ~
         handler:
             class: CertUnlp\NgenBundle\Services\Api\Handler\NetworkHandler
@@ -88,7 +88,7 @@ cert_ngen:
         form_type:
             class: CertUnlp\NgenBundle\Form\NetworkType
         admin:
-            class: CertUnlp\NgenBundle\Entity\Incident\Network\NetworkAdmin
+            class: CertUnlp\NgenBundle\Entity\Network\NetworkAdmin
             handler:
                 class: CertUnlp\NgenBundle\Services\Api\Handler\NetworkAdminHandler
             form_type:

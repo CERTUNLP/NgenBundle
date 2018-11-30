@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Network;
 
-use CertUnlp\NgenBundle\Entity\Incident\Network\NetworkEntity;
+use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -86,7 +86,7 @@ class NetworkEntityController extends FOSRestController
      * @ApiDoc(
      *   resource = true,
      *   description = "Gets a network admin for a given id",
-     *   output = "CertUnlp\NgenBundle\Entity\Incident\Network\NetworkEntity",
+     *   output = "CertUnlp\NgenBundle\Entity\Network\NetworkEntity",
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     404 = "Returned when the network is not found"

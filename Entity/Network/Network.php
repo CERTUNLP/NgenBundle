@@ -92,9 +92,7 @@ class Network implements NetworkInterface
      * @JMS\Expose
      * @JMS\Groups({"api"})
      *
-     * @Assert\Url(
-     *    relativeProtocol = true
-     * )
+     * @Assert\Url()
      */
     private $url;
 
@@ -107,14 +105,14 @@ class Network implements NetworkInterface
 
     /**
      * @var NetworkAdmin
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Network\NetworkAdmin", inversedBy="networks",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
      */
     private $network_admin;
 
     /**
      * @var NetworkEntity
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Network\NetworkEntity", inversedBy="networks",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkEntity", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
      */
     private $network_entity;

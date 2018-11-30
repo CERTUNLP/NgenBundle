@@ -89,7 +89,7 @@ class NetworkType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'CertUnlp\NgenBundle\Entity\Incident\Network\Network',
+            'data_class' => 'CertUnlp\NgenBundle\Entity\Network\Network',
             'csrf_protection' => false,
         ));
     }

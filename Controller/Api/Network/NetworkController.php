@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Network;
 
-use CertUnlp\NgenBundle\Entity\Incident\Network\Network;
+use CertUnlp\NgenBundle\Entity\Network\Network;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -85,7 +85,7 @@ class NetworkController extends FOSRestController
      * @ApiDoc(
      *   resource = true,
      *   description = "Gets a Network for a given host address",
-     *   output = "CertUnlp\NgenBundle\Entity\Incident\Network\Network",
+     *   output = "CertUnlp\NgenBundle\Entity\Network\Network",
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     404 = "Returned when the network is not found"
@@ -100,7 +100,7 @@ class NetworkController extends FOSRestController
      * @FOS\View(
      *  templateVar="network"
      * )
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Incident\Network\Network", options={"repository_method" = "findByHostAddress"})
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findByHostAddress"})
      */
     public function getNetworkHostAction(Network $network)
     {
@@ -113,7 +113,7 @@ class NetworkController extends FOSRestController
      * @ApiDoc(
      *   resource = true,
      *   description = "Gets a Network for a given id",
-     *   output = "CertUnlp\NgenBundle\Entity\Incident\Network\Network",
+     *   output = "CertUnlp\NgenBundle\Entity\Network\Network",
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     404 = "Returned when the network is not found"
@@ -128,7 +128,7 @@ class NetworkController extends FOSRestController
      * @FOS\View(
      *  templateVar="network"
      * )
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Incident\Network\Network", options={"repository_method" = "findOneBy"})
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneBy"})
      */
     public function getNetworkAction(Network $network)
     {
@@ -182,7 +182,7 @@ class NetworkController extends FOSRestController
      *
      * @FOS\Patch("/networks/{ip}/{ipMask}", requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ipMask"="^[1-3]?[0-9]$"} )
      *
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Incident\Network\Network", options={"repository_method" = "findOneBy"})
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneBy"})
      */
     public function patchNetworkAction(Request $request, Network $network)
     {
@@ -210,7 +210,7 @@ class NetworkController extends FOSRestController
      * @FOS\View(
      *  templateVar = "network"
      * )
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Incident\Network\Network", options={"repository_method" = "findOneBy"})
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneBy"})
      */
     public function patchNetworkActivateAction(Request $request, Network $network)
     {
@@ -239,7 +239,7 @@ class NetworkController extends FOSRestController
      * @FOS\View(
      *  templateVar = "network"
      * )
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Incident\Network\Network", options={"repository_method" = "findOneBy"})
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneBy"})
      */
     public function patchNetworkDesactivateAction(Request $request, Network $network)
     {
