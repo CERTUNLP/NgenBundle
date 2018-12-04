@@ -64,21 +64,12 @@ class IncidentController extends FOSRestController
      */
     public function postIncidentAction(Request $request)
     {
-        return $this->getApiController($request->get('hostAddress'))->post($request);
+        return $this->getApiController($request->get('ip'))->post($request);
     }
 
-    public function getApiController($hostAddress)
+    public function getApiController($ip)
     {
-        if (is_object($hostAddress) ? $hostAddress->isInternal() : $this->isInternal($hostAddress)) {
-            return $this->container->get('cert_unlp.ngen.incident.internal.api.controller');
-        } else {
-            return $this->container->get('cert_unlp.ngen.incident.external.api.controller');
-        }
-    }
-
-    private function isInternal(string $hostAddress)
-    {
-        return $this->get('cert_unlp.ngen.network.handler')->getByHostAddress($hostAddress);
+        return $this->container->get('cert_unlp.ngen.incident.internal.api.controller');
     }
 
     /**
@@ -180,6 +171,11 @@ class IncidentController extends FOSRestController
     public function deleteIncidentAction(Request $request, Incident $incident)
     {
         return $this->getApiController($incident)->delete($request, $incident);
+    }
+
+    private function isInternal(string $ip)
+    {
+        return $this->get('cert_unlp.ngen.network.handler')->getByHostAddress($ip);
     }
 
 }

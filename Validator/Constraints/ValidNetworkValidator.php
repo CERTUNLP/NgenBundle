@@ -30,11 +30,11 @@ class ValidNetworkValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        $hostAddresses = explode(',', $value);
-        foreach ($hostAddresses as $hostAddress) {
-            if (!$this->network_handler->getByHostAddress($hostAddress)) {
+        $ipes = explode(',', $value);
+        foreach ($ipes as $ip) {
+            if (!$this->network_handler->getByHostAddress($ip)) {
                 $this->context->addViolation(
-                    $constraint->message, array('%string%' => $hostAddress)
+                    $constraint->message, array('%string%' => $ip)
                 );
             }
         }

@@ -19,7 +19,7 @@ fos_elastica:
                     properties:
                         id:
                             type: integer
-                        hostAddress:
+                        ip:
                             type: ip
                         date:
                             type: date

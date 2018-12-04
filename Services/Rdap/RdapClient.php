@@ -84,7 +84,6 @@ class RdapClient
     /**
      * @param $ip
      * @return RdapResultWrapper|null
-     * @throws Exception
      */
     public function requestIp(string $ip): RdapResultWrapper
     {
@@ -92,7 +91,7 @@ class RdapClient
             $result_file = $this->request_url . $ip;
             return $this->request($result_file);
         } catch (Exception $exc) {
-            throw new Exception("Request Limit", 400);
+            throw new \RuntimeException('Request Limit', 400);
         }
     }
 
@@ -105,24 +104,22 @@ class RdapClient
     {
         try {
             $this->setResponse(new RdapResultWrapper(file_get_contents($url)));
-
             return $this->response;
         } catch (Exception $exc) {
-            throw new Exception("Request Limit", 400);
+            throw new \RuntimeException('Request Limit', 400);
         }
     }
 
     /**
      * @param $link
      * @return Entity
-     * @throws Exception
      */
     public function requestEntity(string $link): Entity
     {
         try {
             return new Entity(json_decode(file_get_contents($link)));
         } catch (Exception $exc) {
-            throw new Exception($exc);
+            throw new \RuntimeException($exc);
         }
     }
 

@@ -19,9 +19,9 @@ class IpValidator extends IpValidatorConstraint
 
     public function validate($value, Constraint $constraint)
     {
-        $hostAddresses = explode(',', $value);
-        foreach ($hostAddresses as $hostAddress) {
-            parent::validate($hostAddress, $constraint);
+        $ipes = explode(',', $value);
+        foreach ($ipes as $ip) {
+            parent::validate($ip, $constraint);
         }
     }
 

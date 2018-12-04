@@ -41,7 +41,7 @@ interface IncidentInterface
     public function getId(): int;
 
     /**
-     * Set hostAddress
+     * Set ip
      *
      * @param IncidentFeed $feed
      * @return Incident
@@ -53,7 +53,7 @@ interface IncidentInterface
      *
      * @return IncidentFeed
      */
-    public function getFeed(): IncidentFeed;
+    public function getFeed(): ?IncidentFeed;
 
     /**
      * Set IncidentDecision
@@ -68,10 +68,10 @@ interface IncidentInterface
      *
      * @return IncidentState
      */
-    public function getState(): IncidentState;
+    public function getState(): ?IncidentState;
 
     /**
-     * Set hostAddress
+     * Set ip
      *
      * @param string $ip
      * @return Incident
@@ -79,11 +79,11 @@ interface IncidentInterface
     public function setIp(string $ip): Incident;
 
     /**
-     * Get hostAddress
+     * Get ip
      *
      * @return string
      */
-    public function getIp(): string;
+    public function getIp(): ?string;
 
     /**
      * Set isClosed
@@ -127,7 +127,7 @@ interface IncidentInterface
      *
      * @return NetworkInterface
      */
-    public function getNetwork(): NetworkInterface;
+    public function getNetwork(): ?NetworkInterface;
 
     /**
      * Set type
@@ -142,7 +142,7 @@ interface IncidentInterface
      *
      * @return IncidentType
      */
-    public function getType(): IncidentType;
+    public function getType(): ?IncidentType;
 
     /**
      * Set date
@@ -157,7 +157,7 @@ interface IncidentInterface
      *
      * @return \DateTime
      */
-    public function getDate(): \DateTime;
+    public function getDate(): ?\DateTime;
 
     /**
      * @return string
@@ -177,7 +177,7 @@ interface IncidentInterface
      *
      * @return ReporterInterface
      */
-    public function getReporter(): ReporterInterface;
+    public function getReporter(): ?ReporterInterface;
 
     /**
      * Set evidence_file
@@ -192,7 +192,7 @@ interface IncidentInterface
      *
      * @return UploadedFile
      */
-    public function getEvidenceFile(): UploadedFile;
+    public function getEvidenceFile(): ?UploadedFile;
 
     /**
      * Set evidence_file_path

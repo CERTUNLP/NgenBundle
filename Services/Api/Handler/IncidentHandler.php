@@ -51,7 +51,7 @@ abstract class IncidentHandler extends Handler
             if ($incident->getOpenDays(true) >= $days) {
                 $incident->setState($state);
                 $this->om->persist($incident);
-                $closedIncidents[$incident->getId()] = ['hostAddress' => $incident->getHostAddress(),
+                $closedIncidents[$incident->getId()] = ['ip' => $incident->getIp(),
                     'type' => $incident->getType(),
                     'date' => getDate(),
                     'lastTimeDetected' => $incident->getLastTimeDetected(),

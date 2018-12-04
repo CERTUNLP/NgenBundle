@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
+use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -20,9 +21,9 @@ class NetworkHandler extends Handler
 
     private $default_network;
 
-    public function __construct(ObjectManager $om, $entityClass, $entityType, FormFactoryInterface $formFactory, $default_network)
+    public function __construct(ObjectManager $om, string $entityClass, string $entityType, FormFactoryInterface $formFactory, $default_network)
     {
-        parent::__construct($om, $entityClass, $entityType, $formFactory);
+        parent::__construct($om, Network::class, $entityType, $formFactory);
         $this->default_network = $default_network;
     }
 
@@ -49,14 +50,9 @@ class NetworkHandler extends Handler
      * @param $address
      * @return NetworkInterface
      */
-    public function getByHostAddress($address)
+    public function getByHostAddress(string $address): NetworkInterface
     {
-        $network = $this->repository->findByHostAddress($address);
-        if (!$network && $this->default_network) {
-
-            $network = $this->repository->findOneByIp($this->default_network);
-        }
-        return $network;
+        return $this->repository->findByIpV4($address);
     }
 
     /**

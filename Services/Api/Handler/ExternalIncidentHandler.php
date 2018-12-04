@@ -39,13 +39,13 @@ class ExternalIncidentHandler extends IncidentHandler
 
     protected function checkIfExists($incident, $method)
     {
-        $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'hostAddress' => $incident->getHostAddress(), 'type' => $incident->getType()]);
+        $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'ip' => $incident->getIp(), 'type' => $incident->getType()]);
         if ($incidentDB && $method == 'POST') {
 
             if ($incident->getFeed()->getSlug() == "shadowserver") {
                 $incidentDB->setSendReport(false);
             } else {
-                $incidentDB->setSendReport($incident->getSendReport());
+                $incidentDB->setSendReport($incident->isSendReport());
             }
 
             if ($incident->getEvidenceFile()) {

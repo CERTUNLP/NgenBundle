@@ -219,11 +219,11 @@ class IncidentState
     /**
      * Add incident
      *
-     * @param InternalIncident $incident
+     * @param Incident $incident
      *
      * @return IncidentState
      */
-    public function addIncident(InternalIncident $incident)
+    public function addIncident(Incident $incident)
     {
         $this->incidents[] = $incident;
 
@@ -233,9 +233,9 @@ class IncidentState
     /**
      * Remove incident
      *
-     * @param InternalIncident $incident
+     * @param Incident $incident
      */
-    public function removeIncident(InternalIncident $incident)
+    public function removeIncident(Incident $incident)
     {
         $this->incidents->removeElement($incident);
     }

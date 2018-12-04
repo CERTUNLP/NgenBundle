@@ -28,13 +28,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\NetworkRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"network"="Network","internal" = "NetworkInternal", "external" = "NetworkExternal", "rdap" = "NetworkRdap"})
+ * @ORM\DiscriminatorMap({"internal" = "NetworkInternal", "external" = "NetworkExternal", "rdap" = "NetworkRdap"})
  * @UniqueEntity(
  *     fields={"ip", "ipMask","isActive"},
  *     message="This network was already added!")
  * @JMS\ExclusionPolicy("all")
  */
-class Network implements NetworkInterface
+abstract class Network implements NetworkInterface
 {
 
     /**

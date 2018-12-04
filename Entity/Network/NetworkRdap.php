@@ -24,19 +24,6 @@ class NetworkRdap extends Network
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    private $abuse_entity;
-    /**
-     * @ORM\Column(type="array",nullable=true)
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    private $abuse_entity_emails;
-
-    /**
-     * @ORM\Column(type="string",nullable=true)
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
     private $start_address;
     /**
      * @ORM\Column(type="string",nullable=true)
@@ -44,6 +31,7 @@ class NetworkRdap extends Network
      * @JMS\Groups({"api"})
      */
     private $end_address;
+
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
@@ -51,34 +39,40 @@ class NetworkRdap extends Network
      */
     private $country;
 
-
     /**
+     * Get endAddress
+     *
      * @return string
      */
-    public function getAbuseEntity(): ?string
+    public function getEndAddress(): string
     {
-        return $this->abuse_entity;
+        return $this->end_address;
     }
 
+
     /**
-     * Set abuse_entity
-     *
-     * @param string $abuse_entity
+     * @param string $end_address
      * @return NetworkRdap
      */
-    public function setAbuseEntity(string $abuse_entity = null): NetworkRdap
+    public function setEndAddress(string $end_address): NetworkRdap
     {
-        $this->abuse_entity = $abuse_entity;
+        $this->end_address = $end_address;
+        $this->renewIp();
 
         return $this;
     }
 
     /**
-     * {@inheritDoc}
+     * Set ip
+     *
+     * @return NetworkRdap
      */
-    public function getNetworkAdmin(): NetworkAdmin
+    public function renewIp(): NetworkRdap
     {
-        return $this->abuse_entity;
+        if ($this->getStartAddress() && $this->getEndAddress()) {
+            $this->setIp($this->iprange2cidr($this->getStartAddress(), $this->getEndAddress()));
+        }
+        return $this;
     }
 
     /**
@@ -105,28 +99,36 @@ class NetworkRdap extends Network
         return $this;
     }
 
-    /**
-     * Get endAddress
-     *
-     * @return string
-     */
-    public function getEndAddress(): string
+    private function iprange2cidr(string $ipStart, string $ipEnd): string
     {
-        return $this->end_address;
+        $start = ip2long($ipStart);
+        $end = ip2long($ipEnd);
+        $result = array();
+        while ($end >= $start) {
+            $maxSize = 32;
+            while ($maxSize > 0) {
+                $mask = hexdec($this->iMask($maxSize - 1));
+                $maskBase = $start & $mask;
+                if ($maskBase !== $start) {
+                    break;
+                }
+                $maxSize--;
+            }
+            $x = log($end - $start + 1) / log(2);
+            $maxDiff = floor(32 - floor($x));
+            if ($maxSize < $maxDiff) {
+                $maxSize = $maxDiff;
+            }
+            $ip = long2ip($start);
+            $result[] = "$ip/$maxSize";
+            $start += 2 ** (32 - $maxSize);
+        }
+        return $result[0];
     }
 
-    /**
-     * Set endAddress
-     *
-     * @param string $endAddress
-     *
-     * @return NetworkRdap
-     */
-    public function setEndAddress(string $endAddress): NetworkRdap
+    private function iMask(int $s): string
     {
-        $this->end_address = $endAddress;
-
-        return $this;
+        return base_convert((2 ** 32) - (2 ** (32 - $s)), 10, 16);
     }
 
     /**
@@ -152,37 +154,5 @@ class NetworkRdap extends Network
 
         return $this;
     }
-
-    /**
-     * Get networkAdminEmails
-     *
-     * @return array
-     */
-    public function getAbuseEntityEmails(): array
-    {
-        return $this->abuse_entity_emails;
-    }
-
-    /**
-     * Set networkAdminEmails
-     *
-     * @param array $abuse_entity_emails
-     * @return NetworkRdap
-     */
-    public function setAbuseEntityEmails(array $abuse_entity_emails): NetworkRdap
-    {
-        $this->abuse_entity_emails = $abuse_entity_emails;
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getEmails(): array
-    {
-        return $this->abuse_entity_emails;
-    }
-
 
 }

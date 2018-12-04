@@ -23,7 +23,7 @@ class InternalIncidentHandler extends IncidentHandler
             if ($incident->getOpenDays(true) >= $days) {
                 $incident->setState($state);
                 $this->om->persist($incident);
-                $closedIncidents[$incident->getId()] = ['hostAddress' => $incident->getHostAddress(),
+                $closedIncidents[$incident->getId()] = ['ip' => $incident->getIp(),
                     'type' => $incident->getType(),
                     'date' => getDate(),
                     'lastTimeDetected' => $incident->getLastTimeDetected(),
@@ -41,12 +41,12 @@ class InternalIncidentHandler extends IncidentHandler
 
     protected function checkIfExists($incident, $method)
     {
-        $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'hostAddress' => $incident->getHostAddress(), 'type' => $incident->getType()]);
+        $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'ip' => $incident->getIp(), 'type' => $incident->getType()]);
         if ($incidentDB && $method == 'POST') {
             if ($incident->getFeed()->getSlug() == "shadowserver") {
                 $incidentDB->setSendReport(false);
             } else {
-                $incidentDB->setSendReport($incident->getSendReport());
+                $incidentDB->setSendReport($incident->isSendReport());
             }
 
             if ($incident->getEvidenceFile()) {

@@ -9,6 +9,7 @@
 namespace CertUnlp\NgenBundle\Services\Rdap;
 
 //use CertUnlp\NgenBundle\Services\Rdap\Entity;
+use stdClass;
 
 /**
  * Description of Entity
@@ -17,11 +18,16 @@ namespace CertUnlp\NgenBundle\Services\Rdap;
  */
 class Entity
 {
-
+    /**
+     * @var stdClass
+     */
     private $object;
+    /**
+     * @var array | Entity[]
+     */
     private $entities;
 
-    public function __construct($entity_object)
+    public function __construct(stdClass $entity_object)
     {
         $this->object = $entity_object;
         if (isset($this->object->entities)) {
@@ -34,42 +40,66 @@ class Entity
         }
     }
 
-    public function __toString()
+    /**
+     * @return stdClass
+     */
+    public function getObject(): stdClass
     {
-        return $this->object->name . "( " . $this->object->handle . " )";
+        return $this->object;
     }
 
-    public function getSelfLink()
+    /**
+     * @param mixed $object
+     * @return Entity
+     */
+    public function setObject(stdClass $object): Entity
+    {
+        $this->object = $object;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->object->name . '( ' . $this->object->handle . ' )';
+    }
+
+    public function getSelfLink(): string
     {
         if ($this->getLinks()) {
             return array_filter(
                 $this->getLinks(), function ($e) {
-                return $e->rel == "self";
+                return $e->rel === 'self';
             }
             )[0]->href;
         }
-        return [];
+        return '';
     }
 
-    public function getLinks()
+    /**
+     * @return array
+     */
+    public function getLinks(): array
     {
-        if (isset($this->object->links)) {
-            return $this->object->links;
-        }
-        return [];
+        return $this->object->links ?? [];
     }
 
-    public function getRoles()
+    /**
+     * @return array
+     */
+    public function getRoles(): array
     {
-        if (isset($this->object->roles)) {
-            return $this->object->roles;
-        }
-        return [];
+        return $this->object->roles ?? [];
     }
 
-    public function getRolesAsString()
+    /**
+     * @return string
+     */
+    public function getRolesAsString(): string
     {
-        $string = "";
+        $string = '';
         if (isset($this->object->roles)) {
             foreach ($this->object->roles as $role) {
                 $string .= "$role ";
@@ -78,31 +108,41 @@ class Entity
         return $string;
     }
 
-    public function getHandle()
+    /**
+     * @return array
+     */
+    public function getHandle(): array
     {
-        if (isset($this->object->handle)) {
-            return $this->object->handle;
-        }
-        return [];
+        return $this->object->handle ?? [];
     }
 
-    public function getEmails()
+    /**
+     * @return array
+     */
+    public function getEmails(): array
     {
         return $this->getVcardElement('email');
     }
 
-    public function getVcardElement($element)
+    /**
+     * @param string $element
+     * @return array
+     */
+    public function getVcardElement(string $element): array
     {
         $elements = [];
         foreach ($this->getVcard() as $vcard) {
-            if ($vcard[0] == $element) {
-                $elements[] = $vcard[sizeof($vcard) - 1];
+            if ($vcard[0] === $element) {
+                $elements[] = $vcard[count($vcard) - 1];
             }
         }
         return $elements;
     }
 
-    public function getVcard()
+    /**
+     * @return array
+     */
+    public function getVcard(): array
     {
         if (isset($this->object->vcardArray)) {
             return $this->object->vcardArray[1];
@@ -110,22 +150,35 @@ class Entity
         return [];
     }
 
-    public function getName()
+    /**
+     * @return string
+     */
+    public function getName(): string
     {
         return $this->getVcardElement('fn')[0];
     }
 
-    public function getOrganization()
+    /**
+     * @return array
+     */
+    public function getOrganization(): array
     {
         return $this->getVcardElement('org');
     }
 
-    public function getPhone()
+    /**
+     * @return array
+     */
+    public function getPhone(): array
     {
         return $this->getVcardElement('tel');
     }
 
-    public function getEntities($callback = '')
+    /**
+     * @param \Closure|null $callback
+     * @return array
+     */
+    public function getEntities(\Closure $callback = null): array
     {
         $entities = [];
         if ($callback) {
@@ -134,8 +187,9 @@ class Entity
             $entities[] = $this;
         }
         foreach ($this->entities as $entity) {
-            $entities = array_merge($entities, $entity->getEntities($callback));
+            $entities[] = $entity->getEntities($callback);
         }
+        array_merge($entities);
         return $entities;
     }
 

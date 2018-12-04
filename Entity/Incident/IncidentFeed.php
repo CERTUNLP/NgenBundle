@@ -227,7 +227,7 @@ class IncidentFeed
      *
      * @return IncidentFeed
      */
-    public function addIncident(InternalIncident $incident)
+    public function addIncident(Incident $incident)
     {
         $this->incidents[] = $incident;
 
@@ -239,7 +239,7 @@ class IncidentFeed
      *
      * @param InternalIncident $incident
      */
-    public function removeIncident(InternalIncident $incident)
+    public function removeIncident(Incident $incident)
     {
         $this->incidents->removeElement($incident);
     }

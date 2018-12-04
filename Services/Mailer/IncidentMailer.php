@@ -58,10 +58,10 @@ class IncidentMailer implements IncidentMailerInterface
     public function send_report(IncidentInterface $incident, $body = null, $echo = null, $is_new_incident = FAlSE, $renotification = false)
     {
         if (!$echo) {
-            if ($incident->getSendReport() || $is_new_incident || $renotification) {
+            if ($incident->isSendReport() || $is_new_incident || $renotification) {
                 $html = $this->getBody($incident);
                 $message = \Swift_Message::newInstance()
-                    ->setSubject(sprintf($this->mailSubject($renotification), $incident->getType()->getName(), $incident->getHostAddress(), $incident->getId()))
+                    ->setSubject(sprintf($this->mailSubject($renotification), $incident->getType()->getName(), $incident->getIp(), $incident->getId()))
                     ->setFrom($this->cert_email)
                     ->setCc($this->cert_email)
                     ->setSender($this->cert_email)
@@ -132,7 +132,7 @@ class IncidentMailer implements IncidentMailerInterface
 
         $html = $this->getReplyBody($incident, $body);
         $message = \Swift_Message::newInstance()
-            ->setSubject(sprintf($this->replySubject(), $incident->getType()->getName(), $incident->getHostAddress(), $incident->getId()))
+            ->setSubject(sprintf($this->replySubject(), $incident->getType()->getName(), $incident->getIp(), $incident->getId()))
             ->setFrom($this->cert_email)
             ->addPart($html, 'text/html');
 

@@ -25,7 +25,7 @@ abstract class Handler implements ApiHandlerInterface
     protected $formFactory;
     private $entityType;
 
-    public function __construct(ObjectManager $om, $entityClass, $entityType, FormFactoryInterface $formFactory)
+    public function __construct(ObjectManager $om, string $entityClass, string $entityType, FormFactoryInterface $formFactory)
     {
         $this->om = $om;
         $this->entityClass = $entityClass;
@@ -103,13 +103,13 @@ abstract class Handler implements ApiHandlerInterface
             $entity_class_instance = $this->checkIfExists($entity_class_instance, $method);
             //try {
 
-               $this->om->persist($entity_class_instance);
-               $this->om->flush();
+            $this->om->persist($entity_class_instance);
+            $this->om->flush();
             //}
             //catch(\Swift_TransportException $e) {
-             //  var_dump($e);
-              // die;
-              //  throw new InvalidFormException($e->getMessage(), $form);
+            //  var_dump($e);
+            // die;
+            //  throw new InvalidFormException($e->getMessage(), $form);
             //}
 
             return $entity_class_instance;

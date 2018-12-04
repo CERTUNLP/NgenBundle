@@ -27,7 +27,7 @@ class ExternalIncident
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    protected $hostAddress;
+    protected $ip;
 
 //    /**
 //     * @ORM\Column(name="network", type="string",nullable=true)
@@ -37,7 +37,7 @@ class ExternalIncident
     /**
      * @var string
      *
-     * @Gedmo\Slug(fields={"hostAddress"},separator="_")
+     * @Gedmo\Slug(fields={"ip"},separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
@@ -81,24 +81,24 @@ class ExternalIncident
     private $country;
 
     /**
-     * Get hostAddress
+     * Get ip
      *
      * @return string
      */
-    public function getHostAddress()
+    public function getIp()
     {
-        return $this->hostAddress;
+        return $this->ip;
     }
 
     /**
-     * Set hostAddress
+     * Set ip
      *
-     * @param string $hostAddress
+     * @param string $ip
      * @return Incident
      */
-    public function setHostAddress($hostAddress)
+    public function setHostAddress($ip)
     {
-        $this->hostAddress = $hostAddress;
+        $this->ip = $ip;
         return $this;
     }
 //

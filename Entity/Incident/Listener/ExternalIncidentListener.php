@@ -68,7 +68,7 @@ class ExternalIncidentListener implements ContainerAwareInterface
 
     public function slugUpdate(IncidentInterface $incident)
     {
-        $incident->setSlug(Sluggable\Urlizer::urlize($incident->getHostAddress() . " " . $incident->getType()->getSlug() . " " . $incident->getDate()->format('Y-m-d-H-i'), '_'));
+        $incident->setSlug(Sluggable\Urlizer::urlize($incident->getIp() . " " . $incident->getType()->getSlug() . " " . $incident->getDate()->format('Y-m-d-H-i'), '_'));
     }
 
     public function stateUpdate(IncidentInterface $incident, $event)
