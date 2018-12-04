@@ -15,7 +15,7 @@ fos_elastica:
                 index:
                     max_result_window: 50000
             types:
-                internal:
+                incident:
                     properties:
                         id:
                             type: integer
@@ -61,16 +61,16 @@ fos_elastica:
                                         name:
                                             type: keyword
                         networkAdmin:
-                                    type: "object"
-                                    properties:
-                                        slug:
-                                            type: keyword
-                                        email:
-                                            type: keyword
-                                        name:
-                                            type: keyword
-                                        isActive:
-                                            type: boolean
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: keyword
+                                email:
+                                    type: keyword
+                                name:
+                                    type: keyword
+                                isActive:
+                                    type: boolean
                         state:
                             type: "object"
                             properties:
@@ -116,85 +116,7 @@ fos_elastica:
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Incident\InternalIncident
-                        provider: ~
-                        finder: ~
-                external:
-                    properties:
-                        id:
-                            type: integer
-                        hostAddress:
-                            type: ip
-                        date:
-                            type: date
-                        lastTimeDetected:
-                            type: date
-                        createdAt:
-                            type: date
-                        updatedAt:
-                            type: date
-                        isClosed:
-                            type: boolean
-                        evidence_file_path:
-                            type: keyword
-                        abuse_entity:
-                            type: keyword
-                        network_entity:
-                            type: keyword
-                        start_address:
-                            type: keyword
-                        end_address:
-                            type: keyword
-                        country:
-                            type: keyword
-                        abuse_entity_emails:
-                            type: keyword
-                        state:
-                            type: "object"
-                            properties:
-                                slug:
-                                    type: keyword
-                                name:
-                                    type: keyword
-                        feed:
-                            type: "object"
-                            properties:
-                                slug:
-                                    type: keyword
-                                name:
-                                    type: keyword
-                        reporter:
-                            type: "object"
-                            properties:
-                                slug:
-                                    type: keyword
-                                name:
-                                    type: keyword
-                                lastname:
-                                    type: keyword
-                                email:
-                                    type: keyword
-                                username:
-                                    type: keyword
-                                enabled:
-                                    type: boolean
-                                createdAt:
-                                    type: date
-                                updatedAt:
-                                    type: date
-                        type:
-                            type: "object"
-                            properties:
-                                slug:
-                                    type: keyword
-                                name:
-                                    type: keyword
-                    persistence:
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
-                        driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Incident\ExternalIncident
+                        model: CertUnlp\NgenBundle\Entity\Incident\Incident
                         provider: ~
                         finder: ~
         networks:

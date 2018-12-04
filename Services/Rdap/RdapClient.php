@@ -25,12 +25,60 @@ class RdapClient
     private $entities;
     private $request_url;
 
-    public function __construct($resources_path)
+    public function __construct(string $resources_path)
     {
         $this->resources_path = $resources_path;
         $this->entities = [];
-        $this->response = null;
+        $this->response;
         $this->request_url = 'https://rdap.arin.net/registry/ip/';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResourcesPath(): string
+    {
+        return $this->resources_path;
+    }
+
+    /**
+     * @param mixed $resources_path
+     */
+    public function setResourcesPath(string $resources_path): void
+    {
+        $this->resources_path = $resources_path;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEntities(): array
+    {
+        return $this->entities;
+    }
+
+    /**
+     * @param array $entities
+     */
+    public function setEntities(array $entities): void
+    {
+        $this->entities = $entities;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequestUrl(): string
+    {
+        return $this->request_url;
+    }
+
+    /**
+     * @param string $request_url
+     */
+    public function setRequestUrl(string $request_url): void
+    {
+        $this->request_url = $request_url;
     }
 
     /**
@@ -38,7 +86,7 @@ class RdapClient
      * @return RdapResultWrapper|null
      * @throws Exception
      */
-    public function requestIp($ip)
+    public function requestIp(string $ip): RdapResultWrapper
     {
         try {
             $result_file = $this->request_url . $ip;
@@ -50,10 +98,10 @@ class RdapClient
 
     /**
      * @param $url
-     * @return RdapResultWrapper|null
+     * @return RdapResultWrapper
      * @throws Exception
      */
-    public function request($url)
+    public function request(string $url): RdapResultWrapper
     {
         try {
             $this->setResponse(new RdapResultWrapper(file_get_contents($url)));
@@ -69,7 +117,7 @@ class RdapClient
      * @return Entity
      * @throws Exception
      */
-    public function requestEntity($link)
+    public function requestEntity(string $link): Entity
     {
         try {
             return new Entity(json_decode(file_get_contents($link)));
@@ -81,7 +129,7 @@ class RdapClient
     /**
      * @return RdapResultWrapper
      */
-    public function getResponse()
+    public function getResponse(): RdapResultWrapper
     {
         return $this->response;
     }
@@ -89,7 +137,7 @@ class RdapClient
     /**
      * @param RdapResultWrapper $response
      */
-    public function setResponse(RdapResultWrapper $response)
+    public function setResponse(RdapResultWrapper $response): void
     {
         $this->response = $response;
     }

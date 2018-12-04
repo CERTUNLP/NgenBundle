@@ -23,11 +23,9 @@ use JMS\Serializer\Annotation as JMS;
  * Description of InternalIncident
  *
  * @author dam
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\InternalIncidentRepository")
- * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Listener\InternalIncidentListener" })
  *
  */
-class InternalIncident extends Incident
+class InternalIncident
 {
     /**
      * @var string

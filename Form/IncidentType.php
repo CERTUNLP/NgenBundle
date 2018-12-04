@@ -11,139 +11,154 @@
 
 namespace CertUnlp\NgenBundle\Form;
 
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentImpact;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
+use CertUnlp\NgenBundle\Entity\User;
+use DateTime;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ExternalIncidentType extends AbstractType
+class IncidentType extends AbstractType
 {
-    public function __construct($doctrine=null) {
+    private $userLogged;
+    private $doctrine;
+
+    public function __construct(EntityManager $doctrine = null, int $userLogged = null)
+    {
         $this->doctrine = $doctrine;
+        $this->userLogged = $userLogged;
     }
 
-    /*
-    **
-    * @param FormBuilderInterface $builder
-    * @param array $options
-    */
+
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @throws \Exception
+     */
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('type', null, array(
                 'empty_value' => 'Choose an incident type',
+                'data' => $this->doctrine->getReference(\CertUnlp\NgenBundle\Entity\Incident\IncidentType::class, 'undefined'),
                 'required' => true,
-                'description' => "(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|"
-                    . "dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|"
-                    . "open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|"
-                    . "open_ssdp|phishing|poodle|scan|shellshock|spam)",
+                'description' => '(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|'
+                    . 'dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|'
+                    . 'open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|'
+                    . 'open_ssdp|phishing|poodle|scan|shellshock|spam)',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
-            ->add('hostAddress', null, array(
+            ->add('ip', null, array(
                 'attr' => array('maxlength' => '300', 'help_text' => 'Add more than one address separating them with a comma.'),
-                'description' => "The host IP. (Add more than one address separating them with a comma.)"))
-            ->add('feed', 'entity', array(
-                'class' => 'CertUnlpNgenBundle:Incident\IncidentFeed',
+                'description' => 'The host IP. (Add more than one address separating them with a comma.)'))
+            ->add('feed', EntityType::class, array(
+                'class' => IncidentFeed::class,
                 'required' => true,
-                'description' => "(bro|external_report|netflow|shadowserver)",
+                'data' => $this->doctrine->getReference(IncidentFeed::class, 'undefined'),
+                'description' => '(bro|external_report|netflow|shadowserver)',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
-            ->add('notes', 'textarea', array(
+            ->add('notes', TextareaType::class, array(
                 'required' => false,
                 'label' => 'Notes',
                 'attr' => array('data-theme' => 'simple', 'help_text' => 'Add some notes/evidence in text format, it will be attached to the mail report.'),
-                'description' => "Add some notes/evidence in text format, it will be attached to the mail report."
+                'description' => 'Add some notes/evidence in text format, it will be attached to the mail report.'
             ))
-            ->add('evidence_file', 'file', array(
+            ->add('evidence_file', FileType::class, array(
                 'label' => 'Report attachment',
                 'required' => false,
-                'description' => "Evidence file that will be attached to the report "))
-            ->add('date', 'datetime', array(
+                'description' => 'Evidence file that will be attached to the report '))
+            ->add('date', DateTimeType::class, array(
                 'required' => false,
                 'html5' => true,
                 'input' => 'datetime',
                 'widget' => 'single_text',
+                'data' => new DateTime(),
                 'attr' => array('type' => 'datetime-local', 'help_text' => 'If no date is selected, the date will be today.'),
-                'description' => "If no date is selected, the date will be today.",
+                'description' => 'If no date is selected, the date will be today.',
             ))
-            ->add('state', null, array(
+            ->add('state', EntityType::class, array(
+                'class' => IncidentState::class,
                 'empty_value' => 'Choose an incident state',
                 'attr' => array('help_text' => 'If none is selected, the state will be \'open\'.'),
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
+                'data' => $this->doctrine->getReference(IncidentState::class, 'undefined'),
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
-            ->add('tlpState', null, array(
+            ->add('tlp', EntityType::class, array(
+                'class' => IncidentTlp::class,
                 'empty_value' => 'Choose an incident tlp',
                 'attr' => array('help_text' => 'If none is selected, the state will be \'green\'.'),
                 'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
-                'data' =>  $this->doctrine->getReference("CertUnlpNgenBundle:Incident\IncidentTlp", "green")
-                ))
-            ->add('reporter', null, array(
+                'data' => $this->doctrine->getReference(IncidentTlp::class, 'green')
+            ))
+            ->add('reporter', EntityType::class, array(
+                'class' => User::class,
                 'empty_value' => 'Choose a reporter',
                 'attr' => array('help_text' => 'If none is selected, the reporter will be the logged user.'),
-                'description' => "The reporter ID. If none was selected, the reporter will be the logged user or the apikey user.",
+                'description' => 'The reporter ID. If none was selected, the reporter will be the logged user or the apikey user.',
+                'data' => $this->userLogged !== null ? $this->doctrine->getReference(User::class, $this->userLogged) : 'null ',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.enabled = TRUE');
                 }))
-            ->add('reporter', null, array(
-                'empty_value' => 'Choose a reporter',
-                'attr' => array('help_text' => 'If none is selected, the reporter will be the logged user.'),
-                'description' => "The reporter ID. If none was selected, the reporter will be the logged user or the apikey user.",
-                'data' => $this->doctrine->getReference("CertUnlpNgenBundle:User", $this->userLogged),
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.enabled = TRUE');
-                }))
-            ->add('assigned', null, array(
+            ->add('assigned', EntityType::class, array(
+                'class' => User::class,
                 'empty_value' => 'Choose a responsable',
                 'attr' => array('help_text' => 'If none is selected, the assigned will be empty.'),
-                'description' => "If none was selected, the incident will remain unassigned.",
-                'data' => $this->doctrine->getReference("CertUnlpNgenBundle:User", $this->userLogged),
+                'description' => 'If none was selected, the incident will remain unassigned.',
+                'data' => $this->userLogged !== null ? $this->doctrine->getReference(User::class, $this->userLogged) : 'null ',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.enabled = TRUE');
                 }))
-            ->add('impact', null, array(
+            ->add('impact', EntityType::class, array(
+                'class' => IncidentImpact::class,
+
                 'empty_value' => 'Choose a impact level',
                 'attr' => array('help_text' => 'If none is selected, the assigned impact will be Low.'),
-                'description' => "If none is selected, the assigned impact will be Low",
+                'description' => 'If none is selected, the assigned impact will be Low',
             ))
-            ->add('urgency', null, array(
+            ->add('urgency', EntityType::class, array(
+                'class' => IncidentUrgency::class,
+
                 'empty_value' => 'Choose a responsable',
                 'attr' => array('help_text' => 'If none is selected, the assigned urgency will be Low'),
                 'description' => 'If none is selected, the assigned urgency will be Low',
             ))
-            ->add('sendReport', 'checkbox', array(
+            ->add('sendReport', CheckboxType::class, array(
                 'data' => true,
                 'mapped' => true,
                 'attr' => array('align_with_widget' => true),
                 'required' => false,
                 'label' => 'Send mail report(if available)',
-                'description' => "Send a mail report to the host administrator."))
-//           ->add('editReport', 'button', array(
-//                'label' => 'Edit the report',
-//               'attr' => array('class' => 'save ladda-button btn btn-primary', 'data-style' => "slide-down"),
-//                    'description' => "JS button. Only works in frontend."
-//            ))
-//           ->add('reportEdit', 'textarea', array(
-//                'required' => false,
-//                'label' => 'Edit the report',
-//                'label_attr' => array('class' => 'hidden'),
-//                'attr' => array('class' => 'hidden', 'data-theme' => 'simple'),
-//                'description' => "JS textarea. Only works in frontend."
-//            ))
-            ->add('slug', 'hidden', array(
+                'description' => 'Send a mail report to the host administrator.'))
+            ->add('slug', HiddenType::class, array(
                 'required' => false,
             ))
-            ->add('save', 'submit', array(
-                'attr' => array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => "slide-down"),
+            ->add('save', SubmitType::class, array(
+                'attr' => array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => 'slide-down'),
 //                    'description' => "Evidence file that will be attached to the report "
             ));
 
@@ -151,11 +166,12 @@ class ExternalIncidentType extends AbstractType
 
     /**
      * @param OptionsResolverInterface $resolver
+     * @return void
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'CertUnlp\NgenBundle\Entity\Incident\ExternalIncident',
+            'data_class' => Incident::class,
             'csrf_protection' => false,
         ));
     }
@@ -163,7 +179,7 @@ class ExternalIncidentType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return '';
     }
