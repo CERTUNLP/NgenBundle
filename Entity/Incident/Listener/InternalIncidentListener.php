@@ -77,7 +77,7 @@ class InternalIncidentListener
         $tlp = $incident->getTlpState();
         $newTLP = $repository->findOneBySlug('white');
         if ($tlp == null) {
-            $incident->setTlp($newTLP);
+            $incident->setTlpState($newTLP);
         }
     }
 
