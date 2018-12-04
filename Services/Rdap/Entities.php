@@ -15,10 +15,16 @@ namespace CertUnlp\NgenBundle\Services\Rdap;
  */
 class Entities
 {
-
+    /**
+     * @var Entity[] | array
+     */
     private $entities;
 
-    public function __construct($entities = [])
+    /**
+     * Entities constructor.
+     * @param array $entities
+     */
+    public function __construct(array $entities = [])
     {
         $this->entities = [];
         foreach ($entities as $entity) {
@@ -27,7 +33,11 @@ class Entities
         }
     }
 
-    public function getOneByRole($roles)
+    /**
+     * @param $roles array
+     * @return Entity|mixed|null
+     */
+    public function getOneByRole(array $roles): Entity
     {
         $entities = $this->getByRole($roles);
 
@@ -38,18 +48,20 @@ class Entities
         return null;
     }
 
-    public function getByRole($roles)
+    /**
+     * @param array $roles
+     * @return Entity[]|array
+     */
+    public function getByRole(array $roles): array
     {
         $entities = [];
         foreach ($this->getEntities() as $entity) {
             foreach ($roles as $role) {
 
-                if (in_array($role, $entity->getRoles())) {
+                if (\in_array($role, $entity->getRoles(), true)) {
                     $entities[] = $entity;
-                } else {
-                    if (strpos($entity->getRolesAsString(), $role) !== false) {
-                        $entities[] = $entity;
-                    }
+                } else if (strpos($entity->getRolesAsString(), $role) !== false) {
+                    $entities[] = $entity;
                 }
             }
         }
@@ -57,39 +69,54 @@ class Entities
         return $entities;
     }
 
-    public function getEntities($callback = null)
+    /**
+     * @param \Closure|null $callback
+     * @return Entity[] | array
+     */
+    public function getEntities(\Closure $callback = null): array
     {
-
-        $entities = [];
+        $entities = [[]];
         foreach ($this->entities as $entity) {
-            $entities = array_merge($entities, $entity->getEntities($callback));
+            $entities[] = $entity->getEntities($callback);
         }
+        $entities = array_merge(...$entities);
+
         return $entities;
     }
 
-    public function getAbuseEntity()
+    /**
+     * @return Entity| null
+     */
+    public function getAbuseEntity(): Entity
     {
         $abuse_entities = $this->getAbuseEntities();
-        return $abuse_entities ? $abuse_entities[0] : [];
+        return $abuse_entities ? $abuse_entities[0] : null;
     }
 
-    public function getAbuseEntities()
+    /**
+     * @return Entity[]|array
+     */
+    public function getAbuseEntities(): array
     {
 
         $abuse_entities = $this->getByRole(['abuse']);
         $extra_entities = $this->getByRole(['noc', 'technical']);
 
-        return $abuse_entities ? $abuse_entities : $extra_entities;
+        return $abuse_entities ?: $extra_entities;
     }
 
-    public function getAbuseEmails()
+    /**
+     * @return array
+     */
+    public function getAbuseEmails(): array
     {
-        $abuse_emails = [];
+        $abuse_emails = [[]];
         $abuse_entities = $this->getAbuseEntities();
 
         foreach ($abuse_entities as $abuse_entity) {
-            $abuse_emails = array_merge($abuse_emails, $abuse_entity->getEmails());
+            $abuse_emails[] = $abuse_entity->getEmails();
         }
+        $abuse_emails = array_merge(...$abuse_emails);
 
         return $abuse_emails;
     }

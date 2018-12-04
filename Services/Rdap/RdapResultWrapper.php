@@ -25,124 +25,140 @@ class RdapResultWrapper
      * @param $rdap_json_response
      * @throws Exception
      */
-    public function __construct($rdap_json_response)
+    public function __construct(string $rdap_json_response)
     {
 
         $this->rdap_json_object = json_decode($rdap_json_response);
         if ($this->getRateLimitNotice()) {
-            throw new Exception($this->getRateLimitNotice()[0]);
+            throw new \RuntimeException($this->getRateLimitNotice()[0]);
         }
 
-        $this->entities = new Entities(isset($this->rdap_json_object->entities) ? $this->rdap_json_object->entities : []);
+        $this->entities = new Entities($this->rdap_json_object->entities ?? []);
     }
 
-    public function getRateLimitNotice()
+    public function getRateLimitNotice(): string
     {
         return $this->getNoticeElement('Rate Limit Notice');
     }
 
-    public function getNoticeElement($element)
+    public function getNoticeElement(string $element): string
     {
         foreach ($this->getNotices() as $notice) {
-            if ($notice->title == $element) {
+            if ($notice->title === $element) {
                 return $notice->description;
             }
         }
-        return null;
+        return '';
     }
 
-    public function getNotices()
+    public function getNotices(): array
     {
         return $this->rdap_json_object->notices;
     }
 
-    public function getName()
+    public function getName(): string
     {
-        return isset($this->rdap_json_object->name) ? $this->rdap_json_object->name : '';
+        return $this->rdap_json_object->name ?? '';
     }
 
-    public function getObjectClassName()
+    public function getObjectClassName(): string
     {
-        return isset($this->rdap_json_object->objectClassName) ? $this->rdap_json_object->objectClassName : '';
+        return $this->rdap_json_object->objectClassName ?? '';
     }
 
-    public function getHandle()
+    public function getHandle(): string
     {
-        return isset($this->rdap_json_object->handle) ? $this->rdap_json_object->handle : '';
+        return $this->rdap_json_object->handle ?? '';
     }
 
-    public function getStartAddress()
+    public function getStartAddress(): string
     {
-        return isset($this->rdap_json_object->startAddress) ? $this->rdap_json_object->startAddress : '';
+        return $this->rdap_json_object->startAddress ?? '';
     }
 
-    public function getCountry()
+    public function getCountry(): string
     {
-        return isset($this->rdap_json_object->country) ? $this->rdap_json_object->country : null;
+        return $this->rdap_json_object->country ?? null;
     }
 
-    public function getEndAddress()
+    public function getEndAddress(): string
     {
-        return isset($this->rdap_json_object->endAddress) ? $this->rdap_json_object->endAddress : '';
+        return $this->rdap_json_object->endAddress ?? '';
     }
 
-    public function getIpVersion()
+    public function getIpVersion(): string
     {
-        return isset($this->rdap_json_object->ipVersion) ? $this->rdap_json_object->ipVersion : '';
+        return $this->rdap_json_object->ipVersion ?? '';
     }
 
-    public function getParentHandle()
+    public function getParentHandle(): string
     {
-        return isset($this->rdap_json_object->parentHandle) ? $this->rdap_json_object->parentHandle : '';
+        return $this->rdap_json_object->parentHandle ?? '';
     }
 
-    public function getRemarks()
+    /**
+     * @return string
+     */
+    public function getRemarks(): string
     {
-        return isset($this->rdap_json_object->remarks) ? $this->rdap_json_object->remarks : '';
+        return $this->rdap_json_object->remarks ?? '';
     }
 
-    public function getLastChanged()
+    public function getLastChanged(): string
     {
         return $this->getEventElement('last changed');
     }
 
-    public function getEventElement($element)
+    /**
+     * @param string $element
+     * @return string |null
+     */
+    public function getEventElement(string $element): string
     {
         foreach ($this->getEvents() as $event) {
-            if ($event->eventAction == $element) {
+            if ($event->eventAction === $element) {
                 return $event->eventDate;
             }
         }
         return null;
     }
 
-    public function getEvents()
+    /**
+     * @return array
+     */
+    public function getEvents(): array
     {
-        return isset($this->rdap_json_object->events) ? $this->rdap_json_object->events : '';
+        return $this->rdap_json_object->events ?? [];
     }
 
-    public function getRegistration()
+    /**
+     * @return string |null
+     */
+    public function getRegistration(): string
     {
         return $this->getEventElement('registration');
     }
 
-    public function getAbuseEmails()
+    public function getAbuseEmails(): array
     {
         return $this->getEntities()->getAbuseEmails();
     }
 
-    public function getEntities()
+    public function getEntities(): Entities
     {
 
         return $this->entities;
     }
 
-    public function getAbuseEntities()
+    /**
+     * @return array|Entity[]
+     */
+    public function getAbuseEntities(): array
     {
         return $this->getEntities()->getAbuseEntities();
     }
 
-    public function getAbuseEntity()
+    public function getAbuseEntity(): ?Entity
     {
         return $this->getEntities()->getAbuseEntity();
     }

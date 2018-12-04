@@ -40,7 +40,7 @@ class CloseOldIncidentsCommand extends ContainerAwareCommand
         $output->writeln('[incidents]: Closed external incidents: ' . count($closedExternalIncidents));
 //        if ($output->isVerbose()) {
 //            foreach ($closedIncidents as $id => $incident) {
-//                $output->writeln('[incidents]: #' . $id . ' hostAdress: ' . $incident['hostAddress'] . ' type: ' . $incident['type'] . ' date: ' . $incident['hostAddress'] . ' lastTimeDetected:' . $incident['lastTimeDetected'] . ' openDays:' . $incident['openDays']);
+//                $output->writeln('[incidents]: #' . $id . ' hostAdress: ' . $incident['ip'] . ' type: ' . $incident['type'] . ' date: ' . $incident['ip'] . ' lastTimeDetected:' . $incident['lastTimeDetected'] . ' openDays:' . $incident['openDays']);
 //            }
 //        }
         $output->writeln('[incidents]: Done.');

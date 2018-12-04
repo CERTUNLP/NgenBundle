@@ -1,6 +1,6 @@
 {% extends  'CertUnlpNgenBundle:IncidentReport:Report/base/baseReport.html.twig' %}
 {% block greeting %}
-    Estimado {{ incident.networkAdmin }},
+    Estimado {{ incident.network.networkAdmin }},
 {% endblock %}
 {% block report_content %}
     <tr>

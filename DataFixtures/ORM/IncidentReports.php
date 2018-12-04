@@ -56,8 +56,8 @@ class IncidentReports extends AbstractFixture implements OrderedFixtureInterface
     {
         return array(
             array('lang' => 'en', 'type' => 'blacklist', 'slug' => 'blacklist-en',
-                'problem' => 'We would like to inform you that we have detected that the <em>host</em> {{incident.hostAddress}} under your administration has been detected in blacklists. For more information please view the attached file.',
-                'derivated_problem' => 'Emails sent to certain destinations could be filtered if they contain the IP  {{incident.hostAddress}}.', 'verification' => 'You can verify the existence of you IP in different blacklists accessing the following site
+                'problem' => 'We would like to inform you that we have detected that the <em>host</em> {{incident.ip}} under your administration has been detected in blacklists. For more information please view the attached file.',
+                'derivated_problem' => 'Emails sent to certain destinations could be filtered if they contain the IP  {{incident.ip}}.', 'verification' => 'You can verify the existence of you IP in different blacklists accessing the following site
 
 <div class = "destacated">
 
@@ -65,7 +65,7 @@ class IncidentReports extends AbstractFixture implements OrderedFixtureInterface
 </code></pre>
 
 </div>', 'recomendations' => 'We suggest you to access the corresponding pages to remove those hosts.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:57', 'updated_at' => '2017-12-21 11:57:57'),
-            array('lang' => 'es', 'type' => 'blacklist', 'slug' => 'blacklist-es', 'problem' => 'Nos comunicamos con usted para informarle que hemos detectado que el Host {{incident.hostAddress}} el cual esta bajo su administración, ha sido detectado en blacklists, las cuales se encuentran en el archivo adjunto.', 'derivated_problem' => 'Servicios brindados por la IP {{incident.hostAddress}} puede verse afectados por la existencia de dicha IP en la blacklist reportada.', 'verification' => 'Puede comprobar la existencia de su IP en diferentes blacklist consultando el sitio
+            array('lang' => 'es', 'type' => 'blacklist', 'slug' => 'blacklist-es', 'problem' => 'Nos comunicamos con usted para informarle que hemos detectado que el Host {{incident.ip}} el cual esta bajo su administración, ha sido detectado en blacklists, las cuales se encuentran en el archivo adjunto.', 'derivated_problem' => 'Servicios brindados por la IP {{incident.ip}} puede verse afectados por la existencia de dicha IP en la blacklist reportada.', 'verification' => 'Puede comprobar la existencia de su IP en diferentes blacklist consultando el sitio
 
 <div class="destacated">
 
@@ -73,7 +73,7 @@ class IncidentReports extends AbstractFixture implements OrderedFixtureInterface
 </code></pre>
 
 </div>', 'recomendations' => 'Le sugerimos acceder a las páginas correspondientes para eliminar dichos hosts de las mismas.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:52', 'updated_at' => '2017-12-21 11:57:52'),
-            array('lang' => 'en', 'type' => 'botnet', 'slug' => 'botnet-en', 'problem' => 'We would like to inform you that we have detected that the <em>host</em> {{incident.hostAddress}} is currently infected with malware and part of a BotNet.', 'derivated_problem' => 'The consequences of the host being infected may vary, we can list the following:
+            array('lang' => 'en', 'type' => 'botnet', 'slug' => 'botnet-en', 'problem' => 'We would like to inform you that we have detected that the <em>host</em> {{incident.ip}} is currently infected with malware and part of a BotNet.', 'derivated_problem' => 'The consequences of the host being infected may vary, we can list the following:
 
 <ul>
 <li><p>Excessive consumption of bandwidth by the host.</p></li>
@@ -103,7 +103,7 @@ or
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:57', 'updated_at' => '2017-12-21 11:57:57'),
-            array('lang' => 'es', 'type' => 'botnet', 'slug' => 'botnet-es', 'problem' => 'Nos comunicamos con Ud. para informarle que se detectó que el host {{incident.hostAddress}} se encuentra infectado con un malware el cual participa en la formación de una Botnet.', 'derivated_problem' => 'Encontrándose infectado el equipo, existen diversas consecuencias entre las que podemos listas:
+            array('lang' => 'es', 'type' => 'botnet', 'slug' => 'botnet-es', 'problem' => 'Nos comunicamos con Ud. para informarle que se detectó que el host {{incident.ip}} se encuentra infectado con un malware el cual participa en la formación de una Botnet.', 'derivated_problem' => 'Encontrándose infectado el equipo, existen diversas consecuencias entre las que podemos listas:
 
 <ul>
 <li><p>Consumo excesivo del ancho de banda por parte del host.</p></li>
@@ -133,7 +133,7 @@ o
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:52', 'updated_at' => '2017-12-21 11:57:52'),
-            array('lang' => 'en', 'type' => 'bruteforce', 'slug' => 'bruteforce-en', 'problem' => 'We would like to inform you that we have detected that the <em>host</em> {{incident.hostAddress}} is involved in brute forcing attacks, most likely due the host being compromised.', 'derivated_problem' => 'This type of attacks are commonly linked to a malware trying to infect other devices inside or outside the network, or possibly an attacker realizing a network scan. Whichever the case, there direct consequences are:
+            array('lang' => 'en', 'type' => 'bruteforce', 'slug' => 'bruteforce-en', 'problem' => 'We would like to inform you that we have detected that the <em>host</em> {{incident.ip}} is involved in brute forcing attacks, most likely due the host being compromised.', 'derivated_problem' => 'This type of attacks are commonly linked to a malware trying to infect other devices inside or outside the network, or possibly an attacker realizing a network scan. Whichever the case, there direct consequences are:
 
 <ul>
 <li><p>Excessive consumption of bandwidth by the host.</p></li>
@@ -163,7 +163,7 @@ Attached to this email you can find the connection logs to identify the maliciou
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:57', 'updated_at' => '2017-12-21 11:57:57'),
-            array('lang' => 'es', 'type' => 'bruteforce', 'slug' => 'bruteforce-es', 'problem' => 'Se detectaron ataques de fuerza bruta provenientes del host {{incident.hostAddress}}, los cuales probablemente se deban a que el equipo ha sido comprometido.', 'derivated_problem' => 'Este tipo de ataques suelen estar vinculados a un malware que busca infectar otros dispositivos, de la red o no, o a un atacante que utiliza el mismo para realizar un reconocimiento de la red.
+            array('lang' => 'es', 'type' => 'bruteforce', 'slug' => 'bruteforce-es', 'problem' => 'Se detectaron ataques de fuerza bruta provenientes del host {{incident.ip}}, los cuales probablemente se deban a que el equipo ha sido comprometido.', 'derivated_problem' => 'Este tipo de ataques suelen estar vinculados a un malware que busca infectar otros dispositivos, de la red o no, o a un atacante que utiliza el mismo para realizar un reconocimiento de la red.
 En cualquiera de los dos casos, existen consecuencias directas de su realización:
 
 <ul>
@@ -197,12 +197,12 @@ Se recomienda el filtrado del tráfico hasta que el problema se vea resultó.', 
             array('lang' => 'en', 'type' => 'cisco_smart_install', 'slug' => 'cisco_smart_install-en', 'problem' => 'This report identifies hosts that have the Cisco Smart Install feature running and accessible to the internet at large. This feature can be used to read or potentially modify a switch\'s configuration.', 'derivated_problem' => 'Information leaking, modify configuration, update firmware and even run commands.', 'verification' => 'Test with Nmap at port 4786. There is more tools to exploit this vulnerability. From swith you can use command `show vstack config` to test if feature is enabled.', 'recomendations' => 'If customers find devices in their network that continue to have the Smart Install feature enabled, Cisco strongly recommends that they disable the Smart Install feature with the no vstack configuration command.
 
 Otherwise, customers should apply the appropriate security controls for the Smart Install feature and their environment. The recommendations noted below and in the Security response will avoid the risk of attackers abusing this feature.', 'more_information' => 'More details can be found on Cisco\'s PSIRT blog. https://blogs.cisco.com/security/cisco-psirt-mitigating-and-detecting-potential-abuse-of-cisco-smart-install-feature', 'is_active' => '1', 'created_at' => '2018-02-01 15:47:21', 'updated_at' => '2018-02-01 15:47:21'),
-            array('lang' => 'es', 'type' => 'cisco_smart_install', 'slug' => 'cisco_smart_install-es', 'problem' => 'Lo contactamos porque hemos sido informados que el dispositivo con IP {{incident.hostAddress}} tiene habilitado y accesible desde internet la característica "Cisco Smart Install".', 'derivated_problem' => 'Podría ser posible leer y modificar la configuración del dispositivo, actualizar el firmware e incluso ejecutar comandos.', 'verification' => 'Realizar un Nmap al puerto 4786. Tener en cuenta que existen otras herramientas desarrolladas para explotar esta vulnerabilidad.
+            array('lang' => 'es', 'type' => 'cisco_smart_install', 'slug' => 'cisco_smart_install-es', 'problem' => 'Lo contactamos porque hemos sido informados que el dispositivo con IP {{incident.ip}} tiene habilitado y accesible desde internet la característica "Cisco Smart Install".', 'derivated_problem' => 'Podría ser posible leer y modificar la configuración del dispositivo, actualizar el firmware e incluso ejecutar comandos.', 'verification' => 'Realizar un Nmap al puerto 4786. Tener en cuenta que existen otras herramientas desarrolladas para explotar esta vulnerabilidad.
 Desde el switch se puede utilizar el comando `show vstack config` para verificar si se encuentra habilitado.', 'recomendations' => 'Deshabilitar la caracteristica "Smart Install" con el comando `no vstack`', 'more_information' => 'https://blogs.cisco.com/security/cisco-psirt-mitigating-and-detecting-potential-abuse-of-cisco-smart-install-feature', 'is_active' => '1', 'created_at' => '2018-02-01 15:36:19', 'updated_at' => '2018-02-01 15:39:36'),
-            array('lang' => 'en', 'type' => 'copyright', 'slug' => 'copyright-en', 'problem' => 'We have been notified that the <em>host</em> {{incident.hostAddress}} is distributing copyrighted material. This is due to an improper use of a P2P network.', 'derivated_problem' => 'Legal actions could be taken against the owner of the host responsible.', 'verification' => NULL, 'recomendations' => 'The corresponding network traffic should be filtered to solve this problem. If this is not possible, forward the issue to the corresponding users.
+            array('lang' => 'en', 'type' => 'copyright', 'slug' => 'copyright-en', 'problem' => 'We have been notified that the <em>host</em> {{incident.ip}} is distributing copyrighted material. This is due to an improper use of a P2P network.', 'derivated_problem' => 'Legal actions could be taken against the owner of the host responsible.', 'verification' => NULL, 'recomendations' => 'The corresponding network traffic should be filtered to solve this problem. If this is not possible, forward the issue to the corresponding users.
 
 Attached to this email you can find a copy of the report we have received.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:57', 'updated_at' => '2017-12-21 11:57:57'),
-            array('lang' => 'es', 'type' => 'copyright', 'slug' => 'copyright-es', 'problem' => 'Nos notificaron que el host {{incident.hostAddress}} está distribuyendo material con copyright. Esto se debe probablemente a que se está utilizando indebidamente una red P2P.', 'derivated_problem' => 'La recepción de acciones legales tomadas contra el responsable del host.', 'verification' => NULL, 'recomendations' => 'La solución a este incidente consiste en filtrar este tipo de tráfico o, en caso de no ser posible, trasladar la inquietud a los usuarios para que estén al tanto de estas notificaciones.
+            array('lang' => 'es', 'type' => 'copyright', 'slug' => 'copyright-es', 'problem' => 'Nos notificaron que el host {{incident.ip}} está distribuyendo material con copyright. Esto se debe probablemente a que se está utilizando indebidamente una red P2P.', 'derivated_problem' => 'La recepción de acciones legales tomadas contra el responsable del host.', 'verification' => NULL, 'recomendations' => 'La solución a este incidente consiste en filtrar este tipo de tráfico o, en caso de no ser posible, trasladar la inquietud a los usuarios para que estén al tanto de estas notificaciones.
 
 Adjunto le enviamos una copia del informe que recibimos.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:52', 'updated_at' => '2017-12-21 11:57:52'),
             array('lang' => 'en', 'type' => 'data_breach', 'slug' => 'data_breach-en', 'problem' => 'Data Breach', 'derivated_problem' => 'A data breach is the intentional or unintentional release of secure or private/confidential information to an untrusted environment. Other terms for this phenomenon include unintentional information disclosure, data leak and also data spill. For example username and password exposed.', 'verification' => 'Check evidence', 'recomendations' => '* Invalidate data exposed, for example force users to change credenetials.
@@ -211,7 +211,7 @@ Adjunto le enviamos una copia del informe que recibimos.', 'more_information' =>
             array('lang' => 'es', 'type' => 'data_breach', 'slug' => 'data_breach-es', 'problem' => 'Fuga de información.', 'derivated_problem' => 'Pueden verse comprometidas datos sensibles del usuario. Un ejemplo son las credenciales de usuario (username y password) que apliquen a otros sistemas ante una fuga de información.', 'verification' => 'Revisar la evidencia que se adjunta.', 'recomendations' => '* Invalidar los datos relacionados a la fuga de datos. Por ejemplo forzando el cambio de contraseña
 * Revisar los accesos realizados con los datos
 * Solicitar al que esta publicando los datos que remueva la publicación', 'more_information' => 'Puede chequear adicionalmente: https://haveibeenpwned.com/', 'is_active' => '1', 'created_at' => '2018-05-03 13:30:56', 'updated_at' => '2018-05-03 13:30:56'),
-            array('lang' => 'en', 'type' => 'deface', 'slug' => 'deface-en', 'problem' => 'We would like to inform you that we have detected that web page hosted with IP {{incident.hostAddress}} has suffered a defacement\'s attack. This is an attack on a website that changes the visual appearance of the site or a webpage performed by an attacker.', 'derivated_problem' => 'The changes in the existing information of the server indicates that the attackers succeeded to obtain restricted privileges on the server. As a result, the server may be exposed to other types of problems, such as:
+            array('lang' => 'en', 'type' => 'deface', 'slug' => 'deface-en', 'problem' => 'We would like to inform you that we have detected that web page hosted with IP {{incident.ip}} has suffered a defacement\'s attack. This is an attack on a website that changes the visual appearance of the site or a webpage performed by an attacker.', 'derivated_problem' => 'The changes in the existing information of the server indicates that the attackers succeeded to obtain restricted privileges on the server. As a result, the server may be exposed to other types of problems, such as:
 
 <ul>
 <li><p>Malware.</p></li>
@@ -222,11 +222,11 @@ Adjunto le enviamos una copia del informe que recibimos.', 'more_information' =>
 
 <div class = "destacated">
 
-<pre><code>http://{{incident.hostAddress}}/
+<pre><code>http://{{incident.ip}}/
 </code></pre>
 
 </div>', 'recomendations' => 'We recommend a forensic analysis on the involved server to obtain information about the source of the problem and it\'s extent. On the other hand, we recommend a penetration test analysis over the involved site, which allows early problem identification that could lead to similar situations.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:58', 'updated_at' => '2017-12-21 11:57:58'),
-            array('lang' => 'es', 'type' => 'deface', 'slug' => 'deface-es', 'problem' => 'Nos ponemos en contacto con Ud. para informarle que el sitio web que se encuentra en {{incident.hostAddress}} sufrió un ataque de defacement, el cual consiste en la modificación del contenido propio del portal por terceros.', 'derivated_problem' => 'La modificación de la información existente en el servidor indica la obtención de privilegios sobre el mismo por parte de los atacantes. A raíz de esta situación, el servidor puede encontrarse expuesto a otros tipos de problemas, como ser:
+            array('lang' => 'es', 'type' => 'deface', 'slug' => 'deface-es', 'problem' => 'Nos ponemos en contacto con Ud. para informarle que el sitio web que se encuentra en {{incident.ip}} sufrió un ataque de defacement, el cual consiste en la modificación del contenido propio del portal por terceros.', 'derivated_problem' => 'La modificación de la información existente en el servidor indica la obtención de privilegios sobre el mismo por parte de los atacantes. A raíz de esta situación, el servidor puede encontrarse expuesto a otros tipos de problemas, como ser:
 
 <ul>
 <li><p>Alojamiento de malware.</p></li>
@@ -237,17 +237,17 @@ Adjunto le enviamos una copia del informe que recibimos.', 'more_information' =>
 
 <div class="destacated">
 
-<pre><code>http://{{incident.hostAddress}}/
+<pre><code>http://{{incident.ip}}/
 </code></pre>
 
 </div>', 'recomendations' => 'Se recomienda la realización de una forensia sobre el servidor con el objetivo de conocer el origen del problema como así también el alcance del ataque. Por otro lado, se recomienda la realización de un pentest sobre el sitio afectado, el cual permitirá la identificación temprana de otros problemas que podrían derivar en situaciones similares a la presente.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:52', 'updated_at' => '2018-05-24 10:59:50'),
-            array('lang' => 'en', 'type' => 'dns_zone_transfer', 'slug' => 'dns_zone_transfer-en', 'problem' => 'LWe would like to inform you that we have detected that the DNS <em>server</em> with IP {{incident.hostAddress}} has zone transfer active in some zones, visible at least from our CERT network.', 'derivated_problem' => '<p class="lead">Problemas derivados</p>
+            array('lang' => 'en', 'type' => 'dns_zone_transfer', 'slug' => 'dns_zone_transfer-en', 'problem' => 'LWe would like to inform you that we have detected that the DNS <em>server</em> with IP {{incident.ip}} has zone transfer active in some zones, visible at least from our CERT network.', 'derivated_problem' => '<p class="lead">Problemas derivados</p>
 
 The <em>server</em> under your administration could be used in DNS amplification attacks.', 'verification' => 'Use the following command:
 
 <div class = "destacated">
 
-<pre><code>dig &lt;zona&gt;.unlp.edu.ar @{{incident.hostAddress}} axfr
+<pre><code>dig &lt;zona&gt;.unlp.edu.ar @{{incident.ip}} axfr
 </code></pre>
 
 </div>', 'recomendations' => 'We recommend establishing restrictions to the DNS server allowing zone queries only from secondary DNS servers.', 'more_information' => '<div class = "destacated">
@@ -258,14 +258,14 @@ The <em>server</em> under your administration could be used in DNS amplification
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:58', 'updated_at' => '2017-12-21 11:57:58'),
-            array('lang' => 'es', 'type' => 'dns_zone_transfer', 'slug' => 'dns_zone_transfer-es', 'problem' => 'Lo contactamos porque hemos detectado que el servidor DNS con IP {{incident.hostAddress}}
+            array('lang' => 'es', 'type' => 'dns_zone_transfer', 'slug' => 'dns_zone_transfer-es', 'problem' => 'Lo contactamos porque hemos detectado que el servidor DNS con IP {{incident.ip}}
 tiene habilitada la transferencia de alguna de sus zonas, al menos desde la
 red de nuestro CERT.', 'derivated_problem' => 'El host bajo su administración podría llegar a ser usado en ataques de
 amplificación DNS.', 'verification' => 'Utilizando el comando:
 
 <div class="destacated">
 
-<pre><code>dig &lt;zona&gt;.unlp.edu.ar @{{incident.hostAddress}} axfr
+<pre><code>dig &lt;zona&gt;.unlp.edu.ar @{{incident.ip}} axfr
 </code></pre>
 
 </div>', 'recomendations' => 'Se recomienda establecer restricciones en el servidor DNS que permitan la
@@ -277,11 +277,11 @@ consultas de requerimiento de zona solo desde los servidores DNS secundarios.', 
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:52', 'updated_at' => '2017-12-21 11:57:52'),
-            array('lang' => 'en', 'type' => 'dos_chargen', 'slug' => 'dos_chargen-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em> {{incident.hostAddress}} is being used to perform Denial of Service attacks (DOS), through the <strong>chargen</strong> service (UDP port 19).', 'derivated_problem' => NULL, 'verification' => 'The verification can be achieved analyzing the existing network traffic and observing UDP datagrams from and towards the port 19. Alternatively, it can be verified by manually connecting to the service using the following command:
+            array('lang' => 'en', 'type' => 'dos_chargen', 'slug' => 'dos_chargen-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em> {{incident.ip}} is being used to perform Denial of Service attacks (DOS), through the <strong>chargen</strong> service (UDP port 19).', 'derivated_problem' => NULL, 'verification' => 'The verification can be achieved analyzing the existing network traffic and observing UDP datagrams from and towards the port 19. Alternatively, it can be verified by manually connecting to the service using the following command:
 
 <div class = "destacated">
 
-<pre><code>ncat -u {{incident.hostAddress}} 19
+<pre><code>ncat -u {{incident.ip}} 19
 </code></pre>
 
 </div>', 'recomendations' => 'We recommend:
@@ -300,12 +300,12 @@ consultas de requerimiento de zona solo desde los servidores DNS secundarios.', 
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:58', 'updated_at' => '2017-12-21 11:57:58'),
-            array('lang' => 'es', 'type' => 'dos_chargen', 'slug' => 'dos_chargen-es', 'problem' => 'Le contactamos porque se nos informó que el <em>host</em> con IP {{incident.hostAddress}} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio <strong>chargen</strong>.', 'derivated_problem' => NULL, 'verification' => 'El problema puede ser verificado mediante el monitoreo de red que permita observar trafico UDP hacia y desde el puerto 19.
+            array('lang' => 'es', 'type' => 'dos_chargen', 'slug' => 'dos_chargen-es', 'problem' => 'Le contactamos porque se nos informó que el <em>host</em> con IP {{incident.ip}} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio <strong>chargen</strong>.', 'derivated_problem' => NULL, 'verification' => 'El problema puede ser verificado mediante el monitoreo de red que permita observar trafico UDP hacia y desde el puerto 19.
 Alternativamente puede verificarlo conectándose manualmente a dicho servicio mediante el comando:
 
 <div class="destacated">
 
-<pre><code>ncat -u {{incident.hostAddress}} 19
+<pre><code>ncat -u {{incident.ip}} 19
 </code></pre>
 
 </div>', 'recomendations' => 'Se recomienda:
@@ -324,13 +324,13 @@ Alternativamente puede verificarlo conectándose manualmente a dicho servicio me
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:52', 'updated_at' => '2017-12-21 11:57:52'),
-            array('lang' => 'en', 'type' => 'dos_ntp', 'slug' => 'dos_ntp-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em> {{incident.hostAddress}} is being used to perform Denial of Service attacks (DOS), through the <strong>NTP service</strong> (UDP port 123).', 'derivated_problem' => NULL, 'verification' => 'The verification can be achieved analyzing the server response to the commands <strong><em>NTP readvar</em></strong> and/or <strong><em>NTP monlist</em></strong>. To manually verify if the service responds to these types of commands, use the following commands:
+            array('lang' => 'en', 'type' => 'dos_ntp', 'slug' => 'dos_ntp-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em> {{incident.ip}} is being used to perform Denial of Service attacks (DOS), through the <strong>NTP service</strong> (UDP port 123).', 'derivated_problem' => NULL, 'verification' => 'The verification can be achieved analyzing the server response to the commands <strong><em>NTP readvar</em></strong> and/or <strong><em>NTP monlist</em></strong>. To manually verify if the service responds to these types of commands, use the following commands:
 
 
 <div class = "destacated">
 
-<pre><code>ntpq -c readvar [{{incident.hostAddress}}]
-ntpdc -n -c monlist [{{incident.hostAddress}}]
+<pre><code>ntpq -c readvar [{{incident.ip}}]
+ntpdc -n -c monlist [{{incident.ip}}]
 </code></pre>
 
 </div>', 'recomendations' => 'To address the <strong><em>NTP readvar</em></strong> issue, we recommend:
@@ -363,13 +363,13 @@ about how to disable <code>monlist</code>.
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:58', 'updated_at' => '2017-12-21 11:57:58'),
-            array('lang' => 'es', 'type' => 'dos_ntp', 'slug' => 'dos_ntp-es', 'problem' => 'Le contactamos porque se nos informó que el <em>host</em> con IP {{incident.hostAddress}} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio NTP (UDP 123).', 'derivated_problem' => NULL, 'verification' => 'Probablemente su servidor responde a comandos del tipo <strong><em>NTP readvar</em></strong>  y/o a comandos <strong><em>NTP monlist</em></strong>.
+            array('lang' => 'es', 'type' => 'dos_ntp', 'slug' => 'dos_ntp-es', 'problem' => 'Le contactamos porque se nos informó que el <em>host</em> con IP {{incident.ip}} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio NTP (UDP 123).', 'derivated_problem' => NULL, 'verification' => 'Probablemente su servidor responde a comandos del tipo <strong><em>NTP readvar</em></strong>  y/o a comandos <strong><em>NTP monlist</em></strong>.
 Para testear manualmente si el servicio responde a este tipo de consultas puede utilizar los respectivos comandos:
 
 <div class="destacated">
 
-<pre><code>ntpq -c readvar [{{incident.hostAddress}}]
-ntpdc -n -c monlist [{{incident.hostAddress}}]
+<pre><code>ntpq -c readvar [{{incident.ip}}]
+ntpdc -n -c monlist [{{incident.ip}}]
 </code></pre>
 
 </div>', 'recomendations' => 'Para el problema <strong><em>NTP readvar</em></strong>, se recomienda:
@@ -403,7 +403,7 @@ sobre cómo deshabilitar <code>monlist</code>.
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:52', 'updated_at' => '2017-12-21 11:57:52'),
-            array('lang' => 'en', 'type' => 'dos_snmp', 'slug' => 'dos_snmp-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em> {{incident.hostAddress}} is being used to perform Denial of Service attacks (DOS), through the <strong>SNMP service</strong> (UDP port 161).', 'derivated_problem' => NULL, 'verification' => 'The verification can be achieved analyzing the existing network traffic and observing a mayor UDP traffic consumption corresponding to spoofed SNMP queries received.', 'recomendations' => 'We recommend:
+            array('lang' => 'en', 'type' => 'dos_snmp', 'slug' => 'dos_snmp-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em> {{incident.ip}} is being used to perform Denial of Service attacks (DOS), through the <strong>SNMP service</strong> (UDP port 161).', 'derivated_problem' => NULL, 'verification' => 'The verification can be achieved analyzing the existing network traffic and observing a mayor UDP traffic consumption corresponding to spoofed SNMP queries received.', 'recomendations' => 'We recommend:
 
 * Users should be allowed and encouraged to disable SNMP.
 * End-user devices should not be configured with SNMP on by default.
@@ -415,7 +415,7 @@ sobre cómo deshabilitar <code>monlist</code>.
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:58', 'updated_at' => '2017-12-21 11:57:58'),
-            array('lang' => 'es', 'type' => 'dos_snmp', 'slug' => 'dos_snmp-es', 'problem' => 'Le contactamos porque se nos informó que el <em>host</em> con IP {{incident.hostAddress}} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio SNMP (UDP 161).', 'derivated_problem' => NULL, 'verification' => 'Mediante el monitoreo de red debería observar grandes cantidades de tráfico UDP correspondientes a consultas SNMP spoofeadas recibidas.', 'recomendations' => 'Se recomienda:
+            array('lang' => 'es', 'type' => 'dos_snmp', 'slug' => 'dos_snmp-es', 'problem' => 'Le contactamos porque se nos informó que el <em>host</em> con IP {{incident.ip}} está siendo utilizado para realizar ataques de Denegación de Servicio (DOS) a través del servicio SNMP (UDP 161).', 'derivated_problem' => NULL, 'verification' => 'Mediante el monitoreo de red debería observar grandes cantidades de tráfico UDP correspondientes a consultas SNMP spoofeadas recibidas.', 'recomendations' => 'Se recomienda:
 
 <ul>
 <li><p>Deshabilitar el servicio.</p></li>
@@ -428,12 +428,12 @@ sobre cómo deshabilitar <code>monlist</code>.
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:52', 'updated_at' => '2017-12-21 11:57:52'),
-            array('lang' => 'en', 'type' => 'drupal_remote_code_execution', 'slug' => 'drupal_remote_code_execution-en', 'problem' => 'Hemos detectado que el host {{incident.hostAddress}} tiene una version de Drupal insegura. Se trata de una vulnerabilidad que permite ejecutar código remoto arbitrario sin autentificación previa debido a un problema que afecta a múltiples instancias con configuraciones predeterminadas en el núcleo de Drupal versión 6.x 7.x 8.x. .
+            array('lang' => 'en', 'type' => 'drupal_remote_code_execution', 'slug' => 'drupal_remote_code_execution-en', 'problem' => 'Hemos detectado que el host {{incident.ip}} tiene una version de Drupal insegura. Se trata de una vulnerabilidad que permite ejecutar código remoto arbitrario sin autentificación previa debido a un problema que afecta a múltiples instancias con configuraciones predeterminadas en el núcleo de Drupal versión 6.x 7.x 8.x. .
 Se debe actualizar inmediatamente a una versión de Drupal segura.', 'derivated_problem' => 'La vulnerabilidad permite a un atacante efectuar varios vectores de ataque con el fin de tomar el control de un sitio Web Drupal por completo.', 'verification' => 'https://github.com/pimps/CVE-2018-7600 (validar vulnerabilidad)', 'recomendations' => 'Se debe actualizar inmediatamente a una versión de Drupal segura.', 'more_information' => 'https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-7600', 'is_active' => '1', 'created_at' => '2018-04-20 12:33:24', 'updated_at' => '2018-04-20 12:33:24'),
-            array('lang' => 'es', 'type' => 'drupal_remote_code_execution', 'slug' => 'drupal_remote_code_execution-es', 'problem' => 'Hemos detectado que el host  {{incident.hostAddress}} tiene una version de Drupal insegura.
+            array('lang' => 'es', 'type' => 'drupal_remote_code_execution', 'slug' => 'drupal_remote_code_execution-es', 'problem' => 'Hemos detectado que el host  {{incident.ip}} tiene una version de Drupal insegura.
 
 Se trata de una vulnerabilidad que permite ejecutar código remoto arbitrario sin autentificación previa debido a un problema que afecta a múltiples instancias con configuraciones predeterminadas en el núcleo de Drupal versión 6.x 7.x 8.x. .', 'derivated_problem' => 'La vulnerabilidad permite a un atacante efectuar varios vectores de ataque con el fin de tomar el control de un sitio Web Drupal por completo.', 'verification' => 'https://github.com/pimps/CVE-2018-7600 (validar vulnerabilidad)', 'recomendations' => 'Se debe actualizar inmediatamente a una versión de Drupal segura.', 'more_information' => 'https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-7600', 'is_active' => '1', 'created_at' => '2018-04-20 11:59:45', 'updated_at' => '2018-04-20 11:59:45'),
-            array('lang' => 'en', 'type' => 'heartbleed', 'slug' => 'heartbleed-en', 'problem' => 'We would like to inform you that we have detected that the <em>host</em> {{incident.hostAddress}} has possible been attacked trough the OpenSSL vulnerability, known as "<a href="http://heartbleed.com/">Heartbleed</a>".', 'derivated_problem' => 'This vulnerability allows an attacker to read part of the memory of a client or server, possibly compromising sensible data.', 'verification' => 'To verify the vulnerability, access the following site and follow the instructions
+            array('lang' => 'en', 'type' => 'heartbleed', 'slug' => 'heartbleed-en', 'problem' => 'We would like to inform you that we have detected that the <em>host</em> {{incident.ip}} has possible been attacked trough the OpenSSL vulnerability, known as "<a href="http://heartbleed.com/">Heartbleed</a>".', 'derivated_problem' => 'This vulnerability allows an attacker to read part of the memory of a client or server, possibly compromising sensible data.', 'verification' => 'To verify the vulnerability, access the following site and follow the instructions
 
 <div class = "destacated">
 
@@ -448,7 +448,7 @@ The SSL certificate on the host could have been compromised, therefore we recomm
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:58', 'updated_at' => '2017-12-21 11:57:58'),
-            array('lang' => 'es', 'type' => 'heartbleed', 'slug' => 'heartbleed-es', 'problem' => 'Se detectó que el servidor {{incident.hostAddress}} posiblemente ha sido atacado mediante la
+            array('lang' => 'es', 'type' => 'heartbleed', 'slug' => 'heartbleed-es', 'problem' => 'Se detectó que el servidor {{incident.ip}} posiblemente ha sido atacado mediante la
 vulnerabilidad de OpenSSL conocida como
 "<a href="http://heartbleed.com/">Heartbleed</a>".', 'derivated_problem' => 'Esta vulnerabilidad permite a un atacante leer la memoria de un servidor o
 un cliente, permitiéndole por ejemplo, conseguir las claves privadas SSL de
@@ -477,7 +477,7 @@ comprometido y por lo tanto se recomienda regenerarlo.', 'more_information' => '
             array('lang' => 'es', 'type' => 'information_leakage', 'slug' => 'information_leakage-es', 'problem' => 'Fuga de Información', 'derivated_problem' => 'Pueden verse comprometidas datos sensibles del usuario. Un ejemplo son las credenciales de usuario (username y password) que apliquen a otros sistemas ante una fuga de información.', 'verification' => 'Revisar la evidencia que se adjunta.', 'recomendations' => '* Invalidar los datos relacionados a la fuga de datos. Por ejemplo forzando el cambio de contraseña
 * Revisar los accesos realizados con los datos
 * Solicitar al que esta publicando los datos que remueva la publicación', 'more_information' => 'Puede chequear adicionalmente: https://haveibeenpwned.com/', 'is_active' => '1', 'created_at' => '2018-05-03 13:03:39', 'updated_at' => '2018-05-03 13:03:39'),
-            array('lang' => 'en', 'type' => 'malware', 'slug' => 'malware-en', 'problem' => 'We would like to inform you that we have been informed that the <em>host</em> {{incident.hostAddress}} is currently infected with malware.', 'derivated_problem' => 'Being the host infected, we can list the following consequences:
+            array('lang' => 'en', 'type' => 'malware', 'slug' => 'malware-en', 'problem' => 'We would like to inform you that we have been informed that the <em>host</em> {{incident.ip}} is currently infected with malware.', 'derivated_problem' => 'Being the host infected, we can list the following consequences:
 
 <ul>
 <li><p>Excessive consumption of bandwidth by the host.</p></li>
@@ -485,7 +485,7 @@ comprometido y por lo tanto se recomienda regenerarlo.', 'more_information' => '
 <li><p>Compromising user information.</p></li>
 <li><p>Forming part of a BotNet.</p></li>
 </ul>', 'verification' => NULL, 'recomendations' => 'We recommend to filter the network traffic until the problem is solved.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:58', 'updated_at' => '2017-12-21 11:57:58'),
-            array('lang' => 'es', 'type' => 'malware', 'slug' => 'malware-es', 'problem' => 'Nos comunicamos con Ud. porque porque hemos sido informados que el host {{incident.hostAddress}} se encuentra infectado con un malware.', 'derivated_problem' => 'Encontrándose infectado el equipo existen diversas consecuencias, entre las que podemos listar:
+            array('lang' => 'es', 'type' => 'malware', 'slug' => 'malware-es', 'problem' => 'Nos comunicamos con Ud. porque porque hemos sido informados que el host {{incident.ip}} se encuentra infectado con un malware.', 'derivated_problem' => 'Encontrándose infectado el equipo existen diversas consecuencias, entre las que podemos listar:
 
 <ul>
 <li><p>Consumo excesivo del ancho de banda por parte del host.</p></li>
@@ -493,7 +493,7 @@ comprometido y por lo tanto se recomienda regenerarlo.', 'more_information' => '
 <li><p>Compromiso de información propia de los usuarios.</p></li>
 <li><p>Ejecute órdenes de una botnet.</p></li>
 </ul>', 'verification' => NULL, 'recomendations' => 'Se recomienda el filtrado del tráfico hasta que el problema sea resuelto.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:53', 'updated_at' => '2017-12-21 11:57:53'),
-            array('lang' => 'es', 'type' => 'open_chargen', 'slug' => 'open_chargen-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} dispone del servicio Chargen abierto y accesible desde Internet.', 'derivated_problem' => 'El host bajo su administración podría llegar a ser usado en ataques de amplificación para causar ataques de denegación de servicio (DOS, DDOS).', 'verification' => NULL, 'recomendations' => 'Se recomienda alguna de las siguientes:
+            array('lang' => 'es', 'type' => 'open_chargen', 'slug' => 'open_chargen-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} dispone del servicio Chargen abierto y accesible desde Internet.', 'derivated_problem' => 'El host bajo su administración podría llegar a ser usado en ataques de amplificación para causar ataques de denegación de servicio (DOS, DDOS).', 'verification' => NULL, 'recomendations' => 'Se recomienda alguna de las siguientes:
 
 <ul>
 <li><p>Deshabilitar el servicio.</p></li>
@@ -507,7 +507,7 @@ comprometido y por lo tanto se recomienda regenerarlo.', 'more_information' => '
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:53', 'updated_at' => '2017-12-21 11:57:53'),
-            array('lang' => 'en', 'type' => 'open_dns', 'slug' => 'open_dns-en', 'problem' => 'We would like to inform you that we have been notified that the <strong>host/servidor</strong> {{incident.hostAddress}} provides insecure <strong>DNS</strong> services. The service  <a href="https://www.us-cert.gov/ncas/alerts/TA13-088A">responds to recursive queries</a> originated outside your network.', 'derivated_problem' => 'The <em>host</em> under your administration could be used to perform <a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplification</a> attacks. This could allow attacks such as:
+            array('lang' => 'en', 'type' => 'open_dns', 'slug' => 'open_dns-en', 'problem' => 'We would like to inform you that we have been notified that the <strong>host/servidor</strong> {{incident.ip}} provides insecure <strong>DNS</strong> services. The service  <a href="https://www.us-cert.gov/ncas/alerts/TA13-088A">responds to recursive queries</a> originated outside your network.', 'derivated_problem' => 'The <em>host</em> under your administration could be used to perform <a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplification</a> attacks. This could allow attacks such as:
 
 <ul>
 <li><p>Dos (Denial of service)</p></li>
@@ -518,7 +518,7 @@ Additionally , the host could be exposed to DNS cache poisoning or <strong>Pharm
 
 <div class = "destacated">
 
-<pre><code>dig +short test.openresolver.com TXT @{{incident.hostAddress}}
+<pre><code>dig +short test.openresolver.com TXT @{{incident.ip}}
 </code></pre>
 
 </div>
@@ -527,7 +527,7 @@ or use the following web page:
 
 <div class = "destacated">
 
-<pre><code>http://openresolver.com/?ip={{incident.hostAddress}}
+<pre><code>http://openresolver.com/?ip={{incident.ip}}
 </code></pre>
 
 </div>', 'recomendations' => 'Disable recursive answers to queries that does not originate from networks under your administration.', 'more_information' => '<div class = "destacated">
@@ -538,7 +538,7 @@ or use the following web page:
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:58', 'updated_at' => '2017-12-21 11:57:58'),
-            array('lang' => 'es', 'type' => 'open_dns', 'slug' => 'open_dns-es', 'problem' => 'Lo contactamos porque hemos sido informados que el <strong>host/servidor</strong> {{incident.hostAddress}} brinda servicios de DNS de manera insegura. 
+            array('lang' => 'es', 'type' => 'open_dns', 'slug' => 'open_dns-es', 'problem' => 'Lo contactamos porque hemos sido informados que el <strong>host/servidor</strong> {{incident.ip}} brinda servicios de DNS de manera insegura. 
 En particular, la configuración de dicho servicio 
 <a href="https://www.us-cert.gov/ncas/alerts/TA13-088A">responde consultas recursivas</a> realizadas desde fuera de la red de la UNLP.', 'derivated_problem' => 'El <em>host</em> bajo su administración podría llegar a ser usado en ataques de
 <a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplificación</a>. Esto
@@ -554,7 +554,7 @@ envenenamiento de caché de DNS o <strong>Pharming</strong>.', 'verification' =>
 
 <div class="destacated">
 
-<pre><code>dig +short test.openresolver.com TXT @{{incident.hostAddress}}
+<pre><code>dig +short test.openresolver.com TXT @{{incident.ip}}
 </code></pre>
 
 </div>
@@ -563,7 +563,7 @@ o vía web a través de la siguiente página:
 
 <div class="destacated">
 
-<pre><code>http://openresolver.com/?ip={{incident.hostAddress}}
+<pre><code>http://openresolver.com/?ip={{incident.ip}}
 </code></pre>
 
 </div>', 'recomendations' => 'Se recomienda desactivar la respuesta recursiva a consultas que no
@@ -575,7 +575,7 @@ provienen de redes bajo su administración.', 'more_information' => '<div class=
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:53', 'updated_at' => '2017-12-21 11:57:53'),
-            array('lang' => 'es', 'type' => 'open_elasticsearch', 'slug' => 'open_elasticsearch-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} dispone del servicio Elasticseach abierto y accesible desde Internet.', 'derivated_problem' => 'Por defecto, este servicio no brinda ningun tipo de autenticación, lo que significa que cualquier entidad podria tener acceso instantaneo a sus datos.', 'verification' => NULL, 'recomendations' => 'Se recomienda alguna de las siguientes:
+            array('lang' => 'es', 'type' => 'open_elasticsearch', 'slug' => 'open_elasticsearch-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} dispone del servicio Elasticseach abierto y accesible desde Internet.', 'derivated_problem' => 'Por defecto, este servicio no brinda ningun tipo de autenticación, lo que significa que cualquier entidad podria tener acceso instantaneo a sus datos.', 'verification' => NULL, 'recomendations' => 'Se recomienda alguna de las siguientes:
 
 <ul>
 <li><p>Deshabilitar el servicio.</p></li>
@@ -587,7 +587,7 @@ provienen de redes bajo su administración.', 'more_information' => '<div class=
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:53', 'updated_at' => '2017-12-21 11:57:53'),
-            array('lang' => 'en', 'type' => 'open_ipmi', 'slug' => 'open_ipmi-en', 'problem' => 'We would like to inform you that we have been informed that web page hosted with the IP {{incident.hostAddress}} has the Intelligent <strong>Intelligent Platform Management Interface</strong> (IPMI) service, accessible from the Internet.', 'derivated_problem' => 'The host under your administration could be controlled remotely. IPMI provides low level access to the device possibly allowing a system reboot, installation of unknown software, access restricted information, etc.', 'verification' => NULL, 'recomendations' => 'We recommend:
+            array('lang' => 'en', 'type' => 'open_ipmi', 'slug' => 'open_ipmi-en', 'problem' => 'We would like to inform you that we have been informed that web page hosted with the IP {{incident.ip}} has the Intelligent <strong>Intelligent Platform Management Interface</strong> (IPMI) service, accessible from the Internet.', 'derivated_problem' => 'The host under your administration could be controlled remotely. IPMI provides low level access to the device possibly allowing a system reboot, installation of unknown software, access restricted information, etc.', 'verification' => NULL, 'recomendations' => 'We recommend:
 
 <ul>
 <li><p>Establish firewall rules and filter unauthorized access to the service.</p></li>
@@ -600,7 +600,7 @@ provienen de redes bajo su administración.', 'more_information' => '<div class=
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:58', 'updated_at' => '2017-12-21 11:57:58'),
-            array('lang' => 'es', 'type' => 'open_ipmi', 'slug' => 'open_ipmi-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} tiene el servicio Intelligent Platform Management Interface (IPMI) accesible desde Internet.', 'derivated_problem' => 'El host bajo su administración podría llegar a ser usado para controlar el dispositivo remotamente. IPMI provee acceso a bajo nivel al dispositivo, pudiendo permitir reiniciar el sistema, instalar un nuevo sistema operativo, acceder a información alojada en el sistema, etc.', 'verification' => NULL, 'recomendations' => 'Se recomienda:
+            array('lang' => 'es', 'type' => 'open_ipmi', 'slug' => 'open_ipmi-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} tiene el servicio Intelligent Platform Management Interface (IPMI) accesible desde Internet.', 'derivated_problem' => 'El host bajo su administración podría llegar a ser usado para controlar el dispositivo remotamente. IPMI provee acceso a bajo nivel al dispositivo, pudiendo permitir reiniciar el sistema, instalar un nuevo sistema operativo, acceder a información alojada en el sistema, etc.', 'verification' => NULL, 'recomendations' => 'Se recomienda:
 
 <ul>
 <li><p>Establecer filtros de acceso (reglas de firewall) para exponer el servicio solo a las IPs del administrador.</p></li>
@@ -613,7 +613,7 @@ provienen de redes bajo su administración.', 'more_information' => '<div class=
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:53', 'updated_at' => '2017-12-21 11:57:53'),
-            array('lang' => 'es', 'type' => 'open_isakmp', 'slug' => 'open_isakmp-es', 'problem' => 'Lo contactamos porque hemos sido informados que el dispositivo {{incident.hostAddress}} contiene una vulnerabilidad en el procesamiento de paquetes IKEv1.', 'derivated_problem' => 'Esta vulnerabilidad podría permitir a un atacante remoto no autentiado recuperar el contenido de la memoria, lo cual podría conducir a la divulgación de información confidencial.', 'verification' => NULL, 'recomendations' => 'Se recomienda alguna de las siguientes:
+            array('lang' => 'es', 'type' => 'open_isakmp', 'slug' => 'open_isakmp-es', 'problem' => 'Lo contactamos porque hemos sido informados que el dispositivo {{incident.ip}} contiene una vulnerabilidad en el procesamiento de paquetes IKEv1.', 'derivated_problem' => 'Esta vulnerabilidad podría permitir a un atacante remoto no autentiado recuperar el contenido de la memoria, lo cual podría conducir a la divulgación de información confidencial.', 'verification' => NULL, 'recomendations' => 'Se recomienda alguna de las siguientes:
 
 <ul>
 <li><p>Actualizar el firmware del dispositivo.</p></li>
@@ -625,19 +625,19 @@ provienen de redes bajo su administración.', 'more_information' => '<div class=
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:53', 'updated_at' => '2017-12-21 11:57:53'),
-            array('lang' => 'en', 'type' => 'open_ldap', 'slug' => 'open_ldap-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em> {{incident.hostAddress}} has the <strong>Lightweight Directory Access Protocol</strong> (LDAP) service, accessible from the Internet.', 'derivated_problem' => 'The <em>host</em> under your administration could be compromising sensitive information.', 'verification' => NULL, 'recomendations' => '<ul>
+            array('lang' => 'en', 'type' => 'open_ldap', 'slug' => 'open_ldap-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em> {{incident.ip}} has the <strong>Lightweight Directory Access Protocol</strong> (LDAP) service, accessible from the Internet.', 'derivated_problem' => 'The <em>host</em> under your administration could be compromising sensitive information.', 'verification' => NULL, 'recomendations' => '<ul>
 <li><p>Establish firewall rules to filter unauthorized queries.</p></li>
 <li><p>Use Transport Layer Security (TLS) encryption in the communication service. (IN o OVER - DAniela)</p></li>
 <li><p>Deny anonymous bind type connections.</p></li>
 <li><p><a href="https://www.sans.org/reading-room/whitepapers/directories/securely-implementing-ldap-109">Additional information</a>.</p></li>
 </ul>', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:58', 'updated_at' => '2017-12-21 11:57:58'),
-            array('lang' => 'es', 'type' => 'open_ldap', 'slug' => 'open_ldap-es', 'problem' => 'Le contactamos porque se nos ha informado que el <em>host</em> con IP {{incident.hostAddress}} tiene el servicio LDAP accesible desde Internet.', 'derivated_problem' => 'El <em>host</em> bajo su administración podría llegar a estar brindando información sensible.', 'verification' => NULL, 'recomendations' => '<ul>
+            array('lang' => 'es', 'type' => 'open_ldap', 'slug' => 'open_ldap-es', 'problem' => 'Le contactamos porque se nos ha informado que el <em>host</em> con IP {{incident.ip}} tiene el servicio LDAP accesible desde Internet.', 'derivated_problem' => 'El <em>host</em> bajo su administración podría llegar a estar brindando información sensible.', 'verification' => NULL, 'recomendations' => '<ul>
 <li><p>Establecer reglas de firewall para permitir consultas sólo desde las redes autorizadas.</p></li>
 <li><p>Utilizar TLS en la comunicación con el servicio.</p></li>
 <li><p>No permitir conexiones de manera anónima (Anonymous BIND).</p></li>
 <li><p><a href="https://www.sans.org/reading-room/whitepapers/directories/securely-implementing-ldap-109">Información adicional</a>.</p></li>
 </ul>', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:53', 'updated_at' => '2017-12-21 11:57:53'),
-            array('lang' => 'es', 'type' => 'open_mdns', 'slug' => 'open_mdns-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} dispone del servicio mDNS (Multicast DNS) abierto y accesible desde Internet.', 'derivated_problem' => 'El host bajo su administración podría llegar a ser usado en ataques de amplificación para causar ataques de denegación de servicio (DOS, DDOS).', 'verification' => NULL, 'recomendations' => 'Se recomienda alguna de las siguientes:
+            array('lang' => 'es', 'type' => 'open_mdns', 'slug' => 'open_mdns-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} dispone del servicio mDNS (Multicast DNS) abierto y accesible desde Internet.', 'derivated_problem' => 'El host bajo su administración podría llegar a ser usado en ataques de amplificación para causar ataques de denegación de servicio (DOS, DDOS).', 'verification' => NULL, 'recomendations' => 'Se recomienda alguna de las siguientes:
 
 <ul>
 <li><p>Deshabilitar el servicio.</p></li>
@@ -650,7 +650,7 @@ provienen de redes bajo su administración.', 'more_information' => '<div class=
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:53', 'updated_at' => '2017-12-21 11:57:53'),
-            array('lang' => 'en', 'type' => 'open_memcached', 'slug' => 'open_memcached-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em> {{incident.hostAddress}} has the <strong>Memcached</strong> service, accessible from the Internet.', 'derivated_problem' => 'The <em>host</em> under your administration could be used to perform <a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplification</a> attacks to third party\'s, like:
+            array('lang' => 'en', 'type' => 'open_memcached', 'slug' => 'open_memcached-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em> {{incident.ip}} has the <strong>Memcached</strong> service, accessible from the Internet.', 'derivated_problem' => 'The <em>host</em> under your administration could be used to perform <a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplification</a> attacks to third party\'s, like:
 
 <div class = "destacated">
 <ul>
@@ -668,7 +668,7 @@ Also, due to the service not providing an authentication mechanism, any third pa
 </ul>
 </div>', 'verification' => 'To verify that the service is currently open, use the <code>telnet</code> command in the following way:
 <div class = "destacated">
-<pre><code>telnet {{incident.hostAddress}} 11211
+<pre><code>telnet {{incident.ip}} 11211
 stats items
 </code></pre>
 </div>', 'recomendations' => '<ul>
@@ -680,7 +680,7 @@ stats items
 <li><p>http://es.wikipedia.org/wiki/Defacement</p></li>
 </ul>
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:59', 'updated_at' => '2018-03-06 13:06:31'),
-            array('lang' => 'es', 'type' => 'open_memcached', 'slug' => 'open_memcached-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host con {{incident.hostAddress}} contiene
+            array('lang' => 'es', 'type' => 'open_memcached', 'slug' => 'open_memcached-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host con {{incident.ip}} contiene
 una instalación de Memcached accesible desde Internet.', 'derivated_problem' => 'Debido a que este servicio no provee autenticación, cualquier entidad que acceda a la instancia de Memcache, tendrá control total sobre los objetos almacenados, con lo que se podría:
 
 <div class = "destacated">
@@ -693,7 +693,7 @@ una instalación de Memcached accesible desde Internet.', 'derivated_problem' =>
 
 <div class="destacated">
 
-<pre><code>telnet {{incident.hostAddress}} 11211
+<pre><code>telnet {{incident.ip}} 11211
 stats items
 </code></pre>
 
@@ -708,11 +708,11 @@ stats items
 <li><p>http://es.wikipedia.org/wiki/Defacement</p></li>
 </ul>
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:54', 'updated_at' => '2018-03-06 12:33:09'),
-            array('lang' => 'en', 'type' => 'open_mongodb', 'slug' => 'open_mongodb-en', 'problem' => 'We would like to inform you that we have been informed that the <em>host</em> {{incident.hostAddress}} has a database (MongoDB) with unrestricted access from the Internet.', 'derivated_problem' => 'The <em>host</em> under your administration could be compromising sensitive information.', 'verification' => 'To manually verify the connection to the service, use the following command:
+            array('lang' => 'en', 'type' => 'open_mongodb', 'slug' => 'open_mongodb-en', 'problem' => 'We would like to inform you that we have been informed that the <em>host</em> {{incident.ip}} has a database (MongoDB) with unrestricted access from the Internet.', 'derivated_problem' => 'The <em>host</em> under your administration could be compromising sensitive information.', 'verification' => 'To manually verify the connection to the service, use the following command:
 
 <div class = "destacated">
 
-<pre><code>mongo {{incident.hostAddress}}
+<pre><code>mongo {{incident.ip}}
 </code></pre>
 
 </div>', 'recomendations' => '* Establish firewall rules to filter unauthorized access.
@@ -745,11 +745,11 @@ stats items
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:59', 'updated_at' => '2017-12-21 11:57:59'),
-            array('lang' => 'es', 'type' => 'open_mongodb', 'slug' => 'open_mongodb-es', 'problem' => 'Le contactamos porque se nos ha informado que el <em>host</em> con IP {{incident.hostAddress}} tiene una base de datos MongoDB NoSQL accesible sin restricciones desde Internet.', 'derivated_problem' => 'El <em>host</em> bajo su administración podría llegar a estar brindando información sensible, comprometiendo sistemas que corren él.', 'verification' => 'Para testear manualmente la conexión al servicio puede utilizar el comando:
+            array('lang' => 'es', 'type' => 'open_mongodb', 'slug' => 'open_mongodb-es', 'problem' => 'Le contactamos porque se nos ha informado que el <em>host</em> con IP {{incident.ip}} tiene una base de datos MongoDB NoSQL accesible sin restricciones desde Internet.', 'derivated_problem' => 'El <em>host</em> bajo su administración podría llegar a estar brindando información sensible, comprometiendo sistemas que corren él.', 'verification' => 'Para testear manualmente la conexión al servicio puede utilizar el comando:
 
 <div class="destacated">
 
-<pre><code>mongo {{incident.hostAddress}}
+<pre><code>mongo {{incident.ip}}
 </code></pre>
 
 </div>', 'recomendations' => '<ul>
@@ -766,7 +766,7 @@ las conexiones en la interfaz de loopback.</p></li>
 <li><p><a href="http://docs.mongodb.org/manual/core/security-network/#rest">Deshabilitar</a>
 la interfaz REST.</p></li>
 </ul>', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:54', 'updated_at' => '2017-12-21 11:57:54'),
-            array('lang' => 'en', 'type' => 'open_mssql', 'slug' => 'open_mssql-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em> {{incident.hostAddress}} has the <strong>Microsoft SQL Server</strong> service, accessible from the Internet.', 'derivated_problem' => 'The <em>host</em> under your administration could be compromising sensitive information, also could victim of UDP amplification performing Denial of Service (DOS,DDOS) attacks.', 'verification' => NULL, 'recomendations' => 'Establish firewall rules to filter unauthorized access.', 'more_information' => '<div class = "destacated">
+            array('lang' => 'en', 'type' => 'open_mssql', 'slug' => 'open_mssql-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em> {{incident.ip}} has the <strong>Microsoft SQL Server</strong> service, accessible from the Internet.', 'derivated_problem' => 'The <em>host</em> under your administration could be compromising sensitive information, also could victim of UDP amplification performing Denial of Service (DOS,DDOS) attacks.', 'verification' => NULL, 'recomendations' => 'Establish firewall rules to filter unauthorized access.', 'more_information' => '<div class = "destacated">
 
 <ul>
 <li><p><a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">https://www.us-cert.gov/ncas/alerts/TA14-017A</a></p></li>
@@ -775,7 +775,7 @@ la interfaz REST.</p></li>
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:59', 'updated_at' => '2017-12-21 11:57:59'),
-            array('lang' => 'es', 'type' => 'open_mssql', 'slug' => 'open_mssql-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} tiene el servicio de resolución de Microsoft SQL Server abierto desde Internet.', 'derivated_problem' => 'El host bajo su administración podría ser usado para revelar información como así también en ataques de amplificación UDP que provoquen denegaciones de servicio (DOS, DDOS).', 'verification' => NULL, 'recomendations' => 'Se recomienda establecer reglas de firewall para permitir solamente las conexiones al servicio solo desde los servidores autorizados.', 'more_information' => '<div class="destacated">
+            array('lang' => 'es', 'type' => 'open_mssql', 'slug' => 'open_mssql-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} tiene el servicio de resolución de Microsoft SQL Server abierto desde Internet.', 'derivated_problem' => 'El host bajo su administración podría ser usado para revelar información como así también en ataques de amplificación UDP que provoquen denegaciones de servicio (DOS, DDOS).', 'verification' => NULL, 'recomendations' => 'Se recomienda establecer reglas de firewall para permitir solamente las conexiones al servicio solo desde los servidores autorizados.', 'more_information' => '<div class="destacated">
 
 <ul>
 <li><p><a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">https://www.us-cert.gov/ncas/alerts/TA14-017A</a></p></li>
@@ -784,7 +784,7 @@ la interfaz REST.</p></li>
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:54', 'updated_at' => '2017-12-21 11:57:54'),
-            array('lang' => 'en', 'type' => 'open_netbios', 'slug' => 'open_netbios-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host/server</em> {{incident.hostAddress}} has the <strong>Network Basic Input/Output System</strong> (NETBIOS) service, accessible from the Internet.', 'derivated_problem' => 'The <em>host</em> under your administration could be used to perform:
+            array('lang' => 'en', 'type' => 'open_netbios', 'slug' => 'open_netbios-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host/server</em> {{incident.ip}} has the <strong>Network Basic Input/Output System</strong> (NETBIOS) service, accessible from the Internet.', 'derivated_problem' => 'The <em>host</em> under your administration could be used to perform:
 
 <ul>
 <li><p>Denial of Service attacks (DOS, DDOS).</p></li>
@@ -805,7 +805,7 @@ la interfaz REST.</p></li>
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:59', 'updated_at' => '2017-12-21 11:57:59'),
-            array('lang' => 'es', 'type' => 'open_netbios', 'slug' => 'open_netbios-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} dispone del servicio NETBIOS abierto desde Internet.', 'derivated_problem' => 'El host bajo su administración podría ser usado para:
+            array('lang' => 'es', 'type' => 'open_netbios', 'slug' => 'open_netbios-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} dispone del servicio NETBIOS abierto desde Internet.', 'derivated_problem' => 'El host bajo su administración podría ser usado para:
 
 <ul>
 <li><p>Ataques de amplificación que causen denegación de servicio (DOS, DDOS)</p></li>
@@ -825,7 +825,7 @@ la interfaz REST.</p></li>
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:54', 'updated_at' => '2017-12-21 11:57:54'),
-            array('lang' => 'en', 'type' => 'open_ntp_monitor', 'slug' => 'open_ntp_monitor-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em> {{incident.hostAddress}} is providing insecure <strong>Network Time Protocol</strong> (NTP) service by responding to <a href="https://www.us-cert.gov/ncas/alerts/TA14-013A">NTP monlist</a> commands.', 'derivated_problem' => 'The <em>host</em> under your administration could be used to perform <a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplification</a> attacks to third party\'s, like:
+            array('lang' => 'en', 'type' => 'open_ntp_monitor', 'slug' => 'open_ntp_monitor-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em> {{incident.ip}} is providing insecure <strong>Network Time Protocol</strong> (NTP) service by responding to <a href="https://www.us-cert.gov/ncas/alerts/TA14-013A">NTP monlist</a> commands.', 'derivated_problem' => 'The <em>host</em> under your administration could be used to perform <a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplification</a> attacks to third party\'s, like:
 
 <ul>
 <li><p>Denial of Service attacks (DOS, DDOS).</p></li>
@@ -834,14 +834,14 @@ la interfaz REST.</p></li>
 
 <div class = "destacated">
 
-<pre><code>ntpdc -n -c monlist {{incident.hostAddress}}
+<pre><code>ntpdc -n -c monlist {{incident.ip}}
 </code></pre>
 
 </div>', 'recomendations' => 'Versions of  <code>ntpd</code> previous to 4.2.7 are vulnerable. Therefore, we recommend upgrading to the latest version available.
 If upgrading is not possible, as an alternative disable <code>monlist</code>.', 'more_information' => '<a href="http://www.purdue.edu/securepurdue/news/2014/advisory--ntp-amplification-attacks.cfm">More</a>
 <a href="http://www.team-cymru.org/ReadingRoom/Templates/secure-ntp-template.html">information</a>
 about how to disable <code>monlist</code>.', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:59', 'updated_at' => '2017-12-21 11:57:59'),
-            array('lang' => 'es', 'type' => 'open_ntp_monitor', 'slug' => 'open_ntp_monitor-es', 'problem' => 'Le contactamos porque se nos ha informado que el <em>host</em> con IP {{incident.hostAddress}} brinda
+            array('lang' => 'es', 'type' => 'open_ntp_monitor', 'slug' => 'open_ntp_monitor-es', 'problem' => 'Le contactamos porque se nos ha informado que el <em>host</em> con IP {{incident.ip}} brinda
 el servicio de NTP de manera insegura. En particular, el servicio estaría
 respondiendo a comandos del tipo
 <a href="https://www.us-cert.gov/ncas/alerts/TA14-013A">NTP monlist</a>.', 'derivated_problem' => 'El <em>host</em> bajo su administración podría llegar a ser usado en ataques de
@@ -856,7 +856,7 @@ utilizar el comando:
 
 <div class="destacated">
 
-<pre><code>ntpdc -n -c monlist {{incident.hostAddress}}
+<pre><code>ntpdc -n -c monlist {{incident.ip}}
 </code></pre>
 
 </div>', 'recomendations' => 'Las versiones de <code>ntpd</code> anteriores a la 4.2.7 son vulnerables por
@@ -866,7 +866,7 @@ En caso de que actualizar no sea una opción, como alternativa se puede
 optar por deshabilitar la funcionalidad <code>monlist</code>.', 'more_information' => '<a href="http://www.purdue.edu/securepurdue/news/2014/advisory--ntp-amplification-attacks.cfm">Más</a>
 <a href="http://www.team-cymru.org/ReadingRoom/Templates/secure-ntp-template.html">información</a>
 sobre cómo deshabilitar <code>monlist</code>.', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:54', 'updated_at' => '2017-12-21 11:57:54'),
-            array('lang' => 'en', 'type' => 'open_ntp_version', 'slug' => 'open_ntp_version-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em>  {{incident.hostAddress}} is providing insecure <strong>Network Time Protocol</strong> (NTP) service by responding to <code>NTP readvar</code> commands.', 'derivated_problem' => '<p class="lead">Problemas derivados</p>
+            array('lang' => 'en', 'type' => 'open_ntp_version', 'slug' => 'open_ntp_version-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em>  {{incident.ip}} is providing insecure <strong>Network Time Protocol</strong> (NTP) service by responding to <code>NTP readvar</code> commands.', 'derivated_problem' => '<p class="lead">Problemas derivados</p>
 
 The <em>host</em>  under your administration could be used to perform <a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplification</a> attacks to third party\'s, like:
 
@@ -877,12 +877,12 @@ The <em>host</em>  under your administration could be used to perform <a href="h
 
 <div class = "destacated">
 
-<pre><code>ntpq -c readvar {{incident.hostAddress}}
+<pre><code>ntpq -c readvar {{incident.ip}}
 </code></pre>
 
 </div>', 'recomendations' => '<a href="http://www.team-cymru.org/ReadingRoom/Templates/secure-ntp-template.html">Disable</a>
 <code>NTP readvar</code> queries.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:59', 'updated_at' => '2017-12-21 11:57:59'),
-            array('lang' => 'es', 'type' => 'open_ntp_version', 'slug' => 'open_ntp_version-es', 'problem' => 'Le contactamos porque se nos ha informado que el <em>host</em> con IP {{incident.hostAddress}} brinda
+            array('lang' => 'es', 'type' => 'open_ntp_version', 'slug' => 'open_ntp_version-es', 'problem' => 'Le contactamos porque se nos ha informado que el <em>host</em> con IP {{incident.ip}} brinda
 el servicio de NTP de manera insegura. En particular, el servicio estaría
 respondiendo a comandos del tipo <code>NTP readvar</code>.', 'derivated_problem' => 'El <em>host</em> bajo su administración podría llegar a ser usado en ataques de
 <a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplificación</a>. Esto
@@ -896,12 +896,12 @@ utilizar el comando:
 
 <div class="destacated">
 
-<pre><code>ntpq -c readvar {{incident.hostAddress}}
+<pre><code>ntpq -c readvar {{incident.ip}}
 </code></pre>
 
 </div>', 'recomendations' => '<a href="http://www.team-cymru.org/ReadingRoom/Templates/secure-ntp-template.html">Deshabilitar</a>
 las consultas <code>NTP readvar</code>.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:54', 'updated_at' => '2017-12-21 11:57:54'),
-            array('lang' => 'en', 'type' => 'open_portmap', 'slug' => 'open_portmap-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host/server</em>  {{incident.hostAddress}} has the <strong>Portmap</strong> service, accessible from the Internet.', 'derivated_problem' => 'The <em>host</em> under your administration could be used to perform <a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplification</a> attacks to third party\'s, like:
+            array('lang' => 'en', 'type' => 'open_portmap', 'slug' => 'open_portmap-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host/server</em>  {{incident.ip}} has the <strong>Portmap</strong> service, accessible from the Internet.', 'derivated_problem' => 'The <em>host</em> under your administration could be used to perform <a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplification</a> attacks to third party\'s, like:
 
 <ul>
 <li><p>Denial of Service attacks (DOS, DDOS).</p></li>
@@ -911,7 +911,7 @@ Additionally, the <strong>host/servidor</strong> could expose other misconfigure
 
 <div class = "destacated">
 
-<pre><code>rpcinfo -T udp -p {{incident.hostAddress}}
+<pre><code>rpcinfo -T udp -p {{incident.ip}}
 </code></pre>
 
 </div>
@@ -920,7 +920,7 @@ View the NFS shared folders using the command:
 
 <div class = "destacated">
 
-<pre><code>showmount -e {{incident.hostAddress}}
+<pre><code>showmount -e {{incident.ip}}
 </code></pre>
 
 </div>', 'recomendations' => '<ul>
@@ -935,7 +935,7 @@ View the NFS shared folders using the command:
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:59', 'updated_at' => '2017-12-21 11:57:59'),
-            array('lang' => 'es', 'type' => 'open_portmap', 'slug' => 'open_portmap-es', 'problem' => 'Lo contactamos porque hemos sido informados que el <strong>host/servidor</strong> {{incident.hostAddress}} brinda el servicio portmap accesible desde Internet.', 'derivated_problem' => 'El <em>host</em> bajo su administración podría llegar a ser usado en ataques de
+            array('lang' => 'es', 'type' => 'open_portmap', 'slug' => 'open_portmap-es', 'problem' => 'Lo contactamos porque hemos sido informados que el <strong>host/servidor</strong> {{incident.ip}} brinda el servicio portmap accesible desde Internet.', 'derivated_problem' => 'El <em>host</em> bajo su administración podría llegar a ser usado en ataques de
 <a href="https://www.us-cert.gov/ncas/alerts/TA14-017A">amplificación</a>. Esto 
 permitiría realizar ataques a terceros de tipo:
 
@@ -948,7 +948,7 @@ Adicionalmente, el servidor podría exponer otros servicios mal configurados com
 
 <div class="destacated">
 
-<pre><code>rpcinfo -T udp -p {{incident.hostAddress}}
+<pre><code>rpcinfo -T udp -p {{incident.ip}}
 </code></pre>
 
 </div>
@@ -957,7 +957,7 @@ Y ver carpetas compartidas NFS utilizando el comando:
 
 <div class="destacated">
 
-<pre><code>showmount -e {{incident.hostAddress}}
+<pre><code>showmount -e {{incident.ip}}
 </code></pre>
 
 </div>', 'recomendations' => '<ul>
@@ -972,7 +972,7 @@ Y ver carpetas compartidas NFS utilizando el comando:
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:55', 'updated_at' => '2017-12-21 11:57:55'),
-            array('lang' => 'es', 'type' => 'open_qotd', 'slug' => 'open_qotd-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} dispone del servicio QOTD (Quote of the Day) abierto y accesible desde Internet.', 'derivated_problem' => 'El host bajo su administración podría llegar a ser usado en ataques de amplificación para causar ataques de denegación de servicio (DOS, DDOS).', 'verification' => NULL, 'recomendations' => 'Se recomienda alguna de las siguientes:
+            array('lang' => 'es', 'type' => 'open_qotd', 'slug' => 'open_qotd-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} dispone del servicio QOTD (Quote of the Day) abierto y accesible desde Internet.', 'derivated_problem' => 'El host bajo su administración podría llegar a ser usado en ataques de amplificación para causar ataques de denegación de servicio (DOS, DDOS).', 'verification' => NULL, 'recomendations' => 'Se recomienda alguna de las siguientes:
 
 <ul>
 <li><p>Deshabilitar el servicio.</p></li>
@@ -985,7 +985,7 @@ Y ver carpetas compartidas NFS utilizando el comando:
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:55', 'updated_at' => '2017-12-21 11:57:55'),
-            array('lang' => 'es', 'type' => 'open_rdp', 'slug' => 'open_rdp-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} tiene el servicio RDP (Remote Desktop Protocol) accesible desde Internet.', 'derivated_problem' => 'Este servicio puede revelar información sensible o el host bajo su administración podría llegar a ser usado para controlar el dispositivo remotamente.', 'verification' => NULL, 'recomendations' => 'Se recomienda:
+            array('lang' => 'es', 'type' => 'open_rdp', 'slug' => 'open_rdp-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} tiene el servicio RDP (Remote Desktop Protocol) accesible desde Internet.', 'derivated_problem' => 'Este servicio puede revelar información sensible o el host bajo su administración podría llegar a ser usado para controlar el dispositivo remotamente.', 'verification' => NULL, 'recomendations' => 'Se recomienda:
 
 <ul>
 <li><p>Establecer filtros de acceso (reglas de firewall) para exponer el servicio solo a las IPs del administrador.</p></li>
@@ -999,7 +999,7 @@ Y ver carpetas compartidas NFS utilizando el comando:
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:55', 'updated_at' => '2017-12-21 11:57:55'),
-            array('lang' => 'es', 'type' => 'open_redis', 'slug' => 'open_redis-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} dispone del servicio Redis abierto y accesible desde Internet.', 'derivated_problem' => 'Por defecto, este servicio no brinda ningun tipo de autenticación, lo que significa que cualquier entidad podria tener acceso instantaneo a sus datos.', 'verification' => NULL, 'recomendations' => 'Se recomienda alguna de las siguientes:
+            array('lang' => 'es', 'type' => 'open_redis', 'slug' => 'open_redis-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} dispone del servicio Redis abierto y accesible desde Internet.', 'derivated_problem' => 'Por defecto, este servicio no brinda ningun tipo de autenticación, lo que significa que cualquier entidad podria tener acceso instantaneo a sus datos.', 'verification' => NULL, 'recomendations' => 'Se recomienda alguna de las siguientes:
 
 <ul>
 <li><p>Deshabilitar el servicio.</p></li>
@@ -1012,7 +1012,7 @@ Y ver carpetas compartidas NFS utilizando el comando:
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:55', 'updated_at' => '2017-12-21 11:57:55'),
-            array('lang' => 'es', 'type' => 'open_smb', 'slug' => 'open_smb-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} tiene el servicio SMB (Server Message Block) accesible desde Internet.', 'derivated_problem' => 'Este servicio no utiliza encriptación y puede revelar información sensible o el host bajo su administración podría llegar a ser usado para controlar el dispositivo remotamente.', 'verification' => NULL, 'recomendations' => 'Se recomienda:
+            array('lang' => 'es', 'type' => 'open_smb', 'slug' => 'open_smb-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} tiene el servicio SMB (Server Message Block) accesible desde Internet.', 'derivated_problem' => 'Este servicio no utiliza encriptación y puede revelar información sensible o el host bajo su administración podría llegar a ser usado para controlar el dispositivo remotamente.', 'verification' => NULL, 'recomendations' => 'Se recomienda:
 
 <ul>
 <li><p>Establecer filtros de acceso (reglas de firewall) para exponer el servicio solo a las IPs del administrador.</p></li>
@@ -1026,7 +1026,7 @@ Y ver carpetas compartidas NFS utilizando el comando:
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:55', 'updated_at' => '2017-12-21 11:57:55'),
-            array('lang' => 'en', 'type' => 'open_snmp', 'slug' => 'open_snmp-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host/server</em> {{incident.hostAddress}} has the <strong>Simple Network Management Protocol</strong> (SNMP - UDP port 161) service, accessible from the Internet.', 'derivated_problem' => 'The <em>host</em> under your administration could be used to perform attacks, such as:
+            array('lang' => 'en', 'type' => 'open_snmp', 'slug' => 'open_snmp-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host/server</em> {{incident.ip}} has the <strong>Simple Network Management Protocol</strong> (SNMP - UDP port 161) service, accessible from the Internet.', 'derivated_problem' => 'The <em>host</em> under your administration could be used to perform attacks, such as:
 
 <ul>
 <li><p>Obtain unauthorized remote access and information.</p></li>
@@ -1037,7 +1037,7 @@ Y ver carpetas compartidas NFS utilizando el comando:
 * End-user devices should not be configured with SNMP on by default.
 * End-user devices should not be routinely configured with the “public” SNMP community string.
 * Establish firewall rules to filter unauthorized queries.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:59', 'updated_at' => '2017-12-21 11:57:59'),
-            array('lang' => 'es', 'type' => 'open_snmp', 'slug' => 'open_snmp-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} dispone de un servicio SNMP (UDP 161) abierto a redes ajenas de la UNLP.', 'derivated_problem' => 'El host bajo su administración podría llegar a ser usado en ataques de:
+            array('lang' => 'es', 'type' => 'open_snmp', 'slug' => 'open_snmp-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} dispone de un servicio SNMP (UDP 161) abierto a redes ajenas de la UNLP.', 'derivated_problem' => 'El host bajo su administración podría llegar a ser usado en ataques de:
 
 <ul>
 <li><p>Obtención de información de dispositivos de red en forma remota no autorizada.</p></li>
@@ -1050,7 +1050,7 @@ Y ver carpetas compartidas NFS utilizando el comando:
 <li><p>Establecer reglas en el firewall para denegar las consultas desde redes no autorizadas.</p></li>
 <li><p>No usar la comunidad por defecto.</p></li>
 </ul>', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:55', 'updated_at' => '2017-12-21 11:57:55'),
-            array('lang' => 'en', 'type' => 'open_ssdp', 'slug' => 'open_ssdp-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host/server</em> {{incident.hostAddress}} has the <strong>Simple Service Discovery Protocol</strong> (SSDP) service, accessible from the Internet.', 'derivated_problem' => 'The host under your administration could be used to perform attacks, such as:
+            array('lang' => 'en', 'type' => 'open_ssdp', 'slug' => 'open_ssdp-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host/server</em> {{incident.ip}} has the <strong>Simple Service Discovery Protocol</strong> (SSDP) service, accessible from the Internet.', 'derivated_problem' => 'The host under your administration could be used to perform attacks, such as:
 * Denial of Service attacks (DOS, DDOS).', 'verification' => NULL, 'recomendations' => 'We recommend:
 
 <ul>
@@ -1064,7 +1064,7 @@ Y ver carpetas compartidas NFS utilizando el comando:
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:58:00', 'updated_at' => '2017-12-21 11:58:00'),
-            array('lang' => 'es', 'type' => 'open_ssdp', 'slug' => 'open_ssdp-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} dispone del servicio SSDP (Simple Service Discovery Protocol) abierto y accesible desde Internet.', 'derivated_problem' => 'El host bajo su administración podría llegar a ser usado en ataques de amplificación para causar ataques de denegación de servicio (DOS, DDOS).', 'verification' => NULL, 'recomendations' => 'Se recomienda alguna de las siguientes:
+            array('lang' => 'es', 'type' => 'open_ssdp', 'slug' => 'open_ssdp-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} dispone del servicio SSDP (Simple Service Discovery Protocol) abierto y accesible desde Internet.', 'derivated_problem' => 'El host bajo su administración podría llegar a ser usado en ataques de amplificación para causar ataques de denegación de servicio (DOS, DDOS).', 'verification' => NULL, 'recomendations' => 'Se recomienda alguna de las siguientes:
 
 <ul>
 <li><p>Deshabilitar el servicio.</p></li>
@@ -1077,7 +1077,7 @@ Y ver carpetas compartidas NFS utilizando el comando:
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:55', 'updated_at' => '2017-12-21 11:57:55'),
-            array('lang' => 'es', 'type' => 'open_telnet', 'slug' => 'open_telnet-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} tiene el servicio Telnet accesible desde Internet.', 'derivated_problem' => 'Este servicio no utiliza encriptación y puede revelar información sensible o el host bajo su administración podría llegar a ser usado para controlar el dispositivo remotamente.', 'verification' => NULL, 'recomendations' => 'Se recomienda:
+            array('lang' => 'es', 'type' => 'open_telnet', 'slug' => 'open_telnet-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} tiene el servicio Telnet accesible desde Internet.', 'derivated_problem' => 'Este servicio no utiliza encriptación y puede revelar información sensible o el host bajo su administración podría llegar a ser usado para controlar el dispositivo remotamente.', 'verification' => NULL, 'recomendations' => 'Se recomienda:
 
 <ul>
 <li><p>Establecer filtros de acceso (reglas de firewall) para exponer el servicio solo a las IPs del administrador.</p></li>
@@ -1090,7 +1090,7 @@ Y ver carpetas compartidas NFS utilizando el comando:
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:55', 'updated_at' => '2017-12-21 11:57:55'),
-            array('lang' => 'es', 'type' => 'open_tftp', 'slug' => 'open_tftp-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} dispone del servicio TFTP (Trivial file transfer Protocol) abierto y accesible desde Internet.', 'derivated_problem' => 'El host bajo su administración podría llegar a ser usado en ataques de amplificación para causar ataques de denegación de servicio (DOS, DDOS).', 'verification' => NULL, 'recomendations' => 'Se recomienda alguna de las siguientes:
+            array('lang' => 'es', 'type' => 'open_tftp', 'slug' => 'open_tftp-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} dispone del servicio TFTP (Trivial file transfer Protocol) abierto y accesible desde Internet.', 'derivated_problem' => 'El host bajo su administración podría llegar a ser usado en ataques de amplificación para causar ataques de denegación de servicio (DOS, DDOS).', 'verification' => NULL, 'recomendations' => 'Se recomienda alguna de las siguientes:
 
 <ul>
 <li><p>Deshabilitar el servicio.</p></li>
@@ -1103,7 +1103,7 @@ Y ver carpetas compartidas NFS utilizando el comando:
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:55', 'updated_at' => '2017-12-21 11:57:55'),
-            array('lang' => 'es', 'type' => 'open_vnc', 'slug' => 'open_vnc-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} tiene el servicio VNC (Virtual Network Computer/Computing) accesible desde Internet.', 'derivated_problem' => 'Este servicio no utiliza encriptación y puede revelar información sensible o el host bajo su administración podría llegar a ser usado para controlar el dispositivo remotamente.', 'verification' => NULL, 'recomendations' => 'Se recomienda:
+            array('lang' => 'es', 'type' => 'open_vnc', 'slug' => 'open_vnc-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} tiene el servicio VNC (Virtual Network Computer/Computing) accesible desde Internet.', 'derivated_problem' => 'Este servicio no utiliza encriptación y puede revelar información sensible o el host bajo su administración podría llegar a ser usado para controlar el dispositivo remotamente.', 'verification' => NULL, 'recomendations' => 'Se recomienda:
 
 <ul>
 <li><p>Establecer filtros de acceso (reglas de firewall) para exponer el servicio solo a las IPs del administrador.</p></li>
@@ -1116,21 +1116,21 @@ Y ver carpetas compartidas NFS utilizando el comando:
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:55', 'updated_at' => '2017-12-21 11:57:55'),
-            array('lang' => 'en', 'type' => 'phishing_mail', 'slug' => 'phishing_mail-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em> {{incident.hostAddress}} is being used to send emails containing Phishing.', 'derivated_problem' => 'If this issue is not addressed, the <em>host</em> could be added in public lists of compromised hosts, thus emails from this host will be filtered.', 'verification' => 'It is likely that the Phishing emails are being sent by a compromised email account.
+            array('lang' => 'en', 'type' => 'phishing_mail', 'slug' => 'phishing_mail-en', 'problem' => 'We would like to inform you that we have been notified that the <em>host</em> {{incident.ip}} is being used to send emails containing Phishing.', 'derivated_problem' => 'If this issue is not addressed, the <em>host</em> could be added in public lists of compromised hosts, thus emails from this host will be filtered.', 'verification' => 'It is likely that the Phishing emails are being sent by a compromised email account.
 Analyzing the email header, the authenticated user being used to send the emails can be identified (See attached file).', 'recomendations' => '<ul>
 <li><p>Modify the compromised user credentials.</p></li>
 <li><p>Increase awareness related to Phishing attacks in the users.</p></li>
 </ul>', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:58:00', 'updated_at' => '2017-12-21 11:58:00'),
-            array('lang' => 'es', 'type' => 'phishing_mail', 'slug' => 'phishing_mail-es', 'problem' => 'Nos notificaron que el host/servidor {{incident.hostAddress}} está enviando correo con contenido de Phishing.', 'derivated_problem' => 'De no solucionar el problema, el host/servidor puede ser introducido en listas públicas de servidores comprometidos que pueden causar que dicho host/servidor no pueda enviar correos a otros servidores.', 'verification' => 'Es probable que el Phishing se envíe utilizando una cuenta de correo comprometida.
+            array('lang' => 'es', 'type' => 'phishing_mail', 'slug' => 'phishing_mail-es', 'problem' => 'Nos notificaron que el host/servidor {{incident.ip}} está enviando correo con contenido de Phishing.', 'derivated_problem' => 'De no solucionar el problema, el host/servidor puede ser introducido en listas públicas de servidores comprometidos que pueden causar que dicho host/servidor no pueda enviar correos a otros servidores.', 'verification' => 'Es probable que el Phishing se envíe utilizando una cuenta de correo comprometida.
 Analizando la cabecera del email de spam adjunto, puede distinguirse el usuario autenticado que realizó el envío del mensaje.', 'recomendations' => 'Se recomienda cambiar las credenciales de los usuarios afectados e instruir a los mismos sobre ataques de phishing, probablemente utilizado para el robo de las credenciales del usuario.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:56', 'updated_at' => '2017-12-21 11:57:56'),
-            array('lang' => 'en', 'type' => 'phishing_web', 'slug' => 'phishing_web-en', 'problem' => 'We would like to inform you that we have been notified that the <em>server</em> {{incident.hostAddress}} is currently hosting a web service being used to perform Phising attacks.', 'derivated_problem' => 'If this issue is not addressed, the <em>server</em> could be added in public lists of compromised hosts, forcing the web browsers to show security alerts when accessing web pages hosted in the server.', 'verification' => 'Verify the information in the attached file.', 'recomendations' => 'We recommend removing the web content being used to perform the phising attack and request a forensic analysis on the server, as to evaluate what has been compromised.', 'more_information' => '<div class = "destacated">
+            array('lang' => 'en', 'type' => 'phishing_web', 'slug' => 'phishing_web-en', 'problem' => 'We would like to inform you that we have been notified that the <em>server</em> {{incident.ip}} is currently hosting a web service being used to perform Phising attacks.', 'derivated_problem' => 'If this issue is not addressed, the <em>server</em> could be added in public lists of compromised hosts, forcing the web browsers to show security alerts when accessing web pages hosted in the server.', 'verification' => 'Verify the information in the attached file.', 'recomendations' => 'We recommend removing the web content being used to perform the phising attack and request a forensic analysis on the server, as to evaluate what has been compromised.', 'more_information' => '<div class = "destacated">
 
 <ul>
 <li><p><a href="https://support.google.com/chrome/answer/99020?hl=es-419">https://support.google.com/chrome/answer/99020?hl=es-419</a></p></li>
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:58:00', 'updated_at' => '2017-12-21 11:58:00'),
-            array('lang' => 'es', 'type' => 'phishing_web', 'slug' => 'phishing_web-es', 'problem' => 'Nos notificaron que el servidor {{incident.hostAddress}} está alojando un sitio web utilizado para ataques de Phishing.', 'derivated_problem' => 'Este problema puede provocar que su servidor sea introducido en listas públicas de servidores comprometidos pudiendo los navegadores disparar alertas de seguridad a los usuarios cuando accedan a cualquier página web alojada en dicho servidor.', 'verification' => 'Verificar la información enviada en el contenido adjunto.', 'recomendations' => 'Se recomienda dar de baja el contenido WEB utilizado para el ataque de phishing y solicitar a CERTUNLP un análisis forense del servidor para 
+            array('lang' => 'es', 'type' => 'phishing_web', 'slug' => 'phishing_web-es', 'problem' => 'Nos notificaron que el servidor {{incident.ip}} está alojando un sitio web utilizado para ataques de Phishing.', 'derivated_problem' => 'Este problema puede provocar que su servidor sea introducido en listas públicas de servidores comprometidos pudiendo los navegadores disparar alertas de seguridad a los usuarios cuando accedan a cualquier página web alojada en dicho servidor.', 'verification' => 'Verificar la información enviada en el contenido adjunto.', 'recomendations' => 'Se recomienda dar de baja el contenido WEB utilizado para el ataque de phishing y solicitar a CERTUNLP un análisis forense del servidor para 
 determinar la modalidad utilizada por el atacante y el nivel de compromiso del servidor.', 'more_information' => '<div class="destacated">
 
 <ul>
@@ -1138,7 +1138,7 @@ determinar la modalidad utilizada por el atacante y el nivel de compromiso del s
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:56', 'updated_at' => '2017-12-21 11:57:56'),
-            array('lang' => 'en', 'type' => 'poodle', 'slug' => 'poodle-en', 'problem' => 'We would like to inform you that we have been notified that the <em>server</em> {{incident.hostAddress}} is currently vulnerable to Padding Oracle On Downgraded Legacy Encryption (POODLE) attacks.', 'derivated_problem' => 'POODLE is a man-in-the-middle exploit which takes advantage of Internet and security software clients fallback to SSL 3.0. If attackers successfully exploit this vulnerability, sensitive information could be obtained by attackers, compromising confidentiality.', 'verification' => 'Access the following web page to verify that the services currently provided by your host are in fact, vulnerable to POODLE:
+            array('lang' => 'en', 'type' => 'poodle', 'slug' => 'poodle-en', 'problem' => 'We would like to inform you that we have been notified that the <em>server</em> {{incident.ip}} is currently vulnerable to Padding Oracle On Downgraded Legacy Encryption (POODLE) attacks.', 'derivated_problem' => 'POODLE is a man-in-the-middle exploit which takes advantage of Internet and security software clients fallback to SSL 3.0. If attackers successfully exploit this vulnerability, sensitive information could be obtained by attackers, compromising confidentiality.', 'verification' => 'Access the following web page to verify that the services currently provided by your host are in fact, vulnerable to POODLE:
 
 
 <div class = "destacated">
@@ -1154,7 +1154,7 @@ determinar la modalidad utilizada por el atacante y el nivel de compromiso del s
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:58:00', 'updated_at' => '2017-12-21 11:58:00'),
-            array('lang' => 'es', 'type' => 'poodle', 'slug' => 'poodle-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} es
+            array('lang' => 'es', 'type' => 'poodle', 'slug' => 'poodle-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} es
 vulnerable a POODLE.', 'derivated_problem' => 'POODLE es una falla en SSLv3 que permite a un atacante recuperar
 información cifrada, ocasionando de esta forma pérdida de confidencialidad.', 'verification' => 'Acceda a la siguiente página para verificar que los servicios que usted
 provee en el host son vulnerables a POODLE:
@@ -1174,7 +1174,7 @@ puede utilizar TLS.', 'more_information' => '<div class="destacated">
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:56', 'updated_at' => '2017-12-21 11:57:56'),
-            array('lang' => 'es', 'type' => 'rpz_botnet', 'slug' => 'rpz_botnet-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} está realizando consultas de DNS que arrojan coincidencia con nuestra zona RPZ "BOTNET".
+            array('lang' => 'es', 'type' => 'rpz_botnet', 'slug' => 'rpz_botnet-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} está realizando consultas de DNS que arrojan coincidencia con nuestra zona RPZ "BOTNET".
 
 Dicha RPZ, contiene direcciones de red conocidas que están vinculadas a infraestructuras de botnets.
 
@@ -1186,7 +1186,7 @@ Se debe tener en cuenta que si la IP informada es un servidor de mail, este repo
 Por otro lado, si la IP informada es un servidor de DNS (resolver local) el origen del problema no es el servidor sino el host que le hizo la consulta DNS reportada. En este caso, la manera de detectar el host infectado es registrando las consultas DNS.', 'derivated_problem' => 'Es probable que su PC o servidor que esté intentando acceder a dominios de BOTNETs.
 
 Esto indica que la misma esté comprometido con algún tipo de malware y quiera conectarse a un servidor C&amp;C para esperar instrucciones a ejecutar (DoS, fuerza bruta, envío de spams, etc.).', 'verification' => NULL, 'recomendations' => 'Se recomienda analizar el host de la red para verificar y solucionar el problema.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:56', 'updated_at' => '2017-12-21 11:57:56'),
-            array('lang' => 'es', 'type' => 'rpz_dbl', 'slug' => 'rpz_dbl-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} está realizando consultas de DNS que arrojan coincidencia con nuestra zona RPZ “DBL”.
+            array('lang' => 'es', 'type' => 'rpz_dbl', 'slug' => 'rpz_dbl-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} está realizando consultas de DNS que arrojan coincidencia con nuestra zona RPZ “DBL”.
 
 Dicha RPZ, contiene información sobre direcciones de red que son utilizadas como distribuidores de malware, sitios que almacenan malware, redirecciones maliciosas, dominios usados como botnets, servidores de C&amp;C y otras actividades maliciosas.', 'derivated_problem' => 'En la mayoría de los casos puede ser un indicador de que su host está siendo utilizado para enviar spam.', 'verification' => 'Si es el host es un servidor de correo o DNS, es importante que lo notifique al CeRT. Esto es para estudiar con mayor profundidad el caso y ver si se trata de un falso positivo o si realmente su servidor de correo está comprometido.
 
@@ -1197,7 +1197,7 @@ Si el host no es un servidor de correo ni un DNS, es muy probable que tenga alg�
 <li><p>Verificar que nuestro host no esté listado en blacklists.</p></li>
 <li><p>Mejorar la infraestructura anti-spam.</p></li>
 </ul>', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:56', 'updated_at' => '2017-12-21 11:57:56'),
-            array('lang' => 'es', 'type' => 'rpz_drop', 'slug' => 'rpz_drop-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} está realizando consultas de DNS que arrojan coincidencia con nuestra zona RPZ “DROP”.
+            array('lang' => 'es', 'type' => 'rpz_drop', 'slug' => 'rpz_drop-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} está realizando consultas de DNS que arrojan coincidencia con nuestra zona RPZ “DROP”.
 
 Dicha RPZ, consiste de bloques de red bogons, que fueron robados o liberados para generar spam u operaciones criminales.', 'derivated_problem' => 'Es probable que su dispositivo se encuentre comprometido.', 'verification' => 'Puede verificar las conexiones establecidas con el comando "netstat".
 
@@ -1211,7 +1211,7 @@ Dicha RPZ, consiste de bloques de red bogons, que fueron robados o liberados par
 </div>
 
 También verificar tráfico inusual con Wireshark como así también los procesos ejecutándose en el host.', 'recomendations' => 'Se recomienda aislar el host hasta verificar y solucionar el problema.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:56', 'updated_at' => '2017-12-21 11:57:56'),
-            array('lang' => 'es', 'type' => 'rpz_malware_aggressive', 'slug' => 'rpz_malware_aggressive-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} está realizando consultas de DNS que arrojan coincidencia con nuestra zona RPZ “MALWARE-AGGRESSIVE”.
+            array('lang' => 'es', 'type' => 'rpz_malware_aggressive', 'slug' => 'rpz_malware_aggressive-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} está realizando consultas de DNS que arrojan coincidencia con nuestra zona RPZ “MALWARE-AGGRESSIVE”.
 
 Dicha RPZ, contiene direcciones de red conocidas que están vinculadas al malware, que mediante mecanismos normales de scoring no fueron agregados a otra lista, pero deberían ser incluidos por otras razones. Por la naturaleza de esta lista, es posible (aunque poco probable) que se reporten falsos positivos.', 'derivated_problem' => 'Esto indica que es probable que su servidor esté comprometido.', 'verification' => 'Puede verificar las conexiones establecidas con el comando "netstat".
 
@@ -1225,7 +1225,7 @@ Dicha RPZ, contiene direcciones de red conocidas que están vinculadas al malwar
 </div>
 
 También verificar tráfico inusual con Wireshark como así también los procesos ejecutándose en el host.', 'recomendations' => 'Se recomienda aislar el host hasta verificar y solucionar el problema.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:56', 'updated_at' => '2017-12-21 11:57:56'),
-            array('lang' => 'es', 'type' => 'rpz_malware', 'slug' => 'rpz_malware-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} está realizando consultas de DNS que arrojan coincidencia con nuestra zona RPZ “MALWARE”.
+            array('lang' => 'es', 'type' => 'rpz_malware', 'slug' => 'rpz_malware-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} está realizando consultas de DNS que arrojan coincidencia con nuestra zona RPZ “MALWARE”.
 
 Dicha RPZ, contiene sólo información de direcciones de red asociadas con malwares. Están excluidos de esta lista fuentes de spam y phising, también dominios de redirección.', 'derivated_problem' => 'Esto indica que es probable que su servidor esté comprometido.', 'verification' => 'Puede verificar las conexiones establecidas con el comando "netstat".
 
@@ -1239,7 +1239,7 @@ Dicha RPZ, contiene sólo información de direcciones de red asociadas con malwa
 </div>
 
 También verificar tráfico inusual con Wireshark como así también los procesos ejecutándose en el host.', 'recomendations' => 'Se recomienda aislar el host hasta verificar y solucionar el problema.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:56', 'updated_at' => '2017-12-21 11:57:56'),
-            array('lang' => 'en', 'type' => 'scan', 'slug' => 'scan-en', 'problem' => 'We would like to inform you that we have detected that the <em>host</em> {{incident.hostAddress}} is currently performing a Scan process over other devices.', 'derivated_problem' => 'Performing a Scan analysis is likely due to the host being compromised and used to gather information about other hosts inside the network, for possible future attacks. On the other hand, this generates great amount of bandwidth consumption, generating a network speed reduction.', 'verification' => 'It can be verified by analyzing the existing network traffic, using tools such as:
+            array('lang' => 'en', 'type' => 'scan', 'slug' => 'scan-en', 'problem' => 'We would like to inform you that we have detected that the <em>host</em> {{incident.ip}} is currently performing a Scan process over other devices.', 'derivated_problem' => 'Performing a Scan analysis is likely due to the host being compromised and used to gather information about other hosts inside the network, for possible future attacks. On the other hand, this generates great amount of bandwidth consumption, generating a network speed reduction.', 'verification' => 'It can be verified by analyzing the existing network traffic, using tools such as:
 
 
 <div class = "destacated">
@@ -1265,7 +1265,7 @@ It is likely that attackers had gained privileges over the compromised host, we 
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:58:00', 'updated_at' => '2017-12-21 11:58:00'),
-            array('lang' => 'es', 'type' => 'scan', 'slug' => 'scan-es', 'problem' => 'Nos comunicamos con Ud. para comunicarle que el host {{incident.hostAddress}} se encuentra realizando un proceso de Scan sobre otros equipos de la UNLP y/o el exterior.', 'derivated_problem' => 'La realización del proceso de Scan probablemente se deba a que el equipo se encuentre comprometido y siendo utilizado para reconocer otros equipos de la red, los cuales dependiendo del scan, serán luego atacados o no.
+            array('lang' => 'es', 'type' => 'scan', 'slug' => 'scan-es', 'problem' => 'Nos comunicamos con Ud. para comunicarle que el host {{incident.ip}} se encuentra realizando un proceso de Scan sobre otros equipos de la UNLP y/o el exterior.', 'derivated_problem' => 'La realización del proceso de Scan probablemente se deba a que el equipo se encuentre comprometido y siendo utilizado para reconocer otros equipos de la red, los cuales dependiendo del scan, serán luego atacados o no.
 Por otro lado este problema genera la circulación en la red grandes volúmenes de información que generan problemas o pérdidas velocidad en la misma.', 'verification' => 'Se puede realizar una verificación del problema a través del análisis del tráfico existente en la red o sobre el host afectado, utilizando herramientas como 
 
 <div class="destacated">
@@ -1291,7 +1291,7 @@ Habiendo ocurrido una muy probable obtención de privilegios sobre el host por p
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:56', 'updated_at' => '2018-05-24 11:06:34'),
-            array('lang' => 'en', 'type' => 'shellshock', 'slug' => 'shellshock-en', 'problem' => 'We would like to inform you that we have been detected that the <em>host</em> {{incident.hostAddress}} has possible been attacked using the known vulnerability ShellShock.', 'derivated_problem' => 'This vulnerability allows an attacker to read the device memory, possibly compromising sensitive information such as private SSL keys.', 'verification' => 'Due to the report possible being a false positive, we recommend to verify the existence of the vulnerability using the following commands:
+            array('lang' => 'en', 'type' => 'shellshock', 'slug' => 'shellshock-en', 'problem' => 'We would like to inform you that we have been detected that the <em>host</em> {{incident.ip}} has possible been attacked using the known vulnerability ShellShock.', 'derivated_problem' => 'This vulnerability allows an attacker to read the device memory, possibly compromising sensitive information such as private SSL keys.', 'verification' => 'Due to the report possible being a false positive, we recommend to verify the existence of the vulnerability using the following commands:
 
 <div class = "destacated">
 
@@ -1307,7 +1307,7 @@ If the execution of the previous command returns the string "vulnerable", is mos
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:58:00', 'updated_at' => '2017-12-21 11:58:00'),
-            array('lang' => 'es', 'type' => 'shellshock', 'slug' => 'shellshock-es', 'problem' => 'Se ha detectado que el servidor con IP {{incident.hostAddress}} posiblemente ha sido atacado mediante la vulnerabilidad conocida como ShellShock.', 'derivated_problem' => 'Esta vulnerabilidad permite a un atacante leer la memoria de un servidor o un cliente, permitiéndole por ejemplo, conseguir las claves privadas SSL de un servidor.', 'verification' => 'Debido a que este reporte puede ser un falso positivo, se recomienda comprobar que el host sea realmente vulnerable a ShellShock:
+            array('lang' => 'es', 'type' => 'shellshock', 'slug' => 'shellshock-es', 'problem' => 'Se ha detectado que el servidor con IP {{incident.ip}} posiblemente ha sido atacado mediante la vulnerabilidad conocida como ShellShock.', 'derivated_problem' => 'Esta vulnerabilidad permite a un atacante leer la memoria de un servidor o un cliente, permitiéndole por ejemplo, conseguir las claves privadas SSL de un servidor.', 'verification' => 'Debido a que este reporte puede ser un falso positivo, se recomienda comprobar que el host sea realmente vulnerable a ShellShock:
 
 <div class="destacated">
 
@@ -1327,12 +1327,12 @@ con el fin de comprobar que el host no contenga backdoors.', 'more_information' 
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:57', 'updated_at' => '2017-12-21 11:57:57'),
-            array('lang' => 'en', 'type' => 'spam', 'slug' => 'spam-en', 'problem' => 'We would like to inform you that we have been informed that the <em>host</em> {{incident.hostAddress}} is possibly sending SPAM.', 'derivated_problem' => 'If this issue is not addressed, the <em>host</em> could be added in blacklists, thus emails from this host will be filtered.', 'verification' => 'It is likely that the Phishing emails are being sent by a compromised email account.
+            array('lang' => 'en', 'type' => 'spam', 'slug' => 'spam-en', 'problem' => 'We would like to inform you that we have been informed that the <em>host</em> {{incident.ip}} is possibly sending SPAM.', 'derivated_problem' => 'If this issue is not addressed, the <em>host</em> could be added in blacklists, thus emails from this host will be filtered.', 'verification' => 'It is likely that the Phishing emails are being sent by a compromised email account.
 Analyzing the email header, the authenticated user being used to send the emails can be identified (See attached file).', 'recomendations' => '* Modify the compromised user credentials.
 * Increase awareness related to this issue among the users.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:58:00', 'updated_at' => '2017-12-21 11:58:00'),
-            array('lang' => 'es', 'type' => 'spam', 'slug' => 'spam-es', 'problem' => 'Nos notificaron que el host {{incident.hostAddress}} está enviando SPAM.', 'derivated_problem' => 'De no solucionar el problema, su servidor puede ser introducido en distintas blacklists que causarán que dicho servidor no pueda enviar correos a otros servidores.', 'verification' => 'Es probable que el SPAM se envíe utilizando una cuenta de correo comprometida.
+            array('lang' => 'es', 'type' => 'spam', 'slug' => 'spam-es', 'problem' => 'Nos notificaron que el host {{incident.ip}} está enviando SPAM.', 'derivated_problem' => 'De no solucionar el problema, su servidor puede ser introducido en distintas blacklists que causarán que dicho servidor no pueda enviar correos a otros servidores.', 'verification' => 'Es probable que el SPAM se envíe utilizando una cuenta de correo comprometida.
 Analizando la cabecera del email de spam adjunto, puede distinguirse el usuario autenticado que realizó el envío del mensaje.', 'recomendations' => 'Se recomienda cambiar las credenciales de los usuarios afectados e instruir a los mismos sobre los mails de phishing, ataque que probablemente haya sido utilizado para el robo de las credenciales.', 'more_information' => NULL, 'is_active' => '1', 'created_at' => '2017-12-21 11:57:57', 'updated_at' => '2017-12-21 11:57:57'),
-            array('lang' => 'en', 'type' => 'sql_injection', 'slug' => 'sql_injection-en', 'problem' => 'We would like to inform you that we have been informed that the <em>host</em> {{incident.hostAddress}} has SQL injection vulnerabilities.', 'derivated_problem' => 'The <em>host</em> under your administration could be compromising sensitive information.', 'verification' => NULL, 'recomendations' => 'We recommend analyzing the database related entries that use SQL.', 'more_information' => '<div class = "destacated">
+            array('lang' => 'en', 'type' => 'sql_injection', 'slug' => 'sql_injection-en', 'problem' => 'We would like to inform you that we have been informed that the <em>host</em> {{incident.ip}} has SQL injection vulnerabilities.', 'derivated_problem' => 'The <em>host</em> under your administration could be compromising sensitive information.', 'verification' => NULL, 'recomendations' => 'We recommend analyzing the database related entries that use SQL.', 'more_information' => '<div class = "destacated">
 
 <ul>
 <li><p><a href="https://www.owasp.org/index.php/SQL_Injection">https://www.owasp.org/index.php/SQL_Injection</a></p></li>
@@ -1340,7 +1340,7 @@ Analizando la cabecera del email de spam adjunto, puede distinguirse el usuario 
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:58:01', 'updated_at' => '2017-12-21 11:58:01'),
-            array('lang' => 'es', 'type' => 'sql_injection', 'slug' => 'sql_injection-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} tiene
+            array('lang' => 'es', 'type' => 'sql_injection', 'slug' => 'sql_injection-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} tiene
 vulnerabilidades de SQL Injection.', 'derivated_problem' => 'El <em>host</em> bajo su administración podría llegar a estar brindando información sensible, comprometiendo sistemas que corren él.', 'verification' => NULL, 'recomendations' => 'Se recomienda revisar la aplicacion verificando todas las entradas que esten relacionadas con la base de datos y el uso de sql.', 'more_information' => '<div class="destacated">
 
 <ul>
@@ -1349,7 +1349,7 @@ vulnerabilidades de SQL Injection.', 'derivated_problem' => 'El <em>host</em> ba
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:57', 'updated_at' => '2017-12-21 11:57:57'),
-            array('lang' => 'es', 'type' => 'ssl_poodle', 'slug' => 'ssl_poodle-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} es
+            array('lang' => 'es', 'type' => 'ssl_poodle', 'slug' => 'ssl_poodle-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} es
 vulnerable a POODLE.', 'derivated_problem' => 'POODLE es una falla en SSLv3 que permite a un atacante recuperar
 información cifrada, ocasionando de esta forma pérdida de confidencialidad.', 'verification' => 'Acceda a la siguiente página para verificar que los servicios que usted
 provee en el host son vulnerables a POODLE:
@@ -1368,7 +1368,7 @@ puede utilizar TLS.', 'more_information' => '<div class="destacated">
 </ul>
 
 </div>', 'is_active' => '1', 'created_at' => '2017-12-21 11:57:57', 'updated_at' => '2017-12-21 11:57:57'),
-            array('lang' => 'es', 'type' => 'suspicious_behavior', 'slug' => 'suspicious_behavior-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.hostAddress}} se está comportando de manera sospechosa.', 'derivated_problem' => 'esto se puede deber a
+            array('lang' => 'es', 'type' => 'suspicious_behavior', 'slug' => 'suspicious_behavior-es', 'problem' => 'Lo contactamos porque hemos sido informados que el host/servidor {{incident.ip}} se está comportando de manera sospechosa.', 'derivated_problem' => 'esto se puede deber a
 
 <ul>
 <li><p>El sitio web contiene software malicioso: El sitio podría instalar software malicioso a los usuarios.</p></li>

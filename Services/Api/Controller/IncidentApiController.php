@@ -42,20 +42,20 @@ class IncidentApiController extends ApiController
 
         try {
             $object_data = array_merge($request->request->all(), $request->files->all());
-            $hostAddresses = explode(',', $object_data['hostAddress']);
-            if (count($hostAddresses) > 1) {
-                $new_incidents = [];
-                foreach ($hostAddresses as $hostAddress) {
-                    $object_data['hostAddress'] = $hostAddress;
-                    $new_incidents[] = $this->getCustomHandler()->post($object_data);
-                }
-                return $this->response([$new_incidents], Response::HTTP_CREATED);
-            } else {
+//            $ipes = explode(',', $object_data['ip']);
+//            if (count($ipes) > 1) {
+//                $new_incidents = [];
+//                foreach ($ipes as $ip) {
+//                    $object_data['ip'] = $ip;
+//                    $new_incidents[] = $this->getCustomHandler()->post($object_data);
+//                }
+//                return $this->response([$new_incidents], Response::HTTP_CREATED);
+//            } else {
 
-                $newObject = $this->getCustomHandler()->post($object_data);
+            $newObject = $this->getCustomHandler()->post($object_data);
 
-                return $this->response([$newObject], Response::HTTP_CREATED);
-            }
+            return $this->response([$newObject], Response::HTTP_CREATED);
+            
         } catch (InvalidFormException $exception) {
             return $exception->getForm();
         }

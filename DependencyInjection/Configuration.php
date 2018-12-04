@@ -90,7 +90,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Entity\Incident\InternalIncident')
+            ->defaultValue('CertUnlp\NgenBundle\Entity\Incident\Incident')
             ->end()
             ->arrayNode('handler')
             ->addDefaultsIfNotSet()

@@ -27,6 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity()
+ * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Listener\InternalIncidentListener" })
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
  * @CustomAssert\TypeHasReport
@@ -180,19 +181,12 @@ class Incident implements IncidentInterface
     /**
      * @var bool
      */
-    protected $sendReport;
+    protected $sendReport = true;
+
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=15)
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    protected $ip;
-    /**
-     * @var string
-     *
-     * @Gedmo\Slug(fields={"ip"},separator="_")
+     * @Gedmo\Slug(fields={"id"},separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
@@ -300,7 +294,7 @@ class Incident implements IncidentInterface
     /**
      * @return User
      */
-    public function getReporter(): ReporterInterface
+    public function getReporter(): ?ReporterInterface
     {
         return $this->reporter;
     }
@@ -318,7 +312,7 @@ class Incident implements IncidentInterface
     /**
      * @return User
      */
-    public function getAssigned(): User
+    public function getAssigned(): ?ReporterInterface
     {
         return $this->assigned;
     }
@@ -354,7 +348,7 @@ class Incident implements IncidentInterface
     /**
      * @return IncidentType
      */
-    public function getType(): IncidentType
+    public function getType(): ?IncidentType
     {
         return $this->type;
     }
@@ -372,7 +366,7 @@ class Incident implements IncidentInterface
     /**
      * @return IncidentFeed
      */
-    public function getFeed(): IncidentFeed
+    public function getFeed(): ?IncidentFeed
     {
         return $this->feed;
     }
@@ -390,7 +384,7 @@ class Incident implements IncidentInterface
     /**
      * @return IncidentTlp
      */
-    public function getTlp(): IncidentTlp
+    public function getTlp(): ?IncidentTlp
     {
         return $this->tlp;
     }
@@ -408,7 +402,7 @@ class Incident implements IncidentInterface
     /**
      * @return IncidentUrgency
      */
-    public function getUrgency(): IncidentUrgency
+    public function getUrgency(): ?IncidentUrgency
     {
         return $this->urgency;
     }
@@ -426,7 +420,7 @@ class Incident implements IncidentInterface
     /**
      * @return IncidentImpact
      */
-    public function getImpact(): IncidentImpact
+    public function getImpact(): ?IncidentImpact
     {
         return $this->impact;
     }
@@ -498,25 +492,33 @@ class Incident implements IncidentInterface
     /**
      * @return string
      */
-    public function getIp(): string
+    public function getIp(): ?string
     {
-        return $this->ip;
+        return $this->getOrigin()->getIpV4();
     }
 
     /**
-     * @param string $ip
+     * @return Host
+     */
+    public function getOrigin(): Host
+    {
+        return $this->origin;
+    }
+
+    /**
+     * @param Host $origin
      * @return Incident
      */
-    public function setIp(string $ip): Incident
+    public function setOrigin(Host $origin): Incident
     {
-        $this->ip = $ip;
+        $this->origin = $origin;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getNotes(): string
+    public function getNotes(): ?string
     {
         return $this->notes;
     }
@@ -543,14 +545,14 @@ class Incident implements IncidentInterface
      */
     public function getSlug(): string
     {
-        return $this->slug;
+        return $this->slug ?: 'ss';
     }
 
     /**
      * @param string $slug
      * @return Incident
      */
-    public function setSlug(string $slug): Incident
+    public function setSlug(?string $slug): Incident
     {
         $this->slug = $slug;
         return $this;
@@ -568,7 +570,11 @@ class Incident implements IncidentInterface
         } else {
             $date = $this->getDate();
         }
-        return $date->diff(new \DateTime())->days;
+
+        if ($date) {
+            return $date->diff(new \DateTime())->days;
+        }
+        return null;
     }
 
     /**
@@ -592,7 +598,7 @@ class Incident implements IncidentInterface
     /**
      * @return \DateTime
      */
-    public function getDate(): \DateTime
+    public function getDate(): ?\DateTime
     {
         return $this->date;
     }
@@ -601,7 +607,7 @@ class Incident implements IncidentInterface
      * @param \DateTime $date
      * @return Incident
      */
-    public function setDate(\DateTime $date): Incident
+    public function setDate(\DateTime $date = null): Incident
     {
         $this->date = $date;
         return $this;
@@ -627,7 +633,7 @@ class Incident implements IncidentInterface
      *
      * @return IncidentState
      */
-    public function getState(): IncidentState
+    public function getState(): ?IncidentState
     {
         return $this->state;
     }
@@ -673,7 +679,7 @@ class Incident implements IncidentInterface
      *
      * @return UploadedFile
      */
-    public function getEvidenceFile(): UploadedFile
+    public function getEvidenceFile(): ?UploadedFile
     {
         return $this->evidence_file;
     }
@@ -740,25 +746,6 @@ class Incident implements IncidentInterface
         return '/' . $this->getDate()->format('Y') . '/' . $this->getDate()->format('F') . '/' . $this->getDate()->format('d');
     }
 
-
-    /**
-     * @return Host
-     */
-    public function getOrigin(): Host
-    {
-        return $this->origin;
-    }
-
-    /**
-     * @param Host $origin
-     * @return Incident
-     */
-    public function setOrigin(Host $origin): Incident
-    {
-        $this->origin = $origin;
-        return $this;
-    }
-
     /**
      * @return bool
      */
@@ -798,7 +785,7 @@ class Incident implements IncidentInterface
     /**
      * @return NetworkInterface
      */
-    public function getNetwork(): NetworkInterface
+    public function getNetwork(): ?NetworkInterface
     {
         return $this->network;
     }
@@ -813,4 +800,14 @@ class Incident implements IncidentInterface
         return $this;
     }
 
+    /**
+     * Set ip
+     *
+     * @param string $ip
+     * @return Incident
+     */
+    public function setIp(string $ip): Incident
+    {
+        return $this;
+    }
 }

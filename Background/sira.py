@@ -33,7 +33,7 @@ class Sira:
 
         apipath = 'api/v1/incidents.json?apikey=' + self.config['api']['apikey']
         headers = {'Content-Type': 'application/json'}
-        payload = json.dumps({'type': 'spam', 'hostAddress': spammer_host,
+        payload = json.dumps({'type': 'spam', 'ip': spammer_host,
                               'feed': 'external_report'})
 
         url = parse.urljoin(self.config['api']['api_server'], apipath)
@@ -48,7 +48,7 @@ class Sira:
 
         apipath = 'api/v1/incidents.json?apikey=' + self.config['api']['apikey']
         headers = {'Content-Type': 'application/json'}
-        payload = json.dumps({'type': 'spam', 'hostAddress': spammer_host,
+        payload = json.dumps({'type': 'spam', 'ip': spammer_host,
                               'feed': 'external_report'})
 
         url = parse.urljoin(self.config['api']['api_server'], apipath)
