@@ -39,18 +39,18 @@ class IncidentFrontendController extends FrontendController
 
         $zipname = $incident . '_' . md5(time()) . '.zip';
         $zip = new \ZipArchive();
-        $zip->open("/tmp/" . $zipname, \ZipArchive::CREATE);
-
         $evidence_path = $this->evidence_path . $incident->getEvidenceSubDirectory() . "/";
+        $zip->open($evidence_path . $zipname, \ZipArchive::CREATE);
+
 
         $options = array('remove_all_path' => TRUE);
         $zip->addGlob($evidence_path . $incident . "*", GLOB_BRACE, $options);
         $zip->close();
 
-        $response = new BinaryFileResponse("/tmp/" . $zipname);
+        $response = new BinaryFileResponse($evidence_path . $zipname);
         $response->headers->set('Content-Type', 'application/zip');
         $response->headers->set('Content-disposition', ' attachment; filename="' . $zipname . '"');
-        $response->headers->set('Content-Length', filesize("/tmp/" . $zipname));
+        $response->headers->set('Content-Length', filesize($evidence_path . $zipname));
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
             $zipname

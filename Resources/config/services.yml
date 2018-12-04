@@ -177,7 +177,7 @@ services:
 
     cert_unlp.ngen.incident.internal.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController
-        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.internal.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.internal","@fos_comment.manager.comment","@fos_comment.manager.thread","@security.token_storage",%cert_unlp.ngen.incident.evidence.path%"]
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.internal.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.internal","@fos_comment.manager.comment","@fos_comment.manager.thread","@security.token_storage","%cert_unlp.ngen.incident.evidence.path%"]
 
     cert_unlp.ngen.incident.external.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController
