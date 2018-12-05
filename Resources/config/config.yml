@@ -167,7 +167,3 @@ jms_serializer:
             FOSUB:
                 namespace_prefix: "FOS\\UserBundle"
                 path: "@CertUnlpNgenBundle/Resources/config/serializer"
-
-twig:
-    globals:
-        sign: "%cert_unlp.ngen.global.sign%"

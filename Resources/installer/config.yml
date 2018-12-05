@@ -112,3 +112,6 @@ monolog:
             type:  console
 doctrine_migrations:
     dir_name: "%kernel.root_dir%/../vendor/certunlp/ngen-bundle/DoctrineMigrations"
+twig:
+    globals:
+        sign: "%sign%"
