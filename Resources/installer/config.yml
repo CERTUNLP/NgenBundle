@@ -73,6 +73,7 @@ cert_unlp_ngen:
         mail: '%team_mail%'
         abuse:  '%team_abuse%'
         url: '%team_url%'
+        name: '%team_name%'
     incidents:
         mailer:
             transport: '%mailer_transport%'
