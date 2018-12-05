@@ -69,6 +69,7 @@ services:
         - TEAM_MAIL=pepe@localhost
         - TEAM_ABUSE=pepe@localhost
         - TEAM_URL=http://www.cert.unlp.edu.ar
+        - TEAM_NAME=CERTUNLP
         - DEFAULT_NETWORK=10.0.0.0
         - ELASTIC_HOST=ngen-elastic
         - ELASTIC_PORT=9200

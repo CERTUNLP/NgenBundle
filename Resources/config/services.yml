@@ -30,11 +30,11 @@ services:
 
     cert_unlp.ngen.incident.factory:
         class:        "%cert_unlp.ngen.incident.factory.class%"
-        arguments:    ["@cert_unlp.ngen.network.handler","%cert_unlp.ngen.incident.internal.class%","@form.factory", "@security.context","%cert_unlp.ngen.incident.reporter.class%","%cert_unlp.ngen.team.abuse%","%cert_unlp.ngen.team.url%"]
+        arguments:    ["@cert_unlp.ngen.network.handler","%cert_unlp.ngen.incident.internal.class%","@form.factory", "@security.context","%cert_unlp.ngen.incident.reporter.class%"]
 
     cert_unlp.ngen.incident.report.factory:
         class:     CertUnlp\NgenBundle\Services\IncidentReportFactory
-        arguments: ["@twig","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view",]
+        arguments: ["@twig","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view","%cert_unlp.ngen.team%"]
 
     cert_unlp.ngen.internal.incident.mailer:
         class:        "%cert_unlp.ngen.incident.internal.mailer.class%"
