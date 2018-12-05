@@ -22,18 +22,20 @@ class IncidentReportFactory
     protected $templating;
     private $viewHandler;
     private $view;
+    private $team;
     private $custom_handler;
 
-    public function __construct(Twig_Environment $templating, ViewHandler $viewHandler, View $view)
+    public function __construct(Twig_Environment $templating, ViewHandler $viewHandler, View $view, $team)
     {
         $this->templating = $templating;
         $this->viewHandler = $viewHandler;
         $this->view = $view;
+        $this->team = $team;
     }
 
     public function getReport($incident, $lang)
     {
-        $data = array('report' => $incident->getType()->getReport($lang), 'incident' => $incident);
+        $data = array('report' => $incident->getType()->getReport($lang), 'incident' => $incident, 'team' => $this->team );
         $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/' . $lang . '.html.twig');
         $this->getView()->setTemplateData($data);
         $html = $this->viewHandler->renderTemplate($this->getView(), 'html');
