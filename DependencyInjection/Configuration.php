@@ -33,24 +33,28 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->addDefaultsIfNotSet()
-            ->children()
-            ->arrayNode('team')
-            ->children()
-            ->scalarNode('mail')
-            ->isRequired()
-            ->cannotBeEmpty()
-            ->end()
-            ->scalarNode('abuse')
-            ->isRequired()
-            ->cannotBeEmpty()
-            ->end()
-            ->scalarNode('url')
-            ->isRequired()
-            ->cannotBeEmpty()
-            ->end()
-            ->end()
-            ->end()
-            ->end();
+                ->children()
+                    ->arrayNode('team')
+                    ->children()
+                        ->scalarNode('mail')
+                            ->isRequired()
+                            ->cannotBeEmpty()
+                        ->end()
+                        ->scalarNode('abuse')
+                            ->isRequired()
+                            ->cannotBeEmpty()
+                        ->end()
+                        ->scalarNode('url')
+                            ->isRequired()
+                            ->cannotBeEmpty()
+                        ->end()
+                        ->scalarNode('name')
+                            ->isRequired()
+                            ->cannotBeEmpty()
+                        ->end()
+                    ->end()
+                    ->end()
+                ->end();
 
         $this->addConfigGlobal($rootNode);
         $this->addIncidentSection($rootNode);
@@ -67,16 +71,18 @@ class Configuration implements ConfigurationInterface
     {
         $rootNode
             ->children()
-            ->arrayNode('global')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('sign')
-            ->defaultValue('true')
-            ->end()
-            ->end()
-            ->end()
+                ->arrayNode('global')
+                  ->addDefaultsIfNotSet()
+                   ->children()
+                    ->booleanNode('sign')
+                        ->defaultValue('true')
+                    ->end()
+                   ->end()
+                ->end()
             ->end();
     }
+
+
 
 
     private function addIncidentSection(ArrayNodeDefinition $rootNode)
@@ -112,7 +118,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Form\IncidentType')
+            ->defaultValue('CertUnlp\NgenBundle\Form\InternalIncidentType')
             ->end()
             ->end()
             ->end()
@@ -156,7 +162,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Entity\NetworkExternal')
+            ->defaultValue('CertUnlp\NgenBundle\Entity\Incident\ExternalIncident')
             ->end()
             ->arrayNode('handler')
             ->addDefaultsIfNotSet()
@@ -335,7 +341,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Form\IncidentTypoType')
+            ->defaultValue('CertUnlp\NgenBundle\Form\IncidentTypeType')
             ->end()
             ->end()
             ->end()
@@ -564,7 +570,6 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->end();
     }
-
     private function addIncidentDecisionSection(ArrayNodeDefinition $rootNode)
     {
         $rootNode

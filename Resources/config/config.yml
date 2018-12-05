@@ -170,4 +170,4 @@ jms_serializer:
 
 twig:
     globals:
-        sign: "%cert_unlp.ngen.global.sign"
+        sign: "%cert_unlp.ngen.global.sign%"
