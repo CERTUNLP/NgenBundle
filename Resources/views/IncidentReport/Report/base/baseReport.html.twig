@@ -136,7 +136,8 @@
                                             <tr>
                                                 <td class="panel">
                                                     <p style="text-align:center;">
-                                                        {%  if sign == true %}
+                                                        {{ sign }}
+                                                        {%  if sign == false %}
                                                             {% block footer_generated_by %}
                                                             {% endblock %}
                                                         {% endif %}
