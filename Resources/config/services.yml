@@ -41,7 +41,7 @@ services:
         arguments:    ["@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","@twig","%cert_unlp.ngen.incident.internal.mailer.sender_address%","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%","@cert_unlp.ngen.incident.report.factory","%cert_unlp.ngen.incident.internal.report.lang%"]
         tags:
             - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
-            - { name: cert_unlp.ngen.incident.internal.delegate, priority: 1 }
+            - { name: cert_unlp.ngen.incident.internal.delegate, priority: 2 }
 
     cert_unlp.ngen.external.incident.mailer:
         class:        "%cert_unlp.ngen.incident.external.mailer.class%"
@@ -55,7 +55,6 @@ services:
         arguments:    ["%cert_unlp.ngen.incident.evidence.path%"]
         tags:
             - { name: cert_unlp.ngen.incident.internal.delegate, priority: 0 }
-            - { name: cert_unlp.ngen.incident.external.delegate, priority: 1 }
 
 
     cert_unlp.ngen.incident.internal.delegator_chain:
@@ -70,10 +69,17 @@ services:
 
     cert_unlp.ngen.incident.internal.listener:
         class: CertUnlp\NgenBundle\Entity\Incident\Listener\InternalIncidentListener
-        arguments: [ "@cert_unlp.ngen.incident.internal.delegator_chain","@cert_unlp.ngen.network.handler","@cert_unlp.ngen.incident.internal.handler","@doctrine.orm.entity_manager","@fos_comment.manager.thread","@router" ]
+        arguments: [ "@cert_unlp.ngen.incident.internal.delegator_chain","@cert_unlp.ngen.host.handler","@cert_unlp.ngen.network.handler","@cert_unlp.ngen.incident.internal.handler","@doctrine.orm.entity_manager","@fos_comment.manager.thread","@router" ]
         tags:
             - { name: doctrine.entity_listener }
             - { name: kernel.event_listener, event: cert_unlp.incident.convert_to_incident.event, method: onConvertToIncident }
+
+
+    cert_unlp.ngen.incident.host.listener:
+        class: CertUnlp\NgenBundle\Entity\Incident\Host\Listener\HostListener
+        arguments: [ "@cert_unlp.ngen.host.handler","@cert_unlp.ngen.network.handler","@doctrine.orm.entity_manager","@fos_comment.manager.thread","@router" ]
+        tags:
+            - { name: doctrine.entity_listener }
 
     cert_unlp.ngen.incident.external.listener:
         class: CertUnlp\NgenBundle\Entity\Incident\Listener\ExternalIncidentListener
@@ -128,6 +134,9 @@ services:
     cert_unlp.ngen.incident.decision.handler:
         class:        "%cert_unlp.ngen.incident.decision.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.decision.class%","%cert_unlp.ngen.incident.decision.form_type.class%","@form.factory"]
+    cert_unlp.ngen.host.handler:
+        class:        CertUnlp\NgenBundle\Services\Api\Handler\HostHandler
+        arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Incident\Host\Host,CertUnlp\NgenBundle\Form\HostType,"@form.factory"]
 
 
     cert_unlp.ngen.incident.decision.api.controller:
@@ -241,10 +250,10 @@ services:
             - { name: validator.constraint_validator, alias: type.has.report.validator }
 
     cert_unlp.ngen.rdap_client:
-        class:        CertUnlp\NgenBundle\Services\IncidentRdapClient
+        class: CertUnlp\NgenBundle\Services\NetworkRdapClient
         arguments: ["%cert_unlp.ngen.resources.path%"]
         tags:
-            - { name: cert_unlp.ngen.incident.external.delegate, priority: 0 }
+            - { name: cert_unlp.ngen.incident.internal.delegate, priority: 1 }
 
     app.form.registration:
         class: CertUnlp\NgenBundle\Form\UserRegistrationType

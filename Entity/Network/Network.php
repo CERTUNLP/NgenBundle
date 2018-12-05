@@ -125,13 +125,18 @@ abstract class Network implements NetworkInterface
     private $incidents;
 
     /**
+     * @var Collection| IncidentInterface[]
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Host\Host",mappedBy="network", cascade={"persist","remove"}))
+     * @JMS\Expose
+     */
+    private $hosts;
+    /**
      * @var boolean
      *
      * @ORM\Column(name="is_active", type="boolean")
      * @JMS\Expose
      */
     private $isActive = true;
-
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
@@ -140,7 +145,6 @@ abstract class Network implements NetworkInterface
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
-
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="update")
@@ -149,7 +153,6 @@ abstract class Network implements NetworkInterface
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
-
     /**
      * @var Collection| IncidentDecision[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDecision",mappedBy="network", cascade={"persist","remove"}))
@@ -163,6 +166,24 @@ abstract class Network implements NetworkInterface
     {
         $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->incidentsDecisions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * @return IncidentInterface[]|Collection
+     */
+    public function getHosts()
+    {
+        return $this->hosts;
+    }
+
+    /**
+     * @param IncidentInterface[]|Collection $hosts
+     * @return Network
+     */
+    public function setHosts($hosts)
+    {
+        $this->hosts = $hosts;
+        return $this;
     }
 
     /**

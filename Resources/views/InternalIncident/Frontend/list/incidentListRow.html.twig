@@ -26,8 +26,8 @@
         {% include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incident': incident,'lastTimeDetected':incident.lastTimeDetected} %}
     </td>
     <td>
-       <span class="tlp-{{ incident.tlpState }} left">
-        TLP-{{ incident.tlpState|upper }}
+       <span class="tlp-{{ incident.tlp }} left">
+        TLP-{{ incident.tlp|upper }}
        </span>
     </td>
     <td>

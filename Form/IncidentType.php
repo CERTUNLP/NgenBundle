@@ -65,7 +65,7 @@ class IncidentType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
-            ->add('ip', null, array(
+            ->add('ip_v4', null, array(
                 'attr' => array('maxlength' => '300', 'help_text' => 'Add more than one address separating them with a comma.'),
                 'description' => 'The host IP. (Add more than one address separating them with a comma.)'))
             ->add('feed', EntityType::class, array(

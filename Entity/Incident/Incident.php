@@ -197,6 +197,28 @@ class Incident implements IncidentInterface
      * @ORM\Column(type="text", nullable=true)
      */
     protected $notes;
+
+    /**
+     * @var string|null
+     *
+     * @Assert\Ip(version="4_no_priv")
+     */
+    private $ip_v4;
+    /**
+     * @var string|null
+     *
+     * @Assert\Ip(version="6_no_priv")
+     */
+    private $ip_v6;
+
+    /**
+     * @var string|null
+     *
+     * @Assert\Url()
+     * )
+     */
+    private $url;
+
     /**
      * @var Host|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Host\Host", inversedBy="incidents_as_origin")
@@ -235,6 +257,54 @@ class Incident implements IncidentInterface
     {
         $this->id = $id;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIpV4(): ?string
+    {
+        return $this->ip_v4;
+    }
+
+    /**
+     * @param string $ip_v4
+     */
+    public function setIpV4(string $ip_v4): void
+    {
+        $this->ip_v4 = $ip_v4;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIpV6(): string
+    {
+        return $this->ip_v6;
+    }
+
+    /**
+     * @param string $ip_v6
+     */
+    public function setIpV6(string $ip_v6): void
+    {
+        $this->ip_v6 = $ip_v6;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function setUrl(string $url): void
+    {
+        $this->url = $url;
     }
 
     /**
@@ -494,13 +564,33 @@ class Incident implements IncidentInterface
      */
     public function getIp(): ?string
     {
-        return $this->getOrigin()->getIpV4();
+        return $this->ip_v4;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHostAddress(): ?string
+    {
+        return $this->ip_v4;
+    }
+
+    /**
+     * Set ip
+     *
+     * @param string $ip
+     * @return Incident
+     */
+    public function setIp(string $ip): Incident
+    {
+        $this->ip_v4 = $ip;
+        return $this;
     }
 
     /**
      * @return Host
      */
-    public function getOrigin(): Host
+    public function getOrigin(): ?Host
     {
         return $this->origin;
     }
@@ -563,7 +653,7 @@ class Incident implements IncidentInterface
      * @return int
      * @throws \Exception
      */
-    public function getOpenDays(bool $lastTimeDetected = false): int
+    public function getOpenDays($lastTimeDetected = false): int
     {
         if ($lastTimeDetected) {
             $date = $this->getLastTimeDetected() ?: $this->getDate();
@@ -580,7 +670,7 @@ class Incident implements IncidentInterface
     /**
      * @return \DateTime
      */
-    public function getLastTimeDetected(): \DateTime
+    public function getLastTimeDetected(): ?\DateTime
     {
         return $this->lastTimeDetected;
     }
@@ -723,7 +813,7 @@ class Incident implements IncidentInterface
 
             return $pre_path . $this . $this->evidence_file_path;
         }
-        return null;
+        return '';
     }
 
     /**
@@ -767,7 +857,7 @@ class Incident implements IncidentInterface
     /**
      * @return Host
      */
-    public function getDestination(): Host
+    public function getDestination(): ?Host
     {
         return $this->destination;
     }
@@ -797,17 +887,6 @@ class Incident implements IncidentInterface
     public function setNetwork(NetworkInterface $network = null): Incident
     {
         $this->network = $network;
-        return $this;
-    }
-
-    /**
-     * Set ip
-     *
-     * @param string $ip
-     * @return Incident
-     */
-    public function setIp(string $ip): Incident
-    {
         return $this;
     }
 }

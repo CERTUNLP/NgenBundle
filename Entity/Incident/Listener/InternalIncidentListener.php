@@ -11,9 +11,11 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident\Listener;
 
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Event\ConvertToIncidentEvent;
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
+use CertUnlp\NgenBundle\Services\Api\Handler\HostHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\InternalIncidentHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\NetworkHandler;
 use CertUnlp\NgenBundle\Services\Delegator\DelegatorChain;
@@ -36,10 +38,12 @@ class InternalIncidentListener
     private $entityManager;
     private $thread_manager;
     private $router;
+    private $host_handler;
 
-    public function __construct(DelegatorChain $delegator_chain, NetworkHandler $network_handler, InternalIncidentHandler $incident_handler, EntityManager $entityManager, ThreadManagerInterface $thread_manager, Router $router)
+    public function __construct(DelegatorChain $delegator_chain, HostHandler $host_handler, NetworkHandler $network_handler, InternalIncidentHandler $incident_handler, EntityManager $entityManager, ThreadManagerInterface $thread_manager, Router $router)
     {
         $this->delegator_chain = $delegator_chain;
+        $this->host_handler = $host_handler;
         $this->network_handler = $network_handler;
         $this->incident_handler = $incident_handler;
         $this->entityManager = $entityManager;
@@ -63,6 +67,7 @@ class InternalIncidentListener
     {
         $this->timestampsUpdate($incident);
         $this->slugUpdate($incident);
+        $this->hostUpdate($incident);
         $this->networkUpdate($incident);
         $this->stateUpdate($incident, $event);
         $this->feedUpdate($incident, $event);
@@ -84,27 +89,56 @@ class InternalIncidentListener
      */
     public function slugUpdate(IncidentInterface $incident): void
     {
-        $incident->setSlug(Sluggable\Urlizer::urlize($incident->getIp() . ' ' . $incident->getType()->getSlug() . ' ' . $incident->getDate()->format('Y-m-d-H-i'), '_'));
+        $incident->setSlug(Sluggable\Urlizer::urlize($incident->getOrigin() . ' ' . $incident->getType()->getSlug() . ' ' . $incident->getDate()->format('Y-m-d-H-i'), '_'));
     }
 
     /**
-     * @param IncidentInterface $incident
+     * @param Incident $incident
      */
-    public function networkUpdate(IncidentInterface $incident): void
+    public function hostUpdate(Incident $incident): void
     {
-        $network = $incident->getNetwork();
-        $newNetwork = $this->network_handler->getByHostAddress($incident->getIp());
-        if ($network) {
-            if (!$network->equals($newNetwork) && !$incident->isClosed()) {
-                $incident->setNetwork($newNetwork);
-//                $incident->setNetworkAdmin($newNetwork->getNetworkAdmin());
+        $host = $incident->getOrigin();
+        $host_new = $this->getHostHandler()->findByIpV4($incident->getIp()) ?: $this->getHostHandler()->post(['ip_v4' => $incident->getIp()]);
+        if ($host) {
+            if (!$host->equals($host_new) && !$incident->isClosed()) {
+                $incident->setOrigin($host_new);
             }
         } else {
-            $incident->setNetwork($newNetwork);
-//            $incident->setNetworkAdmin($newNetwork->getNetworkAdmin());
+            $incident->setOrigin($host_new);
         }
     }
 
+    /**
+     * @return HostHandler
+     */
+    public function getHostHandler(): HostHandler
+    {
+        return $this->host_handler;
+    }
+
+    /**
+     * @param HostHandler $host_handler
+     */
+    public function setHostHandler(HostHandler $host_handler): void
+    {
+        $this->host_handler = $host_handler;
+    }
+
+    /**
+     * @param Incident $incident
+     */
+    public function networkUpdate(Incident $incident): void
+    {
+        $network = $incident->getNetwork();
+        $network_new = $incident->getOrigin()->getNetwork();
+        if ($network) {
+            if (!$network->equals($network_new) && !$incident->isClosed()) {
+                $incident->setNetwork($network_new);
+            }
+        } else {
+            $incident->setNetwork($network_new);
+        }
+    }
 
     public function stateUpdate(IncidentInterface $incident, LifecycleEventArgs $event): void
     {
@@ -112,7 +146,7 @@ class InternalIncidentListener
         $repository = $entityManager->getRepository('CertUnlpNgenBundle:Incident\IncidentState');
         $state = $incident->getState();
         $newState = $repository->findOneBySlug('open');
-        if ($state == null) {
+        if ($state === null) {
             $incident->setState($newState);
         }
     }

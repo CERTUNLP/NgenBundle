@@ -22,6 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity()
+ * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Host\Listener\HostListener" })
  */
 class Host
 {
@@ -39,7 +40,7 @@ class Host
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=15, nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      * @Assert\Ip(version="4_no_priv")
@@ -48,7 +49,7 @@ class Host
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=39)
+     * @ORM\Column(type="string", length=39, nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      * @Assert\Ip(version="6_no_priv")
@@ -58,7 +59,7 @@ class Host
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=39)
+     * @ORM\Column(type="string", length=39, nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      *
@@ -132,9 +133,11 @@ class Host
 
     /**
      * Host constructor.
+     * @param string $ip_v4
      */
-    public function __construct()
+    public function __construct(string $ip_v4 = null)
     {
+        $this->ip_v4 = $ip_v4;
         $this->incidents_as_origin = new ArrayCollection();
         $this->incidents_as_destination = new ArrayCollection();
     }
@@ -154,24 +157,6 @@ class Host
     public function setId(int $id): Host
     {
         $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIpV4(): string
-    {
-        return $this->ip_v4;
-    }
-
-    /**
-     * @param string $ip_v4
-     * @return Host
-     */
-    public function setIpV4(string $ip_v4): Host
-    {
-        $this->ip_v4 = $ip_v4;
         return $this;
     }
 
@@ -268,7 +253,7 @@ class Host
     /**
      * @return Network
      */
-    public function getNetwork(): Network
+    public function getNetwork(): ?Network
     {
         return $this->network;
     }
@@ -355,5 +340,35 @@ class Host
         return $this;
     }
 
+    /**
+     * @param Host|null $other
+     * @return bool
+     */
+    public function equals(Host $other = null): bool
+    {
+        if ($other) {
+            return ($this->getIpV4() === $other->getIpV4());
+        }
+        return false;
+
+    }
+
+    /**
+     * @return string
+     */
+    public function getIpV4(): ?string
+    {
+        return $this->ip_v4;
+    }
+
+    /**
+     * @param string $ip_v4
+     * @return Host
+     */
+    public function setIpV4(string $ip_v4): Host
+    {
+        $this->ip_v4 = $ip_v4;
+        return $this;
+    }
 
 }
