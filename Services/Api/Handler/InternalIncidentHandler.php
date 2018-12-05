@@ -11,6 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
+
 class InternalIncidentHandler extends IncidentHandler
 {
 
@@ -39,15 +41,22 @@ class InternalIncidentHandler extends IncidentHandler
         return $this->repository->findRenotificables();
     }
 
+    /**
+     * @param $incident Incident
+     * @param $method
+     * @return object|null
+     * @throws \Exception
+     */
     protected function checkIfExists($incident, $method)
     {
-        $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'ip' => $incident->getIp(), 'type' => $incident->getType()]);
-        if ($incidentDB && $method == 'POST') {
-            if ($incident->getFeed()->getSlug() == "shadowserver") {
-                $incidentDB->setSendReport(false);
-            } else {
-                $incidentDB->setSendReport($incident->isSendReport());
-            }
+        $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'origin' => $incident->getOrigin(), 'type' => $incident->getType()]);
+//        var_dump($incident->getOrigin());die;
+        if ($incidentDB && $method === 'POST') {
+//            if ($incident->getFeed()->getSlug() === "shadowserver") {
+//                $incidentDB->setSendReport(false);
+//            } else {
+//                $incidentDB->setSendReport($incident->isSendReport());
+//            }
 
             if ($incident->getEvidenceFile()) {
                 $incidentDB->setEvidenceFile($incident->getEvidenceFile());

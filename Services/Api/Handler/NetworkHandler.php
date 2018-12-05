@@ -50,7 +50,7 @@ class NetworkHandler extends Handler
      * @param $address
      * @return NetworkInterface
      */
-    public function getByHostAddress(string $address): NetworkInterface
+    public function getByHostAddress(string $address): ?NetworkInterface
     {
         return $this->repository->findByIpV4($address);
     }

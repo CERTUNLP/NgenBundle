@@ -138,7 +138,7 @@ class InternalIncident
 
     public function getEmails()
     {
-        return [$this->getNetworkAdmin()->getEmail()];
+        return $this->getNetworkAdmin()->getEmails();
     }
 
     /**

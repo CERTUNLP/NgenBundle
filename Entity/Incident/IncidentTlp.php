@@ -71,7 +71,7 @@ class IncidentTlp
     private $description;
 
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="tlpState", cascade={"persist","remove"})) */
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="tlp", cascade={"persist","remove"})) */
     private $incidents;
 
     /**

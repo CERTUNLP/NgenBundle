@@ -47,7 +47,7 @@ fos_elastica:
                                     properties:
                                         slug:
                                             type: keyword
-                                        email:
+                                        emails:
                                             type: keyword
                                         name:
                                             type: keyword
@@ -60,17 +60,6 @@ fos_elastica:
                                             type: keyword
                                         name:
                                             type: keyword
-                        networkAdmin:
-                            type: "object"
-                            properties:
-                                slug:
-                                    type: keyword
-                                email:
-                                    type: keyword
-                                name:
-                                    type: keyword
-                                isActive:
-                                    type: boolean
                         state:
                             type: "object"
                             properties:
@@ -145,7 +134,7 @@ fos_elastica:
                             properties:
                                 slug:
                                     type: keyword
-                                email:
+                                emails:
                                     type: keyword
                                 name:
                                     type: keyword
@@ -180,7 +169,7 @@ fos_elastica:
                             type: keyword
                         slug:
                             type: keyword
-                        email:
+                        emails:
                             type: keyword
                         isActive:
                             type: boolean

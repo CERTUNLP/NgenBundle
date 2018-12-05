@@ -26,11 +26,10 @@ class NetworkRdapClient extends RdapClient
      */
     public function prePersistDelegation(Incident $incident): Incident
     {
-        $network = $incident->setNetwork();
+        $network = $incident->getNetwork();
         if (!$network || $network instanceof NetworkRdap) {
 
             $network_new = $this->find($incident->getIp());
-
             if ($network_new) {
                 $incident->setNetwork();
             }

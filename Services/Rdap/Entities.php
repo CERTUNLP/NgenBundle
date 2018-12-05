@@ -101,7 +101,6 @@ class Entities
 
         $abuse_entities = $this->getByRole(['abuse']);
         $extra_entities = $this->getByRole(['noc', 'technical']);
-
         return $abuse_entities ?: $extra_entities;
     }
 

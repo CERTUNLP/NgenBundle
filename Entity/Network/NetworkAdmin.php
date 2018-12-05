@@ -198,7 +198,7 @@ class NetworkAdmin
      */
     public function getEmailsAsString(): string
     {
-        return $this->emailsAsString;
+        return implode(',', $this->emails);
     }
 
     /**
@@ -230,8 +230,6 @@ class NetworkAdmin
     public function setEmails(array $emails): NetworkAdmin
     {
         $this->emails = $emails;
-        $this->setEmailsAsString(implode(',', $this->emails));
-
         return $this;
     }
 
