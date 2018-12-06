@@ -38,7 +38,7 @@ interface IncidentInterface
      *
      * @return int|string
      */
-    public function getId(): int;
+    public function getId(): ?int;
 
     /**
      * Set ip

@@ -18,7 +18,6 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @author dam
  * @ORM\Entity()
- * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Listener\ExternalIncidentListener" })
  */
 class NetworkInternal extends Network
 {

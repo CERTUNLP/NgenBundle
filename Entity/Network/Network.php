@@ -68,7 +68,7 @@ abstract class Network implements NetworkInterface
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=15, nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      * @Assert\Ip(version="4_no_priv")
@@ -78,7 +78,7 @@ abstract class Network implements NetworkInterface
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=39)
+     * @ORM\Column(type="string", length=39, nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      * @Assert\Ip(version="6_no_priv")
@@ -88,7 +88,7 @@ abstract class Network implements NetworkInterface
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=39)
+     * @ORM\Column(type="string", nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      *
@@ -119,14 +119,14 @@ abstract class Network implements NetworkInterface
 
     /**
      * @var Collection| IncidentInterface[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="network", cascade={"persist","remove"}))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="network", cascade={"persist"}))
      * @JMS\Expose
      */
     private $incidents;
 
     /**
      * @var Collection| IncidentInterface[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Host\Host",mappedBy="network", cascade={"persist","remove"}))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Host\Host",mappedBy="network", cascade={"persist"}))
      * @JMS\Expose
      */
     private $hosts;

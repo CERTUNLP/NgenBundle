@@ -78,7 +78,7 @@ class RdapResultWrapper
 
     public function getCountry(): string
     {
-        return $this->rdap_json_object->country ?? null;
+        return $this->rdap_json_object->country ?? '';
     }
 
     public function getEndAddress(): string
