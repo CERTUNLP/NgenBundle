@@ -108,13 +108,13 @@ class Host
 
     /**
      * @var Incident
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="origin", cascade={"persist"}))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="origin"))
      */
     private $incidents_as_origin;
 
     /**
      * @var Incident
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="destination", cascade={"persist"}))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="destination"))
      */
     private $incidents_as_destination;
     /**
@@ -140,6 +140,32 @@ class Host
         $this->ip_v4 = $ip_v4;
         $this->incidents_as_origin = new ArrayCollection();
         $this->incidents_as_destination = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getSlug();
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     * @return Host
+     */
+    public function setSlug(string $slug): Host
+    {
+        $this->slug = $slug;
+        return $this;
     }
 
     /**
@@ -229,24 +255,6 @@ class Host
     public function setUpdatedAt(\DateTime $updatedAt): Host
     {
         $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSlug(): string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $slug
-     * @return Host
-     */
-    public function setSlug(string $slug): Host
-    {
-        $this->slug = $slug;
         return $this;
     }
 

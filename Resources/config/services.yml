@@ -69,7 +69,7 @@ services:
 
     cert_unlp.ngen.incident.internal.listener:
         class: CertUnlp\NgenBundle\Entity\Incident\Listener\InternalIncidentListener
-        arguments: [ "@cert_unlp.ngen.incident.internal.delegator_chain","@cert_unlp.ngen.host.handler","@cert_unlp.ngen.network.handler","@cert_unlp.ngen.incident.internal.handler","@doctrine.orm.entity_manager","@fos_comment.manager.thread","@router" ]
+        arguments: [ "@cert_unlp.ngen.incident.internal.delegator_chain","@cert_unlp.ngen.network.handler","@cert_unlp.ngen.incident.internal.handler","@doctrine.orm.entity_manager","@fos_comment.manager.thread","@router" ]
         tags:
             - { name: doctrine.entity_listener }
             - { name: kernel.event_listener, event: cert_unlp.incident.convert_to_incident.event, method: onConvertToIncident }
@@ -91,11 +91,7 @@ services:
 
     cert_unlp.ngen.incident.internal.handler:
         class:        "%cert_unlp.ngen.incident.internal.handler.class%"
-        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.internal.class%","%cert_unlp.ngen.incident.internal.form_type.class%","@form.factory", "@security.context","@cert_unlp.ngen.user.handler"]
-
-    cert_unlp.ngen.incident.external.handler:
-        class:        "%cert_unlp.ngen.incident.external.handler.class%"
-        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.external.class%","%cert_unlp.ngen.incident.external.form_type.class%","@form.factory", "@security.context","@cert_unlp.ngen.user.handler"]
+        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.internal.class%","%cert_unlp.ngen.incident.internal.form_type.class%","@form.factory", "@security.context","@cert_unlp.ngen.user.handler","@cert_unlp.ngen.host.handler"]
 
     cert_unlp.ngen.incident.feed.handler:
         class:        "%cert_unlp.ngen.incident.feed.handler.class%"
@@ -140,10 +136,6 @@ services:
     cert_unlp.ngen.incident.internal.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentApiController
         arguments: ["@cert_unlp.ngen.incident.internal.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view","@cert_unlp.ngen.internal.incident.mailer" ]
-
-    cert_unlp.ngen.incident.external.api.controller:
-        class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentApiController
-        arguments: ["@cert_unlp.ngen.incident.external.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view","@cert_unlp.ngen.external.incident.mailer" ]
 
     cert_unlp.ngen.network.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\NetworkApiController
