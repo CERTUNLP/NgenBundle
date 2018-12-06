@@ -11,20 +11,20 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
+use CertUnlp\NgenBundle\Services\NetworkRdapClient;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class NetworkHandler extends Handler
 {
 
-    private $default_network;
+    private $network_rdap_handler;
 
-    public function __construct(ObjectManager $om, string $entityClass, string $entityType, FormFactoryInterface $formFactory, $default_network)
+    public function __construct(ObjectManager $om, string $entityClass, string $entityType, FormFactoryInterface $formFactory, NetworkRdapClient $network_rdap_handler)
     {
-        parent::__construct($om, Network::class, $entityType, $formFactory);
-        $this->default_network = $default_network;
+        parent::__construct($om, $entityClass, $entityType, $formFactory);
+        $this->network_rdap_handler = $network_rdap_handler;
     }
 
     /**
@@ -47,12 +47,16 @@ class NetworkHandler extends Handler
     /**
      * Get a Network.
      *
-     * @param $address
+     * @param string $ip
      * @return NetworkInterface
      */
-    public function getByHostAddress(string $address): ?NetworkInterface
+    public function getByHostAddress(string $ip): ?NetworkInterface
     {
-        return $this->repository->findByIpV4($address);
+        $network = $this->repository->findByIpV4($ip);
+        if (!$network) {
+            $network = $this->network_rdap_handler->findByIpV4($ip);
+        }
+        return $network;
     }
 
     /**

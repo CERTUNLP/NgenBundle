@@ -49,22 +49,15 @@ class InternalIncidentHandler extends IncidentHandler
      */
     protected function checkIfExists($incident, $method)
     {
-        $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'origin' => $incident->getOrigin(), 'type' => $incident->getType()]);
+//        $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'origin' => $incident->getOrigin(), 'type' => $incident->getType()]);
 //        var_dump($incident->getOrigin());die;
-        if ($incidentDB && $method === 'POST') {
-//            if ($incident->getFeed()->getSlug() === "shadowserver") {
-//                $incidentDB->setSendReport(false);
-//            } else {
-//                $incidentDB->setSendReport($incident->isSendReport());
+//        if ($incidentDB && $method === 'POST') {
+//            if ($incident->getEvidenceFile()) {
+//                $incidentDB->setEvidenceFile($incident->getEvidenceFile());
 //            }
-
-            if ($incident->getEvidenceFile()) {
-                $incidentDB->setEvidenceFile($incident->getEvidenceFile());
-            }
-
-            $incident = $incidentDB;
-            $incident->setLastTimeDetected(new \DateTime('now'));
-        }
+//            $incident = $incidentDB;
+//            $incident->setLastTimeDetected(new \DateTime('now'));
+//        }
         return $incident;
     }
 

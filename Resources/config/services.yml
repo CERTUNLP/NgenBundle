@@ -81,12 +81,6 @@ services:
         tags:
             - { name: doctrine.entity_listener }
 
-    cert_unlp.ngen.incident.external.listener:
-        class: CertUnlp\NgenBundle\Entity\Incident\Listener\ExternalIncidentListener
-        arguments: [ "@cert_unlp.ngen.incident.external.delegator_chain", "@service_container" ]
-        tags:
-            - { name: doctrine.entity_listener }
-
     cert_unlp.ngen.fos_rest.view.view:
         class: FOS\RestBundle\View\View
         factory: [FOS\RestBundle\View\View, create]
@@ -121,7 +115,7 @@ services:
 
     cert_unlp.ngen.network.handler:
         class:        "%cert_unlp.ngen.network.handler.class%"
-        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.network.class%","%cert_unlp.ngen.network.form_type.class%","@form.factory","%cert_unlp.ngen.network.default_network%"]
+        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.network.class%","%cert_unlp.ngen.network.form_type.class%","@form.factory","@cert_unlp.ngen.network.rdap.client"]
 
     cert_unlp.ngen.network.admin.handler:
         class:        "%cert_unlp.ngen.network.admin.handler.class%"
@@ -249,11 +243,9 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: type.has.report.validator }
 
-    cert_unlp.ngen.rdap_client:
+    cert_unlp.ngen.network.rdap.client:
         class: CertUnlp\NgenBundle\Services\NetworkRdapClient
         arguments: ["%cert_unlp.ngen.resources.path%"]
-        tags:
-            - { name: cert_unlp.ngen.incident.internal.delegate, priority: 1 }
 
     app.form.registration:
         class: CertUnlp\NgenBundle\Form\UserRegistrationType

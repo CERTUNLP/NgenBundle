@@ -59,7 +59,7 @@ class Host
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=39, nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      *
@@ -100,7 +100,7 @@ class Host
 
     /**
      * @var Network
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network", inversedBy="hosts")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network", inversedBy="hosts", cascade={"persist"})
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
@@ -108,13 +108,13 @@ class Host
 
     /**
      * @var Incident
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="origin", cascade={"persist","remove"}, fetch="EAGER"))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="origin", cascade={"persist"}))
      */
     private $incidents_as_origin;
 
     /**
      * @var Incident
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="destination", cascade={"persist","remove"}, fetch="EAGER"))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="destination", cascade={"persist"}))
      */
     private $incidents_as_destination;
     /**

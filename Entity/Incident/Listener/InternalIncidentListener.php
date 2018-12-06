@@ -69,6 +69,7 @@ class InternalIncidentListener
         $this->slugUpdate($incident);
         $this->hostUpdate($incident);
         $this->networkUpdate($incident);
+        $this->checkIfExists($incident);
         $this->stateUpdate($incident, $event);
         $this->feedUpdate($incident, $event);
         $this->tlpUpdate($incident, $event);
@@ -140,6 +141,25 @@ class InternalIncidentListener
         }
     }
 
+    /**
+     * @param $incident Incident
+     * @return Incident
+     * @throws \Exception
+     */
+    public function checkIfExists(Incident $incident): Incident
+    {
+        $incidentDB = $this->incident_handler->get(['isClosed' => false, 'origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()]);
+//        var_dump($incident->getOrigin());die;
+        if ($incidentDB && $incident->getId()) {
+            if ($incident->getEvidenceFile()) {
+                $incidentDB->setEvidenceFile($incident->getEvidenceFile());
+            }
+            $incident = $incidentDB;
+            $incident->setLastTimeDetected(new \DateTime('now'));
+        }
+        return $incident;
+    }
+
     public function stateUpdate(IncidentInterface $incident, LifecycleEventArgs $event): void
     {
         $entityManager = $event->getEntityManager();
@@ -178,8 +198,7 @@ class InternalIncidentListener
      * @param IncidentInterface $incident
      * @param PreUpdateEventArgs $event
      */
-    public
-    function preUpdateHandler(IncidentInterface $incident, PreUpdateEventArgs $event): void
+    public function preUpdateHandler(IncidentInterface $incident, PreUpdateEventArgs $event): void
     {
         $this->incidentPrePersistUpdate($incident, $event);
         $this->delegator_chain->preUpdateDelegation($incident);
@@ -255,8 +274,7 @@ class InternalIncidentListener
     /** @ORM\PostUpdate
      * @param IncidentInterface $incident
      */
-    public
-    function postUpdateHandler(IncidentInterface $incident): void
+    public function postUpdateHandler(IncidentInterface $incident): void
     {
         $this->delegator_chain->postUpdateDelegation($incident);
     }

@@ -187,9 +187,14 @@ class Entity
             $entities[] = $this;
         }
         foreach ($this->entities as $entity) {
-            $entities[] = $entity->getEntities($callback);
+            if ($callback) {
+                $entities[] = $callback($entity);
+            } else {
+                $entities[] = $entity;
+            }
+
+            $entities += $entity->getEntities($callback);
         }
-        array_merge($entities);
         return $entities;
     }
 

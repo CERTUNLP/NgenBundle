@@ -15,7 +15,6 @@ use JMS\Serializer\Annotation as JMS;
  *
  * @author dam
  * @ORM\Entity()
- * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Listener\ExternalIncidentListener" })
  */
 class NetworkRdap extends Network
 {
