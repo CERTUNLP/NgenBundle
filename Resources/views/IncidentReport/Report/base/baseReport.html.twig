@@ -129,6 +129,7 @@
                                     </td>
                                 </tr>
                             </table>
+                            {%  if sign == true %}
                             <table class="row callout">
                                 <tr>
                                     <td class="wrapper last">
@@ -136,11 +137,8 @@
                                             <tr>
                                                 <td class="panel">
                                                     <p style="text-align:center;">
-                                                        {{ sign }}
-                                                        {%  if sign == false %}
                                                             {% block footer_generated_by %}
                                                             {% endblock %}
-                                                        {% endif %}
                                                     </p>
                                                 <td class="expander"></td>
                                                 </td>
@@ -149,6 +147,8 @@
                                     </td>
                                 </tr>
                             </table>
+                            {% endif %}
+
                         </td>
                     </tr>
                 </table>

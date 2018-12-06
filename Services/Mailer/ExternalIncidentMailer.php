@@ -16,9 +16,9 @@ use FOS\CommentBundle\Event\CommentPersistEvent;
 class ExternalIncidentMailer extends IncidentMailer
 {
 
-    public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, $commentManager, $environment, $report_factory, $lang)
+    public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, $commentManager, $environment, $report_factory, $lang, $team)
     {
-        parent::__construct($mailer, $templating, $cert_email, $upload_directory, $commentManager, $environment, $report_factory, $lang);
+        parent::__construct($mailer, $templating, $cert_email, $upload_directory, $commentManager, $environment, $report_factory, $lang, $team);
     }
 
     public function getMailSubject($renotification = false)

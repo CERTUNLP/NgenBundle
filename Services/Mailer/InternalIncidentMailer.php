@@ -16,15 +16,15 @@ use FOS\CommentBundle\Event\CommentPersistEvent;
 class InternalIncidentMailer extends IncidentMailer
 {
 
-    public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, $commentManager, $environment, $report_factory, $lang)
+    public function __construct(\Swift_Mailer $mailer, $templating, $cert_email, $upload_directory, $commentManager, $environment, $report_factory, $lang, $team)
     {
-        parent::__construct($mailer, $templating, $cert_email, $upload_directory, $commentManager, $environment, $report_factory, $lang);
+        parent::__construct($mailer, $templating, $cert_email, $upload_directory, $commentManager, $environment, $report_factory, $lang, $team);
     }
 
     public function getMailSubject($renotification = false)
     {
         $renotification_text = $renotification ? '[Renotificacion]' : '';
-        return $renotification_text . '[CERTunlp] Incidente de tipo "%s" en el host %s [ID:%s]';
+        return $renotification_text . 'TLP:"%s" ["%s"] Incidente de tipo "%s" en el host %s [ID:%s]';
     }
 
     public function onCommentPrePersist(CommentPersistEvent $event)
