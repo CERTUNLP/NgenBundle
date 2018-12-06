@@ -22,15 +22,18 @@
     {% endif %}
 {% endblock %}
 
+
+{% block sideBar_search_path %}{{ path('cert_unlp_ngen_internal_incident_search_incident') }}{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
-    {{ tinymce_init() }}
-
     {% javascripts
-        '@CertUnlpNgenBundle/Resources/public/js/incident/IncidentForm.js' %}
+        '@CertUnlpNgenBundle/Resources/public/js/incident/InternalIncident.js'
+        '@CertUnlpNgenBundle/Resources/public/js/incident/InternalIncidentApi.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
-        var incidentForm = new IncidentForm();
+        var internalIncidentApi = new InternalIncidentApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
+        var internalIncident = new InternalIncident();
     </script>
 {% endblock %}

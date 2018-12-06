@@ -2,6 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -14,14 +15,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class IncidentImpact
 {
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="name", type="string", length=45, nullable=true)
      */
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
@@ -29,11 +30,35 @@ class IncidentImpact
     private $slug;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="description", type="string", length=512, nullable=true)
      */
     private $description;
+
+    /**
+     * @var Collection|null
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="impact", cascade={"persist"}))
+     */
+    private $incidents;
+
+    /**
+     * @return Collection
+     */
+    public function getIncidents(): Collection
+    {
+        return $this->incidents;
+    }
+
+    /**
+     * @param Collection $incidents
+     * @return IncidentImpact
+     */
+    public function setIncidents(Collection $incidents): IncidentImpact
+    {
+        $this->incidents = $incidents;
+        return $this;
+    }
 
     /**
      * @return string

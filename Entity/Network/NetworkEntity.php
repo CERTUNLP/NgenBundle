@@ -56,9 +56,6 @@ class NetworkEntity
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network",mappedBy="network_entity", cascade={"persist","remove"})) */
     private $networks;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="network_entity", cascade={"persist","remove"})) */
-    private $incidents;
-
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")

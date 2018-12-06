@@ -2,6 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -14,14 +15,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class IncidentUrgency
 {
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="name", type="string", length=45, nullable=true)
      */
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
@@ -29,11 +30,35 @@ class IncidentUrgency
     private $slug;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     private $description;
+
+    /**
+     * @var Collection|null
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="urgency", cascade={"persist"}))
+     */
+    private $incidents;
+
+    /**
+     * @return Collection|null
+     */
+    public function getIncidents(): ?Collection
+    {
+        return $this->incidents;
+    }
+
+    /**
+     * @param Collection|null $incidents
+     * @return IncidentUrgency
+     */
+    public function setIncidents(?Collection $incidents): IncidentUrgency
+    {
+        $this->incidents = $incidents;
+        return $this;
+    }
 
     /**
      * @return string
@@ -45,9 +70,9 @@ class IncidentUrgency
 
     /**
      * @param string $name
-     * @return IncidentTlp
+     * @return IncidentUrgency
      */
-    public function setName(string $name): IncidentTlp
+    public function setName(string $name): IncidentUrgency
     {
         $this->name = $name;
         return $this;
@@ -63,9 +88,9 @@ class IncidentUrgency
 
     /**
      * @param string $description
-     * @return IncidentTlp
+     * @return IncidentUrgency
      */
-    public function setDescription(string $description): IncidentTlp
+    public function setDescription(string $description): IncidentUrgency
     {
         $this->description = $description;
         return $this;
@@ -73,7 +98,7 @@ class IncidentUrgency
 
     public function __toString()
     {
-        return $this->slug;
+        return $this->getSlug();
     }
 
     /**
@@ -81,7 +106,7 @@ class IncidentUrgency
      *
      * @return string
      */
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -90,9 +115,9 @@ class IncidentUrgency
      * Set slug
      *
      * @param string $slug
-     * @return IncidentTlp
+     * @return IncidentUrgency
      */
-    public function setSlug($slug)
+    public function setSlug($slug): IncidentUrgency
     {
         $this->slug = $slug;
 

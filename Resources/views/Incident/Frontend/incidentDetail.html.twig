@@ -8,12 +8,8 @@
 #}
 
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
-{% block content_header %}
-    <h1 class="page-header">Incident [ID: {{ object.id }}][{{ object.type }}
-        ]{% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object} %}</h1>
-{% endblock %}
+
 {% block content_body %}
-    <div class="row">
     {% block incident_body %}
         <div class="col-lg-6">
             <div class="panel panel-primary">
@@ -77,7 +73,7 @@
                                 TLP
                             </td>
                             <td>
-                            <span class="tlp-{{ object.tlp }} left">
+                            <span class=" label tlp-{{ object.tlp }} left">
                             TLP-{{ object.tlp|upper }}
                             </span>
                             </td>
@@ -134,6 +130,60 @@
             </div>
         </div>
     {% endblock %}
+    {% block host_body %}
+        <div class="col-lg-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Host info</h3>
+                </div>
+                <div class="panel-body table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td class="">
+                                ip
+                            </td>
+                            <td class="">
+                                {{ object.origin.ipv4 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                Active
+                            </td>
+                            <td class="">
+                                {{ object.origin.isActive ? 'Yes':'No' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                Network Entity
+                            </td>
+                            <td class="">
+                                {{ object.origin.network.networkEntity }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                Network Admin
+                            </td>
+                            <td class="">
+                                {{ object.origin.network.networkAdmin }}
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                            </td>
+                            <td class="">
+                                {{ object.network.networkAdmin.emailsAsString }}
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
     {% block network_body %}
         <div class="col-lg-6">
             <div class="panel panel-success">
@@ -160,11 +210,10 @@
                         </tr>
                         <tr>
                             <td class="">
-                                Academic Unit
+                                Network Entity
                             </td>
                             <td class="">
                                 {{ object.network.networkEntity }}
-
                             </td>
                         </tr>
                         <tr>
@@ -180,7 +229,7 @@
                             <td class="">
                             </td>
                             <td class="">
-                                {{ object.network.networkAdmin.email }}
+                                {{ object.network.networkAdmin.emailsAsString }}
 
                             </td>
                         </tr>
@@ -190,7 +239,6 @@
         </div>
     {% endblock %}
     {% block reporter_body %}
-
         <div class="col-lg-6">
 
             <div class="panel panel-info">
@@ -224,7 +272,6 @@
 
     {% block comments %}
 
-        </div>
         <div class="col-lg-12">
             <div class="row">
                 <div class="panel panel-info">
@@ -233,13 +280,13 @@
                     </div>
                     <div class="panel-body">
                         {% block comments_body %}
+                            {{ render(controller('CertUnlpNgenBundle:Frontend/Incident/IncidentFrontend:incidentComments', {'incident': object, 'request': app.request})) }}
                         {% endblock %}
                     </div>
                 </div>
             </div>
         </div>
     {% endblock %}
-
 
 {% endblock %}
 {% block javascripts %}
@@ -250,3 +297,13 @@
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
+
+{% block sideBar_search_path %}{{ path('cert_unlp_ngen_internal_incident_search_incident') }}{% endblock %}
+
+{% block content_header %}
+    <h2 class="page-header">{{ icon('arrow-circle-down fa-fw') }}incident [ID: {{ object.id }}
+        ][{{ object.type }}
+        ]{% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object} %}</h2>
+{% endblock %}
+
+
