@@ -1,0 +1,10 @@
+subject_mail_incidente: Incidente de tipo "%s" en %s
+firma_ngen: Este reporte ha sido generado con <a href="https://github.com/CERTUNLP/NgenBundle">https://github.com/CERTUNLP/NgenBundle</a>
+thanks: Le agradeceríamos que nos notifique al solucionar el incidente. No dude en consultarnos ante cualquier inquietud.
+farewell: Un saludo cordial,
+greeting: Estimado
+incident_notes_title: Notas del incidente
+derivated_problem_title: Problemas derivados
+verification_title: Cómo verificar el problema
+recomendations_title: Recomendaciones
+more_information_title: Mas información

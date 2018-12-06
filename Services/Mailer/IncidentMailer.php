@@ -33,7 +33,7 @@ class IncidentMailer implements IncidentMailerInterface
 
 
 
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $templating, string $cert_email, string $upload_directory, CommentManagerInterface $commentManager, string $environment, IncidentReportFactory $report_factory, string $lang, $team)
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $templating, string $cert_email, string $upload_directory, CommentManagerInterface $commentManager, string $environment, IncidentReportFactory $report_factory, string $lang, $team, $translator)
     {
         $this->mailer = $mailer;
         $this->cert_email = $cert_email;
@@ -44,6 +44,7 @@ class IncidentMailer implements IncidentMailerInterface
         $this->report_factory = $report_factory;
         $this->lang = $lang;
         $this->team = $team;
+        $this->translator = $translator;
     }
 
     public function postPersistDelegation($incident)
