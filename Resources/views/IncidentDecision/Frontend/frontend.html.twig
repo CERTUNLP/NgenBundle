@@ -8,10 +8,10 @@
 #}
 {% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
 
-{% block title %}Incident Decisionss{% endblock %}
+{% block title %}{{'Incident Decisions'|trans}}{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{ icon('unlock-alt fa-fw') }} Incident Decisions</h1>
+    <h1 class="page-header">{{ icon('unlock-alt fa-fw') }} {{'Incident Decisions'|trans}}</h1>
 {% endblock %}
 
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_incident_decision_search') }}{% endblock %}

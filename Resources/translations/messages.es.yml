@@ -8,3 +8,11 @@ derivated_problem_title: Problemas derivados
 verification_title: Cómo verificar el problema
 recomendations_title: Recomendaciones
 more_information_title: Mas información
+Type: Tipo
+Network: Red
+Impact: Impacto
+Urgency: Urgencia
+Active: Activo
+Action: Acciones
+add incident Decision: Agregar Decision
+Incident Decisions: Decisiones
