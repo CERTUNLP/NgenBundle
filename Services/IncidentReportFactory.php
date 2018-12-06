@@ -36,7 +36,7 @@ class IncidentReportFactory
     public function getReport($incident, $lang)
     {
         $data = array('report' => $incident->getType()->getReport($lang), 'incident' => $incident, 'team' => $this->team );
-        $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/' . $lang . '.html.twig');
+        $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/mail.html.twig');
         $this->getView()->setTemplateData($data);
         $html = $this->viewHandler->renderTemplate($this->getView(), 'html');
         $parameters = array('incident' => $incident);
@@ -52,7 +52,7 @@ class IncidentReportFactory
     public function getReportReply($incident, $body, $lang)
     {
         $data = array('report' => $incident->getType()->getReport($lang), 'incident' => $incident, 'body' => $body);
-        $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/' . $lang . 'Reply.html.twig');
+        $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/mailReply.html.twig');
         $this->getView()->setTemplateData($data);
         $html = $this->viewHandler->renderTemplate($this->getView(), 'html');
         $parameters = array('incident' => $incident);
