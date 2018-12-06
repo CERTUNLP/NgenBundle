@@ -90,21 +90,26 @@
                     aria-expanded="{{ ('administration' in app.request.get('_route'))? 'true' : 'false' }}" {{ ('network' in app.request.get('_route'))? '' : 'style="height: 0px;"' }}>
                     <li>
                       <a href="{{ path('cert_unlp_ngen_administration_feed_frontend_home') }}" {{ ('feed' in app.request.get('_route'))? 'class="active"' : '' }}>{{ icon('feed fa-fw') }}
-                        Feeds</a>
+                      {{ 'Feeds'| trans }}</a>
                       </li>
                       <li>
                         <a href="{{ path('cert_unlp_ngen_administration_state_frontend_home') }}" {{ ('state' in app.request.get('_route'))? 'class="active"' : '' }}>{{ icon('unlock-alt fa-fw') }}
-                          States</a>
+                            {{ 'States'| trans }}</a>
                         </li>
                         <li>
                           <a href="{{ path('cert_unlp_ngen_administration_type_frontend_home') }}" {{ ('types' in app.request.get('_route'))? 'class="active"' : '' }}>{{ icon('cubes fa-fw') }}
-                            Types</a>
+                              {{ 'Types'| trans }}</a>
                           </li>
                           <li>
                             <a href="{{ path('cert_unlp_ngen_incident_decision_frontend_home') }}" {{ ('decision' in app.request.get('_route'))? 'class="active"' : '' }}>{{ icon('unlock-alt fa-fw') }}
-                              Incident Decisions</a>
+                                {{ 'Incident Decisions'| trans }}</a>
                             </li>
-                          </ul>
+                      <li>
+                        <a href="{{ path('cert_unlp_ngen_incident_priority_frontend_home') }}" {{ ('priority' in app.request.get('_route'))? 'class="active"' : '' }}>{{ icon('unlock-alt fa-fw') }}
+                          {{ 'Incident Priority'| trans }}</a>
+                      </li>
+
+                    </ul>
                         </li>
                       </ul>
 

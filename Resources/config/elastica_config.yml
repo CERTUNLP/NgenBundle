@@ -356,6 +356,41 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\Incident\IncidentState
                         provider: ~
                         finder: ~
+        priorities:
+            index_name: priorities_%kernel.environment%
+            settings:
+                index:
+                    max_result_window: 50000
+            types:
+                priorities:
+                    properties:
+                        name:
+                            type: keyword
+                        slug:
+                            type: keyword
+                        response_time:
+                            type: keyword
+                        resolution_time:
+                            type: keyword
+                        code:
+                            type: integer
+                        risk:
+                            type: keyword
+                        urgency:
+                            type: keyword
+                        createdAt:
+                            type: date
+                        updatedAt:
+                                type: date
+                    persistence:
+                        identifier: slug
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\Incident\IncidentPriority
+                        provider: ~
+                        finder: ~
         decisions:
             index_name: decisions_%kernel.environment%
             settings:

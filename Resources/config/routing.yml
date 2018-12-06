@@ -80,6 +80,11 @@ cert_ngen_administration_decision:
     type:     annotation
     prefix:   /administration/decisions
 
+cert_ngen_administration_priority:
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentPriorityFrontendController.php'
+    type:     annotation
+    prefix:   /administration/priorities
+
 cert_ngen_administration_type_reports:
     resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentReportFrontendController.php'
     type:     annotation
