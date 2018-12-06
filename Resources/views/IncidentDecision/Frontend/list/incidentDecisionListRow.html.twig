@@ -10,7 +10,32 @@
 <tr data-id="{{ IncidentDecision.id }}">
     <td id="decision_label_holder" class="col-md-1">
         <div class="label-holder">
-        {{ IncidentDecision.slug }}
+        {{ IncidentDecision.type }}
+        </div>
+    </td>
+    <td id="decision_label_holder" class="col-md-1">
+        <div class="label-holder">
+            {{ IncidentDecision.feed }}
+        </div>
+    </td>
+    <td id="decision_label_holder" class="col-md-1">
+        <div class="label-holder">
+            {{ IncidentDecision.network }}
+        </div>
+    </td>
+    <td id="decision_label_holder" class="col-md-1">
+        <div class="label-holder">
+            <span class="tlp-{{ IncidentDecision.tlp | lower }} left" id="tlp">&nbsp;TLP:{{ IncidentDecision.tlp}}&nbsp;</span>
+        </div>
+    </td>
+    <td id="decision_label_holder" class="col-md-1">
+        <div class="label-holder">
+            {{ IncidentDecision.impact }}
+        </div>
+    </td>
+    <td id="decision_label_holder" class="col-md-1">
+        <div class="label-holder">
+            {{ IncidentDecision.urgency }}
         </div>
     </td>
     <td id="state_label_holder" class="col-md-1">
