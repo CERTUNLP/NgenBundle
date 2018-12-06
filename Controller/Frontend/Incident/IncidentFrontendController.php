@@ -11,18 +11,17 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
-use CertUnlp\NgenBundle\Entity\Incident\InternalIncident;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class InternalIncidentFrontendController extends Controller
+class IncidentFrontendController extends Controller
 {
 
     /**
-     * @Template("CertUnlpNgenBundle:InternalIncident:Frontend/home.html.twig")
+     * @Template("CertUnlpNgenBundle:Incident:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_internal_incident_frontend_home")
      * @param Request $request
      * @return array
@@ -38,7 +37,7 @@ class InternalIncidentFrontendController extends Controller
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:InternalIncident:Frontend/incidentForm.html.twig")
+     * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_internal_incident_frontend_new_incident")
      * @param Request $request
      * @return array
@@ -49,25 +48,25 @@ class InternalIncidentFrontendController extends Controller
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:InternalIncident:Frontend/incidentForm.html.twig")
+     * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentForm.html.twig")
      * @Route("{id}/edit", name="cert_unlp_ngen_internal_incident_frontend_edit_incident_id",requirements={"id"="\d+"})
      * @Route("{slug}/edit", name="cert_unlp_ngen_internal_incident_frontend_edit_incident")
-     * @param InternalIncident $incident
+     * @param Incident $incident
      * @return array
      */
-    public function editIncidentAction(InternalIncident $incident)
+    public function editIncidentAction(Incident $incident)
     {
         return $this->getFrontendController()->editEntity($incident);
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:InternalIncident:Frontend/incidentDetail.html.twig")
+     * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentDetail.html.twig")
      * @Route("{id}/detail", name="cert_unlp_ngen_internal_incident_frontend_detail_incident_id",requirements={"id"="\d+"})
      * @Route("{slug}/detail", name="cert_unlp_ngen_internal_incident_frontend_detail_incident")
-     * @param InternalIncident $incident
+     * @param Incident $incident
      * @return array
      */
-    public function detailIncidentAction(InternalIncident $incident)
+    public function detailIncidentAction(Incident $incident)
     {
         return $this->getFrontendController()->detailEntity($incident);
     }
@@ -75,17 +74,17 @@ class InternalIncidentFrontendController extends Controller
     /**
      * @Route("{id}/evidence", name="cert_unlp_ngen_internal_incident_frontend_evidence_incident_id", requirements={"id"="\d+"})
      * @Route("{slug}/evidence", name="cert_unlp_ngen_internal_incident_frontend_evidence_incident")
-     * @param InternalIncident $incident
+     * @param Incident $incident
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function evidenceIncidentAction(InternalIncident $incident)
+    public function evidenceIncidentAction(Incident $incident)
     {
 
         return $this->getFrontendController()->evidenceIncidentAction($incident);
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:InternalIncident:Frontend/home.html.twig")
+     * @Template("CertUnlpNgenBundle:Incident:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_internal_incident_search_incident")
      * @param Request $request
      * @return array
@@ -97,11 +96,11 @@ class InternalIncidentFrontendController extends Controller
 
     /**
      * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentComments.html.twig")
-     * @param InternalIncident $incident
+     * @param Incident $incident
      * @param Request $request
      * @return array
      */
-    public function incidentCommentsAction(InternalIncident $incident, Request $request)
+    public function incidentCommentsAction(Incident $incident, Request $request)
     {
         return $this->getFrontendController()->commentsEntity($incident, $request);
     }

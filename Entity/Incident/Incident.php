@@ -51,7 +51,7 @@ class Incident implements IncidentInterface
     protected $reporter;
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="$assignedIncidents")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="assignedIncidents")
      */
     protected $assigned;
     /**

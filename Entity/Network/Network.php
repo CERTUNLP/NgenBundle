@@ -119,7 +119,7 @@ abstract class Network implements NetworkInterface
 
     /**
      * @var Collection| IncidentInterface[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="network", cascade={"persist"}))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="network", cascade={"persist"}))
      * @JMS\Expose
      */
     private $incidents;

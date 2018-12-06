@@ -76,12 +76,6 @@ class NetworkAdmin
     private $networks;
 
     /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="network_admin", cascade={"persist","remove"}))
-     */
-    private $incidents;
-
-    /**
      * @var boolean
      *
      * @ORM\Column(name="is_active", type="boolean")

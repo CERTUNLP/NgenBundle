@@ -22,11 +22,11 @@ use Symfony\Component\HttpFoundation\Request;
 class FrontendController
 {
 
+    protected $entityType;
+    protected $formFactory;
     private $doctrine;
     private $paginator;
     private $finder;
-    protected $entityType;
-    protected $formFactory;
     private $comment_manager;
     private $thread_manager;
 
