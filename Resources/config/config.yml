@@ -171,5 +171,3 @@ jms_serializer:
 twig:
         globals:
                 sign: '%ngen_sign%'
-                joder: "bbbalalal"
-
