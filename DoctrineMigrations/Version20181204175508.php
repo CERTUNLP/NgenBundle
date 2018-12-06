@@ -18,9 +18,9 @@ class Version20181204175508 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-//        $this->addSql('ALTER TABLE incident DROP ip');
-//        $this->addSql('ALTER TABLE network DROP abuse_entity, DROP abuse_entity_emails');
-//        $this->addSql('UPDATE network_admin SET email =CONCAT(\'a:1:{i:0;s:\',CHAR_LENGTH(email), \':"\', email, \'";}\') ');
+        $this->addSql('ALTER TABLE incident DROP ip');
+        $this->addSql('ALTER TABLE network DROP abuse_entity, DROP abuse_entity_emails');
+        $this->addSql('UPDATE network_admin SET email =CONCAT(\'a:1:{i:0;s:\',CHAR_LENGTH(email), \':"\', email, \'";}\') ');
         $this->addSql('ALTER TABLE network_admin CHANGE email emails LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\'');
     }
 

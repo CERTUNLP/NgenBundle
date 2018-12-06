@@ -22,7 +22,7 @@ use Doctrine\ORM\EntityRepository;
 class NetworkRepository extends EntityRepository
 {
 
-    public function findByIpV4(string $address)
+    public function findByIpV4($address)
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();

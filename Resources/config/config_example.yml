@@ -13,7 +13,7 @@ cert_ngen:
         internal:
             class: CertUnlp\NgenBundle\Entity\Incident\InternalIncident
             handler:
-                class: CertUnlp\NgenBundle\Services\Api\Handler\InternalIncidentHandler
+                class: CertUnlp\NgenBundle\Services\Api\Handler\IncidentHandler
             delegator_chain:
                 class: CertUnlp\NgenBundle\Services\Delegator\InternalIncidentDelegatorChain
             form_type:

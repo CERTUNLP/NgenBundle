@@ -53,6 +53,7 @@ class NetworkHandler extends Handler
     public function getByHostAddress(string $ip): ?NetworkInterface
     {
         $network = $this->repository->findByIpV4($ip);
+
         if (!$network) {
             $network = $this->network_rdap_handler->findByIpV4($ip);
         }

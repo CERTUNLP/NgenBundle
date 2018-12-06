@@ -262,22 +262,6 @@ class Incident implements IncidentInterface
     /**
      * @return string
      */
-    public function getIpV4(): ?string
-    {
-        return $this->ip_v4;
-    }
-
-    /**
-     * @param string $ip_v4
-     */
-    public function setIpV4(string $ip_v4): void
-    {
-        $this->ip_v4 = $ip_v4;
-    }
-
-    /**
-     * @return string
-     */
     public function getIpV6(): string
     {
         return $this->ip_v6;
@@ -564,7 +548,44 @@ class Incident implements IncidentInterface
      */
     public function getIp(): ?string
     {
+        if ($this->getIpV4()) {
+            return $this->getIpV4();
+        }
+        return $this->getOrigin() ? $this->getOrigin()->getIpV4() : '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getIpV4(): ?string
+    {
         return $this->ip_v4;
+    }
+
+    /**
+     * @param string $ip_v4
+     */
+    public function setIpV4(string $ip_v4): void
+    {
+        $this->ip_v4 = $ip_v4;
+    }
+
+    /**
+     * @return Host
+     */
+    public function getOrigin(): ?Host
+    {
+        return $this->origin;
+    }
+
+    /**
+     * @param Host $origin
+     * @return Incident
+     */
+    public function setOrigin(Host $origin): Incident
+    {
+        $this->origin = $origin;
+        return $this;
     }
 
     /**
@@ -584,24 +605,6 @@ class Incident implements IncidentInterface
     public function setIp(string $ip): Incident
     {
         $this->ip_v4 = $ip;
-        return $this;
-    }
-
-    /**
-     * @return Host
-     */
-    public function getOrigin(): ?Host
-    {
-        return $this->origin;
-    }
-
-    /**
-     * @param Host $origin
-     * @return Incident
-     */
-    public function setOrigin(Host $origin): Incident
-    {
-        $this->origin = $origin;
         return $this;
     }
 
