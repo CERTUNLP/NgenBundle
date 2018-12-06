@@ -4,6 +4,7 @@ namespace CertUnlp\NgenBundle\Entity\Incident;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * IncidentPriority
@@ -29,10 +30,63 @@ class IncidentPriority
     private $name;
 
     /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="updated_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    private $updatedAt;
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+
+
+    /**
      * @var dateinterval
      *
      * @ORM\Column(name="response_time", type="dateinterval")
      */
+
     private $responseTime;
 
     /**
@@ -49,8 +103,50 @@ class IncidentPriority
      */
     private $code;
 
+    /**
+     * @return mixed
+     */
+    public function getImpact()
+    {
+        return $this->impact;
+    }
 
     /**
+     * @param mixed $impact
+     */
+    public function setImpact($impact)
+    {
+        $this->impact = $impact;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUrgency()
+    {
+        return $this->urgency;
+    }
+
+    /**
+     * @param mixed $urgency
+     */
+    public function setUrgency($urgency)
+    {
+        $this->urgency = $urgency;
+    }
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="incidentsPriorities")
+     * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
+     */
+    protected $impact;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency", inversedBy="incidentsPriorities")
+     * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
+     */
+    protected $urgency;
+    /**@CertUnlpNgenBundle/Resources/public/js/incident/decision/IncidentPriority.js
      * Get id
      *
      * @return int
