@@ -35,9 +35,9 @@ class NetworkHandler extends Handler
      */
     public function get(array $parameters)
     {
-        $ip_and_mask = explode('/', $parameters['ip']);
+        $ip_and_mask = explode('/', $parameters['ip_v4']);
 
-        $parameters['ip'] = $ip_and_mask[0];
+        $parameters['ip_v4'] = $ip_and_mask[0];
         if (isset($ip_and_mask[1])) {
             $parameters['ipMask'] = $ip_and_mask[1];
         }
@@ -75,7 +75,7 @@ class NetworkHandler extends Handler
 
     protected function checkIfExists($network, $method)
     {
-        $networkDB = $this->repository->findOneBy(['ip' => $network->getIP(), 'ipMask' => $network->getIpMask()]);
+        $networkDB = $this->repository->findOneBy(['ip_v4' => $network->getIp(), 'ipMask' => $network->getIpMask()]);
 
         if ($networkDB && $method == 'POST') {
             if (!$networkDB->getIsActive()) {

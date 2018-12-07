@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"internal" = "NetworkInternal", "external" = "NetworkExternal", "rdap" = "NetworkRdap"})
  * @UniqueEntity(
- *     fields={"ip", "ipMask","isActive"},
+ *     fields={"ip_v4", "ipMask","isActive"},
  *     message="This network was already added!")
  * @JMS\ExclusionPolicy("all")
  */
@@ -75,6 +75,7 @@ abstract class Network implements NetworkInterface
      * @Assert\Ip(version="4_no_priv")
      */
     private $ip_v4;
+    private $ip;
 
     /**
      * @var string
@@ -106,14 +107,14 @@ abstract class Network implements NetworkInterface
 
     /**
      * @var NetworkAdmin
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="networks",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="networks",cascade={"persist"},fetch="EAGER")
      * @JMS\Expose
      */
     private $network_admin;
 
     /**
      * @var NetworkEntity
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkEntity", inversedBy="networks",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkEntity", inversedBy="networks",cascade={"persist"},fetch="EAGER")
      * @JMS\Expose
      */
     private $network_entity;
@@ -163,10 +164,49 @@ abstract class Network implements NetworkInterface
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct($ip_v4 = '')
     {
+        if ($ip_v4) {
+            $this->ip_v4 = $ip_v4;
+        }
         $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->incidentsDecisions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * @return NetworkAdmin
+     */
+    public function getNetworkAdmin(): NetworkAdmin
+    {
+        return $this->network_admin;
+    }
+
+    /**
+     * @param NetworkAdmin $network_admin
+     * @return Network
+     */
+    public function setNetworkAdmin(NetworkAdmin $network_admin = null): Network
+    {
+        $this->network_admin = $network_admin;
+        return $this;
+    }
+
+    /**
+     * @return NetworkEntity
+     */
+    public function getNetworkEntity(): NetworkEntity
+    {
+        return $this->network_entity;
+    }
+
+    /**
+     * @param NetworkEntity $network_entity
+     * @return Network
+     */
+    public function setNetworkEntity(NetworkEntity $network_entity = null): Network
+    {
+        $this->network_entity = $network_entity;
+        return $this;
     }
 
     /**
@@ -230,6 +270,8 @@ abstract class Network implements NetworkInterface
 
     public function getIpAndMask(): string
     {
+
+
         return $this->getIp() . '/' . $this->getIpMask();
     }
 
@@ -244,6 +286,19 @@ abstract class Network implements NetworkInterface
     }
 
     /**
+     * Set ip
+     *
+     * @param string $ip
+     * @return Network
+     */
+    public function setIp(string $ip): Network
+    {
+
+        $this->setIpV4($ip);
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getIpV4(): string
@@ -252,12 +307,20 @@ abstract class Network implements NetworkInterface
     }
 
     /**
-     * @param string $ip_v4
+     * Set ip
+     *
+     * @param string $ip
      * @return Network
      */
-    public function setIpV4(string $ip_v4): Network
+    public function setIpV4(string $ip): Network
     {
-        $this->ip_v4 = $ip_v4;
+
+        $ip_and_mask = explode('/', $ip);
+        $this->ip_v4 = $ip_and_mask[0];
+        $this->setNumericIp(ip2long($ip_and_mask[0]));
+        if (isset($ip_and_mask[1])) {
+            $this->setIpMask($ip_and_mask[1]);
+        }
         return $this;
     }
 
@@ -282,25 +345,6 @@ abstract class Network implements NetworkInterface
         $this->ipMask = $ipMask;
         $this->setNumericIpMask(0xffffffff << (32 - $ipMask));
 
-        return $this;
-    }
-
-    /**
-     * Set ip
-     *
-     * @param string $ip
-     * @return Network
-     */
-    public function setIp(string $ip): Network
-    {
-
-        $ip_and_mask = explode('/', $ip);
-
-        $this->setIpV4($ip_and_mask[0]);
-        $this->setNumericIp(ip2long($ip_and_mask[0]));
-        if (isset($ip_and_mask[1])) {
-            $this->setIpMask($ip_and_mask[1]);
-        }
         return $this;
     }
 
@@ -415,39 +459,13 @@ abstract class Network implements NetworkInterface
     }
 
     /**
-     * @return NetworkAdmin
+     * Get isActive
+     *
+     * @return boolean
      */
-    public function getNetworkAdmin(): NetworkAdmin
+    public function getIsActive(): bool
     {
-        return $this->network_admin;
-    }
-
-    /**
-     * @param NetworkAdmin $network_admin
-     * @return Network
-     */
-    public function setNetworkAdmin(NetworkAdmin $network_admin = null): Network
-    {
-        $this->network_admin = $network_admin;
-        return $this;
-    }
-
-    /**
-     * @return NetworkEntity
-     */
-    public function getNetworkEntity(): NetworkEntity
-    {
-        return $this->network_entity;
-    }
-
-    /**
-     * @param NetworkEntity $network_entity
-     * @return Network
-     */
-    public function setNetworkEntity(NetworkEntity $network_entity = null): Network
-    {
-        $this->network_entity = $network_entity;
-        return $this;
+        return $this->isActive;
     }
 
     /**

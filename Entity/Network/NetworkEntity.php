@@ -11,8 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Entity\Network;
 
-use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -82,6 +82,7 @@ class NetworkEntity
      */
     private $isActive = true;
 
+
     /**
      * Constructor
      * @param null $name
@@ -90,20 +91,22 @@ class NetworkEntity
     {
         $this->setName($name);
         $this->networks = new ArrayCollection();
-        $this->incidents = new ArrayCollection();
     }
 
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function __toString()
+    /**
+     * @return string
+     */
+    public function __toString(): string
     {
         return $this->getName();
     }
@@ -113,7 +116,7 @@ class NetworkEntity
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -124,7 +127,7 @@ class NetworkEntity
      * @param string $name
      * @return NetworkEntity
      */
-    public function setName($name)
+    public function setName(string $name): NetworkEntity
     {
         $this->name = $name;
 
@@ -137,7 +140,7 @@ class NetworkEntity
      * @param Network $networks
      * @return NetworkEntity
      */
-    public function addNetwork(Network $networks)
+    public function addNetwork(Network $networks): NetworkEntity
     {
         $this->networks[] = $networks;
 
@@ -148,18 +151,19 @@ class NetworkEntity
      * Remove networks
      *
      * @param Network $networks
+     * @return bool
      */
-    public function removeNetwork(Network $networks)
+    public function removeNetwork(Network $networks): bool
     {
-        $this->networks->removeElement($networks);
+        return $this->networks->removeElement($networks);
     }
 
     /**
      * Get networks
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Network[]|Collection
      */
-    public function getNetworks()
+    public function getNetworks(): Collection
     {
         return $this->networks;
     }
@@ -169,7 +173,7 @@ class NetworkEntity
      *
      * @return string
      */
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -180,7 +184,7 @@ class NetworkEntity
      * @param string $slug
      * @return NetworkEntity
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug): NetworkEntity
     {
         $this->slug = $slug;
 
@@ -188,44 +192,11 @@ class NetworkEntity
     }
 
     /**
-     * Add incidents
-     *
-     * @param Incident $incident
-     * @return NetworkEntity
-     */
-    public function addIncident(Incident $incident)
-    {
-        $this->incidents[] = $incident;
-
-        return $this;
-    }
-
-    /**
-     * Remove incidents
-     *
-     * @param Incident $incident
-     */
-    public function removeIncident(Incident $incident)
-    {
-        $this->incidents->removeElement($incident);
-    }
-
-    /**
-     * Get incidents
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getIncidents()
-    {
-        return $this->incidents;
-    }
-
-    /**
      * Get createdAt
      *
      * @return \DateTime
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
@@ -237,7 +208,7 @@ class NetworkEntity
      *
      * @return NetworkEntity
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt): NetworkEntity
     {
         $this->createdAt = $createdAt;
 
@@ -249,7 +220,7 @@ class NetworkEntity
      *
      * @return \DateTime
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
@@ -261,7 +232,7 @@ class NetworkEntity
      *
      * @return NetworkEntity
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt): NetworkEntity
     {
         $this->updatedAt = $updatedAt;
 
@@ -273,7 +244,7 @@ class NetworkEntity
      *
      * @return boolean
      */
-    public function getIsActive()
+    public function getIsActive(): bool
     {
         return $this->isActive;
     }
@@ -285,7 +256,7 @@ class NetworkEntity
      *
      * @return NetworkEntity
      */
-    public function setIsActive($isActive)
+    public function setIsActive(bool $isActive): NetworkEntity
     {
         $this->isActive = $isActive;
 
