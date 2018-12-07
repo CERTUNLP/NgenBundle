@@ -274,40 +274,6 @@ class NetworkAdmin
     }
 
     /**
-     * Add incidents
-     *
-     * @param IncidentInterface $incidents
-     * @return NetworkAdmin
-     */
-    public function addIncident(IncidentInterface $incidents): NetworkAdmin
-    {
-        $this->incidents[] = $incidents;
-
-        return $this;
-    }
-
-    /**
-     * Remove incidents
-     *
-     * @param IncidentInterface $incidents
-     * @return bool
-     */
-    public function removeIncident(IncidentInterface $incidents): bool
-    {
-        return $this->incidents->removeElement($incidents);
-    }
-
-    /**
-     * Get incidents
-     *
-     * @return Collection
-     */
-    public function getIncidents(): Collection
-    {
-        return $this->incidents;
-    }
-
-    /**
      * Get createdAt
      *
      * @return DateTime

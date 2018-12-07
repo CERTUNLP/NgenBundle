@@ -656,7 +656,7 @@ class Incident implements IncidentInterface
      * @return int
      * @throws \Exception
      */
-    public function getOpenDays($lastTimeDetected = false): int
+    public function getOpenDays(bool $lastTimeDetected = false): int
     {
         if ($lastTimeDetected) {
             $date = $this->getLastTimeDetected() ?: $this->getDate();

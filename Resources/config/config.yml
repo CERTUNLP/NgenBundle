@@ -42,8 +42,7 @@ doctrine:
         #        metadata_cache_driver: apc
         entity_listener_resolver: cert_unlp.ngen.doctrine.entity_listener_resolver
         resolve_target_entities:
-            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\Incident\InternalIncident
-            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\Incident\ExternalIncident
+            CertUnlp\NgenBundle\Model\IncidentInterface: CertUnlp\NgenBundle\Entity\Incident\Incident
             CertUnlp\NgenBundle\Model\ReporterInterface: CertUnlp\NgenBundle\Entity\User
             CertUnlp\NgenBundle\Model\NetworkInterface: CertUnlp\NgenBundle\Entity\Network\Network
         dql:
