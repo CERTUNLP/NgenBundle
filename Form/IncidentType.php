@@ -18,6 +18,7 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
 use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Form\Listener\IncidentDefaultFieldsListener;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -55,7 +56,6 @@ class IncidentType extends AbstractType
         $builder
             ->add('type', null, array(
                 'empty_value' => 'Choose an incident type',
-                'data' => $this->doctrine->getReference(\CertUnlp\NgenBundle\Entity\Incident\IncidentType::class, 'undefined'),
                 'required' => true,
                 'description' => '(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|'
                     . 'dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|'
@@ -66,12 +66,12 @@ class IncidentType extends AbstractType
                         ->where('it.isActive = TRUE');
                 }))
             ->add('ip_v4', null, array(
+                'required' => true,
                 'attr' => array('maxlength' => '300', 'help_text' => 'Add more than one address separating them with a comma.'),
                 'description' => 'The host IP. (Add more than one address separating them with a comma.)'))
             ->add('feed', EntityType::class, array(
                 'class' => IncidentFeed::class,
                 'required' => true,
-                'data' => $this->doctrine->getReference(IncidentFeed::class, 'undefined'),
                 'description' => '(bro|external_report|netflow|shadowserver)',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
@@ -101,7 +101,6 @@ class IncidentType extends AbstractType
                 'empty_value' => 'Choose an incident state',
                 'attr' => array('help_text' => 'If none is selected, the state will be \'open\'.'),
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
-                'data' => $this->doctrine->getReference(IncidentState::class, 'undefined'),
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
@@ -111,14 +110,12 @@ class IncidentType extends AbstractType
                 'empty_value' => 'Choose an incident tlp',
                 'attr' => array('help_text' => 'If none is selected, the state will be \'green\'.'),
                 'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
-                'data' => $this->doctrine->getReference(IncidentTlp::class, 'green')
             ))
             ->add('reporter', EntityType::class, array(
                 'class' => User::class,
                 'empty_value' => 'Choose a reporter',
                 'attr' => array('help_text' => 'If none is selected, the reporter will be the logged user.'),
                 'description' => 'The reporter ID. If none was selected, the reporter will be the logged user or the apikey user.',
-                'data' => $this->userLogged !== null ? $this->doctrine->getReference(User::class, $this->userLogged) : 'null ',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.enabled = TRUE');
@@ -128,7 +125,6 @@ class IncidentType extends AbstractType
                 'empty_value' => 'Choose a responsable',
                 'attr' => array('help_text' => 'If none is selected, the assigned will be empty.'),
                 'description' => 'If none was selected, the incident will remain unassigned.',
-                'data' => $this->userLogged !== null ? $this->doctrine->getReference(User::class, $this->userLogged) : 'null ',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.enabled = TRUE');
@@ -160,7 +156,8 @@ class IncidentType extends AbstractType
             ->add('save', SubmitType::class, array(
                 'attr' => array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => 'slide-down'),
 //                    'description' => "Evidence file that will be attached to the report "
-            ));
+            ))
+            ->addEventSubscriber(new IncidentDefaultFieldsListener($this->doctrine, $this->userLogged));
 
     }
 

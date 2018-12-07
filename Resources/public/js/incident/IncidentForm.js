@@ -9,20 +9,21 @@
 var IncidentForm = Form.extend({
     config: function (params) {
         this.setIncidentId();
-        $("#tlpState").on("change", $.proxy(this.changeTLP, this));
+        $("#tlp").on("change", $.proxy(this.changeTLP, this));
         $("#type").on("change", $.proxy(this.changeDefaults, this));
         $("#feed").on("change", $.proxy(this.changeDefaults, this));
     },
-    changeTLP: function (){
-        var $valor=$("#tlpState option:selected").text()
-        $("#tlp").first().html("TLP:"+$valor.toUpperCase());
-        $("#tlp").attr('class',"tlp-"+$valor.toLowerCase());
+    changeTLP: function () {
+        var $valor = $("#tlp option:selected").text();
+        $("#tlp_label").first().html("TLP:" + $valor.toUpperCase());
+        $("#tlp_label").attr('class', "tlp-" + $valor.toLowerCase());
     },
-    changeDefaults: function (){
-        var $type=$("#type option:selected").text();
-        var $feed=$("#feed option:selected").text();
-        $("#tlp").first().html("TLP:"+$valor.toUpperCase());
-        $("#tlp").attr('class',"tlp-"+$valor.toLowerCase());
+    changeDefaults: function () {
+        var $valor = $("#tlp option:selected").text();
+        var $type = $("#type option:selected").text();
+        var $feed = $("#feed option:selected").text();
+        $("#tlp_label").first().html("TLP:" + $valor.toUpperCase());
+        $("#tlp_label").attr('class', "tlp-" + $valor.toLowerCase());
     },
     setIncidentId: function () {
         this.incidentId = $('#slug').val();

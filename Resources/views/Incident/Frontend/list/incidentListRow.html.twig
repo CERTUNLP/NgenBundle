@@ -26,9 +26,8 @@
         {% include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incident': incident,'lastTimeDetected':incident.lastTimeDetected} %}
     </td>
     <td>
-       <span class="tlp-{{ incident.tlp }} left">
-        TLP-{{ incident.tlp|upper }}
-       </span>
+        <span class=" left label tlp-{{ incident.tlp | lower }}" id="tlp">TLP: {{incident.tlp}}</span>
+
     </td>
     <td>
         <div class="btn-group inline pull-left dropdown action-dropdown">
