@@ -169,7 +169,7 @@ fos_elastica:
                             type: keyword
                         slug:
                             type: keyword
-                        email:
+                        emails:
                             type: keyword
                         isActive:
                             type: boolean

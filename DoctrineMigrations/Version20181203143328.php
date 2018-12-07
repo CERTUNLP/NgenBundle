@@ -19,12 +19,13 @@ class Version20181203143328 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-//        $this->addSql('CREATE TABLE host (id INT AUTO_INCREMENT NOT NULL, network_id INT DEFAULT NULL, ip_v4 VARCHAR(15) NOT NULL, ip_v6 VARCHAR(39) NOT NULL, url VARCHAR(39) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, slug VARCHAR(100) DEFAULT NULL, is_active TINYINT(1) NOT NULL, INDEX IDX_CF2713FD34128B91 (network_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
-//        $this->addSql('ALTER TABLE host ADD CONSTRAINT FK_CF2713FD34128B91 FOREIGN KEY (network_id) REFERENCES network (id)');
-//        $this->addSql('ALTER TABLE incident DROP FOREIGN KEY FK_3D03A11A6801DB4');
-//        $this->addSql('ALTER TABLE incident DROP FOREIGN KEY FK_3D03A11AC9E8B981');
-//        $this->addSql('DROP INDEX IDX_3D03A11AC9E8B981 ON incident');
+        $this->addSql('CREATE TABLE host (id INT AUTO_INCREMENT NOT NULL, network_id INT DEFAULT NULL, ip_v4 VARCHAR(15) NOT NULL, ip_v6 VARCHAR(39) NOT NULL, url VARCHAR(39) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, slug VARCHAR(100) DEFAULT NULL, is_active TINYINT(1) NOT NULL, INDEX IDX_CF2713FD34128B91 (network_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE host ADD CONSTRAINT FK_CF2713FD34128B91 FOREIGN KEY (network_id) REFERENCES network (id)');
+        $this->addSql('ALTER TABLE incident DROP FOREIGN KEY FK_3D03A11A6801DB4');
+        $this->addSql('ALTER TABLE incident DROP FOREIGN KEY FK_3D03A11AC9E8B981');
+        $this->addSql('DROP INDEX IDX_3D03A11AC9E8B981 ON incident');
 //        $this->addSql('DROP INDEX IDX_3D03A11A6801DB4 ON incident');
+        $this->addSql('ALTER TABLE incident DROP FOREIGN KEY FK_3D03A11A7D33BAAB');
         $this->addSql('ALTER TABLE incident ADD origin_id INT DEFAULT NULL, ADD destination_id INT DEFAULT NULL, ADD ip VARCHAR(15) NOT NULL, DROP network_admin_id, DROP network_entity_id, DROP discr, DROP host_address, DROP abuse_entity, DROP abuse_entity_emails, DROP network_entity, DROP start_address, DROP end_address, DROP country, CHANGE notes notes LONGTEXT DEFAULT NULL');
         $this->addSql('ALTER TABLE incident ADD CONSTRAINT FK_3D03A11A56A273CC FOREIGN KEY (origin_id) REFERENCES host (id)');
         $this->addSql('ALTER TABLE incident ADD CONSTRAINT FK_3D03A11A816C6140 FOREIGN KEY (destination_id) REFERENCES host (id)');

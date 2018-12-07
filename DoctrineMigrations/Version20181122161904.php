@@ -36,11 +36,6 @@ class Version20181122161904 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE container_config DROP FOREIGN KEY FK_C89BC17B812D5EB');
-        $this->addSql('ALTER TABLE container_config DROP FOREIGN KEY FK_C89BC17B727ACA70');
-        $this->addSql('DROP TABLE container_extension');
-        $this->addSql('DROP TABLE container_parameter');
-        $this->addSql('DROP TABLE container_config');
         $this->addSql('ALTER TABLE incident DROP FOREIGN KEY FK_3D03A11A6801DB4');
         $this->addSql('ALTER TABLE incident ADD CONSTRAINT FK_3D03A11A7D33BAAB FOREIGN KEY (network_entity_id) REFERENCES academic_unit (id)');
         $this->addSql('CREATE INDEX IDX_3D03A11A7D33BAAB ON incident (network_entity_id)');
