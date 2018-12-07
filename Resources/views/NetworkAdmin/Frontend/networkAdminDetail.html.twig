@@ -43,7 +43,7 @@
                                     Email
                                 </td>
                                 <td class="">
-                                    {{ object.email }}
+                                    {{ object.emails }}
                                 </td>
                             </tr>
                             <tr>
@@ -87,7 +87,7 @@
                                 </td>
                                 <td class="">
                                     <a target="_blank" type="button" class="btn btn-sm btn-primary" role="button"
-                                       href="{{ path('cert_unlp_ngen_network_search_network',{'term': '"'~object.name~'"'~ "&&" ~'"'~object.email~'"'}) }}">
+                                       href="{{ path('cert_unlp_ngen_network_search_network',{'term': '"'~object.name~'"'~ "&&" ~'"'~object.emails~'"'}) }}">
                                         <span>{{ label_info(object.networks.count) }} </span>
                                         <span>search</span>
                                     </a>

@@ -36,12 +36,7 @@ class Version20181121145047 extends AbstractMigration
 
         $this->addSql('ALTER TABLE incident DROP FOREIGN KEY FK_3D03A11A6801DB4');
         $this->addSql('ALTER TABLE network DROP FOREIGN KEY FK_608487BC6801DB4');
-        $this->addSql('ALTER TABLE container_config DROP FOREIGN KEY FK_C89BC17B812D5EB');
-        $this->addSql('ALTER TABLE container_config DROP FOREIGN KEY FK_C89BC17B727ACA70');
         $this->addSql('ALTER TABLE network_entity RENAME TO academic_unit;');
-        $this->addSql('DROP TABLE container_extension');
-        $this->addSql('DROP TABLE container_parameter');
-        $this->addSql('DROP TABLE container_config');
         $this->addSql('DROP INDEX IDX_3D03A11A6801DB4 ON incident');
         $this->addSql('ALTER TABLE incident CHANGE network_entity_id academic_unit_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE incident ADD CONSTRAINT FK_3D03A11A7D33BAAB FOREIGN KEY (academic_unit_id) REFERENCES academic_unit (id)');

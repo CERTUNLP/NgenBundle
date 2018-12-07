@@ -118,7 +118,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Form\InternalIncidentType')
+            ->defaultValue('CertUnlp\NgenBundle\Form\IncidentType')
             ->end()
             ->end()
             ->end()
