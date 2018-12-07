@@ -11,7 +11,7 @@
 
 {% block content_header %}
     <h1 class="page-header">{{ icon('plus-circle fa-fw') }}Add incident
-        <span class="tlp-green" id="tlp">&nbsp;TLP:GREEN&nbsp;</span>
+        <span class="tlp-green" id="tlp_label">&nbsp;TLP:GREEN&nbsp;</span>
     </h1>
 {% endblock %}
 
@@ -28,11 +28,13 @@
 {% block javascripts %}
     {{ parent() }}
     {% javascripts
+        '@CertUnlpNgenBundle/Resources/public/js/incident/IncidentForm.js'
         '@CertUnlpNgenBundle/Resources/public/js/incident/InternalIncident.js'
         '@CertUnlpNgenBundle/Resources/public/js/incident/InternalIncidentApi.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
+        var incidentForm = new IncidentForm();
         var internalIncidentApi = new InternalIncidentApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
         var internalIncident = new InternalIncident();
     </script>

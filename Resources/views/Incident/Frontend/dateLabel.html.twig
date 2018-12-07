@@ -13,14 +13,14 @@
     {% set date = incident.date %}
 {% endif %}  
 
-{% if incident.openDays(lastTimeDetected) >= 3 and incident.openDays(lastTimeDetected) <=6 %}
+{% if incident.openDays(true) >= 3 and incident.openDays(true) <=6 %}
     {% set trclass = "warning" %}
-{% elseif incident.openDays(lastTimeDetected) >6 %}
+{% elseif incident.openDays(true) >6 %}
     {% set trclass = "danger" %}
 {% else %}
     {% set trclass = "success" %}
 {% endif %}  
 
 {{ date |date('Y-m-d') }} <span
-        class="label label-{{ trclass }}">{{ incident.openDays(lastTimeDetected)~" days" }}</span>{% if lastTimeDetected %}
+        class="label label-{{ trclass }}">{{ incident.openDays(true)~" days" }}</span>{% if lastTimeDetected %}
     <span class="label label-warning">ltd</span>{% endif %}

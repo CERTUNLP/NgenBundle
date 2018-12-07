@@ -19,7 +19,7 @@ fos_elastica:
                     properties:
                         id:
                             type: integer
-                        ip:
+                        ip_v4:
                             type: ip
                         date:
                             type: date
@@ -36,7 +36,7 @@ fos_elastica:
                         network:
                             type: "object"
                             properties:
-                                ip:
+                                ip_v4:
                                     type: ip
                                 ipMask:
                                     type: integer
@@ -108,6 +108,10 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\Incident\Incident
                         provider: ~
                         finder: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
         networks:
             index_name: networks_%kernel.environment%
             settings:
@@ -119,7 +123,7 @@ fos_elastica:
                     properties:
                         id:
                             type: integer
-                        ip:
+                        ip_v4:
                             type: ip
                         ipMask:
                             type: integer
@@ -155,6 +159,10 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\Network\Network
                         provider: ~
                         finder: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true: ~
         network_admins:
             index_name: network_admins_%kernel.environment%
             settings:
@@ -185,6 +193,10 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\Network\NetworkAdmin
                         provider: ~
                         finder: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true: ~
         network_entitys:
             index_name: network_entitys_%kernel.environment%
             settings:
@@ -207,12 +219,16 @@ fos_elastica:
                             type: date
                     persistence:
                         # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
+                        # listener and finder: ~
                         # propel and should be removed
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Network\NetworkEntity
                         provider: ~
                         finder: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true: ~
         feeds:
             index_name: feeds_%kernel.environment%
             settings:
@@ -240,6 +256,10 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\Incident\IncidentFeed
                         provider: ~
                         finder: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true: ~
         states:
             index_name: states_%kernel.environment%
             settings:
@@ -267,6 +287,10 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\Incident\IncidentState
                         provider: ~
                         finder: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true: ~
         priorities:
             index_name: priorities_%kernel.environment%
             settings:
@@ -302,6 +326,10 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\Incident\IncidentPriority
                         provider: ~
                         finder: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true: ~
         decisions:
             index_name: decisions_%kernel.environment%
             settings:
@@ -346,6 +374,10 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\Incident\IncidentDecision
                         provider: ~
                         finder: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true: ~
         types:
             index_name: types_%kernel.environment%
             settings:
@@ -380,6 +412,10 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\Incident\IncidentType
                         provider: ~
                         finder: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true: ~
         reports:
             index_name: reports_%kernel.environment%
             settings:
@@ -417,6 +453,10 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\Incident\IncidentReport
                         provider: ~
                         finder: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true: ~
         users:
             index_name: users_%kernel.environment%
             settings:
@@ -452,3 +492,7 @@ fos_elastica:
                         model: CertUnlp\NgenBundle\Entity\User
                         provider: ~
                         finder: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true: ~
