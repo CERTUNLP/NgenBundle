@@ -1,4 +1,5 @@
 subject_mail_incidente: Incident of type "%s" in %s
+subject_mail_renotificacion: Renotification
 firma_ngen: This report was generated with <a href="https://github.com/CERTUNLP/NgenBundle">https://github.com/CERTUNLP/NgenBundle</a>
 thanks: We would appreciate if you notify us when you resolve the incident. Do not hesitate to ask us about any question.
 farewell: Sincerely

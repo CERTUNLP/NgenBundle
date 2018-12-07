@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Services\Frontend\Controller;
 
-use CertUnlp\NgenBundle\Model\IncidentInterface;
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\ThreadManagerInterface;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
@@ -34,7 +34,7 @@ class IncidentFrontendController extends FrontendController
         $this->userLogged = $securityContext->getToken()->getUser()->getId();
     }
 
-    public function evidenceIncidentAction(IncidentInterface $incident)
+    public function evidenceIncidentAction(Incident $incident)
     {
 
         $zipname = $incident . '_' . md5(time()) . '.zip';

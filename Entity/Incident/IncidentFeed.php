@@ -79,7 +79,7 @@ class IncidentFeed
      */
     private $updatedAt;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="feed", cascade={"persist","remove"})) */
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="feed", cascade={"persist","remove"})) */
     private $incidents;
 
     /**

@@ -12,7 +12,6 @@
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Model\IncidentInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -71,11 +70,11 @@ class IncidentHandler extends Handler
     /**
      * Delete a InternalIncident.
      *
-     * @param IncidentInterface $incident
+     * @param Incident $incident
      * @param $state
-     * @return IncidentInterface|object
+     * @return Incident|object
      */
-    public function changeState(IncidentInterface $incident, $state)
+    public function changeState(Incident $incident, $state)
     {
         $incident->setState($state);
         return $this->patch($incident, []);
@@ -171,12 +170,12 @@ class IncidentHandler extends Handler
     /**
      * Processes the form.
      *
-     * @param IncidentInterface $incident
+     * @param Incident $incident
      * @param array $parameters
      * @param String $method
      *
      * @param bool $csrf_protection
-     * @return IncidentInterface|object
+     * @return Incident|object
      *
      */
     protected function processForm($incident, $parameters, $method = "PUT", $csrf_protection = true)

@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Network;
 
-use CertUnlp\NgenBundle\Model\IncidentInterface;
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -190,10 +190,10 @@ class NetworkEntity
     /**
      * Add incidents
      *
-     * @param IncidentInterface $incident
+     * @param Incident $incident
      * @return NetworkEntity
      */
-    public function addIncident(IncidentInterface $incident)
+    public function addIncident(Incident $incident)
     {
         $this->incidents[] = $incident;
 
@@ -203,9 +203,9 @@ class NetworkEntity
     /**
      * Remove incidents
      *
-     * @param IncidentInterface $incident
+     * @param Incident $incident
      */
-    public function removeIncident(IncidentInterface $incident)
+    public function removeIncident(Incident $incident)
     {
         $this->incidents->removeElement($incident);
     }

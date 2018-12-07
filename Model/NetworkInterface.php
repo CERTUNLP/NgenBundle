@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Model;
 
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
@@ -66,7 +67,7 @@ interface NetworkInterface
     /**
      * Set networkAdmin
      *
-     * @param \CertUnlp\NgenBundle\Entity\Network\NetworkAdmin $networkAdmin
+     * @param NetworkAdmin $networkAdmin
      * @return Network
      */
     public function setNetworkAdmin(NetworkAdmin $networkAdmin = null);
@@ -74,14 +75,14 @@ interface NetworkInterface
     /**
      * Get networkAdmin
      *
-     * @return \CertUnlp\NgenBundle\Entity\Network\NetworkAdmin
+     * @return NetworkAdmin
      */
     public function getNetworkAdmin();
 
     /**
      * Set networkEntity
      *
-     * @param \CertUnlp\NgenBundle\Entity\Network\NetworkEntity $networkEntity
+     * @param NetworkEntity $networkEntity
      * @return Network
      */
     public function setNetworkEntity(NetworkEntity $networkEntity = null);
@@ -89,24 +90,24 @@ interface NetworkInterface
     /**
      * Get networkEntity
      *
-     * @return \CertUnlp\NgenBundle\Entity\Network\NetworkEntity
+     * @return NetworkEntity
      */
     public function getNetworkEntity();
 
     /**
      * Add incidents
      *
-     * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
+     * @param Incident $incidents
      * @return Network
      */
-    public function addIncident(IncidentInterface $incidents);
+    public function addIncident(Incident $incidents);
 
     /**
      * Remove incidents
      *
-     * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
+     * @param Incident $incidents
      */
-    public function removeIncident(IncidentInterface $incidents);
+    public function removeIncident(Incident $incidents);
 
     /**
      * Get incidents
@@ -160,5 +161,5 @@ interface NetworkInterface
      */
     public function getNumericIpMask();
 
-    public function equals(NetworkInterface $other);
+    public function equals(Network $other);
 }

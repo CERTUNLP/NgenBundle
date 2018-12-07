@@ -11,7 +11,6 @@
 
 namespace CertUnlp\NgenBundle\Entity\Network;
 
-use CertUnlp\NgenBundle\Model\IncidentInterface;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

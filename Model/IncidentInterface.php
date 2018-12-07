@@ -15,6 +15,8 @@ use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
+use CertUnlp\NgenBundle\Entity\Network\Network;
+use CertUnlp\NgenBundle\Entity\User;
 use DateTime;
 use FOS\CommentBundle\Model\Thread;
 use Symfony\Component\HttpFoundation\File\File;
@@ -117,17 +119,17 @@ interface IncidentInterface
     /**
      * Set network
      *
-     * @param NetworkInterface $network
+     * @param Network $network
      * @return Incident
      */
-    public function setNetwork(NetworkInterface $network = null): Incident;
+    public function setNetwork(Network $network = null): Incident;
 
     /**
      * Get network
      *
-     * @return NetworkInterface
+     * @return Network
      */
-    public function getNetwork(): ?NetworkInterface;
+    public function getNetwork(): ?Network;
 
     /**
      * Set type
@@ -167,17 +169,17 @@ interface IncidentInterface
     /**
      * Set reporter
      *
-     * @param ReporterInterface $reporter
+     * @param User $reporter
      * @return Incident
      */
-    public function setReporter(ReporterInterface $reporter = null): Incident;
+    public function setReporter(User $reporter = null): Incident;
 
     /**
      * Get reporter
      *
-     * @return ReporterInterface
+     * @return User
      */
-    public function getReporter(): ?ReporterInterface;
+    public function getReporter(): ?User;
 
     /**
      * Set evidence_file

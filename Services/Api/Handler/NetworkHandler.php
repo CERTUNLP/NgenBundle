@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
-use CertUnlp\NgenBundle\Model\NetworkInterface;
+use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Services\NetworkRdapClient;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -48,9 +48,9 @@ class NetworkHandler extends Handler
      * Get a Network.
      *
      * @param string $ip
-     * @return NetworkInterface
+     * @return Network
      */
-    public function getByHostAddress(string $ip): ?NetworkInterface
+    public function getByHostAddress(string $ip): ?Network
     {
         $network = $this->repository->findByIpV4($ip);
 
@@ -63,7 +63,7 @@ class NetworkHandler extends Handler
     /**
      * Delete a Network.
      *
-     * @param NetworkInterface $network
+     * @param Network $network
      * @param array $parameters
      *
      * @return void

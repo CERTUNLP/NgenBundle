@@ -14,7 +14,6 @@ namespace CertUnlp\NgenBundle\Entity\Network;
 use CertUnlp\NgenBundle\Entity\Incident\Host\Host;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
-use CertUnlp\NgenBundle\Model\IncidentInterface;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -308,10 +307,10 @@ abstract class Network implements NetworkInterface
     /**
      * Add incidents
      *
-     * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
+     * @param \CertUnlp\NgenBundle\Entity\Incident\Incident $incidents
      * @return Network
      */
-    public function addIncident(IncidentInterface $incidents): Network
+    public function addIncident(Incident $incidents): Network
     {
         $this->incidents[] = $incidents;
 
@@ -321,10 +320,10 @@ abstract class Network implements NetworkInterface
     /**
      * Remove incidents
      *
-     * @param IncidentInterface $incidents
+     * @param Incident $incidents
      * @return bool
      */
-    public function removeIncident(IncidentInterface $incidents): bool
+    public function removeIncident(Incident $incidents): bool
     {
         return $this->incidents->removeElement($incidents);
     }
@@ -342,7 +341,7 @@ abstract class Network implements NetworkInterface
     /**
      * {@inheritDoc}
      */
-    public function equals(NetworkInterface $other = null): bool
+    public function equals(Network $other = null): bool
     {
         if ($other) {
             return ($this->getNumericIp() === $other->getNumericIp()) && ($this->getNumericIpMask() === $other->getNumericIpMask());

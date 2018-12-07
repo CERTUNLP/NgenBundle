@@ -11,8 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Services\Mailer;
 
-use CertUnlp\NgenBundle\Model\IncidentInterface;
-use FOS\CommentBundle\Event\CommentPersistEvent;
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
 
 /**
  *
@@ -21,17 +20,17 @@ use FOS\CommentBundle\Event\CommentPersistEvent;
 interface IncidentMailerInterface
 {
 
-    public function send_report(IncidentInterface $incident, $body = null, $echo = null, $is_new_incident = FALSE);
+    public function send_report(Incident $incident, $body = null, $echo = null, $is_new_incident = FALSE);
 
-    public function getMailSubject($renotification = false);
+    public function getMailSubject(bool $renotification = false);
 
     public function getReplySubject();
 
-    public function getBody(IncidentInterface $incident, $type = 'html');
+    public function getBody(Incident $incident, string $type = 'html');
 
-    public function getReplyBody(IncidentInterface $incident, $body = '');
+    public function getReplyBody(Incident $incident, string $body = '');
 
-    public function send_report_reply(IncidentInterface $incident, $body = '', $self_reply = true);
+    public function send_report_reply(Incident $incident, string $body = '', bool $self_reply = true);
 
-    public function onCommentPrePersist(CommentPersistEvent $event);
+    public function onCommentPrePersist(Incident $event);
 }

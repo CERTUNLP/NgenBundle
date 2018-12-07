@@ -79,7 +79,7 @@ class IncidentController extends FOSRestController
      *   resource = true,
      *   input = "CertUnlp\NgenBundle\Form\IncidentType",
      *   statusCodes = {
-     *     201 = "Returned when the IncidentInterface is created",
+     *     201 = "Returned when the Incident is created",
      *     204 = "Returned when successful",
      *     400 = "Returned when the form has errors"
      *   }
