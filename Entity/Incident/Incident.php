@@ -14,8 +14,7 @@ namespace CertUnlp\NgenBundle\Entity\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\Host\Host;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
-use CertUnlp\NgenBundle\Model\NetworkInterface;
-use CertUnlp\NgenBundle\Model\ReporterInterface;
+use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\CommentBundle\Model\Thread;
@@ -30,7 +29,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Listener\InternalIncidentListener" })
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
- * @CustomAssert\TypeHasReport
  */
 class Incident implements IncidentInterface
 {
@@ -234,8 +232,8 @@ class Incident implements IncidentInterface
      */
     private $destination;
     /**
-     * @var NetworkInterface|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Model\NetworkInterface", inversedBy="incidents")
+     * @var Network|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network", inversedBy="incidents")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
@@ -348,16 +346,16 @@ class Incident implements IncidentInterface
     /**
      * @return User
      */
-    public function getReporter(): ?ReporterInterface
+    public function getReporter(): ?User
     {
         return $this->reporter;
     }
 
     /**
-     * @param ReporterInterface $reporter
+     * @param User $reporter
      * @return Incident
      */
-    public function setReporter(ReporterInterface $reporter = null): Incident
+    public function setReporter(User $reporter = null): Incident
     {
         $this->reporter = $reporter;
         return $this;
@@ -366,7 +364,7 @@ class Incident implements IncidentInterface
     /**
      * @return User
      */
-    public function getAssigned(): ?ReporterInterface
+    public function getAssigned(): ?User
     {
         return $this->assigned;
     }
@@ -876,18 +874,18 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @return NetworkInterface
+     * @return Network
      */
-    public function getNetwork(): ?NetworkInterface
+    public function getNetwork(): ?Network
     {
         return $this->network;
     }
 
     /**
-     * @param NetworkInterface $network
+     * @param Network $network
      * @return Incident
      */
-    public function setNetwork(NetworkInterface $network = null): Incident
+    public function setNetwork(Network $network = null): Incident
     {
         $this->network = $network;
         return $this;

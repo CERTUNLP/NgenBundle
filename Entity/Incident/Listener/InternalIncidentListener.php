@@ -14,7 +14,6 @@ namespace CertUnlp\NgenBundle\Entity\Incident\Listener;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Event\ConvertToIncidentEvent;
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
-use CertUnlp\NgenBundle\Model\IncidentInterface;
 use CertUnlp\NgenBundle\Services\Api\Handler\HostHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\IncidentHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\NetworkHandler;
@@ -52,17 +51,17 @@ class InternalIncidentListener
     }
 
     /** @ORM\PrePersist
-     * @param IncidentInterface $incident
+     * @param Incident $incident
      * @param LifecycleEventArgs $event
      */
-    public function prePersistHandler(IncidentInterface $incident, LifecycleEventArgs $event)
+    public function prePersistHandler(Incident $incident, LifecycleEventArgs $event)
     {
         $this->incidentPrePersistUpdate($incident, $event);
 
         $this->delegator_chain->prePersistDelegation($incident);
     }
 
-    public function incidentPrePersistUpdate(IncidentInterface $incident, LifecycleEventArgs $event)
+    public function incidentPrePersistUpdate(Incident $incident, LifecycleEventArgs $event)
     {
         $this->timestampsUpdate($incident);
         $this->networkUpdate($incident);
@@ -72,7 +71,7 @@ class InternalIncidentListener
         $this->tlpUpdate($incident, $event);
     }
 
-    public function timestampsUpdate(IncidentInterface $incident): void
+    public function timestampsUpdate(Incident $incident): void
     {
         if ($incident->getDate() == null) {
             try {
@@ -106,7 +105,7 @@ class InternalIncidentListener
         $incident->setSlug(Sluggable\Urlizer::urlize($incident->getOrigin() . ' ' . $incident->getType()->getSlug() . ' ' . $incident->getDate()->format('Y-m-d-H-i'), '_'));
     }
 
-    public function stateUpdate(IncidentInterface $incident, LifecycleEventArgs $event): void
+    public function stateUpdate(Incident $incident, LifecycleEventArgs $event): void
     {
         $entityManager = $event->getEntityManager();
         $repository = $entityManager->getRepository('CertUnlpNgenBundle:Incident\IncidentState');
@@ -117,7 +116,7 @@ class InternalIncidentListener
         }
     }
 
-    public function feedUpdate(IncidentInterface $incident, LifecycleEventArgs $event): void
+    public function feedUpdate(Incident $incident, LifecycleEventArgs $event): void
     {
         $entityManager = $event->getEntityManager();
         $repository = $entityManager->getRepository('CertUnlpNgenBundle:Incident\IncidentFeed');
@@ -128,7 +127,7 @@ class InternalIncidentListener
         }
     }
 
-    public function tlpUpdate(IncidentInterface $incident, LifecycleEventArgs $event): void
+    public function tlpUpdate(Incident $incident, LifecycleEventArgs $event): void
     {
         #fix esto tiene que ir a INciddntDecision
         $entityManager = $event->getEntityManager();
@@ -157,10 +156,10 @@ class InternalIncidentListener
     }
 
     /** @ORM\PreUpdate
-     * @param IncidentInterface $incident
+     * @param Incident $incident
      * @param PreUpdateEventArgs $event
      */
-    public function preUpdateHandler(IncidentInterface $incident, PreUpdateEventArgs $event): void
+    public function preUpdateHandler(Incident $incident, PreUpdateEventArgs $event): void
     {
         $this->incidentPrePersistUpdate($incident, $event);
         $this->delegator_chain->preUpdateDelegation($incident);
@@ -202,19 +201,19 @@ class InternalIncidentListener
     }
 
     /** @ORM\PostPersist
-     * @param IncidentInterface $incident
+     * @param Incident $incident
      * @param LifecycleEventArgs $event
      */
-    public function postPersistHandler(IncidentInterface $incident, LifecycleEventArgs $event): void
+    public function postPersistHandler(Incident $incident, LifecycleEventArgs $event): void
     {
         $this->delegator_chain->postPersistDelegation($incident);
         $this->commentThreadUpdate($incident, $event);
     }
 
     /**
-     * @param IncidentInterface $incident
+     * @param Incident $incident
      */
-    public function commentThreadUpdate(IncidentInterface $incident): void
+    public function commentThreadUpdate(Incident $incident): void
     {
         $id = $incident->getId();
         $thread = $this->thread_manager->findThreadById($id);
@@ -234,9 +233,9 @@ class InternalIncidentListener
     }
 
     /** @ORM\PostUpdate
-     * @param IncidentInterface $incident
+     * @param Incident $incident
      */
-    public function postUpdateHandler(IncidentInterface $incident): void
+    public function postUpdateHandler(Incident $incident): void
     {
         $this->delegator_chain->postUpdateDelegation($incident);
     }

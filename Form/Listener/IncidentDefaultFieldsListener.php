@@ -41,8 +41,10 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
             $form->get('tlp')->setData($this->doctrine->getReference(IncidentTlp::class, 'green'));
             $form->get('assigned')->setData($this->userLogged !== null ? $this->doctrine->getReference(User::class, $this->userLogged) : 'null ');
             $form->get('reporter')->setData($this->userLogged !== null ? $this->doctrine->getReference(User::class, $this->userLogged) : 'null ');
-        }else{
-            $form->get('ip_v4')->setData($incident->getOrigin()->getIpV4());
+        } else {
+            if ($incident->getOrigin()) {
+                $form->get('ip_v4')->setData($incident->getOrigin()->getIpV4());
+            }
 
         }
     }

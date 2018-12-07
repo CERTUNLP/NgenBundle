@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity;
 
-use CertUnlp\NgenBundle\Model\IncidentInterface;
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Model\ReporterInterface;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
@@ -68,7 +68,7 @@ class User extends BaseUser implements ReporterInterface
      */
     private $updatedAt;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="reporter") */
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="reporter") */
     private $incidents;
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="assigned") */
     private $assignedIncidents;
@@ -169,10 +169,10 @@ class User extends BaseUser implements ReporterInterface
     /**
      * Add incidents
      *
-     * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
+     * @param \CertUnlp\NgenBundle\Entity\Incident\Incident $incidents
      * @return User
      */
-    public function addIncident(IncidentInterface $incidents)
+    public function addIncident(Incident $incidents)
     {
         $this->incidents[] = $incidents;
 
@@ -182,9 +182,9 @@ class User extends BaseUser implements ReporterInterface
     /**
      * Remove incidents
      *
-     * @param \CertUnlp\NgenBundle\Model\IncidentInterface $incidents
+     * @param \CertUnlp\NgenBundle\Entity\Incident\Incident $incidents
      */
-    public function removeIncident(IncidentInterface $incidents)
+    public function removeIncident(Incident $incidents)
     {
         $this->incidents->removeElement($incidents);
     }

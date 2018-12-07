@@ -11,11 +11,11 @@
 
 namespace CertUnlp\NgenBundle\Services\Mailer;
 
-use CertUnlp\NgenBundle\Model\IncidentInterface;
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Services\IncidentReportFactory;
-use FOS\CommentBundle\Event\CommentPersistEvent;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\SignedCommentInterface;
+use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 
 class IncidentMailer implements IncidentMailerInterface
 {
@@ -30,17 +30,17 @@ class IncidentMailer implements IncidentMailerInterface
     protected $report_factory;
     protected $lang;
     protected $team;
+    private $translator;
 
 
-
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $templating, string $cert_email, string $upload_directory, CommentManagerInterface $commentManager, string $environment, IncidentReportFactory $report_factory, string $lang, $team, $translator)
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $templating, string $cert_email, string $upload_directory, CommentManagerInterface $commentManager, string $environment, IncidentReportFactory $report_factory, string $lang, array $team, Translator $translator)
     {
         $this->mailer = $mailer;
         $this->cert_email = $cert_email;
         $this->templating = $templating;
         $this->upload_directory = $upload_directory;
         $this->commentManager = $commentManager;
-        $this->environment = (in_array($environment, ['dev', 'test'])) ? '[dev]' : '';
+        $this->environment = in_array($environment, ['dev', 'test']) ? '[dev]' : '';
         $this->report_factory = $report_factory;
         $this->lang = $lang;
         $this->team = $team;
@@ -53,20 +53,20 @@ class IncidentMailer implements IncidentMailerInterface
     }
 
     /**
-     * @param IncidentInterface $incident
+     * @param Incident $incident
      * @param null $body
      * @param null $echo
      * @param bool $is_new_incident
      * @param bool $renotification
      * @return int
      */
-    public function send_report(IncidentInterface $incident, $body = null, $echo = null, $is_new_incident = FAlSE, $renotification = false)
+    public function send_report(Incident $incident, $body = null, $echo = null, $is_new_incident = FAlSE, $renotification = false)
     {
         if (!$echo) {
             if ($incident->isSendReport() || $is_new_incident || $renotification) {
                 $html = $this->getBody($incident);
                 $message = \Swift_Message::newInstance()
-                    ->setSubject(sprintf($this->mailSubject($renotification), $incident->getTlp(),$this->team["name"],$incident->getType()->getName(), $incident->getIp(), $incident->getId()))
+                    ->setSubject(sprintf($this->mailSubject($renotification), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getIp(), $incident->getId()))
                     ->setFrom($this->cert_email)
                     ->setCc($this->cert_email)
                     ->setSender($this->cert_email)
@@ -90,22 +90,23 @@ class IncidentMailer implements IncidentMailerInterface
         return null;
     }
 
-    public function getBody(IncidentInterface $incident, $type = 'html')
+    public function getBody(Incident $incident, string $type = 'html')
     {
         return $this->report_factory->getReport($incident, $this->lang);
     }
 
-    public function mailSubject($renotification = false)
+    public function mailSubject(bool $renotification = false)
     {
         return $this->environment . $this->getMailSubject($renotification);
     }
 
-    public function getMailSubject($renotification = false)
+    public function getMailSubject(bool $renotification = false): string
     {
-        return '';
+        $renotification_text = $renotification ? '[' . $this->translator->trans('subject_mail_renotificacion') . ']' : '';
+        return $renotification_text . '[TLP:%s][%s] ' . $this->translator->trans('subject_mail_incidente') . ' [ID:%s]';
     }
 
-    public function prePersistDelegation(IncidentInterface $incident)
+    public function prePersistDelegation(Incident $incident)
     {
         $message = \Swift_Message::newInstance();
         $incident->setReportMessageId($message->getId());
@@ -116,7 +117,7 @@ class IncidentMailer implements IncidentMailerInterface
         $this->send_report($incident);
     }
 
-    public function onCommentPrePersist(CommentPersistEvent $event)
+    public function onCommentPrePersist(Incident $event)
     {
         $comment = $event->getComment();
 
@@ -125,14 +126,14 @@ class IncidentMailer implements IncidentMailerInterface
         }
         if ($comment instanceof SignedCommentInterface) {
             $author = $comment->getAuthor();
-            if ($author->getUsername() == 'mailbot') {
+            if ($author->getUsername() === 'mailbot') {
                 return;
             }
         }
         $this->send_report_reply($comment->getThread()->getIncident(), $comment->getBody(), !$comment->getNotifyToAdmin());
     }
 
-    public function send_report_reply(IncidentInterface $incident, $body = '', $self_reply = true)
+    public function send_report_reply(Incident $incident, string $body = '', bool $self_reply = true)
     {
 
         $html = $this->getReplyBody($incident, $body);
@@ -156,7 +157,7 @@ class IncidentMailer implements IncidentMailerInterface
         $this->mailer->send($message);
     }
 
-    public function getReplyBody(IncidentInterface $incident, $body = '')
+    public function getReplyBody(Incident $incident, string $body = '')
     {
         return $this->report_factory->getReportReply($incident, $body, $this->lang);
 

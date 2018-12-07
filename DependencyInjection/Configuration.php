@@ -11,6 +11,43 @@
 
 namespace CertUnlp\NgenBundle\DependencyInjection;
 
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
+use CertUnlp\NgenBundle\Entity\Network\Network;
+use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
+use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
+use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Form\IncidentDecisionType;
+use CertUnlp\NgenBundle\Form\IncidentFeedType;
+use CertUnlp\NgenBundle\Form\IncidentReportType;
+use CertUnlp\NgenBundle\Form\IncidentStateType;
+use CertUnlp\NgenBundle\Form\IncidentType;
+use CertUnlp\NgenBundle\Form\IncidentTypeType;
+use CertUnlp\NgenBundle\Form\NetworkAdminType;
+use CertUnlp\NgenBundle\Form\NetworkEntityType;
+use CertUnlp\NgenBundle\Form\NetworkType;
+use CertUnlp\NgenBundle\Form\UserType;
+use CertUnlp\NgenBundle\Services\Api\Handler\IncidentDecisionHandler;
+use CertUnlp\NgenBundle\Services\Api\Handler\IncidentFeedHandler;
+use CertUnlp\NgenBundle\Services\Api\Handler\IncidentHandler;
+use CertUnlp\NgenBundle\Services\Api\Handler\IncidentReportHandler;
+use CertUnlp\NgenBundle\Services\Api\Handler\IncidentStateHandler;
+use CertUnlp\NgenBundle\Services\Api\Handler\IncidentTypeHandler;
+use CertUnlp\NgenBundle\Services\Api\Handler\NetworkAdminHandler;
+use CertUnlp\NgenBundle\Services\Api\Handler\NetworkEntityHandler;
+use CertUnlp\NgenBundle\Services\Api\Handler\NetworkHandler;
+use CertUnlp\NgenBundle\Services\Api\Handler\UserHandler;
+use CertUnlp\NgenBundle\Services\Delegator\ExternalIncidentDelegatorChain;
+use CertUnlp\NgenBundle\Services\Delegator\InternalIncidentDelegatorChain;
+use CertUnlp\NgenBundle\Services\IncidentFactory;
+use CertUnlp\NgenBundle\Services\IncidentRedmine;
+use CertUnlp\NgenBundle\Services\Mailer\IncidentMailer;
+use CertUnlp\NgenBundle\Services\ShadowServer\ShadowServerAnalyzer;
+use CertUnlp\NgenBundle\Services\ShadowServer\ShadowServerClient;
+use CertUnlp\NgenBundle\Validator\Constraints\ValidNetworkValidator;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -26,35 +63,35 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('cert_unlp_ngen');
 
         $rootNode
             ->addDefaultsIfNotSet()
-                ->children()
-                    ->arrayNode('team')
-                    ->children()
-                        ->scalarNode('mail')
-                            ->isRequired()
-                            ->cannotBeEmpty()
-                        ->end()
-                        ->scalarNode('abuse')
-                            ->isRequired()
-                            ->cannotBeEmpty()
-                        ->end()
-                        ->scalarNode('url')
-                            ->isRequired()
-                            ->cannotBeEmpty()
-                        ->end()
-                        ->scalarNode('name')
-                            ->isRequired()
-                            ->cannotBeEmpty()
-                        ->end()
-                    ->end()
-                    ->end()
-                ->end();
+            ->children()
+            ->arrayNode('team')
+            ->children()
+            ->scalarNode('mail')
+            ->isRequired()
+            ->cannotBeEmpty()
+            ->end()
+            ->scalarNode('abuse')
+            ->isRequired()
+            ->cannotBeEmpty()
+            ->end()
+            ->scalarNode('url')
+            ->isRequired()
+            ->cannotBeEmpty()
+            ->end()
+            ->scalarNode('name')
+            ->isRequired()
+            ->cannotBeEmpty()
+            ->end()
+            ->end()
+            ->end()
+            ->end();
 
         $this->addConfigGlobal($rootNode);
         $this->addIncidentSection($rootNode);
@@ -67,25 +104,23 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addConfigGlobal(ArrayNodeDefinition $rootNode)
+    private function addConfigGlobal(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()
-                ->arrayNode('global')
-                  ->addDefaultsIfNotSet()
-                   ->children()
-                    ->booleanNode('sign')
-                        ->defaultValue('true')
-                    ->end()
-                   ->end()
-                ->end()
+            ->arrayNode('global')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->booleanNode('sign')
+            ->defaultValue('true')
+            ->end()
+            ->end()
+            ->end()
             ->end();
     }
 
 
-
-
-    private function addIncidentSection(ArrayNodeDefinition $rootNode)
+    private function addIncidentSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()
@@ -96,13 +131,13 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Entity\Incident\Incident')
+            ->defaultValue(Incident::class)
             ->end()
             ->arrayNode('handler')
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\Api\Handler\IncidentHandler')
+            ->defaultValue(IncidentHandler::class)
             ->end()
             ->end()
             ->end()
@@ -110,7 +145,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\Delegator\InternalIncidentDelegatorChain')
+            ->defaultValue(InternalIncidentDelegatorChain::class)
             ->end()
             ->end()
             ->end()
@@ -118,7 +153,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Form\IncidentType')
+            ->defaultValue(IncidentType::class)
             ->end()
             ->end()
             ->end()
@@ -150,7 +185,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\Mailer\InternalIncidentMailer')
+            ->defaultValue(IncidentMailer::class)
             ->end()
             ->scalarNode('sender_address')
             ->end()
@@ -176,7 +211,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\Delegator\ExternalIncidentDelegatorChain')
+            ->defaultValue(ExternalIncidentDelegatorChain::class)
             ->end()
             ->end()
             ->end()
@@ -216,7 +251,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\Mailer\ExternalIncidentMailer')
+            ->defaultValue(IncidentMailer::class)
             ->end()
             ->scalarNode('sender_address')
             ->end()
@@ -261,7 +296,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\IncidentFactory')
+            ->defaultValue(IncidentFactory::class)
             ->end()
             ->end()
             ->end()
@@ -269,7 +304,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Entity\User')
+            ->defaultValue(User::class)
             ->end()
             ->end()
             ->end()
@@ -277,7 +312,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Entity\Incident\IncidentFeed')
+            ->defaultValue(IncidentFeed::class)
             ->end()
 //                                ->end()
 //                                ->end()
@@ -285,7 +320,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\Api\Handler\IncidentFeedHandler')
+            ->defaultValue(IncidentFeedHandler::class)
             ->end()
             ->end()
             ->end()
@@ -293,7 +328,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Form\IncidentFeedType')
+            ->defaultValue(IncidentFeedType::class)
             ->end()
             ->end()
             ->end()
@@ -303,13 +338,13 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Entity\Incident\IncidentState')
+            ->defaultValue(IncidentState::class)
             ->end()
             ->arrayNode('handler')
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\Api\Handler\IncidentStateHandler')
+            ->defaultValue(IncidentStateHandler::class)
             ->end()
             ->end()
             ->end()
@@ -317,7 +352,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Form\IncidentStateType')
+            ->defaultValue(IncidentStateType::class)
             ->end()
             ->end()
             ->end()
@@ -327,13 +362,13 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Entity\Incident\IncidentType')
+            ->defaultValue(\CertUnlp\NgenBundle\Entity\Incident\IncidentType::class)
             ->end()
             ->arrayNode('handler')
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\Api\Handler\IncidentTypeHandler')
+            ->defaultValue(IncidentTypeHandler::class)
             ->end()
             ->end()
             ->end()
@@ -341,7 +376,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Form\IncidentTypeType')
+            ->defaultValue(IncidentTypeType::class)
             ->end()
             ->end()
             ->end()
@@ -349,13 +384,13 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Entity\Incident\IncidentReport')
+            ->defaultValue(IncidentReport::class)
             ->end()
             ->arrayNode('handler')
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\Api\Handler\IncidentReportHandler')
+            ->defaultValue(IncidentReportHandler::class)
             ->end()
             ->end()
             ->end()
@@ -363,7 +398,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Form\IncidentReportType')
+            ->defaultValue(IncidentReportType::class)
             ->end()
             ->end()
             ->end()
@@ -376,7 +411,7 @@ class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    private function addUserSection(ArrayNodeDefinition $rootNode)
+    private function addUserSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()
@@ -384,13 +419,13 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Entity\User')
+            ->defaultValue(User::class)
             ->end()
             ->arrayNode('handler')
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\Api\Handler\UserHandler')
+            ->defaultValue(UserHandler::class)
             ->end()
             ->end()
             ->end()
@@ -398,7 +433,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Form\UserType')
+            ->defaultValue(UserType::class)
             ->end()
             ->end()
             ->end()
@@ -407,7 +442,7 @@ class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    private function addNetworkSection(ArrayNodeDefinition $rootNode)
+    private function addNetworkSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()
@@ -415,7 +450,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Entity\Network\Network')
+            ->defaultValue(Network::class)
             ->end()
             ->scalarNode('default_network')
             ->defaultValue('')
@@ -424,7 +459,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\Api\Handler\NetworkHandler')
+            ->defaultValue(NetworkHandler::class)
             ->end()
             ->end()
             ->end()
@@ -432,7 +467,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Validator\Constraints\ValidNetworkValidator')
+            ->defaultValue(ValidNetworkValidator::class)
             ->end()
             ->end()
             ->end()
@@ -440,7 +475,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Form\NetworkType')
+            ->defaultValue(NetworkType::class)
             ->end()
             ->end()
             ->end()
@@ -448,13 +483,13 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Entity\Network\NetworkAdmin')
+            ->defaultValue(NetworkAdmin::class)
             ->end()
             ->arrayNode('handler')
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\Api\Handler\NetworkAdminHandler')
+            ->defaultValue(NetworkAdminHandler::class)
             ->end()
             ->end()
             ->end()
@@ -462,7 +497,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Form\NetworkAdminType')
+            ->defaultValue(NetworkAdminType::class)
             ->end()
             ->end()
             ->end()
@@ -472,7 +507,7 @@ class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    private function addFeedSection(ArrayNodeDefinition $rootNode)
+    private function addFeedSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()
@@ -487,13 +522,13 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\ShadowServer\ShadowServerAnalyzer')
+            ->defaultValue(ShadowServerAnalyzer::class)
             ->end()
             ->arrayNode('client')
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\ShadowServer\ShadowServerClient')
+            ->defaultValue(ShadowServerClient::class)
             ->end()
             ->scalarNode('url')
             ->defaultValue('https://dl.shadowserver.org/reports/index.php')
@@ -515,7 +550,7 @@ class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    private function addSeedSection(ArrayNodeDefinition $rootNode)
+    private function addSeedSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()
@@ -529,7 +564,7 @@ class Configuration implements ConfigurationInterface
             ->defaultNull()
             ->end()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\IncidentRedmine')
+            ->defaultValue(IncidentRedmine::class)
             ->end()
             ->scalarNode('key')
             ->defaultNull()
@@ -541,7 +576,7 @@ class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    private function addNetworkEntitySection(ArrayNodeDefinition $rootNode)
+    private function addNetworkEntitySection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()
@@ -549,13 +584,13 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Entity\Network\NetworkEntity')
+            ->defaultValue(NetworkEntity::class)
             ->end()
             ->arrayNode('handler')
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\Api\Handler\NetworkEntityHandler')
+            ->defaultValue(NetworkEntityHandler::class)
             ->end()
             ->end()
             ->end()
@@ -563,14 +598,15 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Form\NetworkEntityType')
+            ->defaultValue(NetworkEntityType::class)
             ->end()
             ->end()
             ->end()
             ->end()
             ->end();
     }
-    private function addIncidentDecisionSection(ArrayNodeDefinition $rootNode)
+
+    private function addIncidentDecisionSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()
@@ -578,13 +614,13 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Entity\Incident\IncidentDecision')
+            ->defaultValue(IncidentDecision::class)
             ->end()
             ->arrayNode('handler')
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\Api\Handler\IncidentDecisionHandler')
+            ->defaultValue(IncidentDecisionHandler::class)
             ->end()
             ->end()
             ->end()
@@ -592,7 +628,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Form\IncidentDecisionType')
+            ->defaultValue(IncidentDecisionType::class)
             ->end()
             ->end()
             ->end()

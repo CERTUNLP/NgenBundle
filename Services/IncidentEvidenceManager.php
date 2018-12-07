@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Services;
 
-use CertUnlp\NgenBundle\Model\IncidentInterface;
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
 
 /**
  * Description of incidentEvidenceManager
@@ -28,13 +28,13 @@ class IncidentEvidenceManager
         $this->upload_directory = $upload_directory;
     }
 
-    public function prePersistDelegation(IncidentInterface $incident)
+    public function prePersistDelegation(Incident $incident)
     {
         $this->setFilename($incident);
         $this->uploadEvidenceFile($incident);
     }
 
-    public function setFilename(IncidentInterface $incident)
+    public function setFilename(Incident $incident)
     {
         if ($incident->getEvidenceFile()) {
             $ext = "_" . sha1(uniqid(mt_rand(), true));
@@ -48,15 +48,15 @@ class IncidentEvidenceManager
         }
     }
 
-//    public function postPersistDelegation(IncidentInterface $incident) {
+//    public function postPersistDelegation(Incident $incident) {
 //        $this->uploadEvidenceFile($incident);
 //    }
 //
-//    public function postUpdateDelegation(IncidentInterface $incident) {
+//    public function postUpdateDelegation(Incident $incident) {
 //        $this->uploadEvidenceFile($incident);
 //    }
 
-    public function uploadEvidenceFile(IncidentInterface $incident)
+    public function uploadEvidenceFile(Incident $incident)
     {
 
 //        if (null === $incident->getEvidenceFile()) {
@@ -66,10 +66,8 @@ class IncidentEvidenceManager
         // be automatically thrown by move(). This will properly prevent
         // the entity from being persisted to the database on error
         $uploadDir = $this->getUploadDirectory() . $incident->getEvidenceSubDirectory();
-        if (!file_exists($uploadDir)) {
-            if (!mkdir($uploadDir, 0777, true)) {
-                die('Failed to create folders...');
-            }
+        if (!file_exists($uploadDir) && !mkdir($uploadDir, 0777, true) && !is_dir($uploadDir)) {
+            die('Failed to create folders...');
         }
 
         if ($incident->getEvidenceFile()) {
@@ -91,7 +89,7 @@ class IncidentEvidenceManager
         return $this->upload_directory;
     }
 
-    public function preUpdateDelegation(IncidentInterface $incident)
+    public function preUpdateDelegation(Incident $incident)
     {
         $this->setFilename($incident);
         $this->uploadEvidenceFile($incident);

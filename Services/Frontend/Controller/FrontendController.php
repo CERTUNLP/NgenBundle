@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Services\Frontend\Controller;
 
-use CertUnlp\NgenBundle\Model\IncidentInterface;
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\ThreadManagerInterface;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
@@ -98,11 +98,11 @@ class FrontendController
     }
 
     /**
-     * @param IncidentInterface $object
+     * @param Incident $object
      * @param Request $request
      * @return array
      */
-    public function commentsEntity(IncidentInterface $object, Request $request)
+    public function commentsEntity(Incident $object, Request $request)
     {
         $id = $object->getId();
         $thread = $this->thread_manager->findThreadById($id);

@@ -75,7 +75,7 @@ class IncidentState
      */
     private $updatedAt;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Model\IncidentInterface",mappedBy="state", cascade={"persist","remove"})) */
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state", cascade={"persist","remove"})) */
     private $incidents;
 
     /**
