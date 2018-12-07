@@ -11,9 +11,9 @@
 
 namespace CertUnlp\NgenBundle\Model;
 
-use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
+use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -39,7 +39,7 @@ interface NetworkInterface
      * @param string $ipMask
      * @return Network
      */
-    public function setIpMask($ipMask);
+    public function setIpMask(string $ipMask);
 
     /**
      * Get ipMask
@@ -54,14 +54,14 @@ interface NetworkInterface
      * @param boolean $isActive
      * @return Network
      */
-    public function setIsActive($isActive);
+    public function setIsActive(bool $isActive);
 
     /**
      * Get isActive
      *
      * @return boolean
      */
-    public function getIsActive();
+    public function isActive();
 
     /**
      * Set networkAdmin
@@ -121,7 +121,7 @@ interface NetworkInterface
      * @param string $ip
      * @return Network
      */
-    public function setIp($ip);
+    public function setIp(string $ip): Network;
 
     /**
      * Get ip
@@ -136,7 +136,7 @@ interface NetworkInterface
      * @param integer $numericIp
      * @return Network
      */
-    public function setNumericIp($numericIp);
+    public function setNumericIp(int $numericIp);
 
     /**
      * Get numericIp
@@ -151,7 +151,7 @@ interface NetworkInterface
      * @param integer $numericIpMask
      * @return Network
      */
-    public function setNumericIpMask($numericIpMask);
+    public function setNumericIpMask(int $numericIpMask);
 
     /**
      * Get numericIpMask

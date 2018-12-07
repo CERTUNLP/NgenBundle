@@ -11,6 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Entity\Network;
 
+use CertUnlp\NgenBundle\Entity\Incident\Host\Host;
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
@@ -118,14 +120,14 @@ abstract class Network implements NetworkInterface
     private $network_entity;
 
     /**
-     * @var Collection| IncidentInterface[]
+     * @var Collection| Incident[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="network", cascade={"persist"}))
      * @JMS\Expose
      */
     private $incidents;
 
     /**
-     * @var Collection| IncidentInterface[]
+     * @var Collection| Host[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Host\Host",mappedBy="network", cascade={"persist"}))
      * @JMS\Expose
      */
@@ -169,18 +171,18 @@ abstract class Network implements NetworkInterface
     }
 
     /**
-     * @return IncidentInterface[]|Collection
+     * @return Host[]|Collection
      */
-    public function getHosts()
+    public function getHosts(): Collection
     {
         return $this->hosts;
     }
 
     /**
-     * @param IncidentInterface[]|Collection $hosts
+     * @param Host $hosts
      * @return Network
      */
-    public function setHosts($hosts)
+    public function setHosts(Host $hosts): Network
     {
         $this->hosts = $hosts;
         return $this;

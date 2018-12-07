@@ -6,7 +6,7 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
-{% extends 'CertUnlpNgenBundle::Incident/Frontend/home.html.twig' %}
+{% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_internal_incident_search_incident') }}{% endblock %}
 
 {% block content_header %}
@@ -22,7 +22,7 @@
     </a>
 {% endblock %}
 {% block list_body %}
-    {% include 'CertUnlpNgenBundle:InternalIncident:Frontend/list/incidentListRow.html.twig' with {'incident': incident} %}
+    {% include 'CertUnlpNgenBundle:Incident:Frontend/list/incidentListRow.html.twig' with {'incident': incident} %}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
