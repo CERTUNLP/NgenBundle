@@ -213,7 +213,7 @@ class IncidentReport
      *
      * @return boolean
      */
-    public function getIsActive()
+    public function getIsActive(): bool
     {
         return $this->isActive;
     }
