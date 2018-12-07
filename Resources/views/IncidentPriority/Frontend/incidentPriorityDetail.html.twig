@@ -1,0 +1,63 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+
+{% extends 'CertUnlpNgenBundle::IncidentPriority/Frontend/frontend.html.twig' %}
+{% block content_header %}
+    <h1 class="page-header"> {{ object }} {% include "CertUnlpNgenBundle:IncidentPriority:Frontend/list/incidentPriorityLabel.html.twig" with {'incidentPriority': object} %}
+    </h1>
+{% endblock %}
+{% block content_body %}
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">decision Information</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td class="">
+                                    {{ 'Urgency'| trans }}
+                                </td>
+                                <td class="">
+                                    {{ object.urgency }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    {{ 'Impact'| trans }}
+                                </td>
+                                <td class="">
+                                    {{ object.urgency }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    {{ 'Priority'| trans }}
+                                </td>
+                                <td class="">
+                                    {{ object.urgency }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    Active
+                                </td>
+                                <td class="">
+                                    {% include "CertUnlpNgenBundle:IncidentPriority:Frontend/list/incidentPriorityLabel.html.twig" with {'incidentPriority': object} %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

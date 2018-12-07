@@ -103,6 +103,7 @@
                                                                 {% endblock %}
                                                             </p>
                                                             {{ report.moreInformation|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                        <td class="expander"></td>
                                                         </td>
                                                         <td class="expander"></td>
                                                     </tr>
@@ -136,11 +137,11 @@
                                             <tr>
                                                 <td class="panel">
                                                     <p style="text-align:center;">
-                                                        {% if sign == true %}
                                                             {% block footer_generated_by %}
                                                             {% endblock %}
                                                         {% endif %}
                                                     </p>
+                                                <td class="expander"></td>
                                                 </td>
                                                 <td class="expander"></td>
                                             </tr>

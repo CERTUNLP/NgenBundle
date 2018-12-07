@@ -210,7 +210,7 @@ class IncidentTlp
 
     public function __toString()
     {
-        return $this->slug;
+        return strtoupper($this->slug);
     }
 
     /**

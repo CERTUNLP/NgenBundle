@@ -8,21 +8,26 @@
 #}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong>{{ icon('unlock-alt fa-fw') }} Incident Decision</strong>
+        <strong>{{ icon('unlock-alt fa-fw') }}{{ 'Incident Decisions'|trans }}</strong>
         <strong>({{ objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount }})</strong>
         <div class="pull-right">
             <div class="btn-group">
                 <a class="btn btn-default btn-xs" href="{{ path('cert_unlp_ngen_incident_decision_new') }}">
-                    {{ icon('plus-circle fa-fw') }}add incident Decision
+                    {{ icon('plus-circle fa-fw') }}{{ 'add incident Decision'| trans }}
                 </a>
             </div>
         </div>
     </div>
     <table class="table table-striped table-bordered table-hover dataTable no-footer">
         <tr role="row">
-            <th>{{ knp_pagination_sortable(IncidentDecisions, 'Name', 'slug') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentDecisions, 'active', 'isActive') }}</th>
-            <th>Action</th>
+            <th>{{ knp_pagination_sortable(IncidentDecisions, 'Type'|trans , 'type') }}</th>
+            <th>{{ knp_pagination_sortable(IncidentDecisions, 'Feed'|trans, 'feed') }}</th>
+            <th>{{ knp_pagination_sortable(IncidentDecisions, 'Network'|trans, 'network') }}</th>
+            <th>{{ knp_pagination_sortable(IncidentDecisions, 'TLP'|trans, 'tlp') }}</th>
+            <th>{{ knp_pagination_sortable(IncidentDecisions, 'Impact'|trans, 'impact') }}</th>
+            <th>{{ knp_pagination_sortable(IncidentDecisions, 'Urgency'|trans, 'urgency') }}</th>
+            <th>{{ knp_pagination_sortable(IncidentDecisions, 'active'|trans, 'isActive') }}</th>
+            <th>{{ 'Action'|trans }}</th>
         </tr>
         <tbody>
         {% for IncidentDecision in IncidentDecisions %}
