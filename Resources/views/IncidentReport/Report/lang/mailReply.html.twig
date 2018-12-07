@@ -1,6 +1,6 @@
 {% extends  'CertUnlpNgenBundle:IncidentReport:Report/base/baseReport.html.twig' %}
 {% block greeting %}
-    Estimado {{ incident.network.networkAdmin }},
+    {{ 'greeting'|trans}}  {{ incident.network.networkAdmin }},
 {% endblock %}
 {% block report_content %}
     <tr>
@@ -13,19 +13,10 @@
     </tr>
 {% endblock %}
 {% block footer_content %}
-    Le agradeceríamos que nos notifique al solucionar el incidente. No dude en
-    consultarnos ante cualquier inquietud.
-
-
-    Un saludo cordial,
-    Soporte CertUnlp
-
-
-    CERTunlp - http://www.cert.unlp.edu.ar
-
+    {{ 'thanks'|trans}}{{ 'farewell'|trans }}, {{  team.name }} - {{  team.url }}
 {% endblock %}
 {% block footer_generated_by %}
 
-    Este reporte ha sido generado con <a href="https://github.com/CERTUNLP/NgenBundle">https://github.com/CERTUNLP/NgenBundle</a>
+    {{ 'firma_ngen'|trans |raw}}
 
 {% endblock %}

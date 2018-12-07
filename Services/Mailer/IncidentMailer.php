@@ -29,8 +29,11 @@ class IncidentMailer implements IncidentMailerInterface
     protected $environment;
     protected $report_factory;
     protected $lang;
+    protected $team;
 
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $templating, string $cert_email, string $upload_directory, CommentManagerInterface $commentManager, string $environment, IncidentReportFactory $report_factory, string $lang)
+
+
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $templating, string $cert_email, string $upload_directory, CommentManagerInterface $commentManager, string $environment, IncidentReportFactory $report_factory, string $lang, $team, $translator)
     {
         $this->mailer = $mailer;
         $this->cert_email = $cert_email;
@@ -40,6 +43,8 @@ class IncidentMailer implements IncidentMailerInterface
         $this->environment = (in_array($environment, ['dev', 'test'])) ? '[dev]' : '';
         $this->report_factory = $report_factory;
         $this->lang = $lang;
+        $this->team = $team;
+        $this->translator = $translator;
     }
 
     public function postPersistDelegation($incident)
@@ -61,7 +66,7 @@ class IncidentMailer implements IncidentMailerInterface
             if ($incident->isSendReport() || $is_new_incident || $renotification) {
                 $html = $this->getBody($incident);
                 $message = \Swift_Message::newInstance()
-                    ->setSubject(sprintf($this->mailSubject($renotification), $incident->getType()->getName(), $incident->getIp(), $incident->getId()))
+                    ->setSubject(sprintf($this->mailSubject($renotification), $incident->getTlp(),$this->team["name"],$incident->getType()->getName(), $incident->getIp(), $incident->getId()))
                     ->setFrom($this->cert_email)
                     ->setCc($this->cert_email)
                     ->setSender($this->cert_email)

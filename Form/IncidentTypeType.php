@@ -15,7 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class IncidentTypoType extends AbstractType
+class IncidentTypeType extends AbstractType
 {
 
     /**

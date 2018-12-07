@@ -16,8 +16,10 @@ use JMS\Serializer\Annotation as JMS;
  * Description of InternalIncident
  *
  * @author dam
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\ExternalIncidentRepository")
+ * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Listener\ExternalIncidentListener" })
  */
-class ExternalIncident
+class ExternalIncident extends Incident
 {
 
     /**
@@ -189,7 +191,7 @@ class ExternalIncident
      *
      * @param string $startAddress
      *
-     * @return NetworkExternal
+     * @return ExternalIncident
      */
     public function setStartAddress($startAddress)
     {
@@ -213,7 +215,7 @@ class ExternalIncident
      *
      * @param string $endAddress
      *
-     * @return NetworkExternal
+     * @return ExternalIncident
      */
     public function setEndAddress($endAddress)
     {
@@ -237,7 +239,7 @@ class ExternalIncident
      *
      * @param string $country
      *
-     * @return NetworkExternal
+     * @return ExternalIncident
      */
     public function setCountry($country)
     {
@@ -260,7 +262,7 @@ class ExternalIncident
      * Set networkAdminEmails
      *
      * @param $abuse_entity_emails
-     * @return NetworkExternal
+     * @return ExternalIncident
      */
     public function setAbuseEntityEmails($abuse_entity_emails)
     {
