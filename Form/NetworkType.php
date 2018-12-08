@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -35,10 +36,20 @@ class NetworkType extends AbstractType
     {
 
         $builder
-            ->add('ip', null, array(
+            ->add('ip_v4', null, array(
+                'required' => true,
                 'attr' => array('placeholder' => 'e.g 192.168.1.1/16'),
                 'label' => 'Ip/Mask',
                 'description' => 'The network ip and mask',
+            ))
+            ->add('type', ChoiceType::class, array(
+                'mapped' => false,
+                'required' => true,
+                'choices' => array(
+                    'Internal' => 'internal',
+                    'External' => 'external',
+                ),
+                'choices_as_values' => true,
             ))
             ->add('networkAdmin', EntityType::class, array(
                 'class' => NetworkAdmin::class,
@@ -83,7 +94,7 @@ class NetworkType extends AbstractType
             // If no data is passed to the form, the data is "null".
             // This should be considered a new "Product"
             if ($network) {
-                $form->get('ip')->setData($network->getIpAndMask());
+                $form->get('ip_v4')->setData($network->getIpAndMask());
             }
         });
     }

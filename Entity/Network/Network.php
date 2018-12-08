@@ -75,7 +75,6 @@ abstract class Network implements NetworkInterface
      * @Assert\Ip(version="4_no_priv")
      */
     private $ip_v4;
-    private $ip;
 
     /**
      * @var string
@@ -107,14 +106,14 @@ abstract class Network implements NetworkInterface
 
     /**
      * @var NetworkAdmin
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="networks",cascade={"persist"},fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="networks",cascade={"persist","merge"},fetch="EAGER")
      * @JMS\Expose
      */
     private $network_admin;
 
     /**
      * @var NetworkEntity
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkEntity", inversedBy="networks",cascade={"persist"},fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkEntity", inversedBy="networks",cascade={"persist","merge"},fetch="EAGER")
      * @JMS\Expose
      */
     private $network_entity;
@@ -176,7 +175,7 @@ abstract class Network implements NetworkInterface
     /**
      * @return NetworkAdmin
      */
-    public function getNetworkAdmin(): NetworkAdmin
+    public function getNetworkAdmin(): ?NetworkAdmin
     {
         return $this->network_admin;
     }
@@ -194,7 +193,7 @@ abstract class Network implements NetworkInterface
     /**
      * @return NetworkEntity
      */
-    public function getNetworkEntity(): NetworkEntity
+    public function getNetworkEntity(): ?NetworkEntity
     {
         return $this->network_entity;
     }
@@ -280,7 +279,7 @@ abstract class Network implements NetworkInterface
      *
      * @return string
      */
-    public function getIp(): string
+    public function getIp(): ?string
     {
         return $this->getIpV4();
     }
@@ -301,7 +300,7 @@ abstract class Network implements NetworkInterface
     /**
      * @return string
      */
-    public function getIpV4(): string
+    public function getIpV4(): ?string
     {
         return $this->ip_v4;
     }
@@ -329,7 +328,7 @@ abstract class Network implements NetworkInterface
      *
      * @return string
      */
-    public function getIpMask(): string
+    public function getIpMask(): ?string
     {
         return $this->ipMask;
     }
