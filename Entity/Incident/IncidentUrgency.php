@@ -42,6 +42,9 @@ class IncidentUrgency
      */
     private $incidents;
 
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDecision",mappedBy="urgency", cascade={"persist","remove"})) */
+    private $decisions;
+
     /**
      * @return Collection|null
      */

@@ -82,6 +82,9 @@ class IncidentFeed
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="feed", cascade={"persist","remove"})) */
     private $incidents;
 
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDecision",mappedBy="feed", cascade={"persist","remove"})) */
+    private $decisions;
+
     /**
      * Constructor
      */

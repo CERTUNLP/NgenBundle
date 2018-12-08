@@ -17,7 +17,7 @@ class IncidentImpact
     /**
      * @var string|null
      *
-     * @ORM\Column(name="name", type="string", length=45, nullable=true)
+     * @ORM\Column(name="name", type="string")
      */
     private $name;
 
@@ -38,9 +38,30 @@ class IncidentImpact
 
     /**
      * @var Collection|null
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="impact", cascade={"persist"}))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="impact"))
      */
     private $incidents;
+
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDecision",mappedBy="impact")) */
+    private $decisions;
+
+    /**
+     * @return mixed
+     */
+    public function getDecisions(): IncidentDecision
+    {
+        return $this->decisions;
+    }
+
+    /**
+     * @param mixed $decisions
+     * @return IncidentImpact
+     */
+    public function setDecisions(IncidentDecision $decisions)
+    {
+        $this->decisions = $decisions;
+        return $this;
+    }
 
     /**
      * @return Collection
@@ -70,9 +91,9 @@ class IncidentImpact
 
     /**
      * @param string $name
-     * @return IncidentTlp
+     * @return IncidentImpact
      */
-    public function setName(string $name): IncidentTlp
+    public function setName(string $name): IncidentImpact
     {
         $this->name = $name;
         return $this;
@@ -88,17 +109,17 @@ class IncidentImpact
 
     /**
      * @param string $description
-     * @return IncidentTlp
+     * @return IncidentImpact
      */
-    public function setDescription(string $description): IncidentTlp
+    public function setDescription(string $description): IncidentImpact
     {
         $this->description = $description;
         return $this;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->slug;
+        return $this->getSlug();
     }
 
     /**
@@ -106,7 +127,7 @@ class IncidentImpact
      *
      * @return string
      */
-    public function getSlug()
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -115,9 +136,9 @@ class IncidentImpact
      * Set slug
      *
      * @param string $slug
-     * @return IncidentTlp
+     * @return IncidentImpact
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug)
     {
         $this->slug = $slug;
 

@@ -78,6 +78,9 @@ class IncidentState
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state", cascade={"persist","remove"})) */
     private $incidents;
 
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDecision",mappedBy="state", cascade={"persist","remove"})) */
+    private $decisions;
+
     /**
      * Constructor
      */

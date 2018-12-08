@@ -11,16 +11,24 @@
 
 namespace CertUnlp\NgenBundle\Form;
 
+use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentImpact;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
+use CertUnlp\NgenBundle\Entity\Network\Network;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class IncidentDecisionType extends AbstractType
 {
-    public function __construct($doctrine=null) {
+    public function __construct($doctrine = null)
+    {
         $this->doctrine = $doctrine;
     }
 
@@ -33,25 +41,36 @@ class IncidentDecisionType extends AbstractType
     {
         $builder
             ->add('type', null, array(
+                'class' => \CertUnlp\NgenBundle\Entity\Incident\IncidentType::class,
                 'empty_value' => 'Choose an incident type',
                 'required' => true,
-                'description' => "(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|"
-                    . "dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|"
-                    . "open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|"
-                    . "open_ssdp|phishing|poodle|scan|shellshock|spam)",
+                'description' => '(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|'
+                    . 'dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|'
+                    . 'open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|'
+                    . 'open_ssdp|phishing|poodle|scan|shellshock|spam)',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
-            ->add('feed', 'entity', array(
-                'class' => 'CertUnlpNgenBundle:Incident\IncidentFeed',
+            ->add('network', EntityType::class, array(
+                'empty_value' => 'Choose a network',
+                'class' => Network::class,
+                'required' => false,
+                'description' => '(bro|external_report|netflow|shadowserver)',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('it')
+                        ->where('it.isActive = TRUE');
+                }))
+            ->add('feed', EntityType::class, array(
+                'class' => IncidentFeed::class,
                 'required' => true,
-                'description' => "(bro|external_report|netflow|shadowserver)",
+                'description' => '(bro|external_report|netflow|shadowserver)',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
             ->add('state', null, array(
+                'class' => IncidentState::class,
                 'empty_value' => 'Choose an incident state',
                 'attr' => array('help_text' => 'If none is selected, the state will be \'open\'.'),
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
@@ -60,22 +79,26 @@ class IncidentDecisionType extends AbstractType
                         ->where('it.isActive = TRUE');
                 }))
             ->add('tlp', null, array(
+                'class' => IncidentTlp::class,
                 'empty_value' => 'Choose an incident tlp',
                 'attr' => array('help_text' => 'If none is selected, the state will be \'green\'.'),
                 'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
-                'data' =>  $this->doctrine->getReference("CertUnlpNgenBundle:Incident\IncidentTlp", "green")
-                ))
+                'data' => $this->doctrine->getReference("CertUnlpNgenBundle:Incident\IncidentTlp", "green")
+            ))
             ->add('impact', null, array(
+                'class' => IncidentImpact::class,
                 'empty_value' => 'Choose a impact level',
                 'attr' => array('help_text' => 'If none is selected, the assigned impact will be Low.'),
-                'description' => "If none is selected, the assigned impact will be Low",
+                'description' => 'If none is selected, the assigned impact will be Low',
             ))
             ->add('urgency', null, array(
+                'class' => IncidentUrgency::class,
                 'empty_value' => 'Choose a responsable',
                 'attr' => array('help_text' => 'If none is selected, the assigned urgency will be Low'),
                 'description' => 'If none is selected, the assigned urgency will be Low',
             ))
-            ->add('save', 'submit', array(
+            ->add('id', HiddenType::class)
+            ->add('save', SubmitType::class, array(
                 'attr' => array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => "slide-down"),
 //                    'description' => "Evidence file that will be attached to the report "
             ));

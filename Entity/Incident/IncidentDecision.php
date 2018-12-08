@@ -15,15 +15,6 @@ class IncidentDecision
 {
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
@@ -36,45 +27,41 @@ class IncidentDecision
      */
     protected $updatedAt;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="incidentsDecisions")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="decisions")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      */
     protected $type;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed", inversedBy="incidentsDecisions")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed", inversedBy="decisions")
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
      */
     protected $feed;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network",inversedBy="incidentsDecisions")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network",inversedBy="decisions")
      * @ORM\JoinColumn(name="network", referencedColumnName="id")
      */
     protected $network;
-
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="incidentsDecisions")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="decisions")
      * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
      */
     protected $impact;
-
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency", inversedBy="incidentsDecisions")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency", inversedBy="decisions")
      * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
      */
     protected $urgency;
-
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp", inversedBy="incidentsDecisions")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp", inversedBy="decisions")
      * @ORM\JoinColumn(name="tlp", referencedColumnName="slug")
      */
 
     protected $tlp;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState", inversedBy="incidentsDecisions")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState", inversedBy="decisions")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      */
     protected $state;
-
     /**
      * @var string
      * @ORM\Column(name="slug", type="string", length=100)
@@ -87,7 +74,14 @@ class IncidentDecision
      * }, fields={"id"})
      */
     protected $slug;
-
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
     /**
      * @var boolean
      *
@@ -145,6 +139,26 @@ class IncidentDecision
     public function setFeed($feed)
     {
         $this->feed = $feed;
+    }
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function setId($id)
+    {
+        return $this->id = $id;
     }
 
     /**
@@ -315,16 +329,6 @@ class IncidentDecision
     {
         $this->slug = $slug;
         return $this;
-    }
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
 }

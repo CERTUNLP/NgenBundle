@@ -158,7 +158,7 @@ abstract class Network implements NetworkInterface
      * @var Collection| IncidentDecision[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDecision",mappedBy="network", cascade={"persist","remove"}))
      */
-    private $incidentsDecisions;
+    private $decisions;
 
     /**
      * Constructor
@@ -285,19 +285,6 @@ abstract class Network implements NetworkInterface
     }
 
     /**
-     * Set ip
-     *
-     * @param string $ip
-     * @return Network
-     */
-    public function setIp(string $ip): Network
-    {
-
-        $this->setIpV4($ip);
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getIpV4(): ?string
@@ -344,6 +331,19 @@ abstract class Network implements NetworkInterface
         $this->ipMask = $ipMask;
         $this->setNumericIpMask(0xffffffff << (32 - $ipMask));
 
+        return $this;
+    }
+
+    /**
+     * Set ip
+     *
+     * @param string $ip
+     * @return Network
+     */
+    public function setIp(string $ip): Network
+    {
+
+        $this->setIpV4($ip);
         return $this;
     }
 

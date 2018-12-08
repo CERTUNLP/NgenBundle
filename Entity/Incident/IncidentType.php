@@ -73,7 +73,7 @@ class IncidentType
     private $updatedAt;
 
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDecision",mappedBy="type", cascade={"persist","remove"})) */
-    private $incidentsDecisions;
+    private $decisions;
 
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="type", cascade={"persist","remove"})) */
     private $incidents;

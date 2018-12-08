@@ -244,6 +244,18 @@ class ApiController
     }
 
     /**
+     * Create a Object from the submitted data.
+     *
+     * @param $params array
+     *
+     * @return mixed
+     */
+    public function findObjectBy($params)
+    {
+        return $this->getCustomHandler()->get($params);
+    }
+
+    /**
      * Update existing object from the submitted data or create a new object at a specific location.
      *
      * @param Request $request the request object
