@@ -84,6 +84,12 @@ cert_ngen_administration_decision_api:
     prefix: /incidents
     resource: '@CertUnlpNgenBundle/Controller/Api/Incident/IncidentDecisionController.php'
     name_prefix:  api_
+cert_ngen_administration_priorities_api:
+    type: rest
+    prefix: /incidents
+    resource: '@CertUnlpNgenBundle/Controller/Api/Incident/IncidentPriorityController.php'
+    name_prefix:  api_
+
 #
 #NelmioApiDocBundle:
 #    resource: '@NelmioApiDocBundle/Resources/config/routing.yml'

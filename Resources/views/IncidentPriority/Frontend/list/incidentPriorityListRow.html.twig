@@ -8,33 +8,33 @@
 #}
 
 <tr data-id="{{ IncidentPriority.id }}">
-    <td id="decision_label_holder" class="col-md-1">
+    <td id="priority_label_holder" class="col-md-1">
         <div class="label-holder">
         {{ IncidentPriority.name }}
         </div>
     </td>
-    <td id="decision_label_holder" class="col-md-1">
+    <td id="priority_label_holder" class="col-md-1">
         <div class="label-holder">
             {{ IncidentPriority.code }}
         </div>
     </td>
 
-    <td id="decision_label_holder" class="col-md-1">
+    <td id="priority_label_holder" class="col-md-1">
         <div class="label-holder">
             {{ IncidentPriority.impact }}
         </div>
     </td>
-    <td id="decision_label_holder" class="col-md-1">
+    <td id="priority_label_holder" class="col-md-1">
         <div class="label-holder">
             {{ IncidentPriority.urgency }}
         </div>
     </td>
-    <td id="decision_label_holder" class="col-md-1">
+    <td id="priority_label_holder" class="col-md-1">
         <div class="label-holder">
             {{ IncidentPriority.response_time }}
         </div>
     </td>
-    <td id="decision_label_holder" class="col-md-1">
+    <td id="priority_label_holder" class="col-md-1">
         <div class="label-holder">
             {{ IncidentPriority.resolution_time }}
         </div>
@@ -48,7 +48,7 @@
 
         <div class="btn-group inline pull-left dropdown action-dropdown">
             <a class="btn btn-sm btn-primary" role="button"
-               href="{{ path('cert_unlp_ngen_incident_decision_detail',{'id': IncidentPriority.id}) }}">
+               href="{{ path('cert_unlp_ngen_incident_priority_detail',{'id': IncidentPriority.id}) }}">
                 Details
             </a>
             <button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" type="button"
@@ -59,7 +59,7 @@
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                 <li role="presentation">
                     <a role="menuitem" tabindex="-1"
-                       href="{{ path('cert_unlp_ngen_incident_decision_edit',{'id': IncidentPriority.id}) }}">{{ icon('edit alert-info') }}
+                       href="{{ path('cert_unlp_ngen_incident_priority_edit',{'id': IncidentPriority.id}) }}">{{ icon('edit alert-info') }}
                         <span class="action-text">Edit</span></a>
                 </li>
 

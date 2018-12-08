@@ -17,7 +17,7 @@ var IncidentPriorityApi = ApiClient.extend({
         $.subscribe('/cert_unlp/incident/priority/update', $.proxy(this.update, this));
     },
     addDefaultChannel: function () {
-        this.api.add("descisions", {stripTrailingSlash: true, url: 'incidents/prioritys'});
+        this.api.add("descisions", {stripTrailingSlash: true, url: 'incidents/priorities'});
         this.defaultChannel = this.api.descisions;
     },
     changeState: function (networkId, isActive, callback) {
