@@ -50,7 +50,7 @@ interface ApiHandlerInterface
      * @param bool $csrf_protection
      * @return object
      */
-    public function post(array $parameters, $csrf_protection = false);
+    public function post(array $parameters, bool $csrf_protection = false, $entity_class_instance);
 
     /**
      * Edit a Entity.

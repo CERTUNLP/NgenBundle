@@ -68,10 +68,11 @@
                                     Incidents
                                 </td>
                                 <td class="">
-                                    {#                                    <a target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~object.ip~'"'~ "&&" ~'"'~object.ipMask~'"'})}}">#}
-                                    <span>{{ label_info(object.incidents.count) }} </span>
-                                    {#                                        <span>search</span>#}
-                                    {#                                    </a>#}
+                                    <a target="_blank" class="btn btn-sm btn-primary" role="button"
+                                       href="{{ path('cert_unlp_ngen_internal_incident_search_incident',{'term': '"'~object.ip~'"'~ "&&" ~'"'~object.ipMask~'"'}) }}">
+                                        <span>{{ label_info(object.incidents.count) }} </span>
+                                        <span>search</span>
+                                    </a>
                                 </td>
                             </tr>
                         </table>
@@ -95,26 +96,12 @@
                                     {{ object.networkEntity }}
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="">
-                                    Incidents
-                                </td>
-                                <td class="">
-                                    {#                                    <a  target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~object.networkEntity.name~'"'})}}">#}
-                                    <span>{{ label_info(object.networkEntity.incidents.count) }} </span>
-                                    {#                                        <span>search</span>#}
-                                    {#                                    </a>#}
-                                </td>
-
-                                </td>
-                            </tr>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-lg-6">
-
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <h3 class="panel-title">Network Admin Information</h3>
@@ -129,7 +116,6 @@
                                 </td>
                                 <td class="">
                                     {{ object.networkAdmin }}
-
                                 </td>
                             </tr>
                             <tr>
@@ -137,19 +123,7 @@
                                     Email
                                 </td>
                                 <td class="">
-                                    {{ object.networkAdmin.emails }}
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    Incidents
-                                </td>
-                                <td class="">
-                                    {#                                    <a target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~object.networkAdmin.name~'"'~ "&&" ~'"'~object.networkAdmin.email~'"'})}}">#}
-                                    <span>{{ label_info(object.networkAdmin.incidents.count) }} </span>
-                                    {#                                        <span>search</span>#}
-                                    {#                                    </a>#}
+                                    {{ object.networkAdmin.emailsAsString }}
                                 </td>
                             </tr>
                         </table>
