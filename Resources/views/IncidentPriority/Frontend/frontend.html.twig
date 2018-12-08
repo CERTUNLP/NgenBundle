@@ -8,16 +8,16 @@
 #}
 {% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
 
-{% block title %}{{'Incident Prioritys'|trans}}{% endblock %}
+{% block title %}{{'Incident Priorities'|trans}}{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{ icon('unlock-alt fa-fw') }} {{'Incident Prioritys'|trans}}</h1>
+    <h1 class="page-header">{{ icon('unlock-alt fa-fw') }} {{'Incident Priorities'|trans}}</h1>
 {% endblock %}
 
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_incident_priority_search') }}{% endblock %}
 
 {% block content_body %}
-    {% include 'CertUnlpNgenBundle:IncidentPriority:Frontend/list/incidentPriorityList.html.twig' with {'IncidentPrioritys': objects  } %}
+    {% include 'CertUnlpNgenBundle:IncidentPriority:Frontend/list/incidentPriorityList.html.twig' with {'IncidentPriorities': objects  } %}
 {% endblock %}
 
 
@@ -30,7 +30,7 @@
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
-        var incident_decision = new IncidentPriority();
-        var incident_decision_api = new IncidentPriorityApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
+        var incident_priority = new IncidentPriority();
+        var incident_priority_api = new IncidentPriorityApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
     </script>
 {% endblock %}

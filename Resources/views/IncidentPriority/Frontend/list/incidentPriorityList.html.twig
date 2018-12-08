@@ -8,7 +8,7 @@
 #}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong>{{ icon('unlock-alt fa-fw') }}{{ 'Incident Prioritys'|trans }}</strong>
+        <strong>{{ icon('unlock-alt fa-fw') }}{{ 'Incident Priorities'|trans }}</strong>
         <strong>({{ objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount }})</strong>
         <div class="pull-right">
             <div class="btn-group">
@@ -20,17 +20,17 @@
     </div>
     <table class="table table-striped table-bordered table-hover dataTable no-footer">
         <tr role="row">
-            <th>{{ knp_pagination_sortable(IncidentPrioritys, 'Name'|trans , 'name') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentPrioritys, 'Code'|trans, 'code') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentPrioritys, 'Impact'|trans, 'impact') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentPrioritys, 'Urgency'|trans, 'urgency') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentPrioritys, 'Response Time'|trans, 'response_time') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentPrioritys, 'Resolution Time'|trans, 'resolution_time') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentPrioritys, 'active'|trans, 'isActive') }}</th>
+            <th>{{ knp_pagination_sortable(IncidentPriorities, 'Name'|trans , 'name') }}</th>
+            <th>{{ knp_pagination_sortable(IncidentPriorities, 'Code'|trans, 'code') }}</th>
+            <th>{{ knp_pagination_sortable(IncidentPriorities, 'Impact'|trans, 'impact') }}</th>
+            <th>{{ knp_pagination_sortable(IncidentPriorities, 'Urgency'|trans, 'urgency') }}</th>
+            <th>{{ knp_pagination_sortable(IncidentPriorities, 'Response Time'|trans, 'response_time') }}</th>
+            <th>{{ knp_pagination_sortable(IncidentPriorities, 'Resolution Time'|trans, 'resolution_time') }}</th>
+            <th>{{ knp_pagination_sortable(IncidentPriorities, 'active'|trans, 'isActive') }}</th>
             <th>{{ 'Action'|trans }}</th>
         </tr>
         <tbody>
-        {% for IncidentPriority in IncidentPrioritys %}
+        {% for IncidentPriority in IncidentPriorities %}
             {% include 'CertUnlpNgenBundle:IncidentPriority:Frontend/list/incidentPriorityListRow.html.twig' with {'IncidentPriority': IncidentPriority} %}
         {% endfor %}
         </tbody>
@@ -38,5 +38,5 @@
     </table>
 </div>
 <div class="pagination-centered">
-    {{ knp_pagination_render(IncidentPrioritys, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}
+    {{ knp_pagination_render(IncidentPriorities, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}
 </div>

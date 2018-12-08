@@ -50,12 +50,13 @@ services:
             - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
             - { name: cert_unlp.ngen.incident.external.delegate, priority: 1 }
 
+
+
     cert_unlp.ngen.incident.evidence.manager:
         class:        CertUnlp\NgenBundle\Services\IncidentEvidenceManager
         arguments:    ["%cert_unlp.ngen.incident.evidence.path%"]
         tags:
             - { name: cert_unlp.ngen.incident.internal.delegate, priority: 0 }
-
 
     cert_unlp.ngen.incident.internal.delegator_chain:
         class:        "%cert_unlp.ngen.incident.internal.delegator_chain.class%"
@@ -218,6 +219,13 @@ services:
         class:     CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory",CertUnlp\NgenBundle\Form\IncidentPriorityType,"@knp_paginator","@fos_elastica.finder.priorities.priorities","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
+    cert_unlp.ngen.incident.priority.api.controller:
+        class: CertUnlp\NgenBundle\Services\Api\Controller\ApiController
+        arguments: ["@cert_unlp.ngen.incident.priority.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
+
+    cert_unlp.ngen.incident.priority.handler:
+        class:         CertUnlp\NgenBundle\Services\Api\Handler\IncidentPriorityHandler
+        arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Incident\IncidentPriority,CertUnlp\NgenBundle\Form\IncidentPriorityType,"@form.factory"]
 
     cert_unlp.ngen.incident.report.markdown.parser:
         class: CertUnlp\NgenBundle\Services\IncidentMarkdowReportParser
