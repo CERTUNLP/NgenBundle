@@ -32,7 +32,7 @@ class NetworkRepository extends EntityRepository
             ->andWhere('n.isActive = true')
             ->orderBy('n.ipMask', 'DESC');
 
-        $ip = is_array($address) ? $address['ip'] : $address;
+        $ip = is_array($address) ? $address['ip_v4'] : $address;
         $qb->setParameter('address', $ip);
 
         $results = $qb->getQuery()->getResult();

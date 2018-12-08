@@ -66,11 +66,14 @@ abstract class Handler implements ApiHandlerInterface
      * @param array $parameters
      *
      * @param bool $csrf_protection
+     * @param null $entity_class_instance
      * @return object
      */
-    public function post(array $parameters, $csrf_protection = false)
+    public function post(array $parameters, bool $csrf_protection = false, $entity_class_instance = null)
     {
-        $entity_class_instance = $this->createEntityInstance();
+        if (!$entity_class_instance) {
+            $entity_class_instance = $this->createEntityInstance();
+        }
 
         return $this->processForm($entity_class_instance, $parameters, 'POST', $csrf_protection);
     }
