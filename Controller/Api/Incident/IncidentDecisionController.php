@@ -125,7 +125,7 @@ class IncidentDecisionController extends FOSRestController
      */
     public function patchIncidentDecisionAction(Request $request, IncidentDecision $incident_decision)
     {
-        return $this->getApiController()->patch($request, $incident_decision, true);
+        return $this->getApiController()->patch($request, $incident_decision);
     }
 
     /**
