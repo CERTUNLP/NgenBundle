@@ -70,7 +70,7 @@ services:
 
     cert_unlp.ngen.incident.internal.listener:
         class: CertUnlp\NgenBundle\Entity\Incident\Listener\InternalIncidentListener
-        arguments: [ "@cert_unlp.ngen.incident.internal.delegator_chain","@cert_unlp.ngen.network.handler","@cert_unlp.ngen.incident.internal.handler","@doctrine.orm.entity_manager","@fos_comment.manager.thread","@router" ]
+        arguments: [ "@cert_unlp.ngen.incident.internal.delegator_chain","@cert_unlp.ngen.incident.decision.handler","@cert_unlp.ngen.incident.internal.handler","@doctrine.orm.entity_manager","@fos_comment.manager.thread","@router" ]
         tags:
             - { name: doctrine.entity_listener }
             - { name: kernel.event_listener, event: cert_unlp.incident.convert_to_incident.event, method: onConvertToIncident }
@@ -287,6 +287,6 @@ services:
             - [ setAnnotationReader, [ "@annotation_reader" ] ]
 
     app.image_type_extension:
-            class: CertUnlp\NgenBundle\Form\Extension\DateTimeTypeExtension
-            tags:
-                - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\DateTimeType }
+        class: CertUnlp\NgenBundle\Form\Extension\DateTimeTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\DateTimeType }

@@ -15,8 +15,8 @@ use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Event\ConvertToIncidentEvent;
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
 use CertUnlp\NgenBundle\Services\Api\Handler\HostHandler;
+use CertUnlp\NgenBundle\Services\Api\Handler\IncidentDecisionHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\IncidentHandler;
-use CertUnlp\NgenBundle\Services\Api\Handler\NetworkHandler;
 use CertUnlp\NgenBundle\Services\Delegator\DelegatorChain;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -32,17 +32,17 @@ class InternalIncidentListener
 {
 
     public $delegator_chain;
-    private $network_handler;
     private $incident_handler;
     private $entityManager;
     private $thread_manager;
     private $router;
     private $host_handler;
+    private $decision_handler;
 
-    public function __construct(DelegatorChain $delegator_chain, NetworkHandler $network_handler, IncidentHandler $incident_handler, EntityManager $entityManager, ThreadManagerInterface $thread_manager, Router $router)
+    public function __construct(DelegatorChain $delegator_chain, IncidentDecisionHandler $decision_handler, IncidentHandler $incident_handler, EntityManager $entityManager, ThreadManagerInterface $thread_manager, Router $router)
     {
         $this->delegator_chain = $delegator_chain;
-        $this->network_handler = $network_handler;
+        $this->decision_handler = $decision_handler;
         $this->incident_handler = $incident_handler;
         $this->entityManager = $entityManager;
         $this->thread_manager = $thread_manager;
@@ -63,12 +63,19 @@ class InternalIncidentListener
 
     public function incidentPrePersistUpdate(Incident $incident, LifecycleEventArgs $event)
     {
-        $this->timestampsUpdate($incident);
+
         $this->networkUpdate($incident);
+        $this->decisionUpdate($incident);
+        $this->timestampsUpdate($incident);
         $this->slugUpdate($incident);
         $this->stateUpdate($incident, $event);
         $this->feedUpdate($incident, $event);
         $this->tlpUpdate($incident, $event);
+    }
+
+    public function decisionUpdate(Incident $incident): Incident
+    {
+        return $this->decision_handler->getByIncident($incident)->doDecision($incident);
     }
 
     public function timestampsUpdate(Incident $incident): void

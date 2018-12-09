@@ -194,70 +194,6 @@ class IncidentDecision
     }
 
     /**
-     * @return mixed
-     */
-    public function getImpact()
-    {
-        return $this->impact;
-    }
-
-    /**
-     * @param mixed $impact
-     */
-    public function setImpact($impact)
-    {
-        $this->impact = $impact;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUrgency()
-    {
-        return $this->urgency;
-    }
-
-    /**
-     * @param mixed $urgency
-     */
-    public function setUrgency($urgency)
-    {
-        $this->urgency = $urgency;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTlp()
-    {
-        return $this->tlp;
-    }
-
-    /**
-     * @param mixed $tlp
-     */
-    public function setTlp($tlp)
-    {
-        $this->tlp = $tlp;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    /**
-     * @param mixed $state
-     */
-    public function setState($state)
-    {
-        $this->state = $state;
-    }
-
-    /**
      * @return bool
      */
     public function isAutoSaved(): bool
@@ -329,6 +265,83 @@ class IncidentDecision
     {
         $this->slug = $slug;
         return $this;
+    }
+
+    /**
+     * @param Incident $incident
+     * @return Incident
+     */
+    public function doDecision(Incident $incident): Incident
+    {
+        $incident->getTlp() ?: $incident->setTlp($this->getTlp());
+        $incident->getImpact() ?: $incident->setImpact($this->getImpact());
+        $incident->getUrgency() ?: $incident->setUrgency($this->getUrgency());
+        $incident->getState() ?: $incident->setState($this->getState());
+        return $incident;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTlp()
+    {
+        return $this->tlp;
+    }
+
+    /**
+     * @param mixed $tlp
+     */
+    public function setTlp($tlp)
+    {
+        $this->tlp = $tlp;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImpact()
+    {
+        return $this->impact;
+    }
+
+    /**
+     * @param mixed $impact
+     */
+    public function setImpact($impact)
+    {
+        $this->impact = $impact;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUrgency()
+    {
+        return $this->urgency;
+    }
+
+    /**
+     * @param mixed $urgency
+     */
+    public function setUrgency($urgency)
+    {
+        $this->urgency = $urgency;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param mixed $state
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
     }
 
 }
