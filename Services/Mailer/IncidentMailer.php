@@ -13,6 +13,7 @@ namespace CertUnlp\NgenBundle\Services\Mailer;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Services\IncidentReportFactory;
+use FOS\CommentBundle\Event\CommentPersistEvent;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\SignedCommentInterface;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
@@ -117,7 +118,7 @@ class IncidentMailer implements IncidentMailerInterface
         $this->send_report($incident);
     }
 
-    public function onCommentPrePersist(Incident $event)
+    public function onCommentPrePersist(CommentPersistEvent $event)
     {
         $comment = $event->getComment();
 

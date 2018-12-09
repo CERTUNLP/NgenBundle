@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Services\Mailer;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use FOS\CommentBundle\Event\CommentPersistEvent;
 
 /**
  *
@@ -32,5 +33,5 @@ interface IncidentMailerInterface
 
     public function send_report_reply(Incident $incident, string $body = '', bool $self_reply = true);
 
-    public function onCommentPrePersist(Incident $event);
+    public function onCommentPrePersist(CommentPersistEvent $event);
 }
