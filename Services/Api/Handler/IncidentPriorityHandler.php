@@ -24,8 +24,7 @@ class IncidentPriorityHandler extends Handler
      *
      * @return void
      */
-    public function prepareToDeletion(
-        $incident_priority, array $parameters = null)
+    public function prepareToDeletion($incident_priority, array $parameters = null)
     {
         $incident_priority->setIsActive(FALSE);
     }
@@ -34,7 +33,7 @@ class IncidentPriorityHandler extends Handler
     {
         $incidentPriorityDB = $this->repository->findOneBy(array('code' => $incidentPriority->getCode()));
 
-        if ($incidentPriorityDB && $method == 'GET') {
+        if ($incidentPriorityDB && $method == 'POST') {
             $incidentPriority = $incidentPriorityDB;
         }
         return $incidentPriority;
