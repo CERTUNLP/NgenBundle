@@ -23,10 +23,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class IncidentDecisionType extends AbstractType
 {
+    private $doctrine;
+
     public function __construct($doctrine = null)
     {
         $this->doctrine = $doctrine;
@@ -42,12 +46,19 @@ class IncidentDecisionType extends AbstractType
         $builder
             ->add('type', null, array(
                 'class' => \CertUnlp\NgenBundle\Entity\Incident\IncidentType::class,
-                'empty_value' => 'Choose an incident type',
                 'required' => true,
                 'description' => '(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|'
                     . 'dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|'
                     . 'open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|'
                     . 'open_ssdp|phishing|poodle|scan|shellshock|spam)',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('it')
+                        ->where('it.isActive = TRUE');
+                }))
+            ->add('feed', EntityType::class, array(
+                'class' => IncidentFeed::class,
+                'required' => true,
+                'description' => '(bro|external_report|netflow|shadowserver)',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
@@ -61,18 +72,9 @@ class IncidentDecisionType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
-            ->add('feed', EntityType::class, array(
-                'class' => IncidentFeed::class,
-                'required' => true,
-                'description' => '(bro|external_report|netflow|shadowserver)',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
-                }))
             ->add('state', null, array(
                 'class' => IncidentState::class,
                 'empty_value' => 'Choose an incident state',
-                'attr' => array('help_text' => 'If none is selected, the state will be \'open\'.'),
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
@@ -81,28 +83,39 @@ class IncidentDecisionType extends AbstractType
             ->add('tlp', null, array(
                 'class' => IncidentTlp::class,
                 'empty_value' => 'Choose an incident tlp',
-                'attr' => array('help_text' => 'If none is selected, the state will be \'green\'.'),
                 'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
-                'data' => $this->doctrine->getReference("CertUnlpNgenBundle:Incident\IncidentTlp", "green")
             ))
             ->add('impact', null, array(
                 'class' => IncidentImpact::class,
                 'empty_value' => 'Choose a impact level',
-                'attr' => array('help_text' => 'If none is selected, the assigned impact will be Low.'),
                 'description' => 'If none is selected, the assigned impact will be Low',
             ))
             ->add('urgency', null, array(
                 'class' => IncidentUrgency::class,
-                'empty_value' => 'Choose a responsable',
-                'attr' => array('help_text' => 'If none is selected, the assigned urgency will be Low'),
+                'empty_value' => 'Choose a urgency level',
                 'description' => 'If none is selected, the assigned urgency will be Low',
             ))
             ->add('id', HiddenType::class)
             ->add('save', SubmitType::class, array(
-                'attr' => array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => "slide-down"),
+                'attr' => array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => 'slide-down'),
 //                    'description' => "Evidence file that will be attached to the report "
             ));
-
+        $doctrine = $this->doctrine;
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) use ($doctrine) {
+            $network = $event->getData();
+            $form = $event->getForm();
+            // check if the Product object is "new"
+            // If no data is passed to the form, the data is "null".
+            // This should be considered a new "Product"
+            if (!$network) {
+                $form->get('type')->setData($doctrine->getReference(\CertUnlp\NgenBundle\Entity\Incident\IncidentType::class, 'undefined'));
+                $form->get('feed')->setData($doctrine->getReference(IncidentFeed::class, 'undefined'));
+                $form->get('state')->setData($doctrine->getReference(IncidentState::class, 'undefined'));
+                $form->get('impact')->setData($doctrine->getReference(IncidentImpact::class, 'undefined'));
+                $form->get('urgency')->setData($doctrine->getReference(IncidentUrgency::class, 'undefined'));
+                $form->get('tlp')->setData($doctrine->getReference(IncidentTlp::class, 'green'));
+            }
+        });
     }
 
     /**
