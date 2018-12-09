@@ -71,11 +71,8 @@ class IncidentTlp
     private $description;
 
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="tlp", cascade={"persist","remove"})) */
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="tlp")) */
     private $incidents;
-
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDecision",mappedBy="tlp", cascade={"persist","remove"})) */
-    private $decisions;
 
     /**
      * Constructor

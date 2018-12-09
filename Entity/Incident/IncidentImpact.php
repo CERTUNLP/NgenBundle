@@ -5,12 +5,14 @@ namespace CertUnlp\NgenBundle\Entity\Incident;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * IncidentImpact
  *
  * @ORM\Table(name="incident_impact")
  * @ORM\Entity
+ * @JMS\ExclusionPolicy("all")
  */
 class IncidentImpact
 {
@@ -18,6 +20,7 @@ class IncidentImpact
      * @var string|null
      *
      * @ORM\Column(name="name", type="string")
+     * @JMS\Expose()
      */
     private $name;
 
@@ -26,6 +29,7 @@ class IncidentImpact
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
+     * @JMS\Expose()
      * */
     private $slug;
 
@@ -33,6 +37,7 @@ class IncidentImpact
      * @var string|null
      *
      * @ORM\Column(name="description", type="string", length=512, nullable=true)
+     * @JMS\Expose()
      */
     private $description;
 
@@ -41,27 +46,7 @@ class IncidentImpact
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="impact"))
      */
     private $incidents;
-
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDecision",mappedBy="impact")) */
-    private $decisions;
-
-    /**
-     * @return mixed
-     */
-    public function getDecisions(): IncidentDecision
-    {
-        return $this->decisions;
-    }
-
-    /**
-     * @param mixed $decisions
-     * @return IncidentImpact
-     */
-    public function setDecisions(IncidentDecision $decisions)
-    {
-        $this->decisions = $decisions;
-        return $this;
-    }
+    
 
     /**
      * @return Collection

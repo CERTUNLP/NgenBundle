@@ -53,9 +53,8 @@ class IncidentApiController extends ApiController
 //            } else {
 
             $newObject = $this->getCustomHandler()->post($object_data);
-
             return $this->response([$newObject], Response::HTTP_CREATED);
-            
+
         } catch (InvalidFormException $exception) {
             return $exception->getForm();
         }

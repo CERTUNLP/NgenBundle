@@ -10,23 +10,23 @@ namespace CertUnlp\NgenBundle\Repository;
  */
 class IncidentDecisionRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findOneBy(array $criteria, array $orderBy = null)
-    {
-        $incidentDecisionDB = parent::findOneBy($criteria, $orderBy);
-        if (!$incidentDecisionDB) {
-            if (isset($criteria['type'])) {
-                if (!isset($criteria['feed'])) {
-                    $incidentDecisionDB = parent::findOneBy(array('feed' => "undefined", 'type' => $criteria['type']));
-                    return $incidentDecisionDB ? $incidentDecisionDB : parent::findOneBy(array('feed' => "undefined", 'type' => 'undefined'));
-                }
-            } else {
-                if (isset($criteria['feed'])) {
-                    $incidentDecisionDB = parent::findOneBy(array('feed' => $criteria['feed'], 'type' => 'undefined'));
-                    return $incidentDecisionDB ? $incidentDecisionDB : parent::findOneBy(array('feed' => "undefined", 'type' => 'undefined'));
-
-                }
-            }
-        }
-        return $incidentDecisionDB;
-    }
+//    public function findOneBy(array $criteria, array $orderBy = null)
+//    {
+//        $incidentDecisionDB = parent::findOneBy($criteria, $orderBy);
+//        if (!$incidentDecisionDB) {
+//            if (isset($criteria['type'])) {
+//                if (!isset($criteria['feed'])) {
+//                    $incidentDecisionDB = parent::findOneBy(array('feed' => "undefined", 'type' => $criteria['type']));
+//                    return $incidentDecisionDB ? $incidentDecisionDB : parent::findOneBy(array('feed' => "undefined", 'type' => 'undefined'));
+//                }
+//            } else {
+//                if (isset($criteria['feed'])) {
+//                    $incidentDecisionDB = parent::findOneBy(array('feed' => $criteria['feed'], 'type' => 'undefined'));
+//                    return $incidentDecisionDB ? $incidentDecisionDB : parent::findOneBy(array('feed' => "undefined", 'type' => 'undefined'));
+//
+//                }
+//            }
+//        }
+//        return $incidentDecisionDB;
+//    }
 }

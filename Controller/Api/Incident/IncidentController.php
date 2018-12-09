@@ -38,7 +38,6 @@ class IncidentController extends FOSRestController
      * @param Incident $incident
      * @return Incident
      * @FOS\Get("/incidents/{id}", name="_id",requirements={"id"="\d+"}))
-     * @FOS\Get("/incidents/{slug}")
      */
     public function getIncidentAction(Incident $incident)
     {

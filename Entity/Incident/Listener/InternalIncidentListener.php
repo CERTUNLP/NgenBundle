@@ -68,9 +68,9 @@ class InternalIncidentListener
         $this->decisionUpdate($incident);
         $this->timestampsUpdate($incident);
         $this->slugUpdate($incident);
-        $this->stateUpdate($incident, $event);
-        $this->feedUpdate($incident, $event);
-        $this->tlpUpdate($incident, $event);
+//        $this->stateUpdate($incident, $event);
+//        $this->feedUpdate($incident, $event);
+//        $this->tlpUpdate($incident, $event);
     }
 
     public function decisionUpdate(Incident $incident): Incident

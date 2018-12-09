@@ -106,29 +106,27 @@ abstract class Network implements NetworkInterface
 
     /**
      * @var NetworkAdmin
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="networks",cascade={"persist","merge"},fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
      */
     private $network_admin;
 
     /**
      * @var NetworkEntity
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkEntity", inversedBy="networks",cascade={"persist","merge"},fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkEntity", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
      */
     private $network_entity;
 
     /**
      * @var Collection| Incident[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="network", cascade={"persist"}))
-     * @JMS\Expose
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="network"))
      */
     private $incidents;
 
     /**
      * @var Collection| Host[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Host\Host",mappedBy="network", cascade={"persist"}))
-     * @JMS\Expose
      */
     private $hosts;
     /**
@@ -154,11 +152,6 @@ abstract class Network implements NetworkInterface
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
-    /**
-     * @var Collection| IncidentDecision[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDecision",mappedBy="network", cascade={"persist","remove"}))
-     */
-    private $decisions;
 
     /**
      * Constructor
