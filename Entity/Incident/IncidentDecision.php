@@ -4,62 +4,83 @@ namespace CertUnlp\NgenBundle\Entity\Incident;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * IncidentDecision
  *
  * @ORM\Table(name="incident_decision")
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentDecisionRepository")
+ * @ORM\Entity()
+ * @JMS\ExclusionPolicy("all")
  */
 class IncidentDecision
 {
 
     /**
+     * @var int|null
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Expose()
+     */
+    protected $id;
+
+    /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
+     * @JMS\Expose()
      */
     protected $createdAt;
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
+     * @JMS\Expose()
      */
     protected $updatedAt;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="decisions")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
+     * @JMS\Expose()
      */
     protected $type;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed", inversedBy="decisions")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed")
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
+     * @JMS\Expose()
      */
     protected $feed;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network",inversedBy="decisions")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network")
      * @ORM\JoinColumn(name="network", referencedColumnName="id")
+     * @JMS\Expose()
      */
     protected $network;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="decisions")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact")
      * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
+     * @JMS\Expose()
      */
     protected $impact;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency", inversedBy="decisions")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency")
      * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
+     * @JMS\Expose()
      */
     protected $urgency;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp", inversedBy="decisions")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp")
      * @ORM\JoinColumn(name="tlp", referencedColumnName="slug")
+     * @JMS\Expose()
      */
 
     protected $tlp;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState", inversedBy="decisions")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState",)
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
+     * @JMS\Expose()
      */
     protected $state;
     /**
@@ -72,20 +93,16 @@ class IncidentDecision
      *          @Gedmo\SlugHandlerOption(name="separator", value="_")
      *      })
      * }, fields={"id"})
+     *
      */
     protected $slug;
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+
+
     /**
      * @var boolean
      *
      * @ORM\Column(name="auto_saved", type="boolean")
+     * @JMS\Expose()
      */
     private $autoSaved = false;
 
@@ -93,16 +110,9 @@ class IncidentDecision
      * @var boolean
      *
      * @ORM\Column(name="is_active", type="boolean")
+     * @JMS\Expose()
      */
     private $isActive = true;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     public function __toString()
     {

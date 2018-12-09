@@ -162,7 +162,7 @@ fos_elastica:
                         listener:
                             insert: true
                             update: true
-                            delete: true: ~
+                            delete: true
         network_admins:
             index_name: network_admins_%kernel.environment%
             settings:
@@ -196,7 +196,7 @@ fos_elastica:
                         listener:
                             insert: true
                             update: true
-                            delete: true: ~
+                            delete: true
         network_entitys:
             index_name: network_entitys_%kernel.environment%
             settings:
@@ -228,7 +228,7 @@ fos_elastica:
                         listener:
                             insert: true
                             update: true
-                            delete: true: ~
+                            delete: true
         feeds:
             index_name: feeds_%kernel.environment%
             settings:
@@ -259,7 +259,7 @@ fos_elastica:
                         listener:
                             insert: true
                             update: true
-                            delete: true: ~
+                            delete: true
         states:
             index_name: states_%kernel.environment%
             settings:
@@ -290,7 +290,7 @@ fos_elastica:
                         listener:
                             insert: true
                             update: true
-                            delete: true: ~
+                            delete: true
         priorities:
             index_name: priorities_%kernel.environment%
             settings:
@@ -329,7 +329,7 @@ fos_elastica:
                         listener:
                             insert: true
                             update: true
-                            delete: true: ~
+                            delete: true
         decisions:
             index_name: decisions_%kernel.environment%
             settings:
@@ -377,7 +377,7 @@ fos_elastica:
                         listener:
                             insert: true
                             update: true
-                            delete: true: ~
+                            delete: true
         types:
             index_name: types_%kernel.environment%
             settings:
@@ -415,7 +415,7 @@ fos_elastica:
                         listener:
                             insert: true
                             update: true
-                            delete: true: ~
+                            delete: true
         reports:
             index_name: reports_%kernel.environment%
             settings:
@@ -456,7 +456,7 @@ fos_elastica:
                         listener:
                             insert: true
                             update: true
-                            delete: true: ~
+                            delete: true
         users:
             index_name: users_%kernel.environment%
             settings:
@@ -495,4 +495,4 @@ fos_elastica:
                         listener:
                             insert: true
                             update: true
-                            delete: true: ~
+                            delete: true

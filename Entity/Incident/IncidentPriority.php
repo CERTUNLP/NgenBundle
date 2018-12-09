@@ -15,20 +15,28 @@ use JMS\Serializer\Annotation as JMS;
 class IncidentPriority
 {
     /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="incidentsPriorities")
+     * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
+     */
+    protected $impact;
+    /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency", inversedBy="incidentsPriorities")
+     * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
+     */
+    protected $urgency;
+    /**
      * @var string
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
      * */
     private $slug;
-
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
-
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
@@ -37,7 +45,6 @@ class IncidentPriority
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
-
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="update")
@@ -46,6 +53,25 @@ class IncidentPriority
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
+    /**
+     * @var dateinterval
+     *
+     * @ORM\Column(name="response_time", type="dateinterval")
+     */
+
+    private $responseTime;
+    /**
+     * @var dateinterval
+     *
+     * @ORM\Column(name="resolution_time", type="dateinterval")
+     */
+    private $resolutionTime;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="code", type="integer", unique=true)
+     */
+    private $code;
 
     /**
      * @return \DateTime
@@ -79,30 +105,6 @@ class IncidentPriority
         $this->updatedAt = $updatedAt;
     }
 
-
-
-    /**
-     * @var dateinterval
-     *
-     * @ORM\Column(name="response_time", type="dateinterval")
-     */
-
-    private $responseTime;
-
-    /**
-     * @var dateinterval
-     *
-     * @ORM\Column(name="resolution_time", type="dateinterval")
-     */
-    private $resolutionTime;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="code", type="integer", unique=true)
-     */
-    private $code;
-
     /**
      * @return mixed
      */
@@ -135,17 +137,6 @@ class IncidentPriority
         $this->urgency = $urgency;
     }
 
-    /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="incidentsPriorities")
-     * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
-     */
-    protected $impact;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency", inversedBy="incidentsPriorities")
-     * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
-     */
-    protected $urgency;
     /**@CertUnlpNgenBundle/Resources/public/js/incident/decision/IncidentPriority.js
      * Get id
      *
@@ -154,6 +145,16 @@ class IncidentPriority
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
@@ -171,13 +172,13 @@ class IncidentPriority
     }
 
     /**
-     * Get name
+     * Get responseTime
      *
-     * @return string
+     * @return dateinterval
      */
-    public function getName()
+    public function getResponseTime()
     {
-        return $this->name;
+        return $this->responseTime;
     }
 
     /**
@@ -195,13 +196,13 @@ class IncidentPriority
     }
 
     /**
-     * Get responseTime
+     * Get resolutionTime
      *
      * @return dateinterval
      */
-    public function getResponseTime()
+    public function getResolutionTime()
     {
-        return $this->responseTime;
+        return $this->resolutionTime;
     }
 
     /**
@@ -219,13 +220,13 @@ class IncidentPriority
     }
 
     /**
-     * Get resolutionTime
+     * Get code
      *
-     * @return dateinterval
+     * @return int
      */
-    public function getResolutionTime()
+    public function getCode()
     {
-        return $this->resolutionTime;
+        return $this->code;
     }
 
     /**
@@ -240,16 +241,6 @@ class IncidentPriority
         $this->code = $code;
 
         return $this;
-    }
-
-    /**
-     * Get code
-     *
-     * @return int
-     */
-    public function getCode()
-    {
-        return $this->code;
     }
 
     public function __toString()

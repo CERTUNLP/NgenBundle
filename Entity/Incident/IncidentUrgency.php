@@ -38,12 +38,9 @@ class IncidentUrgency
 
     /**
      * @var Collection|null
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="urgency", cascade={"persist"}))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="urgency"))
      */
     private $incidents;
-
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDecision",mappedBy="urgency", cascade={"persist","remove"})) */
-    private $decisions;
 
     /**
      * @return Collection|null

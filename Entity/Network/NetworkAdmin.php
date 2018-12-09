@@ -70,7 +70,7 @@ class NetworkAdmin
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network",mappedBy="network_admin", cascade={"persist","remove"}))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network",mappedBy="network_admin"))
      */
     private $networks;
 

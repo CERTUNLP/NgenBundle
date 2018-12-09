@@ -37,7 +37,7 @@ class IncidentDecisionHandler extends Handler
 
     protected function checkIfExists($incidentDecision, $method)
     {
-        $incidentDecisionDB = $this->repository->findOneBy(array('feed' => $incidentDecision->getFeed(), 'type' => $incidentDecision->getType(), 'network' => $incidentDecision->getNetwork()));
+        $incidentDecisionDB = $this->repository->findOneBy(['type' => $incidentDecision->getType() ? $incidentDecision->getType()->getSlug() : 'undefined', 'feed' => $incidentDecision->getFeed() ? $incidentDecision->getFeed()->getSlug() : 'undefined', 'network' => $incidentDecision->getNetwork() ? $incidentDecision->getNetwork()->getId() : null]);
 
         if ($incidentDecisionDB && $method === 'POST') {
             $incidentDecision = $incidentDecisionDB;

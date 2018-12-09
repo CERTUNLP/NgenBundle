@@ -12,10 +12,9 @@
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\Host\Host;
+use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
-use CertUnlp\NgenBundle\Entity\Network\Network;
-use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\CommentBundle\Model\Thread;
 use Gedmo\Mapping\Annotation as Gedmo;

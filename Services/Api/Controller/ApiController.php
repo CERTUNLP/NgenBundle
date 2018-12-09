@@ -135,23 +135,23 @@ class ApiController
      */
     public function put(Request $request, $object)
     {
-        try {
-            if (!($object = $this->getCustomHandler()->get($id))) {
-                $statusCode = Response::HTTP_CREATED;
-                $object = $this->getCustomHandler()->post(
-                    $request->request->all()
-                );
-            } else {
-                $statusCode = Response::HTTP_NO_CONTENT;
-                $object = $this->getCustomHandler()->put(
-                    $object, $request->request->all()
-                );
-            }
-            return $this->response([$object], $statusCode);
-        } catch (InvalidFormException $exception) {
-
-            return $exception->getForm();
-        }
+//        try {
+//            if (!($object = $this->getCustomHandler()->get($id))) {
+//                $statusCode = Response::HTTP_CREATED;
+//                $object = $this->getCustomHandler()->post(
+//                    $request->request->all()
+//                );
+//            } else {
+//                $statusCode = Response::HTTP_NO_CONTENT;
+//                $object = $this->getCustomHandler()->put(
+//                    $object, $request->request->all()
+//                );
+//            }
+//            return $this->response([$object], $statusCode);
+//        } catch (InvalidFormException $exception) {
+//
+//            return $exception->getForm();
+//        }
     }
 
     /**
@@ -243,17 +243,17 @@ class ApiController
         }
     }
 
-    /**
-     * Create a Object from the submitted data.
-     *
-     * @param $params array
-     *
-     * @return mixed
-     */
-    public function findObjectBy($params)
-    {
-        return $this->getCustomHandler()->get($params);
-    }
+//    /**
+//     * Create a Object from the submitted data.
+//     *
+//     * @param $params array
+//     *
+//     * @return mixed
+//     */
+//    public function findObjectBy($params)
+//    {
+//        return $this->getCustomHandler()->get($params);
+//    }
 
     /**
      * Update existing object from the submitted data or create a new object at a specific location.
