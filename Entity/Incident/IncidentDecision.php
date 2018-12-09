@@ -10,7 +10,7 @@ use JMS\Serializer\Annotation as JMS;
  * IncidentDecision
  *
  * @ORM\Table(name="incident_decision")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentDecisionRepository")
  * @JMS\ExclusionPolicy("all")
  */
 class IncidentDecision

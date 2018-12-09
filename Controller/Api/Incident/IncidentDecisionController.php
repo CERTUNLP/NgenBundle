@@ -75,8 +75,10 @@ class IncidentDecisionController extends FOSRestController
      * @FOS\View(
      *  templateVar="incident_decision"
      * )
-     * @ParamConverter("incident_decision", class="CertUnlpNgenBundle:IncidentDecision")
-     * @FOS\Get("/decisions/{id}")
+     * @FOS\Get("/decisions/{id}",requirements={"id"="\d+"})
+     * @FOS\Get("/decisions/{type}/{feed}/{network}",requirements={"network"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"} , name="_network")
+     * @FOS\Get("/decisions/{type}/{feed}")
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findByIpV4"},isOptional=true)
      */
     public function getIncidentDecisionAction(IncidentDecision $incident_decision)
     {

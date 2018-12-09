@@ -17,4 +17,5 @@ Active: Activo
 Action: Acciones
 add incident Decision: Agregar Decision
 Incident Decisions: Decisiones
-Incident Priority: 'messages'
+Incident Priority: 'Prioridades'
+Do nothing: 'No hacer nada'

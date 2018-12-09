@@ -10,7 +10,7 @@
 <tr data-id="{{ IncidentDecision.id }}">
     <td id="decision_label_holder" class="col-md-1">
         <div class="label-holder">
-        {{ IncidentDecision.type }}
+            {{ IncidentDecision.type }}
         </div>
     </td>
     <td id="decision_label_holder" class="col-md-1">
@@ -20,22 +20,23 @@
     </td>
     <td id="decision_label_holder" class="col-md-1">
         <div class="label-holder">
-            {{ IncidentDecision.network }}
+            {{ IncidentDecision.network ?:'Do nothing' | trans }}
         </div>
     </td>
     <td id="decision_label_holder" class="col-md-1">
         <div class="label-holder">
-            <span class="label tlp-{{ IncidentDecision.tlp | lower }} left" id="tlp">&nbsp;TLP:{{ IncidentDecision.tlp}}&nbsp;</span>
+            <span class="label tlp-{{ IncidentDecision.tlp | lower }} left"
+                  id="tlp">&nbsp;TLP:{{ IncidentDecision.tlp }}&nbsp;</span>
         </div>
     </td>
     <td id="decision_label_holder" class="col-md-1">
         <div class="label-holder">
-            {{ IncidentDecision.impact }}
+            {{ IncidentDecision.impact  ?:'Do nothing' | trans }}
         </div>
     </td>
     <td id="decision_label_holder" class="col-md-1">
         <div class="label-holder">
-            {{ IncidentDecision.urgency }}
+            {{ IncidentDecision.urgency ?:'Do nothing' | trans }}
         </div>
     </td>
     <td id="state_label_holder" class="col-md-1">
