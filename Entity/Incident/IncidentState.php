@@ -38,6 +38,7 @@ class IncidentState
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100)
+     * @JMS\Expose
      */
     private $name;
 
@@ -46,6 +47,7 @@ class IncidentState
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
+     * @JMS\Expose
      * */
     private $slug;
 

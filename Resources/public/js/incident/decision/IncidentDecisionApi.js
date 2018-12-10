@@ -15,6 +15,7 @@ var IncidentDecisionApi = ApiClient.extend({
         $.subscribe('/cert_unlp/incident/decision/desactivate', $.proxy(this.desactivate, this));
         $.subscribe('/cert_unlp/incident/decision/new', $.proxy(this.create, this));
         $.subscribe('/cert_unlp/incident/decision/update', $.proxy(this.update, this));
+        $.subscribe('/cert_unlp/incident/decision/read', $.proxy(this.get, this));
     },
     addDefaultChannel: function () {
         this.api.add("descisions", {stripTrailingSlash: true, url: 'incidents/decisions'});

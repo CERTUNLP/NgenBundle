@@ -3,9 +3,11 @@
 namespace CertUnlp\NgenBundle\Form\Listener;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentImpact;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
 use CertUnlp\NgenBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -39,6 +41,8 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
             $form->get('feed')->setData($this->doctrine->getReference(IncidentFeed::class, 'undefined'));
             $form->get('state')->setData($this->doctrine->getReference(IncidentState::class, 'undefined'));
             $form->get('tlp')->setData($this->doctrine->getReference(IncidentTlp::class, 'green'));
+            $form->get('impact')->setData($this->doctrine->getReference(IncidentImpact::class, 'undefined'));
+            $form->get('urgency')->setData($this->doctrine->getReference(IncidentUrgency::class, 'undefined'));
             $form->get('assigned')->setData($this->userLogged !== null ? $this->doctrine->getReference(User::class, $this->userLogged) : 'null ');
             $form->get('reporter')->setData($this->userLogged !== null ? $this->doctrine->getReference(User::class, $this->userLogged) : 'null ');
         } else {
