@@ -42,6 +42,10 @@ var ApiClient = Class.extend({
     update: function (id, data, callback) {
         var request = this.defaultChannel.create(id, data, {apikey: this.apiKey});
         this.doRequest(request, callback);
+    },
+    get: function (id, callback) {
+        var request = this.defaultChannel.read(id, {}, {apikey: this.apiKey});
+        this.doRequest(request, callback);
     }
 
 });
