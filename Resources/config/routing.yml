@@ -50,6 +50,11 @@ cert_ngen_network:
     type:     annotation
     prefix:   /networks
 
+cert_ngen_host:
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/HostFrontendController.php'
+    type:   annotation
+    prefix:   /hosts
+
 cert_ngen_internal_incident:
     resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentFrontendController.php'
     type:   annotation

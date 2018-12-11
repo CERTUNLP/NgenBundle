@@ -51,7 +51,7 @@ class IncidentReportFactory
 
     public function getReportReply($incident, $body, $lang)
     {
-        $data = array('report' => $incident->getType()->getReport($lang), 'incident' => $incident, 'body' => $body);
+        $data = array('report' => $incident->getType()->getReport($lang), 'incident' => $incident, 'body' => $body, 'team' => $this->team);
         $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/mailReply.html.twig');
         $this->getView()->setTemplateData($data);
         $html = $this->viewHandler->renderTemplate($this->getView(), 'html');

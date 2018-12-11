@@ -19,8 +19,6 @@ fos_elastica:
                     properties:
                         id:
                             type: integer
-                        ip_v4:
-                            type: ip
                         date:
                             type: date
                         lastTimeDetected:
@@ -33,6 +31,11 @@ fos_elastica:
                             type: boolean
                         evidence_file_path:
                             type: keyword
+                        origin:
+                            type: "object"
+                            properties:
+                                ip_v4:
+                                    type: ip
                         network:
                             type: "object"
                             properties:
@@ -42,24 +45,6 @@ fos_elastica:
                                     type: integer
                                 isActive:
                                     type: boolean
-                                networkAdmin:
-                                    type: "object"
-                                    properties:
-                                        slug:
-                                            type: keyword
-                                        emails:
-                                            type: keyword
-                                        name:
-                                            type: keyword
-                                        isActive:
-                                            type: boolean
-                                networkEntity:
-                                    type: "object"
-                                    properties:
-                                        slug:
-                                            type: keyword
-                                        name:
-                                            type: keyword
                         state:
                             type: "object"
                             properties:
@@ -157,6 +142,38 @@ fos_elastica:
                         # propel and should be removed
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Network\Network
+                        provider: ~
+                        finder: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
+        hosts:
+            index_name: hosts_%kernel.environment%
+            settings:
+                index:
+                    max_result_window: 50000
+            types:
+                host:
+                    properties:
+                        id:
+                            type: integer
+                        ip_v4:
+                            type: ip
+                        url:
+                            type: string
+                        createdAt:
+                            type: date
+                        updatedAt:
+                            type: date
+                        isActive:
+                            type: boolean
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\Incident\Host\Host
                         provider: ~
                         finder: ~
                         listener:
@@ -316,7 +333,7 @@ fos_elastica:
                         createdAt:
                             type: date
                         updatedAt:
-                                type: date
+                            type: date
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel

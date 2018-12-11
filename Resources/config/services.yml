@@ -171,6 +171,10 @@ services:
         arguments: ["@cert_unlp.ngen.network_entity.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
 
 
+    cert_unlp.ngen.host.frontend.controller:
+        class: CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
+        arguments: ["@doctrine.orm.entity_manager","@form.factory",CertUnlp\NgenBundle\Form\HostType,"@knp_paginator","@fos_elastica.finder.hosts.host","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+
     cert_unlp.ngen.incident.internal.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.internal.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.incident","@fos_comment.manager.comment","@fos_comment.manager.thread","@security.token_storage","%cert_unlp.ngen.incident.evidence.path%"]
