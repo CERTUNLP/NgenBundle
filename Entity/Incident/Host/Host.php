@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity()
  * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Host\Listener\HostListener" })
+ * @JMS\ExclusionPolicy("all")
  */
 class Host
 {
@@ -110,6 +111,7 @@ class Host
     /**
      * @var Incident[]|Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="origin"))
+     * @JMS\Exclude()
      */
     private $incidents_as_origin;
 
@@ -118,11 +120,13 @@ class Host
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="destination"))
      */
     private $incidents_as_destination;
+
     /**
      * @var IncidentCommentThread
      * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread",mappedBy="host",fetch="EXTRA_LAZY"))
      */
     private $comment_thread;
+
     /**
      * @var bool
      *

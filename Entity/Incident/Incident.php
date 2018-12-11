@@ -22,12 +22,15 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
+
 
 /**
  * @ORM\Entity()
  * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Listener\InternalIncidentListener" })
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
+ * @CustomAssert\TypeHasReport
  */
 class Incident implements IncidentInterface
 {
