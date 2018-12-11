@@ -102,7 +102,7 @@ class FrontendController
      * @param Request $request
      * @return array
      */
-    public function commentsEntity(Incident $object, Request $request)
+    public function commentsEntity($object, Request $request)
     {
         $id = $object->getId();
         $thread = $this->thread_manager->findThreadById($id);
@@ -110,7 +110,7 @@ class FrontendController
             $thread = $this->thread_manager->createThread();
             $thread->setId($id);
             $object->setCommentThread($thread);
-            $thread->setIncident($object);
+//            $thread->setIncident($object);
             $thread->setPermalink($request->getUri());
 
             // Add the thread

@@ -139,7 +139,7 @@ class IncidentMailer implements IncidentMailerInterface
 
         $html = $this->getReplyBody($incident, $body);
         $message = \Swift_Message::newInstance()
-            ->setSubject(sprintf($this->replySubject(), $incident->getType()->getName(), $incident->getIp(), $incident->getId()))
+            ->setSubject(sprintf($this->replySubject(), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getIp(), $incident->getId()))
             ->setFrom($this->cert_email)
             ->addPart($html, 'text/html');
 

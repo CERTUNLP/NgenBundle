@@ -15,6 +15,7 @@ use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -107,13 +108,13 @@ class Host
     private $network;
 
     /**
-     * @var Incident
+     * @var Incident[]|Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="origin"))
      */
     private $incidents_as_origin;
 
     /**
-     * @var Incident
+     * @var Incident[]|Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="destination"))
      */
     private $incidents_as_destination;
@@ -207,7 +208,7 @@ class Host
     /**
      * @return string
      */
-    public function getUrl(): string
+    public function getUrl(): ?string
     {
         return $this->url;
     }
@@ -277,42 +278,7 @@ class Host
     }
 
     /**
-     * @return Incident
-     */
-    public function getIncidentsAsOrigin(): Incident
-    {
-        return $this->incidents_as_origin;
-    }
-
-    /**
-     * @param Incident $incidents_as_origin
-     * @return Host
-     */
-    public function setIncidentsAsOrigin(Incident $incidents_as_origin): Host
-    {
-        $this->incidents_as_origin = $incidents_as_origin;
-        return $this;
-    }
-
-    /**
-     * @return Incident
-     */
-    public function getIncidentsAsDestination(): Incident
-    {
-        return $this->incidents_as_destination;
-    }
-
-    /**
-     * @param Incident $incidents_as_destination
-     * @return Host
-     */
-    public function setIncidentsAsDestination(Incident $incidents_as_destination): Host
-    {
-        $this->incidents_as_destination = $incidents_as_destination;
-        return $this;
-    }
-
-    /**
+     * /**
      * @return IncidentCommentThread
      */
     public function getCommentThread(): IncidentCommentThread
@@ -376,6 +342,42 @@ class Host
     public function setIpV4(string $ip_v4): Host
     {
         $this->ip_v4 = $ip_v4;
+        return $this;
+    }
+
+    /**
+     * @return Incident[]|Collection
+     */
+    public function getIncidentsAsOrigin()
+    {
+        return $this->incidents_as_origin;
+    }
+
+    /**
+     * @param Incident[]|Collection $incidents_as_origin
+     * @return Host
+     */
+    public function setIncidentsAsOrigin($incidents_as_origin)
+    {
+        $this->incidents_as_origin = $incidents_as_origin;
+        return $this;
+    }
+
+    /**
+     * @return Incident[]|Collection
+     */
+    public function getIncidentsAsDestination()
+    {
+        return $this->incidents_as_destination;
+    }
+
+    /**
+     * @param Incident[]|Collection $incidents_as_destination
+     * @return Host
+     */
+    public function setIncidentsAsDestination($incidents_as_destination)
+    {
+        $this->incidents_as_destination = $incidents_as_destination;
         return $this;
     }
 

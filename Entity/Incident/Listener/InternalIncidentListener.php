@@ -73,21 +73,6 @@ class InternalIncidentListener
 //        $this->tlpUpdate($incident, $event);
     }
 
-    public function decisionUpdate(Incident $incident): Incident
-    {
-        return $this->decision_handler->getByIncident($incident)->doDecision($incident);
-    }
-
-    public function timestampsUpdate(Incident $incident): void
-    {
-        if ($incident->getDate() == null) {
-            try {
-                $incident->setDate(new \DateTime('now'));
-            } catch (\Exception $e) {
-            }
-        }
-    }
-
     /**
      * @param Incident $incident
      */
@@ -101,6 +86,25 @@ class InternalIncidentListener
             }
         } else {
             $incident->setNetwork($network_new);
+        }
+    }
+
+    public function decisionUpdate(Incident $incident): Incident
+    {
+        $decision = $this->decision_handler->getByIncident($incident);
+        if ($decision) {
+            return $decision->doDecision($incident);
+        }
+        return $incident;
+    }
+
+    public function timestampsUpdate(Incident $incident): void
+    {
+        if ($incident->getDate() == null) {
+            try {
+                $incident->setDate(new \DateTime('now'));
+            } catch (\Exception $e) {
+            }
         }
     }
 
