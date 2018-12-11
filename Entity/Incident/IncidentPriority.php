@@ -11,17 +11,21 @@ use JMS\Serializer\Annotation as JMS;
  *
  * @ORM\Table(name="incident_priority")
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IndicentPriorityRepository")
+ * @JMS\ExclusionPolicy("all")
  */
 class IncidentPriority
 {
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="incidentsPriorities")
      * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
+     * @JMS\Expose
      */
     protected $impact;
+
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency", inversedBy="incidentsPriorities")
      * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
+     * @JMS\Expose
      */
     protected $urgency;
     /**
@@ -29,12 +33,14 @@ class IncidentPriority
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
+     * @JMS\Expose
      * */
     private $slug;
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @JMS\Expose
      */
     private $name;
     /**
@@ -57,19 +63,21 @@ class IncidentPriority
      * @var dateinterval
      *
      * @ORM\Column(name="response_time", type="dateinterval")
+     * @JMS\Expose
      */
-
     private $responseTime;
     /**
      * @var dateinterval
      *
      * @ORM\Column(name="resolution_time", type="dateinterval")
+     * @JMS\Expose
      */
     private $resolutionTime;
     /**
      * @var int
      *
      * @ORM\Column(name="code", type="integer", unique=true)
+     * @JMS\Expose
      */
     private $code;
 

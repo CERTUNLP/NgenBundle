@@ -4,12 +4,15 @@ namespace CertUnlp\NgenBundle\Entity\Incident;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
+
 
 /**
  * IncidentTlp
  *
  * @ORM\Table(name="incident_tlp")
  * @ORM\Entity
+ * @JMS\ExclusionPolicy("all")
  */
 class IncidentTlp
 {
@@ -17,6 +20,7 @@ class IncidentTlp
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=45, nullable=true)
+     * @JMS\Expose
      */
     private $name;
 
@@ -25,6 +29,7 @@ class IncidentTlp
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
+     * @JMS\Expose
      * */
     private $slug;
 
@@ -39,6 +44,7 @@ class IncidentTlp
      * @var string
      *
      * @ORM\Column(name="when", type="string", length=500, nullable=true)
+     * @JMS\Expose
      */
     private $when;
 
@@ -53,6 +59,7 @@ class IncidentTlp
      * @var string
      *
      * @ORM\Column(name="why", type="string", length=500, nullable=true)
+     * @JMS\Expose
      */
     private $why;
 
@@ -60,6 +67,7 @@ class IncidentTlp
      * @var string
      *
      * @ORM\Column(name="information", type="string", length=10, nullable=true)
+     * @JMS\Expose
      */
     private $information;
 
@@ -67,11 +75,14 @@ class IncidentTlp
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=150, nullable=true)
+     * @JMS\Expose
      */
     private $description;
 
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="tlp")) */
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="tlp"))
+     * @JMS\Exclude()
+     */
     private $incidents;
 
     /**
