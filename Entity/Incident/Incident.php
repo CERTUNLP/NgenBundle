@@ -705,7 +705,25 @@ class Incident implements IncidentInterface
 
     public function getEmails(): array
     {
-        return [];
+        return $this->getNetwork()->getNetworkAdmin()->getEmails();
+    }
+
+    /**
+     * @return Network
+     */
+    public function getNetwork(): ?Network
+    {
+        return $this->network;
+    }
+
+    /**
+     * @param Network $network
+     * @return Incident
+     */
+    public function setNetwork(Network $network = null): Incident
+    {
+        $this->network = $network;
+        return $this;
     }
 
     public function isInternal(): bool
@@ -869,24 +887,6 @@ class Incident implements IncidentInterface
     public function setDestination(Host $destination): Incident
     {
         $this->destination = $destination;
-        return $this;
-    }
-
-    /**
-     * @return Network
-     */
-    public function getNetwork(): ?Network
-    {
-        return $this->network;
-    }
-
-    /**
-     * @param Network $network
-     * @return Incident
-     */
-    public function setNetwork(Network $network = null): Incident
-    {
-        $this->network = $network;
         return $this;
     }
 }
