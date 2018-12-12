@@ -47,6 +47,24 @@ fos_elastica:
                                     type: boolean
                                 discr:
                                     type: keyword
+                                networkAdmin:
+                                    type: "object"
+                                    properties:
+                                        slug:
+                                            type: keyword
+                                        emails:
+                                            type: keyword
+                                        name:
+                                            type: keyword
+                                        isActive:
+                                            type: boolean
+                                networkEntity:
+                                    type: "object"
+                                    properties:
+                                        slug:
+                                            type: keyword
+                                        name:
+                                            type: keyword
                         state:
                             type: "object"
                             properties:
