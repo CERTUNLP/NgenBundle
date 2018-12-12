@@ -45,6 +45,8 @@ fos_elastica:
                                     type: integer
                                 isActive:
                                     type: boolean
+                                discr:
+                                    type: keyword
                         state:
                             type: "object"
                             properties:

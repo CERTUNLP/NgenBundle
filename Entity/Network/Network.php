@@ -58,14 +58,17 @@ abstract class Network implements NetworkInterface
      * @JMS\Expose
      */
     private $ipMask;
-
+    /**
+     * @var string
+     * @JMS\Expose
+     */
+    private $discr;
     /**
      * @var int
      *
      * @ORM\Column(name="numeric_ip_mask", type="bigint", options={"unsigned":true})
      */
     private $numericIpMask;
-
     /**
      * @var string
      *
@@ -75,7 +78,6 @@ abstract class Network implements NetworkInterface
      * @Assert\Ip(version="4_no_priv")
      */
     private $ip_v4;
-
     /**
      * @var string
      *
@@ -85,7 +87,6 @@ abstract class Network implements NetworkInterface
      * @Assert\Ip(version="6_no_priv")
      */
     private $ip_v6;
-
     /**
      * @var string
      *
@@ -96,34 +97,29 @@ abstract class Network implements NetworkInterface
      * @Assert\Url()
      */
     private $url;
-
     /**
      * @var int
      *
      * @ORM\Column(name="numeric_ip", type="integer",options={"unsigned":true})
      */
     private $numericIp;
-
     /**
      * @var NetworkAdmin
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
      */
     private $network_admin;
-
     /**
      * @var NetworkEntity
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkEntity", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
      */
     private $network_entity;
-
     /**
      * @var Collection| Incident[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="network"))
      */
     private $incidents;
-
     /**
      * @var Collection| Host[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Host\Host",mappedBy="network", cascade={"persist"}))
@@ -163,6 +159,24 @@ abstract class Network implements NetworkInterface
         }
         $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->incidentsDecisions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getDiscr(): ?string
+    {
+        return $this->discr;
+    }
+
+    /**
+     * @param string $discr
+     * @return Network
+     */
+    public function setDiscr(string $discr = null): Network
+    {
+        $this->discr = $discr;
+        return $this;
     }
 
     /**

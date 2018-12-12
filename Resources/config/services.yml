@@ -294,3 +294,8 @@ services:
         class: CertUnlp\NgenBundle\Form\Extension\DateTimeTypeExtension
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\DateTimeType }
+
+    acme.listener.custom_property:
+        class: CertUnlp\NgenBundle\Entity\Incident\Listener\CustomPropertyListener
+        tags:
+            - { name: kernel.event_subscriber }
