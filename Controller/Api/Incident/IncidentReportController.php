@@ -43,7 +43,7 @@ class IncidentReportController extends FOSRestController
      * @FOS\View(
      *  templateVar="incident_report"
      * )
-     * @ParamConverter("lang", class="CertUnlpNgenBundle:IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
+     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
     public function getReportAction(IncidentType $slug, IncidentReport $lang)
     {
@@ -95,7 +95,7 @@ class IncidentReportController extends FOSRestController
      * @param IncidentReport $lang
      * @return FormTypeInterface|View
      *
-     * @ParamConverter("lang", class="CertUnlpNgenBundle:IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
+     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
     public function patchReportAction(Request $request, IncidentType $slug, IncidentReport $lang)
     {
@@ -121,7 +121,7 @@ class IncidentReportController extends FOSRestController
      * @param IncidentReport $lang
      * @return FormTypeInterface|View
      *
-     * @ParamConverter("lang", class="CertUnlpNgenBundle:IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
+     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
     public function patchReportActivateAction(Request $request, IncidentType $slug, IncidentReport $lang)
     {
@@ -147,7 +147,7 @@ class IncidentReportController extends FOSRestController
      * @param IncidentReport $lang
      * @return FormTypeInterface|View
      *
-     * @ParamConverter("lang", class="CertUnlpNgenBundle:IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
+     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
     public function patchReportDesactivateAction(Request $request, IncidentType $slug, IncidentReport $lang)
     {
