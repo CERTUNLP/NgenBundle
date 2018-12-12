@@ -17,7 +17,7 @@ class Version20181212022353 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
+        $this->addSql("INSERT INTO incident_state (`slug`, `name`, `is_active`, `created_at`, `updated_at`) VALUES ('staging', 'Staging', '1', NOW(), NOW())");
         $this->addSql("INSERT INTO incident_decision (`type`, `feed`, `impact`, `urgency`, `tlp`,`state`,`network`,`auto_saved`,`is_active`,`created_at`,`updated_at`,`slug`) 
             VALUES ('undefined', 'Undefined', 'low','low', 'red', 'staging',null,false,true, NOW(), NOW(),'undefined')");
     }
