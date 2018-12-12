@@ -38,7 +38,7 @@ class TypeHasReportValidator extends ConstraintValidator
         }
         $type = $value->getType();
 
-        if ($type && !$type->getReport($lang)) {
+        if ($type && !$type->getReport($lang) && $value->getType()->getSlug() !== 'undefined') {
             if (!empty($constraint->message)) {
                 $this->context->addViolation(
                     $constraint->message, array('%string%' => $lang)

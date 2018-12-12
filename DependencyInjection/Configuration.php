@@ -161,7 +161,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('lang')
-            ->defaultValue('es')
+            ->defaultValue('en')
             ->end()
             ->arrayNode('markdown')
             ->addDefaultsIfNotSet()

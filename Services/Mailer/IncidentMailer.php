@@ -63,7 +63,7 @@ class IncidentMailer implements IncidentMailerInterface
      */
     public function send_report(Incident $incident, $body = null, $echo = null, $is_new_incident = FAlSE, $renotification = false)
     {
-        if (!$echo) {
+        if ($incident->getType()->getSlug() !== 'undefined') {
             if ($incident->isSendReport() || $is_new_incident || $renotification) {
                 $html = $this->getBody($incident);
                 $message = \Swift_Message::newInstance()
@@ -84,9 +84,6 @@ class IncidentMailer implements IncidentMailerInterface
 
                 return $this->mailer->send($message);
             }
-        } else {
-            $html = $this->getBody($incident);
-            return $html;
         }
         return null;
     }

@@ -131,14 +131,12 @@ class IncidentType extends AbstractType
                 }))
             ->add('impact', EntityType::class, array(
                 'class' => IncidentImpact::class,
-
                 'empty_value' => 'Choose a impact level',
                 'attr' => array('help_text' => 'If none is selected, the assigned impact will be Low.'),
                 'description' => 'If none is selected, the assigned impact will be Low',
             ))
             ->add('urgency', EntityType::class, array(
                 'class' => IncidentUrgency::class,
-
                 'empty_value' => 'Choose a responsable',
                 'attr' => array('help_text' => 'If none is selected, the assigned urgency will be Low'),
                 'description' => 'If none is selected, the assigned urgency will be Low',

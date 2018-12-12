@@ -11,7 +11,7 @@
 {% block title %}{{ 'Hosts'|trans }}{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{ icon('unlock-alt fa-fw') }} {{ 'Incident Decisions'|trans }}</h1>
+    <h1 class="page-header">{{ icon('unlock-alt fa-fw') }} {{ ' Hosts'|trans }}</h1>
 {% endblock %}
 
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_host_search') }}{% endblock %}
@@ -25,8 +25,8 @@
     {{ parent() }}
 
     {#{% javascripts#}
-    {#'@CertUnlpNgenBundle/Resources/public/js/incident/decision/Host.js'#}
-    {#'@CertUnlpNgenBundle/Resources/public/js/incident/decision/HostApi.js' %}#}
+    {#'@CertUnlpNgenBundle/Resources/public/js/incident/host/Host.js'#}
+    {#'@CertUnlpNgenBundle/Resources/public/js/incident/host/HostApi.js' %}#}
     {#<script src="{{ asset_url }}"></script>#}
     {#{% endjavascripts %}#}
     {#<script>#}

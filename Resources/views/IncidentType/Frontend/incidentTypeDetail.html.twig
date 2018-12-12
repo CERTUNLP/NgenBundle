@@ -80,7 +80,7 @@
         </div>
 
     </div>
-    {{ render(controller('CertUnlpNgenBundle:IncidentReportFrontend:home', {'term': object.slug, 'request': app.request})) }}
+    {{ render(controller('CertUnlpNgenBundle:Frontend/Incident/IncidentReportFrontend:home', {'term': object.slug, 'request': app.request})) }}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
