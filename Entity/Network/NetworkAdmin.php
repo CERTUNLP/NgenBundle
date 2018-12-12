@@ -117,9 +117,19 @@ class NetworkAdmin
      *
      * @return integer
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function setId($id = null)
+    {
+        return $this->id = $id;
     }
 
     /**
@@ -220,9 +230,9 @@ class NetworkAdmin
      * @param array $emails
      * @return NetworkAdmin
      */
-    public function setEmails(array $emails): NetworkAdmin
+    public function setEmails($emails): NetworkAdmin
     {
-        $this->emails = $emails;
+        $this->emails = [$emails];
         return $this;
     }
 
