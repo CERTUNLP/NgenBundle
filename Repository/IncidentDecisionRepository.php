@@ -19,22 +19,33 @@ class IncidentDecisionRepository extends EntityRepository
      */
     public function findOneBy(array $criteria, array $orderBy = null)
     {
-        $decision = null;
-        if (isset($criteria['type'], $criteria['feed'])) {
-            $decision = parent::findOneBy(array('feed' => $criteria['feed'], 'type' => $criteria['type'], 'network' => $criteria['network'] ?? null));
+        $get_undefined = false;
+        $criteria['isActive'] = true;
+        $criteria['network'] = is_object($criteria['network']) ? $criteria['network']->getId() : $criteria['network'];
+        if (isset($criteria['get_undefined'])) {
+            $get_undefined = $criteria['get_undefined'];
+            unset($criteria['get_undefined']);
         }
-        if (!$decision && isset($criteria['type']) && !isset($criteria['feed'])) {
-            $decision = parent::findOneBy(array('feed' => 'undefined', 'type' => $criteria['type'], 'network' => $criteria['network'] ?? null));
+        if ($get_undefined) {
+            $decision = null;
+            if (isset($criteria['type'], $criteria['feed'])) {
+                $decision = parent::findOneBy(array('feed' => $criteria['feed'], 'type' => $criteria['type'], 'network' => $criteria['network'] ?? null, 'isActive' => true));
+            }
+            if (!$decision && isset($criteria['type']) && !isset($criteria['feed'])) {
+                $decision = parent::findOneBy(array('feed' => 'undefined', 'type' => $criteria['type'], 'network' => $criteria['network'] ?? null, 'isActive' => true));
+            }
+            if (!$decision && !isset($criteria['type']) && isset($criteria['feed'])) {
+                $decision = parent::findOneBy(array('feed' => $criteria['feed'], 'type' => 'undefined', 'network' => $criteria['network'] ?? null, 'isActive' => true));
+            }
+            if (!$decision && isset($criteria['network'])) {
+                $decision = parent::findOneBy(array('feed' => 'undefined', 'type' => 'undefined', 'network' => $criteria['network'], 'isActive' => true));
+            }
+            if (!$decision) {
+                $decision = parent::findOneBy(array('feed' => 'undefined', 'type' => 'undefined', 'network' => null, 'isActive' => true));
+            }
+            return $decision;
         }
-        if (!$decision && !isset($criteria['type']) && isset($criteria['feed'])) {
-            $decision = parent::findOneBy(array('feed' => $criteria['feed'], 'type' => 'undefined', 'network' => $criteria['network'] ?? null));
-        }
-        if (!$decision && isset($criteria['network'])) {
-            $decision = parent::findOneBy(array('feed' => 'undefined', 'type' => 'undefined', 'network' => $criteria['network']));
-        }
-        if (!$decision) {
-            $decision = parent::findOneBy(array('feed' => 'undefined', 'type' => 'undefined', 'network' => null));
-        }
-        return $decision;
+
+        return parent::findOneBy($criteria, $orderBy);
     }
 }

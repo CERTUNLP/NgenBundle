@@ -87,7 +87,7 @@ class NetworkEntity
      * Constructor
      * @param null $name
      */
-    public function __construct($name = null)
+    public function __construct(string $name = null)
     {
         $this->setName($name);
         $this->networks = new ArrayCollection();
@@ -116,7 +116,7 @@ class NetworkEntity
      *
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -127,7 +127,7 @@ class NetworkEntity
      * @param string $name
      * @return NetworkEntity
      */
-    public function setName(string $name): NetworkEntity
+    public function setName(string $name = null): NetworkEntity
     {
         $this->name = $name;
 
@@ -173,7 +173,7 @@ class NetworkEntity
      *
      * @return string
      */
-    public function getSlug(): string
+    public function getSlug(): ?string
     {
         return $this->slug;
     }

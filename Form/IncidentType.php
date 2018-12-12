@@ -67,8 +67,8 @@ class IncidentType extends AbstractType
                 }))
             ->add('ip_v4', null, array(
                 'required' => true,
-                'attr' => array('maxlength' => '300', 'help_text' => 'Add more than one address separating them with a comma.'),
-                'description' => 'The host IP. (Add more than one address separating them with a comma.)'))
+                'attr' => array('maxlength' => '15'),
+            ))
             ->add('feed', EntityType::class, array(
                 'class' => IncidentFeed::class,
                 'required' => true,
@@ -148,7 +148,7 @@ class IncidentType extends AbstractType
                 'required' => false,
                 'label' => 'Send mail report(if available)',
                 'description' => 'Send a mail report to the host administrator.'))
-            ->add('slug', HiddenType::class, array(
+            ->add('id', HiddenType::class, array(
                 'required' => false,
             ))
             ->add('save', SubmitType::class, array(

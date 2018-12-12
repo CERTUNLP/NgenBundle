@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Network;
 
 use CertUnlp\NgenBundle\Entity\Network\Network;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -60,7 +61,7 @@ class NetworkFrontendController extends Controller
 
     /**
      * @Template("CertUnlpNgenBundle:Network:Frontend/networkForm.html.twig")
-     * @Route("{ip}/{ipMask}/edit", name="cert_unlp_ngen_network_edit_network")
+     * @Route("{ip_v4}/{ipMask}/edit", name="cert_unlp_ngen_network_edit_network")
      * @param Network $network
      * @return array
      */
@@ -71,7 +72,7 @@ class NetworkFrontendController extends Controller
 
     /**
      * @Template("CertUnlpNgenBundle:Network:Frontend/networkDetail.html.twig")
-     * @Route("{ip}/{ipMask}/detail", name="cert_unlp_ngen_network_detail_network")
+     * @Route("{ip_v4}/{ipMask}/detail", name="cert_unlp_ngen_network_detail_network")
      * @param Network $network
      * @return array
      */
