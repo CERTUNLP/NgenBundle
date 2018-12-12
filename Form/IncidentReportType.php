@@ -11,9 +11,11 @@
 
 namespace CertUnlp\NgenBundle\Form;
 
+use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -37,9 +39,8 @@ class IncidentReportType extends AbstractType
                 'choices_as_values' => true
             ))
             ->add('type', EntityType::class, array(
-                'class' => 'CertUnlpNgenBundle:IncidentType',
+                'class' => IncidentType::class,
                 'required' => true,
-                'description' => "The administrator responsible for the network"
             ))
             ->add('problem', null, array(
                 'required' => true,
@@ -56,8 +57,8 @@ class IncidentReportType extends AbstractType
             ->add('more_information', null, array(
                 'required' => false,
             ))
-            ->add('save', 'submit', array('attr' =>
-                array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => "slide-down"),
+            ->add('save', SubmitType::class, array('attr' =>
+                array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => 'slide-down'),
             ));
 
 
