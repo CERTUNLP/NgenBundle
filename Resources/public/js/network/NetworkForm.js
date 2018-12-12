@@ -28,7 +28,7 @@ var NetworkForm = Form.extend({
         return this.getNetworkId();
     },
     setNetworkId: function () {
-        this.networkId = $('#ip').val();
+        this.networkId = $('#ip_v4').val();
     },
     getNetworkId: function () {
         return this.networkId;
@@ -39,11 +39,11 @@ var NetworkForm = Form.extend({
             if (v.length > 0) {
                 ul = $('<ul class="help-block" ></ul>');
                 ul.append($('<li>' + v + '</li>'));
-                $('#ip').after(ul);
-                $('#ip').closest('div[class="form-group"]').addClass('has-error');
+                $('#ip_v4').after(ul);
+                $('#ip_v4').closest('div[class="form-group"]').addClass('has-error');
             } else {
-                $('#ip').closest('div[class="form-group has-error"]').removeClass('has-error');
-                $('#ip').siblings('ul').remove();
+                $('#ip_v4').closest('div[class="form-group has-error"]').removeClass('has-error');
+                $('#ip_v4').siblings('ul').remove();
             }
         });
     }

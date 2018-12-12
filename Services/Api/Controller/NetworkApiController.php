@@ -73,6 +73,6 @@ class NetworkApiController extends ApiController
      */
     public function findObjectBy($params)
     {
-        return $this->getCustomHandler()->get(['ip_v4' => $params['ip']]);
+        return $this->getCustomHandler()->get(['ip_v4' => $params['ip_v4']]);
     }
 }

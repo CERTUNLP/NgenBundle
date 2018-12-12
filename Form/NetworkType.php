@@ -38,7 +38,7 @@ class NetworkType extends AbstractType
         $builder
             ->add('ip_v4', null, array(
                 'required' => true,
-                'attr' => array('placeholder' => 'e.g 192.168.1.1/16'),
+                'attr' => array('maxlength' => '17', 'help_text', 'placeholder' => 'e.g 192.168.1.1/16'),
                 'label' => 'Ip/Mask',
                 'description' => 'The network ip and mask',
             ))
