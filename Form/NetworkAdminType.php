@@ -14,11 +14,12 @@ namespace CertUnlp\NgenBundle\Form;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class NetworkAdminType extends AbstractType
@@ -35,19 +36,12 @@ class NetworkAdminType extends AbstractType
             ->add('name', null, array(
                 'required' => true,
             ))
-            ->add('emails', CollectionType::class, array(
+            ->add('emails', TextType::class, array(
                 'required' => true,
-                'entry_type' => EmailType::class,
-                'allow_add' => true,
-                'prototype' => true,
-                'prototype_data' => 'New Tag Placeholder',
-                // these options are passed to each "email" type
-                'entry_options' => array(
-                    'attr' => array('class' => 'email-box'),
-                )))
-            ->add('id', HiddenType::class, array(
+            ))->add('id', HiddenType::class, array(
                 'required' => false,
             ));
+
         if ($builder->getData()) {
             if (!$builder->getData()->getIsActive()) {
                 $builder
@@ -60,6 +54,17 @@ class NetworkAdminType extends AbstractType
         $builder->add('save', SubmitType::class, array('attr' =>
             array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => 'slide-down'),
         ));
+
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            $network = $event->getData();
+            $form = $event->getForm();
+            // check if the Product object is "new"
+            // If no data is passed to the form, the data is "null".
+            // This should be considered a new "Product"
+            if ($network) {
+                $form->get('emails')->setData($network->getEmails()[0]);
+            }
+        });
     }
 
     /**
