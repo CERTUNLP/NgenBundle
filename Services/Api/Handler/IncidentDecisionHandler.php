@@ -18,7 +18,7 @@ class IncidentDecisionHandler extends Handler
 {
     public function getByIncident(Incident $incident): ?IncidentDecision
     {
-        $parameters = ['type' => $incident->getType() ? $incident->getType()->getSlug() : 'undefined', 'feed' => $incident->getFeed() ? $incident->getFeed()->getSlug() : 'undefined', 'network' => $incident->getNetwork() ? $incident->getNetwork()->getId() : null];
+        $parameters = ['type' => $incident->getType() ? $incident->getType()->getSlug() : 'undefined', 'feed' => $incident->getFeed() ? $incident->getFeed()->getSlug() : 'undefined', 'network' => $incident->getNetwork() ? $incident->getNetwork()->getId() : null, 'get_undefined' => true];
         return parent::get($parameters);
     }
 

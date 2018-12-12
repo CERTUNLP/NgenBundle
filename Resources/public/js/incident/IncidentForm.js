@@ -36,7 +36,7 @@ var IncidentForm = Form.extend({
         }
     },
     setIncidentId: function () {
-        this.incidentId = $('#slug').val();
+        this.incidentId = $('#id').val();
     },
     getObjectBrief: function () {
         return 'incident';

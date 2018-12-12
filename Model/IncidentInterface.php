@@ -217,7 +217,7 @@ interface IncidentInterface
      *
      * @return string
      */
-    public function getEvidenceSubDirectory(): string;
+    public function getEvidenceSubDirectory(): ?string;
 
     /**
      * Set evidence_file_temp
@@ -232,7 +232,7 @@ interface IncidentInterface
      *
      * @return string
      */
-    public function getEvidenceFileTemp(): string;
+    public function getEvidenceFileTemp(): ?string;
 
     /**
      * Get an array with emails

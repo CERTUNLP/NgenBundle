@@ -15,6 +15,7 @@ use CertUnlp\NgenBundle\Entity\Incident\Host\Host;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
+use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\CommentBundle\Model\Thread;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -22,7 +23,6 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
-use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
 
 
 /**
@@ -510,7 +510,7 @@ class Incident implements IncidentInterface
     /**
      * @return string
      */
-    public function getEvidenceFileTemp(): string
+    public function getEvidenceFileTemp(): ?string
     {
         return $this->evidence_file_temp;
     }
@@ -519,7 +519,7 @@ class Incident implements IncidentInterface
      * @param string $evidence_file_temp
      * @return Incident
      */
-    public function setEvidenceFileTemp(string $evidence_file_temp): Incident
+    public function setEvidenceFileTemp(string $evidence_file_temp = null): Incident
     {
         $this->evidence_file_temp = $evidence_file_temp;
         return $this;
@@ -841,7 +841,7 @@ class Incident implements IncidentInterface
      * @param mixed $evidence_file_path
      * @return Incident
      */
-    public function setEvidenceFilePath(string $evidence_file_path): Incident
+    public function setEvidenceFilePath(string $evidence_file_path = null): Incident
     {
         $this->evidence_file_path = $evidence_file_path;
         return $this;
@@ -852,7 +852,7 @@ class Incident implements IncidentInterface
      *
      * @return string
      */
-    public function getEvidenceSubDirectory(): string
+    public function getEvidenceSubDirectory(): ?string
     {
         return '/' . $this->getDate()->format('Y') . '/' . $this->getDate()->format('F') . '/' . $this->getDate()->format('d');
     }
