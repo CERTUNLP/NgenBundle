@@ -37,7 +37,7 @@ class IncidentReportFrontendController extends Controller
     public function homeAction(Request $request, $term = null)
     {
 //        var_dump('slug: ' . $term );die;
-        return $this->getFrontendController()->homeEntity($request, 'slug:' . $term.'-*');
+        return $this->getFrontendController()->homeEntity($request, 'slug:' . $term . '-*');
     }
 
     public function getFrontendController()
@@ -68,7 +68,7 @@ class IncidentReportFrontendController extends Controller
     /**
      * @Template("CertUnlpNgenBundle:IncidentReport:Frontend/incidentReportForm.html.twig")
      * @Route("{slug}/reports/{lang}/edit", name="cert_unlp_ngen_incident_type_report_edit")
-     * @ParamConverter("lang", class="CertUnlpNgenBundle:IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
+     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      * @param IncidentType $slug
      * @param IncidentReport $lang
      * @return array
@@ -82,7 +82,7 @@ class IncidentReportFrontendController extends Controller
     /**
      * @Template("CertUnlpNgenBundle:IncidentReport:Frontend/incidentReportDetail.html.twig")
      * @Route("{slug}/reports/{lang}/detail", name="cert_unlp_ngen_incident_type_report_detail")
-     * @ParamConverter("lang", class="CertUnlpNgenBundle:IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
+     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      * @param IncidentType $slug
      * @param IncidentReport $lang
      * @return array

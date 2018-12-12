@@ -86,6 +86,8 @@ cert_unlp_ngen:
         internal:
             mailer:
                 sender_address: '%mailer_sender%'
+            reports:
+                lang: "%ngen_lang%"
         external:
             mailer:
                 sender_address: '%mailer_sender%'

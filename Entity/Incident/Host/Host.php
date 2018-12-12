@@ -135,7 +135,6 @@ class Host
      */
     private $isActive = true;
 
-
     /**
      * Host constructor.
      * @param string $ip_v4

@@ -9,7 +9,7 @@
 
 {% extends 'CertUnlpNgenBundle::Host/Frontend/frontend.html.twig' %}
 {% block content_header %}
-    <h1 class="page-header">{{ icon('plus-circle fa-fw') }}decision</h1>
+    <h1 class="page-header">{{ icon('plus-circle fa-fw') }}host</h1>
 {% endblock %}
 {% block content_body %}
     {% if (form is not null) %}
@@ -22,7 +22,7 @@
     {#{{ parent() }}#}
 
     {#{% javascripts#}
-        {#'@CertUnlpNgenBundle/Resources/public/js/incident/decision/HostForm.js' %}#}
+        {#'@CertUnlpNgenBundle/Resources/public/js/incident/host/HostForm.js' %}#}
         {#<script src="{{ asset_url }}"></script>#}
     {#{% endjavascripts %}#}
     {#<script>#}
