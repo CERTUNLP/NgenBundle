@@ -279,8 +279,9 @@
                         <h3 class="panel-title">Comments</h3>
                     </div>
                     <div class="panel-body">
+
                         {% block comments_body %}
-                            {% include '@FOSComment/Thread/async.html.twig' with {'id': object.id} %}
+                            {% include '@CertUnlpNgen/Incident/Frontend/list/comments.html.twig' with {'id': object.id} %}
                             {#{{ render(controller('CertUnlpNgenBundle:Frontend/Incident/IncidentFrontend:incidentComments', {'incident': object, 'request': app.request})) }}#}
                         {% endblock %}
                     </div>
