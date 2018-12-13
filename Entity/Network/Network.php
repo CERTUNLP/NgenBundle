@@ -15,6 +15,7 @@ use CertUnlp\NgenBundle\Entity\Incident\Host\Host;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -147,14 +148,14 @@ abstract class Network implements NetworkInterface
 
     /**
      * Constructor
+     * @param string $ip_v4
      */
-    public function __construct($ip_v4 = '')
+    public function __construct(string $ip_v4 = '')
     {
         if ($ip_v4) {
             $this->ip_v4 = $ip_v4;
         }
-        $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->incidentsDecisions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->incidents = new ArrayCollection();
     }
 
     /**

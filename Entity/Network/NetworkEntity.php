@@ -39,7 +39,7 @@ class NetworkEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=50)
+     * @ORM\Column(name="name", type="string")
      * @JMS\Expose
      */
     private $name;
@@ -48,7 +48,7 @@ class NetworkEntity
      * @var string
      *
      * @Gedmo\Slug(fields={"name"}, separator="_")
-     * @ORM\Column(name="slug", type="string", length=100,nullable=true)
+     * @ORM\Column(name="slug", type="string",nullable=true)
      * @JMS\Expose
      * */
     private $slug;
@@ -85,7 +85,7 @@ class NetworkEntity
 
     /**
      * Constructor
-     * @param null $name
+     * @param string $name
      */
     public function __construct(string $name = null)
     {
