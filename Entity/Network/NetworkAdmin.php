@@ -41,7 +41,7 @@ class NetworkAdmin
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=100)
+     * @ORM\Column(name="name", type="string")
      * @JMS\Expose()
      */
     private $name;
