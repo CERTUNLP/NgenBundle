@@ -38,6 +38,7 @@ class NetworkAdminType extends AbstractType
             ))
             ->add('emails', TextType::class, array(
                 'required' => true,
+                'attr' => ['help_text' => 'Multiple emails separated by comma']
             ))->add('id', HiddenType::class, array(
                 'required' => false,
             ));
@@ -62,7 +63,7 @@ class NetworkAdminType extends AbstractType
             // If no data is passed to the form, the data is "null".
             // This should be considered a new "Product"
             if ($network) {
-                $form->get('emails')->setData($network->getEmails()[0]);
+                $form->get('emails')->setData(implode(',', $network->getEmails()));
             }
         });
     }

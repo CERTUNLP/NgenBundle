@@ -227,12 +227,21 @@ class NetworkAdmin
     /**
      * Set email
      *
-     * @param array $emails
+     * @param mixed $emails
      * @return NetworkAdmin
      */
     public function setEmails($emails): NetworkAdmin
     {
-        $this->emails = [$emails];
+        if (is_string($emails)) {
+            $emails_exploded = [];
+            foreach (explode(',', $emails) as $email) {
+                $emails_exploded[] = trim($email);
+            }
+            $this->emails = $emails_exploded;
+        }
+        if (is_array($emails)) {
+            $this->emails = $emails;
+        }
         return $this;
     }
 
