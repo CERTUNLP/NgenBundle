@@ -13,8 +13,10 @@ namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
+use Doctrine\Common\Collections\Collection;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Form\FormTypeInterface;
@@ -66,9 +68,34 @@ class IncidentController extends FOSRestController
         return $this->getApiController($request->get('ip'))->post($request);
     }
 
-    public function getApiController($ip)
+    public function getApiController()
     {
         return $this->container->get('cert_unlp.ngen.incident.internal.api.controller');
+    }
+
+    /**
+     * List all incidents.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   statusCodes = {
+     *     200 = "Returned when successful"
+     *   }
+     * )
+     * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incidents.")
+     * @FOS\QueryParam(name="limit", requirements="\d+", default="100", description="How many incidents to return.")
+     * @FOS\View(
+     *  templateVar="incidents"
+     * )
+     * @param Request $request the request object
+     * @param ParamFetcherInterface $paramFetcher param fetcher service
+     *
+     * @return array
+     */
+    public function getIncidentsAction(Request $request, ParamFetcherInterface $paramFetcher): array
+    {
+
+        return $this->getApiController()->getAll($request, $paramFetcher);
     }
 
     /**

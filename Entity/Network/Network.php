@@ -58,11 +58,7 @@ abstract class Network implements NetworkInterface
      * @JMS\Expose
      */
     private $ipMask;
-    /**
-     * @var string
-     * @JMS\Expose
-     */
-    private $discr;
+
     /**
      * @var int
      *
@@ -159,24 +155,6 @@ abstract class Network implements NetworkInterface
         }
         $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->incidentsDecisions = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * @return string
-     */
-    public function getDiscr(): ?string
-    {
-        return $this->discr;
-    }
-
-    /**
-     * @param string $discr
-     * @return Network
-     */
-    public function setDiscr(string $discr = null): Network
-    {
-        $this->discr = $discr;
-        return $this;
     }
 
     /**
