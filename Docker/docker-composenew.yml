@@ -38,7 +38,7 @@ services:
         - "8002:3306"
       networks: ['ngen']
     ngen-app:
-      image: einar1/ngen:0.6.10
+      image: einar1/ngen:0.6.20
       networks: ['ngen']
       depends_on: ['ngen-db','ngen-elastic']
       ports:
@@ -80,6 +80,16 @@ services:
         - ngen-elastic:ngen-elastic
         - ngen-db:ngen-db
         - ngen-mail:ngen-mail
+    ngen-proxy:
+      image: nginx:latest
+      container_name: ngen_proxy
+      volumes:
+       - ./nginx/:/etc/nginx/conf.d/
+      ports:
+       - 443:443
+      links:
+      - ngen-app:ngen-app
+      networks: ['ngen']
     ngen-elastic:
       image: docker.elastic.co/elasticsearch/elasticsearch:5.6.10
       environment:
