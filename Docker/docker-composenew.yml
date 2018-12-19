@@ -38,7 +38,7 @@ services:
         - "8002:3306"
       networks: ['ngen']
     ngen-app:
-      image: einar1/ngen:0.6.20
+      image: einar1/ngen:0.6.21
       networks: ['ngen']
       depends_on: ['ngen-db','ngen-elastic']
       ports:
@@ -49,7 +49,6 @@ services:
         - ngen-feeds:/application/ngen_basic/app/Resources/app/Resources/feed/
       environment:
         - PATH_WEB=/application
-        #Secret key (Si no tienes una, dejarla vacía, el instalador creará una):
         - DATE_TZ=America/Argentina/Buenos_Aires
         - MEMORY_LIMIT=1024M
         - POST_MAX=20M
