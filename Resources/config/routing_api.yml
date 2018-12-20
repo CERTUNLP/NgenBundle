@@ -63,11 +63,11 @@ cert_ngen_network_entity_api:
     resource: '@CertUnlpNgenBundle/Controller/Api/Network/NetworkEntityController.php'
     name_prefix:  api_
 
-fos_comment_api:
+fos_comment_thread_api:
     type: rest
-    resource: '@FOSCommentBundle/Resources/config/routing.yml'
+    resource: '@CertUnlpNgenBundle/Controller/Api/ThreadController.php'
+    name_prefix: fos_comment_
     defaults: { _format: html }
-    name_prefix:  api_
 
 cert_ngen_network_api:
     type: rest

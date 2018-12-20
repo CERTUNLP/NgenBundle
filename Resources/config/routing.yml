@@ -95,10 +95,10 @@ cert_ngen_root:
     type:     annotation
     prefix:   /
 
-fos_comment_api:
-    type: rest
-    resource: '@FOSCommentBundle/Resources/config/routing.yml'
-    defaults: { _format: html }
+#fos_comment_api:
+#    type: rest
+#    resource: '@FOSCommentBundle/Resources/config/routing.yml'
+#    defaults: { _format: html }
 
 cert_ngen_dashboard:
     resource: '@CertUnlpNgenBundle/Controller/Frontend/DashboardController.php'
