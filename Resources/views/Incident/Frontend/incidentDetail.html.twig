@@ -281,8 +281,7 @@
                     <div class="panel-body">
 
                         {% block comments_body %}
-                            {% include '@CertUnlpNgen/Incident/Frontend/list/comments.html.twig' with {'id': object.id} %}
-                            {#{{ render(controller('CertUnlpNgenBundle:Frontend/Incident/IncidentFrontend:incidentComments', {'incident': object, 'request': app.request})) }}#}
+                            {{ render(controller('CertUnlpNgenBundle:Frontend/Incident/IncidentFrontend:incidentComments', {'incident': object, 'request': app.request})) }}
                         {% endblock %}
                     </div>
                 </div>
@@ -291,14 +290,19 @@
     {% endblock %}
 
 {% endblock %}
-{#{% block javascripts %}#}
-{##}
-    {#{{ parent() }}#}
-{##}
-    {#{% javascripts '@FOSCommentBundle/Resources/public/js/comments.js' %}#}
-        {#<script type="text/javascript" src="{{ asset_url }}"></script>#}
-    {#{% endjavascripts %}#}
-{#{% endblock %}#}
+{% block javascripts %}
+
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            window.api_key = '{{ app.user.apikey }}';
+        });
+    </script>
+    {% javascripts '@CertUnlpNgenBundle/Resources/public/js/incident/comments.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock %}
 
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_internal_incident_search_incident') }}{% endblock %}
 

@@ -127,13 +127,13 @@ fos_comment:
             thread:  fos_comment.manager.thread.acl
             comment: fos_comment.manager.comment.acl
             vote:    fos_comment.manager.vote.acl
-    acl_roles:
-        comment:
-            create: ROLE_USER
-            view: ROLE_USER
-        thread:
-            create: ROLE_USER
-            view: ROLE_USER
+#    acl_roles:
+#        comment:
+#            create: ROLE_USER
+#            view: ROLE_USER
+#        thread:
+#            create: ROLE_USER
+#            view: ROLE_USER
 
 stfalcon_tinymce:
     theme:
