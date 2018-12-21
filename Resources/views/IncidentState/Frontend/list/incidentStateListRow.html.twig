@@ -13,9 +13,28 @@
     </td>
     <td id="state_label_holder" class="col-md-1">
         <div class="label-holder">
+            {% if incidentState.mailAdmin %}
+                {{ label_success("True") }}
+            {% else %}
+                {{ label_danger("False") }}
+            {% endif %}
+        </div>
+    </td>
+    <td id="state_label_holder" class="col-md-1">
+        <div class="label-holder">
+            {% if incidentState.mailReporter %}
+                {{ label_success("True") }}
+            {% else %}
+                {{ label_danger("False") }}
+            {% endif %}
+        </div>
+    </td>
+    <td id="state_label_holder" class="col-md-1">
+        <div class="label-holder">
             {% include "CertUnlpNgenBundle:IncidentState:Frontend/list/stateLabel.html.twig" with {'incidentState': incidentState} %}
         </div>
     </td>
+
     <td class="col-sm-1">
 
         <div class="btn-group inline pull-left dropdown action-dropdown">

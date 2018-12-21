@@ -14,6 +14,8 @@ namespace CertUnlp\NgenBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+
 
 class IncidentStateType extends AbstractType
 {
@@ -28,7 +30,21 @@ class IncidentStateType extends AbstractType
         $builder
             ->add('name', null, array(
                 'required' => true,
-            ));
+            ))
+            ->add('mailReporter', CheckboxType::class, array(
+                'mapped' => true,
+                'attr' => array('align_with_widget' => true),
+                'required' => false,
+                'label' => 'Send mail to reporter(if available)',
+                'description' => 'Send a mail report to the reporter.'))
+            ->add('mailAdmin', CheckboxType::class, array(
+                'mapped' => true,
+                'attr' => array('align_with_widget' => true),
+                'required' => false,
+                'label' => 'Send mail to Admin Responsable(if available)',
+                'description' => 'Send a mail report to the host administrator.'))
+
+            ;
 
         if ($builder->getData()) {
             if (!$builder->getData()->getIsActive()) {
