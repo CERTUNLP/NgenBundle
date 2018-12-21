@@ -40,6 +40,30 @@
                             </tr>
                             <tr>
                                 <td class="">
+                                    {{ 'Copy Mail to Admin' |trans }}
+                                </td>
+                                <td class="">
+                                    {% if object.mailAdmin %}
+                                        {{ label_success("True") }}
+                                    {% else %}
+                                        {{ label_danger("False") }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    {{ 'Copy Mail to Reporter' |trans }}
+                                </td>
+                                <td class="">
+                                    {% if object.mailReporter %}
+                                        {{ label_success("True") }}
+                                    {% else %}
+                                        {{ label_danger("False") }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
                                     Created at
                                 </td>
                                 <td class="">

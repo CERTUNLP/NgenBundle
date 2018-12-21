@@ -60,6 +60,53 @@ class IncidentState
     private $isActive = true;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="mail_admin", type="boolean")
+     * @JMS\Expose
+     */
+    private $mailAdmin = true;
+
+    /**
+     * @return bool
+     */
+    public function isMailAdmin()
+    {
+        return $this->mailAdmin;
+    }
+
+    /**
+     * @param bool $mailAdmin
+     */
+    public function setMailAdmin($mailAdmin)
+    {
+        $this->mailAdmin = $mailAdmin;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMailReporter()
+    {
+        return $this->mailReporter;
+    }
+
+    /**
+     * @param bool $mailReporter
+     */
+    public function setMailReporter($mailReporter)
+    {
+        $this->mailReporter = $mailReporter;
+    }
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="mail_reporter", type="boolean")
+     * @JMS\Expose
+     */
+    private $mailReporter = true;
+
+    /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
