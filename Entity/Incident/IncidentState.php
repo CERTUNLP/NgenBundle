@@ -64,7 +64,7 @@ class IncidentState
      * @ORM\Column(name="mail_assigned", type="boolean")
      * @JMS\Expose
      */
-    private $mailAssigned = true;
+    private $mailAssigned =false;
 
     /**
      * @return bool
@@ -88,7 +88,7 @@ class IncidentState
      * @ORM\Column(name="mail_team", type="boolean")
      * @JMS\Expose
      */
-    private $mailTeam = true;
+    private $mailTeam = false;
 
     /**
      * @return bool
@@ -112,7 +112,7 @@ class IncidentState
      * @ORM\Column(name="mail_admin", type="boolean")
      * @JMS\Expose
      */
-    private $mailAdmin = true;
+    private $mailAdmin = false;
 
     /**
      * @return bool
@@ -151,7 +151,7 @@ class IncidentState
      * @ORM\Column(name="mail_reporter", type="boolean")
      * @JMS\Expose
      */
-    private $mailReporter = true;
+    private $mailReporter = false;
 
     /**
      * @var \DateTime

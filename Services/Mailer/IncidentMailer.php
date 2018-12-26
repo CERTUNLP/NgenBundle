@@ -61,17 +61,17 @@ class IncidentMailer implements IncidentMailerInterface
      * @param bool $renotification
      * @return int
      */
-    public function send_report(Incident $incident, $body = null, $echo = null, $is_new_incident = FAlSE, $renotification = false)
+    public function send_report(Incident $incident, $body = null, $echo = null, $is_new_incident = false, $renotification = false)
     {
-        if ($incident->getType()->getSlug() !== 'undefined') {
-            if ($incident->isSendReport() || $is_new_incident || $renotification) {
+        $enviar_a= $incident->getEmails($this->cert_email,$incident->isSendReport());
+        if ($enviar_a) {
+            #Hay que discutir si es necesario mandar cualquier cambio o que cosa todo || $is_new_incident || $renotification) {
                 $html = $this->getBody($incident);
                 $message = \Swift_Message::newInstance()
                     ->setSubject(sprintf($this->mailSubject($renotification), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getIp(), $incident->getId()))
                     ->setFrom($this->cert_email)
-                    ->setCc($this->cert_email)
                     ->setSender($this->cert_email)
-                    ->setTo($incident->getEmails($this->cert_email))
+                    ->setTo($enviar_a)
                     ->addPart($html, 'text/html');
 
                 if ($incident->getEvidenceFilePath()) {
@@ -84,7 +84,6 @@ class IncidentMailer implements IncidentMailerInterface
 
                 return $this->mailer->send($message);
             }
-        }
         return null;
     }
 
