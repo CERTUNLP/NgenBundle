@@ -37,14 +37,25 @@ class IncidentStateType extends AbstractType
                 'required' => false,
                 'label' => 'Send mail to reporter(if available)',
                 'description' => 'Send a mail report to the reporter.'))
+            ->add('mailAssigned', CheckboxType::class, array(
+                'mapped' => true,
+                'attr' => array('align_with_widget' => true),
+                'required' => false,
+                'label' => 'Send mail to the one who has it assigned (if available)',
+                'description' => 'Send a mail report to the one who has it assigned.'))
             ->add('mailAdmin', CheckboxType::class, array(
                 'mapped' => true,
                 'attr' => array('align_with_widget' => true),
                 'required' => false,
                 'label' => 'Send mail to Admin Responsable(if available)',
                 'description' => 'Send a mail report to the host administrator.'))
-
-            ;
+            ->add('mailTeam', CheckboxType::class, array(
+                'mapped' => true,
+                'attr' => array('align_with_widget' => true),
+                'required' => false,
+                'label' => 'Send mail to the team',
+                'description' => 'Send a mail report to the team.'))
+        ;
 
         if ($builder->getData()) {
             if (!$builder->getData()->getIsActive()) {

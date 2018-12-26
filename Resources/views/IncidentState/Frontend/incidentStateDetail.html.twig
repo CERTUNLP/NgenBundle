@@ -52,6 +52,18 @@
                             </tr>
                             <tr>
                                 <td class="">
+                                    {{ 'Copy Mail to Assigned' |trans }}
+                                </td>
+                                <td class="">
+                                    {% if object.mailAssigned %}
+                                        {{ label_success("True") }}
+                                    {% else %}
+                                        {{ label_danger("False") }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
                                     {{ 'Copy Mail to Reporter' |trans }}
                                 </td>
                                 <td class="">

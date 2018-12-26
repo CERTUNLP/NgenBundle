@@ -239,7 +239,7 @@ interface IncidentInterface
      *
      * @return array
      */
-    public function getEmails(): array;
+    public function getEmails(string $team_mail): array;
 
     /**
      * Set report_sent
