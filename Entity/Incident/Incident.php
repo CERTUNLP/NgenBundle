@@ -706,9 +706,14 @@ class Incident implements IncidentInterface
         return $this;
     }
 
-    public function getEmails(): array
+    public function getEmails($cert_email): array
     {
-        return $this->getNetwork()->getNetworkAdmin()->getEmails();
+        $mails=array();
+        if ($this->getState()->isMailAdmin()) {$mails= $this->getNetwork()->getNetworkAdmin()->getEmails();}
+        if ($this->getState()->isMailReporter()) {$mails[]= $this->getReporter()->getEmail();}
+        if ($this->getState()->isMailAssigned()) {$mails[]= $this->getAssigned()->getEmail();}
+        if ($this->getState()->isMailTeam()) {$mails[]= $cert_email;}
+        return $mails;
     }
 
     /**

@@ -71,7 +71,7 @@ class IncidentMailer implements IncidentMailerInterface
                     ->setFrom($this->cert_email)
                     ->setCc($this->cert_email)
                     ->setSender($this->cert_email)
-                    ->setTo($incident->getEmails())
+                    ->setTo($incident->getEmails($this->cert_email))
                     ->addPart($html, 'text/html');
 
                 if ($incident->getEvidenceFilePath()) {

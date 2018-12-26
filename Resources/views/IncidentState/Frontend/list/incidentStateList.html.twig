@@ -21,9 +21,10 @@
     <table class="table table-striped table-bordered table-hover dataTable no-footer">
         <tr role="row">
             <th>{{ knp_pagination_sortable(incidentStates, 'Name', 'slug') }}</th>
-            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Admin', 'slug') }}</th>
-            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Reporter', 'isActive') }}</th>
-
+            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Admin', 'isMailAdmin') }}</th>
+            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Assigned', 'isMailAssigned') }}</th>
+            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Reporter', 'isMailReporter') }}</th>
+            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Team', 'isMailTeam') }}</th>
             <th>{{ knp_pagination_sortable(incidentStates, 'active', 'isActive') }}</th>
             <th>Action</th>
         </tr>

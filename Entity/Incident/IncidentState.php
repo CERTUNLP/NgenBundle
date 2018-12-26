@@ -58,6 +58,53 @@ class IncidentState
      * @JMS\Expose
      */
     private $isActive = true;
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="mail_assigned", type="boolean")
+     * @JMS\Expose
+     */
+    private $mailAssigned = true;
+
+    /**
+     * @return bool
+     */
+    public function isMailAssigned()
+    {
+        return $this->mailAssigned;
+    }
+
+    /**
+     * @param bool $mailAssigned
+     */
+    public function setMailAssigned($mailAssigned)
+    {
+        $this->mailAssigned = $mailAssigned;
+    }
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="mail_team", type="boolean")
+     * @JMS\Expose
+     */
+    private $mailTeam = true;
+
+    /**
+     * @return bool
+     */
+    public function isMailTeam()
+    {
+        return $this->mailTeam;
+    }
+
+    /**
+     * @param bool $mailTeam
+     */
+    public function setMailTeam($mailTeam)
+    {
+        $this->mailTeam = $mailTeam;
+    }
 
     /**
      * @var boolean
