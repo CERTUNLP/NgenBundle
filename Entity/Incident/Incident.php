@@ -181,7 +181,7 @@ class Incident implements IncidentInterface
     /**
      * @var bool
      */
-    protected $sendReport = true;
+    protected $sendReport = false;
 
     /**
      * @var string
@@ -706,13 +706,13 @@ class Incident implements IncidentInterface
         return $this;
     }
 
-    public function getEmails($cert_email): array
+    public function getEmails($cert_email, $force): array
     {
         $mails=array();
-        if ($this->getState()->isMailAdmin()) {$mails= $this->getNetwork()->getNetworkAdmin()->getEmails();}
-        if ($this->getState()->isMailReporter()) {$mails[]= $this->getReporter()->getEmail();}
-        if ($this->getState()->isMailAssigned()) {$mails[]= $this->getAssigned()->getEmail();}
-        if ($this->getState()->isMailTeam()) {$mails[]= $cert_email;}
+        if ($this->getState()->isMailAdmin() || $force) {$mails= $this->getNetwork()->getNetworkAdmin()->getEmails();}
+        if ($this->getState()->isMailReporter()|| $force) {$mails[]= $this->getReporter()->getEmail();}
+        if ($this->getState()->isMailAssigned()|| $force) {$mails[]= $this->getAssigned()->getEmail();}
+        if ($this->getState()->isMailTeam()|| $force) {$mails[]= $cert_email;}
         return $mails;
     }
 
