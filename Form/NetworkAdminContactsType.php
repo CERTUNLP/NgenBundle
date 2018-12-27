@@ -22,7 +22,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class NetworkAdminType extends AbstractType
+class NetworkAdminContacsType extends AbstractType
 {
 
     /**
@@ -36,7 +36,7 @@ class NetworkAdminType extends AbstractType
             ->add('name', null, array(
                 'required' => true,
             ))
-            ->add('id', HiddenType::class, array(
+            ->add('username', HiddenType::class, array(
                 'required' => false,
             ));
 
@@ -60,7 +60,7 @@ class NetworkAdminType extends AbstractType
             // If no data is passed to the form, the data is "null".
             // This should be considered a new "Product"
            // if ($network) {
-            //    $form->get('emails')->setData(implode(',', $network->getEmails()));
+             //   $form->get('emails')->setData(implode(',', $network->getEmails()));
            // }
         });
     }
