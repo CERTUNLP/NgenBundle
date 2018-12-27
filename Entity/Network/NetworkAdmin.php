@@ -55,6 +55,30 @@ class NetworkAdmin
     private $slug;
 
     /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="network_admin"))
+     */
+
+    private $contacts;
+
+    /**
+     * @return Collection
+     */
+    public function getContacts()
+    {
+        return $this->contacts;
+    }
+
+    /**
+     * @param Collection $contacts
+     */
+    public function setContacts($contacts)
+    {
+        $this->contacts = $contacts;
+    }
+
+    /**
+     *
      * @var array
      *
      * @ORM\Column(name="emails", type="array")
@@ -110,6 +134,7 @@ class NetworkAdmin
         $this->setName($name);
         $this->setEmails($emails);
         $this->networks = new ArrayCollection();
+        $this->contacts = new ArrayCollection();
     }
 
     /**

@@ -18,6 +18,7 @@
 
 {% block content_body %}
     {% include 'CertUnlpNgenBundle:NetworkAdmin:Frontend/list/networkAdminList.html.twig' with {'networkAdmins': objects  } %}
+
 {% endblock %}
 
 
@@ -27,6 +28,7 @@
     {% javascripts
         '@CertUnlpNgenBundle/Resources/public/js/network_admin/NetworkAdmin.js'
         '@CertUnlpNgenBundle/Resources/public/js/network_admin/NetworkAdminApi.js' %}
+        <script src="{{ asset('js/jquery.collection.js') }}"></script>
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
