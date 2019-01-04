@@ -88,7 +88,6 @@ class FrontendController
 
     public function editEntity($object)
     {
-
         return array('form' => $this->formFactory->create(new $this->entityType($this->doctrine), $object)->createView(), 'method' => 'patch');
     }
 

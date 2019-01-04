@@ -46,7 +46,15 @@ class IncidentImpact
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="impact"))
      */
     private $incidents;
-    
+
+
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority",mappedBy="impact"))
+     */
+
+    private $incidentsPriorities;
+
 
     /**
      * @return Collection

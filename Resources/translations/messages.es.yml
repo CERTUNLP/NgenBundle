@@ -19,3 +19,22 @@ add incident Decision: Agregar Decision
 Incident Decisions: Decisiones
 Incident Priority: 'Prioridades'
 Do nothing: 'No hacer nada'
+All: Todos
+States: Estados
+Types: Tipos
+Name: Nombre
+Contacts: Contactos
+Username: Nombre de Usuario
+Encryption key: Clave de cifrado
+When to use it?: Cuando usarlo?
+Contact: Contacto
+Telegram: Telegram
+Mail: Mail
+Phone: Teléfono
+Save: Guardar
+Force edit: Forzar edición
+id: id
+Only critical: Sólo críticos
+Dont use it: No usar
+Feeds: Feeds
+Contact type: Tipo de contacto

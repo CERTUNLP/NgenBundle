@@ -21,6 +21,7 @@ class ContactHandler extends Handler
 {
     public function post(array $parameters, bool $csrf_protection = false, $entity_class_instance = null)
     {
+
         switch ($parameters['type']) {
             case 'telegram':
                 $entity_class_instance = new NetworkTelegram();

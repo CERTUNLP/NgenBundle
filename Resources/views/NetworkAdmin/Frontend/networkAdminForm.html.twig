@@ -14,18 +14,11 @@
 {% block content_body %}
     {% if (form is not null) %}
         {{ form_errors(form, { 'global_errors': true }) }}
-        {{ form(form, {'attr': {'id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal', 'col_size': 'sm' }) }}
-    {% endif %}
-    {%
-        form_theme withPlugin
-        'jquery.collection.html.twig'
-        'CertUnlpNgenBundle::NetworkAdmin/Frontend/contacts.html.twig'
-    %}
-    {{ form(withPlugin) }}
+        {%  form_theme form 'jquery.collection.html.twig'  %}
+        {{ form(form) }}
 
-    {% for contact in withPluginData.contacs %}
-        <p>Chosen fruit : {{ contact }}</p>
-    {% endfor %}
+    {% endif %}
+
 {% endblock %}
 
 {% block javascripts %}
@@ -37,5 +30,6 @@
     {% endjavascripts %}
     <script>
         var network_admin_form = new NetworkAdminForm();
+        $('.admin-contacts').collection();
     </script>
 {% endblock %}
