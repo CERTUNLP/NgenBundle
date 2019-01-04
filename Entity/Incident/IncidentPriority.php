@@ -28,6 +28,7 @@ class IncidentPriority
      * @JMS\Expose
      */
     protected $urgency;
+
     /**
      * @var string
      * @ORM\Id

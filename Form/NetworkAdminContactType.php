@@ -11,18 +11,18 @@
 
 namespace CertUnlp\NgenBundle\Form;
 
-use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
+use CertUnlp\NgenBundle\Entity\Contact\Contact;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class NetworkAdminContacsType extends AbstractType
+class NetworkAdminContactType extends AbstractType
 {
 
     /**
@@ -36,8 +36,32 @@ class NetworkAdminContacsType extends AbstractType
             ->add('name', null, array(
                 'required' => true,
             ))
-            ->add('username', HiddenType::class, array(
+            ->add('username', null, array(
                 'required' => false,
+            ))
+            ->add('encryptionKey', null, array(
+                'required' => false,
+            ))
+            ->add('contact_case', ChoiceType::class, array(
+                'label'=> 'When to use it?',
+                'choices'  => array(
+                'Dont use it'=> "none",
+                'Only critical' => "critical",
+                'All' => "all",
+
+            ),
+                // *this line is important*
+            'choices_as_values' => true,
+            ))
+            ->add('contact_type', ChoiceType::class, array(
+                    'choices'  => array(
+                    'Mail' => "mail",
+                    'Telegram'=> "telegram",
+                    'Phone' => "phone",
+
+                ),
+                // *this line is important*
+                'choices_as_values' => true,
             ));
 
         if ($builder->getData()) {
@@ -71,7 +95,7 @@ class NetworkAdminContacsType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => NetworkAdmin::class,
+            'data_class' => Contact::class,
             'csrf_protection' => false,
         ));
     }

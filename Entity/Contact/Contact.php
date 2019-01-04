@@ -26,7 +26,16 @@ class Contact
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
+
+
     private $name;
+
+  /**
+     * @var network_admin
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="contacts")
+     */
+
+    private $network_admin;
 
     /**
      * @var string
@@ -34,6 +43,68 @@ class Contact
      * @ORM\Column(name="username", type="string", length=255)
      */
     private $username;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contact_type", type="string", length=255)
+     */
+    private $contactType;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contact_case", type="string", length=255)
+     */
+    private $contactCase;
+
+    /**
+     * @return network_admin
+     */
+    public function getNetworkAdmin()
+    {
+        return $this->network_admin;
+    }
+
+    /**
+     * @param network_admin $network_admin
+     */
+    public function setNetworkAdmin($network_admin)
+    {
+        $this->network_admin = $network_admin;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContactType()
+    {
+        return $this->contactType;
+    }
+
+    /**
+     * @param string $contactType
+     */
+    public function setContactType($contactType)
+    {
+        $this->contactType = $contactType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContactCase()
+    {
+        return $this->contactCase;
+    }
+
+    /**
+     * @param string $contactCase
+     */
+    public function setContactCase($contactCase)
+    {
+        $this->contactCase = $contactCase;
+    }
 
     /**
      * @var string
