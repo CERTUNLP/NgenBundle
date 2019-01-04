@@ -84,8 +84,6 @@ class ApiController
      */
     public function post(Request $request)
     {
-        echo "hola";
-        die();
         try {
             $object_data = array_merge($request->request->all(), $request->files->all());
 

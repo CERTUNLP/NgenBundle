@@ -72,8 +72,8 @@ class NetworkAdminFrontendController extends Controller
      */
     public function editNetworkAdminAction(NetworkAdmin $networkAdmin)
     {
-        var_dump($networkAdmin->getContacts());
-        die();
+        //var_dump($networkAdmin->getContacts());
+        //die();
         return $this->getFrontendController()->editEntity($networkAdmin);
     }
 
