@@ -15,7 +15,7 @@
     {% if (form is not null) %}
         {{ form_errors(form, { 'global_errors': true }) }}
         {%  form_theme form 'jquery.collection.html.twig'  %}
-        {{ form(form) }}
+        {{ form(form, {'attr': {'id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal', 'col_size': 'sm' }) }}
 
     {% endif %}
 

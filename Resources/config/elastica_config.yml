@@ -50,8 +50,6 @@ fos_elastica:
                                     properties:
                                         slug:
                                             type: keyword
-                                        emails:
-                                            type: keyword
                                         name:
                                             type: keyword
                                         isActive:
