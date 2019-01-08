@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Contact
  *
- * @author dam
+ * @author einar
  * @ORM\Entity()
  */
 class ContactEmail extends Contact

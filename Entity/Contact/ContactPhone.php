@@ -19,11 +19,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @author einar
  * @ORM\Entity()
  */
-class ContactTelegram extends Contact
+class ContactPhone extends Contact
 {
 
     public function getType(): string
     {
-        return "telegram";
+        return "phone";
     }
 }

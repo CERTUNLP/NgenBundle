@@ -53,6 +53,9 @@ class NetworkAdminContactType extends AbstractType
                 // *this line is important*
             'choices_as_values' => true,
             ))
+            ->add('id', HiddenType::class, array(
+                'required' => false,
+            ))
             ->add('contact_type', ChoiceType::class, array(
                     'choices'  => array(
                     'Mail' => "mail",
@@ -78,12 +81,12 @@ class NetworkAdminContactType extends AbstractType
         ));
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-            $network = $event->getData();
+            $admin = $event->getData();
             $form = $event->getForm();
             // check if the Product object is "new"
             // If no data is passed to the form, the data is "null".
             // This should be considered a new "Product"
-           // if ($network) {
+            //if ($admin) {
              //   $form->get('emails')->setData(implode(',', $network->getEmails()));
            // }
         });

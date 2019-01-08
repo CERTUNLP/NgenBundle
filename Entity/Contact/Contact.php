@@ -3,13 +3,19 @@
 namespace CertUnlp\NgenBundle\Entity\Contact;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Contact
  *
- * @ORM\Table(name="contact")
+ * @ORM\Table()
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\ContactRepository")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"contact"="Contact","telegram" = "ContactTelegram", "phone" = "ContactPhone", "email" = "ContactEmail"})
+ * @JMS\ExclusionPolicy("all")
  */
+
 class Contact
 {
     /**

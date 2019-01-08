@@ -56,7 +56,7 @@ class NetworkAdmin
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="network_admin"))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="network_admin",cascade={"persist"})
      */
 
     private $contacts;
@@ -226,7 +226,7 @@ class NetworkAdmin
      */
     public function getEmailsAsString(): string
     {
-        return implode(',', $this->emails);
+        return implode(',', $this->getEmails());
     }
 
     /**
@@ -246,7 +246,10 @@ class NetworkAdmin
      */
     public function getEmails(): array
     {
-        return $this->emails;
+        $array_mails = $this->getContacts()->map(function($value) {
+                                                    return $value->getUsername();
+                                                }); // [2, 3, 4]
+        return $array_mails->toArray();
     }
 
     /**

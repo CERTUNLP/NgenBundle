@@ -187,6 +187,7 @@ class ApiController
      */
     public function patch(Request $request, $object, $reactivate = false)
     {
+        //var_dump($object); die();
         try {
             if ($reactivate) {
                 return $this->doPatchAndReactivate($request, $object);
