@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CertUnlp\NgenBundle\Services\Mailer\OpenPGP;
+namespace CertUnlp\NgenBundle\Services\Communications\OpenPGP;
 
 /**
  * Message Signer used to apply OpenPGP Signature/Encryption to a message.

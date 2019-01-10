@@ -100,7 +100,7 @@ class ContactCase
 
     public function __toString()
     {
-        return $this->getSlug();
+        return $this->getDescription();
     }
 
     /**
@@ -117,7 +117,7 @@ class ContactCase
      * Set slug
      *
      * @param string $slug
-     * @return IncidentUrgency
+     * @return ContactCase
      */
     public function setSlug($slug): ContactCase
     {
@@ -148,5 +148,10 @@ class ContactCase
     public function setLevel($level)
     {
         $this->level = $level;
+    }
+
+    public function needToContact($level)
+    {
+        return ($level>= $this->getLevel());
     }
 }

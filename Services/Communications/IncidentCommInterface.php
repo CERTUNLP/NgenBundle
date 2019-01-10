@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Services\Mailer;
+namespace CertUnlp\NgenBundle\Services\Communications;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use FOS\CommentBundle\Event\CommentPersistEvent;
@@ -18,7 +18,7 @@ use FOS\CommentBundle\Event\CommentPersistEvent;
  *
  * @author demyen
  */
-interface IncidentMailerInterface
+interface IncidentCommInterface
 {
 
     public function send_report(Incident $incident, $body = null, $echo = null, $is_new_incident = FALSE);

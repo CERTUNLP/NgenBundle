@@ -107,6 +107,15 @@ class Incident implements IncidentInterface
      * @var IncidentCommentThread
      * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread",mappedBy="incident",fetch="EXTRA_LAZY"))
      */
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority", inversedBy="incidents")
+     * @ORM\JoinColumn(name="impact", referencedColumnName="impact", nullable=FALSE)
+     * @ORM\JoinColumn(name="urgency", referencedColumnName="urgency", nullable=FALSE)
+     */
+    protected $priority;
+
+
     protected $comment_thread;
     /**
      * @var \DateTime
@@ -706,9 +715,10 @@ class Incident implements IncidentInterface
         return $this;
     }
 
-    public function getEmails($cert_email, $force): array
+    public function getContactsArray($cert_email, $force): array
     {
-        $mails=array();
+        $contacts=array();
+//        if ($this->getState()->getMailAdmin()->needToContact($this->get)
         if ($this->getState()->isMailAdmin() || $force) {$mails= $this->getNetwork()->getNetworkAdmin()->getEmails();}
         if ($this->getState()->isMailReporter()|| $force) {$mails[]= $this->getReporter()->getEmail();}
         if ($this->getState()->isMailAssigned()|| $force) {$mails[]= $this->getAssigned()->getEmail();}

@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Contact\ContactCase;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -58,24 +59,59 @@ class IncidentState
      * @JMS\Expose
      */
     private $isActive = true;
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="mail_assigned", type="string", length=255)
-     * @JMS\Expose
-     */
-    private $mailAssigned="none";
 
     /**
-     * @return bool
+     * @var ContactCase
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
+     * @ORM\JoinColumn(name="mail_assigned", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
      */
-    public function isMailAssigned()
+    private $mailAssigned;
+
+
+
+    /**
+     * @var ContactCase
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
+     * @ORM\JoinColumn(name="mail_team", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+
+    private $mailTeam;
+
+    /**
+     * @var ContactCase
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
+     * @ORM\JoinColumn(name="mail_admin", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+
+    private $mailAdmin;
+
+
+    /**
+     * @var ContactCase
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
+     * @ORM\JoinColumn(name="mail_reporter", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+
+    private $mailReporter;
+
+    /**
+     * @return ContactCase
+     */
+    public function getMailAssigned()
     {
         return $this->mailAssigned;
     }
 
     /**
-     * @param bool $mailAssigned
+     * @param ContactCase $mailAssigned
      */
     public function setMailAssigned($mailAssigned)
     {
@@ -83,23 +119,15 @@ class IncidentState
     }
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="mail_team", type="string", length=255)
-     * @JMS\Expose
+     * @return ContactCase
      */
-    private $mailTeam = "none";
-
-    /**
-     * @return bool
-     */
-    public function isMailTeam()
+    public function getMailTeam()
     {
         return $this->mailTeam;
     }
 
     /**
-     * @param bool $mailTeam
+     * @param ContactCase $mailTeam
      */
     public function setMailTeam($mailTeam)
     {
@@ -107,23 +135,15 @@ class IncidentState
     }
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="mail_admin", type="string", length=255)
-     * @JMS\Expose
+     * @return ContactCase
      */
-    private $mailAdmin = "none";
-
-    /**
-     * @return bool
-     */
-    public function isMailAdmin()
+    public function getMailAdmin()
     {
         return $this->mailAdmin;
     }
 
     /**
-     * @param bool $mailAdmin
+     * @param ContactCase $mailAdmin
      */
     public function setMailAdmin($mailAdmin)
     {
@@ -131,27 +151,20 @@ class IncidentState
     }
 
     /**
-     * @return bool
+     * @return ContactCase
      */
-    public function isMailReporter()
+    public function getMailReporter()
     {
         return $this->mailReporter;
     }
 
     /**
-     * @param bool $mailReporter
+     * @param ContactCase $mailReporter
      */
     public function setMailReporter($mailReporter)
     {
         $this->mailReporter = $mailReporter;
     }
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="mail_reporter", type="string", length=255)
-     * @JMS\Expose
-     */
-    private $mailReporter = "none";
 
     /**
      * @var \DateTime

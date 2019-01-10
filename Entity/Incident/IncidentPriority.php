@@ -30,6 +30,12 @@ class IncidentPriority
     protected $urgency;
 
     /**
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="priority"))
+     */
+
+    protected $incidents;
+
+     /**
      * @var string
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
