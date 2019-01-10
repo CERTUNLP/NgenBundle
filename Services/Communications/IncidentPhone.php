@@ -9,16 +9,17 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Services\Mailer;
+namespace CertUnlp\NgenBundle\Services\Communications;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
 use CertUnlp\NgenBundle\Services\IncidentReportFactory;
 use FOS\CommentBundle\Event\CommentPersistEvent;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\SignedCommentInterface;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 
-class IncidentMailer implements IncidentMailerInterface
+class IncidentPhone extends IncidentCommunication
 {
 
     protected $mailer;

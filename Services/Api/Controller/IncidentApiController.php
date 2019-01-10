@@ -12,7 +12,7 @@
 namespace CertUnlp\NgenBundle\Services\Api\Controller;
 
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
-use CertUnlp\NgenBundle\Services\Mailer\IncidentMailer;
+use CertUnlp\NgenBundle\Services\Communications\IncidentMailer;
 use FOS\RestBundle\View\View;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;

@@ -44,7 +44,7 @@ use CertUnlp\NgenBundle\Services\Delegator\ExternalIncidentDelegatorChain;
 use CertUnlp\NgenBundle\Services\Delegator\InternalIncidentDelegatorChain;
 use CertUnlp\NgenBundle\Services\IncidentFactory;
 use CertUnlp\NgenBundle\Services\IncidentRedmine;
-use CertUnlp\NgenBundle\Services\Mailer\IncidentMailer;
+use CertUnlp\NgenBundle\Services\Communications\IncidentMailer;
 use CertUnlp\NgenBundle\Services\ShadowServer\ShadowServerAnalyzer;
 use CertUnlp\NgenBundle\Services\ShadowServer\ShadowServerClient;
 use CertUnlp\NgenBundle\Validator\Constraints\ValidNetworkValidator;

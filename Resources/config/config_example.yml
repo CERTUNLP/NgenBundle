@@ -24,7 +24,7 @@ cert_ngen:
                 twig:
                     path: %kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/views/InternalIncident/Report/Twig
             mailer:
-                class: CertUnlp\NgenBundle\Services\Mailer\IncidentMailer
+                class: CertUnlp\NgenBundle\Services\Communications\IncidentMailer
 
         external:
             class: CertUnlp\NgenBundle\Entity\Incident\ExternalIncident
@@ -40,7 +40,7 @@ cert_ngen:
                 twig:
                     path: %kernel.root_dir%/../src/CertUnlp/NgenBundle/Resources/views/ExternalIncident/Report/Twig
             mailer:
-                class: CertUnlp\NgenBundle\Services\Mailer\IncidentMailer
+                class: CertUnlp\NgenBundle\Services\Communications\IncidentMailer
 
         mailer:
             class: CertUnlp\NgenBundle\Services\IncidentMailer
