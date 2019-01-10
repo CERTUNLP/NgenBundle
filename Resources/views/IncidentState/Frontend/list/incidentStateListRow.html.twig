@@ -13,38 +13,23 @@
     </td>
     <td id="state_label_holder" class="col-md-1">
         <div class="label-holder">
-            {% if incidentState.mailAdmin %}
-                {{ label_success("True") }}
-            {% else %}
-                {{ label_danger("False") }}
-            {% endif %}
+            {{  incidentState.mailAdmin }}
         </div>
     </td>
     <td id="state_label_holder" class="col-md-1">
         <div class="label-holder">
-            {% if incidentState.mailAssigned %}
-                {{ label_success("True") }}
-            {% else %}
-                {{ label_danger("False") }}
-            {% endif %}
+            {{ incidentState.mailAssigned }}
         </div>
     </td>
     <td id="state_label_holder" class="col-md-1">
         <div class="label-holder">
-            {% if incidentState.mailReporter %}
-                {{ label_success("True") }}
-            {% else %}
-                {{ label_danger("False") }}
-            {% endif %}
+            {{ incidentState.mailReporter }}
         </div>
     </td>
     <td id="state_label_holder" class="col-md-1">
         <div class="label-holder">
-            {% if incidentState.mailTeam %}
-                {{ label_success("True") }}
-            {% else %}
-                {{ label_danger("False") }}
-            {% endif %}
+            {{ incidentState.mailTeam }}
+
         </div>
     </td>
     <td id="state_label_holder" class="col-md-1">

@@ -22,8 +22,12 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class NetworkAdminContactType extends AbstractType
+class ContactType extends AbstractType
 {
+    public function getBlockPrefix()
+    {
+        return 'ContactType';
+    }
 
     /**
      * @param FormBuilderInterface $builder
@@ -34,26 +38,32 @@ class NetworkAdminContactType extends AbstractType
 
         $builder
             ->add('name', null, array(
-                'required' => true,
+                'required' => false,
+                'attr' => array('placeholder' => 'Description'),
             ))
             ->add('username', null, array(
                 'required' => false,
+                'attr' => array('placeholder' => 'Email/Phone Number/Telegram chat'),
+
             ))
             ->add('encryptionKey', null, array(
                 'required' => false,
+                'attr' => array('placeholder' => 'GPG public key'),
+
             ))
             ->add('contact_case', ChoiceType::class, array(
                 'label'=> 'When to use it?',
+                'attr' => array('placeholder' => 'When to use it?'),
                 'choices'  => array(
-                'Dont use it'=> "none",
-                'Only critical' => "critical",
-                'All' => "all",
+                'none'=> "Dont use it",
+                'critical' => "Only critical",
+                'all' => "All",
 
             ),
                 // *this line is important*
             'choices_as_values' => true,
             ))
-            ->add('id', HiddenType::class, array(
+            ->add('network_admin', HiddenType::class, array(
                 'required' => false,
             ))
             ->add('contact_type', ChoiceType::class, array(
@@ -87,8 +97,9 @@ class NetworkAdminContactType extends AbstractType
             // If no data is passed to the form, the data is "null".
             // This should be considered a new "Product"
             //if ($admin) {
-             //   $form->get('emails')->setData(implode(',', $network->getEmails()));
-           // }
+              //  $form->get('contacts')->setData('1');
+                //print_r($setData($network->getId());
+            //}
         });
     }
 

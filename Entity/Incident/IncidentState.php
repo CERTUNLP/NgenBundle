@@ -61,10 +61,10 @@ class IncidentState
     /**
      * @var boolean
      *
-     * @ORM\Column(name="mail_assigned", type="boolean")
+     * @ORM\Column(name="mail_assigned", type="string", length=255)
      * @JMS\Expose
      */
-    private $mailAssigned =false;
+    private $mailAssigned="none";
 
     /**
      * @return bool
@@ -85,10 +85,10 @@ class IncidentState
     /**
      * @var boolean
      *
-     * @ORM\Column(name="mail_team", type="boolean")
+     * @ORM\Column(name="mail_team", type="string", length=255)
      * @JMS\Expose
      */
-    private $mailTeam = false;
+    private $mailTeam = "none";
 
     /**
      * @return bool
@@ -109,10 +109,10 @@ class IncidentState
     /**
      * @var boolean
      *
-     * @ORM\Column(name="mail_admin", type="boolean")
+     * @ORM\Column(name="mail_admin", type="string", length=255)
      * @JMS\Expose
      */
-    private $mailAdmin = false;
+    private $mailAdmin = "none";
 
     /**
      * @return bool
@@ -148,10 +148,10 @@ class IncidentState
     /**
      * @var boolean
      *
-     * @ORM\Column(name="mail_reporter", type="boolean")
+     * @ORM\Column(name="mail_reporter", type="string", length=255)
      * @JMS\Expose
      */
-    private $mailReporter = false;
+    private $mailReporter = "none";
 
     /**
      * @var \DateTime

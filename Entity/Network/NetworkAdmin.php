@@ -11,12 +11,16 @@
 
 namespace CertUnlp\NgenBundle\Entity\Network;
 
+use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
+use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
+use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use CertUnlp\NgenBundle\Entity\Contact\Contact;
 
 /**
  * NetworkAdmin
@@ -56,7 +60,7 @@ class NetworkAdmin
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="network_admin",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="network_admin",cascade={"persist"},orphanRemoval=true)
      */
 
     private $contacts;
@@ -69,12 +73,36 @@ class NetworkAdmin
         return $this->contacts;
     }
 
-    /**
-     * @param Collection $contacts
-     */
-    public function setContacts($contacts)
+    public function addContact(Contact $contact)
     {
-        $this->contacts = $contacts;
+        $newObj=$contact;
+        switch ($contact->getContactType()) {
+            case 'telegram':
+                $newObj = $contact->castAs(new ContactTelegram());
+                break;
+            case 'mail':
+                $newObj = $contact->castAs(new ContactEmail());
+                break;
+            case 'phone':
+                $newObj = $contact->castAs(new ContactPhone());
+                break;
+        }
+
+        if (!$this->contacts->contains($newObj)){
+            $newObj->setNetworkAdmin($this);
+        }
+        $this->contacts->add($newObj);
+        return $this;
+
+    }
+    public function removeContact(Contact $contact)
+    {
+           $this->contacts->removeElement($contact);
+           $contact->setNetworkAdmin(null);
+//        if ($this->contacts->contains($contact)){
+//
+//        }
+       return $this;
     }
 
     /**

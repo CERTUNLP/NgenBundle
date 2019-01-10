@@ -14,7 +14,7 @@ namespace CertUnlp\NgenBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 
 class IncidentStateType extends AbstractType
@@ -31,31 +31,56 @@ class IncidentStateType extends AbstractType
             ->add('name', null, array(
                 'required' => true,
             ))
-            ->add('mailReporter', CheckboxType::class, array(
-                'mapped' => true,
+            ->add('mailReporter', ChoiceType::class, array(
                 'attr' => array('align_with_widget' => true),
-                'required' => false,
+                'required' => true,
                 'label' => 'Send mail to reporter(if available)',
-                'description' => 'Send a mail report to the reporter.'))
-            ->add('mailAssigned', CheckboxType::class, array(
-                'mapped' => true,
+                'description' => 'Send a mail report to the reporter.',
+                'choices'  => array(
+                    'none'=> "Dont use it",
+                    'critical' => "Only critical",
+                    'all' => "All",
+
+                ),
+            ))
+            ->add('mailAssigned', ChoiceType::class, array(
                 'attr' => array('align_with_widget' => true),
-                'required' => false,
+                'required' => true,
                 'label' => 'Send mail to the one who has it assigned (if available)',
-                'description' => 'Send a mail report to the one who has it assigned.'))
-            ->add('mailAdmin', CheckboxType::class, array(
+                'description' => 'Send a mail report to the one who has it assigned.',
+                'choices'  => array(
+                    'none'=> "Dont use it",
+                    'critical' => "Only critical",
+                    'all' => "All",
+
+                ),
+            ))
+            ->add('mailAdmin', ChoiceType::class, array(
                 'mapped' => true,
                 'attr' => array('align_with_widget' => true),
-                'required' => false,
+                'required' => true,
                 'label' => 'Send mail to Admin Responsable(if available)',
-                'description' => 'Send a mail report to the host administrator.'))
-            ->add('mailTeam', CheckboxType::class, array(
+                'description' => 'Send a mail report to the host administrator.',
+                'choices'  => array(
+                    'none'=> "Dont use it",
+                    'critical' => "Only critical",
+                    'all' => "All",
+
+                ),
+            ))
+            ->add('mailTeam', ChoiceType::class, array(
                 'mapped' => true,
                 'attr' => array('align_with_widget' => true),
-                'required' => false,
+                'required' => true,
                 'label' => 'Send mail to the team',
-                'description' => 'Send a mail report to the team.'))
-        ;
+                'description' => 'Send a mail report to the team.',
+                'choices'  => array(
+                    'none'=> "Dont use it",
+                    'critical' => "Only critical",
+                    'all' => "All",
+
+                ),
+            ));
 
         if ($builder->getData()) {
             if (!$builder->getData()->getIsActive()) {

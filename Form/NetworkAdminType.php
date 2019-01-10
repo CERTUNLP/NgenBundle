@@ -44,12 +44,13 @@ class NetworkAdminType extends AbstractType
             ->add('contacts', CollectionType::class,
                 array (
                     'label'        => 'Contacts',
-                    'entry_type'   => NetworkAdminContactType::class,
+                    'entry_options' => array('label' => false),
+                    'entry_type'   => ContactType::class,
                     'allow_add'    => true,
                     'allow_delete' => true,
                     'prototype'    => true,
                     'required'     => false,
-                    'by_reference' => true,
+                    'by_reference' => false,
                     'delete_empty' => true,
                     'attr' => array(
                         'class' => 'admin-contacts',
