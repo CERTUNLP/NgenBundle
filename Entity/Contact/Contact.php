@@ -4,6 +4,9 @@ namespace CertUnlp\NgenBundle\Entity\Contact;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
+use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
+use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
 
 /**
  * Contact
@@ -58,9 +61,11 @@ class Contact
     private $contactType;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="contact_case", type="string", length=255)
+     * @var ContactCase
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase", inversedBy="contacts")
+     * @ORM\JoinColumn(name="contact_case", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
      */
     private $contactCase;
 
@@ -197,5 +202,12 @@ class Contact
     public function getEncryptionKey()
     {
         return $this->encryptionKey;
+    }
+
+    public function castAs($obj) {
+        foreach (get_object_vars($this) as $key => $name) {
+            $obj->$key = $name;
+        }
+        return $obj;
     }
 }

@@ -7,34 +7,33 @@
  with this source code in the file LICENSE.
 #}
 
-{% block ContactsType_label %}{% endblock %}
+{#{% block ContactType_label %} {% endblock %}#}
 
-{% block ContactsType_widget %}
-
+{% block ContactType_widget %}
+   <fieldset class="fieldset-contact col-sm-10" >
     <div class="row">
-        <div class="col-md-5">
-            {{ form_widget(form.type) }}
-        </div>
-        <div class="col-md-5">
+        <div class="col-md-3">
             {{ form_widget(form.name) }}
         </div>
-        <div class="col-md-5">
-            {{ form_widget(form.username) }}
+        <div class="col-md-2">
+            {{ form_widget(form.contact_type) }}
         </div>
-        <div class="col-md-5">dsg
-            {{ form_widget(form.encryptionKey) }}
+        <div class="col-md-4">
+        {{ form_widget(form.username) }}
         </div>
-        <div class="col-md-3">
-            <a href="#" class="collection-up btn btn-default" title="Move fruit up"><span class="glyphicon glyphicon-arrow-up"></span></a>
-            <a href="#" class="collection-down btn btn-default" title="Move fruit down"><span class="glyphicon glyphicon-arrow-down"></span></a>
-        </div>
-        <div class="col-md-3">
-            <a href="#" class="collection-remove btn btn-default" title="Delete fruit"><span class="glyphicon glyphicon-trash"></span></a>
-            <a href="#" class="collection-add btn btn-default" title="Add fruit"><span class="glyphicon glyphicon-plus-sign"></span></a>
-        </div>
-        <div class="col-md-1">
-            <a href="#" class="collection-duplicate btn btn-default" title="Duplicate fruit"><span class="glyphicon glyphicon-th-large"></span></a>
+        <div class="col-md-2">
+            {{ form_widget(form.contact_case) }}
         </div>
     </div>
-
+    <div class="row">
+        <div class="col-md-8">
+                {{ form_widget(form.encryptionKey) }}
+        </div>
+        <div class="col-md-1">
+            <a href="#" class="collection-remove btn btn-default" title="Delete"><span
+                        class="fa fa-trash-o"></span></a>
+        </div>
+    </div>
+    </fieldset>
 {% endblock %}
+

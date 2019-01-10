@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
 use CertUnlp\NgenBundle\Entity\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
 use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
 use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -22,12 +23,15 @@ class ContactHandler extends Handler
     public function post(array $parameters, bool $csrf_protection = false, $entity_class_instance = null)
     {
 
-        switch ($parameters['type']) {
+        switch ($parameters['contact_type']) {
             case 'telegram':
-                $entity_class_instance = new NetworkTelegram();
+                $entity_class_instance = new ContactTelegram();
                 break;
             case 'email':
-                $entity_class_instance = new NetworkEmail();
+                $entity_class_instance = new ContactEmail();
+                break;
+            case 'phone':
+                $entity_class_instance = new ContactPhone();
                 break;
         }
         unset($parameters['type']);
