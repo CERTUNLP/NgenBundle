@@ -110,8 +110,8 @@ class Incident implements IncidentInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority", inversedBy="incidents")
-     * @ORM\JoinColumn(name="impact", referencedColumnName="impact", nullable=FALSE)
-     * @ORM\JoinColumn(name="urgency", referencedColumnName="urgency", nullable=FALSE)
+     * @ORM\JoinColumn(name="impact", referencedColumnName="slug", nullable=FALSE)
+     * @ORM\JoinColumn(name="urgency", referencedColumnName="slug", nullable=FALSE)
      */
     protected $priority;
 
@@ -715,15 +715,28 @@ class Incident implements IncidentInterface
         return $this;
     }
 
-    public function getContactsArray($cert_email, $force): array
+    public function getContactsArray(): array
     {
-        $contacts=array();
-//        if ($this->getState()->getMailAdmin()->needToContact($this->get)
-        if ($this->getState()->isMailAdmin() || $force) {$mails= $this->getNetwork()->getNetworkAdmin()->getEmails();}
-        if ($this->getState()->isMailReporter()|| $force) {$mails[]= $this->getReporter()->getEmail();}
-        if ($this->getState()->isMailAssigned()|| $force) {$mails[]= $this->getAssigned()->getEmail();}
-        if ($this->getState()->isMailTeam()|| $force) {$mails[]= $cert_email;}
-        return $mails;
+        $contactos[]=$this->getAssigned();
+        $contactos[]=$this->getReporter();
+        $contactos[]=$this->getNetwork()->getNetworkAdmin()->getContacts();
+        return $contactos;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param mixed $priority
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
     }
 
     /**

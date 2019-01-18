@@ -17,6 +17,11 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use CertUnlp\NgenBundle\Entity\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
+use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
+use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
+
 
 /**
  * User
@@ -309,4 +314,56 @@ class User extends BaseUser implements ReporterInterface
         return $this;
     }
 
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="network_admin",cascade={"persist"},orphanRemoval=true)
+     */
+
+    private $contacts;
+
+    /**
+     * @return Collection
+     */
+    public function getContacts()
+    {
+        //parche para que funcione por ahora con el contacto como mail
+        $contact=new ContactEmail();
+        $contact->setUsername($this->getEmail());
+        $contact->setName($this->name);
+        $contacts[]=$contact;
+
+        return $contacts;
+    }
+
+    public function addContact(Contact $contact)
+    {
+        $newObj=$contact;
+        switch ($contact->getContactType()) {
+            case 'telegram':
+                $newObj = $contact->castAs(new ContactTelegram());
+                break;
+            case 'mail':
+                $newObj = $contact->castAs(new ContactEmail());
+                break;
+            case 'phone':
+                $newObj = $contact->castAs(new ContactPhone());
+                break;
+        }
+
+        if (!$this->contacts->contains($newObj)){
+            $newObj->setNetworkAdmin($this);
+        }
+        $this->contacts->add($newObj);
+        return $this;
+
+    }
+    public function removeContact(Contact $contact)
+    {
+        $this->contacts->removeElement($contact);
+        $contact->setNetworkAdmin(null);
+//        if ($this->contacts->contains($contact)){
+//
+//        }
+        return $this;
+    }
 }

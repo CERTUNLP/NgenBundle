@@ -38,7 +38,7 @@ class IncidentPriority
      /**
      * @var string
      * @ORM\Id
-     * @Gedmo\Slug(fields={"name"}, separator="_")
+     * @Gedmo\Slug(fields={"impact","urgency"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
      * @JMS\Expose
      * */

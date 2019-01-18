@@ -13,6 +13,7 @@ namespace CertUnlp\NgenBundle\Services\Communications;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Services\IncidentReportFactory;
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\CommentBundle\Event\CommentPersistEvent;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\SignedCommentInterface;
@@ -22,7 +23,7 @@ class IncidentCommunication
 {
 
     protected $mailer;
-    protected $cert_email;
+    protected $teamContact;
     protected $templating;
     protected $upload_directory;
     protected $reports_path;
@@ -39,6 +40,11 @@ class IncidentCommunication
         $this->send_report($incident, null, null, TRUE);
     }
 
+    public function postUpdateDelegation($incident)
+    {
+        $this->send_report($incident);
+    }
+
     /**
      * @param Incident $incident
      * @param null $body
@@ -47,9 +53,17 @@ class IncidentCommunication
      * @param bool $renotification
      * @return int
      */
-    public function send_report(Incident $incident, $body = null, $echo = null, $is_new_incident = false, $renotification = false)
+    public function send_report(Incident $incident, $body = null, $echo = null, $is_new_incident = false, $renotification = false, $makeContact=true)
     {
-        $contac
+        if ($makeContact) {
+            $incidentContacts = new ArrayCollection($incident->getContactsArray());
+            $incidentContacts->add($this->teamContact);
+            $priorityCode=$incident->getPriority()->getCode();
+            $mappedCollection = $incidentContacts->filter(function($contact) {
+                return $contact->getContactCase() > $priorityCode;
+            });
+            ver_dump($mappedCollection); die();
+        }
         $enviar_a= $incident->getEmails($this->cert_email,$incident->isSendReport());
         if ($enviar_a) {
             #Hay que discutir si es necesario mandar cualquier cambio o que cosa todo || $is_new_incident || $renotification) {
@@ -96,10 +110,7 @@ class IncidentCommunication
         $incident->setReportMessageId($message->getId());
     }
 
-    public function postUpdateDelegation($incident)
-    {
-        $this->send_report($incident);
-    }
+
 
     public function onCommentPrePersist(CommentPersistEvent $event)
     {

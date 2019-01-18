@@ -358,4 +358,11 @@ class IncidentState
     {
         return $this->incidents;
     }
+
+    public function getContacts(int $incidentPriority, bool $force): array
+    {
+        $contactos=[];
+        if ($this->notificar_admin($incidentPriority))
+        if ($force){ return $contactos; }
+    }
 }
