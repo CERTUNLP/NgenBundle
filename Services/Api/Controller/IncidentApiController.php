@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Services\Api\Controller;
 
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
+use CertUnlp\NgenBundle\Services\Communications\IncidentCommunication;
 use CertUnlp\NgenBundle\Services\Communications\IncidentMailer;
 use FOS\RestBundle\View\View;
 use Symfony\Component\Form\FormTypeInterface;
@@ -21,12 +22,12 @@ use Symfony\Component\HttpFoundation\Response;
 class IncidentApiController extends ApiController
 {
 
-    private $mailer;
+    private $comm;
 
-    public function __construct($handler, $viewHandler, $view, IncidentMailer $mailer)
+    public function __construct($handler, $viewHandler, $view, IncidentCommunication $incidentCommunication)
     {
         parent::__construct($handler, $viewHandler, $view);
-        $this->mailer = $mailer;
+        $this->comm = $incidentCommunication;
     }
 
     /**
@@ -81,7 +82,7 @@ class IncidentApiController extends ApiController
      */
     public function reportMailAction($incident)
     {
-        return new Response($this->mailer->send_report($incident, null, true));
+        return new Response($this->comm->send_report($incident, null, true));
     }
 
 }

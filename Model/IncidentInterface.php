@@ -239,7 +239,8 @@ interface IncidentInterface
      *
      * @return array
      */
-    public function getEmails(string $team_mail, bool $force): array;
+
+    public function getContactsArray(): array;
 
     /**
      * Set report_sent

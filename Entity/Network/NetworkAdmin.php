@@ -11,9 +11,6 @@
 
 namespace CertUnlp\NgenBundle\Entity\Network;
 
-use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
-use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
-use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,6 +18,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use CertUnlp\NgenBundle\Entity\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
+use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
+use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
+
 
 /**
  * NetworkAdmin
