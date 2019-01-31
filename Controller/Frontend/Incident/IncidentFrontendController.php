@@ -105,4 +105,5 @@ class IncidentFrontendController extends Controller
         return $this->getFrontendController()->commentsEntity($incident, $request);
     }
 
+
 }

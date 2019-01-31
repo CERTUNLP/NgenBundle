@@ -7,18 +7,18 @@
  with this source code in the file LICENSE.
 #}
 
-<tr data-id="{{ IncidentPriority.id }}">
-    <td id="priority_label_holder" class="col-md-1">
-        <div class="label-holder">
-        {{ IncidentPriority.name }}
-        </div>
-    </td>
+<tr data-id="{{ IncidentPriority.slug }}">
+
     <td id="priority_label_holder" class="col-md-1">
         <div class="label-holder">
             {{ IncidentPriority.code }}
         </div>
     </td>
-
+    <td id="priority_label_holder" class="col-md-1">
+        <div class="label-holder">
+            {{ IncidentPriority.name }}
+        </div>
+    </td>
     <td id="priority_label_holder" class="col-md-1">
         <div class="label-holder">
             {{ IncidentPriority.impact }}
@@ -31,12 +31,12 @@
     </td>
     <td id="priority_label_holder" class="col-md-1">
         <div class="label-holder">
-            {{ IncidentPriority.response_time }}
+            {{ IncidentPriority.responseTime }}
         </div>
     </td>
     <td id="priority_label_holder" class="col-md-1">
         <div class="label-holder">
-            {{ IncidentPriority.resolution_time }}
+            {{ IncidentPriority.resolutionTime }}
         </div>
     </td>
     <td id="state_label_holder" class="col-md-1">
