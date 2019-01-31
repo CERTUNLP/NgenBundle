@@ -342,7 +342,7 @@ fos_elastica:
                             type: keyword
                         code:
                             type: integer
-                        risk:
+                        impact:
                             type: keyword
                         urgency:
                             type: keyword

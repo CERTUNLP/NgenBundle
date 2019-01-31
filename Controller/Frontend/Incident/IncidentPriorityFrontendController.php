@@ -34,13 +34,15 @@ class IncidentPriorityFrontendController extends Controller
      */
     public function homeAction(Request $request)
     {
-        return $this->getFrontendController()->homeEntity($request);
+        return $this->getFrontendController()->homeEntity($request,null, 10, 'code', 'asc');
     }
+
 
     public function getFrontendController()
     {
         return $this->get('cert_unlp.ngen.incident.priority.frontend.controller');
     }
+
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentPriority:Frontend/home.html.twig")

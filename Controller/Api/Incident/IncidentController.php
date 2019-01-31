@@ -204,4 +204,7 @@ class IncidentController extends FOSRestController
         return $this->get('cert_unlp.ngen.network.handler')->getByHostAddress($ip);
     }
 
+    public function getPriority(){
+      return  $this->getDoctrine()->getRepository(IncidentPriority::class)->find($this->getImpact(),$this->getUrgency());
+    }
 }

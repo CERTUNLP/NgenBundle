@@ -108,15 +108,9 @@ class Incident implements IncidentInterface
      * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread",mappedBy="incident",fetch="EXTRA_LAZY"))
      */
 
-    /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority", inversedBy="incidents")
-     * @ORM\JoinColumn(name="impact", referencedColumnName="slug", nullable=FALSE)
-     * @ORM\JoinColumn(name="urgency", referencedColumnName="slug", nullable=FALSE)
-     */
-    protected $priority;
-
-
     protected $comment_thread;
+
+
     /**
      * @var \DateTime
      *
@@ -723,21 +717,6 @@ class Incident implements IncidentInterface
         return $contactos;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getPriority()
-    {
-        return $this->priority;
-    }
-
-    /**
-     * @param mixed $priority
-     */
-    public function setPriority($priority)
-    {
-        $this->priority = $priority;
-    }
 
     /**
      * @return Network

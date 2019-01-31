@@ -46,12 +46,12 @@ class FrontendController
         return $this->doctrine;
     }
 
-    public function homeEntity(Request $request, $term = '')
+    public function homeEntity(Request $request, $term = '', $limit = 7, $defaultSortFieldName='createdAt',$defaultSortDirection='desc')
     {
-        return $this->searchEntity($request, $term);
+        return $this->searchEntity($request, $term, $limit,$defaultSortFieldName,$defaultSortDirection);
     }
 
-    public function searchEntity(Request $request, $term = null)
+    public function searchEntity(Request $request, $term = null, $limit = 7, $defaultSortFieldName='createdAt',$defaultSortDirection='desc')
     {
         if (!$term) {
             $term = $request->get('term') ? $request->get('term') : '*';
@@ -59,8 +59,8 @@ class FrontendController
         $results = $this->getFinder()->createPaginatorAdapter($term);
 
         $pagination = $this->getPaginator()->paginate(
-            $results, $request->query->get('page', 1), 7
-            , array('defaultSortFieldName' => 'createdAt', 'defaultSortDirection' => 'desc')
+            $results, $request->query->get('page', 1), $limit
+            , array('defaultSortFieldName' => $defaultSortFieldName, 'defaultSortDirection' => $defaultSortDirection)
         );
 
         $pagination->setParam('term', $term);

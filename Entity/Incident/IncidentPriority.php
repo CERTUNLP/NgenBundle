@@ -35,20 +35,56 @@ class IncidentPriority
 
     protected $incidents;
 
-     /**
-     * @var string
-     * @ORM\Id
-     * @Gedmo\Slug(fields={"impact","urgency"}, separator="_")
-     * @ORM\Column(name="slug", type="string", length=45)
-     * @JMS\Expose
-     * */
-    private $slug;
+    /**
+     * @return mixed
+     */
+    public function getIncidents()
+    {
+        return $this->incidents;
+    }
+
+    /**
+     * @param mixed $incidents
+     */
+    public function setIncidents($incidents)
+    {
+        $this->incidents = $incidents;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Id
+     * @ORM\Column(name="slug", type="string", length=255, unique=true)
      * @JMS\Expose
      */
+
+    private $slug;
+
+
+
+    /**
+     * @var string
+     * @ORM\Column(name="name", type="string", length=255)
+     * @JMS\Expose
+     */
+
     private $name;
     /**
      * @var \DateTime
@@ -67,23 +103,21 @@ class IncidentPriority
      */
     private $updatedAt;
     /**
-     * @var dateinterval
-     *
-     * @ORM\Column(name="response_time", type="dateinterval")
+     * @var integer
+     * @ORM\Column(name="response_time", type="integer")
      * @JMS\Expose
      */
     private $responseTime;
     /**
-     * @var dateinterval
-     *
-     * @ORM\Column(name="resolution_time", type="dateinterval")
+     * @var integer
+     * @ORM\Column(name="resolution_time", type="integer")
      * @JMS\Expose
      */
     private $resolutionTime;
     /**
      * @var int
      *
-     * @ORM\Column(name="code", type="integer", unique=true)
+     * @ORM\Column(name="code", type="integer")
      * @JMS\Expose
      */
     private $code;
@@ -159,7 +193,7 @@ class IncidentPriority
      */
     public function getId()
     {
-        return $this->id;
+        return $this->getSlug();
     }
 
     /**
@@ -260,30 +294,14 @@ class IncidentPriority
 
     public function __toString()
     {
-        return $this->slug;
+        return $this->name;
     }
-
     /**
-     * Get slug
-     *
-     * @return string
+     * @return bool
      */
-    public function getSlug()
+    public function isActive()
     {
-        return $this->slug;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return IncidentTlp
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-
-        return $this;
+        return true;
     }
 }
 

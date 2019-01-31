@@ -58,7 +58,7 @@ class IncidentCommunication
         if ($makeContact) {
             $incidentContacts = new ArrayCollection($incident->getContactsArray());
             $incidentContacts->add($this->teamContact);
-            $priorityCode=$incident->getPriority()->getCode();
+         //ACAAAAA   $priorityCode=$incident->getPriority()->getCode();
             $mappedCollection = $incidentContacts->filter(function($contact) {
                 return $contact->getContactCase() > $priorityCode;
             });
