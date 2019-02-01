@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Services\Communications;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
 use CertUnlp\NgenBundle\Services\IncidentReportFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\CommentBundle\Event\CommentPersistEvent;
@@ -33,6 +34,30 @@ class IncidentCommunication
     protected $lang;
     protected $team;
     private $translator;
+    private $doctrine;
+
+    public function __construct($doctrine, \Swift_Mailer $mailer, \Twig_Environment $templating, string $cert_email, string $upload_directory, CommentManagerInterface $commentManager, string $environment, IncidentReportFactory $report_factory, string $lang, array $team, Translator $translator)
+    {
+        $this->doctrine= $doctrine;
+        $this->mailer = $mailer;
+        $this->cert_email = $cert_email;
+        $this->templating = $templating;
+        $this->upload_directory = $upload_directory;
+        $this->commentManager = $commentManager;
+        $this->environment = in_array($environment, ['dev', 'test']) ? '[dev]' : '';
+        $this->report_factory = $report_factory;
+        $this->lang = $lang;
+        $this->team = $team;
+        $this->translator = $translator;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDoctrine()
+    {
+        return $this->doctrine;
+    }
 
 
     public function postPersistDelegation($incident)
@@ -58,7 +83,14 @@ class IncidentCommunication
         if ($makeContact) {
             $incidentContacts = new ArrayCollection($incident->getContactsArray());
             $incidentContacts->add($this->teamContact);
-         //ACAAAAA   $priorityCode=$incident->getPriority()->getCode();
+
+            $repo=$this->getDoctrine()->getRepository(IncidentPriority::class);
+            $found = $repo->findOneBy(array('impact'=>$incident->getImpact(), 'urgency'=>$incident->getUrgency()) );
+
+            if ($found) {$priorityCode=$found->getCode();}
+            else {$priorityCode=5;}
+echo $priorityCode;
+            die();//->getRepository('
             $mappedCollection = $incidentContacts->filter(function($contact) {
                 return $contact->getContactCase() > $priorityCode;
             });
