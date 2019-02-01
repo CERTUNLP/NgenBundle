@@ -38,7 +38,7 @@ services:
 
     cert_unlp.ngen.incident.communication.center:
         class:        CertUnlp\NgenBundle\Services\Communications\IncidentCommunication
-        arguments:    ["@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","@twig","%cert_unlp.ngen.incident.internal.mailer.sender_address%","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%","@cert_unlp.ngen.incident.report.factory","%cert_unlp.ngen.incident.internal.report.lang%","%cert_unlp.ngen.team%","@translator.default"]
+        arguments:    ["@doctrine.orm.entity_manager","@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","@twig","%cert_unlp.ngen.incident.internal.mailer.sender_address%","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%","@cert_unlp.ngen.incident.report.factory","%cert_unlp.ngen.incident.internal.report.lang%","%cert_unlp.ngen.team%","@translator.default"]
         tags:
            - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
            - { name: cert_unlp.ngen.incident.internal.delegate, priority: 2 }
