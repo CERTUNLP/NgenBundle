@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Repository;
 
+use CertUnlp\NgenBundle\Entity\Network\Network;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -21,16 +22,37 @@ use Doctrine\ORM\EntityRepository;
  */
 class NetworkRepository extends EntityRepository
 {
+    public function findByAddress(array $params): ?Network
+    {
+        $address = explode('/', $params['address']);
+        switch (Network::guessType($address[0])) {
+            case FILTER_FLAG_IPV4:
+//                var_dump(['ip_v4' => $address, 'ip_v4_mask' => $params['address_mask']]);
+//                die;
 
-    public function findByIpV4($address)
+                return $this->findOneBy(['ip_v4' => $address[0], 'ip_v4_mask' => $address[1] ?? $params['address_mask']]);
+                break;
+            case FILTER_FLAG_IPV6:
+                return $this->findOneBy(['ip_v6' => $address[0], 'ip_v6_mask' => $address[1] ?? $params['address_mask']]);
+                break;
+            case FILTER_VALIDATE_DOMAIN:
+                return $this->findOneBy(['domain' => $address[0]]);
+                break;
+            default:
+                return null;
+        }
+
+    }
+
+    public function findByIpV4(string $address): Network
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
         $qb->select('n')
             ->from('CertUnlpNgenBundle:Network\Network', 'n')
-            ->where($qb->expr()->eq('BIT_AND(INET_ATON(:address),n.numericIpMask)', 'n.numericIp'))
+            ->where($qb->expr()->eq('BIT_AND(INET_ATON(:address),n.numericIpV4Mask)', 'n.numericIpV4'))
             ->andWhere('n.isActive = true')
-            ->orderBy('n.ipMask', 'DESC');
+            ->orderBy('n.ip_v4_mask', 'DESC');
 
         $ip = is_array($address) ? $address['ip_v4'] : $address;
         $qb->setParameter('address', $ip);
@@ -38,5 +60,50 @@ class NetworkRepository extends EntityRepository
         $results = $qb->getQuery()->getResult();
         return $results ? $results[0] : null;
     }
+
+    public function findByIpV6(string $address): Network
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('n')
+            ->from('CertUnlpNgenBundle:Network\Network', 'n')
+            ->where($qb->expr()->eq('BIT_AND(INET6_ATON(:address),n.numericIpV6Mask)', 'n.numericIpV6'))
+            ->andWhere('n.isActive = true')
+            ->orderBy('n.ip_v6_mask', 'DESC');
+
+        $ip = is_array($address) ? $address['ip_v4'] : $address;
+        $qb->setParameter('address', $ip);
+
+        $results = $qb->getQuery()->getResult();
+        return $results ? $results[0] : null;
+    }
+
+    public function findByUrl(string $domain): Network
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('n')
+            ->from('CertUnlpNgenBundle:Network\Network', 'n')
+            ->andWhere('n.isActive = true')
+            ->orderBy('n.numericDomain', 'DESC');
+
+        $count = substr_count($domain, '.') + 1;
+
+        $qb->where($qb->expr()->eq('SUBSTRING_INDEX(:domain,\'.\',:count1 )', 'n.domain'));
+        $qb->setParameter('count1', -1);
+
+        for ($i = $count; $i > 1; $i--) {
+            $qb->orWhere($qb->expr()->eq('SUBSTRING_INDEX(:domain,\'.\',:count' . $i . ')', 'n.domain'));
+            $qb->setParameter('count' . $i, $i * -1);
+        }
+
+        $ip = is_array($domain) ? $domain['domain'] : $domain;
+
+        $qb->setParameter('domain', $ip);
+
+        $results = $qb->getQuery()->getResult();
+        return $results ? $results[0] : null;
+    }
+
 
 }

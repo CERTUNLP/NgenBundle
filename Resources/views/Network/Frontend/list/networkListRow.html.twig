@@ -7,9 +7,9 @@
  with this source code in the file LICENSE.
 #}
 
-<tr data-id="{{ network.ipAndMask }}">
+<tr data-id="{{ network.addressAndMask }}">
     <td class="col-md-1">
-        {{ network.ipAndMask }}
+        {{ network.addressAndMask }}
     </td>
     <td class="col-md-1">
         {{ network.networkEntity }}
@@ -26,7 +26,7 @@
 
         <div class="btn-group inline pull-left dropdown action-dropdown">
             <a class="btn btn-sm btn-primary" role="button"
-               href="{{ path('cert_unlp_ngen_network_detail_network',{'ip_v4': network.ip,'ipMask':network.ipMask}) }}">
+               href="{% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail'} %}">
                 Details
             </a>
             <button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" type="button"
@@ -37,7 +37,7 @@
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                 <li role="presentation">
                     <a role="menuitem" tabindex="-1"
-                       href="{{ path('cert_unlp_ngen_network_edit_network',{'ip_v4': network.ip,'ipMask':network.ipMask}) }}">{{ icon('edit alert-info') }}
+                       href="{% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'edit'} %}">{{ icon('edit alert-info') }}
                         <span class="action-text">Edit</span></a>
                 </li>
 

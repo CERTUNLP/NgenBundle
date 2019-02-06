@@ -41,8 +41,8 @@ fos_elastica:
                             properties:
                                 ip_v4:
                                     type: ip
-                                ipMask:
-                                    type: integer
+#                                ipMask:
+#                                    type: integer
                                 isActive:
                                     type: boolean
                                 networkAdmin:
@@ -126,8 +126,8 @@ fos_elastica:
                             type: integer
                         ip_v4:
                             type: ip
-                        ipMask:
-                            type: integer
+#                        ipMask:
+#                            type: integer
                         createdAt:
                             type: date
                         updatedAt:

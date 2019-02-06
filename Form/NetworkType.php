@@ -36,10 +36,10 @@ class NetworkType extends AbstractType
     {
 
         $builder
-            ->add('ip_v4', null, array(
+            ->add('address', null, array(
                 'required' => true,
-                'attr' => array('maxlength' => '17', 'help_text', 'placeholder' => 'e.g 192.168.1.1/16'),
-                'label' => 'Ip/Mask',
+                'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
+                'label' => 'Address',
                 'description' => 'The network ip and mask',
             ))
             ->add('type', ChoiceType::class, array(
@@ -93,9 +93,9 @@ class NetworkType extends AbstractType
             // check if the Product object is "new"
             // If no data is passed to the form, the data is "null".
             // This should be considered a new "Product"
-            if ($network) {
-                $form->get('ip_v4')->setData($network->getIpAndMask());
-            }
+//            if ($network) {
+//                $form->get('ip_v4')->setData($network->getIpAndMask());
+//            }
         });
     }
 

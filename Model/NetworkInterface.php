@@ -35,21 +35,6 @@ interface NetworkInterface
     public function __construct();
 
     /**
-     * Set ipMask
-     *
-     * @param string $ipMask
-     * @return Network
-     */
-    public function setIpMask(string $ipMask);
-
-    /**
-     * Get ipMask
-     *
-     * @return string
-     */
-    public function getIpMask();
-
-    /**
      * Set isActive
      *
      * @param boolean $isActive
@@ -117,34 +102,19 @@ interface NetworkInterface
     public function getIncidents();
 
     /**
-     * Set ip
-     *
-     * @param string $ip
-     * @return Network
-     */
-    public function setIp(string $ip): Network;
-
-    /**
-     * Get ip
-     *
-     * @return string
-     */
-    public function getIp();
-
-    /**
      * Set numericIp
      *
      * @param integer $numericIp
      * @return Network
      */
-    public function setNumericIp(int $numericIp);
+    public function setNumericIpV4(int $numericIp);
 
     /**
      * Get numericIp
      *
      * @return integer
      */
-    public function getNumericIp();
+    public function getNumericIpV4();
 
     /**
      * Set numericIpMask
@@ -152,14 +122,14 @@ interface NetworkInterface
      * @param integer $numericIpMask
      * @return Network
      */
-    public function setNumericIpMask(int $numericIpMask);
+    public function setNumericIpV4Mask(int $numericIpMask);
 
     /**
      * Get numericIpMask
      *
      * @return integer
      */
-    public function getNumericIpMask();
+    public function getNumericIpV4Mask();
 
     public function equals(Network $other);
 }
