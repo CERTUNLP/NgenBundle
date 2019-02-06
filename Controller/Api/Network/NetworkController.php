@@ -123,12 +123,12 @@ class NetworkController extends FOSRestController
      * @param Network $network
      * @return Network
      *
-     * @FOS\Get("/networks/{ip}/{ipMask}",requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ipMask"="^[1-3]?[0-9]$"} )
-     *
+     * @FOS\Get("/networks/{domain}", name="_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
+     * @FOS\Get("/networks/{ip_v4}/{ip_v4_mask}", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"} )
+     * @FOS\Get("/networks/{ip_v6}/{ip_v6_mask}", name="_ip_v6")
      * @FOS\View(
      *  templateVar="network"
      * )
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneBy"})
      */
     public function getNetworkAction(Network $network)
     {
@@ -180,9 +180,9 @@ class NetworkController extends FOSRestController
      * @param Network $network
      * @return FormTypeInterface|View
      *
-     * @FOS\Patch("/networks/{ip}/{ipMask}", requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ipMask"="^[1-3]?[0-9]$"} )
-     *
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneBy"})
+     * @FOS\Patch("/networks/{domain}", name="_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
+     * @FOS\Patch("/networks/{ip_v4}/{ip_v4_mask}", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"} )
+     * @FOS\Patch("/networks/{ip_v6}/{ip_v6_mask}", name="_ip_v6")
      */
     public function patchNetworkAction(Request $request, Network $network)
     {
@@ -206,7 +206,9 @@ class NetworkController extends FOSRestController
      * @param Network $network
      * @return FormTypeInterface|View
      *
-     * @FOS\Patch("/networks/{ip}/{ipMask}/activate", requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ipMask"="^[1-3]?[0-9]$"} )
+     * @FOS\Patch("/networks/{domain}/activate", name="_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
+     * @FOS\Patch("/networks/{ip_v4}/{ip_v4_mask}/activate", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_v4_mask"="^[1-3]?[0-9]$"} )
+     * @FOS\Patch("/networks/{ip_v6}/{ip_v6_mask}/activate", name="_ip_v6")
      * @FOS\View(
      *  templateVar = "network"
      * )
@@ -235,7 +237,9 @@ class NetworkController extends FOSRestController
      * @param Network $network
      * @return FormTypeInterface|View
      *
-     * @FOS\Patch("/networks/{ip}/{ipMask}/desactivate", requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ipMask"="^[1-3]?[0-9]$"} )
+     * @FOS\Patch("/networks/{domain}/desactivate", name="_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
+     * @FOS\Patch("/networks/{ip_v4}/{ip_v4_mask}/desactivate", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_v4_mask"="^[1-3]?[0-9]$"} )
+     * @FOS\Patch("/networks/{ip_v6}/{ip_v6_mask}/desactivate", name="_ip_v6")
      * @FOS\View(
      *  templateVar = "network"
      * )

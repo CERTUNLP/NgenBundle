@@ -83,6 +83,11 @@ services:
         tags:
             - { name: doctrine.entity_listener }
 
+    cert_unlp.ngen.incident.network.listener:
+        class: CertUnlp\NgenBundle\Entity\Network\Listener\NetworkListener
+        tags:
+            - { name: doctrine.entity_listener }
+
     cert_unlp.ngen.fos_rest.view.view:
         class: FOS\RestBundle\View\View
         factory: [FOS\RestBundle\View\View, create]
