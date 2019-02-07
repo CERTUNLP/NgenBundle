@@ -41,8 +41,16 @@ fos_elastica:
                             properties:
                                 ip_v4:
                                     type: ip
-#                                ipMask:
-#                                    type: integer
+                                ip_v4_mask:
+                                    type: integer
+                                ip_v6:
+                                    type: ip
+                                ip_v6_mask:
+                                    type: integer
+                                domain:
+                                    type: keyword
+                                numeric_domain:
+                                    type: integer
                                 isActive:
                                     type: boolean
                                 networkAdmin:
@@ -126,8 +134,16 @@ fos_elastica:
                             type: integer
                         ip_v4:
                             type: ip
-#                        ipMask:
-#                            type: integer
+                        ip_v4_mask:
+                            type: integer
+                        ip_v6:
+                            type: ip
+                        ip_v6_mask:
+                            type: integer
+                        domain:
+                            type: keyword
+                        numeric_domain:
+                            type: integer
                         createdAt:
                             type: date
                         updatedAt:
