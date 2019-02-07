@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Network\Address;
 
-use CertUnlp\NgenBundle\Entity\Network\Network;
+use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -20,7 +20,7 @@ use JMS\Serializer\Annotation as JMS;
  */
 class IpV4Address extends Address
 {
-    public function setCustomAddress(string $address): Network
+    public function setCustomAddress(string $address): NetworkElement
     {
         $ip_and_mask = explode('/', $address);
         $this->getNetwork()->setIpV4($ip_and_mask[0]);
@@ -31,19 +31,19 @@ class IpV4Address extends Address
         return $this->getNetwork();
     }
 
-    public function setCustomNumericAddress(string $address): Network
+    public function setCustomNumericAddress(string $address): NetworkElement
     {
         return $this->getNetwork()->setNumericIpV4(ip2long($address));
     }
 
-    public function setCustomAddressMask(string $address): Network
+    public function setCustomAddressMask(string $address): NetworkElement
     {
         $this->getNetwork()->setIpV4Mask($address);
         $this->setCustomNumericAddressMask($address);
         return $this->getNetwork();
     }
 
-    public function setCustomNumericAddressMask(string $address): Network
+    public function setCustomNumericAddressMask(string $address): NetworkElement
     {
         return $this->getNetwork()->setNumericIpV4Mask(0xffffffff << (32 - $address));
     }

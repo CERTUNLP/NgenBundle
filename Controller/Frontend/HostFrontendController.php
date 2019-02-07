@@ -17,7 +17,7 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend;
 
-use CertUnlp\NgenBundle\Entity\Incident\Host\Host;
+use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

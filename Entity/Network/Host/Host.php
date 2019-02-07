@@ -9,24 +9,24 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Entity\Incident\Host;
+namespace CertUnlp\NgenBundle\Entity\Network\Host;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread;
 use CertUnlp\NgenBundle\Entity\Network\Network;
+use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity()
- * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Host\Listener\HostListener" })
+ * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Network\Host\Listener\HostListener" })
  * @JMS\ExclusionPolicy("all")
  */
-class Host
+class Host extends NetworkElement
 {
 
     /**
@@ -38,37 +38,6 @@ class Host
      * @JMS\Expose
      */
     private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=15, nullable=true)
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     * @Assert\Ip(version="4_no_priv")
-     */
-    private $ip_v4;
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=39, nullable=true)
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     * @Assert\Ip(version="6_no_priv")
-     */
-    private $ip_v6;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", nullable=true)
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     *
-     * @Assert\Url()
-     * )
-     */
-    private $url;
 
     /**
      * @var \DateTime
@@ -137,21 +106,15 @@ class Host
 
     /**
      * Host constructor.
-     * @param string $ip_v4
+     * @param string|null $term
      */
-    public function __construct(string $ip_v4 = null)
+    public function __construct(string $term = null)
     {
-        $this->ip_v4 = $ip_v4;
+        if ($term) {
+            $this->guessAddress($term);
+        }
         $this->incidents_as_origin = new ArrayCollection();
         $this->incidents_as_destination = new ArrayCollection();
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->getSlug();
     }
 
     /**
@@ -187,24 +150,6 @@ class Host
     public function setId(int $id): Host
     {
         $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIpV6(): string
-    {
-        return $this->ip_v6;
-    }
-
-    /**
-     * @param string $ip_v6
-     * @return Host
-     */
-    public function setIpV6(string $ip_v6): Host
-    {
-        $this->ip_v6 = $ip_v6;
         return $this;
     }
 
@@ -314,37 +259,6 @@ class Host
     public function setIsActive(bool $isActive): Host
     {
         $this->isActive = $isActive;
-        return $this;
-    }
-
-    /**
-     * @param Host|null $other
-     * @return bool
-     */
-    public function equals(Host $other = null): bool
-    {
-        if ($other) {
-            return ($this->getIpV4() === $other->getIpV4());
-        }
-        return false;
-
-    }
-
-    /**
-     * @return string
-     */
-    public function getIpV4(): ?string
-    {
-        return $this->ip_v4;
-    }
-
-    /**
-     * @param string $ip_v4
-     * @return Host
-     */
-    public function setIpV4(string $ip_v4): Host
-    {
-        $this->ip_v4 = $ip_v4;
         return $this;
     }
 

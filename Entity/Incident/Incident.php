@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Incident\Host\Host;
+use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
@@ -224,14 +224,14 @@ class Incident implements IncidentInterface
 
     /**
      * @var Host|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Host\Host", inversedBy="incidents_as_origin")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_origin")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     private $origin;
     /**
      * @var Host|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Host\Host", inversedBy="incidents_as_destination")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_destination")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */

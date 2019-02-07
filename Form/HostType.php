@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Form;
 
-use CertUnlp\NgenBundle\Entity\Incident\Host\Host;
+use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

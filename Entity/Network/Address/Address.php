@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Network\Address;
 
-use CertUnlp\NgenBundle\Entity\Network\Network;
+use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -23,7 +23,7 @@ abstract class Address
 
     protected $network;
 
-    public function __construct(Network $network)
+    public function __construct(NetworkElement $network)
     {
         $this->network = $network;
     }
@@ -40,29 +40,29 @@ abstract class Address
 
     abstract public function getType(): string;
 
-    public function getNetwork(): Network
+    public function getNetwork(): NetworkElement
     {
         return $this->network;
     }
 
-    public function setNetwork(Network $network): Address
+    public function setNetwork(NetworkElement $network): Address
     {
         $this->network = $network;
         return $this;
     }
 
-    public function setAddress(string $address): Network
+    public function setAddress(string $address): NetworkElement
     {
         return $this->setCustomAddress($address);
     }
 
-    abstract public function setCustomAddress(string $address): Network;
+    abstract public function setCustomAddress(string $address): NetworkElement;
 
-    abstract public function setCustomNumericAddress(string $address): Network;
+    abstract public function setCustomNumericAddress(string $address): NetworkElement;
 
     abstract public function getCustomNumericAddress(): string;
 
-    abstract public function setCustomNumericAddressMask(string $address): Network;
+    abstract public function setCustomNumericAddressMask(string $address): NetworkElement;
 
     abstract public function getCustomNumericAddressMask(): string;
 
@@ -85,12 +85,12 @@ abstract class Address
         return $this->getCustomAddressMask();
     }
 
-    public function setAddressMask(string $address): Network
+    public function setAddressMask(string $address): NetworkElement
     {
         return $this->setCustomAddressMask($address);
     }
 
-    abstract public function setCustomAddressMask(string $address): Network;
+    abstract public function setCustomAddressMask(string $address): NetworkElement;
 
 
 }
