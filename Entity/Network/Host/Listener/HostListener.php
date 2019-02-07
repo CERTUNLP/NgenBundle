@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Entity\Incident\Host\Listener;
+namespace CertUnlp\NgenBundle\Entity\Network\Host\Listener;
 
-use CertUnlp\NgenBundle\Entity\Incident\Host\Host;
+use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Services\Api\Handler\HostHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\NetworkHandler;
 use Doctrine\ORM\EntityManager;
@@ -62,7 +62,7 @@ class HostListener
     public function networkUpdate(Host $host): void
     {
         $network = $host->getNetwork();
-        $network_new = $this->network_handler->getByHostAddress($host->getIpV4());
+        $network_new = $this->network_handler->getByHostAddress($host->getAddress());
         if ($network) {
             if (!$network->equals($network_new)) {
                 $host->setNetwork($network_new);

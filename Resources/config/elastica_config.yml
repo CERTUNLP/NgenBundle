@@ -205,7 +205,7 @@ fos_elastica:
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Incident\Host\Host
+                        model: CertUnlp\NgenBundle\Entity\Network\Host\Host
                         provider: ~
                         finder: ~
                         listener:

@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Network\Address;
 
-use CertUnlp\NgenBundle\Entity\Network\Network;
+use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -22,26 +22,26 @@ class DomainAddress extends Address
 {
 
 
-    public function setCustomAddress(string $address): Network
+    public function setCustomAddress(string $address): NetworkElement
     {
         $this->getNetwork()->setDomain($address);
         $this->setCustomNumericAddress($address);
         return $this->getNetwork();
     }
 
-    public function setCustomNumericAddress(string $address): Network
+    public function setCustomNumericAddress(string $address): NetworkElement
     {
         return $this->getNetwork()->setNumericDomain(substr_count($address, '.') + 1);
     }
 
-    public function setCustomAddressMask(string $address): Network
+    public function setCustomAddressMask(string $address): NetworkElement
     {
         $this->getNetwork()->setDomain($address);
         $this->setCustomNumericAddressMask($address);
         return $this->getNetwork();
     }
 
-    public function setCustomNumericAddressMask(string $address): Network
+    public function setCustomNumericAddressMask(string $address): NetworkElement
     {
         return $this->getNetwork();
     }
