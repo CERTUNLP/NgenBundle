@@ -105,7 +105,7 @@ abstract class Network implements NetworkInterface
      *
      * @ORM\Column(name="numeric_domain", type="integer",options={"unsigned":true}, nullable=true)
      */
-    protected $numericDomain;
+    protected $numeric_domain;
     /**
      * @var int
      *
@@ -285,7 +285,7 @@ abstract class Network implements NetworkInterface
     /**
      * @return string
      */
-    public function getIpV4Mask(): string
+    public function getIpV4Mask(): ?string
     {
         return $this->ip_v4_mask;
     }
@@ -305,7 +305,7 @@ abstract class Network implements NetworkInterface
     /**
      * @return string
      */
-    public function getIpV6Mask(): string
+    public function getIpV6Mask(): ?string
     {
         return $this->ip_v6_mask;
     }
@@ -380,18 +380,18 @@ abstract class Network implements NetworkInterface
     /**
      * @return int
      */
-    public function getNumericDomain(): int
+    public function getNumericDomain(): ?int
     {
-        return $this->numericDomain;
+        return $this->numeric_domain;
     }
 
     /**
-     * @param int $numericDomain
+     * @param int $numeric_domain
      * @return Network
      */
-    public function setNumericDomain(int $numericDomain): Network
+    public function setNumericDomain(int $numeric_domain): Network
     {
-        $this->numericDomain = $numericDomain;
+        $this->numeric_domain = $numeric_domain;
         return $this;
     }
 
@@ -452,7 +452,7 @@ abstract class Network implements NetworkInterface
     /**
      * @return string
      */
-    public function getDomain(): string
+    public function getDomain(): ?string
     {
         return $this->domain;
     }

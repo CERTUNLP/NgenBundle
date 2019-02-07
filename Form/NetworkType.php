@@ -90,12 +90,9 @@ class NetworkType extends AbstractType
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
             $network = $event->getData();
             $form = $event->getForm();
-            // check if the Product object is "new"
-            // If no data is passed to the form, the data is "null".
-            // This should be considered a new "Product"
-//            if ($network) {
-//                $form->get('ip_v4')->setData($network->getIpAndMask());
-//            }
+            if ($network) {
+                $form->get('address')->setData($network->getAddressAndMask());
+            }
         });
     }
 
