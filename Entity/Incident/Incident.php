@@ -225,6 +225,17 @@ class Incident implements IncidentInterface
     private $address;
 
     /**
+     * Incident constructor.
+     * @param string|null $term
+     */
+    public function __construct(string $term = null)
+    {
+        if ($term) {
+            $this->setAddress($term);
+        }
+    }
+
+    /**
      * @return int
      */
     public function getId(): ?int
@@ -558,10 +569,16 @@ class Incident implements IncidentInterface
 
     public function getContactsArray(): array
     {
-        $contactos= [];
-        if($this->getAssigned()){ $contactos=$this->getAssigned()->getContacts();}
-        if($this->getReporter()){ $contactos=$contactos + $this->getReporter()->getContacts();}
-        if($this->getNetwork()->getNetworkAdmin()){$contactos=$contactos + $this->getNetwork()->getNetworkAdmin()->getContacts()->toArray();}
+        $contactos = [];
+        if ($this->getAssigned()) {
+            $contactos = $this->getAssigned()->getContacts();
+        }
+        if ($this->getReporter()) {
+            $contactos = $contactos + $this->getReporter()->getContacts();
+        }
+        if ($this->getNetwork()->getNetworkAdmin()) {
+            $contactos = $contactos + $this->getNetwork()->getNetworkAdmin()->getContacts()->toArray();
+        }
         /*var_dump($contactos); die();*/
         return $contactos;
     }
