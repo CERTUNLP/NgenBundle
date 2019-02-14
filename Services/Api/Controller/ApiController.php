@@ -221,7 +221,7 @@ class ApiController
                     $object->setIsActive(TRUE);
                 }
                 if ($request->get('force_edit')) {
-                    $statusCode = Response::HTTP_NO_CONTENT;
+                    $statusCode = Response::HTTP_OK;
 
                     $object = $this->getCustomHandler()->patch($object, $parameters);
                 } else {
@@ -230,7 +230,7 @@ class ApiController
                     $object = $this->getCustomHandler()->post($parameters);
                 }
             } else {
-                $statusCode = Response::HTTP_NO_CONTENT;
+                $statusCode = Response::HTTP_OK;
 
                 $this->getCustomHandler()->desactivate($object);
                 $this->getCustomHandler()->activate($db_object);

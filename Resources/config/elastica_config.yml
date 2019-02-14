@@ -41,7 +41,15 @@ fos_elastica:
                             properties:
                                 ip_v4:
                                     type: ip
-                                ipMask:
+                                ip_v4_mask:
+                                    type: integer
+                                ip_v6:
+                                    type: ip
+                                ip_v6_mask:
+                                    type: integer
+                                domain:
+                                    type: keyword
+                                numeric_domain:
                                     type: integer
                                 isActive:
                                     type: boolean
@@ -126,7 +134,15 @@ fos_elastica:
                             type: integer
                         ip_v4:
                             type: ip
-                        ipMask:
+                        ip_v4_mask:
+                            type: integer
+                        ip_v6:
+                            type: ip
+                        ip_v6_mask:
+                            type: integer
+                        domain:
+                            type: keyword
+                        numeric_domain:
                             type: integer
                         createdAt:
                             type: date
@@ -189,7 +205,7 @@ fos_elastica:
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Incident\Host\Host
+                        model: CertUnlp\NgenBundle\Entity\Network\Host\Host
                         provider: ~
                         finder: ~
                         listener:

@@ -43,7 +43,11 @@ doctrine:
         entity_listener_resolver: cert_unlp.ngen.doctrine.entity_listener_resolver
         dql:
             string_functions:
-                INET_ATON: CertUnlp\NgenBundle\DQL\InetAtonFunction
+                inet_aton: DoctrineExtensions\Query\Mysql\InetAton
+                inet_ntoa: DoctrineExtensions\Query\Mysql\InetNtoa
+                inet6_aton: DoctrineExtensions\Query\Mysql\Inet6Aton
+                inet6_ntoa: DoctrineExtensions\Query\Mysql\Inet6Ntoa
+                substring_index: DoctrineExtensions\Query\Mysql\SubstringIndex
 
 sensio_framework_extra:
     view: { annotations: true }

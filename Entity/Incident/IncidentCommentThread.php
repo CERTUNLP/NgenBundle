@@ -38,7 +38,7 @@ class IncidentCommentThread extends BaseThread
 
     /**
      * @var Incident
-     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Host\Host", inversedBy="comment_thread")
+     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="comment_thread")
      *
      * */
     protected $host;

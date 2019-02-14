@@ -12,7 +12,6 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Network;
 
 use CertUnlp\NgenBundle\Entity\Network\Network;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -61,7 +60,9 @@ class NetworkFrontendController extends Controller
 
     /**
      * @Template("CertUnlpNgenBundle:Network:Frontend/networkForm.html.twig")
-     * @Route("{ip_v4}/{ipMask}/edit", name="cert_unlp_ngen_network_edit_network")
+     * @Route("{domain}/edit", name="cert_unlp_ngen_network_edit_network_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,20}$"} )
+     * @Route("{ip_v4}/{ip_v4_mask}/edit", name="cert_unlp_ngen_network_edit_network_ip_v4", requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"} )
+     * @Route("{ip_v6}/{ip_v6_mask}/edit", name="cert_unlp_ngen_network_edit_network_ip_v6")
      * @param Network $network
      * @return array
      */
@@ -72,7 +73,9 @@ class NetworkFrontendController extends Controller
 
     /**
      * @Template("CertUnlpNgenBundle:Network:Frontend/networkDetail.html.twig")
-     * @Route("{ip_v4}/{ipMask}/detail", name="cert_unlp_ngen_network_detail_network")
+     * @Route("{domain}/detail", name="cert_unlp_ngen_network_detail_network_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,20}$"} )
+     * @Route("{ip_v4}/{ip_v4_mask}/detail", name="cert_unlp_ngen_network_detail_network_ip_v4", requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"} )
+     * @Route("{ip_v6}/{ip_v6_mask}/detail", name="cert_unlp_ngen_network_detail_network_ip_v6")
      * @param Network $network
      * @return array
      */
