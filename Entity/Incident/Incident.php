@@ -558,9 +558,10 @@ class Incident implements IncidentInterface
 
     public function getContactsArray(): array
     {
-        $contactos[] = $this->getAssigned();
-        $contactos[] = $this->getReporter();
-        $contactos[] = $this->getNetwork()->getNetworkAdmin()->getContacts();
+        $contactos=$this->getAssigned()->getContacts();
+        $contactos=$contactos + $this->getReporter()->getContacts();
+        $contactos=$contactos + $this->getNetwork()->getNetworkAdmin()->getContacts()->toArray();
+        var_dump($contactos); die();
         return $contactos;
     }
 
