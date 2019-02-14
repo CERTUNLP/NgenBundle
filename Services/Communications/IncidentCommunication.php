@@ -93,9 +93,8 @@ class IncidentCommunication
                 return $contact->getContactCase() > $priorityCode;
             });
 
-            var_dump($mappedCollection); die();
         }
-        $enviar_a= $incident->getEmails($this->cert_email,$incident->isSendReport());
+        /*$enviar_a= $incident->getEmails($this->cert_email,$incident->isSendReport());
         if ($enviar_a) {
             #Hay que discutir si es necesario mandar cualquier cambio o que cosa todo || $is_new_incident || $renotification) {
                 $html = $this->getBody($incident);
@@ -115,7 +114,7 @@ class IncidentCommunication
                 }
 
                 return $this->mailer->send($message);
-            }
+            }*/
         return null;
     }
 
