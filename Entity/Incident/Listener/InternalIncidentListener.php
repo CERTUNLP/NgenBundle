@@ -113,7 +113,7 @@ class InternalIncidentListener
      */
     public function slugUpdate(Incident $incident): void
     {
-        $incident->setSlug(Sluggable\Urlizer::urlize($incident->getOrigin() . ' ' . $incident->getType()->getSlug() . ' ' . $incident->getDate()->format('Y-m-d-H-i'), '_'));
+        $incident->setSlug(Sluggable\Urlizer::urlize($incident->getOrigin()->getAddress() . ' ' . $incident->getType()->getSlug() . ' ' . $incident->getDate()->format('Y-m-d-H-i'), '_'));
     }
 
     public function stateUpdate(Incident $incident, LifecycleEventArgs $event): void
@@ -199,7 +199,7 @@ class InternalIncidentListener
             'type' => $convertible->getType(),
             'feed' => $convertible->getFeed(),
             'reporter' => $incidentReporter->getId(),
-            'ip' => $convertible->getIp(),
+            'ip' => $convertible->getAddress(),
             'evidence_file' => $UploadedFile,
             'sendReport' => true
         ];

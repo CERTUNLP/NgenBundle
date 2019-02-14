@@ -19,6 +19,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\CommentBundle\Model\ThreadManagerInterface;
+use Gedmo\Sluggable\Util as Sluggable;
 use Symfony\Component\Routing\Router;
 
 
@@ -42,18 +43,35 @@ class HostListener
 
     }
 
+    /** @ORM\PostLoad()
+     * @param Host $host
+     * @param LifecycleEventArgs $event
+     */
+    public function postLoadHandler(Host $host, LifecycleEventArgs $event): void
+    {
+        $host->guessAddress($host->getIpV4() ?? $host->getIpV6() ?? $host->getDomain());
+    }
+
     /** @ORM\PrePersist
      * @param Host $host
      * @param LifecycleEventArgs $event
      */
     public function prePersistHandler(Host $host, LifecycleEventArgs $event): void
     {
+        $host->guessAddress($host->getIpV4() ?? $host->getIpV6() ?? $host->getDomain());
+
         $this->incidentPrePersistUpdate($host, $event);
     }
 
     public function incidentPrePersistUpdate(Host $host, LifecycleEventArgs $event): void
     {
+        $this->slugUpdate($host);
         $this->networkUpdate($host);
+    }
+
+    public function slugUpdate(Host $incident): void
+    {
+        $incident->setSlug(Sluggable\Urlizer::urlize($incident->getAddress()));
     }
 
     /**

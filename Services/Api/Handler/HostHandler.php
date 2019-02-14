@@ -11,8 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
+use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 
 class HostHandler extends Handler
 {
@@ -36,10 +36,9 @@ class HostHandler extends Handler
      * @param string $address
      * @return Host
      */
-    public function findByIpV4(string $address): ?Host
+    public function findByAddress(string $address): ?Host
     {
-
-        return $this->repository->findOneBy(['ip_v4' => $address]);
+        return $this->repository->findByAddress(['address' => $address]);
     }
 
     /**
@@ -49,7 +48,7 @@ class HostHandler extends Handler
      */
     protected function checkIfExists($host, $method)
     {
-        $hostDB = $this->repository->findOneBy(['ip_v4' => $host->getIpV4()]);
+        $hostDB = $this->repository->findByAddress(['address' => $host->getAddress()]);
 
         if ($hostDB && $method === 'POST') {
             if (!$hostDB->getIsActive()) {
@@ -59,4 +58,13 @@ class HostHandler extends Handler
         }
         return $host;
     }
+
+    protected function createEntityInstance(array $params)
+    {
+        $entity_class_instance = new $this->entityClass($params['address']);
+
+        return $entity_class_instance->guessAddress($entity_class_instance->getIpV4() ?? $entity_class_instance->getIpV6() ?? $entity_class_instance->getDomain());
+    }
+
+
 }

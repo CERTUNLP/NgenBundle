@@ -36,7 +36,6 @@ class IncidentReportFrontendController extends Controller
      */
     public function homeAction(Request $request, $term = null)
     {
-//        var_dump('slug: ' . $term );die;
         return $this->getFrontendController()->homeEntity($request, 'slug:' . $term . '-*');
     }
 

@@ -190,10 +190,6 @@ fos_elastica:
                     properties:
                         id:
                             type: integer
-                        ip_v4:
-                            type: ip
-                        url:
-                            type: string
                         createdAt:
                             type: date
                         updatedAt:
