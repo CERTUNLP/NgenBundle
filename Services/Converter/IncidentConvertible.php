@@ -19,7 +19,7 @@ namespace CertUnlp\NgenBundle\Services\Converter;
 interface IncidentConvertible extends Convertible
 {
 
-    public function getIp();
+    public function getAddress();
 
     public function getType();
 

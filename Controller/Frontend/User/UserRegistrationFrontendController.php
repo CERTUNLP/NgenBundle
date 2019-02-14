@@ -92,7 +92,6 @@ class UserRegistrationFrontendController extends RegistrationController
                 return $response;
             }
         }
-//        var_dump($form);die;
         return $this->render('CertUnlpNgenBundle:User:Frontend/Registration/register.html.twig', array(
             'form' => $form->createView(),
         ));

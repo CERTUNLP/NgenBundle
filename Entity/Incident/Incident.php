@@ -202,27 +202,6 @@ class Incident implements IncidentInterface
     protected $notes;
 
     /**
-     * @var string|null
-     *
-     * @Assert\Ip(version="4_no_priv")
-     */
-    private $ip_v4;
-    /**
-     * @var string|null
-     *
-     * @Assert\Ip(version="6_no_priv")
-     */
-    private $ip_v6;
-
-    /**
-     * @var string|null
-     *
-     * @Assert\Url()
-     * )
-     */
-    private $url;
-
-    /**
      * @var Host|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_origin")
      * @JMS\Expose
@@ -243,6 +222,7 @@ class Incident implements IncidentInterface
      * @JMS\Groups({"api"})
      */
     private $network;
+    private $address;
 
     /**
      * @return int
@@ -260,38 +240,6 @@ class Incident implements IncidentInterface
     {
         $this->id = $id;
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIpV6(): string
-    {
-        return $this->ip_v6;
-    }
-
-    /**
-     * @param string $ip_v6
-     */
-    public function setIpV6(string $ip_v6): void
-    {
-        $this->ip_v6 = $ip_v6;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUrl(): string
-    {
-        return $this->url;
-    }
-
-    /**
-     * @param string $url
-     */
-    public function setUrl(string $url): void
-    {
-        $this->url = $url;
     }
 
     /**
@@ -345,42 +293,6 @@ class Incident implements IncidentInterface
     public function setUpdatedAt(\DateTime $updatedAt): Incident
     {
         $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
-    /**
-     * @return User
-     */
-    public function getReporter(): ?User
-    {
-        return $this->reporter;
-    }
-
-    /**
-     * @param User $reporter
-     * @return Incident
-     */
-    public function setReporter(User $reporter = null): Incident
-    {
-        $this->reporter = $reporter;
-        return $this;
-    }
-
-    /**
-     * @return User
-     */
-    public function getAssigned(): ?User
-    {
-        return $this->assigned;
-    }
-
-    /**
-     * @param User $assigned
-     * @return Incident
-     */
-    public function setAssigned(User $assigned): Incident
-    {
-        $this->assigned = $assigned;
         return $this;
     }
 
@@ -549,71 +461,6 @@ class Incident implements IncidentInterface
     /**
      * @return string
      */
-    public function getIp(): ?string
-    {
-        if ($this->getIpV4()) {
-            return $this->getIpV4();
-        }
-        return $this->getOrigin() ? $this->getOrigin()->getIpV4() : '';
-    }
-
-    /**
-     * @return string
-     */
-    public function getIpV4(): ?string
-    {
-        return $this->ip_v4;
-    }
-
-    /**
-     * @param string $ip_v4
-     */
-    public function setIpV4(string $ip_v4): void
-    {
-        $this->ip_v4 = $ip_v4;
-    }
-
-    /**
-     * @return Host
-     */
-    public function getOrigin(): ?Host
-    {
-        return $this->origin;
-    }
-
-    /**
-     * @param Host $origin
-     * @return Incident
-     */
-    public function setOrigin(Host $origin): Incident
-    {
-        $this->origin = $origin;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getHostAddress(): ?string
-    {
-        return $this->ip_v4;
-    }
-
-    /**
-     * Set ip
-     *
-     * @param string $ip
-     * @return Incident
-     */
-    public function setIp(string $ip): Incident
-    {
-        $this->ip_v4 = $ip;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getNotes(): ?string
     {
         return $this->notes;
@@ -719,6 +566,41 @@ class Incident implements IncidentInterface
         return $contactos;
     }
 
+    /**
+     * @return User
+     */
+    public function getAssigned(): ?User
+    {
+        return $this->assigned;
+    }
+
+    /**
+     * @param User $assigned
+     * @return Incident
+     */
+    public function setAssigned(User $assigned): Incident
+    {
+        $this->assigned = $assigned;
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getReporter(): ?User
+    {
+        return $this->reporter;
+    }
+
+    /**
+     * @param User $reporter
+     * @return Incident
+     */
+    public function setReporter(User $reporter = null): Incident
+    {
+        $this->reporter = $reporter;
+        return $this;
+    }
 
     /**
      * @return Network
@@ -899,6 +781,49 @@ class Incident implements IncidentInterface
     public function setDestination(Host $destination): Incident
     {
         $this->destination = $destination;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddress(): ?string
+    {
+        return $this->getOrigin() ? $this->getOrigin()->getAddress() : $this->address;
+    }
+
+    /**
+     * Set ip
+     *
+     * @param string $address
+     * @return Incident
+     */
+    public function setAddress(string $address): Incident
+    {
+        if ($this->getOrigin()) {
+            $this->getOrigin()->setAddress($address);
+
+        } else {
+            $this->address = $address;
+        }
+        return $this;
+    }
+
+    /**
+     * @return Host
+     */
+    public function getOrigin(): ?Host
+    {
+        return $this->origin;
+    }
+
+    /**
+     * @param Host $origin
+     * @return Incident
+     */
+    public function setOrigin(Host $origin): Incident
+    {
+        $this->origin = $origin;
         return $this;
     }
 }
