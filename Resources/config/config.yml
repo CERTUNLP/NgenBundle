@@ -38,6 +38,8 @@ swiftmailer:
 doctrine:
     orm:
         auto_mapping: true
+        auto_generate_proxy_classes: "%kernel.debug%"
+
         #        query_cache_driver:    apc
         #        metadata_cache_driver: apc
         entity_listener_resolver: cert_unlp.ngen.doctrine.entity_listener_resolver

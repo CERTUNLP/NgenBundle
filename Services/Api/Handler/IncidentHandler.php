@@ -89,7 +89,7 @@ class IncidentHandler extends Handler
             if ($incident->getOpenDays(true) >= $days) {
                 $incident->setState($state);
                 $this->om->persist($incident);
-                $closedIncidents[$incident->getId()] = ['ip' => $incident->getIp(),
+                $closedIncidents[$incident->getId()] = ['ip' => $incident->getAddress(),
                     'type' => $incident->getType(),
                     'date' => getDate(),
                     'lastTimeDetected' => $incident->getLastTimeDetected(),
@@ -133,9 +133,11 @@ class IncidentHandler extends Handler
      */
     public function hostUpdate(Incident $incident): void
     {
+
         $host = $incident->getOrigin();
-        $host_new = $this->getHostHandler()->findByIpV4($incident->getIp()) ?: $this->getHostHandler()->post(['ip_v4' => $incident->getIp()]);
+        $host_new = $this->getHostHandler()->findByAddress($incident->getAddress()) ?: $this->getHostHandler()->post(['address' => $incident->getAddress()]);
         if ($host) {
+
             if (!$host->equals($host_new) && !$incident->isClosed()) {
                 $incident->setOrigin($host_new);
             }
@@ -197,5 +199,4 @@ class IncidentHandler extends Handler
     {
         return $this->context->getToken() ? $this->context->getToken()->getUser() : 'anon.';
     }
-
 }

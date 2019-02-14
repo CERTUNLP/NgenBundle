@@ -125,8 +125,8 @@ class IncidentRedmine implements ContainerAwareInterface
         }
         $issue = $this->getClient()->api('issue')->create(array(
             'project_id' => $this->project_id,
-            'subject' => sprintf('Host %s en incidente "%s"', $incident->getIp(), $incident->getType()),
-            'description' => sprintf($description, $incident->getIp(), $incident->getType()),
+            'subject' => sprintf('Host %s en incidente "%s"', $incident->getAddress(), $incident->getType()),
+            'description' => sprintf($description, $incident->getAddress(), $incident->getType()),
             'category_id' => $this->getClient()->api('issue_category')->getIdByName($this->project_id, $incident->getType()->getName()),
             'tracker_id' => $this->getClient()->api('tracker')->getIdByName($this->tracker_name),
             'watcher_user_ids' => $this->getClient()->api('user')->getIdByUsername('cert'),

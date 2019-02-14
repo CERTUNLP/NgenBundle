@@ -1,72 +1,51 @@
-<?php
+PImage img1, img2, img3, img4, img5;
+String estado;
+void setup (){
+size(400,400);
+img1 = loadImage("Recurso 1.png");
+img2 = loadImage("Recurso 2.png");
+img3 = loadImage("Recurso 3.png");
+img4 = loadImage("Recurso 4.png");
+img5 = loadImage("Recurso 5.png");
+estado = "imagen1" ;
+keyPressed = false ;
+}
 
-/*
- * This file is part of the Ngen - CSIRT Incident Report System.
- *
- * (c) CERT UNLP <support@cert.unlp.edu.ar>
- *
- * This source file is subject to the GPL v3.0 license that is bundled
- * with this source code in the file LICENSE.
- */
+void draw(){
+image(img1,0,0);
+while (keyPressed == false) {
+if(estado == "imagen1" && keyCode == RIGHT && keyPressed == false ){
+image(img2,0,0);
+estado = "imagen2";
+keyPressed = true ;
 
-namespace CertUnlp\NgenBundle\Form;
+}
 
-use CertUnlp\NgenBundle\Entity\Network\Host\Host;
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+if(estado == "imagen2" && keyCode == LEFT && keyPressed == false){
+image(img3,0,0);
+estado = "imagen3";
+keyPressed = true ;
 
-class HostType extends AbstractType
-{
-    private $userLogged;
-    private $doctrine;
+}
 
-    public function __construct(EntityManager $doctrine = null, int $userLogged = null)
-    {
-        $this->doctrine = $doctrine;
-        $this->userLogged = $userLogged;
-    }
+if(estado == "imagen3" && keyCode == DOWN && keyPressed == false){
+image(img1,0,0);
+estado = "imagen1";
+keyPressed = true ;
 
+}
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     * @throws \Exception
-     */
+if(estado == "image2" && keyCode == RIGHT && keyPressed == false){
+image(img4,0,0);
+estado = "image4";
+keyPressed = true ;
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('ip_v4', null, array(
-                'attr' => array('maxlength' => '300', 'help_text' => 'Add more than one address separating them with a comma.'),
-                'description' => 'The host IP. (Add more than one address separating them with a comma.)'))
-            ->add('save', SubmitType::class, array(
-                'attr' => array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => 'slide-down'),
-//                    'description' => "Evidence file that will be attached to the report "
-            ));
+}
 
-    }
-
-    /**
-     * @param OptionsResolverInterface $resolver
-     * @return void
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => Host::class,
-            'csrf_protection' => false,
-        ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return '';
-    }
-
+if(estado == "image4" && keyCode == RIGHT && keyPressed == false){
+image(img5,0,0);
+keyPressed = true ;
+}
+}
+keyPressed = false
 }

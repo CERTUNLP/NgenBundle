@@ -78,14 +78,14 @@ interface IncidentInterface
      * @param string $ip
      * @return Incident
      */
-    public function setIp(string $ip): Incident;
+    public function setAddress(string $ip): Incident;
 
     /**
      * Get ip
      *
      * @return string
      */
-    public function getIp(): ?string;
+    public function getAddress(): ?string;
 
     /**
      * Set isClosed

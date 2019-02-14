@@ -65,9 +65,11 @@ class IncidentType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
-            ->add('ip_v4', null, array(
+            ->add('address', null, array(
                 'required' => true,
-                'attr' => array('maxlength' => '15'),
+                'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
+                'label' => 'Address',
+                'description' => 'The network ip and mask',
             ))
             ->add('feed', EntityType::class, array(
                 'class' => IncidentFeed::class,
