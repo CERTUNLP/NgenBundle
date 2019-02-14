@@ -116,7 +116,6 @@ class IncidentHandler extends Handler
      */
     protected function checkIfExists($incident, $method)
     {
-        $this->hostUpdate($incident);
         $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()]);
         if ($incidentDB && $method === 'POST') {
             if ($incident->getEvidenceFile()) {
@@ -126,42 +125,6 @@ class IncidentHandler extends Handler
             $incident->setLastTimeDetected(new \DateTime('now'));
         }
         return $incident;
-    }
-
-    /**
-     * @param Incident $incident
-     */
-    public function hostUpdate(Incident $incident): void
-    {
-
-        $host = $incident->getOrigin();
-        $host_new = $this->getHostHandler()->findByAddress($incident->getAddress()) ?: $this->getHostHandler()->post(['address' => $incident->getAddress()]);
-        if ($host) {
-
-            if (!$host->equals($host_new) && !$incident->isClosed()) {
-                $incident->setOrigin($host_new);
-            }
-        } else {
-            $incident->setOrigin($host_new);
-        }
-    }
-
-    /**
-     * @return HostHandler
-     */
-    public function getHostHandler(): HostHandler
-    {
-        return $this->host_handler;
-    }
-
-    /**
-     * @param HostHandler $host_handler
-     * @return IncidentHandler
-     */
-    public function setHostHandler(HostHandler $host_handler): IncidentHandler
-    {
-        $this->host_handler = $host_handler;
-        return $this;
     }
 
     protected function prepareToDeletion($incident, array $parameters)
@@ -198,5 +161,49 @@ class IncidentHandler extends Handler
     public function getUser()
     {
         return $this->context->getToken() ? $this->context->getToken()->getUser() : 'anon.';
+    }
+
+    protected function createEntityInstance(array $params)
+    {
+        return $this->hostUpdate(new $this->entityClass($params['address']));
+
+    }
+
+    /**
+     * @param Incident $incident
+     * @return Incident
+     */
+    public function hostUpdate(Incident $incident): Incident
+    {
+
+        $host = $incident->getOrigin();
+        $host_new = $this->getHostHandler()->findByAddress($incident->getAddress()) ?: $this->getHostHandler()->post(['address' => $incident->getAddress()]);
+        if ($host) {
+
+            if (!$host->equals($host_new) && !$incident->isClosed()) {
+                $incident->setOrigin($host_new);
+            }
+        } else {
+            $incident->setOrigin($host_new);
+        }
+        return $incident;
+    }
+
+    /**
+     * @return HostHandler
+     */
+    public function getHostHandler(): HostHandler
+    {
+        return $this->host_handler;
+    }
+
+    /**
+     * @param HostHandler $host_handler
+     * @return IncidentHandler
+     */
+    public function setHostHandler(HostHandler $host_handler): IncidentHandler
+    {
+        $this->host_handler = $host_handler;
+        return $this;
     }
 }

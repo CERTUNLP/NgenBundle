@@ -47,7 +47,7 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
             $form->get('reporter')->setData($this->userLogged !== null ? $this->doctrine->getReference(User::class, $this->userLogged) : 'null ');
         } else {
             if ($incident->getOrigin()) {
-                $form->get('ip_v4')->setData($incident->getOrigin()->getIpV4());
+                $form->get('address')->setData($incident->getOrigin()->getAddress());
             }
 
         }
