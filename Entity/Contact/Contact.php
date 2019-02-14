@@ -15,7 +15,7 @@ use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\ContactRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"contact"="Contact","telegram" = "ContactTelegram", "phone" = "ContactPhone", "email" = "ContactEmail"})
+ * @ORM\DiscriminatorMap({"contact"="Contact","telegram" = "ContactTelegram", "phone" = "ContactPhone", "email" = "ContactEmail", "threema"="ContactThreema"})
  * @JMS\ExclusionPolicy("all")
  */
 
