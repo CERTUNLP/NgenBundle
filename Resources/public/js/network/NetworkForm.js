@@ -28,7 +28,7 @@ var NetworkForm = Form.extend({
         return this.getNetworkId();
     },
     setNetworkId: function () {
-        this.networkId = $('#ip_v4').val();
+        this.networkId = $('#address').val();
     },
     getNetworkId: function () {
         return this.networkId;

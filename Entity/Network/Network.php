@@ -11,16 +11,15 @@
 
 namespace CertUnlp\NgenBundle\Entity\Network;
 
-use CertUnlp\NgenBundle\Entity\Incident\Host\Host;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
+use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -31,12 +30,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"internal" = "NetworkInternal", "external" = "NetworkExternal", "rdap" = "NetworkRdap"})
- * @UniqueEntity(
- *     fields={"ip_v4", "ipMask","isActive"},
- *     message="This network was already added!")
  * @JMS\ExclusionPolicy("all")
+ * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Network\Listener\NetworkListener" })
  */
-abstract class Network implements NetworkInterface
+abstract class Network extends NetworkElement implements NetworkInterface
 {
 
     /**
@@ -46,89 +43,95 @@ abstract class Network implements NetworkInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ip_mask", type="string", length=40)
+     * @ORM\Column(name="ip_v4_mask", type="string", length=40, nullable=true)
      * @Assert\Range(
      *      min = 1,
      *      max = 32,
      * )
      * @JMS\Expose
      */
-    private $ipMask;
+    protected $ip_v4_mask;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="numeric_ip_mask", type="bigint", options={"unsigned":true})
+     * @ORM\Column(name="numeric_ip_v4_mask",type="bigint", options={"unsigned":true}, nullable=true)
      */
-    private $numericIpMask;
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=15, nullable=true)
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     * @Assert\Ip(version="4_no_priv")
-     */
-    private $ip_v4;
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=39, nullable=true)
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     * @Assert\Ip(version="6_no_priv")
-     */
-    private $ip_v6;
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", nullable=true)
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     *
-     * @Assert\Url()
-     */
-    private $url;
+    protected $numeric_ip_v4_mask;
+
     /**
      * @var int
      *
-     * @ORM\Column(name="numeric_ip", type="integer",options={"unsigned":true})
+     * @ORM\Column(type="integer",options={"unsigned":true}, nullable=true)
      */
-    private $numericIp;
+    protected $numeric_ip_v4;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ip_v6_mask", type="string", length=3, nullable=true)
+     * @Assert\Range(
+     *      min = 1,
+     *      max = 128,
+     * )
+     * @JMS\Expose
+     */
+    protected $ip_v6_mask;
+
+    /**
+     * @var int
+     * @ORM\Column(name="numeric_ip_v6_mask",type="binary", length=16, nullable=true)
+     */
+    protected $numeric_ip_v6_mask;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column( type="binary",length=16, nullable=true)
+     */
+    protected $numeric_ip_v6;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="numeric_domain", type="integer",options={"unsigned":true}, nullable=true)
+     */
+    protected $numeric_domain;
+
     /**
      * @var NetworkAdmin
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
      */
-    private $network_admin;
+    protected $network_admin;
     /**
      * @var NetworkEntity
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkEntity", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
      */
-    private $network_entity;
+    protected $network_entity;
     /**
      * @var Collection| Incident[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="network"))
      */
-    private $incidents;
+    protected $incidents;
     /**
      * @var Collection| Host[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Host\Host",mappedBy="network", cascade={"persist"}))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host",mappedBy="network", cascade={"persist"}))
      */
-    private $hosts;
+    protected $hosts;
     /**
      * @var boolean
      *
      * @ORM\Column(name="is_active", type="boolean")
      * @JMS\Expose
      */
-    private $isActive = true;
+    protected $isActive = true;
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
@@ -136,7 +139,7 @@ abstract class Network implements NetworkInterface
      * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
-    private $createdAt;
+    protected $createdAt;
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="update")
@@ -144,16 +147,16 @@ abstract class Network implements NetworkInterface
      * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * Constructor
-     * @param string $ip_v4
+     * @param string $term
      */
-    public function __construct(string $ip_v4 = '')
+    public function __construct(string $term = '')
     {
-        if ($ip_v4) {
-            $this->ip_v4 = $ip_v4;
+        if ($term) {
+            $this->guessAddress($term);
         }
         $this->incidents = new ArrayCollection();
     }
@@ -213,127 +216,6 @@ abstract class Network implements NetworkInterface
     }
 
     /**
-     * @return string
-     */
-    public function getIpV6(): string
-    {
-        return $this->ip_v6;
-    }
-
-    /**
-     * @param string $ip_v6
-     * @return Network
-     */
-    public function setIpV6(string $ip_v6): Network
-    {
-        $this->ip_v6 = $ip_v6;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUrl(): string
-    {
-        return $this->url;
-    }
-
-    /**
-     * @param string $url
-     * @return Network
-     */
-    public function setUrl(string $url): Network
-    {
-        $this->url = $url;
-        return $this;
-    }
-
-    public function __toString(): string
-    {
-        return $this->getIpAndMask();
-    }
-
-    public function getIpAndMask(): string
-    {
-
-
-        return $this->getIp() . '/' . $this->getIpMask();
-    }
-
-    /**
-     * Get ip
-     *
-     * @return string
-     */
-    public function getIp(): ?string
-    {
-        return $this->getIpV4();
-    }
-
-    /**
-     * @return string
-     */
-    public function getIpV4(): ?string
-    {
-        return $this->ip_v4;
-    }
-
-    /**
-     * Set ip
-     *
-     * @param string $ip
-     * @return Network
-     */
-    public function setIpV4(string $ip): Network
-    {
-
-        $ip_and_mask = explode('/', $ip);
-        $this->ip_v4 = $ip_and_mask[0];
-        $this->setNumericIp(ip2long($ip_and_mask[0]));
-        if (isset($ip_and_mask[1])) {
-            $this->setIpMask($ip_and_mask[1]);
-        }
-        return $this;
-    }
-
-    /**
-     * Get ipMask
-     *
-     * @return string
-     */
-    public function getIpMask(): ?string
-    {
-        return $this->ipMask;
-    }
-
-    /**
-     * Set ipMask
-     *
-     * @param string $ipMask
-     * @return Network
-     */
-    public function setIpMask(string $ipMask): Network
-    {
-        $this->ipMask = $ipMask;
-        $this->setNumericIpMask(0xffffffff << (32 - $ipMask));
-
-        return $this;
-    }
-
-    /**
-     * Set ip
-     *
-     * @param string $ip
-     * @return Network
-     */
-    public function setIp(string $ip): Network
-    {
-
-        $this->setIpV4($ip);
-        return $this;
-    }
-
-    /**
      * Add incidents
      *
      * @param \CertUnlp\NgenBundle\Entity\Incident\Incident $incidents
@@ -368,60 +250,12 @@ abstract class Network implements NetworkInterface
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function equals(Network $other = null): bool
-    {
-        if ($other) {
-            return ($this->getNumericIp() === $other->getNumericIp()) && ($this->getNumericIpMask() === $other->getNumericIpMask());
-        }
-        return false;
-
-    }
-
-    /**
-     * Get numericIp
-     *
-     * @return int
-     */
-    public function getNumericIp(): int
-    {
-        return $this->numericIp;
-    }
-
-    /**
-     * Set numericIp
-     *
-     * @param integer $numericIp
+     * @param Incident[]|Collection $incidents
      * @return Network
      */
-    public function setNumericIp(int $numericIp): Network
+    public function setIncidents(Collection $incidents): Network
     {
-        $this->numericIp = $numericIp;
-
-        return $this;
-    }
-
-    /**
-     * Get numericIpMask
-     *
-     * @return int
-     */
-    public function getNumericIpMask(): int
-    {
-        return $this->numericIpMask;
-    }
-
-    /**
-     * Set numericIpMask
-     *
-     * @param int $numericIpMask
-     * @return Network
-     */
-    public function setNumericIpMask(int $numericIpMask): Network
-    {
-        $this->numericIpMask = $numericIpMask;
-
+        $this->incidents = $incidents;
         return $this;
     }
 
