@@ -288,8 +288,6 @@ class OpenPGPSigner implements \Swift_Signers_BodySigner
 
 //            $signed = sprintf("%s\r\n%s", $message->getHeaders()->get('Content-Type')->toString(), $signedBody);
             $signed = $originalMessage->toString();;
-//            var_dump($signedBody, $signature, $body);
-//            die;
             if (!$this->recipientKeys) {
                 foreach ($message->getTo() as $key => $value) {
                     if (!isset($this->recipientKeys[$key])) {

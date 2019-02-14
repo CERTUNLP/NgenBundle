@@ -69,7 +69,7 @@ class IncidentMailer extends IncidentCommunication
             #Hay que discutir si es necesario mandar cualquier cambio o que cosa todo || $is_new_incident || $renotification) {
                 $html = $this->getBody($incident);
                 $message = \Swift_Message::newInstance()
-                    ->setSubject(sprintf($this->mailSubject($renotification), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getIp(), $incident->getId()))
+                    ->setSubject(sprintf($this->mailSubject($renotification), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getAddress(), $incident->getId()))
                     ->setFrom($this->cert_email)
                     ->setSender($this->cert_email)
                     ->setTo($enviar_a)
@@ -136,7 +136,7 @@ class IncidentMailer extends IncidentCommunication
 
         $html = $this->getReplyBody($incident, $body);
         $message = \Swift_Message::newInstance()
-            ->setSubject(sprintf($this->replySubject(), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getIp(), $incident->getId()))
+            ->setSubject(sprintf($this->replySubject(), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getAddress(), $incident->getId()))
             ->setFrom($this->cert_email)
             ->addPart($html, 'text/html');
 

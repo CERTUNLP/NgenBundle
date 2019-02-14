@@ -29,7 +29,7 @@ class NetworkRdapClient extends RdapClient
         $network = $incident->getNetwork();
         if (!$network || $network instanceof NetworkRdap) {
 
-            $network_new = $this->findByIpV4($incident->getIp());
+            $network_new = $this->findByIpV4($incident->getAddress());
             if ($network_new) {
                 $incident->setNetwork();
             }

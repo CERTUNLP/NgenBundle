@@ -79,7 +79,7 @@ class UserHandler extends Handler
         return $user;
     }
 
-    protected function createEntityInstance()
+    protected function createEntityInstance(array $params)
     {
         $user = new $this->entityClass();
         $user->setEnabled(true);
