@@ -85,16 +85,15 @@ class IncidentCommunication
             $incidentContacts->add($this->teamContact);
 
             $repo=$this->getDoctrine()->getRepository(IncidentPriority::class);
-            $found = $repo->findOneBy(array('impact'=>$incident->getImpact(), 'urgency'=>$incident->getUrgency()) );
-
+            $found = $repo->findOneBy(array('impact'=>$incident->getImpact(), 'urgency'=>$incident->getUrgency()));
             if ($found) {$priorityCode=$found->getCode();}
             else {$priorityCode=5;}
-echo $priorityCode;
-            die();//->getRepository('
+
             $mappedCollection = $incidentContacts->filter(function($contact) {
                 return $contact->getContactCase() > $priorityCode;
             });
-            ver_dump($mappedCollection); die();
+
+            var_dump($mappedCollection); die();
         }
         $enviar_a= $incident->getEmails($this->cert_email,$incident->isSendReport());
         if ($enviar_a) {
