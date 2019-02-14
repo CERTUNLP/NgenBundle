@@ -106,20 +106,6 @@ class NetworkAdmin
        return $this;
     }
 
-    /**
-     *
-     * @var array
-     *
-     * @ORM\Column(name="emails", type="array")
-     * @JMS\Expose()
-     */
-    private $emails = [];
-
-    /**
-     * @var string
-     *
-     */
-    private $emailsAsString = [];
 
     /**
      * @var Collection
@@ -158,10 +144,9 @@ class NetworkAdmin
      * @param string $name
      * @param array $emails
      */
-    public function __construct(string $name = '', array $emails = [])
+    public function __construct(string $name = '')
     {
         $this->setName($name);
-        $this->setEmails($emails);
         $this->networks = new ArrayCollection();
         $this->contacts = new ArrayCollection();
     }
@@ -258,15 +243,6 @@ class NetworkAdmin
         return implode(',', $this->getEmails());
     }
 
-    /**
-     * @param string $emailsAsString
-     * @return NetworkAdmin
-     */
-    public function setEmailsAsString(string $emailsAsString): NetworkAdmin
-    {
-        $this->emailsAsString = $emailsAsString;
-        return $this;
-    }
 
     /**
      * Get emails
@@ -281,26 +257,6 @@ class NetworkAdmin
         return $array_mails->toArray();
     }
 
-    /**
-     * Set email
-     *
-     * @param mixed $emails
-     * @return NetworkAdmin
-     */
-    public function setEmails($emails): NetworkAdmin
-    {
-        if (is_string($emails)) {
-            $emails_exploded = [];
-            foreach (explode(',', $emails) as $email) {
-                $emails_exploded[] = trim($email);
-            }
-            $this->emails = $emails_exploded;
-        }
-        if (is_array($emails)) {
-            $this->emails = $emails;
-        }
-        return $this;
-    }
 
     /**
      * Get slug
