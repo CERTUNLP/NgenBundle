@@ -124,8 +124,8 @@ class NetworkController extends FOSRestController
      * @return Network
      *
      * @FOS\Get("/networks/{domain}", name="_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
-     * @FOS\Get("/networks/{ip_v4}/{ip_v4_mask}", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"} )
-     * @FOS\Get("/networks/{ip_v6}/{ip_v6_mask}", name="_ip_v6")
+     * @FOS\Get("/networks/{ip_v4}/{ip_v4_mask}", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_v4_mask"="^[1-3]?[0-9]$"} )
+     * @FOS\Get("/networks/{ip_v6}/{ip_v6_mask}", name="_ip_v6",  requirements={"ip_v6"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$","ip_v6_mask"="^(([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$"} )
      * @FOS\View(
      *  templateVar="network"
      * )
@@ -181,8 +181,8 @@ class NetworkController extends FOSRestController
      * @return FormTypeInterface|View
      *
      * @FOS\Patch("/networks/{domain}", name="_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
-     * @FOS\Patch("/networks/{ip_v4}/{ip_v4_mask}", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"} )
-     * @FOS\Patch("/networks/{ip_v6}/{ip_v6_mask}", name="_ip_v6")
+     * @FOS\Patch("/networks/{ip_v4}/{ip_v4_mask}", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_v4_mask"="^[1-3]?[0-9]$"} )
+     * @FOS\Patch("/networks/{ip_v6}/{ip_v6_mask}", name="_ip_v6",  requirements={"ip_v6"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$","ip_v6_mask"="^(([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$"} )
      */
     public function patchNetworkAction(Request $request, Network $network)
     {
@@ -208,7 +208,7 @@ class NetworkController extends FOSRestController
      *
      * @FOS\Patch("/networks/{domain}/activate", name="_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
      * @FOS\Patch("/networks/{ip_v4}/{ip_v4_mask}/activate", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_v4_mask"="^[1-3]?[0-9]$"} )
-     * @FOS\Patch("/networks/{ip_v6}/{ip_v6_mask}/activate", name="_ip_v6")
+     * @FOS\Patch("/networks/{ip_v6}/{ip_v6_mask}/activate", name="_ip_v6",  requirements={"ip_v6"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$","ip_v6_mask"="^(([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$"} )
      * @FOS\View(
      *  templateVar = "network"
      * )
@@ -239,7 +239,7 @@ class NetworkController extends FOSRestController
      *
      * @FOS\Patch("/networks/{domain}/desactivate", name="_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
      * @FOS\Patch("/networks/{ip_v4}/{ip_v4_mask}/desactivate", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_v4_mask"="^[1-3]?[0-9]$"} )
-     * @FOS\Patch("/networks/{ip_v6}/{ip_v6_mask}/desactivate", name="_ip_v6")
+     * @FOS\Patch("/networks/{ip_v6}/{ip_v6_mask}/desactivate", name="_ip_v6",  requirements={"ip_v6"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$","ip_v6_mask"="^(([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$"} )
      * @FOS\View(
      *  templateVar = "network"
      * )
