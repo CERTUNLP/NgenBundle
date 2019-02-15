@@ -76,7 +76,7 @@ class NetworkElementRepository extends EntityRepository
         return $results ? $results[0] : null;
     }
 
-    public function findByUrl(string $domain): NetworkElement
+    public function findByDomain(string $domain): NetworkElement
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
