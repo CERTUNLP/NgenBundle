@@ -667,7 +667,7 @@ class Incident implements IncidentInterface
     public function setState(IncidentState $state = null): Incident
     {
 
-        if ($state && !\in_array($state->getSlug(), ['open', 'stand_by'])) {
+        if ($state && !\in_array($state->getSlug(), ['open', 'staging'])) {
             $this->close();
         } else {
             $this->open();
