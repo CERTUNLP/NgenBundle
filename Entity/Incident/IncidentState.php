@@ -64,19 +64,14 @@ class IncidentState
      * @var ContactCase
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_assigned", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
      */
     private $mailAssigned;
-
 
 
     /**
      * @var ContactCase
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_team", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
      */
 
     private $mailTeam;
@@ -85,8 +80,6 @@ class IncidentState
      * @var ContactCase
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_admin", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
      */
 
     private $mailAdmin;
@@ -96,11 +89,35 @@ class IncidentState
      * @var ContactCase
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_reporter", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
      */
 
     private $mailReporter;
+    /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    private $createdAt;
+    /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="updated_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    private $updatedAt;
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state")) */
+    private $incidents;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * @return ContactCase
@@ -164,35 +181,6 @@ class IncidentState
     public function setMailReporter($mailReporter)
     {
         $this->mailReporter = $mailReporter;
-    }
-
-    /**
-     * @var \DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-
-    /**
-     * @var \DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
-
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state")) */
-    private $incidents;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function __toString()
@@ -361,8 +349,10 @@ class IncidentState
 
     public function getContacts(int $incidentPriority, bool $force): array
     {
-        $contactos=[];
+        $contactos = [];
         if ($this->notificar_admin($incidentPriority))
-        if ($force){ return $contactos; }
+            if ($force) {
+                return $contactos;
+            }
     }
 }

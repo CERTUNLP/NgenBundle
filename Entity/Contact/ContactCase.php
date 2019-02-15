@@ -17,6 +17,42 @@ use JMS\Serializer\Annotation as JMS;
 class ContactCase
 {
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="name", type="string", length=45, nullable=true)
+     * @JMS\Expose
+     */
+    private $name;
+    /**
+     * @var string|null
+     * @ORM\Id
+     * @Gedmo\Slug(fields={"name"}, separator="_")
+     * @ORM\Column(name="slug", type="string", length=45)
+     * @JMS\Expose
+     * */
+    private $slug;
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
+     * @JMS\Expose
+     */
+    private $description;
+    /**
+     * @var Collection|null
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="contactCase"))
+     * @JMS\Exclude()
+     */
+    private $contacts;
+    /**
+     * @var level
+     *
+     * @ORM\Column(name="level", type="integer")
+     *
+     */
+    private $level;
+
+    /**
      * @return string|null
      */
     public function getName()
@@ -30,22 +66,6 @@ class ContactCase
     public function setName($name)
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string|null $description
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
     }
 
     /**
@@ -63,44 +83,26 @@ class ContactCase
     {
         $this->contacts = $contacts;
     }
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="name", type="string", length=45, nullable=true)
-     * @JMS\Expose
-     */
-    private $name;
-
-    /**
-     * @var string|null
-     * @ORM\Id
-     * @Gedmo\Slug(fields={"name"}, separator="_")
-     * @ORM\Column(name="slug", type="string", length=45)
-     * @JMS\Expose
-     * */
-    private $slug;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="description", type="string", length=255, nullable=true)
-     * @JMS\Expose
-     */
-    private $description;
-
-    /**
-     * @var Collection|null
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="contactCase"))
-     * @JMS\Exclude()
-     */
-
-    private $contacts;
-
-
 
     public function __toString()
     {
         return $this->getDescription();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string|null $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
     }
 
     /**
@@ -126,13 +128,10 @@ class ContactCase
         return $this;
     }
 
-    /**
-     * @var level
-     *
-     * @ORM\Column(name="level", type="integer")
-     *
-     */
-    private $level;
+    public function needToContact($level)
+    {
+        return ($level >= $this->getLevel());
+    }
 
     /**
      * @return level
@@ -148,10 +147,5 @@ class ContactCase
     public function setLevel($level)
     {
         $this->level = $level;
-    }
-
-    public function needToContact($level)
-    {
-        return ($level>= $this->getLevel());
     }
 }
