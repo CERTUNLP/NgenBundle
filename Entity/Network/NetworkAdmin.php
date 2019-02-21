@@ -21,6 +21,7 @@ use CertUnlp\NgenBundle\Entity\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
 use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
 use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
+use CertUnlp\NgenBundle\Entity\Contact\ContactThreema;
 
 
 /**
@@ -87,6 +88,9 @@ class NetworkAdmin
             case 'phone':
                 $newObj = $contact->castAs(new ContactPhone());
                 break;
+            case 'threema':
+                $newObj = $contact->castAs(new ContactThreema());
+                break;
         }
 
         if (!$this->contacts->contains($newObj)){
@@ -144,9 +148,10 @@ class NetworkAdmin
      * @param string $name
      * @param array $emails
      */
-    public function __construct(string $name = '')
+    public function __construct(Array $request)
     {
-        $this->setName($name);
+        $this->setName($request["name"]);
+
         $this->networks = new ArrayCollection();
         $this->contacts = new ArrayCollection();
     }

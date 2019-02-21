@@ -80,7 +80,7 @@ class IncidentCommunication
      */
     public function send_report(Incident $incident, $body = null, $echo = null, $is_new_incident = false, $renotification = false, $makeContact=true)
     {
-        /*if ($makeContact) {
+        if ($makeContact) {
             $incidentContacts = new ArrayCollection($incident->getContactsArray());
             $incidentContacts->add($this->teamContact);
 
@@ -94,7 +94,7 @@ class IncidentCommunication
             });
 
         }
-        $enviar_a= $incident->getEmails($this->cert_email,$incident->isSendReport());
+        /*$enviar_a= $incident->getEmails($this->cert_email,$incident->isSendReport());
         if ($enviar_a) {
             #Hay que discutir si es necesario mandar cualquier cambio o que cosa todo || $is_new_incident || $renotification) {
                 $html = $this->getBody($incident);
