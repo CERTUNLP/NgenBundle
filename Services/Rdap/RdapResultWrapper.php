@@ -56,6 +56,11 @@ class RdapResultWrapper
         return $this->rdap_json_object->notices;
     }
 
+    public function getCidr(): array
+    {
+        return $this->rdap_json_object->cidr0_cidrs ?? [];
+    }
+
     public function getName(): string
     {
         return $this->rdap_json_object->name ?? '';

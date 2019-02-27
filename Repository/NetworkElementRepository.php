@@ -42,48 +42,46 @@ class NetworkElementRepository extends EntityRepository
 
     }
 
-    public function findByIpV4(string $address): NetworkElement
+    public function findByIpV4(string $address): ?NetworkElement
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
         $qb->select('n')
             ->from($this->getClassName(), 'n')
-            ->where($qb->expr()->eq('BIT_AND(INET_ATON(:address),n.numeric_ip_v4_mask)', 'n.numeric_ip_v4'))
+            ->where($qb->expr()->between('INET_ATON(:address)', 'INET_ATON(n.ip_start_address)', 'INET_ATON(n.ip_end_address)'))
             ->andWhere('n.isActive = true')
-            ->orderBy('n.ip_v4_mask', 'DESC');
+            ->orderBy('n.ip_mask', 'DESC');
 
-        $ip = is_array($address) ? $address['ip_v4'] : $address;
-        $qb->setParameter('address', $ip);
+        $qb->setParameter('address', $address);
 
         $results = $qb->getQuery()->getResult();
         return $results ? $results[0] : null;
     }
 
-    public function findByIpV6(string $address): NetworkElement
+    public function findByIpV6(string $address): ?NetworkElement
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
         $qb->select('n')
             ->from($this->getClassName(), 'n')
-            ->where($qb->expr()->eq('BIT_AND(INET6_ATON(:address),n.numeric_ip_v6_mask)', 'n.numeric_ip_v6'))
+            ->where($qb->expr()->between('INET6_ATON(:address)', 'INET6_ATON(n.ip_start_address)', 'INET6_ATON(n.ip_end_address)'))
             ->andWhere('n.isActive = true')
-            ->orderBy('n.ip_v6_mask', 'DESC');
+            ->orderBy('n.ip_mask', 'DESC');
 
-        $ip = is_array($address) ? $address['ip_v4'] : $address;
-        $qb->setParameter('address', $ip);
+        $qb->setParameter('address', $address);
 
         $results = $qb->getQuery()->getResult();
         return $results ? $results[0] : null;
     }
 
-    public function findByDomain(string $domain): NetworkElement
+    public function findByDomain(string $domain): ?NetworkElement
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
         $qb->select('n')
             ->from($this->getClassName(), 'n')
             ->andWhere('n.isActive = true')
-            ->orderBy('n.numeric_domain', 'DESC');
+            ->orderBy('n.ip_mask', 'DESC');
 
         $count = substr_count($domain, '.') + 1;
 

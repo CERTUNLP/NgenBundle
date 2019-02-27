@@ -11,70 +11,38 @@
 
 namespace CertUnlp\NgenBundle\Entity\Network\Address;
 
-use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
 use JMS\Serializer\Annotation as JMS;
 
 /**
  *
  * @JMS\ExclusionPolicy("all")
  */
-class IpV4Address extends Address
+class IpV4Address extends IpAddress
 {
-    public function setCustomAddress(string $address): NetworkElement
-    {
-        $ip_and_mask = explode('/', $address);
-        $this->getNetwork()->setIpV4($ip_and_mask[0]);
-        $this->setCustomNumericAddress($ip_and_mask[0]);
-        if (isset($ip_and_mask[1])) {
-            $this->setCustomAddressMask($ip_and_mask[1]);
-        }
-        return $this->getNetwork();
-    }
 
-    public function setCustomNumericAddress(string $address): NetworkElement
+    public function getCustomNumericAddress(): string
     {
-        return $this->getNetwork()->setNumericIpV4(ip2long($address));
-    }
-
-    public function setCustomAddressMask(string $address): NetworkElement
-    {
-        $this->getNetwork()->setIpV4Mask($address);
-        $this->setCustomNumericAddressMask($address);
-        return $this->getNetwork();
-    }
-
-    public function setCustomNumericAddressMask(string $address): NetworkElement
-    {
-        return $this->getNetwork()->setNumericIpV4Mask(0xffffffff << (32 - $address));
+        return ip2long($this->getCustomAddress());
     }
 
     public function getCustomAddress(): string
     {
-        return $this->getNetwork()->getIpV4();
-    }
-
-    public function getCustomAddressMask(): string
-    {
-        return $this->getNetwork()->getIpV4Mask();
-    }
-
-    public function getCustomNumericAddress(): string
-    {
-        return $this->getNetwork()->getNumericIpV4();
+        return $this->getNetwork()->getIp();
     }
 
     public function getCustomNumericAddressMask(): string
     {
-        return $this->getNetwork()->getNumericIpV4Mask();
+        return 0xffffffff << (32 - $this->getCustomAddress());
     }
 
-    public function equal(): bool
-    {
-        // TODO: Implement equal() method.
-    }
 
     public function getType(): string
     {
         return 'ip_v4';
+    }
+
+    public function getDefaultIpMask(): int
+    {
+        return 32;
     }
 }

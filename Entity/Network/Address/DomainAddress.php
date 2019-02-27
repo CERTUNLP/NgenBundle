@@ -25,25 +25,18 @@ class DomainAddress extends Address
     public function setCustomAddress(string $address): NetworkElement
     {
         $this->getNetwork()->setDomain($address);
-        $this->setCustomNumericAddress($address);
         return $this->getNetwork();
-    }
-
-    public function setCustomNumericAddress(string $address): NetworkElement
-    {
-        return $this->getNetwork()->setNumericDomain(substr_count($address, '.') + 1);
     }
 
     public function setCustomAddressMask(string $address): NetworkElement
     {
         $this->getNetwork()->setDomain($address);
-        $this->setCustomNumericAddressMask($address);
         return $this->getNetwork();
     }
 
-    public function setCustomNumericAddressMask(string $address): NetworkElement
+    public function getCustomAddressMask(): string
     {
-        return $this->getNetwork();
+        return substr_count($this->getCustomAddress(), '.') + 1;
     }
 
     public function getCustomAddress(): string
@@ -51,23 +44,18 @@ class DomainAddress extends Address
         return $this->getNetwork()->getDomain();
     }
 
-    public function getCustomAddressMask(): string
+    public function getType(): string
     {
-        return '';
+        return 'domain';
     }
 
     public function getCustomNumericAddress(): string
     {
-        return $this->getNetwork()->getNumericDomain();
+        return '';
     }
 
     public function getCustomNumericAddressMask(): string
     {
         return '';
-    }
-
-    public function getType(): string
-    {
-        return 'domain';
     }
 }

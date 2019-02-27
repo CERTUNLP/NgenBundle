@@ -11,16 +11,16 @@
 
 namespace CertUnlp\NgenBundle\Entity\Network;
 
+use CertUnlp\NgenBundle\Entity\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
+use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
+use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
-use CertUnlp\NgenBundle\Entity\Contact\Contact;
-use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
-use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
-use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
 
 
 /**
@@ -65,54 +65,11 @@ class NetworkAdmin
      */
 
     private $contacts;
-
-    /**
-     * @return Collection
-     */
-    public function getContacts()
-    {
-        return $this->contacts;
-    }
-
-    public function addContact(Contact $contact)
-    {
-        $newObj=$contact;
-        switch ($contact->getContactType()) {
-            case 'telegram':
-                $newObj = $contact->castAs(new ContactTelegram());
-                break;
-            case 'mail':
-                $newObj = $contact->castAs(new ContactEmail());
-                break;
-            case 'phone':
-                $newObj = $contact->castAs(new ContactPhone());
-                break;
-        }
-
-        if (!$this->contacts->contains($newObj)){
-            $newObj->setNetworkAdmin($this);
-        }
-        $this->contacts->add($newObj);
-        return $this;
-
-    }
-    public function removeContact(Contact $contact)
-    {
-           $this->contacts->removeElement($contact);
-           $contact->setNetworkAdmin(null);
-//        if ($this->contacts->contains($contact)){
-//
-//        }
-       return $this;
-    }
-
-
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network",mappedBy="network_admin"))
      */
     private $networks;
-
     /**
      * @var boolean
      *
@@ -120,7 +77,6 @@ class NetworkAdmin
      * @JMS\Expose()
      */
     private $isActive = true;
-
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="create")
@@ -129,7 +85,6 @@ class NetworkAdmin
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
-
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="update")
@@ -142,13 +97,45 @@ class NetworkAdmin
     /**
      * Constructor
      * @param string $name
-     * @param array $emails
      */
     public function __construct(string $name = '')
     {
         $this->setName($name);
         $this->networks = new ArrayCollection();
         $this->contacts = new ArrayCollection();
+    }
+
+    public function addContact(Contact $contact)
+    {
+        $newObj = $contact;
+        switch ($contact->getContactType()) {
+            case 'telegram':
+                $newObj = $contact->castAs(new ContactTelegram());
+                break;
+            case 'mail':
+                $newObj = $contact->castAs(new ContactEmail());
+                break;
+            case 'phone':
+                $newObj = $contact->castAs(new ContactPhone());
+                break;
+        }
+
+        if (!$this->contacts->contains($newObj)) {
+            $newObj->setNetworkAdmin($this);
+        }
+        $this->contacts->add($newObj);
+        return $this;
+
+    }
+
+    public function removeContact(Contact $contact)
+    {
+        $this->contacts->removeElement($contact);
+        $contact->setNetworkAdmin(null);
+//        if ($this->contacts->contains($contact)){
+//
+//        }
+        return $this;
     }
 
     /**
@@ -243,7 +230,6 @@ class NetworkAdmin
         return implode(',', $this->getEmails());
     }
 
-
     /**
      * Get emails
      *
@@ -251,12 +237,19 @@ class NetworkAdmin
      */
     public function getEmails(): array
     {
-        $array_mails = $this->getContacts()->map(function($value) {
-                                                    return $value->getUsername();
-                                                }); // [2, 3, 4]
+        $array_mails = $this->getContacts()->map(function ($value) {
+            return $value->getUsername();
+        }); // [2, 3, 4]
         return $array_mails->toArray();
     }
 
+    /**
+     * @return Collection
+     */
+    public function getContacts()
+    {
+        return $this->contacts;
+    }
 
     /**
      * Get slug

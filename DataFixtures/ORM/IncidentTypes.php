@@ -15,6 +15,7 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Gedmo\Sluggable\Util as Sluggable;
 
 class IncidentTypes extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -27,69 +28,70 @@ class IncidentTypes extends AbstractFixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         $incident_types = array(
-            array('name' => "Blacklist"),
-            array('name' => "Botnet"),
-            array('name' => "Bruteforce"),
-            array('name' => "Cisco Smart Install"),
-            array('name' => "Copyright"),
-            array('name' => "Data Breach"),
-            array('name' => "Deface"),
-            array('name' => "DNS zone transfer"),
-            array('name' => "DOS chargen"),
-            array('name' => "DOS NTP"),
-            array('name' => "DOS SNMP"),
-            array('name' => "Drupal Remote Code Execution"),
-            array('name' => "Heartbleed"),
-            array('name' => "Information Leakage"),
-            array('name' => "Malware"),
-            array('name' => "Open Chargen"),
-            array('name' => "Open Elasticsearch"),
-            array('name' => "Open IPMI"),
-            array('name' => "Open ISAKMP"),
-            array('name' => "Open MSSQL"),
-            array('name' => "Open NetBios"),
-            array('name' => "Open QOTD"),
-            array('name' => "Open RDP"),
-            array('name' => "Open Redis"),
-            array('name' => "Open SMB"),
-            array('name' => "Open MDNS"),
-            array('name' => "Open SSDP"),
-            array('name' => "Open Telnet"),
-            array('name' => "Open TFTP"),
-            array('name' => "Open VNC"),
-            array('name' => "Open DNS"),
-            array('name' => "Open memcached"),
-            array('name' => "Open NTP monitor"),
-            array('name' => "Open NTP version"),
-            array('name' => "Open SNMP"),
-            array('name' => "Open LDAP"),
-            array('name' => "Open MongoDB"),
-            array('name' => "Phishing Mail"),
-            array('name' => "Phishing Web"),
-            array('name' => "Open Portmap"),
-            array('name' => "Poodle"),
-            array('name' => "RPZ Botnet"),
-            array('name' => "RPZ DBL"),
-            array('name' => "RPZ Drop"),
-            array('name' => "RPZ Malware"),
-            array('name' => "RPZ Malware Aggressive"),
-            array('name' => "Scan"),
-            array('name' => "Shellshock"),
-            array('name' => "Spam"),
-            array('name' => "SQL Injection"),
-            array('name' => "SSL Poodle"),
-            array('name' => "Suspicious Behavior"),
+            array('name' => 'Blacklist'),
+            array('name' => 'Botnet'),
+            array('name' => 'Bruteforce'),
+            array('name' => 'Cisco Smart Install'),
+            array('name' => 'Copyright'),
+            array('name' => 'Data Breach'),
+            array('name' => 'Deface'),
+            array('name' => 'DNS zone transfer'),
+            array('name' => 'DOS chargen'),
+            array('name' => 'DOS NTP'),
+            array('name' => 'DOS SNMP'),
+            array('name' => 'Drupal Remote Code Execution'),
+            array('name' => 'Heartbleed'),
+            array('name' => 'Information Leakage'),
+            array('name' => 'Malware'),
+            array('name' => 'Open Chargen'),
+            array('name' => 'Open Elasticsearch'),
+            array('name' => 'Open IPMI'),
+            array('name' => 'Open ISAKMP'),
+            array('name' => 'Open MSSQL'),
+            array('name' => 'Open NetBios'),
+            array('name' => 'Open QOTD'),
+            array('name' => 'Open RDP'),
+            array('name' => 'Open Redis'),
+            array('name' => 'Open SMB'),
+            array('name' => 'Open MDNS'),
+            array('name' => 'Open SSDP'),
+            array('name' => 'Open Telnet'),
+            array('name' => 'Open TFTP'),
+            array('name' => 'Open VNC'),
+            array('name' => 'Open DNS'),
+            array('name' => 'Open memcached'),
+            array('name' => 'Open NTP monitor'),
+            array('name' => 'Open NTP version'),
+            array('name' => 'Open SNMP'),
+            array('name' => 'Open LDAP'),
+            array('name' => 'Open MongoDB'),
+            array('name' => 'Phishing Mail'),
+            array('name' => 'Phishing Web'),
+            array('name' => 'Open Portmap'),
+            array('name' => 'Poodle'),
+            array('name' => 'RPZ Botnet'),
+            array('name' => 'RPZ DBL'),
+            array('name' => 'RPZ Drop'),
+            array('name' => 'RPZ Malware'),
+            array('name' => 'RPZ Malware Aggressive'),
+            array('name' => 'Scan'),
+            array('name' => 'Shellshock'),
+            array('name' => 'Spam'),
+            array('name' => 'SQL Injection'),
+            array('name' => 'SSL Poodle'),
+            array('name' => 'Undefined'),
+            array('name' => 'Suspicious Behavior'),
         );
 
         foreach ($incident_types as $incident_type) {
             $newIncidentType = new IncidentType();
             $newIncidentType->setName($incident_type['name']);
-
+            $newIncidentType->setSlug(Sluggable\Urlizer::urlize($incident_type['name']));
             $manager->persist($newIncidentType);
-            $manager->flush();
 
-            $this->addReference('incidentType-' . $newIncidentType->getSlug(), $newIncidentType);
+            $this->addReference('incidentType-' . $incident_type['name'], $newIncidentType);
         }
+        $manager->flush();
 
     }
 

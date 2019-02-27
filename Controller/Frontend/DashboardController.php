@@ -30,7 +30,10 @@ class DashboardController extends Controller
      */
     public function homeAction()
     {
-
+//        $address = $this->getDoctrine()->getRepository(Network::class)->findByAddress(['address' => '163.10.42.242']);
+//        $address = new NetworkInternal('2001:4860::/32');
+//        $this->getDoctrine()->getManager()->persist($address);
+//        $this->getDoctrine()->getManager()->flush();
         return $this->redirect($this->generateUrl('cert_unlp_ngen_internal_incident_frontend_home'));
 
     }
