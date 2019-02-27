@@ -26,7 +26,7 @@ class NetworkListener
      */
     public function prePersistHandler(Network $network, LifecycleEventArgs $event): void
     {
-        $network->guessAddress($network->getIpV4() ?? $network->getIpV6() ?? $network->getDomain());
+        $network->guessAddress($network->getIp() ?? $network->getDomain());
     }
 
 

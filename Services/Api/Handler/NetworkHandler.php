@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
 use CertUnlp\NgenBundle\Entity\Network\Network;
+use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
 use CertUnlp\NgenBundle\Entity\Network\NetworkExternal;
 use CertUnlp\NgenBundle\Entity\Network\NetworkInternal;
 use CertUnlp\NgenBundle\Services\NetworkRdapClient;
@@ -65,7 +66,16 @@ class NetworkHandler extends Handler
         $network = $this->repository->findByAddress(['address' => $ip]);
 
         if (!$network) {
-            $network = $this->network_rdap_handler->findByAddress(['address' => $ip]);
+            switch (NetworkElement::guessType($ip)) {
+                case FILTER_FLAG_IPV4:
+                    return $this->network_rdap_handler->findByIp($ip);
+                    break;
+                case FILTER_FLAG_IPV6:
+                    return $this->network_rdap_handler->findByIp($ip);
+                    break;
+                default:
+                    return null;
+            }
         }
         return $network;
     }
@@ -78,12 +88,14 @@ class NetworkHandler extends Handler
      *
      * @return void
      */
-    public function prepareToDeletion($network, array $parameters = null)
+    public
+    function prepareToDeletion($network, array $parameters = null)
     {
         $network->setIsActive(FALSE);
     }
 
-    protected function checkIfExists($network, $method)
+    protected
+    function checkIfExists($network, $method)
     {
         $networkDB = $this->repository->findByAddress(['address' => $network->getAddress(), 'address_mask' => $network->getAddressMask()]);
 

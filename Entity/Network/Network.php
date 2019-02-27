@@ -12,7 +12,6 @@
 namespace CertUnlp\NgenBundle\Entity\Network;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
 use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -48,60 +47,14 @@ abstract class Network extends NetworkElement implements NetworkInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="ip_v4_mask", type="string", length=40, nullable=true)
+     * @ORM\Column(type="string", length=40, nullable=true)
      * @Assert\Range(
      *      min = 1,
      *      max = 32,
      * )
      * @JMS\Expose
      */
-    protected $ip_v4_mask;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="numeric_ip_v4_mask",type="bigint", options={"unsigned":true}, nullable=true)
-     */
-    protected $numeric_ip_v4_mask;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer",options={"unsigned":true}, nullable=true)
-     */
-    protected $numeric_ip_v4;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="ip_v6_mask", type="string", length=3, nullable=true)
-     * @Assert\Range(
-     *      min = 1,
-     *      max = 128,
-     * )
-     * @JMS\Expose
-     */
-    protected $ip_v6_mask;
-
-    /**
-     * @var int
-     * @ORM\Column(name="numeric_ip_v6_mask",type="binary", length=16, nullable=true)
-     */
-    protected $numeric_ip_v6_mask;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column( type="binary",length=16, nullable=true)
-     */
-    protected $numeric_ip_v6;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="numeric_domain", type="integer",options={"unsigned":true}, nullable=true)
-     */
-    protected $numeric_domain;
+    protected $ip_mask;
 
     /**
      * @var NetworkAdmin
@@ -109,22 +62,26 @@ abstract class Network extends NetworkElement implements NetworkInterface
      * @JMS\Expose
      */
     protected $network_admin;
+
     /**
      * @var NetworkEntity
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkEntity", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
      */
     protected $network_entity;
+
     /**
      * @var Collection| Incident[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="network"))
      */
     protected $incidents;
+
     /**
      * @var Collection| Host[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host",mappedBy="network", cascade={"persist"}))
      */
     protected $hosts;
+
     /**
      * @var boolean
      *
@@ -132,6 +89,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
      * @JMS\Expose
      */
     protected $isActive = true;
+
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
@@ -140,6 +98,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     protected $createdAt;
+
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="update")
@@ -150,15 +109,74 @@ abstract class Network extends NetworkElement implements NetworkInterface
     protected $updatedAt;
 
     /**
-     * Constructor
-     * @param string $term
+     * @ORM\Column(type="string",nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
      */
-    public function __construct(string $term = '')
+    protected $ip_start_address;
+
+    /**
+     * @ORM\Column(type="string",nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    protected $ip_end_address;
+
+    /**
+     * @ORM\Column(type="string",nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    private $country;
+
+    public function __construct(string $term = null)
     {
-        if ($term) {
-            $this->guessAddress($term);
-        }
+        parent::__construct($term);
         $this->incidents = new ArrayCollection();
+    }
+
+    /**
+     * Get startAddress
+     *
+     * @return string
+     */
+    public function getStartAddress(): string
+    {
+        return $this->ip_start_address;
+    }
+
+    /**
+     * Set startAddress
+     *
+     * @param string $startAddress
+     *
+     * @return Network
+     */
+    public function setStartAddress(string $startAddress): Network
+    {
+        $this->ip_start_address = $startAddress;
+
+        return $this;
+    }
+
+    /**
+     * Get endAddress
+     *
+     * @return string
+     */
+    public function getEndAddress(): string
+    {
+        return $this->ip_end_address;
+    }
+
+    /**
+     * @param string $end_address
+     * @return Network
+     */
+    public function setEndAddress(string $end_address): Network
+    {
+        $this->ip_end_address = $end_address;
+        return $this;
     }
 
     /**
@@ -176,6 +194,26 @@ abstract class Network extends NetworkElement implements NetworkInterface
     public function setNetworkAdmin(NetworkAdmin $network_admin = null): Network
     {
         $this->network_admin = $network_admin;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIpMask(): ?string
+    {
+        return $this->ip_mask;
+    }
+
+    /**
+     * Set ipMask
+     *
+     * @param string $ip_mask
+     * @return NetworkElement
+     */
+    public function setIpMask(string $ip_mask): NetworkElement
+    {
+        $this->ip_mask = $ip_mask;
         return $this;
     }
 
@@ -278,19 +316,19 @@ abstract class Network extends NetworkElement implements NetworkInterface
     }
 
     /**
-     * Get isActive
-     *
-     * @return boolean
+     * @return bool
      */
-    public function getIsActive(): bool
+    public function isActive(): bool
     {
         return $this->isActive;
     }
 
     /**
-     * @return bool
+     * Get isActive
+     *
+     * @return boolean
      */
-    public function isActive(): bool
+    public function getIsActive(): bool
     {
         return $this->isActive;
     }
@@ -342,20 +380,20 @@ abstract class Network extends NetworkElement implements NetworkInterface
     }
 
     /**
-     * @return IncidentDecision[]|Collection
+     * @return mixed
      */
-    public function getIncidentsDecisions(): Collection
+    public function getCountry(): string
     {
-        return $this->incidentsDecisions;
+        return $this->country;
     }
 
     /**
-     * @param IncidentDecision[]|Collection $incidentsDecisions
+     * @param mixed $country
      * @return Network
      */
-    public function setIncidentsDecisions(Collection $incidentsDecisions): Network
+    public function setCountry(string $country): Network
     {
-        $this->incidentsDecisions = $incidentsDecisions;
+        $this->country = $country;
         return $this;
     }
 

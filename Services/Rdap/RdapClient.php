@@ -29,7 +29,6 @@ class RdapClient
     {
         $this->resources_path = $resources_path;
         $this->entities = [];
-        $this->response = null;
         $this->request_url = 'https://rdap.arin.net/registry/ip/';
     }
 
