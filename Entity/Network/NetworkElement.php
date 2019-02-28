@@ -134,6 +134,27 @@ abstract class NetworkElement
     {
         return $this->address->getAddressMask();
     }
+    
+
+    /**
+     * @return string
+     */
+    public function getIp(): ?string
+    {
+        return $this->ip;
+    }
+
+    /**
+     * Set ip
+     *
+     * @param string $ip
+     * @return NetworkElement
+     */
+    public function setIp(string $ip): NetworkElement
+    {
+        $this->ip = $ip;
+        return $this;
+    }
 
     public function equals(Network $other = null): bool
     {
@@ -151,7 +172,6 @@ abstract class NetworkElement
     {
         return $this->address;
     }
-
 
     /**
      * @return string
@@ -174,27 +194,6 @@ abstract class NetworkElement
     public function __toString(): string
     {
         return $this->address->__toString();
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getIp(): ?string
-    {
-        return $this->ip;
-    }
-
-    /**
-     * Set ip
-     *
-     * @param string $ip
-     * @return NetworkElement
-     */
-    public function setIp(string $ip): NetworkElement
-    {
-        $this->ip = $ip;
-        return $this;
     }
 
 

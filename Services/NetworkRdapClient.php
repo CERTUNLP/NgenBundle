@@ -61,7 +61,7 @@ class NetworkRdapClient extends RdapClient
      */
     public function getCidrMask(): int
     {
-        return $this->getMaskFromAddresses() ?? $this->getMaskFromAddresses();
+        return $this->getResponse()->getCidr() ?? $this->getMaskFromAddresses();
     }
 
     public function getMaskFromAddresses(): int
