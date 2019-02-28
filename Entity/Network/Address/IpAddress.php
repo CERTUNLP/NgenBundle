@@ -113,7 +113,10 @@ abstract class IpAddress extends Address
      */
     public function getCustomAddressMask(): string
     {
-        return $this->getNetwork()->getIpMask();
+        if (is_callable([$this->getNetwork(), 'getIpMask'])) {
+            return $this->getNetwork()->getIpMask();
+        }
+        return '';
     }
 
     /**
