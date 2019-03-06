@@ -15,7 +15,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class TelegramCommand extends ContainerAwareCommand
 {
@@ -41,10 +40,6 @@ class TelegramCommand extends ContainerAwareCommand
             $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->patch($incident);
         }
         $output->writeln('[incidents]: Done.');
-    }
-
-
-
     }
 
 }
