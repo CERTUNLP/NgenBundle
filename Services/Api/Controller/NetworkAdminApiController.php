@@ -25,7 +25,7 @@ class NetworkAdminApiController extends ApiController
      */
     public function findObjectBy($params)
     {
-        return $this->getCustomHandler()->get(['name' => $params['name']]);
+        return $this->getCustomHandler()->get(['id' => $params['id']]);
     }
 
 }

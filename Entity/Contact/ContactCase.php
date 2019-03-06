@@ -45,7 +45,7 @@ class ContactCase
      */
     private $contacts;
     /**
-     * @var level
+     * @var int|null
      *
      * @ORM\Column(name="level", type="integer")
      *
@@ -55,54 +55,64 @@ class ContactCase
     /**
      * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
      * @param string|null $name
+     * @return ContactCase
      */
-    public function setName($name)
+    public function setName(string $name): ?ContactCase
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
      * @return Collection|null
      */
-    public function getContacts()
+    public function getContacts(): ?Collection
     {
         return $this->contacts;
     }
 
     /**
      * @param Collection|null $contacts
+     * @return ContactCase
      */
-    public function setContacts($contacts)
+    public function setContacts(Collection $contacts): ?ContactCase
     {
         $this->contacts = $contacts;
-    }
+        return $this;
 
-    public function __toString()
-    {
-        return $this->getDescription();
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getDescription()
+    public function __toString(): ?string
+    {
+        return $this->getSlug();
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
      * @param string|null $description
+     * @return ContactCase
      */
-    public function setDescription($description)
+    public function setDescription(string $description): ?ContactCase
     {
         $this->description = $description;
+        return $this;
     }
 
     /**
@@ -110,7 +120,7 @@ class ContactCase
      *
      * @return string
      */
-    public function getSlug(): string
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -121,31 +131,38 @@ class ContactCase
      * @param string $slug
      * @return ContactCase
      */
-    public function setSlug($slug): ContactCase
+    public function setSlug(string $slug): ?ContactCase
     {
         $this->slug = $slug;
 
         return $this;
     }
 
-    public function needToContact($level)
+    /**
+     * @param $level
+     * @return bool
+     */
+    public function needToContact(int $level): ?bool
     {
         return ($level >= $this->getLevel());
     }
 
     /**
-     * @return level
+     * @return int
      */
-    public function getLevel()
+    public function getLevel(): ?int
     {
         return $this->level;
     }
 
     /**
-     * @param level $level
+     * @param int $level
+     * @return ContactCase
      */
-    public function setLevel($level)
+    public function setLevel(int $level): ?ContactCase
     {
         $this->level = $level;
+        return $this;
+
     }
 }

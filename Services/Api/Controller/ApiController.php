@@ -187,7 +187,6 @@ class ApiController
      */
     public function patch(Request $request, $object, $reactivate = false)
     {
-        //var_dump($object); die();
         try {
             if ($reactivate) {
                 return $this->doPatchAndReactivate($request, $object);
@@ -226,6 +225,7 @@ class ApiController
                     $object = $this->getCustomHandler()->patch($object, $parameters);
                 } else {
                     $statusCode = Response::HTTP_CREATED;
+
                     $this->getCustomHandler()->desactivate($object);
                     $object = $this->getCustomHandler()->post($parameters);
                 }

@@ -12,11 +12,13 @@
 namespace CertUnlp\NgenBundle\Form;
 
 use CertUnlp\NgenBundle\Entity\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Contact\ContactCase;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -51,25 +53,16 @@ class ContactType extends AbstractType
                 'attr' => array('placeholder' => 'GPG public key'),
 
             ))
-            ->add('contact_case', ChoiceType::class, array(
-                'label'=> 'When to use it?',
-                'attr' => array('placeholder' => 'When to use it?'),
-                'choices'  => array(
-                'none'=> "Dont use it",
-                'critical' => "Only critical",
-                'all' => "All",
-
-            ),
-                // *this line is important*
-            'choices_as_values' => true,
+            ->add('contact_case', EntityType::class, array(
+                'class' => ContactCase::class
             ))
             ->add('network_admin', HiddenType::class, array(
                 'required' => false,
             ))
             ->add('contact_type', ChoiceType::class, array(
-                    'choices'  => array(
+                'choices' => array(
                     'Mail' => "mail",
-                    'Telegram'=> "telegram",
+                    'Telegram' => "telegram",
                     'Phone' => "phone",
 
                 ),
@@ -97,8 +90,8 @@ class ContactType extends AbstractType
             // If no data is passed to the form, the data is "null".
             // This should be considered a new "Product"
             //if ($admin) {
-              //  $form->get('contacts')->setData('1');
-                //print_r($setData($network->getId());
+            //  $form->get('contacts')->setData('1');
+            //print_r($setData($network->getId());
             //}
         });
     }
