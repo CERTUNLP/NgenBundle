@@ -24,6 +24,6 @@ class ContactEmail extends Contact
 
     public function getType(): string
     {
-        return "email";
+        return 'email';
     }
 }

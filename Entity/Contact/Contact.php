@@ -2,11 +2,9 @@
 
 namespace CertUnlp\NgenBundle\Entity\Contact;
 
+use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
-use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
-use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
-use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
 
 /**
  * Contact
@@ -18,11 +16,10 @@ use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
  * @ORM\DiscriminatorMap({"contact"="Contact","telegram" = "ContactTelegram", "phone" = "ContactPhone", "email" = "ContactEmail", "threema"="ContactThreema"})
  * @JMS\ExclusionPolicy("all")
  */
-
 class Contact
 {
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -31,108 +28,120 @@ class Contact
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-
-
     private $name;
 
-  /**
-     * @var network_admin
+    /**
+     * @var NetworkAdmin|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="contacts")
      */
-
     private $network_admin;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="username", type="string", length=255)
      */
     private $username;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="contact_type", type="string", length=255)
      */
     private $contactType;
 
     /**
-     * @var ContactCase
+     * @var ContactCase|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase", inversedBy="contacts")
      * @ORM\JoinColumn(name="contact_case", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     private $contactCase;
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="encryption_key", type="string", length=4000, nullable=true)
+     */
+    private $encryptionKey;
 
     /**
-     * @return network_admin
+     * @return NetworkAdmin
      */
-    public function getNetworkAdmin()
+    public function getNetworkAdmin(): ?NetworkAdmin
     {
         return $this->network_admin;
     }
 
     /**
-     * @param network_admin $network_admin
+     * @param NetworkAdmin $network_admin
+     * @return Contact
      */
-    public function setNetworkAdmin($network_admin)
+    public function setNetworkAdmin(NetworkAdmin $network_admin): Contact
     {
         $this->network_admin = $network_admin;
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getContactType()
+    public function getContactType(): ?string
     {
         return $this->contactType;
     }
 
     /**
      * @param string $contactType
+     * @return Contact
      */
-    public function setContactType($contactType)
+    public function setContactType(string $contactType): Contact
     {
         $this->contactType = $contactType;
+        return $this;
     }
 
     /**
-     * @return string
+     * @return ContactCase
      */
-    public function getContactCase()
+    public function getContactCase(): ?ContactCase
     {
         return $this->contactCase;
     }
 
     /**
-     * @param string $contactCase
+     * @param ContactCase $contactCase
+     * @return Contact
      */
-    public function setContactCase($contactCase)
+    public function setContactCase(ContactCase $contactCase): Contact
     {
         $this->contactCase = $contactCase;
+        return $this;
+
     }
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="encryption_key", type="string", length=4000, nullable=true)
-     */
-    private $encryptionKey;
-
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
     }
 
     /**
@@ -141,7 +150,7 @@ class Contact
      * @param string $name
      * @return Contact
      */
-    public function setName($name)
+    public function setName(string $name): Contact
     {
         $this->name = $name;
 
@@ -149,13 +158,13 @@ class Contact
     }
 
     /**
-     * Get name
+     * Get username
      *
-     * @return string 
+     * @return string
      */
-    public function getName()
+    public function getUsername(): ?string
     {
-        return $this->name;
+        return $this->username;
     }
 
     /**
@@ -164,7 +173,7 @@ class Contact
      * @param string $username
      * @return Contact
      */
-    public function setUsername($username)
+    public function setUsername(string $username): Contact
     {
         $this->username = $username;
 
@@ -172,13 +181,13 @@ class Contact
     }
 
     /**
-     * Get username
+     * Get encryptionKey
      *
-     * @return string 
+     * @return string
      */
-    public function getUsername()
+    public function getEncryptionKey(): ?string
     {
-        return $this->username;
+        return $this->encryptionKey;
     }
 
     /**
@@ -187,7 +196,7 @@ class Contact
      * @param string $encryptionKey
      * @return Contact
      */
-    public function setEncryptionKey($encryptionKey)
+    public function setEncryptionKey(string $encryptionKey): Contact
     {
         $this->encryptionKey = $encryptionKey;
 
@@ -195,19 +204,14 @@ class Contact
     }
 
     /**
-     * Get encryptionKey
-     *
-     * @return string 
+     * @param $contact
+     * @return mixed
      */
-    public function getEncryptionKey()
+    public function castAs(Contact $contact): Contact
     {
-        return $this->encryptionKey;
-    }
-
-    public function castAs($obj) {
         foreach (get_object_vars($this) as $key => $name) {
-            $obj->$key = $name;
+            $contact->$key = $name;
         }
-        return $obj;
+        return $contact;
     }
 }
