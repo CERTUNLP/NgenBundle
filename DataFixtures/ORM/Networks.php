@@ -11,9 +11,9 @@
 
 namespace CertUnlp\NgenBundle\DataFixtures\ORM;
 
-use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
-use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
+use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
+use CertUnlp\NgenBundle\Entity\Network\NetworkInternal;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -30,17 +30,17 @@ class Networks extends AbstractFixture implements OrderedFixtureInterface
     {
         $data = array(
             array('ip_mask' => '192.168.0.0/16', 'network_entity_name' => 'Test', 'admin_name' => 'Support Test', 'admin_email' => 'support@organization.test'));
-        $NetworkAdminRepository = $manager->getRepository('CertUnlpNgenBundle:NetworkAdmin');
-        $NetworkEntityRepository = $manager->getRepository('CertUnlpNgenBundle:NetworkEntity');
+        $NetworkAdminRepository = $manager->getRepository('CertUnlpNgenBundle:Network\NetworkAdmin');
+        $NetworkEntityRepository = $manager->getRepository('CertUnlpNgenBundle:Network\NetworkEntity');
         foreach ($data as $network_data) {
-            $Network = new Network();
-            $Network->setIp($network_data['ip_mask']);
+            $Network = new NetworkInternal($network_data['ip_mask']);
+
             $na = $NetworkAdminRepository->findOneByName($network_data['admin_name']);
             $au = $NetworkEntityRepository->findOneByName($network_data['network_entity_name']);
             if ($na) {
                 $Network->setNetworkAdmin($na);
             } else {
-                $Network->setNetworkAdmin(new NetworkAdmin($network_data['admin_name'], $network_data['admin_email']));
+                $Network->setNetworkAdmin(new NetworkAdmin($network_data['admin_name']));
             }
 
             if ($au) {

@@ -31,9 +31,9 @@ class NetworkAdminHandler extends Handler
 
     protected function checkIfExists($network_admin, $method)
     {
-        $network_adminDB = $this->repository->findOneBy(['name' => $network_admin->getName()]);
+        $network_adminDB = $this->repository->findOneBy(['id' => $network_admin->getId()]);
 
-        if ($network_adminDB && $method == 'POST') {
+        if ($network_adminDB && $method === 'POST') {
             if (!$network_adminDB->getIsActive()) {
                 $network_adminDB->setIsActive(TRUE);
             }
@@ -42,4 +42,8 @@ class NetworkAdminHandler extends Handler
         return $network_admin;
     }
 
+    protected function createEntityInstance(array $params)
+    {
+        return new $this->entityClass();
+    }
 }

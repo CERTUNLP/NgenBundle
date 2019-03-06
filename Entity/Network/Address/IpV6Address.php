@@ -11,48 +11,36 @@
 
 namespace CertUnlp\NgenBundle\Entity\Network\Address;
 
-use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
 use JMS\Serializer\Annotation as JMS;
 
 /**
  *
  * @JMS\ExclusionPolicy("all")
  */
-class IpV6Address extends Address
+class IpV6Address extends IpAddress
 {
 
-    public function setCustomAddress(string $address): NetworkElement
+
+    public function getDefaultIpMask(): int
     {
-        $ip_and_mask = explode('/', $address);
-        $this->getNetwork()->setIpV6($ip_and_mask[0]);
-        $this->setCustomNumericAddress($ip_and_mask[0]);
-        if (isset($ip_and_mask[1])) {
-            $this->setCustomAddressMask($ip_and_mask[1]);
-        }
-        return $this->getNetwork();
+        return 128;
     }
 
-    public function setCustomNumericAddress(string $address): NetworkElement
+
+    public function getCustomNumericAddress(): string
     {
-        return $this->getNetwork()->setNumericIpV6(inet_pton($address));
+        return inet_pton($this->getCustomAddress());
     }
 
-    public function setCustomAddressMask(string $address): NetworkElement
-    {
-        $this->getNetwork()->setIpV6Mask($address);
-        $this->setCustomNumericAddressMask($address);
-        return $this->getNetwork();
-    }
 
-    public function setCustomNumericAddressMask(string $address): NetworkElement
+    public function getCustomNumericAddressMask(): string
     {
-
-        return $this->getNetwork()->setNumericIpV6Mask($this->maskTobits($address));
+        return $this->maskTobits($this->getCustomAddress());
     }
 
     private function maskTobits(string $mask)
     {
-        $addr = str_repeat("f", $mask / 4);
+        $addr = str_repeat('f', $mask / 4);
         switch ($mask % 4) {
             case 0:
                 break;
@@ -69,31 +57,6 @@ class IpV6Address extends Address
         $addr = str_pad($addr, 32, '0');
         $addr = pack('H*', $addr);
         return $addr;
-    }
-
-    public function getCustomAddress(): string
-    {
-        return $this->getNetwork()->getIpV6();
-    }
-
-    public function getCustomAddressMask(): string
-    {
-        return $this->getNetwork()->getIpV6Mask();
-    }
-
-    public function getCustomNumericAddress(): string
-    {
-        return $this->getNetwork()->getNumericIpV6();
-    }
-
-    public function getCustomNumericAddressMask(): string
-    {
-        return $this->getNetwork()->getNumericIpV6Mask();
-    }
-
-    public function equal(): bool
-    {
-        // TODO: Implement equal() method.
     }
 
     public function getType(): string

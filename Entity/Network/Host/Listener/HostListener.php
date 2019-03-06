@@ -49,7 +49,7 @@ class HostListener
      */
     public function postLoadHandler(Host $host, LifecycleEventArgs $event): void
     {
-        $host->guessAddress($host->getIpV4() ?? $host->getIpV6() ?? $host->getDomain());
+        $host->guessAddress($host->getIp() ?? $host->getDomain());
     }
 
     /** @ORM\PrePersist
@@ -58,7 +58,7 @@ class HostListener
      */
     public function prePersistHandler(Host $host, LifecycleEventArgs $event): void
     {
-        $host->guessAddress($host->getIpV4() ?? $host->getIpV6() ?? $host->getDomain());
+        $host->guessAddress($host->getIp() ?? $host->getDomain());
 
         $this->incidentPrePersistUpdate($host, $event);
     }

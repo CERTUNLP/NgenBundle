@@ -29,7 +29,7 @@ class NetworkRdapClient extends RdapClient
         $network = $incident->getNetwork();
         if (!$network || $network instanceof NetworkRdap) {
 
-            $network_new = $this->findByIpV4($incident->getAddress());
+            $network_new = $this->findByIp($incident->getAddress());
             if ($network_new) {
                 $incident->setNetwork();
             }
@@ -37,19 +37,54 @@ class NetworkRdapClient extends RdapClient
         return $incident;
     }
 
-    public function findByIpV4(string $ip): ?NetworkRdap
+    public function findByIp(string $ip): ?NetworkRdap
     {
         $this->setResponse($this->requestIp($ip));
-
-        $network = new NetworkRdap();
+        $network = new NetworkRdap($this->getStartAddress() . '/' . $this->getCidrMask());
         $this->seachForAbuseEntities();
         $network->setNetworkAdmin($this->getNetworkAdmin());
-//            $network->setAbuseEntityEmails($this->getAbuseEntityEmails());
         $network->setNetworkEntity($this->getNetworkEntity());
-        $network->setStartAddress($this->getStartAddress());
-        $network->setEndAddress($this->getEndAddress());
         $network->setCountry($this->getCountry());
         return $network;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStartAddress(): string
+    {
+        return $this->getResponse()->getStartAddress();
+    }
+
+    /**
+     * @return int
+     */
+    public function getCidrMask(): int
+    {
+        return $this->getResponse()->getCidr() ?? $this->getMaskFromAddresses();
+    }
+
+    public function getMaskFromAddresses(): int
+    {
+        if ($this->getResponse()->getIpVersion() === 'v6') {
+            $start = explode(':', $this->getStartAddress());
+            $end = explode(':', $this->getEndAddress());
+            $result = 128 - 16 * count(array_diff($end, $start));
+        } else {
+            $start = explode('.', $this->getStartAddress());
+            $end = explode('.', $this->getEndAddress());
+            $result = 32 - 8 * count(array_diff($end, $start));
+        }
+        return $result;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getEndAddress(): string
+    {
+        return $this->getResponse()->getEndAddress();
     }
 
     public function seachForAbuseEntities(): void
@@ -102,22 +137,6 @@ class NetworkRdapClient extends RdapClient
     public function getNetworkEntity(): NetworkEntity
     {
         return new NetworkEntity($this->getResponse()->getName() . ' (' . $this->getResponse()->getHandle() . ')');
-    }
-
-    /**
-     * @return string
-     */
-    public function getStartAddress(): string
-    {
-        return $this->getResponse()->getStartAddress();
-    }
-
-    /**
-     * @return string
-     */
-    public function getEndAddress(): string
-    {
-        return $this->getResponse()->getEndAddress();
     }
 
     /**

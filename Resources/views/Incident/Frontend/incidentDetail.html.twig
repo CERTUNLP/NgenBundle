@@ -154,89 +154,89 @@
                                 {{ object.origin.isActive ? 'Yes':'No' }}
                             </td>
                         </tr>
-                        <tr>
-                            <td class="">
-                                Network Entity
-                            </td>
-                            <td class="">
-                                {{ object.origin.network.networkEntity }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="">
-                                Network Admin
-                            </td>
-                            <td class="">
-                                {{ object.origin.network.networkAdmin }}
+                        {% if object.origin.network %}
 
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="">
-                            </td>
-                            <td class="">
-                                {{ object.network.networkAdmin.emailsAsString }}
+                            <tr>
+                                <td class="">
+                                    Network Entity
+                                </td>
+                                <td class="">
+                                    {{ object.origin.network.networkEntity }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    Network Admin
+                                </td>
+                                <td class="">
+                                    {{ object.origin.network.networkAdmin }}
 
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        {% endif %}
+
                     </table>
                 </div>
             </div>
         </div>
     {% endblock %}
     {% block network_body %}
+
         <div class="col-lg-6">
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <h3 class="panel-title">Network info</h3>
                 </div>
                 <div class="panel-body table-responsive">
-                    <table class="table table-bordered">
-                        <tr>
-                            <td class="">
-                                IP/mask
-                            </td>
-                            <td class="">
-                                {{ object.network }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="">
-                                Active
-                            </td>
-                            <td class="">
-                                {{ object.network.isActive ? 'Yes':'No' }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="">
-                                Network Entity
-                            </td>
-                            <td class="">
-                                {{ object.network.networkEntity }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="">
-                                Network Admin
-                            </td>
-                            <td class="">
-                                {{ object.network.networkAdmin }}
+                    {% if object.network %}
+                        <table class="table table-bordered">
+                            <tr>
+                                <td class="">
+                                    IP/mask
+                                </td>
+                                <td class="">
+                                    {{ object.network }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    Active
+                                </td>
+                                <td class="">
+                                    {{ object.network.isActive ? 'Yes':'No' }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    Network Entity
+                                </td>
+                                <td class="">
+                                    {{ object.network.networkEntity }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    Network Admin
+                                </td>
+                                <td class="">
+                                    {{ object.network.networkAdmin }}
 
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="">
-                            </td>
-                            <td class="">
-                                {{ object.network.networkAdmin.emailsAsString }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                </td>
+                                <td class="">
+                                    {{ object.network.networkAdmin.emailsAsString }}
 
-                            </td>
-                        </tr>
-                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    {% endif %}
                 </div>
             </div>
         </div>
+
     {% endblock %}
     {% block reporter_body %}
         <div class="col-lg-6">

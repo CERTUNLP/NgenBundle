@@ -62,7 +62,6 @@ class Host extends NetworkElement
     /**
      * @var string
      *
-     * @Gedmo\Slug(fields={"ip_v4"},separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
@@ -104,19 +103,12 @@ class Host extends NetworkElement
      */
     private $isActive = true;
 
-    /**
-     * Host constructor.
-     * @param string|null $term
-     */
-    public function __construct(string $term = null)
+    public function __construct(?string $term = null)
     {
-        if ($term) {
-            $this->guessAddress($term);
-        }
+        parent::__construct($term);
         $this->incidents_as_origin = new ArrayCollection();
         $this->incidents_as_destination = new ArrayCollection();
     }
-
 
     /**
      * @return string
@@ -202,7 +194,7 @@ class Host extends NetworkElement
      * @param Network $network
      * @return Host
      */
-    public function setNetwork(Network $network): Host
+    public function setNetwork(Network $network = null): Host
     {
         $this->network = $network;
         return $this;

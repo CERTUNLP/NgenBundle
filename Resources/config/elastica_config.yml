@@ -34,23 +34,17 @@ fos_elastica:
                         origin:
                             type: "object"
                             properties:
-                                ip_v4:
+                                ip:
                                     type: ip
                         network:
                             type: "object"
                             properties:
-                                ip_v4:
+                                ip:
                                     type: ip
-                                ip_v4_mask:
-                                    type: integer
-                                ip_v6:
-                                    type: ip
-                                ip_v6_mask:
+                                ip_mask:
                                     type: integer
                                 domain:
                                     type: keyword
-                                numeric_domain:
-                                    type: integer
                                 isActive:
                                     type: boolean
                                 networkAdmin:
@@ -132,18 +126,12 @@ fos_elastica:
                     properties:
                         id:
                             type: integer
-                        ip_v4:
+                        ip:
                             type: ip
-                        ip_v4_mask:
-                            type: integer
-                        ip_v6:
-                            type: ip
-                        ip_v6_mask:
+                        ip_mask:
                             type: integer
                         domain:
                             type: keyword
-                        numeric_domain:
-                            type: integer
                         createdAt:
                             type: date
                         updatedAt:

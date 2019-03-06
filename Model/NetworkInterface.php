@@ -100,36 +100,4 @@ interface NetworkInterface
      * @return \Doctrine\Common\Collections\Collection
      */
     public function getIncidents();
-
-    /**
-     * Set numericIp
-     *
-     * @param integer $numericIp
-     * @return Network
-     */
-    public function setNumericIpV4(int $numericIp);
-
-    /**
-     * Get numericIp
-     *
-     * @return integer
-     */
-    public function getNumericIpV4();
-
-    /**
-     * Set numericIpMask
-     *
-     * @param integer $numericIpMask
-     * @return Network
-     */
-    public function setNumericIpV4Mask(int $numericIpMask);
-
-    /**
-     * Get numericIpMask
-     *
-     * @return integer
-     */
-    public function getNumericIpV4Mask();
-
-    public function equals(Network $other);
 }

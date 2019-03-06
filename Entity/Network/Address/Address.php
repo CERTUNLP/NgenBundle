@@ -23,10 +23,18 @@ abstract class Address
 
     protected $network;
 
-    public function __construct(NetworkElement $network)
+    public function __construct(NetworkElement $network, string $term)
     {
         $this->network = $network;
+        $this->setAddress($term);
     }
+
+    public function setAddress(string $address): NetworkElement
+    {
+        return $this->setCustomAddress($address);
+    }
+
+    abstract public function setCustomAddress(string $address): NetworkElement;
 
     public function __toString(): string
     {
@@ -51,18 +59,7 @@ abstract class Address
         return $this;
     }
 
-    public function setAddress(string $address): NetworkElement
-    {
-        return $this->setCustomAddress($address);
-    }
-
-    abstract public function setCustomAddress(string $address): NetworkElement;
-
-    abstract public function setCustomNumericAddress(string $address): NetworkElement;
-
     abstract public function getCustomNumericAddress(): string;
-
-    abstract public function setCustomNumericAddressMask(string $address): NetworkElement;
 
     abstract public function getCustomNumericAddressMask(): string;
 
