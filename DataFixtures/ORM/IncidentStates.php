@@ -32,24 +32,25 @@ class IncidentStates extends AbstractFixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         $incident_closing_types = array(
-            array('name' => "Open"),
-            array('name' => "Staging"),
-            array('name' => "Closed"),
-            array('name' => "Closed by inactivity"),
-            array('name' => "Stand by"),
-            array('name' => "Removed"),
-            array('name' => "Unresolved"),
+            array('name' => 'Open'),
+            array('name' => 'Staging'),
+            array('name' => 'Closed'),
+            array('name' => 'Closed by inactivity'),
+            array('name' => 'Stand by'),
+            array('name' => 'Undefined'),
+            array('name' => 'Removed'),
+            array('name' => 'Unresolved'),
         );
         foreach ($incident_closing_types as $incident_closing_type) {
             $newIncidentType = new IncidentState();
             $newIncidentType->setName($incident_closing_type['name']);
 
             $manager->persist($newIncidentType);
+            $manager->flush();
 
             $this->addReference('IncidentStates-' . $incident_closing_type['name'], $newIncidentType);
         }
 
-        $manager->flush();
     }
 
 }

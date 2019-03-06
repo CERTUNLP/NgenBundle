@@ -10,12 +10,12 @@
 <tr data-id="{{ Host.id }}">
     <td id="host_label_holder" class="col-md-1">
         <div class="label-holder">
-            {{ Host.ipV4 }}
+            {{ Host.address }}
         </div>
     </td>
     <td id="host_label_holder" class="col-md-1">
         <div class="label-holder">
-            {{ Host.network }}
+            {{ Host.network | default('empty')}}
         </div>
     </td>
     <td id="state_label_holder" class="col-md-1">

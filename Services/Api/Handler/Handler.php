@@ -80,7 +80,6 @@ abstract class Handler implements ApiHandlerInterface
 
     protected function createEntityInstance(array $params)
     {
-
         return new $this->entityClass($params);
     }
 

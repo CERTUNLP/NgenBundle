@@ -11,6 +11,7 @@
 namespace CertUnlp\NgenBundle\DataFixtures\ORM;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -29,7 +30,7 @@ class IncidentReports extends AbstractFixture implements OrderedFixtureInterface
     {
 
         $incident_reports = $this->getIncidentReports();
-        $incidentTypeRepository = $manager->getRepository('CertUnlpNgenBundle:IncidentType');
+        $incidentTypeRepository = $manager->getRepository(IncidentType::class);
         foreach ($incident_reports as $incident_report) {
             $newIncidentReport = new IncidentReport();
             foreach ($incident_report as $key => $value) {

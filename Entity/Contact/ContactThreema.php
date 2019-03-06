@@ -24,6 +24,6 @@ class ContactThreema extends Contact
 
     public function getType(): string
     {
-        return "threema";
+        return 'threema';
     }
 }

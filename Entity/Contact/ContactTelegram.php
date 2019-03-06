@@ -24,6 +24,6 @@ class ContactTelegram extends Contact
 
     public function getType(): string
     {
-        return "telegram";
+        return 'telegram';
     }
 }

@@ -27,10 +27,10 @@ class HostRepository extends NetworkElementRepository
         $address = explode('/', $params['address']);
         switch (NetworkElement::guessType($address[0])) {
             case FILTER_FLAG_IPV4:
-                return $this->findOneBy(['ip_v4' => $address[0]]);
+                return $this->findOneBy(['ip' => $address[0]]);
                 break;
             case FILTER_FLAG_IPV6:
-                return $this->findOneBy(['ip_v6' => $address[0]]);
+                return $this->findOneBy(['ip' => $address[0]]);
                 break;
             case FILTER_VALIDATE_DOMAIN:
                 return $this->findOneBy(['domain' => $address[0]]);
