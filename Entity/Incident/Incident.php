@@ -13,9 +13,11 @@ namespace CertUnlp\NgenBundle\Entity\Incident;
 
 use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Entity\Network\Network;
+use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
 use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\CommentBundle\Model\Thread;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -23,7 +25,6 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
-
 
 /**
  * @ORM\Entity()
@@ -107,9 +108,7 @@ class Incident implements IncidentInterface
      * @var IncidentCommentThread
      * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread",mappedBy="incident",fetch="EXTRA_LAZY"))
      */
-
     protected $comment_thread;
-
 
     /**
      * @var \DateTime
@@ -567,20 +566,31 @@ class Incident implements IncidentInterface
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getContactsArray(): array
+    {
+        return $this->getContacts()->toArray();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getContacts(): ArrayCollection
     {
         $contactos = [];
         if ($this->getAssigned()) {
-            $contactos = $this->getAssigned()->getContacts();
+            $contactos = array_merge($contactos, $this->getAssigned()->getContacts()->toArray());
         }
         if ($this->getReporter()) {
-            $contactos = $contactos + $this->getReporter()->getContacts();
+            $contactos = array_merge($contactos, $this->getReporter()->getContacts()->toArray());
         }
-        if ($this->getNetwork()->getNetworkAdmin()) {
-            $contactos = $contactos + $this->getNetwork()->getNetworkAdmin()->getContacts()->toArray();
+        if ($this->getNetworkAdmin()) {
+            $contactos = array_merge($contactos, $this->getNetworkAdmin()->getContacts()->toArray());
         }
-        /*var_dump($contactos); die();*/
-        return $contactos;
+
+        return new ArrayCollection($contactos);
     }
 
     /**
@@ -617,6 +627,14 @@ class Incident implements IncidentInterface
     {
         $this->reporter = $reporter;
         return $this;
+    }
+
+    public function getNetworkAdmin(): ?NetworkAdmin
+    {
+        if ($this->getNetwork()) {
+            return $this->getNetwork()->getNetworkAdmin();
+        }
+        return null;
     }
 
     /**
@@ -716,7 +734,7 @@ class Incident implements IncidentInterface
         if ($this->getEvidenceFilePath()) {
 // store the old name to delete after the update
             $this->setEvidenceFileTemp($this->getEvidenceFilePath());
-            $this->setEvidenceFilePath(null);
+            $this->setEvidenceFilePath();
         } else {
             $this->setEvidenceFilePath('initial');
         }
@@ -799,6 +817,14 @@ class Incident implements IncidentInterface
     {
         $this->destination = $destination;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIp(): ?string
+    {
+        return $this->getAddress();
     }
 
     /**
