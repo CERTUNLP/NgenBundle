@@ -11,17 +11,17 @@
 
 namespace CertUnlp\NgenBundle\Entity;
 
+use CertUnlp\NgenBundle\Entity\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
+use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
+use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Model\ReporterInterface;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
-use CertUnlp\NgenBundle\Entity\Contact\Contact;
-use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
-use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
-use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
-
+use Doctrine\Common\Collections\Collection;
 
 /**
  * User
@@ -84,6 +84,11 @@ class User extends BaseUser implements ReporterInterface
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
      * */
     private $slug;
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="network_admin",cascade={"persist"},orphanRemoval=true)
+     */
+    private $contacts;
 
     /**
      * Constructor
@@ -315,29 +320,16 @@ class User extends BaseUser implements ReporterInterface
     }
 
     /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="network_admin",cascade={"persist"},orphanRemoval=true)
-     */
-
-    private $contacts;
-
-    /**
      * @return Collection
      */
-    public function getContacts()
+    public function getContacts(): Collection
     {
-        //parche para que funcione por ahora con el contacto como mail
-        $contact=new ContactEmail();
-        $contact->setUsername($this->getEmail());
-        $contact->setName($this->name);
-        $contacts[]=$contact;
-
-        return $contacts;
+        return $this->contacts;
     }
 
     public function addContact(Contact $contact)
     {
-        $newObj=$contact;
+        $newObj = $contact;
         switch ($contact->getContactType()) {
             case 'telegram':
                 $newObj = $contact->castAs(new ContactTelegram());
@@ -350,13 +342,14 @@ class User extends BaseUser implements ReporterInterface
                 break;
         }
 
-        if (!$this->contacts->contains($newObj)){
+        if (!$this->contacts->contains($newObj)) {
             $newObj->setNetworkAdmin($this);
         }
         $this->contacts->add($newObj);
         return $this;
 
     }
+
     public function removeContact(Contact $contact)
     {
         $this->contacts->removeElement($contact);
@@ -366,4 +359,6 @@ class User extends BaseUser implements ReporterInterface
 //        }
         return $this;
     }
+
+
 }
