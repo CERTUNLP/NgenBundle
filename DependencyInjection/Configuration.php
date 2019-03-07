@@ -16,6 +16,7 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
+use CertUnlp\NgenBundle\Entity\Message;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
@@ -36,6 +37,7 @@ use CertUnlp\NgenBundle\Services\Api\Handler\IncidentHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\IncidentReportHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\IncidentStateHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\IncidentTypeHandler;
+use CertUnlp\NgenBundle\Services\Api\Handler\MessageHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\NetworkAdminHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\NetworkEntityHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\NetworkHandler;
@@ -95,6 +97,7 @@ class Configuration implements ConfigurationInterface
 
         $this->addConfigGlobal($rootNode);
         $this->addIncidentSection($rootNode);
+        $this->addMessagesSection($rootNode);
         $this->addUserSection($rootNode);
         $this->addNetworkSection($rootNode);
         $this->addFeedSection($rootNode);
@@ -434,6 +437,29 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->scalarNode('class')
             ->defaultValue(UserType::class)
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end();
+    }
+
+    private function addMessagesSection(ArrayNodeDefinition $rootNode): void
+    {
+        $rootNode
+            ->children()
+            ->arrayNode('messages')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('class')
+            ->defaultValue(Message::class)
+            ->end()
+            ->arrayNode('handler')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('class')
+            ->defaultValue(MessageHandler::class)
             ->end()
             ->end()
             ->end()

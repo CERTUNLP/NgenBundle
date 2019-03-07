@@ -52,7 +52,6 @@ services:
         class:        CertUnlp\NgenBundle\Services\Communications\IncidentPhone
         arguments:    ["@twig","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%","@cert_unlp.ngen.incident.report.factory","%cert_unlp.ngen.incident.internal.report.lang%","%cert_unlp.ngen.team%","@translator.default"]
 
-
     cert_unlp.ngen.incident.evidence.manager:
         class:        CertUnlp\NgenBundle\Services\IncidentEvidenceManager
         arguments:    ["%cert_unlp.ngen.incident.evidence.path%"]
