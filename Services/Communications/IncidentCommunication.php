@@ -11,10 +11,10 @@
 
 namespace CertUnlp\NgenBundle\Services\Communications;
 
+use CertUnlp\NgenBundle\Entity\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
 use CertUnlp\NgenBundle\Services\IncidentReportFactory;
-use Doctrine\Common\Collections\ArrayCollection;
 use FOS\CommentBundle\Event\CommentPersistEvent;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\SignedCommentInterface;
@@ -67,32 +67,32 @@ class IncidentCommunication
     public function send_report(Incident $incident, $body = null, $echo = null, $is_new_incident = false, $renotification = false, $makeContact = true)
     {
         if ($makeContact) {
-            $incidentContacts = new ArrayCollection($incident->getContactsArray());
-            $incidentContacts->add($this->teamContact);
-
+            $incidentContacts = $incident->getContacts();
+            if ($this->teamContact) {
+                $incidentContacts->add($this->teamContact);
+            }
             $repo = $this->getDoctrine()->getRepository(IncidentPriority::class);
-            $found = $repo->findOneBy(array('impact' => $incident->getImpact(), 'urgency' => $incident->getUrgency()));
+            $found = $repo->findOneBy(array('impact' => $incident->getImpact()->getSlug(), 'urgency' => $incident->getUrgency()->getSlug()));
             if ($found) {
                 $priorityCode = $found->getCode();
             } else {
                 $priorityCode = 5;
             }
 
-                var_dump($incidentContacts);die;
-            $mappedCollection = $incidentContacts->filter(function ($contact) use ($priorityCode) {
-                return $contact->getContactCase() > $priorityCode;
-            });
+            $emails = $incidentContacts->filter(function (Contact $contact) use ($priorityCode) {
+                return $contact->getContactCase()->getLevel() > $priorityCode;
+            })->map(function (Contact $contact) {
+                return $contact->getUsername();
+            })->toArray();
 
-        }
-        /*$enviar_a= $incident->getEmails($this->cert_email,$incident->isSendReport());
-        if ($enviar_a) {
-            #Hay que discutir si es necesario mandar cualquier cambio o que cosa todo || $is_new_incident || $renotification) {
+            if ($emails) {
+                #Hay que discutir si es necesario mandar cualquier cambio o que cosa todo || $is_new_incident || $renotification) {
                 $html = $this->getBody($incident);
                 $message = \Swift_Message::newInstance()
                     ->setSubject(sprintf($this->mailSubject($renotification), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getAddress(), $incident->getId()))
                     ->setFrom($this->cert_email)
                     ->setSender($this->cert_email)
-                    ->setTo($enviar_a)
+                    ->setTo($emails)
                     ->addPart($html, 'text/html');
 
                 if ($incident->getEvidenceFilePath()) {
@@ -104,8 +104,10 @@ class IncidentCommunication
                 }
 
                 return $this->mailer->send($message);
-            }*/
-        return null;
+            }
+
+            return null;
+        }
     }
 
     /**
@@ -116,23 +118,40 @@ class IncidentCommunication
         return $this->doctrine;
     }
 
-    public function postUpdateDelegation($incident)
-    {
-        $this->send_report($incident);
-    }
-
-    public function getBody(Incident $incident, string $type = 'html')
+    public
+    function getBody(Incident $incident, string $type = 'html')
     {
         return $this->report_factory->getReport($incident, $this->lang);
     }
 
-    public function prePersistDelegation(Incident $incident)
+    public
+    function mailSubject(bool $renotification = false)
+    {
+        return $this->environment . $this->getMailSubject($renotification);
+    }
+
+    public
+    function getMailSubject(bool $renotification = false): string
+    {
+        $renotification_text = $renotification ? '[' . $this->translator->trans('subject_mail_renotificacion') . ']' : '';
+        return $renotification_text . '[TLP:%s][%s] ' . $this->translator->trans('subject_mail_incidente') . ' [ID:%s]';
+    }
+
+    public
+    function postUpdateDelegation($incident)
+    {
+        $this->send_report($incident);
+    }
+
+    public
+    function prePersistDelegation(Incident $incident)
     {
         $message = \Swift_Message::newInstance();
         $incident->setReportMessageId($message->getId());
     }
 
-    public function onCommentPrePersist(CommentPersistEvent $event)
+    public
+    function onCommentPrePersist(CommentPersistEvent $event)
     {
         $comment = $event->getComment();
 
@@ -148,7 +167,8 @@ class IncidentCommunication
         $this->send_report_reply($comment->getThread()->getIncident(), $comment->getBody(), !$comment->getNotifyToAdmin());
     }
 
-    public function send_report_reply(Incident $incident, string $body = '', bool $self_reply = true)
+    public
+    function send_report_reply(Incident $incident, string $body = '', bool $self_reply = true)
     {
 
         $html = $this->getReplyBody($incident, $body);
@@ -172,29 +192,21 @@ class IncidentCommunication
         $this->mailer->send($message);
     }
 
-    public function getReplyBody(Incident $incident, string $body = '')
+    public
+    function getReplyBody(Incident $incident, string $body = '')
     {
         return $this->report_factory->getReportReply($incident, $body, $this->lang);
 
     }
 
-    public function replySubject()
+    public
+    function replySubject()
     {
         return 'Comment:' . $this->mailSubject();
     }
 
-    public function mailSubject(bool $renotification = false)
-    {
-        return $this->environment . $this->getMailSubject($renotification);
-    }
-
-    public function getMailSubject(bool $renotification = false): string
-    {
-        $renotification_text = $renotification ? '[' . $this->translator->trans('subject_mail_renotificacion') . ']' : '';
-        return $renotification_text . '[TLP:%s][%s] ' . $this->translator->trans('subject_mail_incidente') . ' [ID:%s]';
-    }
-
-    public function getReplySubject()
+    public
+    function getReplySubject()
     {
         return '';
     }

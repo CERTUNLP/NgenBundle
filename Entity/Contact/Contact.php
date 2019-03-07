@@ -81,7 +81,7 @@ class Contact
      * @param NetworkAdmin $network_admin
      * @return Contact
      */
-    public function setNetworkAdmin(NetworkAdmin $network_admin): Contact
+    public function setNetworkAdmin(NetworkAdmin $network_admin = null): Contact
     {
         $this->network_admin = $network_admin;
         return $this;
