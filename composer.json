@@ -53,7 +53,8 @@
     "doctrine/doctrine-migrations-bundle": "^1.1",
     "symfony/assetic-bundle": "^2.7",
     "symfony/security-acl": "^3.0",
-    "beberlei/DoctrineExtensions": "^1.1"
+    "beberlei/DoctrineExtensions": "^1.1",
+    "darsyn/ip": "^4.0"
   },
   "require-dev": {
     "symfony/assetic-bundle": "^2.7",

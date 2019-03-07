@@ -235,14 +235,6 @@ interface IncidentInterface
     public function getEvidenceFileTemp(): ?string;
 
     /**
-     * Get an array with emails
-     *
-     * @return array
-     */
-
-    public function getContactsArray(): array;
-
-    /**
      * Set report_sent
      *
      * @param boolean $sendReport
