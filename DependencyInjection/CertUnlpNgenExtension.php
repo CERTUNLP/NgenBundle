@@ -142,6 +142,8 @@ class CertUnlpNgenExtension extends Extension
         $container->setParameter('cert_unlp.ngen.user.handler.class', $config['users']['handler']['class']);
         $container->setParameter('cert_unlp.ngen.user.form_type.class', $config['users']['form_type']['class']);
 
+        $container->setParameter('cert_unlp.ngen.message.class', $config['messages']['class']);
+        $container->setParameter('cert_unlp.ngen.message.handler.class', $config['messages']['handler']['class']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');

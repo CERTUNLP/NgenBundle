@@ -31,15 +31,41 @@ class TelegramCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('[incidents]: Starting.');
-        $output->writeln('[incidents]: Sendind Telegram messages...');
-        $incidents = $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->renotificateIncidents();
-        foreach ($incidents as $incident) {
-            $incident->setRenotificationDate(New \DateTime());
-            $this->getContainer()->get('cert_unlp.ngen.internal.incident.mailer')->send_report($incident, false, false, false, true);
-            $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->patch($incident);
+        $output->writeln('[Messages]: Starting.');
+        $output->writeln('[Messages]: Sendind Telegram messages...');
+        $messages= $this->getContainer()-> get('doctrine.orm.entity_manager')->getRepository('CertUnlp\NgenBundle\Entity\TelegramMessage')->findMessagesToSend();
+        foreach ($messages as $message) {
+            $decode_result=json_decode($this->sendMessage($message->getChatID(),$message->getMessage(),$message->getToken()));
+            if(array_key_exists('error', $decode_result)) {
+                $message->setResponse($decode_result->description);
+            }
+            else{
+                $message->setResponse($decode_result->result);
+                $message->setPending(FALSE);
+                }
+            echo "persistiendo";
+            $this->getContainer()-> get('doctrine.orm.entity_manager')->persist($message);
+            $this->getContainer()-> get('doctrine.orm.entity_manager')->flush();
         }
         $output->writeln('[incidents]: Done.');
+    }
+
+    function sendMessage($chatID, $messaggio, $token) {
+        echo "sending message to " . $chatID . "\n";
+
+        $url = "https://api.telegram.org/bot" . $token . "/sendMessage?chat_id=" . $chatID;
+        $url = $url . "&text=" . urlencode($messaggio);
+        echo $url;
+        $ch = curl_init();
+        $optArray = array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true
+        );
+        curl_setopt_array($ch, $optArray);
+        $result = curl_exec($ch);
+        $err = curl_error($ch);
+        curl_close($ch);
+        return $result;
     }
 
 }
