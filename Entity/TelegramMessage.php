@@ -38,13 +38,13 @@ class TelegramMessage extends Message
     public function getMessage():string {
 
         if ($this->getData()["risk"] == 'HIGH'){
-            $state = "\u{1F525}";}
+            $state = "\u{274C}";}
             elseif ($this->getData()["risk"] == 'WARNING'){
-                    $state = "\u{000026A0}";}
+                    $state = "\u{1F4A5}";}
                     elseif ($this->getData()["risk"] == 'CRITICAL'){
-                            $state = "\u{0001F525}";}
+                            $state = "\u{1F525}";}
                             elseif ($this->getData()["risk"]  == 'UNKNOWN'){
-                                $state = "\u{00002753}";
+                                $state = "\u{2753}";
                             }
         $formato = '%s Incidente en el host %s del tipo %s con un riesgo %s';
         return sprintf($formato, $state, $this->getData()["address"], $this->getData()["type"],$this->getData()["risk"]);
