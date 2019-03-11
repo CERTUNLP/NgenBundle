@@ -26,4 +26,14 @@ class ContactPhone extends Contact
     {
         return 'phone';
     }
+
+    public function getEmail(): string
+    {
+        return '';
+    }
+
+    public function getTelegram(): string
+    {
+        return '';
+    }
 }

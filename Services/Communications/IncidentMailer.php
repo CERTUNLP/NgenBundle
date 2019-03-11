@@ -12,8 +12,8 @@
 namespace CertUnlp\NgenBundle\Services\Communications;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
 use CertUnlp\NgenBundle\Services\IncidentReportFactory;
+use Doctrine\ORM\EntityManagerInterface;
 use FOS\CommentBundle\Event\CommentPersistEvent;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\SignedCommentInterface;
@@ -35,8 +35,9 @@ class IncidentMailer extends IncidentCommunication
     private $translator;
 
 
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $templating, string $cert_email, string $upload_directory, CommentManagerInterface $commentManager, string $environment, IncidentReportFactory $report_factory, string $lang, array $team, Translator $translator)
+    public function __construct(EntityManagerInterface $doctrine, \Swift_Mailer $mailer, \Twig_Environment $templating, string $cert_email, string $upload_directory, CommentManagerInterface $commentManager, string $environment, IncidentReportFactory $report_factory, string $lang, array $team, Translator $translator)
     {
+        parent::__construct($doctrine);
         $this->mailer = $mailer;
         $this->cert_email = $cert_email;
         $this->templating = $templating;
@@ -49,42 +50,38 @@ class IncidentMailer extends IncidentCommunication
         $this->translator = $translator;
     }
 
-    public function postPersistDelegation($incident)
-    {
-        $this->send_report($incident, null, null, TRUE);
-    }
-
     /**
      * @param Incident $incident
-     * @param null $body
-     * @param null $echo
-     * @param bool $is_new_incident
-     * @param bool $renotification
-     * @return int
+     * @return void
      */
-    public function send_report(Incident $incident, $body = null, $echo = null, $is_new_incident = false, $renotification = false)
+    public function comunicate(Incident $incident): void
     {
-        $enviar_a= $incident->getEmails($this->cert_email,$incident->isSendReport());
-        if ($enviar_a) {
+        $this->sendMail($incident);
+    }
+
+    public function sendMail(Incident $incident, $body = null, $echo = null, $is_new_incident = false, $renotification = false)
+    {
+        $emails = $this->getEmails($incident);
+        if ($emails) {
             #Hay que discutir si es necesario mandar cualquier cambio o que cosa todo || $is_new_incident || $renotification) {
-                $html = $this->getBody($incident);
-                $message = \Swift_Message::newInstance()
-                    ->setSubject(sprintf($this->mailSubject($renotification), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getAddress(), $incident->getId()))
-                    ->setFrom($this->cert_email)
-                    ->setSender($this->cert_email)
-                    ->setTo($enviar_a)
-                    ->addPart($html, 'text/html');
+            $html = $this->getBody($incident);
+            $message = \Swift_Message::newInstance()
+                ->setSubject(sprintf($this->mailSubject($renotification), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getAddress(), $incident->getId()))
+                ->setFrom($this->cert_email)
+                ->setSender($this->cert_email)
+                ->setTo($emails)
+                ->addPart($html, 'text/html');
 
-                if ($incident->getEvidenceFilePath()) {
-                    $message->attach(\Swift_Attachment::fromPath($this->upload_directory . $incident->getEvidenceFilePath(true)));
-                }
-
-                if ($incident->getReportMessageId()) {
-                    $message->setId($incident->getReportMessageId());
-                }
-
-                return $this->mailer->send($message);
+            if ($incident->getEvidenceFilePath()) {
+                $message->attach(\Swift_Attachment::fromPath($this->upload_directory . $incident->getEvidenceFilePath(true)));
             }
+
+            if ($incident->getReportMessageId()) {
+                $message->setId($incident->getReportMessageId());
+            }
+
+            return $this->mailer->send($message);
+        }
         return null;
     }
 
@@ -108,11 +105,6 @@ class IncidentMailer extends IncidentCommunication
     {
         $message = \Swift_Message::newInstance();
         $incident->setReportMessageId($message->getId());
-    }
-
-    public function postUpdateDelegation($incident)
-    {
-        $this->send_report($incident);
     }
 
     public function onCommentPrePersist(CommentPersistEvent $event)

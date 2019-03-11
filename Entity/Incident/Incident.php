@@ -820,9 +820,9 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @return string
+     * @return Host
      */
-    public function getIp(): ?string
+    public function getHostAddress(): ?string
     {
         return $this->getAddress();
     }
@@ -868,5 +868,13 @@ class Incident implements IncidentInterface
     {
         $this->origin = $origin;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIp(): ?string
+    {
+        return $this->getAddress();
     }
 }

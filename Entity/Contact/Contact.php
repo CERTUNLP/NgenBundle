@@ -41,6 +41,12 @@ class Contact
     private $network_admin;
 
     /**
+     * @var NetworkAdmin|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="contacts")
+     */
+    private $user;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(name="username", type="string", length=255)
@@ -68,6 +74,17 @@ class Contact
      * @ORM\Column(name="encryption_key", type="string", length=4000, nullable=true)
      */
     private $encryptionKey;
+
+    public function getEmail(): string
+    {
+        return '';
+    }
+
+    public function getTelegram(): string
+    {
+        return '';
+
+    }
 
     /**
      * @return NetworkAdmin
@@ -213,5 +230,23 @@ class Contact
             $contact->$key = $name;
         }
         return $contact;
+    }
+
+    /**
+     * @return NetworkAdmin|null
+     */
+    public function getUser(): ?NetworkAdmin
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param NetworkAdmin|null $user
+     * @return Contact
+     */
+    public function setUser(?NetworkAdmin $user): Contact
+    {
+        $this->user = $user;
+        return $this;
     }
 }

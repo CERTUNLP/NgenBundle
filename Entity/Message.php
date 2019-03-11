@@ -12,12 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"telegram" = "TelegramMessage", "threema" = "ThreemaMessage"})
+ * @ORM\HasLifecycleCallbacks
  */
-
 class Message
 {
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -26,28 +26,28 @@ class Message
     private $id;
 
     /**
-     * @var array
+     * @var array|null
      *
      * @ORM\Column(name="data", type="json_array")
      */
     private $data;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
     private $createdAt;
 
     /**
-     * @var array
+     * @var array|null
      *
      * @ORM\Column(name="response", type="json_array",nullable=true)
      */
@@ -55,14 +55,14 @@ class Message
     private $response;
 
     /**
-     * @var bool
+     * @var bool|null
      *
      * @ORM\Column(name="pending", type="boolean", nullable=true)
      */
     private $pending;
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="incident_id", type="integer")
      */
@@ -71,11 +71,21 @@ class Message
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * Get data
+     *
+     * @return array
+     */
+    public function getData(): array
+    {
+        return $this->data;
     }
 
     /**
@@ -84,7 +94,7 @@ class Message
      * @param array $data
      * @return Message
      */
-    public function setData($data)
+    public function setData(array $data): Message
     {
         $this->data = $data;
 
@@ -92,13 +102,13 @@ class Message
     }
 
     /**
-     * Get data
+     * Get updatedAt
      *
-     * @return array 
+     * @return \DateTime
      */
-    public function getData()
+    public function getUpdatedAt(): ?\DateTime
     {
-        return $this->data;
+        return $this->updatedAt;
     }
 
     /**
@@ -107,7 +117,7 @@ class Message
      * @param \DateTime $updatedAt
      * @return Message
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt): Message
     {
         $this->updatedAt = $updatedAt;
 
@@ -115,45 +125,22 @@ class Message
     }
 
     /**
-     * Get updatedAt
+     * Get response
      *
-     * @return \DateTime 
+     * @return array
      */
-    public function getUpdatedAt()
+    public function getResponse(): array
     {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return Message
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime 
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
+        return $this->response;
     }
 
     /**
      * Set response
      *
-     * @param string $response
+     * @param array $response
      * @return Message
      */
-    public function setResponse($response)
+    public function setResponse(array $response): Message
     {
         $this->response = $response;
 
@@ -161,13 +148,13 @@ class Message
     }
 
     /**
-     * Get response
+     * Get pending
      *
-     * @return string 
+     * @return boolean
      */
-    public function getResponse()
+    public function getPending(): bool
     {
-        return $this->response;
+        return $this->pending;
     }
 
     /**
@@ -176,7 +163,7 @@ class Message
      * @param boolean $pending
      * @return Message
      */
-    public function setPending($pending)
+    public function setPending(bool $pending): Message
     {
         $this->pending = $pending;
 
@@ -184,13 +171,13 @@ class Message
     }
 
     /**
-     * Get pending
+     * Get incidentId
      *
-     * @return boolean 
+     * @return integer
      */
-    public function getPending()
+    public function getIncidentId(): int
     {
-        return $this->pending;
+        return $this->incidentId;
     }
 
     /**
@@ -199,7 +186,7 @@ class Message
      * @param integer $incidentId
      * @return Message
      */
-    public function setIncidentId($incidentId)
+    public function setIncidentId(int $incidentId): Message
     {
         $this->incidentId = $incidentId;
 
@@ -207,33 +194,48 @@ class Message
     }
 
     /**
-     * Get incidentId
-     *
-     * @return integer 
-     */
-    public function getIncidentId()
-    {
-        return $this->incidentId;
-    }
-    /**
      *
      * @ORM\PrePersist
      * @ORM\PreUpdate
      */
-    public function timestampsUpdate()
+    public function timestampsUpdate(): void
     {
-        $this->setUpdatedAt(new DateTime('now'));
+        $this->setUpdatedAt(new \DateTime('now'));
 
         if ($this->getCreatedAt() == null) {
-            $this->setCreatedAt(new DateTime('now'));
+            $this->setCreatedAt(new \DateTime('now'));
             $this->setPending(true);
         }
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt(): ?\DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Message
+     */
+    public function setCreatedAt(\DateTime $createdAt): Message
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     public function isTelegram(): bool
     {
         return false;
     }
+
     public function isThreema(): bool
     {
         return false;

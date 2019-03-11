@@ -26,4 +26,13 @@ class ContactThreema extends Contact
     {
         return 'threema';
     }
+    public function getEmail(): string
+    {
+        return '';
+    }
+
+    public function getTelegram(): string
+    {
+        return '';
+    }
 }
