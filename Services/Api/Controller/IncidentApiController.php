@@ -12,8 +12,6 @@
 namespace CertUnlp\NgenBundle\Services\Api\Controller;
 
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
-use CertUnlp\NgenBundle\Services\Communications\IncidentCommunication;
-use CertUnlp\NgenBundle\Services\Communications\IncidentMailer;
 use FOS\RestBundle\View\View;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,13 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 class IncidentApiController extends ApiController
 {
 
-    private $comm;
-
-    public function __construct($handler, $viewHandler, $view, IncidentCommunication $incidentCommunication)
-    {
-        parent::__construct($handler, $viewHandler, $view);
-        $this->comm = $incidentCommunication;
-    }
 
     /**
      * Create a Object from the submitted data.
@@ -73,16 +64,6 @@ class IncidentApiController extends ApiController
         $this->getView()->setTemplate('CertUnlpNgenBundle:Incident:Report/Twig/incidentReportHtml.html.twig');
         $this->getView()->setTemplateData($data);
         return $this->handle();
-    }
-
-    /**
-     * Prints a mail template for the given incident.
-     * @param $incident
-     * @return Response
-     */
-    public function reportMailAction($incident)
-    {
-        return new Response($this->comm->send_report($incident, null, true));
     }
 
 }

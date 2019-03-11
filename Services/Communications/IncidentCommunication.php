@@ -14,201 +14,116 @@ namespace CertUnlp\NgenBundle\Services\Communications;
 use CertUnlp\NgenBundle\Entity\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
-use CertUnlp\NgenBundle\Services\IncidentReportFactory;
-use FOS\CommentBundle\Event\CommentPersistEvent;
-use FOS\CommentBundle\Model\CommentManagerInterface;
-use FOS\CommentBundle\Model\SignedCommentInterface;
-use Symfony\Bundle\FrameworkBundle\Translation\Translator;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 
-class IncidentCommunication
+abstract class IncidentCommunication
 {
 
-    protected $mailer;
-    protected $teamContact;
-    protected $templating;
-    protected $upload_directory;
-    protected $reports_path;
-    protected $commentManager;
-    protected $environment;
-    protected $report_factory;
-    protected $lang;
-    protected $team;
-    private $translator;
     private $doctrine;
 
-    public function __construct($doctrine, \Swift_Mailer $mailer, \Twig_Environment $templating, string $cert_email, string $upload_directory, CommentManagerInterface $commentManager, string $environment, IncidentReportFactory $report_factory, string $lang, array $team, Translator $translator)
+    public function __construct(EntityManagerInterface $doctrine)
     {
         $this->doctrine = $doctrine;
-        $this->mailer = $mailer;
-        $this->cert_email = $cert_email;
-        $this->templating = $templating;
-        $this->upload_directory = $upload_directory;
-        $this->commentManager = $commentManager;
-        $this->environment = in_array($environment, ['dev', 'test']) ? '[dev]' : '';
-        $this->report_factory = $report_factory;
-        $this->lang = $lang;
-        $this->team = $team;
-        $this->translator = $translator;
     }
 
     public function postPersistDelegation($incident)
     {
-        $this->send_report($incident, null, null, TRUE);
+        $this->comunicate($incident);
+    }
+
+    abstract public function comunicate(Incident $incident): void;
+
+    /**
+     * @param Incident $incident
+     * @return array
+     */
+    public function getEmails(Incident $incident): array
+    {
+        return array_filter($this->getEmailContacts($incident)->map(function (Contact $contact) {
+            return $contact->getEmail();
+        })->toArray(), function ($value) {
+            return $value !== '';
+        });
     }
 
     /**
      * @param Incident $incident
-     * @param null $body
-     * @param null $echo
-     * @param bool $is_new_incident
-     * @param bool $renotification
-     * @return int
+     * @return ArrayCollection
      */
-    public function send_report(Incident $incident, $body = null, $echo = null, $is_new_incident = false, $renotification = false, $makeContact = true)
+    public function getEmailContacts(Incident $incident): ArrayCollection
     {
-        if ($makeContact) {
-            $incidentContacts = $incident->getContacts();
-            if ($this->teamContact) {
-                $incidentContacts->add($this->teamContact);
-            }
-            $repo = $this->getDoctrine()->getRepository(IncidentPriority::class);
-            $found = $repo->findOneBy(array('impact' => $incident->getImpact()->getSlug(), 'urgency' => $incident->getUrgency()->getSlug()));
-            if ($found) {
-                $priorityCode = $found->getCode();
-            } else {
-                $priorityCode = 5;
-            }
-
-            $emails = $incidentContacts->filter(function (Contact $contact) use ($priorityCode) {
-                return $contact->getContactCase()->getLevel() > $priorityCode;
-            })->map(function (Contact $contact) {
-                return $contact->getUsername();
-            })->toArray();
-
-            if ($emails) {
-                #Hay que discutir si es necesario mandar cualquier cambio o que cosa todo || $is_new_incident || $renotification) {
-                $html = $this->getBody($incident);
-                $message = \Swift_Message::newInstance()
-                    ->setSubject(sprintf($this->mailSubject($renotification), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getAddress(), $incident->getId()))
-                    ->setFrom($this->cert_email)
-                    ->setSender($this->cert_email)
-                    ->setTo($emails)
-                    ->addPart($html, 'text/html');
-
-                if ($incident->getEvidenceFilePath()) {
-                    $message->attach(\Swift_Attachment::fromPath($this->upload_directory . $incident->getEvidenceFilePath(true)));
-                }
-
-                if ($incident->getReportMessageId()) {
-                    $message->setId($incident->getReportMessageId());
-                }
-
-                return $this->mailer->send($message);
-            }
-
-            return null;
-        }
+        return $this->getContacts($incident)->filter(function (Contact $contact) {
+            return $contact->getEmail();
+        });
     }
 
     /**
-     * @return mixed
+     * @param $incident
+     * @return ArrayCollection
      */
-    public function getDoctrine()
+    public function getContacts(Incident $incident): ArrayCollection
+    {
+        $incidentContacts = $incident->getContacts();
+//            if ($this->teamContact) {
+//                $incidentContacts->add($this->teamContact);
+//            }
+        $priorityCode = $this->getPriorityCode($incident);
+        return $incidentContacts->filter(function (Contact $contact) use ($priorityCode) {
+            return $contact->getContactCase()->getLevel() >= $priorityCode;
+        });
+    }
+
+    /**
+     * @param Incident $incident
+     * @return int
+     */
+    public function getPriorityCode(Incident $incident): int
+    {
+        $priority = $this->getPriority($incident);
+        return $priority ? $priority->getCode() : 5;
+    }
+
+    /**
+     * @param Incident $incident
+     * @return IncidentPriority
+     */
+    public function getPriority(Incident $incident): IncidentPriority
+    {
+        $repo = $this->getDoctrine()->getRepository(IncidentPriority::class);
+        $priority = $repo->findOneBy(array('impact' => $incident->getImpact()->getSlug(), 'urgency' => $incident->getUrgency()->getSlug()));
+        return $priority;
+    }
+
+    /**
+     * @return EntityManagerInterface
+     */
+    public function getDoctrine(): EntityManagerInterface
     {
         return $this->doctrine;
     }
 
-    public
-    function getBody(Incident $incident, string $type = 'html')
+    /**
+     * @param Incident $incident
+     * @return array
+     */
+    public function getTelegrams(Incident $incident): array
     {
-        return $this->report_factory->getReport($incident, $this->lang);
+        return array_filter($this->getTelegramContacts($incident)->map(function (Contact $contact) {
+            return $contact->getTelegram();
+        })->toArray(), function ($value) {
+            return $value !== '';
+        });
     }
 
-    public
-    function mailSubject(bool $renotification = false)
+    /**
+     * @param Incident $incident
+     * @return ArrayCollection
+     */
+    public function getTelegramContacts(Incident $incident): ArrayCollection
     {
-        return $this->environment . $this->getMailSubject($renotification);
+        return $this->getContacts($incident)->filter(function (Contact $contact) {
+            return $contact->getTelegram();
+        });
     }
-
-    public
-    function getMailSubject(bool $renotification = false): string
-    {
-        $renotification_text = $renotification ? '[' . $this->translator->trans('subject_mail_renotificacion') . ']' : '';
-        return $renotification_text . '[TLP:%s][%s] ' . $this->translator->trans('subject_mail_incidente') . ' [ID:%s]';
-    }
-
-    public
-    function postUpdateDelegation($incident)
-    {
-        $this->send_report($incident);
-    }
-
-    public
-    function prePersistDelegation(Incident $incident)
-    {
-        $message = \Swift_Message::newInstance();
-        $incident->setReportMessageId($message->getId());
-    }
-
-    public
-    function onCommentPrePersist(CommentPersistEvent $event)
-    {
-        $comment = $event->getComment();
-
-        if (!$this->commentManager->isNewComment($comment)) {
-            return;
-        }
-        if ($comment instanceof SignedCommentInterface) {
-            $author = $comment->getAuthor();
-            if ($author->getUsername() === 'mailbot') {
-                return;
-            }
-        }
-        $this->send_report_reply($comment->getThread()->getIncident(), $comment->getBody(), !$comment->getNotifyToAdmin());
-    }
-
-    public
-    function send_report_reply(Incident $incident, string $body = '', bool $self_reply = true)
-    {
-
-        $html = $this->getReplyBody($incident, $body);
-        $message = \Swift_Message::newInstance()
-            ->setSubject(sprintf($this->replySubject(), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getAddress(), $incident->getId()))
-            ->setFrom($this->cert_email)
-            ->addPart($html, 'text/html');
-
-        if ($self_reply) {
-            $message
-                ->setTo($this->cert_email);
-        } else {
-            $message
-                ->setTo($incident->getEmails())
-                ->setCc($this->cert_email);
-        }
-
-        $message->getHeaders()->addTextHeader('References', $incident->getReportMessageId());
-        $message->getHeaders()->addTextHeader('In-Reply-To', $incident->getReportMessageId());
-
-        $this->mailer->send($message);
-    }
-
-    public
-    function getReplyBody(Incident $incident, string $body = '')
-    {
-        return $this->report_factory->getReportReply($incident, $body, $this->lang);
-
-    }
-
-    public
-    function replySubject()
-    {
-        return 'Comment:' . $this->mailSubject();
-    }
-
-    public
-    function getReplySubject()
-    {
-        return '';
-    }
-
 }

@@ -26,4 +26,14 @@ class ContactTelegram extends Contact
     {
         return 'telegram';
     }
+
+    public function getEmail(): string
+    {
+        return '';
+    }
+
+    public function getTelegram(): string
+    {
+        return $this->getUsername();
+    }
 }

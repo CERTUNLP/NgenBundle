@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Command;
 
+use CertUnlp\NgenBundle\Entity\TelegramMessage;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -33,28 +34,45 @@ class TelegramCommand extends ContainerAwareCommand
     {
         $output->writeln('[Messages]: Starting.');
         $output->writeln('[Messages]: Sendind Telegram messages...');
-        $messages= $this->getContainer()-> get('doctrine.orm.entity_manager')->getRepository('CertUnlp\NgenBundle\Entity\TelegramMessage')->findMessagesToSend();
+        $messages = $this->findMessagesToSend();
         foreach ($messages as $message) {
-            $decode_result=json_decode($this->sendMessage($message->getChatID(),$message->getMessage(),$message->getToken()));
-            if(array_key_exists('error', $decode_result)) {
-                $message->setResponse($decode_result->description);
-            }
-            else{
-                $message->setResponse($decode_result->result);
+            $decode_result = json_decode($this->sendMessage($message->getChatID(), $message->getMessage(), $message->getToken(), $output), true);
+            if (array_key_exists('error', $decode_result)) {
+                $message->setResponse($decode_result['description']);
+            } else {
+                $message->setResponse($decode_result['result']);
                 $message->setPending(FALSE);
-                }
-            echo "persistiendo";
-            $this->getContainer()-> get('doctrine.orm.entity_manager')->persist($message);
-            $this->getContainer()-> get('doctrine.orm.entity_manager')->flush();
+            }
+
+            $this->getContainer()->get('doctrine')->getManager()->persist($message);
         }
-        $output->writeln('[incidents]: Done.');
+        $output->writeln('[Messages]: Saving.');
+        $this->getContainer()->get('doctrine')->getManager()->flush();
+        $output->writeln('[Messages]: Done.');
     }
 
-    function sendMessage($chatID, $messaggio, $token) {
-        echo "sending message to " . $chatID . "\n";
+    /**
+     * @return TelegramMessage[]
+     */
+    private function findMessagesToSend(): array
+    {
+        return $this->getContainer()->get('doctrine')->getRepository(TelegramMessage::class)->findMessagesToSend();
+    }
 
-        $url = "https://api.telegram.org/bot" . $token . "/sendMessage?chat_id=" . $chatID;
-        $url = $url . "&text=" . urlencode($messaggio);
+    /**
+     * @param $chatID
+     * @param $messaggio
+     * @param $token
+     * @param OutputInterface $output
+     * @return bool|string
+     */
+    private function sendMessage($chatID, $messaggio, $token, OutputInterface $output)
+    {
+        $output->writeln('[Messages]: sending message to ' . $chatID);
+
+
+        $url = 'https://api.telegram.org/bot' . $token . '/sendMessage?chat_id=' . $chatID;
+        $url = $url . '&text=' . urlencode($messaggio);
         echo $url;
         $ch = curl_init();
         $optArray = array(

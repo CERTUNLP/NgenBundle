@@ -17,11 +17,11 @@ use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
 use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Model\ReporterInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
-use Doctrine\Common\Collections\Collection;
 
 /**
  * User
@@ -86,7 +86,7 @@ class User extends BaseUser implements ReporterInterface
     private $slug;
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="network_admin",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="user",cascade={"persist"},orphanRemoval=true)
      */
     private $contacts;
 
@@ -343,7 +343,7 @@ class User extends BaseUser implements ReporterInterface
         }
 
         if (!$this->contacts->contains($newObj)) {
-            $newObj->setNetworkAdmin($this);
+            $newObj->setUser($this);
         }
         $this->contacts->add($newObj);
         return $this;
