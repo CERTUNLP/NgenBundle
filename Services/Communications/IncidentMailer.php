@@ -24,30 +24,17 @@ class IncidentMailer extends IncidentCommunication
 
     protected $mailer;
     protected $cert_email;
-    protected $templating;
     protected $upload_directory;
-    protected $reports_path;
-    protected $commentManager;
-    protected $environment;
     protected $report_factory;
-    protected $lang;
-    protected $team;
-    private $translator;
 
 
-    public function __construct(EntityManagerInterface $doctrine, \Swift_Mailer $mailer, \Twig_Environment $templating, string $cert_email, string $upload_directory, CommentManagerInterface $commentManager, string $environment, IncidentReportFactory $report_factory, string $lang, array $team, Translator $translator)
+    public function __construct(EntityManagerInterface $doctrine, CommentManagerInterface $commentManager, string $environment, string $lang, array $team, Translator $translator, \Swift_Mailer $mailer, string $cert_email, IncidentReportFactory $report_factory, string $upload_directory)
     {
-        parent::__construct($doctrine);
+        parent::__construct($doctrine, $commentManager, $environment, $lang, $team, $translator);
         $this->mailer = $mailer;
         $this->cert_email = $cert_email;
-        $this->templating = $templating;
         $this->upload_directory = $upload_directory;
-        $this->commentManager = $commentManager;
-        $this->environment = in_array($environment, ['dev', 'test']) ? '[dev]' : '';
         $this->report_factory = $report_factory;
-        $this->lang = $lang;
-        $this->team = $team;
-        $this->translator = $translator;
     }
 
     /**
@@ -120,10 +107,10 @@ class IncidentMailer extends IncidentCommunication
                 return;
             }
         }
-        $this->send_report_reply($comment->getThread()->getIncident(), $comment->getBody(), !$comment->getNotifyToAdmin());
+        $this->comunicate_reply($comment->getThread()->getIncident(), $comment->getBody(), $comment->getNotifyToAdmin());
     }
 
-    public function send_report_reply(Incident $incident, string $body = '', bool $self_reply = true)
+    public function comunicate_reply(Incident $incident, string $body = '', bool $notify_to_admins = true)
     {
 
         $html = $this->getReplyBody($incident, $body);
@@ -132,13 +119,13 @@ class IncidentMailer extends IncidentCommunication
             ->setFrom($this->cert_email)
             ->addPart($html, 'text/html');
 
-        if ($self_reply) {
+        if ($notify_to_admins) {
             $message
-                ->setTo($this->cert_email);
+                ->setTo($this->getEmails($incident))
+                ->setCc($this->cert_email);
         } else {
             $message
-                ->setTo($incident->getEmails())
-                ->setCc($this->cert_email);
+                ->setTo($this->cert_email);
         }
 
         $message->getHeaders()->addTextHeader('References', $incident->getReportMessageId());
