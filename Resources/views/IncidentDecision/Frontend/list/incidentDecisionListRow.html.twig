@@ -25,6 +25,11 @@
     </td>
     <td id="decision_label_holder" class="col-md-1">
         <div class="label-holder">
+            {{ IncidentDecision.state }}
+        </div>
+    </td>
+    <td id="decision_label_holder" class="col-md-1">
+        <div class="label-holder">
             <span class="label tlp-{{ IncidentDecision.tlp | lower }} left"
                   id="tlp">&nbsp;TLP:{{ IncidentDecision.tlp }}&nbsp;</span>
         </div>
