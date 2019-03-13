@@ -32,6 +32,7 @@ class Version20190130151556 extends AbstractMigration
         $this->addSql("INSERT INTO incident_priority (`slug`, `name`, `response_time`, `resolution_time`, `code`, `impact`, `urgency`, `created_at`, `updated_at`) VALUES ('low_medium', 'Low', '240', '1440', '4', 'low', 'medium', now(), now())");
         $this->addSql("INSERT INTO incident_priority (`slug`, `name`, `response_time`, `resolution_time`, `code`, `impact`, `urgency`, `created_at`, `updated_at`) VALUES ('medium_low', 'Low', '240', '1440', '4', 'medium', 'low', now(), now())");
         $this->addSql("INSERT INTO incident_priority (`slug`, `name`, `response_time`, `resolution_time`, `code`, `impact`, `urgency`, `created_at`, `updated_at`) VALUES ('low_low', 'Very Low', '1440', '10080', '5', 'low', 'low',  now(), now())");
+        $this->addSql("INSERT INTO incident_priority (`slug`, `name`, `response_time`, `resolution_time`, `code`, `impact`, `urgency`, `created_at`, `updated_at`) VALUES ('undefined_undefined', 'Undefined', '0', '0', '0', 'undefined', 'undefined', now(), now())");
         $this->addSql('ALTER TABLE incident_priority CHANGE response_time response_time INT NOT NULL, CHANGE resolution_time resolution_time INT NOT NULL');
         $this->addSql('ALTER TABLE acl_classes CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
         $this->addSql('ALTER TABLE acl_security_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
