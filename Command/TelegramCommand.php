@@ -71,9 +71,8 @@ class TelegramCommand extends ContainerAwareCommand
         $output->writeln('[Messages]: sending message to ' . $chatID);
 
 
-        $url = 'https://api.telegram.org/bot' . $token . '/sendMessage?chat_id=' . $chatID;
+        $url = 'https://api.telegram.org/bot' . $token . '/sendMessage?parse_mode=markdown&chat_id=' . $chatID;
         $url = $url . '&text=' . urlencode($messaggio);
-        echo $url;
         $ch = curl_init();
         $optArray = array(
             CURLOPT_URL => $url,

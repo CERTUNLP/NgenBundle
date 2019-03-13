@@ -49,7 +49,10 @@ class TelegramMessage extends Message
         } else {
             $state = "\u{2753}";
         }
-        $formato = '%s Incidente en el host %s del tipo %s con un riesgo %s';
+        $formato = '%s Incidente en el host "*%s*" del tipo "*%s*" con un riesgo "*%s*"';
+        if ($this->getData()['notes']) {
+            $formato .= sprintf(PHP_EOL . PHP_EOL . '*Nota/Comentario:*  %s', $this->getData()['notes']);
+        }
         return sprintf($formato, $state, $this->getData()['address'], $this->getData()['type'], $this->getData()['priority']);
     }
 
