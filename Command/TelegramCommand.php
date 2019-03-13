@@ -32,23 +32,27 @@ class TelegramCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('[Messages]: Starting.');
-        $output->writeln('[Messages]: Sendind Telegram messages...');
+        $output->writeln('<info>[Messages]: Starting.</info>');
+        $output->writeln('<info>[Messages]: Sending Telegram messages...</info>');
         $messages = $this->findMessagesToSend();
         foreach ($messages as $message) {
+            $output->writeln('<info>[Messages]: sending message(' . $message->getId() . ') to client(' . $message->getChatID() . ')</info>');
+
             $decode_result = json_decode($this->sendMessage($message->getChatID(), $message->getMessage(), $message->getToken(), $output), true);
-            if (array_key_exists('error', $decode_result)) {
-                $message->setResponse($decode_result['description']);
+            if (array_key_exists('error_code', $decode_result)) {
+                $message->setResponse($decode_result);
+                $output->writeln('<error>[Messages][ERROR]: ' . $decode_result['description'] . '</error>');
             } else {
-                $message->setResponse($decode_result['result']);
+                $message->setResponse($decode_result);
                 $message->setPending(FALSE);
+                $output->writeln('<info>[Messages]: message(.' . $message->getId() . '.) sended. </info>');
             }
 
             $this->getContainer()->get('doctrine')->getManager()->persist($message);
         }
-        $output->writeln('[Messages]: Saving.');
+        $output->writeln('<info>[Messages]: Persisting sended messages.</info>');
         $this->getContainer()->get('doctrine')->getManager()->flush();
-        $output->writeln('[Messages]: Done.');
+        $output->writeln('<info>[Messages]: Done.</info>');
     }
 
     /**
@@ -59,20 +63,19 @@ class TelegramCommand extends ContainerAwareCommand
         return $this->getContainer()->get('doctrine')->getRepository(TelegramMessage::class)->findMessagesToSend();
     }
 
+
     /**
-     * @param $chatID
-     * @param $messaggio
-     * @param $token
+     * @param string $chatID
+     * @param string $message
+     * @param string $token
      * @param OutputInterface $output
      * @return bool|string
      */
-    private function sendMessage($chatID, $messaggio, $token, OutputInterface $output)
+    private function sendMessage(string $chatID, string $message, string $token, OutputInterface $output)
     {
-        $output->writeln('[Messages]: sending message to ' . $chatID);
-
 
         $url = 'https://api.telegram.org/bot' . $token . '/sendMessage?parse_mode=markdown&chat_id=' . $chatID;
-        $url = $url . '&text=' . urlencode($messaggio);
+        $url = $url . '&text=' . urlencode($message);
         $ch = curl_init();
         $optArray = array(
             CURLOPT_URL => $url,

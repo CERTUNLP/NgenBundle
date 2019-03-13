@@ -27,33 +27,29 @@ class TelegramMessage extends Message
         return true;
     }
 
+    /**
+     * @return string
+     */
     public function getToken(): string
     {
         return $this->getData()['token'];
     }
 
+    /**
+     * @return string
+     */
     public function getChatID(): string
     {
         return $this->getData()['chatid'];
     }
 
+    /**
+     * @return string
+     */
     public function getMessage(): string
     {
-
-        if ($this->getData()['priority'] === 'HIGH') {
-            $state = "\u{274C}";
-        } elseif ($this->getData()['priority'] === 'WARNING') {
-            $state = "\u{1F4A5}";
-        } elseif ($this->getData()['priority'] === 'CRITICAL') {
-            $state = "\u{1F525}";
-        } else {
-            $state = "\u{2753}";
-        }
-        $formato = '%s Incidente en el host "*%s*" del tipo "*%s*" con un riesgo "*%s*"';
-        if ($this->getData()['notes']) {
-            $formato .= sprintf(PHP_EOL . PHP_EOL . '*Nota/Comentario:*  %s', $this->getData()['notes']);
-        }
-        return sprintf($formato, $state, $this->getData()['address'], $this->getData()['type'], $this->getData()['priority']);
+        return $this->getData()['message'];
     }
+
 
 }
