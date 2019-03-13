@@ -38,3 +38,5 @@ Only critical: Sólo críticos
 Dont use it: No usar
 Feeds: Feeds
 Contact type: Tipo de contacto
+Note/Comment: 'Nota/Comentario'
+telegram_message: '%s Incidente en el host "*%s*" del tipo "*%s*" con un riesgo "*%s*" TLP: %s(%s)'
