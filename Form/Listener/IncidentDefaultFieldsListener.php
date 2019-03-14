@@ -48,6 +48,8 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
         } else {
             if ($incident->getOrigin()) {
                 $form->get('address')->setData($incident->getOrigin()->getAddress());
+                $form->get('impact')->setData($this->doctrine->getReference(IncidentImpact::class, $incident->getPriority()->getImpact()->getSlug()));
+                $form->get('urgency')->setData($this->doctrine->getReference(IncidentUrgency::class, $incident->getPriority()->getUrgency()->getSlug()));
             }
 
         }
