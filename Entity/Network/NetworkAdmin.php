@@ -244,10 +244,17 @@ class NetworkAdmin
     }
 
     /**
+     * @param int|null $priorityCode
      * @return Collection
      */
-    public function getContacts()
+    public function getContacts(int $priorityCode = null): Collection
     {
+        if ($priorityCode !== null) {
+            return $this->contacts->filter(function (Contact $contact) use ($priorityCode) {
+                return $contact->getContactCase()->getLevel() >= $priorityCode;
+            });
+        }
+
         return $this->contacts;
     }
 
