@@ -88,28 +88,28 @@ class Incident implements IncidentInterface
      * @JMS\Groups({"api"})
      */
     protected $tlp;
+
     /**
-     * @var IncidentUrgency
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency", inversedBy="incidents")
-     * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
+     * @var IncidentPriority
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority", inversedBy="incidents")
+     * @ORM\JoinColumn(name="priority", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    protected $urgency;
+    protected $priority;
     /**
      * @var IncidentImpact
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact", inversedBy="incidents")
-     * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
      */
     protected $impact;
+    /**
+     * @var IncidentUrgency
+     */
+    protected $urgency;
     /**
      * @var IncidentCommentThread
      * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread",mappedBy="incident",fetch="EXTRA_LAZY"))
      */
     protected $comment_thread;
-
     /**
      * @var \DateTime
      *
@@ -184,7 +184,6 @@ class Incident implements IncidentInterface
      * @var bool
      */
     protected $sendReport = false;
-
     /**
      * @var string
      *
@@ -199,7 +198,6 @@ class Incident implements IncidentInterface
      * @ORM\Column(type="text", nullable=true)
      */
     protected $notes;
-
     /**
      * @var Host|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_origin")
@@ -232,6 +230,24 @@ class Incident implements IncidentInterface
         if ($term) {
             $this->setAddress($term);
         }
+    }
+
+    /**
+     * @return IncidentPriority
+     */
+    public function getPriority(): ?IncidentPriority
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param IncidentPriority $priority
+     * @return Incident
+     */
+    public function setPriority(IncidentPriority $priority): Incident
+    {
+        $this->priority = $priority;
+        return $this;
     }
 
     /**
