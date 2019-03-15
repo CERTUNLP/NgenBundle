@@ -11,14 +11,12 @@
 
 namespace CertUnlp\NgenBundle\Form;
 
-use CertUnlp\NgenBundle\Entity\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -42,19 +40,19 @@ class NetworkAdminType extends AbstractType
                 'required' => false,
             ))
             ->add('contacts', CollectionType::class,
-                array (
-                    'label'        => 'Contacts',
+                array(
+                    'label' => 'Contacts',
                     'entry_options' => array('label' => false),
-                    'entry_type'   => ContactType::class,
-                    'allow_add'    => true,
+                    'entry_type' => ContactType::class,
+                    'allow_add' => true,
                     'allow_delete' => true,
-                    'prototype'    => true,
-                    'required'     => false,
+                    'prototype' => true,
+                    'required' => false,
                     'by_reference' => false,
                     'delete_empty' => true,
                     'attr' => array(
                         'class' => 'admin-contacts',
-                     ),
+                    ),
                 ));
 
         if ($builder->getData()) {
@@ -76,9 +74,9 @@ class NetworkAdminType extends AbstractType
             // check if the Product object is "new"
             // If no data is passed to the form, the data is "null".
             // This should be considered a new "Product"
-           // if ($network) {
+            // if ($network) {
             //    $form->get('emails')->setData(implode(',', $network->getEmails()));
-           // }
+            // }
         });
     }
 

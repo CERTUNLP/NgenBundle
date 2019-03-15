@@ -572,24 +572,6 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @return IncidentPriority
-     */
-    public function getPriority(): ?IncidentPriority
-    {
-        return $this->priority;
-    }
-
-    /**
-     * @param IncidentPriority $priority
-     * @return Incident
-     */
-    public function setPriority(IncidentPriority $priority): Incident
-    {
-        $this->priority = $priority;
-        return $this;
-    }
-
-    /**
      * @return ArrayCollection
      */
     public function getAssignedContacts(): ArrayCollection
@@ -645,6 +627,24 @@ class Incident implements IncidentInterface
         }
         $this->state = $state;
 
+        return $this;
+    }
+
+    /**
+     * @return IncidentPriority
+     */
+    public function getPriority(): ?IncidentPriority
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param IncidentPriority $priority
+     * @return Incident
+     */
+    public function setPriority(IncidentPriority $priority): Incident
+    {
+        $this->priority = $priority;
         return $this;
     }
 
