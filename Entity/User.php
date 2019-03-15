@@ -17,6 +17,7 @@ use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
 use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Model\ReporterInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
@@ -96,8 +97,9 @@ class User extends BaseUser implements ReporterInterface
     public function __construct()
     {
         parent::__construct();
-        $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->assignedIncidents = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->incidents = new ArrayCollection();
+        $this->assignedIncidents = new ArrayCollection();
+        $this->contacts = new ArrayCollection();
     }
 
     /**
@@ -323,7 +325,7 @@ class User extends BaseUser implements ReporterInterface
      * @param int|null $priorityCode
      * @return Collection
      */
-    public function getContacts(int $priorityCode = null): Collection
+    public function getContacts(int $priorityCode = null): ?Collection
     {
         if ($priorityCode !== null) {
             return $this->contacts->filter(function (Contact $contact) use ($priorityCode) {
