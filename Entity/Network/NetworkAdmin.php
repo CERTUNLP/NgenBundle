@@ -238,7 +238,7 @@ class NetworkAdmin
     public function getEmails(): array
     {
         $array_mails = $this->getContacts()->map(function ($value) {
-            return $value->getUsername();
+            return $value->getEmail();
         }); // [2, 3, 4]
         return $array_mails->toArray();
     }

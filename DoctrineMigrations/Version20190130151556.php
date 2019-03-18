@@ -34,10 +34,6 @@ class Version20190130151556 extends AbstractMigration
         $this->addSql("INSERT INTO incident_priority (`slug`, `name`, `response_time`, `resolution_time`, `code`, `impact`, `urgency`, `created_at`, `updated_at`) VALUES ('low_low', 'Very Low', '1440', '10080', '5', 'low', 'low',  now(), now())");
         $this->addSql("INSERT INTO incident_priority (`slug`, `name`, `response_time`, `resolution_time`, `code`, `impact`, `urgency`, `created_at`, `updated_at`) VALUES ('undefined_undefined', 'Undefined', '0', '0', '0', 'undefined', 'undefined', now(), now())");
         $this->addSql('ALTER TABLE incident_priority CHANGE response_time response_time INT NOT NULL, CHANGE resolution_time resolution_time INT NOT NULL');
-        $this->addSql('ALTER TABLE acl_classes CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_security_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_object_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_entries CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
     }
 
     /**
@@ -48,10 +44,6 @@ class Version20190130151556 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE acl_classes CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_entries CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_object_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_security_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
         $this->addSql('ALTER TABLE incident DROP FOREIGN KEY FK_3D03A11AC409C007');
         $this->addSql('DROP INDEX UNIQ_9A63B854989D9B62 ON incident_priority');
         $this->addSql('ALTER TABLE incident_priority CHANGE slug slug VARCHAR(45) NOT NULL COLLATE utf8_unicode_ci');
