@@ -18,7 +18,7 @@ class Version20190213120523 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE network_admin DROP emails');
+//        $this->addSql('ALTER TABLE network_admin DROP emails');
     }
 
     /**

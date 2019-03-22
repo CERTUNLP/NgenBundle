@@ -19,10 +19,6 @@ class Version20190118204831 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE incident DROP FOREIGN KEY FK_3D03A11AC409C007');
-        $this->addSql('ALTER TABLE incident_state ADD CONSTRAINT FK_F8A77091D64D0DD2 FOREIGN KEY (mail_assigned) REFERENCES contact_case (slug)');
-        $this->addSql('ALTER TABLE incident_state ADD CONSTRAINT FK_F8A77091699B3576 FOREIGN KEY (mail_team) REFERENCES contact_case (slug)');
-        $this->addSql('ALTER TABLE incident_state ADD CONSTRAINT FK_F8A77091BCCDAF19 FOREIGN KEY (mail_admin) REFERENCES contact_case (slug)');
-        $this->addSql('ALTER TABLE incident_state ADD CONSTRAINT FK_F8A77091AB0121BA FOREIGN KEY (mail_reporter) REFERENCES contact_case (slug)');
     }
 
     /**

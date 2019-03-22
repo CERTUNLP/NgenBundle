@@ -35,7 +35,6 @@ class Version20181121145047 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE incident DROP FOREIGN KEY FK_3D03A11A6801DB4');
-        $this->addSql('ALTER TABLE network DROP FOREIGN KEY FK_608487BC6801DB4');
         $this->addSql('ALTER TABLE network_entity RENAME TO academic_unit;');
         $this->addSql('DROP INDEX IDX_3D03A11A6801DB4 ON incident');
         $this->addSql('ALTER TABLE incident CHANGE network_entity_id academic_unit_id INT DEFAULT NULL');
@@ -46,7 +45,6 @@ class Version20181121145047 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_7C69DA3B62A6DC27 ON incident_decision (tlp)');
         $this->addSql('ALTER TABLE incident_decision ADD CONSTRAINT FK_7C69DA3B35F44C09 FOREIGN KEY (tlp) REFERENCES incident_tlp (slug)');
         $this->addSql('ALTER TABLE incident_tlp CHANGE description description VARCHAR(45) DEFAULT NULL COLLATE utf8_unicode_ci');
-        $this->addSql('DROP INDEX IDX_608487BC6801DB4 ON network');
         $this->addSql('ALTER TABLE network CHANGE network_entity_id academic_unit_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE network ADD CONSTRAINT FK_608487BC7D33BAAB FOREIGN KEY (academic_unit_id) REFERENCES academic_unit (id)');
         $this->addSql('CREATE INDEX IDX_608487BC7D33BAAB ON network (academic_unit_id)');

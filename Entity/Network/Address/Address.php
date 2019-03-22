@@ -59,6 +59,8 @@ abstract class Address
         return $this;
     }
 
+    abstract public function inRange(Address $other = null): bool;
+
     abstract public function getCustomNumericAddress(): string;
 
     abstract public function getCustomNumericAddressMask(): string;

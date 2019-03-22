@@ -18,7 +18,10 @@ class Version20190109203258 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
+        $this->addSql("UPDATE incident_state SET `updated_at`=CURRENT_TIMESTAMP() WHERE CAST(updated_at AS CHAR(20))='0000-00-00 00:00:00'");
+        $this->addSql("UPDATE incident_state SET `created_at`=CURRENT_TIMESTAMP() WHERE CAST(created_at AS CHAR(20))='0000-00-00 00:00:00'");
         $this->addSql('ALTER TABLE incident_state CHANGE mail_admin mail_admin VARCHAR(255) NOT NULL, CHANGE mail_reporter mail_reporter VARCHAR(255) NOT NULL, CHANGE mail_assigned mail_assigned VARCHAR(255) NOT NULL, CHANGE mail_team mail_team VARCHAR(255) NOT NULL');
+
         $this->addSql("UPDATE incident_state SET `mail_admin`='none', `mail_reporter`='none', `mail_assigned`='none', `mail_team`='none'");
     }
 

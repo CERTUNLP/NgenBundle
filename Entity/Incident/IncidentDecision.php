@@ -2,6 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Network\Network;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -190,17 +191,19 @@ class IncidentDecision
     /**
      * @return mixed
      */
-    public function getNetwork()
+    public function getNetwork(): ?Network
     {
         return $this->network;
     }
 
     /**
      * @param mixed $network
+     * @return IncidentDecision
      */
-    public function setNetwork($network)
+    public function setNetwork(Network $network = null): IncidentDecision
     {
         $this->network = $network;
+        return $this;
     }
 
     /**

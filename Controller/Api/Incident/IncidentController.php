@@ -65,6 +65,7 @@ class IncidentController extends FOSRestController
      */
     public function postIncidentAction(Request $request)
     {
+
         return $this->getApiController($request->get('ip'))->post($request);
     }
 

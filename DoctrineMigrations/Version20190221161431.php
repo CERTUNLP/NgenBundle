@@ -19,7 +19,7 @@ class Version20190221161431 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE host DROP ip_v6, CHANGE ip_v4 ip VARCHAR(39) DEFAULT NULL');
-        $this->addSql('ALTER TABLE network ADD ip_start_address VARCHAR(255) DEFAULT NULL, ADD ip_end_address VARCHAR(255) DEFAULT NULL, DROP numeric_ip_v4_mask, DROP ip_v4, DROP numeric_ip_v4, DROP numeric_domain, DROP numeric_ip_v6_mask, DROP numeric_ip_v6, DROP ip_v6_mask, DROP ip_v6_start_address, DROP ip_v6_end_address, CHANGE ip_v4_mask ip_mask VARCHAR(40) DEFAULT NULL, CHANGE ip_v6 ip VARCHAR(39) DEFAULT NULL');
+        $this->addSql('ALTER TABLE network ADD ip_start_address VARCHAR(255) DEFAULT NULL, ADD ip_end_address VARCHAR(255) DEFAULT NULL, DROP numeric_ip_v4_mask, DROP ip_v6, DROP numeric_ip_v4, DROP numeric_domain, DROP numeric_ip_v6_mask, DROP numeric_ip_v6, DROP ip_v6_mask, DROP ip_v6_start_address, DROP ip_v6_end_address, CHANGE ip_v4_mask ip_mask VARCHAR(40) DEFAULT NULL, CHANGE ip_v4 ip VARCHAR(39) DEFAULT NULL');
     }
 
     /**

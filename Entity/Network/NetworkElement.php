@@ -134,7 +134,7 @@ abstract class NetworkElement
     {
         return $this->address->getAddressMask();
     }
-    
+
 
     /**
      * @return string
@@ -171,6 +171,15 @@ abstract class NetworkElement
     public function getAddressObject(): Address
     {
         return $this->address;
+    }
+
+    public function inRange(NetworkElement $other = null): bool
+    {
+        if ($other) {
+            return $this->address->inRange($other->getAddressObject());
+        }
+        return false;
+
     }
 
     /**
