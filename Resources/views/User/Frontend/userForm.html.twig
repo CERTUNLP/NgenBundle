@@ -14,6 +14,9 @@
 {% block content_body %}
     {% if (form is not null) %}
         {{ form_errors(form, { 'global_errors': true }) }}
+        {% form_theme form
+            'jquery.collection.html.twig'
+            'CertUnlpNgenBundle:NetworkAdmin/Frontend:contacts.html.twig' %}
         {{ form(form, {'attr': {'id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal', 'col_size': 'sm' }) }}
     {% endif %}
 {% endblock %}
@@ -27,5 +30,9 @@
     {% endjavascripts %}
     <script>
         var user_form = new UserForm();
+        $('.user-contacts').collection({
+                min: 1
+            }
+        );
     </script>
 {% endblock %}

@@ -46,10 +46,10 @@ class IncidentMailer extends IncidentCommunication
         $this->sendMail($incident);
     }
 
-    public function sendMail(Incident $incident, $body = null, $echo = null, $is_new_incident = false, $renotification = false)
+    public function sendMail(Incident $incident, bool $renotification = false)
     {
-        $emails = $this->getEmails($incident);
-        if ($emails) {
+        $emails = $incident->getEmails();
+        if ($emails && $incident->canBeSended()) {
             #Hay que discutir si es necesario mandar cualquier cambio o que cosa todo || $is_new_incident || $renotification) {
             $html = $this->getBody($incident);
             $message = \Swift_Message::newInstance()
@@ -58,6 +58,14 @@ class IncidentMailer extends IncidentCommunication
                 ->setSender($this->cert_email)
                 ->setTo($emails)
                 ->addPart($html, 'text/html');
+
+            if ($incident->getState()->getMailTeam()->getLevel() >= $incident->getPriority()->getCode()) {
+                $message->setCc($this->cert_email);
+            }
+            if ($incident->getEvidenceFilePath()) {
+                $message->attach(\Swift_Attachment::fromPath($this->upload_directory . $incident->getEvidenceFilePath(true)));
+            }
+
 
             if ($incident->getEvidenceFilePath()) {
                 $message->attach(\Swift_Attachment::fromPath($this->upload_directory . $incident->getEvidenceFilePath(true)));
@@ -72,6 +80,11 @@ class IncidentMailer extends IncidentCommunication
         return null;
     }
 
+    /**
+     * @param Incident $incident
+     * @param string $type
+     * @return false|string
+     */
     public function getBody(Incident $incident, string $type = 'html')
     {
         return $this->report_factory->getReport($incident, $this->lang);
@@ -121,7 +134,7 @@ class IncidentMailer extends IncidentCommunication
 
         if ($notify_to_admins) {
             $message
-                ->setTo($this->getEmails($incident))
+                ->setTo($incident->getEmails())
                 ->setCc($this->cert_email);
         } else {
             $message

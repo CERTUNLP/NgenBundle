@@ -21,6 +21,21 @@ use JMS\Serializer\Annotation as JMS;
 class DomainAddress extends Address
 {
 
+    public function inRange(Address $other = null): bool
+    {
+        return false;
+
+    }
+
+    public function getCustomAddressMask(): string
+    {
+        return substr_count($this->getCustomAddress(), '.') + 1;
+    }
+
+    public function getCustomAddress(): string
+    {
+        return $this->getNetwork()->getDomain();
+    }
 
     public function setCustomAddress(string $address): NetworkElement
     {
@@ -32,16 +47,6 @@ class DomainAddress extends Address
     {
         $this->getNetwork()->setDomain($address);
         return $this->getNetwork();
-    }
-
-    public function getCustomAddressMask(): string
-    {
-        return substr_count($this->getCustomAddress(), '.') + 1;
-    }
-
-    public function getCustomAddress(): string
-    {
-        return $this->getNetwork()->getDomain();
     }
 
     public function getType(): string

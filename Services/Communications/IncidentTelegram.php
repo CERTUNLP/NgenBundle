@@ -48,7 +48,7 @@ class IncidentTelegram extends IncidentCommunication
     public function comunicate(Incident $incident, string $body = '', bool $notify_to_admins = true): void
     {
         if ($notify_to_admins) {
-            $telegrams = $this->getTelegramContacts($incident);
+            $telegrams = $incident->getTelegramContacts();
             if ($telegrams) {
                 foreach ($telegrams as $telegram) {
                     $message = new TelegramMessage();
@@ -92,7 +92,7 @@ class IncidentTelegram extends IncidentCommunication
             $formato .= sprintf(PHP_EOL . PHP_EOL . '*' . $this->translator->trans('Note/Comment') . ':*  %s', $notes ?? $incident->getNotes());
         }
 
-        return sprintf($formato, $this->getTelegramIcon($this->getPriority($incident)->getSlug()), $incident->getAddress(), $incident->getType()->getName(), $this->getPriority($incident)->getName(), $incident->getTlp()->getSlug(), $this->getTlpIcon($incident->getTlp()->getSlug()));
+        return sprintf($formato, $this->getTelegramIcon($incident->getPriority()->getSlug()), $incident->getAddress(), $incident->getType()->getName(), $incident->getPriority()->getName(), $incident->getTlp()->getSlug(), $this->getTlpIcon($incident->getTlp()->getSlug()));
     }
 
     /**

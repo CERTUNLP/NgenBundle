@@ -36,9 +36,9 @@ class HostHandler extends Handler
      * @param string $address
      * @return Host
      */
-    public function findByAddress(string $address): ?Host
+    public function findOneByAddress(string $address): ?Host
     {
-        return $this->repository->findByAddress(['address' => $address]);
+        return $this->repository->findOneByAddress(['address' => $address]);
     }
 
     /**
@@ -48,10 +48,10 @@ class HostHandler extends Handler
      */
     protected function checkIfExists($host, $method)
     {
-        $hostDB = $this->repository->findByAddress(['address' => $host->getAddress()]);
+        $hostDB = $this->repository->findOneByAddress(['address' => $host->getAddress()]);
 
         if ($hostDB && $method === 'POST') {
-            if (!$hostDB->getIsActive()) {
+            if (!$hostDB->isActive()) {
                 $hostDB->setIsActive(TRUE);
             }
             $host = $hostDB;

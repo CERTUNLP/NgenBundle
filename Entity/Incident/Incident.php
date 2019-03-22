@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
@@ -35,7 +36,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Incident implements IncidentInterface
 {
-
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="host_address", type="string",length=20)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    protected $host_address;
     /**
      * @var integer
      *
@@ -89,27 +97,26 @@ class Incident implements IncidentInterface
      */
     protected $tlp;
     /**
-     * @var IncidentUrgency
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency", inversedBy="incidents")
-     * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
+     * @var IncidentPriority
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority", inversedBy="incidents")
+     * @ORM\JoinColumn(name="priority", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    protected $urgency;
+    protected $priority;
     /**
      * @var IncidentImpact
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact", inversedBy="incidents")
-     * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
      */
     protected $impact;
+    /**
+     * @var IncidentUrgency
+     */
+    protected $urgency;
     /**
      * @var IncidentCommentThread
      * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread",mappedBy="incident",fetch="EXTRA_LAZY"))
      */
     protected $comment_thread;
-
     /**
      * @var \DateTime
      *
@@ -184,7 +191,6 @@ class Incident implements IncidentInterface
      * @var bool
      */
     protected $sendReport = false;
-
     /**
      * @var string
      *
@@ -199,7 +205,6 @@ class Incident implements IncidentInterface
      * @ORM\Column(type="text", nullable=true)
      */
     protected $notes;
-
     /**
      * @var Host|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_origin")
@@ -321,24 +326,6 @@ class Incident implements IncidentInterface
     public function setIsClosed(bool $isClosed): Incident
     {
         $this->isClosed = $isClosed;
-        return $this;
-    }
-
-    /**
-     * @return IncidentType
-     */
-    public function getType(): ?IncidentType
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param IncidentType $type
-     * @return Incident
-     */
-    public function setType(IncidentType $type = null): Incident
-    {
-        $this->type = $type;
         return $this;
     }
 
@@ -580,17 +567,25 @@ class Incident implements IncidentInterface
     public function getContacts(): ArrayCollection
     {
         $contactos = [];
-        if ($this->getAssigned()) {
-            $contactos = array_merge($contactos, $this->getAssigned()->getContacts()->toArray());
-        }
-        if ($this->getReporter()) {
-            $contactos = array_merge($contactos, $this->getReporter()->getContacts()->toArray());
-        }
-        if ($this->getNetworkAdmin()) {
-            $contactos = array_merge($contactos, $this->getNetworkAdmin()->getContacts()->toArray());
-        }
+
+        $contactos = array_merge($contactos, $this->getAssignedContacts()->toArray());
+
+        $contactos = array_merge($contactos, $this->getReporterContacts()->toArray());
+
+        $contactos = array_merge($contactos, $this->getNetworkAdminContacts()->toArray());
 
         return new ArrayCollection($contactos);
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAssignedContacts(): ArrayCollection
+    {
+        if ($this->getAssigned() && $this->getState()->getMailAssigned()->getLevel() >= $this->getPriority()->getCode()) {
+            return $this->getAssigned()->getContacts($this->getPriority()->getCode());
+        }
+        return new ArrayCollection();
     }
 
     /**
@@ -609,60 +604,6 @@ class Incident implements IncidentInterface
     {
         $this->assigned = $assigned;
         return $this;
-    }
-
-    /**
-     * @return User
-     */
-    public function getReporter(): ?User
-    {
-        return $this->reporter;
-    }
-
-    /**
-     * @param User $reporter
-     * @return Incident
-     */
-    public function setReporter(User $reporter = null): Incident
-    {
-        $this->reporter = $reporter;
-        return $this;
-    }
-
-    public function getNetworkAdmin(): ?NetworkAdmin
-    {
-        if ($this->getNetwork()) {
-            return $this->getNetwork()->getNetworkAdmin();
-        }
-        return null;
-    }
-
-    /**
-     * @return Network
-     */
-    public function getNetwork(): ?Network
-    {
-        return $this->network;
-    }
-
-    /**
-     * @param Network $network
-     * @return Incident
-     */
-    public function setNetwork(Network $network = null): Incident
-    {
-        $this->network = $network;
-        return $this;
-    }
-
-    public function isInternal(): bool
-    {
-        return false;
-    }
-
-    public function isExternal(): bool
-    {
-        return false;
     }
 
     /**
@@ -696,6 +637,90 @@ class Incident implements IncidentInterface
     }
 
     /**
+     * @return IncidentPriority
+     */
+    public function getPriority(): ?IncidentPriority
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param IncidentPriority $priority
+     * @return Incident
+     */
+    public function setPriority(IncidentPriority $priority): Incident
+    {
+        $this->priority = $priority;
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getReporterContacts(): ArrayCollection
+    {
+        if ($this->getReporter() && $this->getState()->getMailReporter()->getLevel() >= $this->getPriority()->getCode()) {
+            return $this->getReporter()->getContacts($this->getPriority()->getCode());
+        }
+        return new ArrayCollection();
+    }
+
+    /**
+     * @return User
+     */
+    public function getReporter(): ?User
+    {
+        return $this->reporter;
+    }
+
+    /**
+     * @param User $reporter
+     * @return Incident
+     */
+    public function setReporter(User $reporter = null): Incident
+    {
+        $this->reporter = $reporter;
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getNetworkAdminContacts(): ArrayCollection
+    {
+        if ($this->getNetworkAdmin() && $this->getState()->getMailAdmin()->getLevel() >= $this->getPriority()->getCode()) {
+            return $this->getNetworkAdmin()->getContacts($this->getPriority()->getCode());
+        }
+        return new ArrayCollection();
+    }
+
+    public function getNetworkAdmin(): ?NetworkAdmin
+    {
+        if ($this->getNetwork()) {
+            return $this->getNetwork()->getNetworkAdmin();
+        }
+        return null;
+    }
+
+    /**
+     * @return Network
+     */
+    public function getNetwork(): ?Network
+    {
+        return $this->network;
+    }
+
+    /**
+     * @param Network $network
+     * @return Incident
+     */
+    public function setNetwork(Network $network = null): Incident
+    {
+        $this->network = $network;
+        return $this;
+    }
+
+    /**
      * @return Incident
      */
     public function close(): Incident
@@ -709,6 +734,104 @@ class Incident implements IncidentInterface
     public function open(): Incident
     {
         return $this->setIsClosed(false);
+    }
+
+    /**
+     * @return array
+     */
+    public function getEmails(): array
+    {
+        return array_filter($this->getEmailContacts()->map(function (Contact $contact) {
+            return $contact->getEmail();
+        })->toArray(), function ($value) {
+            return $value !== '';
+        });
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getEmailContacts(): ArrayCollection
+    {
+        return $this->getContacts()->filter(function (Contact $contact) {
+            return $contact->getEmail();
+        });
+    }
+
+    /**
+     * @return bool
+     */
+    public function canBeSended(): bool
+
+    {
+        return !$this->isStaging() || !$this->isUndefined();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStaging(): bool
+    {
+        return $this->getState()->getSlug() === 'staging';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUndefined(): bool
+    {
+        return $this->getType()->getSlug() === 'undefined';
+
+    }
+
+    /**
+     * @return IncidentType
+     */
+    public function getType(): ?IncidentType
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param IncidentType $type
+     * @return Incident
+     */
+    public function setType(IncidentType $type = null): Incident
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTelegrams(): array
+    {
+        return array_filter($this->getTelegramContacts()->map(function (Contact $contact) {
+            return $contact->getTelegram();
+        })->toArray(), function ($value) {
+            return $value !== '';
+        });
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTelegramContacts(): ArrayCollection
+    {
+        return $this->getContacts()->filter(function (Contact $contact) {
+            return $contact->getTelegram();
+        });
+    }
+
+    public function isInternal(): bool
+    {
+        return false;
+    }
+
+    public function isExternal(): bool
+    {
+        return false;
     }
 
     /**
@@ -820,9 +943,25 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @return Host
+     * @return string
      */
     public function getHostAddress(): ?string
+    {
+        return $this->host_address;
+    }
+
+    /**
+     * @param string $host_address
+     */
+    public function setHostAddress(string $host_address): void
+    {
+        $this->host_address = $host_address;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIp(): ?string
     {
         return $this->getAddress();
     }
@@ -868,13 +1007,5 @@ class Incident implements IncidentInterface
     {
         $this->origin = $origin;
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIp(): ?string
-    {
-        return $this->getAddress();
     }
 }
