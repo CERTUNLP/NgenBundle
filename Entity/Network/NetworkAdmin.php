@@ -93,7 +93,14 @@ class NetworkAdmin
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
-
+    /**
+     *
+     * @var array
+     *
+     * @ORM\Column(name="emails", type="array")
+     * @JMS\Expose()
+     */
+    private $emails = [];
     /**
      * Constructor
      * @param string $name
@@ -237,17 +244,21 @@ class NetworkAdmin
      */
     public function getEmails(): array
     {
-        $array_mails = $this->getContacts()->map(function ($value) {
-            return $value->getUsername();
-        }); // [2, 3, 4]
-        return $array_mails->toArray();
+        return $this->emails;
     }
 
     /**
+     * @param int|null $priorityCode
      * @return Collection
      */
-    public function getContacts()
+    public function getContacts(int $priorityCode = null): Collection
     {
+        if ($priorityCode !== null) {
+            return $this->contacts->filter(function (Contact $contact) use ($priorityCode) {
+                return $contact->getContactCase()->getLevel() >= $priorityCode;
+            });
+        }
+
         return $this->contacts;
     }
 

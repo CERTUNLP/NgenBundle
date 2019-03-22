@@ -11,10 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Services\Communications;
 
-use CertUnlp\NgenBundle\Entity\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use Symfony\Component\Translation\Translator;
@@ -50,66 +47,6 @@ abstract class IncidentCommunication
 
     abstract public function comunicate(Incident $incident): void;
 
-    /**
-     * @param Incident $incident
-     * @return array
-     */
-    public function getEmails(Incident $incident): array
-    {
-        return array_filter($this->getEmailContacts($incident)->map(function (Contact $contact) {
-            return $contact->getEmail();
-        })->toArray(), function ($value) {
-            return $value !== '';
-        });
-    }
-
-    /**
-     * @param Incident $incident
-     * @return ArrayCollection
-     */
-    public function getEmailContacts(Incident $incident): ArrayCollection
-    {
-        return $this->getContacts($incident)->filter(function (Contact $contact) {
-            return $contact->getEmail();
-        });
-    }
-
-    /**
-     * @param $incident
-     * @return ArrayCollection
-     */
-    public function getContacts(Incident $incident): ArrayCollection
-    {
-        $incidentContacts = $incident->getContacts();
-//            if ($this->teamContact) {
-//                $incidentContacts->add($this->teamContact);
-//            }
-        $priorityCode = $this->getPriorityCode($incident);
-        return $incidentContacts->filter(function (Contact $contact) use ($priorityCode) {
-            return $contact->getContactCase()->getLevel() >= $priorityCode;
-        });
-    }
-
-    /**
-     * @param Incident $incident
-     * @return int
-     */
-    public function getPriorityCode(Incident $incident): int
-    {
-        $priority = $this->getPriority($incident);
-        return $priority ? $priority->getCode() : 5;
-    }
-
-    /**
-     * @param Incident $incident
-     * @return IncidentPriority
-     */
-    public function getPriority(Incident $incident): IncidentPriority
-    {
-        $repo = $this->getDoctrine()->getRepository(IncidentPriority::class);
-        $priority = $repo->findOneBy(array('impact' => $incident->getImpact()->getSlug(), 'urgency' => $incident->getUrgency()->getSlug()));
-        return $priority;
-    }
 
     /**
      * @return EntityManagerInterface
@@ -119,27 +56,4 @@ abstract class IncidentCommunication
         return $this->doctrine;
     }
 
-    /**
-     * @param Incident $incident
-     * @return array
-     */
-    public function getTelegrams(Incident $incident): array
-    {
-        return array_filter($this->getTelegramContacts($incident)->map(function (Contact $contact) {
-            return $contact->getTelegram();
-        })->toArray(), function ($value) {
-            return $value !== '';
-        });
-    }
-
-    /**
-     * @param Incident $incident
-     * @return ArrayCollection
-     */
-    public function getTelegramContacts(Incident $incident): ArrayCollection
-    {
-        return $this->getContacts($incident)->filter(function (Contact $contact) {
-            return $contact->getTelegram();
-        });
-    }
 }

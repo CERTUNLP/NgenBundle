@@ -13,8 +13,10 @@ namespace CertUnlp\NgenBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class UserType extends AbstractType
@@ -44,7 +46,22 @@ class UserType extends AbstractType
                 'multiple' => true,
                 'data' => $builder->getData() ? $builder->getData()->getRoles() : []
             ))
-            ->add('save', 'submit', array(
+            ->add('contacts', CollectionType::class,
+                array(
+                    'label' => 'Contacts',
+                    'entry_options' => array('label' => false),
+                    'entry_type' => ContactType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'prototype' => true,
+                    'required' => false,
+                    'by_reference' => false,
+                    'delete_empty' => true,
+                    'attr' => array(
+                        'class' => 'user-contacts',
+                    ),
+                ))
+            ->add('save', SubmitType::class, array(
                 'attr' => array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => 'slide-down')));
     }
 

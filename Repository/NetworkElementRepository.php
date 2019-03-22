@@ -13,6 +13,7 @@ namespace CertUnlp\NgenBundle\Repository;
 
 use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 
 /**
  * NetworkRepository
@@ -22,7 +23,129 @@ use Doctrine\ORM\EntityRepository;
  */
 class NetworkElementRepository extends EntityRepository
 {
-    public function findByAddress(array $params): ?NetworkElement
+    public function findOneByAddress(array $params): ?NetworkElement
+    {
+
+        $address = explode('/', $params['address']);
+        switch (NetworkElement::guessType($address[0])) {
+            case FILTER_FLAG_IPV4:
+                return $this->findOneByIpV4($address[0]);
+                break;
+            case FILTER_FLAG_IPV6:
+                return $this->findOneByIpV6($address[0]);
+                break;
+            case FILTER_VALIDATE_DOMAIN:
+                return $this->findOneByDomain($address[0]);
+                break;
+            default:
+                return null;
+        }
+
+    }
+
+    /**
+     * @param string $address
+     * @return NetworkElement|null
+     */
+    public function findOneByIpV4(string $address): ?NetworkElement
+    {
+        $results = $this->queryByIpV4($address)->getResult();
+        return $results ? $results[0] : null;
+    }
+
+    /**
+     * @param string $address
+     * @return Query
+     */
+    public function queryByIpV4(string $address): Query
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('n')
+            ->from($this->getClassName(), 'n')
+            ->where($qb->expr()->between('INET_ATON(:address)', 'INET_ATON(n.ip_start_address)', 'INET_ATON(n.ip_end_address)'))
+            ->andWhere('n.isActive = true')
+            ->orderBy('n.ip_mask', 'DESC');
+
+        $qb->setParameter('address', $address);
+
+        return $qb->getQuery();
+    }
+
+    /**
+     * @param string $address
+     * @return NetworkElement|null
+     */
+    public function findOneByIpV6(string $address): ?NetworkElement
+    {
+        $results = $this->queryByIpV6($address)->getResult();
+        return $results ? $results[0] : null;
+    }
+
+    /**
+     * @param string $address
+     * @return Query
+     */
+    public function queryByIpV6(string $address): Query
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('n')
+            ->from($this->getClassName(), 'n')
+            ->where($qb->expr()->between('INET6_ATON(:address)', 'INET6_ATON(n.ip_start_address)', 'INET6_ATON(n.ip_end_address)'))
+            ->andWhere('n.isActive = true')
+            ->orderBy('n.ip_mask', 'DESC');
+
+        $qb->setParameter('address', $address);
+
+        return $qb->getQuery();
+
+    }
+
+    /**
+     * @param string $address
+     * @return NetworkElement|null
+     */
+    public function findOneByDomain(string $address): ?NetworkElement
+    {
+        $results = $this->queryByDomain($address)->getResult();
+        return $results ? $results[0] : null;
+    }
+
+    /**
+     * @param string $domain
+     * @return Query
+     */
+    public function queryByDomain(string $domain): Query
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('n')
+            ->from($this->getClassName(), 'n')
+            ->andWhere('n.isActive = true')
+            ->orderBy('n.ip_mask', 'DESC');
+
+        $count = substr_count($domain, '.') + 1;
+
+        $qb->where($qb->expr()->eq('SUBSTRING_INDEX(:domain,\'.\',:count1 )', 'n.domain'));
+        $qb->setParameter('count1', -1);
+
+        for ($i = $count; $i > 1; $i--) {
+            $qb->orWhere($qb->expr()->eq('SUBSTRING_INDEX(:domain,\'.\',:count' . $i . ')', 'n.domain'));
+            $qb->setParameter('count' . $i, $i * -1);
+        }
+
+        $qb->setParameter('domain', $domain);
+
+        return $qb->getQuery();
+
+    }
+
+    /**
+     * @param array $params
+     * @return array
+     */
+    public function findByAddress(array $params): array
     {
 
         $address = explode('/', $params['address']);
@@ -42,63 +165,34 @@ class NetworkElementRepository extends EntityRepository
 
     }
 
-    public function findByIpV4(string $address): ?NetworkElement
+    /**
+     * @param string $address
+     * @return array
+     */
+    public function findByIpV4(string $address): array
     {
-        $em = $this->getEntityManager();
-        $qb = $em->createQueryBuilder();
-        $qb->select('n')
-            ->from($this->getClassName(), 'n')
-            ->where($qb->expr()->between('INET_ATON(:address)', 'INET_ATON(n.ip_start_address)', 'INET_ATON(n.ip_end_address)'))
-            ->andWhere('n.isActive = true')
-            ->orderBy('n.ip_mask', 'DESC');
-
-        $qb->setParameter('address', $address);
-
-        $results = $qb->getQuery()->getResult();
-        return $results ? $results[0] : null;
+        $results = $this->queryByIpV4($address)->getResult();
+        return $results ?: [];
     }
 
-    public function findByIpV6(string $address): ?NetworkElement
+    /**
+     * @param string $address
+     * @return array
+     */
+    public function findByIpV6(string $address): array
     {
-        $em = $this->getEntityManager();
-        $qb = $em->createQueryBuilder();
-        $qb->select('n')
-            ->from($this->getClassName(), 'n')
-            ->where($qb->expr()->between('INET6_ATON(:address)', 'INET6_ATON(n.ip_start_address)', 'INET6_ATON(n.ip_end_address)'))
-            ->andWhere('n.isActive = true')
-            ->orderBy('n.ip_mask', 'DESC');
-
-        $qb->setParameter('address', $address);
-
-        $results = $qb->getQuery()->getResult();
-        return $results ? $results[0] : null;
+        $results = $this->queryByIpV6($address)->getResult();
+        return $results ?: [];
     }
 
-    public function findByDomain(string $domain): ?NetworkElement
+    /**
+     * @param string $address
+     * @return array
+     */
+    public function findByDomain(string $address): array
     {
-        $em = $this->getEntityManager();
-        $qb = $em->createQueryBuilder();
-        $qb->select('n')
-            ->from($this->getClassName(), 'n')
-            ->andWhere('n.isActive = true')
-            ->orderBy('n.ip_mask', 'DESC');
-
-        $count = substr_count($domain, '.') + 1;
-
-        $qb->where($qb->expr()->eq('SUBSTRING_INDEX(:domain,\'.\',:count1 )', 'n.domain'));
-        $qb->setParameter('count1', -1);
-
-        for ($i = $count; $i > 1; $i--) {
-            $qb->orWhere($qb->expr()->eq('SUBSTRING_INDEX(:domain,\'.\',:count' . $i . ')', 'n.domain'));
-            $qb->setParameter('count' . $i, $i * -1);
-        }
-
-        $ip = is_array($domain) ? $domain['domain'] : $domain;
-
-        $qb->setParameter('domain', $ip);
-
-        $results = $qb->getQuery()->getResult();
-        return $results ? $results[0] : null;
+        $results = $this->queryByDomain($address)->getResult();
+        return $results ?: [];
     }
 
 

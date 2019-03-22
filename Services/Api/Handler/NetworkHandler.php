@@ -38,7 +38,7 @@ class NetworkHandler extends Handler
      */
     public function get(array $parameters)
     {
-        return $this->repository->findByAddress($parameters);
+        return $this->repository->findOneByAddress($parameters);
     }
 
     public function post(array $parameters, bool $csrf_protection = false, $entity_class_instance = null)
@@ -63,7 +63,7 @@ class NetworkHandler extends Handler
      */
     public function getByHostAddress(string $ip): ?Network
     {
-        $network = $this->repository->findByAddress(['address' => $ip]);
+        $network = $this->repository->findOneByAddress(['address' => $ip]);
 
         if (!$network) {
             switch (NetworkElement::guessType($ip)) {
@@ -97,7 +97,7 @@ class NetworkHandler extends Handler
     protected
     function checkIfExists($network, $method)
     {
-        $networkDB = $this->repository->findByAddress(['address' => $network->getAddress(), 'address_mask' => $network->getAddressMask()]);
+        $networkDB = $this->repository->findOneByAddress(['address' => $network->getAddress(), 'address_mask' => $network->getAddressMask()]);
 
         if ($networkDB && $method == 'POST') {
             if (!$networkDB->getIsActive()) {

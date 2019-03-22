@@ -131,6 +131,15 @@ abstract class IpAddress extends Address
         return $this;
     }
 
+    public function inRange(Address $other = null): bool
+    {
+        if ($other) {
+            return $this->getIp()->inRange($other->getIp(), (int)$other->getCustomAddressMask());
+        }
+        return false;
+
+    }
+
     public function getCustomAddress(): string
     {
         return $this->getIp()->getProtocolAppropriateAddress();

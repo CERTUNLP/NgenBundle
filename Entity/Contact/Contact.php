@@ -3,6 +3,7 @@
 namespace CertUnlp\NgenBundle\Entity\Contact;
 
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
+use CertUnlp\NgenBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
@@ -241,10 +242,10 @@ class Contact
     }
 
     /**
-     * @param NetworkAdmin|null $user
+     * @param User|null $user
      * @return Contact
      */
-    public function setUser(?NetworkAdmin $user): Contact
+    public function setUser(User $user = null): Contact
     {
         $this->user = $user;
         return $this;
