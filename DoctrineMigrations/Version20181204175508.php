@@ -34,6 +34,6 @@ class Version20181204175508 extends AbstractMigration
 
         $this->addSql('ALTER TABLE incident ADD ip VARCHAR(15) NOT NULL COLLATE utf8_unicode_ci');
         $this->addSql('ALTER TABLE network ADD abuse_entity VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci, ADD abuse_entity_emails LONGTEXT DEFAULT NULL COLLATE utf8_unicode_ci COMMENT \'(DC2Type:array)\'');
-        $this->addSql('ALTER TABLE network_admin ADD email VARCHAR(150) NOT NULL COLLATE utf8_unicode_ci, DROP emails');
+        $this->addSql('ALTER TABLE network_admin ADD email VARCHAR(150) NOT NULL COLLATE utf8_unicode_ci');
     }
 }

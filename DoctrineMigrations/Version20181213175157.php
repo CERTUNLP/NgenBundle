@@ -20,6 +20,7 @@ class Version20181213175157 extends AbstractMigration
 
         $this->addSql('ALTER TABLE network_admin CHANGE name name VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE network_entity CHANGE name name VARCHAR(255) NOT NULL, CHANGE slug slug VARCHAR(255) DEFAULT NULL');
+
         $this->addSql('ALTER TABLE incident_impact CHANGE name name VARCHAR(255) NOT NULL');
     }
 

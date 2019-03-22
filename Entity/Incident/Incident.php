@@ -36,7 +36,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Incident implements IncidentInterface
 {
-
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="host_address", type="string",length=20)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    protected $host_address;
     /**
      * @var integer
      *
@@ -89,7 +96,6 @@ class Incident implements IncidentInterface
      * @JMS\Groups({"api"})
      */
     protected $tlp;
-
     /**
      * @var IncidentPriority
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority", inversedBy="incidents")
@@ -937,9 +943,25 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @return Host
+     * @return string
      */
     public function getHostAddress(): ?string
+    {
+        return $this->host_address;
+    }
+
+    /**
+     * @param string $host_address
+     */
+    public function setHostAddress(string $host_address): void
+    {
+        $this->host_address = $host_address;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIp(): ?string
     {
         return $this->getAddress();
     }
@@ -985,13 +1007,5 @@ class Incident implements IncidentInterface
     {
         $this->origin = $origin;
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIp(): ?string
-    {
-        return $this->getAddress();
     }
 }

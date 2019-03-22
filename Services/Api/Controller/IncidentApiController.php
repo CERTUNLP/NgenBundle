@@ -31,7 +31,6 @@ class IncidentApiController extends ApiController
     public function post(Request $request)
     {
         //TODO: refactoring aca o algo, poqnomegusta
-
         try {
             $object_data = array_merge($request->request->all(), $request->files->all());
 //            $ipes = explode(',', $object_data['ip']);

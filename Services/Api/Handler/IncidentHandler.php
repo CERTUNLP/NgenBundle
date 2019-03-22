@@ -145,9 +145,9 @@ class IncidentHandler extends Handler
      */
     protected function processForm($incident, $parameters, $method = "PUT", $csrf_protection = true)
     {
-        if (!isset($parameters['reporter']) || !$parameters['reporter']) {
-            $parameters['reporter'] = $this->getReporter();
-        }
+//        if (!isset($parameters['reporter']) || !$parameters['reporter']) {
+//            $parameters['reporter'] = $this->getReporter();
+//        }
 
 
         return parent::processForm($incident, $parameters, $method, $csrf_protection);
@@ -177,7 +177,7 @@ class IncidentHandler extends Handler
     {
 
         $host = $incident->getOrigin();
-        $host_new = $this->getHostHandler()->findByAddress($incident->getAddress()) ?: $this->getHostHandler()->post(['address' => $incident->getAddress()]);
+        $host_new = $this->getHostHandler()->findOneByAddress($incident->getAddress()) ?: $this->getHostHandler()->post(['address' => $incident->getAddress()]);
         if ($host) {
 
             if (!$host->equals($host_new) && !$incident->isClosed()) {
