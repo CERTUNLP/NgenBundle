@@ -102,11 +102,15 @@ class IncidentTelegram extends IncidentCommunication
     public function getTelegramIcon(string $priority): string
     {
 
-        if ($priority === 'high') {
+        if ($priority === 'Critical') {
             $state = "\u{274C}";
-        } elseif ($priority === 'warning') {
-            $state = "\u{1F4A5}";
-        } elseif ($priority === 'critical') {
+        } elseif ($priority === 'High') {
+            $state = "\u{1F534}";
+        } elseif ($priority === 'Medium') {
+            $state = "\u{1F525}";
+        } elseif ($priority === 'Low') {
+            $state = "\u{2733}";
+        } elseif ($priority === 'Very Low') {
             $state = "\u{1F525}";
         } else {
             $state = "\u{2753}";
