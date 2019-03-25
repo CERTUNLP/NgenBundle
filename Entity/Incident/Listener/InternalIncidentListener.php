@@ -97,18 +97,17 @@ class InternalIncidentListener
 
     public function decisionUpdate(Incident $incident): Incident
     {
-
         $decisions = new ArrayCollection($this->entityManager->getRepository(IncidentDecision::class)->findBy(['type' => $incident->getType() ? $incident->getType()->getSlug() : 'undefined', 'feed' => $incident->getFeed() ? $incident->getFeed()->getSlug() : 'undefined', 'get_undefined' => true]));
         $iterator = $decisions->getIterator();
 
-        $iterator->uasort(function (IncidentDecision $first, IncidentDecision $second) {
+        $iterator->uasort(static function (IncidentDecision $first, IncidentDecision $second) {
             return (int)($first->getNetwork() ? $first->getNetwork()->getAddressMask() : -1) <= (int)($second->getNetwork() ? $second->getNetwork()->getAddressMask() : -1);
         });
         foreach ($iterator as $decision) {
-
-            if ($incident->getNetwork()->inRange($decision->getNetwork())) {
+            if ($decision->getNetwork() && $incident->getNetwork()->inRange($decision->getNetwork())) {
                 return $decision->doDecision($incident);;
             }
+            return $decision->doDecision($incident);;
         }
         return null;
     }
