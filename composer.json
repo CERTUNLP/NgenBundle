@@ -37,7 +37,7 @@
     "friendsofsymfony/elastica-bundle": "4.*",
     "friendsofsymfony/comment-bundle": "^2.2",
     "friendsofsymfony/user-bundle": "=2.0.1",
-    "ninsuo/symfony-collection": "dev-master",
+    "ninsuo/symfony-collection": "2.1.30",
     "knplabs/knp-markdown-bundle": "~1.4",
     "knplabs/knp-menu-bundle": "~2.0",
     "knplabs/knp-paginator-bundle": "^2.8",
