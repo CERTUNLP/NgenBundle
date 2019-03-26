@@ -123,11 +123,18 @@ abstract class Network extends NetworkElement implements NetworkInterface
     protected $ip_end_address;
 
     /**
+     * @ORM\Column(type="string",length=2,nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    private $country_code;
+
+    /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    private $country;
+    private $asn;
 
     public function __construct(string $term = null)
     {
@@ -316,19 +323,19 @@ abstract class Network extends NetworkElement implements NetworkInterface
     }
 
     /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
      * Get isActive
      *
      * @return boolean
      */
     public function getIsActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
     {
         return $this->isActive;
     }
@@ -380,20 +387,38 @@ abstract class Network extends NetworkElement implements NetworkInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getCountry(): string
+    public function getCountryCode(): string
     {
-        return $this->country;
+        return $this->country_code;
     }
 
     /**
-     * @param mixed $country
+     * @param mixed $country_code
      * @return Network
      */
-    public function setCountry(string $country): Network
+    public function setCountryCode(string $country_code): Network
     {
-        $this->country = $country;
+        $this->country_code = $country_code;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAsn(): string
+    {
+        return $this->asn;
+    }
+
+    /**
+     * @param string $asn
+     * @return Network
+     */
+    public function setAsn(string $asn): string
+    {
+        $this->asn = $asn;
         return $this;
     }
 
