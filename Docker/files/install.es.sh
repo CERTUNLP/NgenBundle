@@ -136,11 +136,6 @@ configurarConfigYML(){
            password:  $ML_PASSWORD
     networks:
         default_network: $DEFAULT_NETWORK
-    feeds:
-        shadowserver:
-            client:
-                user: $SHADOW_USER
-                password: $SHADOW_PASS" >> "$CONFIGYML_DEST"
 }
 
 configurarRouting(){
