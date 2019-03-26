@@ -100,16 +100,6 @@ cert_ngen:
             class: CertUnlp\NgenBundle\Services\Api\Handler\UserHandler
         form_type:
             class: CertUnlp\NgenBundle\Form\UserType
-
-    feeds:
-        path: %kernel.root_dir%/Resources/feed
-        shadowserver:
-            class: CertUnlp\NgenBundle\Services\ShadowServer\ShadowServerAnalyzer
-            client:
-                class: CertUnlp\NgenBundle\Services\ShadowServer\ShadowServerClient
-                url: https://dl.shadowserver.org/reports/index.php
-                user: ~
-                password: ~
     seeds:
         redmine:
             class: CertUnlp\NgenBundle\Services\IncidentRedmine

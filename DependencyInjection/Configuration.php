@@ -37,18 +37,15 @@ use CertUnlp\NgenBundle\Services\Api\Handler\IncidentHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\IncidentReportHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\IncidentStateHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\IncidentTypeHandler;
-use CertUnlp\NgenBundle\Services\Api\Handler\MessageHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\NetworkAdminHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\NetworkEntityHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\NetworkHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\UserHandler;
+use CertUnlp\NgenBundle\Services\Communications\IncidentMailer;
 use CertUnlp\NgenBundle\Services\Delegator\ExternalIncidentDelegatorChain;
 use CertUnlp\NgenBundle\Services\Delegator\InternalIncidentDelegatorChain;
 use CertUnlp\NgenBundle\Services\IncidentFactory;
 use CertUnlp\NgenBundle\Services\IncidentRedmine;
-use CertUnlp\NgenBundle\Services\Communications\IncidentMailer;
-use CertUnlp\NgenBundle\Services\ShadowServer\ShadowServerAnalyzer;
-use CertUnlp\NgenBundle\Services\ShadowServer\ShadowServerClient;
 use CertUnlp\NgenBundle\Validator\Constraints\ValidNetworkValidator;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -100,7 +97,6 @@ class Configuration implements ConfigurationInterface
         $this->addMessagesSection($rootNode);
         $this->addUserSection($rootNode);
         $this->addNetworkSection($rootNode);
-        $this->addFeedSection($rootNode);
         $this->addSeedSection($rootNode);
         $this->addNetworkEntitySection($rootNode);
         $this->addIncidentDecisionSection($rootNode);
@@ -414,6 +410,29 @@ class Configuration implements ConfigurationInterface
             ->end();
     }
 
+    private function addMessagesSection(ArrayNodeDefinition $rootNode): void
+    {
+        $rootNode
+            ->children()
+            ->arrayNode('messages')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('class')
+            ->defaultValue(Message::class)
+            ->end()
+            ->arrayNode('handler')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('class')
+            ->defaultValue(MessageHandler::class)
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end();
+    }
+
     private function addUserSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
@@ -437,29 +456,6 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->scalarNode('class')
             ->defaultValue(UserType::class)
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end();
-    }
-
-    private function addMessagesSection(ArrayNodeDefinition $rootNode): void
-    {
-        $rootNode
-            ->children()
-            ->arrayNode('messages')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('class')
-            ->defaultValue(Message::class)
-            ->end()
-            ->arrayNode('handler')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('class')
-            ->defaultValue(MessageHandler::class)
             ->end()
             ->end()
             ->end()
@@ -524,49 +520,6 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->scalarNode('class')
             ->defaultValue(NetworkAdminType::class)
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end();
-    }
-
-    private function addFeedSection(ArrayNodeDefinition $rootNode): void
-    {
-        $rootNode
-            ->children()
-            ->arrayNode('feeds')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('path')
-            ->defaultValue('%kernel.root_dir%/Resources/feed')
-            ->end()
-            ->arrayNode('shadowserver')
-            ->canBeEnabled()
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('class')
-            ->defaultValue(ShadowServerAnalyzer::class)
-            ->end()
-            ->arrayNode('client')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('class')
-            ->defaultValue(ShadowServerClient::class)
-            ->end()
-            ->scalarNode('url')
-            ->defaultValue('https://dl.shadowserver.org/reports/index.php')
-            ->end()
-            ->scalarNode('user')
-            ->defaultNull()
-            ->end()
-            ->scalarNode('password')
-            ->defaultNull()
-//                ->isRequired()
-//                ->cannotBeEmpty()
-            ->end()
             ->end()
             ->end()
             ->end()

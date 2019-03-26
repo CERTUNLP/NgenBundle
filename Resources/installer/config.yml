@@ -95,11 +95,6 @@ cert_unlp_ngen:
         default_network: '%default_network%'
     global:
         sign: false
-    #feeds:
-    #    shadowserver:
-    #        client:
-    #            user: mail@cert.example.com
-    #            password: mail@cert.example.com
 monolog:
     handlers:
         main:

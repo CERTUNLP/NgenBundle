@@ -17,16 +17,6 @@ services:
         class: CertUnlp\NgenBundle\Doctrine\EntityListenerResolver
         arguments: [ "@service_container" ]
 
-    cert_unlp.ngen.feed.shadowserver.report.factory:
-        class: CertUnlp\NgenBundle\Services\ShadowServer\Reports\Types\ShadowServerReportTypeFactory
-
-    cert_unlp.ngen.feed.shadowserver.client:
-        class: "%cert_unlp.ngen.feed.shadowserver.client.class%"
-        arguments:    ["%cert_unlp.ngen.feed.shadowserver.client.url%","%cert_unlp.ngen.feed.shadowserver.client.user%","%cert_unlp.ngen.feed.shadowserver.client.password%","%cert_unlp.ngen.feed.path%","@cert_unlp.ngen.feed.shadowserver.report.factory","@service_container"]
-
-    cert_unlp.ngen.feed.shadowserver:
-        class: "%cert_unlp.ngen.feed.shadowserver.class%"
-        arguments: ["@cert_unlp.ngen.feed.shadowserver.client","@cert_unlp.ngen.incident.converter"]
 
     cert_unlp.ngen.incident.factory:
         class:        "%cert_unlp.ngen.incident.factory.class%"
