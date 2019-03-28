@@ -388,6 +388,8 @@ fos_elastica:
                             type: date
                         updatedAt:
                             type: date
+                        isActive:
+                            type: boolean   
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel
@@ -415,6 +417,12 @@ fos_elastica:
                             type: date
                         updatedAt:
                             type: date
+                        isActive:
+                            type: boolean
+                        impact:
+                            type: keyword
+                        urgency:
+                                type: keyword
                         state:
                             type: "object"
                             properties:
@@ -436,6 +444,18 @@ fos_elastica:
                                     type: keyword
                                 name:
                                     type: keyword
+                        tlp:
+                            type: "object"
+                            properties:
+                                name:
+                                    type: keyword
+                                slug:
+                                    type: keyword
+                        network:
+                            type: "object"
+                            properties:
+                                ip:
+                                    type: ip
                     persistence:
                         identifier: id
                         # the driver can be orm, mongodb or propel
