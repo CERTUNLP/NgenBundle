@@ -44,7 +44,7 @@ class NetworkRdapClient extends RdapClient
         $this->seachForAbuseEntities();
         $network->setNetworkAdmin($this->getNetworkAdmin());
         $network->setNetworkEntity($this->getNetworkEntity());
-        $network->setCountry($this->getCountry());
+        $network->setCountryCode($this->getCountry());
         return $network;
     }
 
@@ -53,7 +53,11 @@ class NetworkRdapClient extends RdapClient
      */
     public function getStartAddress(): string
     {
-        return $this->getResponse()->getStartAddress();
+        $response = $this->getResponse()->getStartAddress();
+        if (strpos($response, '/') !== false) {
+            $response = explode("/", $response)[0];
+        }
+        return $response;
     }
 
     /**
@@ -61,7 +65,12 @@ class NetworkRdapClient extends RdapClient
      */
     public function getCidrMask(): int
     {
-        return $this->getResponse()->getCidr() ?? $this->getMaskFromAddresses();
+        if($this->getResponse()->getCidr() !='') {
+            return $this->getResponse()->getCidr();
+        }
+        else {
+                return $this->getMaskFromAddresses();
+        }
     }
 
     public function getMaskFromAddresses(): int
@@ -71,11 +80,32 @@ class NetworkRdapClient extends RdapClient
             $end = explode(':', $this->getEndAddress());
             $result = 128 - 16 * count(array_diff($end, $start));
         } else {
-            $start = explode('.', $this->getStartAddress());
-            $end = explode('.', $this->getEndAddress());
-            $result = 32 - 8 * count(array_diff($end, $start));
+            $result=$this->calcularMaskV4($this->getStartAddress(),$this->getEndAddress());
         }
         return $result;
+    }
+
+    private function iMask($s){
+        return base_convert((pow(2, 32) - pow(2, (32-$s))), 10, 16);
+    }
+
+    private function calcularMaskV4($startStr,$endStr){
+        $start=ip2long($startStr);
+        $end=ip2long($endStr);
+        $maxSize = 32;
+        while ($maxSize > 0){
+                $mask = hexdec($this->iMask($maxSize - 1));
+                $maskBase = $start & $mask;
+                if($maskBase != $start) break;
+                $maxSize--;
+        }
+        $x = log($end - $start + 1)/log(2);
+        $maxDiff = floor(32 - floor($x));
+        if($maxSize < $maxDiff){
+              $maxSize = $maxDiff;
+        }
+        return($maxSize);
+
     }
 
 
@@ -84,7 +114,12 @@ class NetworkRdapClient extends RdapClient
      */
     public function getEndAddress(): string
     {
-        return $this->getResponse()->getEndAddress();
+        $response= $this->getResponse()->getEndAddress();
+        if(strpos($response, '/') !== false) {
+            $response=explode("/", $response)[0];
+        }
+        return $response;
+
     }
 
     public function seachForAbuseEntities(): void
