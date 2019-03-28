@@ -389,7 +389,7 @@ fos_elastica:
                         updatedAt:
                             type: date
                         isActive:
-                            type: boolean   
+                            type: boolean
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel
