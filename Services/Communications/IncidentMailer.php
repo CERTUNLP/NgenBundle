@@ -62,10 +62,6 @@ class IncidentMailer extends IncidentCommunication
             if ($incident->getState()->getMailTeam()->getLevel() >= $incident->getPriority()->getCode()) {
                 $message->setCc($this->cert_email);
             }
-            if ($incident->getEvidenceFilePath()) {
-                $message->attach(\Swift_Attachment::fromPath($this->upload_directory . $incident->getEvidenceFilePath(true)));
-            }
-
 
             if ($incident->getEvidenceFilePath()) {
                 $message->attach(\Swift_Attachment::fromPath($this->upload_directory . $incident->getEvidenceFilePath(true)));

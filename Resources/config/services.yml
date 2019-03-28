@@ -259,7 +259,7 @@ services:
 
     cert_unlp.ngen.network.rdap.client:
         class: CertUnlp\NgenBundle\Services\NetworkRdapClient
-        arguments: ["%cert_unlp.ngen.resources.path%"]
+        arguments: ["%cert_unlp.ngen.team%","@doctrine"]
 
     app.form.registration:
         class: CertUnlp\NgenBundle\Form\UserRegistrationType
