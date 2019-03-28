@@ -73,7 +73,6 @@ class User extends BaseUser implements ReporterInterface
      * @ORM\Column(name="updated_at", type="datetime")
      */
     private $updatedAt;
-
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="reporter") */
     private $incidents;
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="assigned") */
@@ -101,6 +100,45 @@ class User extends BaseUser implements ReporterInterface
         $this->assignedIncidents = new ArrayCollection();
         $this->contacts = new ArrayCollection();
     }
+
+    /**
+     * Get emails
+     *
+     * @return string
+     */
+    public function getEmailsAsString(): string
+    {
+        return implode(',', $this->getEmails());
+    }
+
+    /**
+     * Get emails
+     *
+     * @return array
+     */
+    public function getEmails(): array
+    {
+        $array_mails = $this->getContacts()->map(static function (Contact $value) {
+            return $value->getEmail();
+        }); // [2, 3, 4]
+        return $array_mails->toArray();
+    }
+
+    /**
+     * @param int|null $priorityCode
+     * @return Collection
+     */
+    public function getContacts(int $priorityCode = null): Collection
+    {
+        if ($priorityCode !== null) {
+            return $this->contacts->filter(static function (Contact $contact) use ($priorityCode) {
+                return $contact->getContactCase()->getLevel() >= $priorityCode;
+            });
+        }
+
+        return $this->contacts;
+    }
+
 
     /**
      * @return mixed
@@ -319,21 +357,6 @@ class User extends BaseUser implements ReporterInterface
         $this->slug = $slug;
 
         return $this;
-    }
-
-    /**
-     * @param int|null $priorityCode
-     * @return Collection
-     */
-    public function getContacts(int $priorityCode = null): ?Collection
-    {
-        if ($priorityCode !== null) {
-            return $this->contacts->filter(function (Contact $contact) use ($priorityCode) {
-                return $contact->getContactCase()->getLevel() >= $priorityCode;
-            });
-        }
-
-        return $this->contacts;
     }
 
     public function addContact(Contact $contact)
