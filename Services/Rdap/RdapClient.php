@@ -21,15 +21,51 @@ use Exception;
 class RdapClient
 {
     private $response;
-    private $resources_path;
-    private $entities;
     private $request_url;
+    private $team;
+    private $doctrine;
 
-    public function __construct($resources_path)
+    public function __construct(array $team, $doctrine)
     {
-        $this->resources_path = $resources_path;
-        $this->entities = [];
+        $this->team = $team;
+        $this->doctrine = $doctrine;
         $this->request_url = 'https://rdap.arin.net/registry/ip/';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDoctrine()
+    {
+        return $this->doctrine;
+    }
+
+    /**
+     * @param mixed $doctrine
+     * @return RdapClient
+     */
+    public function setDoctrine($doctrine)
+    {
+        $this->doctrine = $doctrine;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequestUrl(): string
+    {
+        return $this->request_url;
+    }
+
+    /**
+     * @param string $request_url
+     * @return RdapClient
+     */
+    public function setRequestUrl(string $request_url): RdapClient
+    {
+        $this->request_url = $request_url;
+        return $this;
     }
 
     /**
@@ -63,15 +99,33 @@ class RdapClient
 
     /**
      * @param $link
-     * @return Entity
+     * @return Entity| DefaultEntity
      */
     public function requestEntity($link)
     {
         try {
             return new Entity(json_decode(file_get_contents($link)));
         } catch (Exception $exc) {
-            throw new \RuntimeException($exc);
+            return new DefaultEntity(null, $this->getTeam()['mail']);
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getTeam(): array
+    {
+        return $this->team;
+    }
+
+    /**
+     * @param array $team
+     * @return RdapClient
+     */
+    public function setTeam(array $team): RdapClient
+    {
+        $this->team = $team;
+        return $this;
     }
 
     /**

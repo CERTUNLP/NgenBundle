@@ -93,14 +93,7 @@ class NetworkAdmin
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
-    /**
-     *
-     * @var array
-     *
-     * @ORM\Column(name="emails", type="array")
-     * @JMS\Expose()
-     */
-    private $emails = [];
+
     /**
      * Constructor
      * @param string $name
@@ -112,7 +105,7 @@ class NetworkAdmin
         $this->contacts = new ArrayCollection();
     }
 
-    public function addContact(Contact $contact)
+    public function addContact(Contact $contact): NetworkAdmin
     {
         $newObj = $contact;
         switch ($contact->getContactType()) {
@@ -135,10 +128,10 @@ class NetworkAdmin
 
     }
 
-    public function removeContact(Contact $contact)
+    public function removeContact(Contact $contact): NetworkAdmin
     {
         $this->contacts->removeElement($contact);
-        $contact->setNetworkAdmin(null);
+        $contact->setNetworkAdmin();
 //        if ($this->contacts->contains($contact)){
 //
 //        }
@@ -158,9 +151,10 @@ class NetworkAdmin
     /**
      * Get id
      *
+     * @param null $id
      * @return integer
      */
-    public function setId($id = null)
+    public function setId(int $id = null): int
     {
         return $this->id = $id;
     }
@@ -244,7 +238,10 @@ class NetworkAdmin
      */
     public function getEmails(): array
     {
-        return $this->emails;
+        $array_mails = $this->getContacts()->map(static function (Contact $value) {
+            return $value->getEmail();
+        }); // [2, 3, 4]
+        return $array_mails->toArray();
     }
 
     /**
@@ -254,7 +251,7 @@ class NetworkAdmin
     public function getContacts(int $priorityCode = null): Collection
     {
         if ($priorityCode !== null) {
-            return $this->contacts->filter(function (Contact $contact) use ($priorityCode) {
+            return $this->contacts->filter(static function (Contact $contact) use ($priorityCode) {
                 return $contact->getContactCase()->getLevel() >= $priorityCode;
             });
         }
