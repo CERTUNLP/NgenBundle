@@ -145,9 +145,9 @@ class IncidentHandler extends Handler
      */
     protected function processForm($incident, $parameters, $method = "PUT", $csrf_protection = true)
     {
-//        if (!isset($parameters['reporter']) || !$parameters['reporter']) {
-//            $parameters['reporter'] = $this->getReporter();
-//        }
+        if (!isset($parameters['reporter']) || !$parameters['reporter']) {
+            $parameters['reporter'] = $this->getReporter();
+        }
 
 
         return parent::processForm($incident, $parameters, $method, $csrf_protection);

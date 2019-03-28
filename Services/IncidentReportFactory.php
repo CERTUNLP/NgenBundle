@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Services;
 
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandler;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,9 +34,9 @@ class IncidentReportFactory
         $this->team = $team;
     }
 
-    public function getReport($incident, $lang)
+    public function getReport(Incident $incident, string $lang)
     {
-        $data = array('report' => $incident->getType()->getReport($lang), 'incident' => $incident, 'team' => $this->team );
+        $data = array('report' => $incident->getType()->getReport($lang), 'incident' => $incident, 'team' => $this->team);
         $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/mail.html.twig');
         $this->getView()->setTemplateData($data);
         $html = $this->viewHandler->renderTemplate($this->getView(), 'html');

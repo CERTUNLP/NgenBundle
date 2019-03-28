@@ -27,7 +27,7 @@ class Entity
      */
     private $entities;
 
-    public function __construct(stdClass $entity_object)
+    public function __construct(stdClass $entity_object = null)
     {
         $this->object = $entity_object;
         if (isset($this->object->entities)) {

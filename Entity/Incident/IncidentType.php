@@ -83,7 +83,7 @@ class IncidentType
      * )
      */
     private $reports;
-   
+
     /**
      * Constructor
      */
@@ -303,13 +303,13 @@ class IncidentType
     /**
      * Get report
      *
-     * @param null $lang
+     * @param string $lang
      * @return IncidentReport
      */
-    public function getReport($lang = null)
+    public function getReport(string $lang = null)
     {
-        return $this->reports->filter(function ($report) use ($lang) {
-            return $report->getLang() == $lang;
+        return $this->reports->filter(static function (IncidentReport $report) use ($lang) {
+            return $report->getLang() === $lang;
         })->first();
     }
 
