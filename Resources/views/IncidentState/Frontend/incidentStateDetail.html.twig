@@ -40,7 +40,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    {{ 'Copy Mail to Admin' |trans }}
+                                    {{ 'Send messages to Admin' |trans }}
                                 </td>
                                 <td class="">
                                     {% if object.mailAdmin %}
@@ -52,7 +52,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    {{ 'Copy Mail to Assigned' |trans }}
+                                    {{ 'Send messages to Assigned' |trans }}
                                 </td>
                                 <td class="">
                                     {% if object.mailAssigned %}
@@ -64,7 +64,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    {{ 'Copy Mail to Reporter' |trans }}
+                                    {{ 'Send messages to Reporter' |trans }}
                                 </td>
                                 <td class="">
                                     {% if object.mailReporter %}
@@ -74,6 +74,19 @@
                                     {% endif %}
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="">
+                                    {{ 'Send messages to Team' |trans }}
+                                </td>
+                                <td class="">
+                                    {% if object.mailTeam %}
+                                        {{ label_success("True") }}
+                                    {% else %}
+                                        {{ label_danger("False") }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+
                             <tr>
                                 <td class="">
                                     Created at
