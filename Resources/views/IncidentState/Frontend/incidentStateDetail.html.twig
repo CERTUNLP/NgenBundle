@@ -43,11 +43,8 @@
                                     {{ 'Send messages to Admin' |trans }}
                                 </td>
                                 <td class="">
-                                    {% if object.mailAdmin %}
-                                        {{ label_success("True") }}
-                                    {% else %}
-                                        {{ label_danger("False") }}
-                                    {% endif %}
+
+                                    {{ object.mailAdmin }}
                                 </td>
                             </tr>
                             <tr>
@@ -55,11 +52,8 @@
                                     {{ 'Send messages to Assigned' |trans }}
                                 </td>
                                 <td class="">
-                                    {% if object.mailAssigned %}
-                                        {{ label_success("True") }}
-                                    {% else %}
-                                        {{ label_danger("False") }}
-                                    {% endif %}
+                                    {{   object.mailAssigned }}
+
                                 </td>
                             </tr>
                             <tr>
@@ -67,11 +61,7 @@
                                     {{ 'Send messages to Reporter' |trans }}
                                 </td>
                                 <td class="">
-                                    {% if object.mailReporter %}
-                                        {{ label_success("True") }}
-                                    {% else %}
-                                        {{ label_danger("False") }}
-                                    {% endif %}
+                                    {{ object.mailReporter   }}
                                 </td>
                             </tr>
                             <tr>
@@ -79,11 +69,7 @@
                                     {{ 'Send messages to Team' |trans }}
                                 </td>
                                 <td class="">
-                                    {% if object.mailTeam %}
-                                        {{ label_success("True") }}
-                                    {% else %}
-                                        {{ label_danger("False") }}
-                                    {% endif %}
+                                    {{  object.mailTeam }}
                                 </td>
                             </tr>
 
