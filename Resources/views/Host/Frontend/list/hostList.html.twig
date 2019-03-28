@@ -20,8 +20,8 @@
     </div>
     <table class="table table-striped table-bordered table-hover dataTable no-footer">
         <tr role="row">
-            <th>{{ knp_pagination_sortable(Hosts, 'Address'|trans , 'address') }}</th>
-            <th>{{ knp_pagination_sortable(Hosts, 'Network'|trans, 'network') }}</th>
+            <th>{{ knp_pagination_sortable(Hosts, 'Address'|trans , 'ip') }}</th>
+            <th>{{ knp_pagination_sortable(Hosts, 'Network'|trans, 'network.ip') }}</th>
             <th>{{ knp_pagination_sortable(Hosts, 'Active'|trans, 'isActive') }}</th>
             <th>{{ 'Action'|trans }}</th>
         </tr>
