@@ -18,14 +18,17 @@ use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Model\IncidentInterface;
 use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use FOS\CommentBundle\Model\Thread;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+use function in_array;
 
 /**
  * @ORM\Entity()
@@ -112,7 +115,7 @@ class Incident implements IncidentInterface
      */
     protected $comment_thread;
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="date", type="datetime")
      * @JMS\Expose
@@ -121,7 +124,7 @@ class Incident implements IncidentInterface
      */
     protected $date;
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="last_time_detected", type="datetime",nullable=true)
      * @JMS\Expose
@@ -130,7 +133,7 @@ class Incident implements IncidentInterface
      */
     protected $lastTimeDetected;
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="renotification_date", type="datetime",nullable=true)
      * @JMS\Expose
@@ -139,7 +142,7 @@ class Incident implements IncidentInterface
      */
     protected $renotificationDate;
     /**
-     * @var \DateTime
+     * @var DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      * @JMS\Expose
@@ -148,7 +151,7 @@ class Incident implements IncidentInterface
      */
     protected $createdAt;
     /**
-     * @var \DateTime
+     * @var DateTime
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
      * @JMS\Expose
@@ -221,6 +224,11 @@ class Incident implements IncidentInterface
      */
     private $network;
     private $address;
+    /**
+     * @var IncidentState|null
+     *
+     */
+    private $previous_state;
 
     /**
      * Incident constructor.
@@ -252,54 +260,54 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getRenotificationDate(): \DateTime
+    public function getRenotificationDate(): DateTime
     {
         return $this->renotificationDate;
     }
 
     /**
-     * @param \DateTime $renotificationDate
+     * @param DateTime $renotificationDate
      * @return Incident
      */
-    public function setRenotificationDate(\DateTime $renotificationDate): Incident
+    public function setRenotificationDate(DateTime $renotificationDate): Incident
     {
         $this->renotificationDate = $renotificationDate;
         return $this;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @param \DateTime $createdAt
+     * @param DateTime $createdAt
      * @return Incident
      */
-    public function setCreatedAt(\DateTime $createdAt): Incident
+    public function setCreatedAt(DateTime $createdAt): Incident
     {
         $this->createdAt = $createdAt;
         return $this;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
 
     /**
-     * @param \DateTime $updatedAt
+     * @param DateTime $updatedAt
      * @return Incident
      */
-    public function setUpdatedAt(\DateTime $updatedAt): Incident
+    public function setUpdatedAt(DateTime $updatedAt): Incident
     {
         $this->updatedAt = $updatedAt;
         return $this;
@@ -495,7 +503,7 @@ class Incident implements IncidentInterface
     /**
      * @param bool $lastTimeDetected
      * @return int
-     * @throws \Exception
+     * @throws Exception
      */
     public function getOpenDays(bool $lastTimeDetected = false): int
     {
@@ -506,42 +514,42 @@ class Incident implements IncidentInterface
         }
 
         if ($date) {
-            return $date->diff(new \DateTime())->days;
+            return $date->diff(new DateTime())->days;
         }
         return null;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getLastTimeDetected(): ?\DateTime
+    public function getLastTimeDetected(): ?DateTime
     {
         return $this->lastTimeDetected;
     }
 
     /**
-     * @param \DateTime $lastTimeDetected
+     * @param DateTime $lastTimeDetected
      * @return Incident
      */
-    public function setLastTimeDetected(\DateTime $lastTimeDetected): Incident
+    public function setLastTimeDetected(DateTime $lastTimeDetected): Incident
     {
         $this->lastTimeDetected = $lastTimeDetected;
         return $this;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getDate(): ?\DateTime
+    public function getDate(): ?DateTime
     {
         return $this->date;
     }
 
     /**
-     * @param \DateTime $date
+     * @param DateTime $date
      * @return Incident
      */
-    public function setDate(\DateTime $date = null): Incident
+    public function setDate(DateTime $date = null): Incident
     {
         $this->date = $date;
         return $this;
@@ -611,20 +619,19 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * /**
      * Set state
-     *
      * @param IncidentState $state
      * @return Incident
      */
     public function setState(IncidentState $state = null): Incident
     {
 
-        if ($state && !\in_array($state->getSlug(), ['open', 'staging'])) {
+        if ($state && !in_array($state->getSlug(), ['open', 'staging'])) {
             $this->close();
         } else {
             $this->open();
         }
+        $this->setPreviousState($this->getState());
         $this->state = $state;
 
         return $this;
@@ -728,6 +735,49 @@ class Incident implements IncidentInterface
     public function open(): Incident
     {
         return $this->setIsClosed(false);
+    }
+
+    /**
+     * Set state
+     * @return bool
+     */
+    public function formStagingToOpen(): bool
+    {
+        return $this->wasStaging() && $this->isOpen();
+    }
+
+    /**
+     * @return bool
+     */
+    public function wasStaging(): bool
+    {
+        return $this->getPreviousState() ? $this->getPreviousState()->getSlug() === 'staging' : false;
+    }
+
+    /**
+     * @return IncidentState|null
+     */
+    public function getPreviousState(): ?IncidentState
+    {
+        return $this->previous_state;
+    }
+
+    /**
+     * @param IncidentState|null $previous_state
+     * @return Incident
+     */
+    public function setPreviousState(?IncidentState $previous_state): Incident
+    {
+        $this->previous_state = $previous_state;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOpen(): bool
+    {
+        return $this->getState()->getSlug() === 'open';
     }
 
     /**

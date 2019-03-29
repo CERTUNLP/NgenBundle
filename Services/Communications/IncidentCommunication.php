@@ -47,6 +47,12 @@ abstract class IncidentCommunication
 
     abstract public function comunicate(Incident $incident): void;
 
+    public function postUpdateDelegation(Incident $incident)
+    {
+        if ($incident->formStagingToOpen()) {
+            $this->comunicate($incident);
+        }
+    }
 
     /**
      * @return EntityManagerInterface

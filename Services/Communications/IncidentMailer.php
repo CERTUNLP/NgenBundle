@@ -37,6 +37,12 @@ class IncidentMailer extends IncidentCommunication
         $this->report_factory = $report_factory;
     }
 
+    public function prePersistDelegation(Incident $incident)
+    {
+        $message = \Swift_Message::newInstance();
+        $incident->setReportMessageId($message->getId());
+    }
+
     /**
      * @param Incident $incident
      * @return void
@@ -95,12 +101,6 @@ class IncidentMailer extends IncidentCommunication
     {
         $renotification_text = $renotification ? '[' . $this->translator->trans('subject_mail_renotificacion') . ']' : '';
         return $renotification_text . '[TLP:%s][%s] ' . $this->translator->trans('subject_mail_incidente') . ' [ID:%s]';
-    }
-
-    public function prePersistDelegation(Incident $incident)
-    {
-        $message = \Swift_Message::newInstance();
-        $incident->setReportMessageId($message->getId());
     }
 
     public function onCommentPrePersist(CommentPersistEvent $event)
