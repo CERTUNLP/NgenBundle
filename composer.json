@@ -44,7 +44,7 @@
     "braincrafted/bootstrap-bundle": "~2.1",
     "twbs/bootstrap": "~3.3",
     "kbsali/redmine-api": "~1.5",
-    "nelmio/api-doc-bundle": "^3.4",
+    "nelmio/api-doc-bundle": "2.13.3",
     "fabpot/goutte": "~2.0",
     "ddeboer/data-import": "~0.18.0",
     "ddeboer/data-import-bundle": "~0.1.0",
