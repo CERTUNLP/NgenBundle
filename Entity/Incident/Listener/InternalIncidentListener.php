@@ -16,6 +16,7 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
+use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Event\ConvertToIncidentEvent;
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
 use CertUnlp\NgenBundle\Services\Api\Handler\HostHandler;
@@ -69,6 +70,7 @@ class InternalIncidentListener
     public function incidentPrePersistUpdate(Incident $incident, LifecycleEventArgs $event)
     {
 
+        $this->hostUpdate($incident);
         $this->networkUpdate($incident);
         $this->decisionUpdate($incident);
         $this->timestampsUpdate($incident);
@@ -77,6 +79,26 @@ class InternalIncidentListener
 //        $this->stateUpdate($incident, $event);
 //        $this->feedUpdate($incident, $event);
 //        $this->tlpUpdate($incident, $event);
+    }
+
+    /**
+     * @param Incident $incident
+     * @return Incident
+     */
+    public function hostUpdate(Incident $incident): Incident
+    {
+
+        $host = $incident->getOrigin();
+        $host_new = $this->entityManager->getRepository(Host::class)->findOneByAddress(['address' => $incident->getAddress()]) ?: $this->entityManager->getRepository(Host::class)->post(['address' => $incident->getAddress()]);
+
+        if ($host) {
+            if (!$host->equals($host_new) && !$incident->isClosed()) {
+                $incident->setOrigin($host_new);
+            }
+        } else {
+            $incident->setOrigin($host_new);
+        }
+        return $incident;
     }
 
     /**
@@ -104,16 +126,15 @@ class InternalIncidentListener
             return (int)($first->getNetwork() ? $first->getNetwork()->getAddressMask() : -1) <= (int)($second->getNetwork() ? $second->getNetwork()->getAddressMask() : -1);
         });
         foreach ($iterator as $decision) {
-            if ($decision->getNetwork() && $incident->getNetwork()->inRange($decision->getNetwork())) {
-                return $decision->doDecision($incident);;
+            if ($incident->getNetwork() && $decision->getNetwork() && $incident->getNetwork()->inRange($decision->getNetwork())) {
+                return $decision->doDecision($incident);
             }
-            return $decision->doDecision($incident);;
+            return $decision->doDecision($incident);
         }
         return null;
     }
 
-    public
-    function timestampsUpdate(Incident $incident): void
+    public function timestampsUpdate(Incident $incident): void
     {
         if ($incident->getDate() == null) {
             try {
@@ -126,14 +147,12 @@ class InternalIncidentListener
     /**
      * @param Incident $incident
      */
-    public
-    function slugUpdate(Incident $incident): void
+    public function slugUpdate(Incident $incident): void
     {
         $incident->setSlug(Sluggable\Urlizer::urlize($incident->getOrigin()->getAddress() . ' ' . $incident->getType()->getSlug() . ' ' . $incident->getDate()->format('Y-m-d-H-i'), '_'));
     }
 
-    public
-    function priorityUpdate(Incident $incident, LifecycleEventArgs $event): void
+    public function priorityUpdate(Incident $incident, LifecycleEventArgs $event): void
     {
         $entityManager = $event->getEntityManager();
         $repository = $entityManager->getRepository(IncidentPriority::class);
@@ -142,8 +161,23 @@ class InternalIncidentListener
 
     }
 
-    public
-    function feedUpdate(Incident $incident, LifecycleEventArgs $event): void
+    /**
+     * @return HostHandler
+     */
+    public function getHostHandler(): HostHandler
+    {
+        return $this->host_handler;
+    }
+
+    /**
+     * @param HostHandler $host_handler
+     */
+    public function setHostHandler(HostHandler $host_handler): void
+    {
+        $this->host_handler = $host_handler;
+    }
+
+    public function feedUpdate(Incident $incident, LifecycleEventArgs $event): void
     {
         $entityManager = $event->getEntityManager();
         $repository = $entityManager->getRepository(IncidentFeed::class);
@@ -154,8 +188,7 @@ class InternalIncidentListener
         }
     }
 
-    public
-    function tlpUpdate(Incident $incident, LifecycleEventArgs $event): void
+    public function tlpUpdate(Incident $incident, LifecycleEventArgs $event): void
     {
         #fix esto tiene que ir a INciddntDecision
         $entityManager = $event->getEntityManager();
@@ -167,30 +200,11 @@ class InternalIncidentListener
         }
     }
 
-    /**
-     * @return HostHandler
-     */
-    public
-    function getHostHandler(): HostHandler
-    {
-        return $this->host_handler;
-    }
-
-    /**
-     * @param HostHandler $host_handler
-     */
-    public
-    function setHostHandler(HostHandler $host_handler): void
-    {
-        $this->host_handler = $host_handler;
-    }
-
     /** @ORM\PreUpdate
      * @param Incident $incident
      * @param PreUpdateEventArgs $event
      */
-    public
-    function preUpdateHandler(Incident $incident, PreUpdateEventArgs $event): void
+    public function preUpdateHandler(Incident $incident, PreUpdateEventArgs $event): void
     {
         $this->incidentPrePersistUpdate($incident, $event);
         $this->delegator_chain->preUpdateDelegation($incident);
@@ -199,8 +213,7 @@ class InternalIncidentListener
     /**
      * @param ConvertToIncidentEvent $event
      */
-    public
-    function onConvertToIncident(ConvertToIncidentEvent $event)
+    public function onConvertToIncident(ConvertToIncidentEvent $event)
     {
         $convertible = $event->getConvertible();
         $entityManager = $this->entityManager;
@@ -239,8 +252,7 @@ class InternalIncidentListener
      * @param Incident $incident
      * @param LifecycleEventArgs $event
      */
-    public
-    function postPersistHandler(Incident $incident, LifecycleEventArgs $event): void
+    public function postPersistHandler(Incident $incident, LifecycleEventArgs $event): void
     {
         $this->delegator_chain->postPersistDelegation($incident);
         $this->commentThreadUpdate($incident, $event);
@@ -249,8 +261,7 @@ class InternalIncidentListener
     /**
      * @param Incident $incident
      */
-    public
-    function commentThreadUpdate(Incident $incident): void
+    public function commentThreadUpdate(Incident $incident): void
     {
         $id = $incident->getId();
         $thread = $this->thread_manager->findThreadById($id);
@@ -272,8 +283,7 @@ class InternalIncidentListener
     /** @ORM\PostUpdate
      * @param Incident $incident
      */
-    public
-    function postUpdateHandler(Incident $incident): void
+    public function postUpdateHandler(Incident $incident): void
     {
         $this->delegator_chain->postUpdateDelegation($incident);
     }
