@@ -35,8 +35,11 @@ class MigrateNgenV2ToV3Command extends ContainerAwareCommand
         $incidents = $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->all(['origin' => null], [], 50, $input->getOption('offset'));
         while ($incidents) {
             foreach ($incidents as $incident) {
-                echo($incident->getId());
+                echo($incident->getId()."\n");
+                echo($incident->getHostAddress())." era la ip esto\n";
+
                 $incident->setOrigin($this->getContainer()->get('cert_unlp.ngen.host.handler')->post(['address' => $incident->getHostAddress()]));
+
                 $this->getContainer()->get('doctrine')->getManager()->persist($incident);
             }
             $this->getContainer()->get('doctrine')->getManager()->flush();

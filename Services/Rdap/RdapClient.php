@@ -103,11 +103,15 @@ class RdapClient
      */
     public function requestEntity($link)
     {
+        if ($link){
         try {
             return new Entity(json_decode(file_get_contents($link)));
         } catch (Exception $exc) {
             return new DefaultEntity(null, $this->getTeam()['mail']);
+        }} else{
+            return new DefaultEntity(null, $this->getTeam()['mail']);
         }
+
     }
 
     /**
