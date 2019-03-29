@@ -152,8 +152,6 @@ fos_elastica:
                             properties:
                                 slug:
                                     type: keyword
-                                emails:
-                                    type: keyword
                                 name:
                                     type: keyword
                                 isActive:
@@ -225,8 +223,6 @@ fos_elastica:
                         name:
                             type: keyword
                         slug:
-                            type: keyword
-                        emails:
                             type: keyword
                         isActive:
                             type: boolean

@@ -87,7 +87,7 @@ class Entities
     /**
      * @return Entity| null
      */
-    public function getAbuseEntity(): Entity
+    public function getAbuseEntity(): ?Entity
     {
         $abuse_entities = $this->getAbuseEntities();
         return $abuse_entities ? $abuse_entities[0] : null;
