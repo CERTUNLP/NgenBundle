@@ -36,6 +36,8 @@ fos_elastica:
                             properties:
                                 ip:
                                     type: ip
+                                domain:
+                                    type: keyword
                         network:
                             type: "object"
                             properties:
@@ -63,8 +65,6 @@ fos_elastica:
                                             type: keyword
                                         name:
                                             type: keyword
-                        address:
-                            type: ip
                         tlp:
                             type: "object"
                             properties:
@@ -418,7 +418,7 @@ fos_elastica:
                         impact:
                             type: keyword
                         urgency:
-                                type: keyword
+                            type: keyword
                         state:
                             type: "object"
                             properties:

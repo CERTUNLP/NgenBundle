@@ -50,6 +50,24 @@ class HostListener
     public function postLoadHandler(Host $host, LifecycleEventArgs $event): void
     {
         $host->guessAddress($host->getIp() ?? $host->getDomain());
+        $this->networkUpdate($host);
+
+    }
+
+    /**
+     * @param Host $host
+     */
+    public function networkUpdate(Host $host): void
+    {
+        $network = $host->getNetwork();
+        $network_new = $this->network_handler->getByHostAddress($host->getAddress());
+        if ($network) {
+            if (!$network->equals($network_new)) {
+                $host->setNetwork($network_new);
+            }
+        } else {
+            $host->setNetwork($network_new);
+        }
     }
 
     /** @ORM\PrePersist
@@ -72,22 +90,6 @@ class HostListener
     public function slugUpdate(Host $incident): void
     {
         $incident->setSlug(Sluggable\Urlizer::urlize($incident->getAddress()));
-    }
-
-    /**
-     * @param Host $host
-     */
-    public function networkUpdate(Host $host): void
-    {
-        $network = $host->getNetwork();
-        $network_new = $this->network_handler->getByHostAddress($host->getAddress());
-        if ($network) {
-            if (!$network->equals($network_new)) {
-                $host->setNetwork($network_new);
-            }
-        } else {
-            $host->setNetwork($network_new);
-        }
     }
 
     /** @ORM\PreUpdate

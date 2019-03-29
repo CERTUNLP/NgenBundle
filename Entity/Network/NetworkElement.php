@@ -156,7 +156,7 @@ abstract class NetworkElement
         return $this;
     }
 
-    public function equals(Network $other = null): bool
+    public function equals(NetworkElement $other = null): bool
     {
         if ($other) {
             return $this->address->equals($other->getAddressObject());

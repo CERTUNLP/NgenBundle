@@ -63,4 +63,5 @@ class DomainAddress extends Address
     {
         return '';
     }
+
 }
