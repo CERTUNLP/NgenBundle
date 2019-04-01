@@ -121,9 +121,8 @@ class InternalIncidentListener
     {
         $decisions = new ArrayCollection($this->entityManager->getRepository(IncidentDecision::class)->findBy(['type' => $incident->getType() ? $incident->getType()->getSlug() : 'undefined', 'feed' => $incident->getFeed() ? $incident->getFeed()->getSlug() : 'undefined', 'get_undefined' => true]));
         $iterator = $decisions->getIterator();
-
         $iterator->uasort(static function (IncidentDecision $first, IncidentDecision $second) {
-            return (int)($first->getNetwork() ? $first->getNetwork()->getAddressMask() : -1) <= (int)($second->getNetwork() ? $second->getNetwork()->getAddressMask() : -1);
+            return (int)($first->getNetwork() ? $first->getNetwork()->getAddressMask() : -1) <= (int)($second->getNetwork() ? $second->getNetwork()->getAddressMask() : -2);
         });
         foreach ($iterator as $decision) {
             if ($incident->getNetwork() && $decision->getNetwork() && $incident->getNetwork()->inRange($decision->getNetwork())) {

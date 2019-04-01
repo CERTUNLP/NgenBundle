@@ -116,7 +116,8 @@ class IncidentHandler extends Handler
      */
     protected function checkIfExists($incident, $method)
     {
-        $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()]);
+
+        $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
         if ($incidentDB && $method === 'POST') {
             if ($incident->getEvidenceFile()) {
                 $incidentDB->setEvidenceFile($incident->getEvidenceFile());
