@@ -23,18 +23,28 @@ var UserForm = Form.extend({
         return this.userId;
     },
     handleExtraErrors: function (jqXHR) {
-        $.each(jqXHR.responseJSON.errors.errors, function (k, v) {
+        function ya(jqXHR.responseJSON.errors.children) {
+            console.log(obj.name);
+            if (obj.child) {
+                console.log("length=" + obj.child.length);
+                for (i = 0; i < obj.child.length; i++) {
+                    ya(obj.child[i]);
+                }
+            }
+        }
+        $.each(jqXHR.responseJSON.errors.children, function (k, v) {
             errorsText = "";
-            if (v.length > 0) {
+            if (! jQuery.isEmptyObject(v)    ) {
                 ul = $('<ul class="help-block" ></ul>');
-                ul.append($('<li>' + v + '</li>'));
-                $('#ip').after(ul);
-                $('#ip').closest('div[class="form-group"]').addClass('has-error');
+                ul.append($('<li>' + JSON.stringify(v,) + '</li>'));
+                $('#error').after(ul);
+                $('#error').closest('div[class="form-group"]').addClass('has-error');
             } else {
-                $('#ip').closest('div[class="form-group has-error"]').removeClass('has-error');
-                $('#ip').siblings('ul').remove();
+                $('#error').closest('div[class="form-group has-error"]').removeClass('has-error');
+                $('#error').siblings('ul').remove();
             }
         });
+
     }
 });
 
