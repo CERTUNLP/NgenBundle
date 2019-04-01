@@ -12,9 +12,38 @@
     <h1 class="page-header">{{ icon('plus-circle fa-fw') }} {{"Decision" | trans  }}</h1>
 {% endblock %}
 {% block content_body %}
+
     {% if (form is not null) %}
+        {{ form_start(form,{'attr': {'id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal'}) }}
         {{ form_errors(form, { 'global_errors': true }) }}
-        {{ form(form, {'attr': {'id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal', 'col_size': 'sm' }) }}
+
+        <fieldset class="scheduler-border" style="border:#0d70b7 2px solid;width:80%;margin:1em 1em 1em 1em">
+            <legend class="scheduler-border">{{ "Decision Filter"|trans }}</legend>
+
+         <div class="form-group" style="width:100%">
+
+        {{ form_row(form.type) }}
+        {{ form_row(form.feed) }}
+        {{ form_row(form.network) }}
+
+         </div>
+        </fieldset>
+          <fieldset class="scheduler-border" style="border:#0d70b7 2px solid;width:80%;margin:1em 1em 1em 1em">
+            <legend class="scheduler-border">{{ "Decision Properties" |trans }}</legend>
+        <div class="form-group" style="width:100%">
+        {{ form_row(form.state) }}
+        {{ form_row(form.tlp) }}
+        {{ form_row(form.impact) }}
+        {{ form_row(form.urgency) }}
+        {{ form_row(form.id) }}
+        </div>
+          </fieldset>
+         <div class="form-group" style="width:80%;float:left;margin:1em 1em 1em 1em">
+        {{ form_row(form.save) }}
+         </div>
+        {{ form_end(form) }}
+
+
     {% endif %}
 {% endblock %}
 
