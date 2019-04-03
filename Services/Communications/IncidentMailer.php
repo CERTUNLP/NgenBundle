@@ -54,7 +54,13 @@ class IncidentMailer extends IncidentCommunication
 
     public function sendMail(Incident $incident, bool $renotification = false)
     {
-        $emails = $incident->getEmails();
+        $emails = [];
+
+        if ($incident->getState()->getMailTeam()->getLevel() >= $incident->getPriority()->getCode()) {
+            $emails = array($this->cert_email);
+        }
+
+        $emails =array_merge($emails,$incident->getEmails());
         if ($emails && $incident->canBeSended()) {
             #Hay que discutir si es necesario mandar cualquier cambio o que cosa todo || $is_new_incident || $renotification) {
             $html = $this->getBody($incident);
@@ -64,10 +70,6 @@ class IncidentMailer extends IncidentCommunication
                 ->setSender($this->cert_email)
                 ->setTo($emails)
                 ->addPart($html, 'text/html');
-
-            if ($incident->getState()->getMailTeam()->getLevel() >= $incident->getPriority()->getCode()) {
-                $message->setCc($this->cert_email);
-            }
 
             if ($incident->getEvidenceFilePath()) {
                 $message->attach(\Swift_Attachment::fromPath($this->upload_directory . $incident->getEvidenceFilePath(true)));
