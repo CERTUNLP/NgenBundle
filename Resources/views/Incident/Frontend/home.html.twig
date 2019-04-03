@@ -12,7 +12,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             {% block list_header %}
-                <strong>{{ icon('arrow-circle-down fa-fw') }} Internal incidents</strong>
+                <strong>{{ icon('arrow-circle-down fa-fw') }} {{ "Incidents" | trans }} </strong>
             {% endblock %}
             <strong>({{ objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount }})</strong>
             <div class="pull-right">
@@ -56,7 +56,7 @@
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_internal_incident_search_incident') }}{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{ icon('arrow-circle-down fa-fw') }} Internal incidents</h1>
+    <h1 class="page-header">{{ icon('arrow-circle-down fa-fw') }} {{ "Incidents" | trans }}</h1>
 
 {% endblock %}
 
