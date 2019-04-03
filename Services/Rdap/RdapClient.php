@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Services\Rdap;
 
 use Exception;
+use RuntimeException;
 
 /**
  * Description of RdapClient
@@ -78,7 +79,7 @@ class RdapClient
             $result_file = $this->request_url . $ip;
             return $this->request($result_file);
         } catch (Exception $exc) {
-            throw new \RuntimeException('Request Limit', 400);
+            throw new RuntimeException('Request Limit', 400);
         }
     }
 
@@ -93,7 +94,7 @@ class RdapClient
             $this->setResponse(new RdapResultWrapper(file_get_contents($url)));
             return $this->response;
         } catch (Exception $exc) {
-            throw new \RuntimeException('Request Limit', 400);
+            throw new RuntimeException('Request Limit', 400);
         }
     }
 
@@ -101,14 +102,15 @@ class RdapClient
      * @param $link
      * @return Entity| DefaultEntity
      */
-    public function requestEntity($link)
+    public function requestEntity(string $link)
     {
-        if ($link){
-        try {
-            return new Entity(json_decode(file_get_contents($link)));
-        } catch (Exception $exc) {
-            return new DefaultEntity(null, $this->getTeam()['mail']);
-        }} else{
+        if ($link) {
+            try {
+                return new Entity(json_decode(file_get_contents($link)));
+            } catch (Exception $exc) {
+                return new DefaultEntity(null, $this->getTeam()['mail']);
+            }
+        } else {
             return new DefaultEntity(null, $this->getTeam()['mail']);
         }
 

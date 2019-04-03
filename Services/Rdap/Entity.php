@@ -29,15 +29,15 @@ class Entity
 
     public function __construct(stdClass $entity_object = null)
     {
+        $entities = [];
         $this->object = $entity_object;
         if (isset($this->object->entities)) {
             foreach ($this->object->entities as $entity) {
 
-                $this->entities[] = new Entity($entity);
+                $entities[] = new Entity($entity);
             }
-        } else {
-            $this->entities = [];
         }
+        $this->entities = new Entities($entities);
     }
 
     /**
@@ -70,7 +70,7 @@ class Entity
     {
         if ($this->getLinks()) {
             return array_filter(
-                $this->getLinks(), function ($e) {
+                $this->getLinks(), static function ($e) {
                 return $e->rel === 'self';
             }
             )[0]->href;
@@ -109,11 +109,11 @@ class Entity
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getHandle(): array
+    public function getHandle(): string
     {
-        return $this->object->handle ?? [];
+        return $this->object->handle ?? '';
     }
 
     /**
@@ -175,27 +175,27 @@ class Entity
     }
 
     /**
-     * @param \Closure|null $callback
-     * @return array
+     * @return Entities|Entity
      */
-    public function getEntities(\Closure $callback = null): array
+    public function getEntities()
     {
-        $entities = [];
-        if ($callback) {
-            $entities[] = $callback($this);
-        } else {
-            $entities[] = $this;
-        }
-        foreach ($this->entities as $entity) {
-            if ($callback) {
-                $entities[] = $callback($entity);
-            } else {
-                $entities[] = $entity;
-            }
-
-            $entities += $entity->getEntities($callback);
-        }
-        return $entities;
+//        $entities = [];
+//        if ($callback) {
+//            $entities[] = $callback($this);
+//        } else {
+//            $entities[] = $this;
+//        }
+//        foreach ($this->entities as $entity) {
+//            if ($callback) {
+//                $entities[] = $callback($entity);
+//            } else {
+//                $entities[] = $entity;
+//            }
+//
+//            $entities += $entity->getEntities($callback);
+//        }
+//        return new Entities($entities);
+        return $this->entities;
     }
 
 }
