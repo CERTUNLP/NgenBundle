@@ -8,6 +8,7 @@
 
 namespace CertUnlp\NgenBundle\Services\Rdap;
 
+use Closure;
 use Exception;
 
 /**
@@ -17,6 +18,9 @@ use Exception;
  */
 class RdapResultWrapper
 {
+    /**
+     * @var Entity[]
+     */
     private $entities;
     private $rdap_json_object;
 
@@ -32,8 +36,11 @@ class RdapResultWrapper
         if ($this->getRateLimitNotice()) {
             throw new \RuntimeException($this->getRateLimitNotice()[0]);
         }
-
-        $this->entities = new Entities($this->rdap_json_object->entities ?? []);
+        $entities = [];
+        foreach ($this->rdap_json_object->entities as $entity) {
+            $entities[] = new Entity($entity);
+        }
+        $this->entities = new Entities($entities);
     }
 
     public function getRateLimitNotice(): string
@@ -146,13 +153,12 @@ class RdapResultWrapper
 
     public function getAbuseEmails(): array
     {
-        return $this->getEntities()->getAbuseEmails();
+        return $this->entities->getAbuseEmails();
     }
 
-    public function getEntities(): Entities
+    public function getEntities(bool $recrusive = false, Closure $callback = null): array
     {
-
-        return $this->entities;
+        return $this->entities->getEntities($recrusive, $callback);
     }
 
     /**
@@ -160,12 +166,12 @@ class RdapResultWrapper
      */
     public function getAbuseEntities(): array
     {
-        return $this->getEntities()->getAbuseEntities();
+        return $this->entities->getAbuseEntities();
     }
 
     public function getAbuseEntity(): ?Entity
     {
-        return $this->getEntities()->getAbuseEntity();
+        return $this->entities->getAbuseEntity();
     }
 
 }
