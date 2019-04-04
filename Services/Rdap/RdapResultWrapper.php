@@ -37,8 +37,11 @@ class RdapResultWrapper
             throw new \RuntimeException($this->getRateLimitNotice()[0]);
         }
         $entities = [];
-        foreach ($this->rdap_json_object->entities as $entity) {
-            $entities[] = new Entity($entity);
+        if (isset($this->rdap_json_object->entities)) {
+
+            foreach ($this->rdap_json_object->entities as $entity) {
+                $entities[] = new Entity($entity);
+            }
         }
         $this->entities = new Entities($entities);
     }
