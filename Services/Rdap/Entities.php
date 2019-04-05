@@ -8,6 +8,9 @@
 
 namespace CertUnlp\NgenBundle\Services\Rdap;
 
+use Closure;
+use function in_array;
+
 /**
  * Description of Entities
  *
@@ -26,11 +29,11 @@ class Entities
      */
     public function __construct(array $entities = [])
     {
-        $this->entities = [];
-        foreach ($entities as $entity) {
-
-            $this->entities[] = new Entity($entity);
-        }
+        $this->entities = $entities;
+//        foreach ($entities as $entity) {
+//
+//            $this->entities[] = new Entity($entity);
+//        }
     }
 
     /**
@@ -54,34 +57,48 @@ class Entities
      */
     public function getByRole(array $roles): array
     {
-        $entities = [];
-        foreach ($this->getEntities() as $entity) {
+        return $this->getEntities(true, static function (Entity $entity) use ($roles) {
+            $entities = [];
             foreach ($roles as $role) {
-
-                if (\in_array($role, $entity->getRoles(), true)) {
+                if (in_array($role, $entity->getRoles(), true)) {
                     $entities[] = $entity;
                 } else if (strpos($entity->getRolesAsString(), $role) !== false) {
                     $entities[] = $entity;
                 }
             }
-        }
-
-        return $entities;
+            return $entities;
+        });
     }
 
     /**
-     * @param \Closure|null $callback
+     * @param bool $recursive
+     * @param Closure|null $callback
      * @return Entity[] | array
      */
-    public function getEntities(\Closure $callback = null): array
+    public function getEntities(bool $recursive = false, Closure $callback = null): array
     {
-        $entities = [[]];
-        foreach ($this->entities as $entity) {
-            $entities[] = $entity->getEntities($callback);
+        if ($recursive) {
+            $entities = [[]];
+            foreach ($this->entities as $entity) {
+                if ($callback) {
+                    $entities[] = $callback($entity);
+                } else {
+                    $entities[] = [$entity];
+                }
+                if (!$entity->getEntities()->isEmpty()) {
+                    $entities[] = $entity->getEntities()->getEntities($recursive, $callback);
+                }
+            }
+            $entities = array_merge(...$entities);
+            return $entities;
         }
-        $entities = array_merge(...$entities);
+        return $this->entities;
 
-        return $entities;
+    }
+
+    public function isEmpty(): int
+    {
+        return !count($this->entities);
     }
 
     /**
@@ -89,6 +106,7 @@ class Entities
      */
     public function getAbuseEntity(): ?Entity
     {
+
         $abuse_entities = $this->getAbuseEntities();
         return $abuse_entities ? $abuse_entities[0] : null;
     }

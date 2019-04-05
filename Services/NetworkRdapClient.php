@@ -93,7 +93,7 @@ class NetworkRdapClient extends RdapClient
     public function getEndAddress(): string
     {
         $response = $this->getResponse()->getEndAddress();
-        if (strpos($response, '/') != false) {
+        if (strpos($response, '/') !== false) {
             $response = explode('/', $response)[0];
         }
         return $response;
@@ -146,16 +146,18 @@ class NetworkRdapClient extends RdapClient
      */
     public function getNetworkAdmin(): NetworkAdmin
     {
-        $admin = new NetworkAdmin($this->getAbuseEntity());
-
-        foreach ($this->getAbuseEntityEmails() as $email) {
-            $contact = new ContactEmail();
-            $contact->setUsername($email);
-            $contact->setName($this->getAbuseEntity());
-            $contact->setNetworkAdmin($admin);
-            $contact->setContactType('email');
-            $contact->setContactCase($this->getDoctrine()->getRepository(ContactCase::class)->findOneBySlug('all'));
-            $admin->addContact($contact);
+        $admin = $this->getDoctrine()->getRepository(NetworkAdmin::class)->findOneByName($this->getAbuseEntityName());
+        if (!$admin) {
+            $admin = new NetworkAdmin($this->getAbuseEntityName());
+            foreach ($this->getAbuseEntityEmails() as $email) {
+                $contact = new ContactEmail();
+                $contact->setUsername($email);
+                $contact->setName($this->getAbuseEntityName());
+                $contact->setNetworkAdmin($admin);
+                $contact->setContactType('email');
+                $contact->setContactCase($this->getDoctrine()->getRepository(ContactCase::class)->findOneBySlug('all'));
+                $admin->addContact($contact);
+            }
         }
         return $admin;
     }
@@ -163,10 +165,11 @@ class NetworkRdapClient extends RdapClient
     /**
      * @return mixed
      */
-    public function getAbuseEntity(): string
+    public function getAbuseEntityName(): string
     {
-        if ($this->getResponse()->getAbuseEntity()) {
-            return $this->getResponse()->getAbuseEntity()->getName();
+        $abuse_entity = $this->getResponse()->getAbuseEntity();
+        if ($abuse_entity) {
+            return $abuse_entity->getName() . '(' . $abuse_entity->getHandle() . ')';
         }
         return '';
     }
@@ -187,7 +190,16 @@ class NetworkRdapClient extends RdapClient
      */
     public function getNetworkEntity(): NetworkEntity
     {
-        return new NetworkEntity($this->getResponse()->getName() . ' (' . $this->getResponse()->getHandle() . ')');
+        $network_entity = $this->getDoctrine()->getRepository(NetworkEntity::class)->findOneByName($this->getNetworkEntityName());
+        if (!$network_entity) {
+            $network_entity = new NetworkEntity($this->getNetworkEntityName());
+        }
+        return $network_entity;
+    }
+
+    public function getNetworkEntityName(): string
+    {
+        return $this->getResponse()->getName() . ' (' . $this->getResponse()->getHandle() . ')';
     }
 
     /**
