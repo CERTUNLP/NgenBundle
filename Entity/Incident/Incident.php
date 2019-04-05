@@ -542,11 +542,11 @@ class Incident implements IncidentInterface
     public function getResponseMinutes(bool $lastTimeDetected = false): int
     {
         if (!$this->isNew()){
-            return $this->getOpenedAt()->diff($this->getDate())->i; //lo devuelvo en minutos eso es el i
+            return abs((($this->getDate())->getTimestamp()-($this->getOpenedAt())->getTimestamp())/60); //lo devuelvo en minutos eso es el i
         }
         else
             {
-            return $this->getDate()->diff(new DateTime())->i;
+                return abs(((new DateTime())->getTimestamp()-($this->getDate())->getTimestamp())/60);
         }
     }
 
@@ -555,18 +555,19 @@ class Incident implements IncidentInterface
      * @return int
      * @throws Exception
      */
-    public function getResolutionMinutes(bool $lastTimeDetected = false): int
+    public function getResolutionMinutes(bool $lastTimeDetected = false):int
     {
         if (!$this->isClosed()) {
             if (!$this->isNew()) {
-                return $this->getOpenedAt()->diff(new DateTime())->i; //lo devuelvo en minutos eso es el i
+                return abs(((new DateTime())->getTimestamp()-($this->getOpenedAt())->getTimestamp())/60); //lo devuelvo en minutos eso es el i
             } else {
                 return 0;
             }
         }
         else
         {
-            return $this->getOpenedAt()->diff($this->getUpdatedAt())->i;
+            return abs((($this->getUpdatedAt()->getTimestamp())-($this->getOpenedAt())->getTimestamp())/60);
+
         }
     }
     /**
