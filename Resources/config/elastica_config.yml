@@ -93,6 +93,15 @@ fos_elastica:
                                     type: keyword
                                 name:
                                     type: keyword
+                        assigned:
+                            type: "object"
+                            properties:
+                                id:
+                                    type: keyword
+                                    null_value: "NULL"
+                                username:
+                                    type: keyword
+
                         reporter:
                             type: "object"
                             properties:
@@ -112,6 +121,16 @@ fos_elastica:
                                     type: date
                                 updatedAt:
                                     type: date
+                        priority:
+                            type: "object"
+                            properties:
+                                urgency:
+                                    type: keyword
+                                impact:
+                                    type: keyword
+                                name:
+                                    type: keyword
+
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
