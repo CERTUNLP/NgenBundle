@@ -33,7 +33,9 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
     {
         $incident = $event->getData();
         $form = $event->getForm();
-
+//       echo($form->getData()->getState());
+//        echo($incident->getState());
+//       die();
         // checks whether the user from the initial data has chosen to
         // display their email or not.
         if (!$form->getData()) {
@@ -51,7 +53,7 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
             }
             if ($incident->getPriority()) {
                 $form->get('impact')->setData($this->doctrine->getReference(IncidentImpact::class, $incident->getPriority()->getImpact()->getSlug()));
-                $form->get('urgency')->setData($this->doctrine ?? $this->doctrine->getReference(IncidentUrgency::class, $incident->getPriority()->getUrgency()->getSlug()));
+                $form->get('urgency')->setData( $this->doctrine->getReference(IncidentUrgency::class, $incident->getPriority()->getUrgency()->getSlug()));
             }
         }
     }

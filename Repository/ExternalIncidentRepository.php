@@ -37,22 +37,6 @@ class ExternalIncidentRepository extends EntityRepository
         return $query->getQuery()->getOneOrNullResult();
     }
 
-    public function findByUnique($parameters)
-    {
-        $query = $this->createQueryBuilder('i')
-            ->where('i.type = :type')
-            ->andWhere('i.ip = :ip')
-            ->andWhere('i.isClosed = :closed')
-            ->setParameter('type', $parameters['type'])
-            ->setParameter('ip', $parameters['ip'])
-            ->setParameter('closed', FALSE);
-
-        $incident = $query->getQuery()->getOneOrNullResult();
-        if ($incident) {
-            $incident->setLastTimeDetected(new \DateTime('now'));
-        }
-        return [];
-    }
 
     public function findRenotificables()
     {
