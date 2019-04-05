@@ -123,12 +123,11 @@ class Incident implements IncidentInterface
      * @JMS\Groups({"api"})
      */
     protected $date;
+
     /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="last_time_detected", type="datetime",nullable=true)
+     * @var Collection
      * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentLastTimeDetected",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
      * @JMS\Groups({"api"})
      */
     protected $lastTimeDetected;
@@ -159,6 +158,16 @@ class Incident implements IncidentInterface
      * @JMS\Groups({"api"})
      */
     protected $updatedAt;
+
+    /**
+     * @var DateTime
+     * @ORM\Column(name="opened_at", type="datetime", nullable=true)
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
+     */
+    protected $openedAt;
+
     /**
      * @var boolean
      *
@@ -167,6 +176,17 @@ class Incident implements IncidentInterface
      * @JMS\Type("boolean")
      */
     protected $isClosed = false;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_new", type="boolean")
+     * @JMS\Expose
+     * @JMS\Type("boolean")
+     */
+    protected $isNew = true;
+
+
     /**
      * @Assert\File(maxSize = "500k")
      */
@@ -239,6 +259,7 @@ class Incident implements IncidentInterface
         if ($term) {
             $this->setAddress($term);
         }
+        $this->lastTimeDetected=new ArrayCollection();
     }
 
     /**
@@ -505,35 +526,76 @@ class Incident implements IncidentInterface
      * @return int
      * @throws Exception
      */
-    public function getOpenDays(bool $lastTimeDetected = false): int
+    public function getOpenMinutes(bool $lastTimeDetected = false): int
     {
-        if ($lastTimeDetected) {
-            $date = $this->getLastTimeDetected() ?: $this->getDate();
-        } else {
-            $date = $this->getDate();
+        if ($this->isOpen()){
+            return $this->getOpenedAt()->diff(new DateTime())->i; //lo devuelvo en minutos eso es el i
         }
-
-        if ($date) {
-            return $date->diff(new DateTime())->days;
-        }
-        return null;
+        else{ return 0;}
     }
 
     /**
-     * @return DateTime
+     * @param bool $lastTimeDetected
+     * @return int
+     * @throws Exception
      */
-    public function getLastTimeDetected(): ?DateTime
+    public function getResponseMinutes(bool $lastTimeDetected = false): int
+    {
+        if (!$this->isNew()){
+            return $this->getOpenedAt()->diff($this->getDate())->i; //lo devuelvo en minutos eso es el i
+        }
+        else
+            {
+            return $this->getDate()->diff(new DateTime())->i;
+        }
+    }
+
+    /**
+     * @param bool $lastTimeDetected
+     * @return int
+     * @throws Exception
+     */
+    public function getResolutionMinutes(bool $lastTimeDetected = false): int
+    {
+        if (!$this->isClosed()) {
+            if (!$this->isNew()) {
+                return $this->getOpenedAt()->diff(new DateTime())->i; //lo devuelvo en minutos eso es el i
+            } else {
+                return 0;
+            }
+        }
+        else
+        {
+            return $this->getOpenedAt()->diff($this->getUpdatedAt())->i;
+        }
+    }
+    /**
+     * @param bool $lastTimeDetected
+     * @return int
+     * @throws Exception
+     */
+    public function getNewMinutes(bool $lastTimeDetected = false): int
+    {
+        if ($this->isNew()){
+            return $this->getDate()->diff(new DateTime())->i; //lo devuelvo en minutos eso es el i
+        }
+        else{ return 0;}
+    }
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLastTimeDetected()
     {
         return $this->lastTimeDetected;
     }
 
     /**
-     * @param DateTime $lastTimeDetected
+     * @param IncidentLastTimeDetected $lastTimeDetected
      * @return Incident
      */
     public function setLastTimeDetected(DateTime $lastTimeDetected): Incident
     {
-        $this->lastTimeDetected = $lastTimeDetected;
+        $this->lastTimeDetected[] = $lastTimeDetected;
         return $this;
     }
 
@@ -1044,4 +1106,38 @@ class Incident implements IncidentInterface
     {
         return $this->getAddress();
     }
+
+    /**
+     * @return bool
+     */
+    public function isNew(): bool
+    {
+        return $this->isNew;
+    }
+
+    /**
+     * @param bool $isNew
+     */
+    public function setIsNew($isNew=true): bool
+    {
+        $this->isNew = $isNew;
+        $this->setOpenedAt(new DateTime());
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getOpenedAt()
+    {
+        return $this->openedAt;
+    }
+
+    /**
+     * @param DateTime $openedAt
+     */
+    public function setOpenedAt($openedAt)
+    {
+        $this->openedAt = $openedAt;
+    }
+
 }

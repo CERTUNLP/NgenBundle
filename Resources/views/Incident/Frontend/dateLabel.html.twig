@@ -19,8 +19,11 @@
     {% set trclass = "danger" %}
 {% else %}
     {% set trclass = "success" %}
-{% endif %}  
+{% endif %}
 
-{{ date |date('Y-m-d') }} <span
-        class="label label-{{ trclass }}">{{ incident.openDays(true)~" days" }}</span>{% if lastTimeDetected %}
-    <span class="label label-warning">ltd</span>{% endif %}
+<span class="label label-{{ trclass }}">{{ incident.openDays(true)~" days" }}</span>
+{% if lastTimeDetected %}
+<span class="label label-warning">ltd {{ incident.lastTimeDetected | date('Y-m-d H:i:s') }}</span>
+{%  else %}
+<span class="label label-warning">ltd {{ incident.lastTimeDetected | date('Y-m-d H:i:s') }}</span>
+{% endif %}

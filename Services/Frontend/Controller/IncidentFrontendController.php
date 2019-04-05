@@ -31,7 +31,7 @@ class IncidentFrontendController extends FrontendController
     {
         parent::__construct($doctrine, $formFactory, $entityType, $paginator, $finder, $comment_manager, $thread_manager);
         $this->evidence_path = $evidence_path;
-        $this->userLogged = $securityContext->getToken()->getUser()->getId();
+        $this->userLogged = $securityContext->getToken()->getUser();
     }
 
     public function evidenceIncidentAction(Incident $incident)
@@ -62,12 +62,41 @@ class IncidentFrontendController extends FrontendController
 
     public function newEntity(Request $request)
     {
-        return array('form' => $this->formFactory->create(new $this->entityType($this->getDoctrine(), $this->userLogged))->createView(), 'method' => 'POST');
+        return array('form' => $this->formFactory->create(new $this->entityType($this->getDoctrine(), $this->userLogged->getId()))->createView(), 'method' => 'POST');
     }
 
     public function editEntity($object)
     {
-        return array('form' => $this->formFactory->create(new $this->entityType($this->getDoctrine(), $this->userLogged), $object)->createView(), 'method' => 'patch');
+        return array('form' => $this->formFactory->create(new $this->entityType($this->getDoctrine(), $this->userLogged->getId()), $object)->createView(), 'method' => 'patch');
     }
 
+    public function homeEntity(Request $request, $term = '', $limit = 7, $defaultSortFieldName='createdAt',$defaultSortDirection='desc')
+    {
+        if (!$term) {
+            $term = $request->get('term') ? $request->get('term') : '*';
+        }
+
+        $match = new \Elastica\Query\QueryString();
+        $match->setQuery($term);
+
+        $term3 = new \Elastica\Query\BoolQuery();
+        $term2 = new \Elastica\Query\BoolQuery();
+
+        $assigned_term=new \Elastica\Query\Match("assigned.id",$this->userLogged->getId());
+        $term2->addMust($match);
+        $term2->addMust($assigned_term);
+
+
+        $unasiggned_term = new \Elastica\Query\BoolQuery();
+        $existQuery = new \Elastica\Query\Exists('assigned.id');
+        $open=new \Elastica\Query\Match("isClosed",'0');
+        $unasiggned_term->addMustNot($existQuery);
+        $term3->addMust($match);
+        $term3->addMust($open);
+        $term3->addMust($unasiggned_term);
+
+
+        return array('objects'=>$this->searchEntity($request, $term, $limit,$defaultSortFieldName,$defaultSortDirection,'page')['objects'],'mine_objects'=>$this->searchEntity($request, $term2, $limit,$defaultSortFieldName,$defaultSortDirection,'mine_page')['objects'],'unassigned_objects'=>$this->searchEntity($request, $term3, $limit,$defaultSortFieldName,$defaultSortDirection,'undefined_page')['objects'],'term'=> $term);
+
+    }
 }
