@@ -40,6 +40,7 @@ class IncidentState
      *
      * @ORM\Column(name="name", type="string", length=100)
      * @JMS\Expose
+     * @JMS\Groups({"api_input"})
      */
     private $name;
 
@@ -49,6 +50,7 @@ class IncidentState
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
      * @JMS\Expose
+     * @JMS\Groups({"api_input"})
      * */
     private $slug;
 
@@ -110,6 +112,57 @@ class IncidentState
     private $updatedAt;
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state")) */
     private $incidents;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_opening", type="boolean")
+     * @JMS\Expose
+     * @JMS\Type("boolean")
+     */
+    protected $isOpening = true;
+
+    /**
+     * @return bool
+     */
+    public function isOpening(): bool
+    {
+        return $this->isOpening;
+    }
+
+    /**
+     * @param bool $isOpening
+     */
+    public function setIsOpening(bool $isOpening): void
+    {
+        $this->isOpening = $isOpening;
+    }
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_closing", type="boolean")
+     * @JMS\Expose
+     * @JMS\Type("boolean")
+     */
+
+    protected $isClosing = false;
+
+    /**
+     * @return bool
+     */
+    public function isClosing(): bool
+    {
+        return $this->isClosing;
+    }
+
+    /**
+     * @param bool $isClosing
+     */
+    public function setIsClosing(bool $isClosing): void
+    {
+        $this->isClosing = $isClosing;
+    }
 
     /**
      * Constructor

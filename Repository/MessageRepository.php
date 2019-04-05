@@ -32,49 +32,4 @@ class MessageRepository extends EntityRepository
     }
 
 
-    function findByHostDateType($parameters)
-    {
-        $query = $this->createQueryBuilder('i')
-            ->where('i.type = :type')
-            ->andWhere('i.ip = :ip')
-            ->andWhere('i.date = :date')
-//                ->andWhere('i.isClosed = :closed')
-            ->setParameter('type', $parameters['type'])
-            ->setParameter('ip', $parameters['ip'])
-//                ->setParameter('closed', FALSE)
-            ->setParameter('date', $parameters['date']);
-
-        return $query->getQuery()->getOneOrNullResult();
-    }
-
-    public function findByUnique($parameters)
-    {
-        $query = $this->createQueryBuilder('i')
-            ->where('i.type = :type')
-            ->andWhere('i.ip = :ip')
-            ->andWhere('i.isClosed = :closed')
-            ->setParameter('type', $parameters['type'])
-            ->setParameter('ip', $parameters['ip'])
-            ->setParameter('closed', FALSE);
-
-        $incident = $query->getQuery()->getOneOrNullResult();
-        if ($incident) {
-            $incident->setLastTimeDetected(new \DateTime('now'));
-        }
-        return [];
-    }
-
-    public function findRenotificables()
-    {
-        $query = $this->createQueryBuilder('i')
-            ->select('count(i)')
-            ->where('i.isClosed = :closed')
-            ->andWhere('DATE_DIFF(:date,i.date) = 5')
-            ->orWhere('DATE_DIFF(:date,i.renotificationDate) = 5')
-            ->setParameter('closed', FALSE)
-            ->setParameter('date', new \DateTime('-2 days'));
-
-        return $query->getQuery()->getResult();
-    }
-
 }

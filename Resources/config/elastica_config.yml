@@ -21,14 +21,16 @@ fos_elastica:
                             type: integer
                         date:
                             type: date
-                        lastTimeDetected:
-                            type: date
                         createdAt:
                             type: date
                         updatedAt:
                             type: date
                         isClosed:
                             type: boolean
+                        isNew:
+                            type: boolean
+                        openedAt:
+                            type: date
                         evidence_file_path:
                             type: keyword
                         origin:

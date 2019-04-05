@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentLastTimeDetected;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -76,6 +77,7 @@ class IncidentHandler extends Handler
      */
     public function changeState(Incident $incident, $state)
     {
+        echo "carajo"; die();
         $incident->setState($state);
         return $this->patch($incident, []);
     }
@@ -91,8 +93,8 @@ class IncidentHandler extends Handler
                 $this->om->persist($incident);
                 $closedIncidents[$incident->getId()] = ['ip' => $incident->getAddress(),
                     'type' => $incident->getType(),
-                    'date' => getDate(),
-                    'lastTimeDetected' => $incident->getLastTimeDetected(),
+                    'date' => $incident->getUpdatedAt(),
+                    'lastTimeDetected' => $incident->getU(),
                     'openDays' => $incident->getOpenDays(true)];
             }
         }
@@ -122,8 +124,9 @@ class IncidentHandler extends Handler
             if ($incident->getEvidenceFile()) {
                 $incidentDB->setEvidenceFile($incident->getEvidenceFile());
             }
+            $incidentDB->addLastTimeDetected($incident->getFeed());
             $incident = $incidentDB;
-            $incident->setLastTimeDetected(new \DateTime('now'));
+
         }
         return $incident;
     }
@@ -207,4 +210,5 @@ class IncidentHandler extends Handler
         $this->host_handler = $host_handler;
         return $this;
     }
+
 }
