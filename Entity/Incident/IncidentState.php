@@ -110,58 +110,59 @@ class IncidentState
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
+
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state")) */
+
     private $incidents;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_opening", type="boolean")
+     * @var IncidentStateAction
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateAction", inversedBy="incident_state")
+     * @ORM\JoinColumn(name="tlp_state", referencedColumnName="slug")
      * @JMS\Expose
-     * @JMS\Type("boolean")
+     * @JMS\Groups({"api"})
      */
-    protected $isOpening = true;
+    protected $incident_action;
+
+    /**
+     * @return IncidentStateAction
+     */
+    public function getIncidentAction(): IncidentStateAction
+    {
+        return $this->incident_action;
+    }
+
+    /**
+     * @param IncidentStateAction $incident_action
+     */
+    public function setIncidentAction(IncidentStateAction $incident_action): void
+    {
+        $this->incident_action = $incident_action;
+    }
 
     /**
      * @return bool
      */
     public function isOpening(): bool
     {
-        return $this->isOpening;
+        return $this->getIncidentAction()->isOpen();
     }
 
-    /**
-     * @param bool $isOpening
-     */
-    public function setIsOpening(bool $isOpening): void
-    {
-        $this->isOpening = $isOpening;
-    }
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_closing", type="boolean")
-     * @JMS\Expose
-     * @JMS\Type("boolean")
-     */
-
-    protected $isClosing = false;
 
     /**
      * @return bool
      */
     public function isClosing(): bool
     {
-        return $this->isClosing;
+        $this->getIncidentAction()->isClose();
     }
 
     /**
-     * @param bool $isClosing
+     * @return bool
      */
-    public function setIsClosing(bool $isClosing): void
+    public function isReOpening(): bool
     {
-        $this->isClosing = $isClosing;
+        return $this->getIncidentAction()->isReOpen();
     }
 
     /**
