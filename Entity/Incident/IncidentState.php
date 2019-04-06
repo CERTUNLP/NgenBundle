@@ -26,15 +26,6 @@ use JMS\Serializer\Annotation as JMS;
  */
 class IncidentState
 {
-//    /**
-//     * @var integer
-//     *
-//     * @ORM\Column(name="id", type="integer")
-//     * @ORM\Id
-//     * @ORM\GeneratedValue(strategy="AUTO")
-//     */
-//    private $id;
-
     /**
      * @var string
      *
@@ -118,7 +109,7 @@ class IncidentState
     /**
      * @var IncidentStateAction
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateAction", inversedBy="incident_state")
-     * @ORM\JoinColumn(name="tlp_state", referencedColumnName="slug")
+     * @ORM\JoinColumn(name="incident_state_action", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
@@ -154,7 +145,7 @@ class IncidentState
      */
     public function isClosing(): bool
     {
-        $this->getIncidentAction()->isClose();
+       return $this->getIncidentAction()->isClose();
     }
 
     /**

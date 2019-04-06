@@ -757,7 +757,8 @@ class Incident implements IncidentInterface
      */
     public function setState(IncidentState $state = null): Incident
     {
-        //FIX hay que trabajar el flujo del estado del incidente
+        ////FIX hay que trabajar el flujo del estado del incidente DAMIAN HELP
+
        if ($state->isOpening() and $this->isNew()){
             $this->open();
         }
