@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * IncidentLastTimeDetected
  *
- * @ORM\Table(name="incident_change_state_history")
+ * @ORM\Table(name="incident_change_state")
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
@@ -27,13 +27,14 @@ class IncidentChangeState
 
 
 
-    public function __construct(Incident $incident,IncidentState $oldState,IncidentState $newState)
+    public function __construct(Incident $incident,IncidentState $oldState,IncidentState $newState,$responsable, $method = "frontend" )
     {
         $this->setIncident($incident);
         $this->setOldState($oldState);
         $this->setNewState($newState);
         $this->setDate(new DateTime('now'));
-
+        $this->setMethodUsed($method);
+        $this->setResponsable($responsable);
     }
 
     /**
@@ -133,6 +134,18 @@ class IncidentChangeState
      */
     protected $oldState;
 
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
+     */
+    protected $responsable;
 
-
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="method", type="string", length=25)
+     * @JMS\Expose
+     * @JMS\Groups({"api_input"})
+     */
+    protected $method;
 }

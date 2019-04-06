@@ -139,7 +139,7 @@ class IncidentStateAction
      */
     public function isClose(): bool
     {
-        return $this->close;
+          return $this->close;
     }
 
     /**
