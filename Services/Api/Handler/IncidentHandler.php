@@ -77,7 +77,6 @@ class IncidentHandler extends Handler
      */
     public function changeState(Incident $incident, $state)
     {
-        echo "carajo"; die();
         $incident->setState($state);
         return $this->patch($incident, []);
     }

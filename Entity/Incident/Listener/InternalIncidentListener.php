@@ -62,8 +62,6 @@ class InternalIncidentListener
      */
     public function prePersistHandler(Incident $incident, LifecycleEventArgs $event)
     {
-        echo("lola");
-
         $this->incidentPrePersistUpdate($incident, $event);
 
         $this->delegator_chain->prePersistDelegation($incident);
@@ -71,13 +69,6 @@ class InternalIncidentListener
 
     public function incidentPrePersistUpdate(Incident $incident, LifecycleEventArgs $event)
     {
-//        echo $incident->getState();
-//        echo $incident->getTlp();
-//
-//        echo $incident->getImpact();        echo $incident->getUrgency();
-//
-//        die();
-echo("papa");
         $this->hostUpdate($incident);
         $this->networkUpdate($incident);
         $this->decisionUpdate($incident);
@@ -261,8 +252,6 @@ echo("papa");
      */
     public function postPersistHandler(Incident $incident, LifecycleEventArgs $event): void
     {
-        echo("papa");
-
         $this->delegator_chain->postPersistDelegation($incident);
         $this->commentThreadUpdate($incident, $event);
     }
@@ -294,8 +283,6 @@ echo("papa");
      */
     public function postUpdateHandler(Incident $incident): void
     {
-        echo("papa");
-
         $this->delegator_chain->postUpdateDelegation($incident);
     }
 

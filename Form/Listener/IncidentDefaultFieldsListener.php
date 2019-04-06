@@ -33,9 +33,6 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
     {
         $incident = $event->getData();
         $form = $event->getForm();
-//       echo($form->getData()->getState());
-//        echo($incident->getState());
-//       die();
         // checks whether the user from the initial data has chosen to
         // display their email or not.
         if (!$form->getData()) {

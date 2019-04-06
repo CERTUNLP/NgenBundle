@@ -757,19 +757,18 @@ class Incident implements IncidentInterface
      */
     public function setState(IncidentState $state = null): Incident
     {
-        if(! $this->getState()){
-            $this->state=$state;
-        }
-        $this->addChangeStateHistory(new IncidentChangeState($this,$this->getState(),$state));
-        if ($state->isOpening()){
+        //FIX hay que trabajar el flujo del estado del incidente
+       if ($state->isOpening() and $this->isNew()){
             $this->open();
-            if ($this->isNew()){
-                $this->setOpenedAt(new DateTime('now'));
-            }
+        }
+        if ($state->isReOpening() and $this->isClosed()){
+            $this->reOpen();
         }
         if ($state->isClosing()){
             $this->close();
         }
+        $this->addChangeStateHistory(new IncidentChangeState($this,$this->getState(),$state));
+        $this->state=$state;
         return $this;
     }
 
@@ -871,6 +870,7 @@ class Incident implements IncidentInterface
     public function open(): Incident
     {
         $this->isNeedToCommunicate(true);
+        $this->setOpenedAt(new DateTime('now'));
         return $this->setIsNew(false);
     }
 
