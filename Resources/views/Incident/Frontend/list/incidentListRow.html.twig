@@ -34,7 +34,10 @@
         {{ incident.priority }}
     </td>
     <td>
-        {% include "CertUnlpNgenBundle:Incident:Frontend/rtrtLabel.html.twig" with {'incident': incident,'lastTimeDetected':incident.lastTimeDetected} %}
+        {% include "CertUnlpNgenBundle:Incident:Frontend/responseTimeLabel.html.twig" with {'incident': incident,'lastTimeDetected':incident.lastTimeDetected} %}
+    </td>
+    <td>
+        {% include "CertUnlpNgenBundle:Incident:Frontend/resolutionTimeLabel.html.twig" with {'incident': incident,'lastTimeDetected':incident.lastTimeDetected} %}
     </td>
 
     <td>

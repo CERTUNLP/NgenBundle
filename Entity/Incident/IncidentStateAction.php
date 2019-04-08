@@ -41,7 +41,7 @@ class IncidentStateAction
      */
     private $description;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState",mappedBy="posibleAction"))
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState",mappedBy="incident_action"))
      * @JMS\Exclude()
      */
     private $incident_state;

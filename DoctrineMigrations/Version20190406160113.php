@@ -17,7 +17,6 @@ class Version20190406160113 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('CREATE TABLE incident_change_state (id INT AUTO_INCREMENT NOT NULL, incident_id INT DEFAULT NULL, state VARCHAR(100) DEFAULT NULL, responsable_id INT DEFAULT NULL, date DATETIME DEFAULT NULL, method VARCHAR(25) NOT NULL, INDEX IDX_CCFC5A1D59E53FB9 (incident_id), INDEX IDX_CCFC5A1DA393D2FB (state), INDEX IDX_CCFC5A1D53C59D72 (responsable_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE incident_change_state ADD CONSTRAINT FK_CCFC5A1D59E53FB9 FOREIGN KEY (incident_id) REFERENCES incident (id)');
         $this->addSql('ALTER TABLE incident_change_state ADD CONSTRAINT FK_CCFC5A1DA393D2FB FOREIGN KEY (state) REFERENCES incident_state (slug)');

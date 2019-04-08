@@ -76,11 +76,6 @@ class IncidentType
     private $incidents;
 
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentReport",mappedBy="type",indexBy="lang"))
-     *
-     * @Assert\Count(
-     *      min = 1,
-     *      minMessage = "This type needs at least one report to be used",
-     * )
      */
     private $reports;
 

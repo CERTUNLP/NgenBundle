@@ -554,7 +554,7 @@ class Incident implements IncidentInterface
      * @return int
      * @throws Exception
      */
-    public function getOpenDays(bool $lastTimeUpdated = false): int
+    public function getOpenDays(bool $lastTimeDetected = false): int
     {
         if ($lastTimeDetected) {
             $date = $this->getUpdatedAt() ?: $this->getDate();
@@ -753,13 +753,14 @@ class Incident implements IncidentInterface
     /**
      * Set state
      * @param IncidentState $state
+     * @param User $reporter
      * @return Incident
      */
-    public function setState(IncidentState $state = null): Incident
+    public function setState(IncidentState $state = null,User $reporter): Incident
     {
         ////FIX hay que trabajar el flujo del estado del incidente DAMIAN HELP
 
-       if ($state->isOpening() and $this->isNew()){
+        if ($state->isOpening() and $this->isNew()){
             $this->open();
         }
         if ($state->isReOpening() and $this->isClosed()){
@@ -768,7 +769,7 @@ class Incident implements IncidentInterface
         if ($state->isClosing()){
             $this->close();
         }
-        $this->addChangeStateHistory(new IncidentChangeState($this,$this->getState(),$state));
+        $this->addChangeStateHistory(new IncidentChangeState($this,$this->getState(),$state,$reporter));
         $this->state=$state;
         return $this;
     }
@@ -870,11 +871,10 @@ class Incident implements IncidentInterface
      */
     public function open(): Incident
     {
-        $this->isNeedToCommunicate(true);
+        $this->setNeedToCommunicate(true);
         $this->setOpenedAt(new DateTime('now'));
         return $this->setIsNew(false);
     }
-
 
     /**
      * @return bool
@@ -884,6 +884,14 @@ class Incident implements IncidentInterface
         return $this->getState()->getSlug() === 'open';
     }
 
+    /**
+     * @return Incident
+     */
+    public function reOpen(): Incident
+    {
+        $this->setNeedToCommunicate(true);
+        return $this->setIsClosed(false);
+    }
     /**
      * @return array
      */
