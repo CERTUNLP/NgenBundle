@@ -73,7 +73,12 @@ class IncidentLastTimeDetected
         $this->dateDetected = $dateDetected;
     }
 
-
+    public function getCountDaysFromDetection()
+    {
+        $dStart = new DateTime('now');
+        $dDiff = $dStart->diff($this->getDateDetected());
+        return $dDiff->days;
+    }
     /**
      * @var Incident
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="lastTimeDetected")
