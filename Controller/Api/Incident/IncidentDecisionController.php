@@ -12,6 +12,9 @@
 namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
+use CertUnlp\NgenBundle\Entity\Network\Network;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -70,19 +73,26 @@ class IncidentDecisionController extends FOSRestController
      *   }
      * )
      *
-     * @param IncidentDecision $incident_decision
+     * @param IncidentType $type
+     * @param IncidentFeed $feed
+     * @param Network $ip_v4
+     * @param Network|null $ip_v6
+     * @param Network|null $domains
      * @return IncidentDecision
      * @FOS\View(
      *  templateVar="incident_decision"
      * )
-     * @FOS\Get("/decisions/{id}",requirements={"id"="\d+"})
-     * @FOS\Get("/decisions/{type}/{feed}/{network}",requirements={"network"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"} , name="_network")
-     * @FOS\Get("/decisions/{type}/{feed}")
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneByAddress"},isOptional=true)
+     * @FOS\Get("/decisions/{type}/{feed}/{domains}", name="_domain",requirements={"domains"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
+     * @FOS\Get("/decisions/{type}/{feed}/{ip_v4}", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"} )
+     * @FOS\Get("/decisions/{type}/{feed}/{ip_v6}", name="_ip_v6",  requirements={"ip_v6"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$"} )
+     * @FOS\Get("/decisions/{type}/{feed}" )
+     * @ParamConverter("domains", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneByStringAddress", "domains"="address"},isOptional=true)
+     * @ParamConverter("ip_v4", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneByStringAddress", "ip_v4"="address"},isOptional=true)
+     * @ParamConverter("ip_v6", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneByStringAddress", "ip_v6"="address"},isOptional=true)
      */
-    public function getIncidentDecisionAction(IncidentDecision $incident_decision)
+    public function getIncidentDecisionAction(IncidentType $type, IncidentFeed $feed, Network $ip_v4 = null, Network $ip_v6 = null, Network $domains = null)
     {
-        return $incident_decision;
+        return $this->get('cert_unlp.ngen.incident.decision.handler')->getByNetwork($type, $feed, $ip_v4 ?? $ip_v6 ?? $domains);
     }
 
     /**

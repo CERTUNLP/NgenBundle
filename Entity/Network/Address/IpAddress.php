@@ -12,6 +12,9 @@
 namespace CertUnlp\NgenBundle\Entity\Network\Address;
 
 use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
+use Darsyn\IP\Exception\InvalidCidrException;
+use Darsyn\IP\Exception\InvalidIpAddressException;
+use Darsyn\IP\Exception\WrongVersionException;
 use Darsyn\IP\Version\Multi as IP;
 use JMS\Serializer\Annotation as JMS;
 
@@ -45,9 +48,9 @@ abstract class IpAddress extends Address
     /**
      * @param string $address
      * @return NetworkElement
-     * @throws \Darsyn\IP\Exception\InvalidCidrException
-     * @throws \Darsyn\IP\Exception\InvalidIpAddressException
-     * @throws \Darsyn\IP\Exception\WrongVersionException
+     * @throws InvalidCidrException
+     * @throws InvalidIpAddressException
+     * @throws WrongVersionException
      */
     public function setCustomAddress(string $address): NetworkElement
     {
@@ -80,7 +83,7 @@ abstract class IpAddress extends Address
 
     /**
      * @return IpAddress
-     * @throws \Darsyn\IP\Exception\InvalidCidrException
+     * @throws InvalidCidrException
      */
     public function setCustomStartAddress(): IpAddress
     {
@@ -121,7 +124,7 @@ abstract class IpAddress extends Address
 
     /**
      * @return IpAddress
-     * @throws \Darsyn\IP\Exception\InvalidCidrException
+     * @throws InvalidCidrException
      */
     public function setCustomEndAddress(): IpAddress
     {
@@ -133,7 +136,7 @@ abstract class IpAddress extends Address
 
     public function inRange(Address $other = null): bool
     {
-        if ($other) {
+        if ($other && get_class($other) === get_class($this)) {
             return $this->getIp()->inRange($other->getIp(), (int)$other->getCustomAddressMask());
         }
         return false;
