@@ -23,9 +23,13 @@ use Doctrine\ORM\Query;
  */
 class NetworkElementRepository extends EntityRepository
 {
-    public function findOneByAddress(array $params): ?NetworkElement
+    public function findOneByStringAddress($params): ?NetworkElement
     {
+        return $this->findOneByAddress(['address' => $params]);
+    }
 
+    public function findOneByAddress($params): ?NetworkElement
+    {
         $address = explode('/', $params['address']);
         switch (NetworkElement::guessType($address[0])) {
             case FILTER_FLAG_IPV4:
