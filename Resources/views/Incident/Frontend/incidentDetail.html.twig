@@ -122,6 +122,17 @@
                                 {{ object.updatedAt |date('Y-m-d H:i') }}
                             </td>
                         </tr>
+                        {% if object.getChangeStateHistory %}
+                            <tr>
+                                <td class="">
+                                    {{ 'Status Change history'|trans}}
+                                </td>
+                                <td class="">
+                                    {% include "CertUnlpNgenBundle:Incident:Frontend/historyChangeLabel.html.twig" with {'incident': object} %}
+                                </td>
+                            </tr>
+                        {% endif %}
+
                         <tr>
                             <td class="">
                                 {{  'RT/Rt' |trans}}

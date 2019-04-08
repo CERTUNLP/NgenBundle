@@ -557,7 +557,7 @@ class Incident implements IncidentInterface
     public function getOpenDays(bool $lastTimeDetected = false): int
     {
         if ($lastTimeDetected) {
-            $date = $this->getUpdatedAt() ?: $this->getDate();
+            $date = $this->getOpenedAt()?: $this->getDate();
         } else {
             $date = $this->getDate();
         }
@@ -644,7 +644,7 @@ class Incident implements IncidentInterface
     /**
      * @return Collection
      */
-    public function getChangeStateHistory(): Collection
+    public function getChangeStateHistory()
     {
         return $this->changeStateHistory;
     }

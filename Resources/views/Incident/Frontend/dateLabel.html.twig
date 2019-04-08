@@ -16,11 +16,9 @@
 {% endif %}
 
 {% for lastTimeDetected in incident.lastTimeDetected %}
+    {% if lastTimeDetected %}
+        <span class="label label-{{ trclass }}">{{ lastTimeDetected.CountDaysFromDetection ~" days" }}</span>
 
-<span class="label label-{{ trclass }}">{{ incident.openDays(true)~" days" }}</span>
-{% if lastTimeDetected %}
-<span class="label label-warning">ltd {{ lastTimeDetected.dateDetected | date('Y-m-d H:i') }}-{{ lastTimeDetected.feed  }}</span>
-{%  else %}
 <span class="label label-warning">ltd {{ lastTimeDetected.dateDetected | date('Y-m-d H:i') }}-{{ lastTimeDetected.feed  }}</span>
 {% endif %}
 {% endfor %}
