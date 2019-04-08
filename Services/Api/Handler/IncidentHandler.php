@@ -77,7 +77,7 @@ class IncidentHandler extends Handler
      */
     public function changeState(Incident $incident, $state)
     {
-        $incident->setState($state);
+        $incident->setState($state,$this->getReporter());
         return $this->patch($incident, []);
     }
 
@@ -89,7 +89,7 @@ class IncidentHandler extends Handler
         foreach ($incidents as $incident) {
             if ($incident->getOpenDays(true) >= $days) {
                 $incident->setState($state);
-                $this->om->persist($incident);
+                $this->om->persist($incident,$this->getReporter());
                 $closedIncidents[$incident->getId()] = ['ip' => $incident->getAddress(),
                     'type' => $incident->getType(),
                     'date' => $incident->getUpdatedAt(),
@@ -149,7 +149,7 @@ class IncidentHandler extends Handler
     protected function processForm($incident, $parameters, $method = "PUT", $csrf_protection = true)
     {
         if (!isset($parameters['reporter']) || !$parameters['reporter']) {
-            $parameters['reporter'] = $this->getReporter();
+            $parameters['reporter'] = $this->getReporter()->getId();
         }
 
 
@@ -158,7 +158,7 @@ class IncidentHandler extends Handler
 
     protected function getReporter()
     {
-        return (string)$this->getUser()->getId();
+        return $this->getUser();
     }
 
     public function getUser()

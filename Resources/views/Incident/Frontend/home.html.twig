@@ -31,11 +31,15 @@
             <tr role="row">
                 <th>{{ knp_pagination_sortable(objects, 'Status'| trans, 'state.name')  }}</th>
                 <th>{{ knp_pagination_sortable(objects, 'Address'| trans , 'origin.ip')}}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Assigned'| trans , 'assigned.username')}}</th>
                 <th>{{ knp_pagination_sortable(objects, 'Type'| trans, 'type.name')}}</th>
                 <th>{{ knp_pagination_sortable(objects, 'Feed'| trans, 'feed.name')}}</th>
                 <th>{{ knp_pagination_sortable(objects, 'Date'| trans, 'date')}}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Priority'| trans, 'priority')}}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Response Time'| trans, 'responsetime')}}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Resolution Time'| trans, 'resolvetime')}}</th>
+                <th>{{ knp_pagination_sortable(objects, 'LTD'| trans, 'tld.slug') }}</th>
                 <th>{{ knp_pagination_sortable(objects, 'TLP'| trans, 'tlp.slug')}}</th>
-                <th>{{ knp_pagination_sortable(objects, 'TLU'| trans, 'tlp.slug') }}</th>
                 <th>Action</th>
             </tr>
             <tbody>
@@ -55,8 +59,8 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-                <strong>{{ icon('arrow-circle-down fa-fw') }} {{ "Mine Incidents" | trans }} </strong>
-            <strong>({{ mine_objects.getPaginationData.lastItemNumber~"/"~mine_objects.getTotalItemCount }})</strong>
+                <strong>{{ icon('arrow-circle-down fa-fw') }} {{ "My Incidents" | trans }} </strong>
+            <strong>({{ my_objects.getPaginationData.lastItemNumber~"/"~my_objects.getTotalItemCount }})</strong>
             <div class="pull-right">
                 <div class="btn-group">
 
@@ -67,15 +71,19 @@
             <tr role="row">
                 <th>{{ knp_pagination_sortable(objects, 'Status'| trans, 'state.name')  }}</th>
                 <th>{{ knp_pagination_sortable(objects, 'Address'| trans , 'origin.ip')}}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Assigned'| trans , 'assigned.username')}}</th>
                 <th>{{ knp_pagination_sortable(objects, 'Type'| trans, 'type.name')}}</th>
                 <th>{{ knp_pagination_sortable(objects, 'Feed'| trans, 'feed.name')}}</th>
                 <th>{{ knp_pagination_sortable(objects, 'Date'| trans, 'date')}}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Priority'| trans, 'priority')}}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Response Time'| trans, 'responsetime')}}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Resolution Time'| trans, 'resolvetime')}}</th>
+                <th>{{ knp_pagination_sortable(objects, 'LTD'| trans, 'tld.slug') }}</th>
                 <th>{{ knp_pagination_sortable(objects, 'TLP'| trans, 'tlp.slug')}}</th>
-                <th>{{ knp_pagination_sortable(objects, 'TLU'| trans, 'tlp.slug') }}</th>
                 <th>Action</th>
             </tr>
             <tbody>
-            {% for incident in mine_objects %}
+            {% for incident in my_objects %}
                 {% block list_body %}
                     {% include 'CertUnlpNgenBundle:Incident:Frontend/list/incidentListRow.html.twig' with {'incident': incident} %}
                 {% endblock %}
@@ -86,7 +94,7 @@
         </table>
     </div>
     <div class="pagination-centered">
-        {{ knp_pagination_render(mine_objects, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}
+        {{ knp_pagination_render(my_objects, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}
     </div>
 
     <div class="panel panel-default">
@@ -108,8 +116,9 @@
             <th>{{ knp_pagination_sortable(objects, 'Feed'| trans, 'feed.name')}}</th>
             <th>{{ knp_pagination_sortable(objects, 'Date'| trans, 'date')}}</th>
             <th>{{ knp_pagination_sortable(objects, 'Priority'| trans, 'priority')}}</th>
-            <th>{{ knp_pagination_sortable(objects, 'RT/Rt'| trans, 'tlp.slug')}}</th>
-            <th>{{ knp_pagination_sortable(objects, 'LTD'| trans, 'tlp.slug') }}</th>
+            <th>{{ knp_pagination_sortable(objects, 'Response Time'| trans, 'responsetime')}}</th>
+            <th>{{ knp_pagination_sortable(objects, 'Resolution Time'| trans, 'resolvetime')}}</th>
+            <th>{{ knp_pagination_sortable(objects, 'LTD'| trans, 'tld.slug') }}</th>
             <th>{{ knp_pagination_sortable(objects, 'TLP'| trans, 'tlp.slug')}}</th>
             <th>Action</th>
         </tr>

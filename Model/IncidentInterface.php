@@ -61,9 +61,10 @@ interface IncidentInterface
      * Set IncidentDecision
      *
      * @param $state
+     * @param $responsable
      * @return Incident
      */
-    public function setState(IncidentState $state): Incident;
+    public function setState(IncidentState $state, User $responsable): Incident;
 
     /**
      * Get $state

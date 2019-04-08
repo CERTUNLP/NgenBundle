@@ -41,13 +41,6 @@ class IncidentUrgency
      */
     private $description;
 
-    /**
-     * @var Collection|null
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="urgency"))
-     * @JMS\Exclude()
-     */
-
-    private $incidents;
 
     /**
      * @var Collection

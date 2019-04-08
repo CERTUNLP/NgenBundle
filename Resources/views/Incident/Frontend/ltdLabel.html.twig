@@ -8,8 +8,7 @@
 #}
 
 {% if not incident.lastTimeDetected is empty%}
-    <span class="label label-warning">{{ 'FIRST'| trans }} {{ incident.date | date('Y-m-d H:i') }} </span>
-    {% for lastTimeDetected in incident.lastTimeDetected %}
-    <span class="label label-warning">{{ 'td'|trans }} {{ lastTimeDetected.dateDetected | date('Y-m-d H:i') }}-{{ lastTimeDetected.feed  }}</span>
-    {% endfor %}
+        <span class="label label-warning"> {{  'Detected '|trans}}{{ incident.lastTimeDetected|length }}{{ ' times'|trans}}</span>
+        <span class="label label-warning"> {{  'LAST: '|trans}}{{ incident.lastTimeDetected|last }}</span>
+
 {% endif %}

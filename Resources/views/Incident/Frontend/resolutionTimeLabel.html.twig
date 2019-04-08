@@ -1,0 +1,26 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+
+{%  set atrasado= incident.priority.resolutiontime-incident.resolutionMinutes %}
+ {% if not incident.isNew %}
+ {% if not incident.isClosed %}
+     {%   if atrasado > 0 %}
+         <span class="label label-success" > {{ 'Waiting for resolution, '|trans}} {{ atrasado }}{{ ' minutes left'|trans }}</span>
+    {%  else %}
+        <span class="label label-danger" > {{ 'Resolution delayed for '|trans}}{{ atrasado * -1 }}{{ ' minutes'|trans }}</span>
+     {% endif %}
+ {% else %}
+     {%   if atrasado > 0 %}
+         <span class="label label-success" > {{ 'Resolved on time '|trans}} {{ atrasado}}{{ ' minutes left'|trans }}</span>
+     {% else %}
+         <span class="label label-danger" > {{ 'Reolved delayed for '|trans}}{{ atrasado * -1 }}{{ ' minutes'|trans }}</span>
+    {% endif %}
+
+ {% endif %}
+ {% endif %}

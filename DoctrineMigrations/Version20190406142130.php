@@ -34,6 +34,7 @@ class Version20190406142130 extends AbstractMigration
         $this->addSql("UPDATE `incident_state` SET `incident_state_action`='new' WHERE `slug`='undefined'");
         $this->addSql("UPDATE incident_state` SET `incident_state_action`='close' WHERE `slug`='unresolved'");
         $this->addSql('ALTER TABLE incident_state ADD incident_state_action VARCHAR(45) DEFAULT NULL, DROP is_opening, DROP is_closing');
+        $this->addSql("ALTER TABLE incident_state modify incident_state_action varchar(45) collate UTF8_unicode_ci");
         $this->addSql('ALTER TABLE incident_state ADD CONSTRAINT FK_F8A77091B8037C6C FOREIGN KEY (incident_state_action) REFERENCES incident_state_action (slug)');
         $this->addSql('CREATE INDEX IDX_F8A77091B8037C6C ON incident_state (incident_state_action)');
         $this->addSql('ALTER TABLE acl_classes CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');

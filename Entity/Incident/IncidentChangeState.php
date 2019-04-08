@@ -2,13 +2,14 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\User;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * IncidentLastTimeDetected
+ * IncidentChangeState
  *
  * @ORM\Table(name="incident_change_state")
  * @ORM\Entity
@@ -33,13 +34,14 @@ class IncidentChangeState
         $this->setOldState($oldState);
         $this->setNewState($newState);
         $this->setDate(new DateTime('now'));
-        $this->setMethodUsed($method);
+        $this->setMethod($method);
         $this->setResponsable($responsable);
+        $this->setActionApplied($newState->getIncidentAction());
     }
 
     /**
      * @var Incident
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="chageStatesHistory")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="changeStateHistory")
      *
      * */
     protected $incident;
@@ -120,7 +122,7 @@ class IncidentChangeState
     /**
      * @var IncidentState
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
-     * @ORM\JoinColumn(name="state", referencedColumnName="slug")
+     * @ORM\JoinColumn(name="newState", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
@@ -128,17 +130,42 @@ class IncidentChangeState
     /**
      * @var IncidentState
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
-     * @ORM\JoinColumn(name="state", referencedColumnName="slug")
+     * @ORM\JoinColumn(name="oldState", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     protected $oldState;
 
     /**
+     * @var IncidentStateAction
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateAction")
+     * @ORM\JoinColumn(name="action_applied", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    protected $actionApplied;
+
+    /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
      */
     protected $responsable;
+
+    /**
+     * @return IncidentStateAction
+     */
+    public function getActionApplied(): IncidentStateAction
+    {
+        return $this->actionApplied;
+    }
+
+    /**
+     * @param IncidentStateAction $actionApplied
+     */
+    public function setActionApplied(IncidentStateAction $actionApplied): void
+    {
+        $this->actionApplied = $actionApplied;
+    }
 
     /**
      * @var string
@@ -148,4 +175,36 @@ class IncidentChangeState
      * @JMS\Groups({"api_input"})
      */
     protected $method;
+
+    /**
+     * @return User
+     */
+    public function getResponsable(): User
+    {
+        return $this->responsable;
+    }
+
+    /**
+     * @param User $responsable
+     */
+    public function setResponsable(User $responsable): void
+    {
+        $this->responsable = $responsable;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethod(): string
+    {
+        return $this->method;
+    }
+
+    /**
+     * @param string $method
+     */
+    public function setMethod(string $method): void
+    {
+        $this->method = $method;
+    }
 }
