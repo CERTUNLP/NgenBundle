@@ -90,8 +90,9 @@ class IncidentFrontendController extends Controller
      * @return array
      */
     public function searchIncidentAction(Request $request)
+
     {
-        return $this->getFrontendController()->searchEntity($request);
+        return $this->getFrontendController()->homeEntity($request);
     }
 
     /**
