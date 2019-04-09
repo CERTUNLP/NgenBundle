@@ -42,6 +42,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Expose
      */
     protected $id;
 
@@ -51,7 +52,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
      * @ORM\Column(type="string", length=40, nullable=true)
      * @Assert\Range(
      *      min = 1,
-     *      max = 32,
+     *      max = 128,
      * )
      * @JMS\Expose
      */

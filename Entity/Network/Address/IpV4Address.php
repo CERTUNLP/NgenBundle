@@ -25,10 +25,6 @@ class IpV4Address extends IpAddress
         return ip2long($this->getCustomAddress());
     }
 
-    public function getCustomAddress(): string
-    {
-        return $this->getNetwork()->getIp();
-    }
 
     public function getCustomNumericAddressMask(): string
     {

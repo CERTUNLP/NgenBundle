@@ -56,7 +56,7 @@ abstract class IpAddress extends Address
     {
         $ip_and_mask = explode('/', $address);
         $this->setIp(IP::factory($ip_and_mask[0]));
-        $this->getNetwork()->setIp($ip_and_mask[0]);
+        $this->getNetwork()->setIp($this->getCustomAddress());
         if (isset($ip_and_mask[1])) {
             $this->setCustomAddressMask($ip_and_mask[1]);
         } else {
@@ -66,6 +66,29 @@ abstract class IpAddress extends Address
         $this->setCustomStartAddress();
         $this->setCustomEndAddress();
         return $this->getNetwork();
+    }
+
+    public function getCustomAddress(): string
+    {
+        return $this->getIp()->getProtocolAppropriateAddress();
+    }
+
+    /**
+     * @return IP
+     */
+    public function getIp(): IP
+    {
+        return $this->ip;
+    }
+
+    /**
+     * @param IP $ip
+     * @return IpAddress
+     */
+    public function setIp(IP $ip): IpAddress
+    {
+        $this->ip = $ip;
+        return $this;
     }
 
     public function setCustomAddressMask(string $mask): NetworkElement
@@ -90,24 +113,6 @@ abstract class IpAddress extends Address
         if (is_callable([$this->getNetwork(), 'setStartAddress'])) {
             $this->getNetwork()->setStartAddress($this->getIp()->getNetworkIp((int)$this->getCustomAddressMask())->getProtocolAppropriateAddress());
         }
-        return $this;
-    }
-
-    /**
-     * @return IP
-     */
-    public function getIp(): IP
-    {
-        return $this->ip;
-    }
-
-    /**
-     * @param IP $ip
-     * @return IpAddress
-     */
-    public function setIp(IP $ip): IpAddress
-    {
-        $this->ip = $ip;
         return $this;
     }
 
@@ -141,10 +146,5 @@ abstract class IpAddress extends Address
         }
         return false;
 
-    }
-
-    public function getCustomAddress(): string
-    {
-        return $this->getIp()->getProtocolAppropriateAddress();
     }
 }
