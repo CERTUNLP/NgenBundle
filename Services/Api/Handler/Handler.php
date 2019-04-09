@@ -99,7 +99,9 @@ abstract class Handler implements ApiHandlerInterface
 
         $form = $this->formFactory->create(new $this->entityType($this->om), $entity_class_instance, array('csrf_protection' => $csrf_protection, 'method' => $method));
         $form->submit($parameters, 'PATCH' !== $method);
+
         if ($form->isValid()) {
+
             $entity_class_instance = $form->getData();
 
             $entity_class_instance = $this->checkIfExists($entity_class_instance, $method);
@@ -107,12 +109,6 @@ abstract class Handler implements ApiHandlerInterface
 
             $this->om->persist($entity_class_instance);
             $this->om->flush();
-            //}
-            //catch(\Swift_TransportException $e) {
-            //  var_dump($e);
-            // die;
-            //  throw new InvalidFormException($e->getMessage(), $form);
-            //}
 
             return $entity_class_instance;
         }

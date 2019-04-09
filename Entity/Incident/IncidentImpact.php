@@ -41,12 +41,6 @@ class IncidentImpact
      */
     private $description;
 
-    /**
-     * @var Collection|null
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="impact"))
-     */
-    private $incidents;
-
 
     /**
      * @var Collection

@@ -104,7 +104,7 @@ class IncidentType extends AbstractType
                 'attr' => array('help_text' => 'If none is selected, the state will be \'open\'.'),
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
+                 return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
             ->add('tlp', EntityType::class, array(
@@ -139,7 +139,7 @@ class IncidentType extends AbstractType
             ))
             ->add('urgency', EntityType::class, array(
                 'class' => IncidentUrgency::class,
-                'empty_value' => 'Choose a responsable',
+                'empty_value' => 'Choose an Urgency',
                 'attr' => array('help_text' => 'If none is selected, the assigned urgency will be Low'),
                 'description' => 'If none is selected, the assigned urgency will be Low',
             ))

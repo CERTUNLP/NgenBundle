@@ -51,7 +51,7 @@ class FrontendController
         return $this->searchEntity($request, $term, $limit,$defaultSortFieldName,$defaultSortDirection);
     }
 
-    public function searchEntity(Request $request, $term = null, $limit = 7, $defaultSortFieldName='createdAt',$defaultSortDirection='desc',$page='page')
+    public function searchEntity(Request $request, $term = null, $limit = 7, $defaultSortFieldName='createdAt',$defaultSortDirection='desc',$page='page',$field='')
     {
         if (!$term) {
             $term = $request->get('term') ? $request->get('term') : '*';
@@ -60,7 +60,7 @@ class FrontendController
 
         $pagination = $this->getPaginator()->paginate(
             $results, $request->query->get($page, 1), $limit
-            , array('defaultSortFieldName' => $defaultSortFieldName, 'defaultSortDirection' => $defaultSortDirection)
+            , array('pageParameterName'=> 'page'.$field,'sortFieldParameterName'=> 'sort'.$field,'sortDirectionParameterName'=> 'direction'.$field,'defaultSortFieldName' => $defaultSortFieldName, 'defaultSortDirection' => $defaultSortDirection)
         );
 
         $pagination->setParam('term', $term);

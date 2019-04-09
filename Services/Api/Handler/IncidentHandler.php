@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentLastTimeDetected;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -76,7 +77,7 @@ class IncidentHandler extends Handler
      */
     public function changeState(Incident $incident, $state)
     {
-        $incident->setState($state);
+        $incident->setState($state,$this->getReporter());
         return $this->patch($incident, []);
     }
 
@@ -88,11 +89,11 @@ class IncidentHandler extends Handler
         foreach ($incidents as $incident) {
             if ($incident->getOpenDays(true) >= $days) {
                 $incident->setState($state);
-                $this->om->persist($incident);
+                $this->om->persist($incident,$this->getReporter());
                 $closedIncidents[$incident->getId()] = ['ip' => $incident->getAddress(),
                     'type' => $incident->getType(),
-                    'date' => getDate(),
-                    'lastTimeDetected' => $incident->getLastTimeDetected(),
+                    'date' => $incident->getUpdatedAt(),
+                    'lastTimeDetected' => $incident->getU(),
                     'openDays' => $incident->getOpenDays(true)];
             }
         }
@@ -122,8 +123,9 @@ class IncidentHandler extends Handler
             if ($incident->getEvidenceFile()) {
                 $incidentDB->setEvidenceFile($incident->getEvidenceFile());
             }
+            $incidentDB->addLastTimeDetected($incident->getFeed());
             $incident = $incidentDB;
-            $incident->setLastTimeDetected(new \DateTime('now'));
+
         }
         return $incident;
     }
@@ -147,7 +149,7 @@ class IncidentHandler extends Handler
     protected function processForm($incident, $parameters, $method = "PUT", $csrf_protection = true)
     {
         if (!isset($parameters['reporter']) || !$parameters['reporter']) {
-            $parameters['reporter'] = $this->getReporter();
+            $parameters['reporter'] = $this->getReporter()->getId();
         }
 
 
@@ -156,7 +158,7 @@ class IncidentHandler extends Handler
 
     protected function getReporter()
     {
-        return (string)$this->getUser()->getId();
+        return $this->getUser();
     }
 
     public function getUser()
@@ -207,4 +209,5 @@ class IncidentHandler extends Handler
         $this->host_handler = $host_handler;
         return $this;
     }
+
 }

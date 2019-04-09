@@ -131,6 +131,16 @@ class Incident implements IncidentInterface
      * @JMS\Groups({"api"})
      */
     protected $lastTimeDetected;
+
+    /**
+     * @var Collection
+     * @JMS\Expose
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentChangeState",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
+     * @JMS\Groups({"api"})
+     */
+    protected $changeStateHistory;
+
+
     /**
      * @var DateTime
      *
@@ -185,6 +195,28 @@ class Incident implements IncidentInterface
      * @JMS\Type("boolean")
      */
     protected $isNew = true;
+
+    /**
+     * @var boolean
+     *
+     */
+    protected $needToCommunicate = false;
+
+    /**
+     * @return bool
+     */
+    public function isNeedToCommunicate(): bool
+    {
+        return $this->needToCommunicate;
+    }
+
+    /**
+     * @param bool $needToCommunicate
+     */
+    public function setNeedToCommunicate(bool $needToCommunicate): void
+    {
+        $this->needToCommunicate = $needToCommunicate;
+    }
 
 
     /**
@@ -244,11 +276,6 @@ class Incident implements IncidentInterface
      */
     private $network;
     private $address;
-    /**
-     * @var IncidentState|null
-     *
-     */
-    private $previous_state;
 
     /**
      * Incident constructor.
@@ -260,6 +287,7 @@ class Incident implements IncidentInterface
             $this->setAddress($term);
         }
         $this->lastTimeDetected=new ArrayCollection();
+        $this->changeStateHistory=new ArrayCollection();
     }
 
     /**
@@ -522,16 +550,22 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @param bool $lastTimeDetected
+     * @param bool $lastTimeUpdated
      * @return int
      * @throws Exception
      */
-    public function getOpenMinutes(bool $lastTimeDetected = false): int
+    public function getOpenDays(bool $lastTimeDetected = false): int
     {
-        if ($this->isOpen()){
-            return $this->getOpenedAt()->diff(new DateTime())->i; //lo devuelvo en minutos eso es el i
+        if ($lastTimeDetected) {
+            $date = $this->getOpenedAt()?: $this->getDate();
+        } else {
+            $date = $this->getDate();
         }
-        else{ return 0;}
+
+        if ($date) {
+            return $date->diff(new DateTime())->days;
+        }
+        return null;
     }
 
     /**
@@ -591,14 +625,49 @@ class Incident implements IncidentInterface
     }
 
     /**
+     * @param Collection $lastTimeDetectedCollection
+     */
+    public function setLastTimeDetected(Collection $lastTimeDetectedCollection): void
+    {
+        $this->lastTimeDetected = $lastTimeDetectedCollection;
+    }
+
+    /**
      * @param IncidentLastTimeDetected $lastTimeDetected
      * @return Incident
      */
-    public function setLastTimeDetected(DateTime $lastTimeDetected): Incident
+    public function addLastTimeDetected(IncidentFeed $feed): Incident
     {
-        $this->lastTimeDetected[] = $lastTimeDetected;
+        $this->lastTimeDetected[] = new IncidentLastTimeDetected($this,$feed);
         return $this;
     }
+    /**
+     * @return Collection
+     */
+    public function getChangeStateHistory()
+    {
+        return $this->changeStateHistory;
+    }
+
+    /**
+     * @param Collection $changeStateHistory
+     */
+    public function setChangeStateHistory(Collection $changeStateHistory): void
+    {
+        $this->changeStateHistory = $changeStateHistory;
+    }
+
+
+    /**
+     * @param IncidentChangeState $changeState
+     * @return Incident
+     */
+    public function addChangeStateHistory(IncidentChangeState $changeState): Incident
+    {
+        $this->changeStateHistory[] = $changeState;
+        return $this;
+    }
+
 
     /**
      * @return DateTime
@@ -684,19 +753,24 @@ class Incident implements IncidentInterface
     /**
      * Set state
      * @param IncidentState $state
+     * @param User $reporter
      * @return Incident
      */
-    public function setState(IncidentState $state = null): Incident
+    public function setState(IncidentState $state = null,User $reporter): Incident
     {
+        ////FIX hay que trabajar el flujo del estado del incidente DAMIAN HELP
 
-        if ($state && !in_array($state->getSlug(), ['open', 'staging'])) {
-            $this->close();
-        } else {
+        if ($state->isOpening() and $this->isNew()){
             $this->open();
         }
-        $this->setPreviousState($this->getState());
-        $this->state = $state;
-
+        if ($state->isReOpening() and $this->isClosed()){
+            $this->reOpen();
+        }
+        if ($state->isClosing()){
+            $this->close();
+        }
+        $this->addChangeStateHistory(new IncidentChangeState($this,$this->getState(),$state,$reporter));
+        $this->state=$state;
         return $this;
     }
 
@@ -797,42 +871,9 @@ class Incident implements IncidentInterface
      */
     public function open(): Incident
     {
-        return $this->setIsClosed(false);
-    }
-
-    /**
-     * Set state
-     * @return bool
-     */
-    public function formStagingToOpen(): bool
-    {
-        return $this->wasStaging() && $this->isOpen();
-    }
-
-    /**
-     * @return bool
-     */
-    public function wasStaging(): bool
-    {
-        return $this->getPreviousState() ? $this->getPreviousState()->getSlug() === 'staging' : false;
-    }
-
-    /**
-     * @return IncidentState|null
-     */
-    public function getPreviousState(): ?IncidentState
-    {
-        return $this->previous_state;
-    }
-
-    /**
-     * @param IncidentState|null $previous_state
-     * @return Incident
-     */
-    public function setPreviousState(?IncidentState $previous_state): Incident
-    {
-        $this->previous_state = $previous_state;
-        return $this;
+        $this->setNeedToCommunicate(true);
+        $this->setOpenedAt(new DateTime('now'));
+        return $this->setIsNew(false);
     }
 
     /**
@@ -843,6 +884,14 @@ class Incident implements IncidentInterface
         return $this->getState()->getSlug() === 'open';
     }
 
+    /**
+     * @return Incident
+     */
+    public function reOpen(): Incident
+    {
+        $this->setNeedToCommunicate(true);
+        return $this->setIsClosed(false);
+    }
     /**
      * @return array
      */
@@ -1119,10 +1168,11 @@ class Incident implements IncidentInterface
     /**
      * @param bool $isNew
      */
-    public function setIsNew($isNew=true): bool
+    public function setIsNew($isNew=true): Incident
     {
         $this->isNew = $isNew;
         $this->setOpenedAt(new DateTime());
+        return $this;
     }
 
     /**

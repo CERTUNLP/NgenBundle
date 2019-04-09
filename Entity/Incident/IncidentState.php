@@ -26,20 +26,12 @@ use JMS\Serializer\Annotation as JMS;
  */
 class IncidentState
 {
-//    /**
-//     * @var integer
-//     *
-//     * @ORM\Column(name="id", type="integer")
-//     * @ORM\Id
-//     * @ORM\GeneratedValue(strategy="AUTO")
-//     */
-//    private $id;
-
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100)
      * @JMS\Expose
+     * @JMS\Groups({"api_input"})
      */
     private $name;
 
@@ -49,6 +41,7 @@ class IncidentState
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
      * @JMS\Expose
+     * @JMS\Groups({"api_input"})
      * */
     private $slug;
 
@@ -108,8 +101,60 @@ class IncidentState
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
+
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state")) */
+
     private $incidents;
+
+    /**
+     * @var IncidentStateAction
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateAction", inversedBy="incident_state")
+     * @ORM\JoinColumn(name="incident_state_action", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    protected $incident_action;
+
+    /**
+     * @return IncidentStateAction
+     */
+    public function getIncidentAction(): IncidentStateAction
+    {
+        return $this->incident_action;
+    }
+
+    /**
+     * @param IncidentStateAction $incident_action
+     */
+    public function setIncidentAction(IncidentStateAction $incident_action): void
+    {
+        $this->incident_action = $incident_action;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOpening(): bool
+    {
+        return $this->getIncidentAction()->isOpen();
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isClosing(): bool
+    {
+       return $this->getIncidentAction()->isClose();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReOpening(): bool
+    {
+        return $this->getIncidentAction()->isReOpen();
+    }
 
     /**
      * Constructor
