@@ -22,10 +22,6 @@ class Version20190405014436 extends AbstractMigration
         $this->addSql('ALTER TABLE incident_last_time_detected ADD feed VARCHAR(100) DEFAULT NULL');
         $this->addSql('ALTER TABLE incident_last_time_detected ADD CONSTRAINT FK_B0FEF4C7234044AB FOREIGN KEY (feed) REFERENCES incident_feed (slug)');
         $this->addSql('CREATE INDEX IDX_B0FEF4C7234044AB ON incident_last_time_detected (feed)');
-        $this->addSql('ALTER TABLE acl_classes CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_security_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_object_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_entries CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
     }
 
     /**
@@ -36,10 +32,6 @@ class Version20190405014436 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE acl_classes CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_entries CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_object_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_security_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
         $this->addSql('ALTER TABLE incident DROP opened_at');
         $this->addSql('ALTER TABLE incident_last_time_detected DROP FOREIGN KEY FK_B0FEF4C7234044AB');
         $this->addSql('DROP INDEX IDX_B0FEF4C7234044AB ON incident_last_time_detected');
