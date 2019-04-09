@@ -16,6 +16,10 @@
     <td>
         {{ incident.address }}
     </td>
+
+    <td>
+        {{ incident.assigned }}
+    </td>
     <td>
         {{ incident.type }}
     </td>
@@ -23,8 +27,20 @@
         {{ incident.feed }}
     </td>
     <td>
-        {% include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incident': incident,'lastTimeDetected':incident.lastTimeDetected} %}
+        {{ incident.date|date('Y-m-d H:i') }}
     </td>
+
+    <td>
+        {{ incident.priority }}
+    </td>
+    <td>
+        {% include "CertUnlpNgenBundle:Incident:Frontend/rtrtLabel.html.twig" with {'incident': incident,'lastTimeDetected':incident.lastTimeDetected} %}
+    </td>
+
+    <td>
+        {% include "CertUnlpNgenBundle:Incident:Frontend/ltdLabel.html.twig" with {'incident': incident,'lastTimeDetected':incident.lastTimeDetected} %}
+    </td>
+
     <td>
         <span class=" left label tlp-{{ incident.tlp | lower }}" id="tlp">TLP: {{incident.tlp}}</span>
 
