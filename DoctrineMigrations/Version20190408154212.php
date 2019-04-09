@@ -27,10 +27,6 @@ class Version20190408154212 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_CCFC5A1DCB9A3939 ON incident_change_state (newState)');
         $this->addSql('CREATE INDEX IDX_CCFC5A1D17EA0C41 ON incident_change_state (oldState)');
         $this->addSql('CREATE INDEX IDX_CCFC5A1DFC5C7F77 ON incident_change_state (action_applied)');
-        $this->addSql('ALTER TABLE acl_classes CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_security_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_object_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_entries CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
     }
 
     /**
@@ -41,10 +37,6 @@ class Version20190408154212 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE acl_classes CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_entries CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_object_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_security_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
         $this->addSql('ALTER TABLE incident_change_state DROP FOREIGN KEY FK_CCFC5A1DCB9A3939');
         $this->addSql('ALTER TABLE incident_change_state DROP FOREIGN KEY FK_CCFC5A1D17EA0C41');
         $this->addSql('ALTER TABLE incident_change_state DROP FOREIGN KEY FK_CCFC5A1DFC5C7F77');

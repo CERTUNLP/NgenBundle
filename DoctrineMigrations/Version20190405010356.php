@@ -20,7 +20,6 @@ class Version20190405010356 extends AbstractMigration
 
         $this->addSql('CREATE TABLE incident_last_time_detected (id INT AUTO_INCREMENT NOT NULL, incident_id INT DEFAULT NULL, date_detected DATETIME DEFAULT NULL, UNIQUE INDEX UNIQ_B0FEF4C759E53FB9 (incident_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE incident_last_time_detected ADD CONSTRAINT FK_B0FEF4C759E53FB9 FOREIGN KEY (incident_id) REFERENCES incident (id)');
-        $this->addSql('DROP TABLE incident_decision_google');
         $this->addSql('ALTER TABLE incident DROP FOREIGN KEY FK_3D03A11A234044AB');
         $this->addSql('ALTER TABLE incident DROP FOREIGN KEY FK_3D03A11A34128B91');
         $this->addSql('ALTER TABLE incident DROP FOREIGN KEY FK_3D03A11A56A273CC');
@@ -46,10 +45,6 @@ class Version20190405010356 extends AbstractMigration
         $this->addSql('ALTER TABLE incident_comment ADD CONSTRAINT FK_33BE48B1E2904019 FOREIGN KEY (thread_id) REFERENCES incident_comment_thread (id)');
         $this->addSql('ALTER TABLE incident_comment_thread DROP FOREIGN KEY FK_E073862F59E53FB9');
         $this->addSql('ALTER TABLE incident_comment_thread ADD CONSTRAINT FK_E073862F59E53FB9 FOREIGN KEY (incident_id) REFERENCES incident (id)');
-        $this->addSql('ALTER TABLE acl_classes CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_security_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_object_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_entries CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
     }
 
     /**
@@ -62,10 +57,6 @@ class Version20190405010356 extends AbstractMigration
 
         $this->addSql('CREATE TABLE incident_decision_google (id INT DEFAULT NULL, type TEXT DEFAULT NULL COLLATE latin1_swedish_ci, feed TEXT DEFAULT NULL COLLATE latin1_swedish_ci, impact TEXT DEFAULT NULL COLLATE latin1_swedish_ci, urgency TEXT DEFAULT NULL COLLATE latin1_swedish_ci, tlp TEXT DEFAULT NULL COLLATE latin1_swedish_ci, state TEXT DEFAULT NULL COLLATE latin1_swedish_ci, network TEXT DEFAULT NULL COLLATE latin1_swedish_ci, created_at TEXT DEFAULT NULL COLLATE latin1_swedish_ci, updated_at TEXT DEFAULT NULL COLLATE latin1_swedish_ci, auto_saved INT DEFAULT NULL, is_active INT DEFAULT NULL, slug TEXT DEFAULT NULL COLLATE latin1_swedish_ci) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB COMMENT = \'\' ');
         $this->addSql('DROP TABLE incident_last_time_detected');
-        $this->addSql('ALTER TABLE acl_classes CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_entries CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_object_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_security_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
         $this->addSql('ALTER TABLE incident DROP FOREIGN KEY FK_3D03A11AE1CFE6F5');
         $this->addSql('ALTER TABLE incident DROP FOREIGN KEY FK_3D03A11AE1501A05');
         $this->addSql('ALTER TABLE incident DROP FOREIGN KEY FK_3D03A11A8CDE5729');
