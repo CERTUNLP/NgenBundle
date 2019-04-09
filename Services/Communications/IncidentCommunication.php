@@ -49,7 +49,7 @@ abstract class IncidentCommunication
 
     public function postUpdateDelegation(Incident $incident)
     {
-        if ($incident->formStagingToOpen()) {
+        if ($incident->isNeedToCommunicate()) {
             $this->comunicate($incident);
         }
     }

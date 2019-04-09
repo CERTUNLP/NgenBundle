@@ -25,9 +25,25 @@ class IncidentLastTimeDetected
      */
     protected $id;
 
+
+
+    public function __construct(Incident $incident,IncidentFeed $feed)
+    {
+        $this->setIncident($incident);
+        $this->setFeed($feed);
+        $this->setDateDetected(new DateTime('now'));
+
+    }
+
+    public function __toString(): string
+    {
+        return $this->getDateDetected()->format("Y-m-d h:i")." - ". $this->getFeed()->getSlug();
+    }
+
       /**
      * @return Incident
      */
+
     public function getIncident()
     {
         return $this->incident;
@@ -57,10 +73,15 @@ class IncidentLastTimeDetected
         $this->dateDetected = $dateDetected;
     }
 
-
+    public function getCountDaysFromDetection()
+    {
+        $dStart = new DateTime('now');
+        $dDiff = $dStart->diff($this->getDateDetected());
+        return $dDiff->days;
+    }
     /**
      * @var Incident
-     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="lastTimeDetected")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="lastTimeDetected")
      *
      * */
     protected $incident;

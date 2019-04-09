@@ -67,7 +67,6 @@ class InternalIncidentListener
 
     public function incidentPrePersistUpdate(Incident $incident, LifecycleEventArgs $event)
     {
-
         $this->hostUpdate($incident);
         $this->networkUpdate($incident);
         $this->decisionUpdate($incident);
@@ -115,7 +114,7 @@ class InternalIncidentListener
         }
     }
 
-    public function decisionUpdate(Incident $incident): Incident
+    public function decisionUpdate(Incident $incident): ?Incident
     {
         return $this->decision_handler->getByIncident($incident);
     }
