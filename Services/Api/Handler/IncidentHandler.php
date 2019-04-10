@@ -92,7 +92,7 @@ class IncidentHandler extends Handler
                 $closedIncidents[$incident->getId()] = ['ip' => $incident->getAddress(),
                     'type' => $incident->getType(),
                     'date' => $incident->getUpdatedAt(),
-                    'lastTimeDetected' => $incident->getU(),
+                    'lastTimeDetected' => $incident->getUpdatedAt(),
                     'openDays' => $incident->getOpenDays(true)];
             }
         }
