@@ -12,7 +12,6 @@
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentLastTimeDetected;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -77,7 +76,7 @@ class IncidentHandler extends Handler
      */
     public function changeState(Incident $incident, $state)
     {
-        $incident->setState($state,$this->getReporter());
+        $incident->setStateAndReporter($state,$this->getReporter());
         return $this->patch($incident, []);
     }
 
