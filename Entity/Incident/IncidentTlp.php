@@ -25,6 +25,14 @@ class IncidentTlp
     private $name;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="code", type="integer", nullable=true)
+     * @JMS\Expose
+     */
+    private $code;
+
+    /**
      * @var string
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
@@ -245,6 +253,22 @@ class IncidentTlp
         $this->slug = $slug;
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCode(): int
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param int $code
+     */
+    public function setCode(int $code): void
+    {
+        $this->code = $code;
     }
 
 }
