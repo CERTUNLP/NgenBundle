@@ -12,6 +12,9 @@
 namespace CertUnlp\NgenBundle\Entity\Network\Address;
 
 use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
+use Darsyn\IP\Exception\InvalidCidrException;
+use Darsyn\IP\Exception\InvalidIpAddressException;
+use Darsyn\IP\Exception\WrongVersionException;
 use Darsyn\IP\Version\Multi as IP;
 use JMS\Serializer\Annotation as JMS;
 
@@ -45,15 +48,15 @@ abstract class IpAddress extends Address
     /**
      * @param string $address
      * @return NetworkElement
-     * @throws \Darsyn\IP\Exception\InvalidCidrException
-     * @throws \Darsyn\IP\Exception\InvalidIpAddressException
-     * @throws \Darsyn\IP\Exception\WrongVersionException
+     * @throws InvalidCidrException
+     * @throws InvalidIpAddressException
+     * @throws WrongVersionException
      */
     public function setCustomAddress(string $address): NetworkElement
     {
         $ip_and_mask = explode('/', $address);
         $this->setIp(IP::factory($ip_and_mask[0]));
-        $this->getNetwork()->setIp($ip_and_mask[0]);
+        $this->getNetwork()->setIp($this->getCustomAddress());
         if (isset($ip_and_mask[1])) {
             $this->setCustomAddressMask($ip_and_mask[1]);
         } else {
@@ -65,29 +68,9 @@ abstract class IpAddress extends Address
         return $this->getNetwork();
     }
 
-    public function setCustomAddressMask(string $mask): NetworkElement
+    public function getCustomAddress(): string
     {
-        if (is_callable([$this->getNetwork(), 'setIpMask'])) {
-            return $this->getNetwork()->setIpMask($mask);
-        }
-        return $this->getNetwork();
-    }
-
-    /**
-     * @return int
-     */
-    abstract public function getDefaultIpMask(): int;
-
-    /**
-     * @return IpAddress
-     * @throws \Darsyn\IP\Exception\InvalidCidrException
-     */
-    public function setCustomStartAddress(): IpAddress
-    {
-        if (is_callable([$this->getNetwork(), 'setStartAddress'])) {
-            $this->getNetwork()->setStartAddress($this->getIp()->getNetworkIp((int)$this->getCustomAddressMask())->getProtocolAppropriateAddress());
-        }
-        return $this;
+        return $this->getIp()->getProtocolAppropriateAddress();
     }
 
     /**
@@ -108,6 +91,31 @@ abstract class IpAddress extends Address
         return $this;
     }
 
+    public function setCustomAddressMask(string $mask): NetworkElement
+    {
+        if (is_callable([$this->getNetwork(), 'setIpMask'])) {
+            return $this->getNetwork()->setIpMask($mask);
+        }
+        return $this->getNetwork();
+    }
+
+    /**
+     * @return int
+     */
+    abstract public function getDefaultIpMask(): int;
+
+    /**
+     * @return IpAddress
+     * @throws InvalidCidrException
+     */
+    public function setCustomStartAddress(): IpAddress
+    {
+        if (is_callable([$this->getNetwork(), 'setStartAddress'])) {
+            $this->getNetwork()->setStartAddress($this->getIp()->getNetworkIp((int)$this->getCustomAddressMask())->getProtocolAppropriateAddress());
+        }
+        return $this;
+    }
+
     /**
      * @return string
      */
@@ -121,7 +129,7 @@ abstract class IpAddress extends Address
 
     /**
      * @return IpAddress
-     * @throws \Darsyn\IP\Exception\InvalidCidrException
+     * @throws InvalidCidrException
      */
     public function setCustomEndAddress(): IpAddress
     {
@@ -133,15 +141,10 @@ abstract class IpAddress extends Address
 
     public function inRange(Address $other = null): bool
     {
-        if ($other) {
+        if ($other && get_class($other) === get_class($this)) {
             return $this->getIp()->inRange($other->getIp(), (int)$other->getCustomAddressMask());
         }
         return false;
 
-    }
-
-    public function getCustomAddress(): string
-    {
-        return $this->getIp()->getProtocolAppropriateAddress();
     }
 }

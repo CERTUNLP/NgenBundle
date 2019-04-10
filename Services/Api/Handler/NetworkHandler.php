@@ -88,18 +88,16 @@ class NetworkHandler extends Handler
      *
      * @return void
      */
-    public
-    function prepareToDeletion($network, array $parameters = null)
+    public function prepareToDeletion($network, array $parameters = null)
     {
         $network->setIsActive(FALSE);
     }
 
-    protected
-    function checkIfExists($network, $method)
+    protected function checkIfExists($network, $method)
     {
-        $networkDB = $this->repository->findOneByAddress(['address' => $network->getAddress(), 'address_mask' => $network->getAddressMask()]);
+        $networkDB = $this->repository->findOneBy(['address' => $network->getAddress(), 'address_mask' => $network->getAddressMask()]);
 
-        if ($networkDB && $method == 'POST') {
+        if ($networkDB && $method === 'POST') {
             if (!$networkDB->getIsActive()) {
                 $networkDB->setIsActive(TRUE);
                 $networkDB->setNetworkAdmin($network->getNetworkAdmin());

@@ -14,6 +14,7 @@ namespace CertUnlp\NgenBundle\Entity\Network;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -41,6 +42,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Expose
      */
     protected $id;
 
@@ -50,7 +52,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
      * @ORM\Column(type="string", length=40, nullable=true)
      * @Assert\Range(
      *      min = 1,
-     *      max = 32,
+     *      max = 128,
      * )
      * @JMS\Expose
      */
@@ -91,7 +93,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
     protected $isActive = true;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      * @JMS\Expose
@@ -100,7 +102,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
     protected $createdAt;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
      * @JMS\Expose
@@ -351,36 +353,36 @@ abstract class Network extends NetworkElement implements NetworkInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @param \DateTime $createdAt
+     * @param DateTime $createdAt
      * @return Network
      */
-    public function setCreatedAt(\DateTime $createdAt): Network
+    public function setCreatedAt(DateTime $createdAt): Network
     {
         $this->createdAt = $createdAt;
         return $this;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
 
     /**
-     * @param \DateTime $updatedAt
+     * @param DateTime $updatedAt
      * @return Network
      */
-    public function setUpdatedAt(\DateTime $updatedAt): Network
+    public function setUpdatedAt(DateTime $updatedAt): Network
     {
         $this->updatedAt = $updatedAt;
         return $this;

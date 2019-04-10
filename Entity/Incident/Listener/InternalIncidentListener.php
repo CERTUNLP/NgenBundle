@@ -12,7 +12,6 @@
 namespace CertUnlp\NgenBundle\Entity\Incident\Listener;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
@@ -23,7 +22,6 @@ use CertUnlp\NgenBundle\Services\Api\Handler\HostHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\IncidentDecisionHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\IncidentHandler;
 use CertUnlp\NgenBundle\Services\Delegator\DelegatorChain;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
@@ -118,18 +116,7 @@ class InternalIncidentListener
 
     public function decisionUpdate(Incident $incident): ?Incident
     {
-        $decisions = new ArrayCollection($this->entityManager->getRepository(IncidentDecision::class)->findBy(['type' => $incident->getType() ? $incident->getType()->getSlug() : 'undefined', 'feed' => $incident->getFeed() ? $incident->getFeed()->getSlug() : 'undefined', 'get_undefined' => true]));
-        $iterator = $decisions->getIterator();
-        $iterator->uasort(static function (IncidentDecision $first, IncidentDecision $second) {
-            return (int)($first->getNetwork() ? $first->getNetwork()->getAddressMask() : -1) <= (int)($second->getNetwork() ? $second->getNetwork()->getAddressMask() : -2);
-        });
-        foreach ($iterator as $decision) {
-            if ($incident->getNetwork() && $decision->getNetwork() && $incident->getNetwork()->inRange($decision->getNetwork())) {
-                return $decision->doDecision($incident);
-            }
-            return $decision->doDecision($incident);
-        }
-        return null;
+        return $this->decision_handler->getByIncident($incident);
     }
 
     public function timestampsUpdate(Incident $incident): void

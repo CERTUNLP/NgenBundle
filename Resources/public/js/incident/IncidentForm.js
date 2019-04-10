@@ -19,8 +19,8 @@ var IncidentForm = Form.extend({
         $("#tlp_label").attr('class', "tlp-" + $valor.toLowerCase());
     },
     getIncidentDecision: function () {
-        ip = $("#ip_v4").val();
-        var $id = $("#type option:selected").val() + '/' + $("#feed option:selected").val() + (ip ? '/' + ip : '');
+        let $ip = $("#address").val();
+        var $id = $("#type option:selected").val() + '/' + $("#feed option:selected").val() + ($ip ? '/' + $ip : '');
         this.laddaButton = Ladda.create(this.getSubmitButton().get(0));
         this.laddaButton.start();
         $.publish('/cert_unlp/incident/decision/read', [$id, $.proxy(this.changeDefaults, this)]);
