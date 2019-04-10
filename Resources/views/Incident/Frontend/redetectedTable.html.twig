@@ -1,0 +1,28 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+
+<table class="table table-bordered">
+        {%  for incidentDetected in incidentsDetected %}
+                <tr>
+                        <td>{{ incidentDetected.type | trans }}</td>
+                        <td>{{ incidentDetected.feed | trans }}</td>
+                        <td>{{ incidentDetected.state | trans }}</td>
+                        <td>{{ incidentDetected.tlp | trans }}</td>
+                        <td>{{ incidentDetected.date | date('Y-m-d H:i') }}</td>
+                        <td>{{ incidentDetected.notes| trans }}</td>
+                       
+
+                </tr>>
+        {% endfor %}
+</table>
+{% if not incident.incidentsDetected is empty%}
+        <span class="label label-warning"> {{  'Detected '|trans}}{{ incident.incidentsDetected|length }}{{ ' times'|trans}}</span>
+        <span class="label label-warning"> {{  'LAST: '|trans}}{{ incident.incidentsDetected|last }}</span>
+
+{% endif %}

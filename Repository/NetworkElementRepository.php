@@ -24,7 +24,7 @@ use Doctrine\ORM\Query;
  */
 class NetworkElementRepository extends EntityRepository
 {
-    public function findOneByStringAddress($params): ?NetworkElement
+    public function findOneByStringAddress( $params): ?NetworkElement
     {
         return $this->findOneByAddress(['address' => $params]);
     }

@@ -619,7 +619,7 @@ class Incident implements IncidentInterface
     /**
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getIncidentsTimeDetected()
+    public function getIncidentsDetected()
     {
         return $this->incidentsDetected;
     }
@@ -639,9 +639,9 @@ class Incident implements IncidentInterface
      * @param IncidentDetected $incidentDetected
      * @return Incident
      */
-    public function addIncidentDetected(IncidentFeed $feed): Incident
+    public function addIncidentDetected(Incident $incidentDetected): Incident
     {
-        $this->incidentsDetected[] = new IncidentDetected($this,$feed);
+        $this->incidentsDetected[] = new IncidentDetected($incidentDetected,$this);
         return $this;
     }
     /**
@@ -1221,7 +1221,11 @@ class Incident implements IncidentInterface
     public function updateVariables(Incident $incidentDetected): Incident
     {
         $this->setStateAndReporter($incidentDetected->getState(), $incidentDetected->getReporter());
-        if ($this->getTlp()->getCode() < $incidentDetected->getTlp()->getCode()){ $this->setTlp($incidentDetected->getTlp()); }
-        if ($this->getPriority()->getCode()> $incidentDetected->getPriority()->getCode() ){ $this->setPriority($incidentDetected->getPriority());}
+        if ($this->isNew()) {
+            if ($this->getTlp()->getCode() < $incidentDetected->getTlp()->getCode()){ $this->setTlp($incidentDetected->getTlp()); }
+            if ($this->getPriority()->getCode()> $incidentDetected->getPriority()->getCode() ){ $this->setPriority($incidentDetected->getPriority());}
+        }
+        return $this;
     }
+
 }

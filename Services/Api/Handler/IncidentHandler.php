@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\CommentBundle\Command\FixAcesCommand;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -117,18 +118,21 @@ class IncidentHandler extends Handler
      */
     protected function checkIfExists($incident, $method)
     {
+        $repository = $this->om->getRepository(IncidentPriority::class);
+        $priority = $repository->findOneBy(array('impact' => $incident->getImpact()->getSlug(), 'urgency' => $incident->getUrgency()->getSlug()));
+        $incident->setPriority($priority);
 
         $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
         if ($incidentDB && $method === 'POST') {
             if ($incident->getEvidenceFile()) {
                 $incidentDB->setEvidenceFile($incident->getEvidenceFile());
             }
-            $incidentDB->addIncidentDetected($incident,$incidentDB);
+            $incidentDB->addIncidentDetected($incident);
             $incidentDB->updateVariables($incident);
             $incident = $incidentDB;
         } else{
             //this means is a new incident
-            $incident->addIncidentDetected($incident,$incident);
+            $incident->addIncidentDetected($incident);
 
         }
 
