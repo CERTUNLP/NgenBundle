@@ -30,8 +30,9 @@ class IncidentDetected
     public function __construct(Incident $incident,Incident $incidentFather)
     {
         $this->setIncident($incidentFather);
-        $this->setFeed($incidet.$this->getFeed());
-        $this->setAssigned($incident.$this->getAssigned());
+        $this->setFeed($incident->getFeed());
+        $this->setType($incident->getType());
+        $this->setAssigned($incident->getAssigned());
         $this->setDate(new DateTime('now'));
         $this->setEvidenceFile($incident->getEvidenceFile());
         $this->setEvidenceFileTemp($incident->getEvidenceFileTemp());
@@ -41,6 +42,7 @@ class IncidentDetected
         $this->setState($incident->getState());
         $this->setTlp($incident->getTlp());
         $this->setPriority($incident->getPriority());
+
     }
 
     public function __toString(): string
@@ -71,6 +73,7 @@ class IncidentDetected
         $dDiff = $dStart->diff($this->getDate());
         return $dDiff->days;
     }
+
     /**
      * @var Incident
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="incidentsDetected")
@@ -151,7 +154,13 @@ class IncidentDetected
      * @var $evidence_file_temp
      */
     protected $evidence_file_temp;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
     protected $notes;
+
 
     /**
      * @return DateTime
@@ -211,7 +220,8 @@ class IncidentDetected
 
     /**
      * @param IncidentType $type
-     */
+     *
+    */
     public function setType(IncidentType $type): void
     {
         $this->type = $type;
@@ -276,6 +286,7 @@ class IncidentDetected
     /**
      * @param IncidentPriority $priority
      */
+
     public function setPriority(IncidentPriority $priority): void
     {
         $this->priority = $priority;
@@ -344,11 +355,5 @@ class IncidentDetected
     {
         $this->notes = $notes;
     }
-    /**
-     * @var Host|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_origin")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
 
 }

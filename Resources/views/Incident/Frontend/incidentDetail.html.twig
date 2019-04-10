@@ -104,7 +104,7 @@
                             </td>
                         </tr>
                         {%  endif %}
-                        {% if object.incidetnsDetected %}
+                        {% if object.incidentsDetected %}
                             <tr>
                                 <td class="">
                                     {{ 'Last Time Detected'|trans}}
@@ -146,8 +146,8 @@
                                 {{  'RT/Rt' |trans}}
                             </td>
                             <td class="">
-                                {% include "CertUnlpNgenBundle:Incident:Frontend/responseTimeLabel.html.twig" with {'incident': object,'alreadyDetected':object.incidentDetected} %}
-                                {% include "CertUnlpNgenBundle:Incident:Frontend/resolutionTimeLabel.html.twig" with {'incident': object,'alreadyDetected':object.incidentDetected} %}
+                                {% include "CertUnlpNgenBundle:Incident:Frontend/responseTimeLabel.html.twig" with {'incident': object,'alreadyDetected':object.incidentsDetected} %}
+                                {% include "CertUnlpNgenBundle:Incident:Frontend/resolutionTimeLabel.html.twig" with {'incident': object,'alreadyDetected':object.incidentsDetected} %}
                             </td>
                         </tr>
                         {% if object.notes %}
@@ -369,6 +369,21 @@
                 </div>
             </div>
         </div>
+    {% endblock %}
+    {% block redetected_body %}
+        {%  if object.incidentsDetected %}
+        <div class="col-lg-6">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'Network info'|trans}}</h3>
+                </div>
+                <div class="panel-body table-responsive">
+                    {% include "@CertUnlpNgen/Incident/Frontend/redetectedTable.html.twig" with {'incident': object,'incidentsDetected':object.incidentsDetected} %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
     {% endblock %}
 
 {% endblock %}
