@@ -132,6 +132,14 @@
                                 </td>
                             </tr>
                         {% endif %}
+                        <tr>
+                            <td class="">
+                                {{  'Impact/Urgency' |trans}}
+                            </td>
+                            <td class="">
+                               {{ object.priority.impact }}/{{ object.priority.urgency }}
+                            </td>
+                        </tr>
 
                         <tr>
                             <td class="">
@@ -142,6 +150,17 @@
                                 {% include "CertUnlpNgenBundle:Incident:Frontend/resolutionTimeLabel.html.twig" with {'incident': object,'lastTimeDetected':object.lastTimeDetected} %}
                             </td>
                         </tr>
+                        {% if object.notes %}
+
+                        <tr>
+                            <td class="">
+                                {{  'Notes' |trans}}
+                            </td>
+                            <td class="">
+                                {{ object.notes }}
+                            </td>
+                        </tr>
+                        {% endif %}
 
                         {% if object.evidenceFilePath %}
                             <tr>
@@ -299,7 +318,8 @@
         </div>
     {% endblock %}
     {% block asigned_body %}
-        <div class="col-lg-6">
+        {% if object.assigned %}
+            <div class="col-lg-6">
 
             <div class="panel panel-info">
                 <div class="panel-heading">
@@ -328,6 +348,8 @@
                 </div>
             </div>
         </div>
+        {% endif %}
+
     {% endblock %}
 
     {% block comments %}

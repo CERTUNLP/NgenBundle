@@ -6,7 +6,6 @@ use CertUnlp\NgenBundle\Entity\User;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * IncidentChangeState
@@ -28,10 +27,10 @@ class IncidentChangeState
 
 
 
-    public function __construct(Incident $incident,IncidentState $oldState,IncidentState $newState,$responsable, $method = "frontend" )
+    public function __construct(Incident $incident,IncidentState $newState,$responsable, IncidentState $oldState=null $method = "frontend" )
     {
         $this->setIncident($incident);
-        $this->setOldState($oldState);
+        if ($oldState){$this->setOldState($oldState);}
         $this->setNewState($newState);
         $this->setDate(new DateTime('now'));
         $this->setMethod($method);
@@ -97,7 +96,7 @@ class IncidentChangeState
     /**
      * @return IncidentState
      */
-    public function getOldState(): IncidentState
+    public function getOldState(): ? IncidentState
     {
         return $this->oldState;
     }

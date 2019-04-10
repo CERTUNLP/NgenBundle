@@ -625,9 +625,10 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @param Collection $lastTimeDetectedCollection
+     * @param ArrayCollection $lastTimeDetectedCollection
      */
-    public function setLastTimeDetected(Collection $lastTimeDetectedCollection): void
+
+    public function setLastTimeDetected(ArrayCollection $lastTimeDetectedCollection): void
     {
         $this->lastTimeDetected = $lastTimeDetectedCollection;
     }
@@ -642,7 +643,7 @@ class Incident implements IncidentInterface
         return $this;
     }
     /**
-     * @return Collection
+     * @return ArrayCollection
      */
     public function getChangeStateHistory()
     {
@@ -650,9 +651,9 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @param Collection $changeStateHistory
+     * @param ArrayCollection $changeStateHistory
      */
-    public function setChangeStateHistory(Collection $changeStateHistory): void
+    public function setChangeStateHistory(ArrayCollection $changeStateHistory): void
     {
         $this->changeStateHistory = $changeStateHistory;
     }
@@ -756,7 +757,7 @@ class Incident implements IncidentInterface
      * @param User $reporter
      * @return Incident
      */
-    public function setState(IncidentState $state = null,User $reporter): Incident
+    public function setStateAndReporter(IncidentState $state = null,User $reporter): Incident
     {
         ////FIX hay que trabajar el flujo del estado del incidente DAMIAN HELP
 
@@ -769,10 +770,22 @@ class Incident implements IncidentInterface
         if ($state->isClosing()){
             $this->close();
         }
-        $this->addChangeStateHistory(new IncidentChangeState($this,$this->getState(),$state,$reporter));
+        $this->addChangeStateHistory(new IncidentChangeState($this,$this->getState(),$reporter,$state));
+        $this->setState($state) ;
+        return $this;
+    }
+
+    /**
+     * Set state
+     * @param IncidentState $state
+     * @return Incident
+     */
+    public function setState(IncidentState $state = null): Incident
+    {
         $this->state=$state;
         return $this;
     }
+
 
     /**
      * @return IncidentPriority
