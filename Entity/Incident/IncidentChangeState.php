@@ -27,7 +27,7 @@ class IncidentChangeState
 
 
 
-    public function __construct(Incident $incident,IncidentState $newState,$responsable, IncidentState $oldState=null $method = "frontend" )
+    public function __construct(Incident $incident,IncidentState $newState,$responsable, IncidentState $oldState=null, $method = "frontend" )
     {
         $this->setIncident($incident);
         if ($oldState){$this->setOldState($oldState);}

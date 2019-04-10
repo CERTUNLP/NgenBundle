@@ -13,6 +13,7 @@ namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use Doctrine\Common\Persistence\ObjectManager;
+use FOS\CommentBundle\Command\FixAcesCommand;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\SecurityContext;
 
@@ -122,10 +123,15 @@ class IncidentHandler extends Handler
             if ($incident->getEvidenceFile()) {
                 $incidentDB->setEvidenceFile($incident->getEvidenceFile());
             }
-            $incidentDB->addLastTimeDetected($incident->getFeed());
+            $incidentDB->addIncidentDetected($incident,$incidentDB);
+            $incidentDB->updateVariables($incident);
             $incident = $incidentDB;
+        } else{
+            //this means is a new incident
+            $incident->addIncidentDetected($incident,$incident);
 
         }
+
         return $incident;
     }
 

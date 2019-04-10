@@ -15,10 +15,11 @@
     {% set trclass = "success" %}
 {% endif %}
 
-{% for lastTimeDetected in incident.lastTimeDetected %}
-    {% if lastTimeDetected %}
-        <span class="label label-{{ trclass }}">{{ lastTimeDetected.CountDaysFromDetection ~" days" }}</span>
+////FIX
+{% for incidentDetected in incident.incidentsDetected %}
+    {% if incidentDetected %}
+        <span class="label label-{{ trclass }}">{{ incidentDetected.CountDaysFromDetection ~" days" }}</span>
 
-<span class="label label-warning">ltd {{ lastTimeDetected.dateDetected | date('Y-m-d H:i') }}-{{ lastTimeDetected.feed  }}</span>
+<span class="label label-warning">ltd {{ incidentDetected.date | date('Y-m-d H:i') }}-{{ incidentDetected.feed  }}</span>
 {% endif %}
 {% endfor %}

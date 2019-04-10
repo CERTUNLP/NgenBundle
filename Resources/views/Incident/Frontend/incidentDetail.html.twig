@@ -104,13 +104,13 @@
                             </td>
                         </tr>
                         {%  endif %}
-                        {% if object.lastTimeDetected %}
+                        {% if object.incidetnsDetected %}
                             <tr>
                                 <td class="">
                                     {{ 'Last Time Detected'|trans}}
                                 </td>
                                 <td class="">
-                                    {% include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incident': object, 'lastTimeDetected':true} %}
+                                    {% include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incident': object, 'alreadyDetected':true} %}
                                 </td>
                             </tr>
                         {% endif %}
@@ -146,8 +146,8 @@
                                 {{  'RT/Rt' |trans}}
                             </td>
                             <td class="">
-                                {% include "CertUnlpNgenBundle:Incident:Frontend/responseTimeLabel.html.twig" with {'incident': object,'lastTimeDetected':object.lastTimeDetected} %}
-                                {% include "CertUnlpNgenBundle:Incident:Frontend/resolutionTimeLabel.html.twig" with {'incident': object,'lastTimeDetected':object.lastTimeDetected} %}
+                                {% include "CertUnlpNgenBundle:Incident:Frontend/responseTimeLabel.html.twig" with {'incident': object,'alreadyDetected':object.incidentDetected} %}
+                                {% include "CertUnlpNgenBundle:Incident:Frontend/resolutionTimeLabel.html.twig" with {'incident': object,'alreadyDetected':object.incidentDetected} %}
                             </td>
                         </tr>
                         {% if object.notes %}
