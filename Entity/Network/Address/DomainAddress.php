@@ -23,18 +23,21 @@ class DomainAddress extends Address
 
     public function inRange(Address $other = null): bool
     {
+        if ($other && get_class($other) === get_class($this)) {
+            return !count(array_diff(explode($this->getCustomAddress(), '.'), explode($other->getCustomAddress(), '.')));
+        }
         return false;
 
-    }
-
-    public function getCustomAddressMask(): string
-    {
-        return substr_count($this->getCustomAddress(), '.') + 1;
     }
 
     public function getCustomAddress(): string
     {
         return $this->getNetwork()->getDomain();
+    }
+
+    public function getCustomAddressMask(): string
+    {
+        return substr_count($this->getCustomAddress(), '.') + 1;
     }
 
     public function setCustomAddress(string $address): NetworkElement

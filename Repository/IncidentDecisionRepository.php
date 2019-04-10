@@ -23,6 +23,9 @@ class IncidentDecisionRepository extends EntityRepository
         $get_undefined = false;
         $criteria['isActive'] = true;
         $criteria['network'] = is_object($criteria['network']) ? $criteria['network']->getId() : $criteria['network'];
+        if (!$criteria['network']) {
+            unset($criteria['network']);
+        }
         if (isset($criteria['get_undefined'])) {
             $get_undefined = $criteria['get_undefined'];
             unset($criteria['get_undefined']);

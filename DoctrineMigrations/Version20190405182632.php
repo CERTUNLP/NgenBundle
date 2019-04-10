@@ -22,10 +22,6 @@ class Version20190405182632 extends AbstractMigration
         $this->addSql('ALTER TABLE incident_change_state_history ADD CONSTRAINT FK_7D5CDF8D59E53FB9 FOREIGN KEY (incident_id) REFERENCES incident (id)');
         $this->addSql('ALTER TABLE incident_change_state_history ADD CONSTRAINT FK_7D5CDF8DA393D2FB FOREIGN KEY (state) REFERENCES incident_state (slug)');
         $this->addSql('ALTER TABLE incident_state CHANGE is_new is_opening TINYINT(1) NOT NULL');
-        $this->addSql('ALTER TABLE acl_classes CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_security_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_object_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_entries CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
     }
 
     /**
@@ -37,10 +33,6 @@ class Version20190405182632 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('DROP TABLE incident_change_state_history');
-        $this->addSql('ALTER TABLE acl_classes CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_entries CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_object_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
-        $this->addSql('ALTER TABLE acl_security_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
         $this->addSql('ALTER TABLE incident_state CHANGE is_opening is_new TINYINT(1) NOT NULL');
     }
 }
