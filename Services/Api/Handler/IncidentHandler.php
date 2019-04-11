@@ -118,6 +118,23 @@ class IncidentHandler extends Handler
      */
     protected function checkIfExists($incident, $method)
     {
+        $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
+        if ($incidentDB && $method === 'POST') {
+            return $incidentDB;
+        } else {
+            //this means is a new incident
+            return $incident;
+        }
+    }
+
+    /**
+     * @param $incident Incident
+     * @param $method
+     * @return object|null
+     * @throws \Exception
+     */
+    public function addOrUpdateIncident($incident, $method="POST")
+    {
         $repository = $this->om->getRepository(IncidentPriority::class);
         $priority = $repository->findOneBy(array('impact' => $incident->getImpact()->getSlug(), 'urgency' => $incident->getUrgency()->getSlug()));
         $incident->setPriority($priority);
@@ -131,7 +148,7 @@ class IncidentHandler extends Handler
             $incidentDB->updateVariables($incident);
             $incident = $incidentDB;
         } else{
-            //this means is a new incident
+
             $incident->addIncidentDetected($incident);
 
         }

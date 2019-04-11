@@ -205,7 +205,7 @@ class IncidentDetected
     /**
      * @param User $assigned
      */
-    public function setAssigned(User $assigned): void
+    public function setAssigned(User $assigned=null): void
     {
         $this->assigned = $assigned;
     }

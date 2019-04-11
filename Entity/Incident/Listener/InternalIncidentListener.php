@@ -72,10 +72,11 @@ class InternalIncidentListener
         $this->decisionUpdate($incident);
         $this->timestampsUpdate($incident);
         $this->slugUpdate($incident);
-       // $this->priorityUpdate($incident, $event);
-//        $this->stateUpdate($incident, $event);
-//        $this->feedUpdate($incident, $event);
-//        $this->tlpUpdate($incident, $event);
+        $this->incident_handler->addOrUpdateIncident($incident);
+        //$this->priorityUpdate($incident, $event);
+        //$this->stateUpdate($incident, $event);
+        //$this->feedUpdate($incident, $event);
+        //$this->tlpUpdate($incident, $event);
     }
 
     /**
@@ -121,6 +122,7 @@ class InternalIncidentListener
 
     public function timestampsUpdate(Incident $incident): void
     {
+        //FIX comprobar que actualice el updated
         if ($incident->getDate() == null) {
             try {
                 $incident->setDate(new \DateTime('now'));
