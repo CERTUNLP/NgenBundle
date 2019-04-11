@@ -759,10 +759,10 @@ class Incident implements IncidentInterface
      * @param User $reporter
      * @return Incident
      */
-    public function setStateAndReporter(IncidentState $state = null, User $reporter): Incident
+    public function setStateAndReporter(IncidentState $state, User $reporter): Incident
     {
         if ($this->modifyIncidentStatus($state)) {
-            $this->addChangeStateHistory(new IncidentChangeState($this, $this->getState(), $reporter, $state));
+            $this->addChangeStateHistory(new IncidentChangeState($this,$state,$reporter,$this->getState()));
             $this->setState($state);
         }
         return $this;
@@ -770,23 +770,39 @@ class Incident implements IncidentInterface
 
     public function modifyIncidentStatus(IncidentState $state = null): bool
     {
-        $cambio=false;
-        if ($state->isOpening() and $this->isNew()) {
-            $this->open();
-            $cambio=true;
+        //FIX DAMIAN aca hay q avisar que no se puede cambiar el tipo de incidente
+        if ($this->isNew()){
+            if ($state->isOpening()){
+                $this->open();
+                return true;
+            }
+            elseif ($state->isReOpening())
+            {
+                $this->open();
+                return true;
+            }elseif (!$state->isClosing()){
+                return true;
+            }
         }
-        if ($state->isReOpening() and $this->isClosed()) {
-            $this->reOpen();
-            $cambio=true;
+        if ($this->isClosed()){
+            if ($state->isReOpening())
+            {
+                $this->reOpen();
+                return true;
+            }
+            elseif ($state->isClosing()){
+                return true;
+            }
         }
-        if ($state->isClosing() and !$this->isClosed()) {
-            $this->close();
-            $cambio=true;
+        if (!$this->isClosed() and !$this->isNew()) {
+            if ($state->isOpening() or $state->isReOpening()) {
+                return true;
+            } elseif ($state->isClosing()) {
+                $this->close();
+                return true;
+            }
         }
-        if ($state->isOpening() and !$this->isClosed()){
-            $cambio=true;
-        }
-        return $cambio;
+        return false;
     }
 
     /**
@@ -1138,6 +1154,7 @@ class Incident implements IncidentInterface
      */
     public function getAddress(): ?string
     {
+
         return $this->getOrigin() ? $this->getOrigin()->getAddress() : $this->address;
     }
 
