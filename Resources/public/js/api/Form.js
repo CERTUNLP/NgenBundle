@@ -11,6 +11,7 @@ var Form = Class.extend({
         this.setForm();
         this.form.submit($.proxy(this.request, this));
         this.config(params);
+        $('select').select2();
     },
     setForm: function () {
         this.form = $('#' + this.getFormId());

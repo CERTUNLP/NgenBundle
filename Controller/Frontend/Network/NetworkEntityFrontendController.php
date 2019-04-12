@@ -43,6 +43,17 @@ class NetworkEntityFrontendController extends Controller
     }
 
     /**
+     * @Route("search/autocomplete", name="cert_unlp_ngen_network_entity_search_autocomplete")
+     * @param Request $request
+     * @return array
+     */
+    public function searchAutocompleteNetworkAdminAction(Request $request)
+    {
+        return $this->getFrontendController()->searchAutocompleteEntity($request);
+
+    }
+
+    /**
      * @Template("CertUnlpNgenBundle:NetworkEntity:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_network_entity_search")
      * @param Request $request
