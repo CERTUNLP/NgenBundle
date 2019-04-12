@@ -175,3 +175,5 @@ jms_serializer:
 twig:
     globals:
         sign: '%ngen_sign%'
+    form_themes:
+        - 'TetranzSelect2EntityBundle:Form:fields.html.twig'
