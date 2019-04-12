@@ -43,7 +43,6 @@ class NetworkAdminFrontendController extends Controller
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_network_search_network_admin")
      * @param Request $request
      * @return array
@@ -51,6 +50,17 @@ class NetworkAdminFrontendController extends Controller
     public function searchNetworkAdminAction(Request $request)
     {
         return $this->getFrontendController()->searchEntity($request);
+    }
+
+    /**
+     * @Route("search/autocomplete", name="cert_unlp_ngen_network_admin_search_autocomplete")
+     * @param Request $request
+     * @return array
+     */
+    public function searchAutocompleteNetworkAdminAction(Request $request)
+    {
+        return $this->getFrontendController()->searchAutocompleteEntity($request);
+
     }
 
     /**
