@@ -12,11 +12,13 @@
 namespace CertUnlp\NgenBundle\Services\Frontend\Controller;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\ThreadManagerInterface;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Knp\Component\Pager\Paginator;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class FrontendController
@@ -46,12 +48,12 @@ class FrontendController
         return $this->doctrine;
     }
 
-    public function homeEntity(Request $request, $term = '', $limit = 7, $defaultSortFieldName='createdAt',$defaultSortDirection='desc')
+    public function homeEntity(Request $request, $term = '', $limit = 7, $defaultSortFieldName = 'createdAt', $defaultSortDirection = 'desc')
     {
-        return $this->searchEntity($request, $term, $limit,$defaultSortFieldName,$defaultSortDirection);
+        return $this->searchEntity($request, $term, $limit, $defaultSortFieldName, $defaultSortDirection);
     }
 
-    public function searchEntity(Request $request, $term = null, $limit = 7, $defaultSortFieldName='createdAt',$defaultSortDirection='desc',$page='page',$field='')
+    public function searchEntity(Request $request, $term = null, $limit = 7, $defaultSortFieldName = 'createdAt', $defaultSortDirection = 'desc', $page = 'page', $field = '')
     {
         if (!$term) {
             $term = $request->get('term') ? $request->get('term') : '*';
@@ -60,7 +62,7 @@ class FrontendController
 
         $pagination = $this->getPaginator()->paginate(
             $results, $request->query->get($page, 1), $limit
-            , array('pageParameterName'=> 'page'.$field,'sortFieldParameterName'=> 'sort'.$field,'sortDirectionParameterName'=> 'direction'.$field,'defaultSortFieldName' => $defaultSortFieldName, 'defaultSortDirection' => $defaultSortDirection)
+            , array('pageParameterName' => 'page' . $field, 'sortFieldParameterName' => 'sort' . $field, 'sortDirectionParameterName' => 'direction' . $field, 'defaultSortFieldName' => $defaultSortFieldName, 'defaultSortDirection' => $defaultSortDirection)
         );
 
         $pagination->setParam('term', $term);
@@ -79,6 +81,19 @@ class FrontendController
     public function getPaginator()
     {
         return $this->paginator;
+    }
+
+    public function searchAutocompleteEntity(Request $request, $term = null, $limit = 7, $defaultSortFieldName = 'createdAt', $defaultSortDirection = 'desc', $page = 'page', $field = '')
+    {
+        if (!$term) {
+            $term = $request->get('term') ?? $request->get('q') ?? '*';
+        }
+        $results = $this->getFinder()->find($term);
+
+        $array = (new ArrayCollection($results))->map(static function ($element) {
+            return ['id' => $element->getId(), 'text' => (string)$element];
+        });
+        return new JsonResponse($array->toArray());
     }
 
     public function newEntity(Request $request)

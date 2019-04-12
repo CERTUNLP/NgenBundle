@@ -14,8 +14,6 @@ namespace CertUnlp\NgenBundle\Form;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -24,6 +22,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class NetworkType extends AbstractType
 {
@@ -51,28 +50,22 @@ class NetworkType extends AbstractType
                 ),
                 'choices_as_values' => true,
             ))
-            ->add('networkAdmin', EntityType::class, array(
-                'class' => NetworkAdmin::class,
-                'required' => true,
-                'empty_value' => 'Choose an admin',
-                'attr' => array('help_text' => 'This will be the network admin'),
-                'description' => 'The administrator responsible for the network',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('na')
-                        ->where('na.isActive = TRUE')
-                        ->orderBy('na.name', 'ASC');
-                }
-            ))
-            ->add('networkEntity', EntityType::class, array(
+            ->add('networkEntity', Select2EntityType::class, [
+                'remote_route' => 'cert_unlp_ngen_network_entity_search_autocomplete',
                 'class' => NetworkEntity::class,
-                'required' => true,
-                'empty_value' => 'Choose a unit',
-                'attr' => array('help_text' => 'The unit to which the network belongs'),
-                'description' => 'The unit responsible, that owns the network',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('au')
-                        ->orderBy('au.name', 'ASC');
-                }));
+                'text_property' => 'value',
+                'minimum_input_length' => 3,
+                'page_limit' => 10,
+                'placeholder' => 'Select an entity',
+            ])
+            ->add('networkAdmin', Select2EntityType::class, array(
+                'remote_route' => 'cert_unlp_ngen_network_admin_search_autocomplete',
+                'class' => NetworkAdmin::class,
+                'text_property' => 'value',
+                'minimum_input_length' => 3,
+                'page_limit' => 10,
+                'placeholder' => 'Select an admin',
+            ));
 
         if ($builder->getData()) {
             if (!$builder->getData()->getIsActive()) {

@@ -55,6 +55,7 @@
     "symfony/security-acl": "^3.0",
     "beberlei/DoctrineExtensions": "^1.1",
     "darsyn/ip": "^4.0",
+    "tetranz/select2entity-bundle": "^2.9",
     "ext-json": "*",
     "ext-curl": "*"
   },
