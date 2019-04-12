@@ -107,6 +107,7 @@ abstract class Handler implements ApiHandlerInterface
             //try {
 
             $this->om->persist($entity_class_instance);
+
             $this->om->flush();
 
             return $entity_class_instance;

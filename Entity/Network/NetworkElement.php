@@ -31,6 +31,7 @@ abstract class NetworkElement
      *
      * @ORM\Column(type="string", length=39, nullable=true)
      * @JMS\Expose
+     * @JMS\SerializedName("address")
      * @JMS\Groups({"api"})
      * @Assert\Ip(version="all")
      */
@@ -41,6 +42,7 @@ abstract class NetworkElement
      *
      * @ORM\Column(type="string", nullable=true)
      * @JMS\Expose
+     * @JMS\SerializedName("address")
      * @JMS\Groups({"api"})
      *
      */

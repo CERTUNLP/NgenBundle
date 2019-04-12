@@ -14,21 +14,13 @@
         <div class="col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Incident Information</h3>
+                    <h3 class="panel-title"{{ 'Incident Information' | trans }}</h3>
                 </div>
                 <div class="panel-body table-responsive">
                     <table class="table table-bordered">
                         <tr>
                             <td class="">
-                                {{ "System Id"|trans}}
-                            </td>
-                            <td class="">
-                                {{ object.id }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="">
-                                {{ 'Host Address'|trans}}
+                                {{ 'Host/Network Involved'|trans }}
                             </td>
                             <td class="">
                                 {{ object.address }}
@@ -36,7 +28,7 @@
                         </tr>
                         <tr>
                             <td class="">
-                                {{ 'State'|trans}}
+                                {{ 'State'|trans }}
                             </td>
                             <td class="">
                                 {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object} %}
@@ -44,16 +36,7 @@
                         </tr>
                         <tr>
                             <td class="">
-                                {{ 'Closed'|trans}}
-                            </td>
-                            <td class="">
-                                {{ object.isClosed ? 'Yes':'No' }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="">
-                                {{ 'Type'|trans}}
+                                {{ 'Type'|trans }}
                             </td>
                             <td class="">
                                 {{ object.type }}
@@ -62,7 +45,7 @@
 
                         <tr>
                             <td class="">
-                                {{ 'Feed'|trans}}
+                                {{ 'Feed'|trans }}
                             </td>
                             <td class="">
                                 {{ object.feed }}
@@ -70,7 +53,7 @@
                         </tr>
                         <tr>
                             <td class="">
-                                {{ 'TLP'|trans}}
+                                {{ 'TLP'|trans }}
                             </td>
                             <td>
                                 <span class="label tlp-{{ object.tlp|lower }} left">
@@ -80,7 +63,7 @@
                         </tr>
                         <tr>
                             <td class="">
-                                {{ 'Original Incident Date'| trans }}
+                                {{ 'Original Date'| trans }}
                             </td>
                             <td class="">
                                 {{ object.date |date('Y-m-d H:i') }}
@@ -88,62 +71,54 @@
                         </tr>
                         <tr>
                             <td class="">
-                                {{ 'Created at'|trans}}
+                                {{ 'Created at'|trans }}
                             </td>
                             <td class="">
                                 {{ object.createdAt|date('Y-m-d H:i') }}
                             </td>
                         </tr>
                         {% if object.openedAt %}
-                        <tr>
-                            <td class="">
-                                {{ 'Opened at '| trans}}
-                            </td>
-                            <td class="">
-                                {{ object.openedAt |date('Y-m-d H:i') }}
-                            </td>
-                        </tr>
-                        {%  endif %}
-                        {% if object.incidentsDetected %}
                             <tr>
                                 <td class="">
-                                    {{ 'Last Time Detected'|trans}}
+                                    {{ 'Opened at '| trans }}
                                 </td>
                                 <td class="">
-                                    {% include "CertUnlpNgenBundle:Incident:Frontend/dateLabel.html.twig" with {'incident': object, 'alreadyDetected':true} %}
+                                    {{ object.openedAt |date('Y-m-d H:i') }}
+                                </td>
+                            </tr>
+                        {% endif %}
+
+                        {% if object.incidentsDetected|length > 1 %}
+                            <tr>
+                                <td class="">
+                                    {{ 'Last Time Detected'|trans }}
+                                </td>
+                                <td class="">
+                                    {% include "CertUnlpNgenBundle:Incident:Frontend/incidentsDetectedSummary.html.twig" with {'incident': object, 'alreadyDetected':true} %}
                                 </td>
                             </tr>
                         {% endif %}
                         <tr>
                             <td class="">
-                                {{  'Last Update'|trans }}
+                                {{ 'Last Update'|trans }}
                             </td>
                             <td class="">
                                 {{ object.updatedAt |date('Y-m-d H:i') }}
                             </td>
                         </tr>
-                        {% if object.getChangeStateHistory %}
-                            <tr>
-                                <td class="">
-                                    {{ 'Status Change history'|trans}}
-                                </td>
-                                <td class="">
-                                    {% include "CertUnlpNgenBundle:Incident:Frontend/historyChangeLabel.html.twig" with {'incident': object} %}
-                                </td>
-                            </tr>
-                        {% endif %}
+
                         <tr>
                             <td class="">
-                                {{  'Impact/Urgency' |trans}}
+                                {{ 'Impact/Urgency' |trans }}
                             </td>
                             <td class="">
-                               {{ object.priority.impact }}/{{ object.priority.urgency }}
+                                {{ object.priority.impact }}/{{ object.priority.urgency }}
                             </td>
                         </tr>
 
                         <tr>
                             <td class="">
-                                {{  'RT/Rt' |trans}}
+                                {{ 'RT/Rt' |trans }}
                             </td>
                             <td class="">
                                 {% include "CertUnlpNgenBundle:Incident:Frontend/responseTimeLabel.html.twig" with {'incident': object,'alreadyDetected':object.incidentsDetected} %}
@@ -152,20 +127,20 @@
                         </tr>
                         {% if object.notes %}
 
-                        <tr>
-                            <td class="">
-                                {{  'Notes' |trans}}
-                            </td>
-                            <td class="">
-                                {{ object.notes }}
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="">
+                                    {{ 'Notes' |trans }}
+                                </td>
+                                <td class="">
+                                    {{ object.notes }}
+                                </td>
+                            </tr>
                         {% endif %}
 
                         {% if object.evidenceFilePath %}
                             <tr>
                                 <td class="">
-                                    {{ 'Evidence File'|trans}}
+                                    {{ 'Evidence File'|trans }}
                                 </td>
                                 <td class="">
                                     <a href="{{ path('cert_unlp_ngen_internal_incident_frontend_evidence_incident',{'slug':object.slug}) }}">Evidence
@@ -188,7 +163,7 @@
                     <table class="table table-bordered">
                         <tr>
                             <td class="">
-                                {{ 'ip'|trans}}
+                                {{ 'ip'|trans }}
                             </td>
                             <td class="">
                                 {{ object.address }}
@@ -196,7 +171,7 @@
                         </tr>
                         <tr>
                             <td class="">
-                                {{ 'Active'|trans}}
+                                {{ 'Active'|trans }}
                             </td>
                             <td class="">
                                 {{ object.origin.isActive ? 'Yes':'No' }}
@@ -206,7 +181,7 @@
 
                             <tr>
                                 <td class="">
-                                    {{ 'Network Entity'|trans}}
+                                    {{ 'Network Entity'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.origin.network.networkEntity }}
@@ -214,7 +189,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    {{ 'Network Admin'|trans}}
+                                    {{ 'Network Admin'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.origin.network.networkAdmin }}
@@ -233,14 +208,14 @@
         <div class="col-lg-6">
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    <h3 class="panel-title">{{ 'Network info'|trans}}</h3>
+                    <h3 class="panel-title">{{ 'Network info'|trans }}</h3>
                 </div>
                 <div class="panel-body table-responsive">
                     {% if object.network %}
                         <table class="table table-bordered">
                             <tr>
                                 <td class="">
-                                    {{ 'IP/mask'|trans}}
+                                    {{ 'IP/mask'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.network }}
@@ -248,7 +223,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    {{ 'Active'|trans}}
+                                    {{ 'Active'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.network.isActive ? 'Yes':'No' }}
@@ -256,7 +231,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    {{ 'Network Entity'|trans}}
+                                    {{ 'Network Entity'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.network.networkEntity }}
@@ -264,7 +239,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    {{ 'Network Admin'|trans}}
+                                    {{ 'Network Admin'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.network.networkAdmin }}
@@ -298,7 +273,7 @@
                     <table class="table table-bordered">
                         <tr>
                             <td class="">
-                                {{ 'Name'|trans}}
+                                {{ 'Name'|trans }}
                             </td>
                             <td class="">
                                 {{ object.reporter }}
@@ -306,7 +281,7 @@
                         </tr>
                         <tr>
                             <td class="">
-                                {{ 'Email'|trans}}
+                                {{ 'Email'|trans }}
                             </td>
                             <td class="">
                                 {{ object.reporter.emailsAsString }}
@@ -321,38 +296,72 @@
         {% if object.assigned %}
             <div class="col-lg-6">
 
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{ 'Assigned Info' |trans }}</h3>
-                </div>
-                <div class="panel-body table-responsive">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ 'Assigned Info' |trans }}</h3>
+                    </div>
+                    <div class="panel-body table-responsive">
 
-                    <table class="table table-bordered">
-                        <tr>
-                            <td class="">
-                                {{ 'Name'|trans}}
-                            </td>
-                            <td class="">
-                                {{ object.assigned }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="">
-                                {{ 'Email'|trans}}
-                            </td>
-                            <td class="">
-                                {{ object.assigned.emailsAsString }}
-                            </td>
-                        </tr>
-                    </table>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td class="">
+                                    {{ 'Name'|trans }}
+                                </td>
+                                <td class="">
+                                    {{ object.assigned }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    {{ 'Email'|trans }}
+                                </td>
+                                <td class="">
+                                    {{ object.assigned.emailsAsString }}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
         {% endif %}
 
     {% endblock %}
+    {% block redetected_body %}
+        {% if object.incidentsDetected %}
+            <div class="col-lg-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ 'Historical Detections'|trans }}
+                            {% if not object.incidentsDetected is empty%}
+                            <span class="label label-warning"> {{  'Detected '|trans}}{{ object.incidentsDetected|length }}{{ ' times'|trans}}</span>
+                            <span class="label label-warning"> {{  'LAST: '|trans}}{{ object.incidentsDetected|last }}</span>
 
-    {% block comments %}
+{% endif %}
+
+</h3>
+                    </div>
+                    <div class="panel-body table-responsive">
+                        {% include "@CertUnlpNgen/Incident/Frontend/redetectedTable.html.twig" with {'incident': object,'incidentsDetected':object.incidentsDetected} %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endblock %}
+    {% block state_history %}
+        {% if object.getChangeStateHistory|length > 0 %}
+            <div class="col-lg-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ 'Historical Status Changes'|trans }}{{ ' -  Detected'|trans}} {{ label_info(object.getChangeStateHistory|length) }} {{ ' changes'|trans}}</h3>
+                    </div>
+                    <div class="panel-body table-responsive">
+                        {% include "CertUnlpNgenBundle:Incident:Frontend/historyChangeSummary.html.twig" with {'incident': object} %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endblock %}
+     {% block comments %}
 
         <div class="col-lg-12">
             <div class="row">
@@ -370,23 +379,8 @@
             </div>
         </div>
     {% endblock %}
-    {% block redetected_body %}
-        {%  if object.incidentsDetected %}
-        <div class="col-lg-6">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{ 'Network info'|trans}}</h3>
-                </div>
-                <div class="panel-body table-responsive">
-                    {% include "@CertUnlpNgen/Incident/Frontend/redetectedTable.html.twig" with {'incident': object,'incidentsDetected':object.incidentsDetected} %}
-                </div>
-            </div>
-        </div>
-        {% endif %}
-
-    {% endblock %}
-
 {% endblock %}
+
 {% block javascripts %}
 
     {{ parent() }}

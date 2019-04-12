@@ -37,7 +37,7 @@ class IncidentFrontendController extends FrontendController
     public function evidenceIncidentAction(Incident $incident)
     {
 
-        $zipname = $incident . '_' . md5(time()) . '.zip';
+        $zipname = $incident . '.zip';
         $zip = new \ZipArchive();
         $evidence_path = $this->evidence_path . $incident->getEvidenceSubDirectory() . "/";
         $zip->open($evidence_path . $zipname, \ZipArchive::CREATE);
