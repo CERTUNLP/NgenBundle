@@ -7,10 +7,15 @@
  with this source code in the file LICENSE.
 #}
 
-{% if incident.state.slug == "open" %}
-    {{ label_info(incident.state) }}
-{% elseif incident.state.slug == "closed" %}
-    {{ label_success(incident.state) }}
+{% set translatedState = incident.state.name|trans %}
+{% set translatedStatus = incident.statusToString|trans %}
+
+{{ label_info(translatedState) }}
+
+{% if incident.isNew %}
+    {{ label_danger(translatedStatus) }}
+{% elseif incident.isClosed %}
+    {{ label_success(translatedStatus) }}
 {% else %}
-    {{ label_danger(incident.state) }}
+    {{ label_success(translatedStatus) }}
 {% endif %}

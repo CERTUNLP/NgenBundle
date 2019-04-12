@@ -60,93 +60,18 @@ class InternalIncidentListener
      */
     public function prePersistHandler(Incident $incident, LifecycleEventArgs $event)
     {
-        $this->incidentPrePersistUpdate($incident, $event);
+//        $this->incidentPrePersistUpdate($incident, $event);
 
         $this->delegator_chain->prePersistDelegation($incident);
     }
 
-    public function incidentPrePersistUpdate(Incident $incident, LifecycleEventArgs $event)
-    {
-        $this->hostUpdate($incident);
-        $this->networkUpdate($incident);
-        $this->decisionUpdate($incident);
-        $this->timestampsUpdate($incident);
-        $this->slugUpdate($incident);
-        $this->incident_handler->addOrUpdateIncident($incident);
-        //$this->priorityUpdate($incident, $event);
-        //$this->stateUpdate($incident, $event);
-        //$this->feedUpdate($incident, $event);
-        //$this->tlpUpdate($incident, $event);
-    }
+//    public function incidentPrePersistUpdate(Incident $incident, LifecycleEventArgs $event)
+//    {
+//
+//        $this->updateIncidentData($incident);
+//    }
 
-    /**
-     * @param Incident $incident
-     * @return Incident
-     */
-    public function hostUpdate(Incident $incident): Incident
-    {
 
-        $host = $incident->getOrigin();
-        $host_new = $this->entityManager->getRepository(Host::class)->findOneByAddress(['address' => $incident->getAddress()]) ?: $this->entityManager->getRepository(Host::class)->post(['address' => $incident->getAddress()]);
-
-        if ($host) {
-            if (!$host->equals($host_new) && !$incident->isClosed()) {
-                $incident->setOrigin($host_new);
-            }
-        } else {
-            $incident->setOrigin($host_new);
-        }
-        return $incident;
-    }
-
-    /**
-     * @param Incident $incident
-     */
-    public function networkUpdate(Incident $incident): void
-    {
-        $network = $incident->getNetwork();
-        $network_new = $incident->getOrigin()->getNetwork();
-        if ($network) {
-            if (!$network->equals($network_new) && !$incident->isClosed()) {
-                $incident->setNetwork($network_new);
-            }
-        } else {
-            $incident->setNetwork($network_new);
-        }
-    }
-
-    public function decisionUpdate(Incident $incident): ?Incident
-    {
-        return $this->decision_handler->getByIncident($incident);
-    }
-
-    public function timestampsUpdate(Incident $incident): void
-    {
-        //FIX comprobar que actualice el updated
-        if ($incident->getDate() == null) {
-            try {
-                $incident->setDate(new \DateTime('now'));
-            } catch (\Exception $e) {
-            }
-        }
-    }
-
-    /**
-     * @param Incident $incident
-     */
-    public function slugUpdate(Incident $incident): void
-    {
-        $incident->setSlug(Sluggable\Urlizer::urlize($incident->getOrigin()->getAddress() . ' ' . $incident->getType()->getSlug() . ' ' . $incident->getDate()->format('Y-m-d-H-i'), '_'));
-    }
-
-    public function priorityUpdate(Incident $incident, LifecycleEventArgs $event): void
-    {
-        $entityManager = $event->getEntityManager();
-        $repository = $entityManager->getRepository(IncidentPriority::class);
-        $priority = $repository->findOneBy(array('impact' => $incident->getImpact()->getSlug(), 'urgency' => $incident->getUrgency()->getSlug()));
-        $incident->setPriority($priority);
-
-    }
 
     /**
      * @return HostHandler
@@ -193,7 +118,7 @@ class InternalIncidentListener
      */
     public function preUpdateHandler(Incident $incident, PreUpdateEventArgs $event): void
     {
-        $this->incidentPrePersistUpdate($incident, $event);
+        $this->incident_handler->checkIfExists($incident,"POST");
         $this->delegator_chain->preUpdateDelegation($incident);
     }
 

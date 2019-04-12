@@ -641,7 +641,8 @@ class Incident implements IncidentInterface
      */
     public function addIncidentDetected(Incident $incidentDetected): Incident
     {
-        $this->incidentsDetected[] = new IncidentDetected($incidentDetected,$this);
+        $nuevo=new IncidentDetected($incidentDetected,$this);
+        $this->incidentsDetected->add($nuevo);
         return $this;
     }
     /**
@@ -667,7 +668,7 @@ class Incident implements IncidentInterface
      */
     public function addChangeStateHistory(IncidentChangeState $changeState): Incident
     {
-        $this->changeStateHistory[] = $changeState;
+        $this->changeStateHistory->add($changeState);
         return $this;
     }
 
@@ -764,6 +765,7 @@ class Incident implements IncidentInterface
         if ($this->modifyIncidentStatus($state)) {
             $this->addChangeStateHistory(new IncidentChangeState($this,$state,$reporter,$this->getState()));
             $this->setState($state);
+
         }
         return $this;
     }
@@ -803,6 +805,20 @@ class Incident implements IncidentInterface
             }
         }
         return false;
+    }
+
+    public function statusToString(): string
+    {
+        if ($this->isNew()){
+            return "New Incident";
+        }
+        if (!$this->isClosed() and !$this->isNew()) {
+            return "Under treatment";
+        }
+        if ($this->isClosed()){
+            return "Closed";
+        }
+        return "Undefined";
     }
 
     /**
@@ -924,7 +940,7 @@ class Incident implements IncidentInterface
      */
     public function isOpen(): bool
     {
-        return $this->getState()->getSlug() === 'open';
+        return (!$this->isClosed() and !$this->isNew());
     }
 
     /**

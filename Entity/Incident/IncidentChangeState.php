@@ -25,7 +25,23 @@ class IncidentChangeState
      */
     protected $id;
 
+/**
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
+    /**
+     * @param int $id
+     * @return Incident
+     */
+    public function setId(int $id): Incident
+    {
+        $this->id = $id;
+        return $this;
+    }
 
     public function __construct(Incident $incident,IncidentState $newState,$responsable, IncidentState $oldState=null, $method = "frontend" )
     {
@@ -153,7 +169,7 @@ class IncidentChangeState
     /**
      * @return IncidentStateAction
      */
-    public function getActionApplied(): IncidentStateAction
+    public function getActionApplied(): ? IncidentStateAction
     {
         return $this->actionApplied;
     }

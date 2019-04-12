@@ -7,22 +7,30 @@
  with this source code in the file LICENSE.
 #}
 
-<table class="table table-bordered">
+<table class="table table-striped table-bordered table-hover dataTable no-footer">
+    <tr role="row">
+        <th>{{  'Type'|trans }}</th>
+        <th>{{ 'Feed'|trans }}</th>
+        <th>{{ 'State'|trans }}</th>
+        <th>{{ 'TLP'|trans }}</th>
+        <th>{{ 'Date'|trans }}</th>
+        <th>{{ 'Notes'|trans }}</th>
+        <th>{{ 'Evidence'|trans }}</th>
+    </tr>
+    <tbody>
+    
         {%  for incidentDetected in incidentsDetected %}
-                <tr>
+                <tr role="row">
                         <td>{{ incidentDetected.type | trans }}</td>
                         <td>{{ incidentDetected.feed | trans }}</td>
                         <td>{{ incidentDetected.state | trans }}</td>
                         <td>{{ incidentDetected.tlp | trans }}</td>
                         <td>{{ incidentDetected.date | date('Y-m-d H:i') }}</td>
                         <td>{{ incidentDetected.notes| trans }}</td>
+                        <td>{{ incidentDetected.evidenceFile }}</td>
+                </tr>
+        {% endfor %}    
 
+    </tbody>
 
-                </tr>>
-        {% endfor %}
 </table>
-{% if not incident.incidentsDetected is empty%}
-        <span class="label label-warning"> {{  'Detected '|trans}}{{ incident.incidentsDetected|length }}{{ ' times'|trans}}</span>
-        <span class="label label-warning"> {{  'LAST: '|trans}}{{ incident.incidentsDetected|last }}</span>
-
-{% endif %}
