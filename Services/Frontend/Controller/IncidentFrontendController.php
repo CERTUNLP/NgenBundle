@@ -17,7 +17,7 @@ use FOS\CommentBundle\Model\ThreadManagerInterface;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Knp\Component\Pager\Paginator;
 use Symfony\Component\Form\FormFactory;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
@@ -37,27 +37,27 @@ class IncidentFrontendController extends FrontendController
     public function evidenceIncidentAction(Incident $incident)
     {
 
-        $zipname = $incident . '.zip';
+        // Create new Zip Archive.
         $zip = new \ZipArchive();
+
+        // The name of the Zip documents.
         $evidence_path = $this->evidence_path . $incident->getEvidenceSubDirectory() . "/";
-        $zip->open($evidence_path . $zipname, \ZipArchive::CREATE);
-
-
+        $zipName = $evidence_path . 'EvidenceDocuments' . $incident . '.zip';
         $options = array('remove_all_path' => TRUE);
+
+        $zip->open($zipName, \ZipArchive::CREATE);
         $zip->addGlob($evidence_path . $incident . "*", GLOB_BRACE, $options);
         $zip->close();
-
-        $response = new BinaryFileResponse($evidence_path . $zipname);
+        $response = new Response(file_get_contents($zipName));
         $response->headers->set('Content-Type', 'application/zip');
-        $response->headers->set('Content-disposition', ' attachment; filename="' . $zipname . '"');
-        $response->headers->set('Content-Length', filesize($evidence_path . $zipname));
-        $disposition = $response->headers->makeDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $zipname
-        );
+        $response->headers->set('Content-Disposition', 'attachment;filename="' . $zipName . '"');
+        $response->headers->set('Content-length', filesize($zipName));
 
-        $response->headers->set('Content-Disposition', $disposition);
+        @unlink($zipName);
+
         return $response;
+
+
     }
 
     public function newEntity(Request $request)

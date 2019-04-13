@@ -17,6 +17,22 @@ use CertUnlp\NgenBundle\Entity\User;
 class IncidentDetected
 {
     /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
