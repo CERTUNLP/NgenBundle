@@ -182,13 +182,16 @@ services:
         arguments: ["@doctrine.orm.entity_manager","@form.factory",CertUnlp\NgenBundle\Form\HostType,"@knp_paginator","@fos_elastica.finder.hosts.host","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.incident.internal.frontend.controller:
-    cert_unlp.ngen.incident.internal.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.internal.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.incident","@fos_comment.manager.comment","@fos_comment.manager.thread","@security.token_storage","%cert_unlp.ngen.incident.evidence.path%"]
 
     cert_unlp.ngen.incident.external.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.external.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.incident","@fos_comment.manager.comment","@fos_comment.manager.thread","%cert_unlp.ngen.incident.evidence.path%"]
+
+    cert_unlp.ngen.incident.detected.frontend.controller:
+        class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentDetectedFrontendController
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.internal.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.incident","@fos_comment.manager.comment","@fos_comment.manager.thread","@security.token_storage","%cert_unlp.ngen.incident.evidence.path%"]
 
     cert_unlp.ngen.network.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\NetworkFrontendController
