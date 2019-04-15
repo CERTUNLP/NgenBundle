@@ -9,7 +9,6 @@
 
 <table class="table table-striped table-bordered table-hover dataTable no-footer">
     <tr role="row">
-        <th>{{  'Type'|trans }}</th>
         <th>{{ 'Feed'|trans }}</th>
         <th>{{ 'State'|trans }}</th>
         <th>{{ 'TLP'|trans }}</th>
@@ -20,8 +19,7 @@
     <tbody>
     
         {%  for incidentDetected in incidentsDetected %}
-            <tr role="row" data-id="{{ incidentDetected.id }}">>
-                        <td>{{ incidentDetected.type | trans }}</td>
+            <tr role="row" data-id="{{ incidentDetected.id }}">
                         <td>{{ incidentDetected.feed | trans }}</td>
                         <td>{{ incidentDetected.state | trans }}</td>
                         <td>{{ incidentDetected.tlp | trans }}</td>
@@ -29,8 +27,7 @@
                         <td>{{ incidentDetected.notes| trans }}</td>
                 <td class="">
                     {% if incidentDetected.EvidenceFilePath %}
-                        <a href="{{ path('cert_unlp_ngen_incident_frontend_evidence_incident_detected_id',{'id':incidentDetected.id}) }}">Evidence
-                            (.zip)</a>
+                        <a href="{{ path('cert_unlp_ngen_incident_frontend_evidence_incident_detected_id',{'id':incidentDetected.id}) }}">{{ 'Download'|trans }}</a>
                     {% endif %}
                 </td>
                 </tr>

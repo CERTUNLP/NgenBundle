@@ -44,9 +44,13 @@ class IncidentFrontendController extends FrontendController
         $evidence_path = $this->evidence_path . $incident->getEvidenceSubDirectory() . "/";
         $zipName = $evidence_path . 'EvidenceDocuments' . $incident . '.zip';
         $options = array('remove_all_path' => TRUE);
-
         $zip->open($zipName, \ZipArchive::CREATE);
-        $zip->addGlob($evidence_path . $incident . "*", GLOB_BRACE, $options);
+        foreach($incident->getIncidentsDetected() as $detected) {
+            if ($detected->getEvidenceFilePath()){
+               $zip->addFile($this->evidence_path.$detected->getEvidenceFilePath(),$detected->getEvidenceFilePath());
+            }
+        }
+        //$zip->addGlob($evidence_path . "*", GLOB_BRACE, $options);
         $zip->close();
         $response = new Response(file_get_contents($zipName));
         $response->headers->set('Content-Type', 'application/zip');

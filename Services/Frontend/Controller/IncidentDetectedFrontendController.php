@@ -35,14 +35,12 @@ class IncidentDetectedFrontendController extends FrontendController
     public function evidenceIncidentAction(IncidentDetected $incident)
     {
 
-        $evidence_file = $this->evidence_path . $incident->getIncident()->getEvidenceSubDirectory() . "/" . $incident->getEvidenceFilePath();
+        $evidence_file = $this->evidence_path ."/" . $incident->getEvidenceFilePath();
 
         $response = new Response(file_get_contents($evidence_file));
         $response->headers->set('Content-Type', 'application/zip');
         $response->headers->set('Content-Disposition', 'attachment;filename="' . $evidence_file . '"');
         $response->headers->set('Content-length', filesize($evidence_file));
-
-        @unlink($evidence_file);
 
         return $response;
 

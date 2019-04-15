@@ -9,16 +9,15 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Services;
+namespace CertUnlp\NgenBundle\Entity\Incident\Listener;
 
-use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Description of incidentEvidenceManager
- *
- * @author demyen
- */
-class IncidentEvidenceManager
+
+class IncidentDetectedListener
 {
 
     private $upload_directory;
@@ -28,16 +27,20 @@ class IncidentEvidenceManager
         $this->upload_directory = $upload_directory;
     }
 
-    public function prePersistDelegation(Incident $incident)
+    /** @ORM\PrePersist
+     * @param IncidentDetected $incident
+     * @param LifecycleEventArgs $event
+     */
+    public function prePersistHandler(IncidentDetected $incident,LifecycleEventArgs $event)
     {
         $this->setFilename($incident);
         $this->uploadEvidenceFile($incident);
     }
 
-    public function setFilename(Incident $incident)
+    public function setFilename(IncidentDetected $incident)
     {
         if ($incident->getEvidenceFile()) {
-            $ext = "_" . sha1(uniqid(mt_rand(), true));
+            $ext = $incident->getIncident()->getEvidenceSubDirectory()."/_" . sha1(uniqid(mt_rand(), true));
             if (is_callable(array($incident->getEvidenceFile(), 'getClientOriginalExtension'))) {
 
                 $incident->setEvidenceFilePath($ext . "." . $incident->getEvidenceFile()->getClientOriginalExtension());
@@ -48,38 +51,15 @@ class IncidentEvidenceManager
         }
     }
 
-//    public function postPersistDelegation(Incident $incident) {
-//        $this->uploadEvidenceFile($incident);
-//    }
-//
-//    public function postUpdateDelegation(Incident $incident) {
-//        $this->uploadEvidenceFile($incident);
-//    }
-
-    public function uploadEvidenceFile(Incident $incident)
+    public function uploadEvidenceFile(IncidentDetected $incident)
     {
-
-//        if (null === $incident->getEvidenceFile()) {
-//            return;
-//        }
-        // if there is an error when moving the file, an exception will
-        // be automatically thrown by move(). This will properly prevent
-        // the entity from being persisted to the database on error
         $uploadDir = $this->getUploadDirectory() . $incident->getIncident()->getEvidenceSubDirectory();
         if (!file_exists($uploadDir) && !mkdir($uploadDir, 0777, true) && !is_dir($uploadDir)) {
             die('Failed to create folders...');
         }
-
         if ($incident->getEvidenceFile()) {
             $incident->getEvidenceFile()->move($uploadDir, $incident->getEvidenceFilePath());
         }
-        // check if we have an old image
-//        if ($incident->getEvidenceFileTemp()) {
-//            // delete the old image
-//            unlink($this->getUploadDirectory() . $incident->getEvidenceFileTemp());
-//            // clear the temp image path
-//            $incident->setEvidenceFileTemp(null);
-//        }
     }
 
     protected function getUploadDirectory()
@@ -88,11 +68,16 @@ class IncidentEvidenceManager
         // documents should be saved
         return $this->upload_directory;
     }
+    /** @ORM\PreUpdate
+     * @param IncidentDetected $incident
+     * @param PreUpdateEventArgs $event
+     */
 
-    public function preUpdateDelegation(Incident $incident)
+    public function preUpdateHandler(IncidentDetected $incident, PreUpdateEventArgs $event): void
     {
         $this->setFilename($incident);
         $this->uploadEvidenceFile($incident);
     }
 
 }
+

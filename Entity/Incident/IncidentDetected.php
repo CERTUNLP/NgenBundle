@@ -12,6 +12,7 @@ use CertUnlp\NgenBundle\Entity\User;
  *
  * @ORM\Table(name="incident_detected")
  * @ORM\Entity
+ * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Listener\IncidentDetectedListener" })
  * @JMS\ExclusionPolicy("all")
  */
 class IncidentDetected
@@ -52,7 +53,7 @@ class IncidentDetected
         $this->setDate(new DateTime('now'));
         $this->setEvidenceFile($incident->getEvidenceFile());
         $this->setEvidenceFileTemp($incident->getEvidenceFileTemp());
-        $this->setEvidenceFilePath($incident->getEvidenceFilePath());
+        $this->setEvidenceFilePath($incidentFather->getEvidenceSubDirectory().$incident->getEvidenceFilePath());
         $this->setNotes($incident->getNotes());
         $this->setReporter($incident->getReporter());
         $this->setState($incident->getState());
@@ -337,6 +338,7 @@ class IncidentDetected
      */
     public function setEvidenceFilePath($evidence_file_path): void
     {
+
         $this->evidence_file_path = $evidence_file_path;
     }
 
