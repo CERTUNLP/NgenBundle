@@ -298,6 +298,12 @@ class Incident implements IncidentInterface
         return $this->id;
     }
 
+
+    public function getIncident(): Incident
+    {
+        return $this;
+    }
+
     /**
      * @param int $id
      * @return Incident
@@ -1069,13 +1075,14 @@ class Incident implements IncidentInterface
     {
         $this->evidence_file = $evidenceFile;
         // check if we have an old image path
-        if ($this->getEvidenceFilePath()) {
-        // store the old name to delete after the update
-            $this->setEvidenceFileTemp($this->getEvidenceFilePath());
-            $this->setEvidenceFilePath();
-        } else {
-            $this->setEvidenceFilePath('initial');
-        }
+//        if ($this->getEvidenceFilePath()) {
+//        // store the old name to delete after the update
+//            $this->setEvidenceFileTemp($this->getEvidenceFilePath());
+//            $this->setEvidenceFilePath();
+//        } else {
+//            $this->setEvidenceFilePath('initial');
+//        }
+        $this->setEvidenceFilePath($evidenceFile->getFilename());
         return $this;
     }
 
@@ -1096,7 +1103,7 @@ class Incident implements IncidentInterface
                 $pre_path = '';
             }
 
-            return $pre_path . $this . $this->evidence_file_path;
+            return $pre_path . $this->evidence_file_path;
         }
         return '';
     }
@@ -1118,7 +1125,8 @@ class Incident implements IncidentInterface
      */
     public function getEvidenceSubDirectory(): ?string
     {
-        return '/' . $this->getDate()->format('Y') . '/' . $this->getDate()->format('F') . '/' . $this->getDate()->format('d');
+        //return '/'.$this->getId().$this->getSlug();//sha1(sha1($this->getId()).sha1($this->getSlug()));
+      return '/'.$this->getSlug().'/'.sha1($this->getDate()->format('Y-m-d-h-i'));
     }
 
     /**
