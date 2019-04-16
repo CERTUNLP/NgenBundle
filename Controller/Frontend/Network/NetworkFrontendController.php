@@ -49,6 +49,17 @@ class NetworkFrontendController extends Controller
     }
 
     /**
+     * @Route("search/autocomplete", name="cert_unlp_ngen_network_search_autocomplete")
+     * @param Request $request
+     * @return array
+     */
+    public function searchAutocompleteNetworkAction(Request $request)
+    {
+        return $this->getFrontendController()->searchAutocompleteEntity($request);
+
+    }
+
+    /**
      * @Template("CertUnlpNgenBundle:Network:Frontend/networkForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_network_new_network")
      * @param Request $request

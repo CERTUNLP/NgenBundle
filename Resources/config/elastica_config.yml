@@ -151,13 +151,15 @@ fos_elastica:
                 index:
                     max_result_window: 50000
             types:
-
                 network:
                     properties:
                         id:
                             type: integer
                         ip:
                             type: ip
+                        addressAndMask:
+                            type: keyword
+                            index: not_analyzed
                         ip_mask:
                             type: integer
                         domain:

@@ -21,7 +21,7 @@ use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
  */
 class HostRepository extends NetworkElementRepository
 {
-    public function findOneByAddress(array $params): ?NetworkElement
+    public function findOneByAddress($params): ?NetworkElement
     {
 
         $address = explode('/', $params['address']);

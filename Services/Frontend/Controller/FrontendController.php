@@ -88,7 +88,8 @@ class FrontendController
         if (!$term) {
             $term = $request->get('term') ?? $request->get('q') ?? '*';
         }
-        $results = $this->getFinder()->find($term);
+
+        $results = $this->getFinder()->find($term . ' && isActive:"true"');
 
         $array = (new ArrayCollection($results))->map(static function ($element) {
             return ['id' => $element->getId(), 'text' => (string)$element];

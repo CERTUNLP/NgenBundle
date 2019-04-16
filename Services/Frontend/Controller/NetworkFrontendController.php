@@ -11,21 +11,40 @@
 
 namespace CertUnlp\NgenBundle\Services\Frontend\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Elastica\Query;
+use Elastica\Query\BoolQuery;
+use Elastica\Query\Prefix;
+use Elastica\Query\Term;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+
 class NetworkFrontendController extends FrontendController
 {
 
-//    public function homeEntity(Request $request, $entity = 'Network') {
-//        $em = $this->getDoctrine();
-//        $dql = "SELECT n,au,na "
-//                . "FROM CertUnlpNgenBundle:Network n join n.network_entity au join n.network_admin na";
-//        $query = $em->createQuery($dql);
-//
-//        $pagination = $this->getPaginator()->paginate(
-//                $query, $request->query->get('page', 1), 7
-//                , array('defaultSortFieldName' => 'n.createdAt', 'defaultSortDirection' => 'desc')
-//        );
-//
-//        return array('objects' => $pagination);
-//    }
+    public function searchAutocompleteEntity(Request $request, $term = null, $limit = 7, $defaultSortFieldName = 'createdAt', $defaultSortDirection = 'desc', $page = 'page', $field = '')
+    {
+        if (!$term) {
+            $term = $request->get('term') ?? $request->get('q') ?? '*';
+        }
+
+        $prefix = new Prefix();
+        $prefix
+            ->setPrefix('addressAndMask', $term);
+        $prefix2 = new Term();
+        $prefix2
+            ->setTerm('isActive', true);
+
+        $bool = new BoolQuery();
+        $bool
+            ->addShould($prefix)
+            ->addMust($prefix2);
+        $results = $this->getFinder()->find(Query::create($bool));
+
+        $array = (new ArrayCollection($results))->map(static function ($element) {
+            return ['id' => $element->getId(), 'text' => (string)$element];
+        });
+        return new JsonResponse($array->toArray());
+    }
 
 }
