@@ -7,8 +7,8 @@
  with this source code in the file LICENSE.
 #}
 
-{% if not incident.lastTimeDetected is empty%}
-        <span class="label label-warning"> {{  'Detected '|trans}}{{ incident.lastTimeDetected|length }}{{ ' times'|trans}}</span>
-        <span class="label label-warning"> {{  'LAST: '|trans}}{{ incident.lastTimeDetected|last }}</span>
+{% if not incident.incidentsDetected is empty%}
+        <span class="label label-warning"> {{  'Detected '|trans}}{{ incident.incidentsDetected|length }}{{ ' times'|trans}}</span>
+        <span class="label label-warning"> {{  'LAST: '|trans}}{{ incident.incidentsDetected|last }}</span>
 
 {% endif %}

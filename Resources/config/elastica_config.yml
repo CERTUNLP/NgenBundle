@@ -138,13 +138,42 @@ fos_elastica:
                                     type: keyword
                                 name:
                                     type: keyword
-
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Incident\Incident
+                        provider: ~
+                        finder: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
+        changeStateHistory:
+            index_name: changestatehistory_%kernel.environment%
+            settings:
+                index:
+                    max_result_window: 50000
+            types:
+                incidentStateAction:
+                    properties:
+                        responsable:
+                            type: keyword
+                        date:
+                            type: keyword
+                        oldstate:
+                            type: keyword
+                        newstate:
+                            type: keyword
+                        actionApplied:
+                            type: keyword
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\Incident\IncidentChangeState
                         provider: ~
                         finder: ~
                         listener:

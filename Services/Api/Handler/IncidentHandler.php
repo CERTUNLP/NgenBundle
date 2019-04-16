@@ -12,22 +12,29 @@
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use FOS\CommentBundle\Command\FixAcesCommand;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Gedmo\Sluggable\Util as Sluggable;
 
 class IncidentHandler extends Handler
 {
-
     private $user_handler;
     private $context;
     private $host_handler;
+    private $decision_handler;
 
-    public function __construct(ObjectManager $om, string $entityClass, string $entityType, FormFactoryInterface $formFactory, SecurityContext $context, UserHandler $user_handler, HostHandler $host_handler)
+    public function __construct(ObjectManager $om, string $entityClass, string $entityType, FormFactoryInterface $formFactory, SecurityContext $context, UserHandler $user_handler, HostHandler $host_handler, IncidentDecisionHandler $decision_handler)
     {
+
         parent::__construct($om, $entityClass, $entityType, $formFactory);
         $this->host_handler = $host_handler;
         $this->user_handler = $user_handler;
+        $this->decision_handler = $decision_handler;
         $this->context = $context;
     }
 
@@ -114,16 +121,19 @@ class IncidentHandler extends Handler
      * @return object|null
      * @throws \Exception
      */
-    protected function checkIfExists($incident, $method)
+    public function checkIfExists($incident, $method)
     {
-
+        $this->updateIncidentData($incident);
         $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
         if ($incidentDB && $method === 'POST') {
             if ($incident->getEvidenceFile()) {
                 $incidentDB->setEvidenceFile($incident->getEvidenceFile());
             }
-            $incidentDB->addLastTimeDetected($incident->getFeed());
+            $incidentDB->addIncidentDetected($incident);
+            $incidentDB->updateVariables($incident);
             $incident = $incidentDB;
+        } else{
+            $incident->addIncidentDetected($incident);
 
         }
         return $incident;
@@ -207,6 +217,66 @@ class IncidentHandler extends Handler
     {
         $this->host_handler = $host_handler;
         return $this;
+    }
+
+
+    public function updateIncidentData(Incident $incident)
+    {
+        $this->hostUpdate($incident);
+        $this->networkUpdate($incident);
+        $this->decisionUpdate($incident);
+        $this->timestampsUpdate($incident);
+        $this->slugUpdate($incident);
+        $this->priorityUpdate($incident);
+    }
+
+
+
+    /**
+     * @param Incident $incident
+     */
+    public function networkUpdate(Incident $incident): void
+    {
+        $network = $incident->getNetwork();
+        $network_new = $incident->getOrigin()->getNetwork();
+        if ($network) {
+            if (!$network->equals($network_new) && !$incident->isClosed()) {
+                $incident->setNetwork($network_new);
+            }
+        } else {
+            $incident->setNetwork($network_new);
+        }
+    }
+
+    public function decisionUpdate(Incident $incident): ?Incident
+    {
+        return $this->decision_handler->getByIncident($incident);
+    }
+
+    public function timestampsUpdate(Incident $incident): void
+    {
+        //FIX comprobar que actualice el updated
+        if ($incident->getDate() == null) {
+            try {
+                $incident->setDate(new \DateTime('now'));
+            } catch (\Exception $e) {
+            }
+        }
+    }
+
+    /**
+     * @param Incident $incident
+     */
+    public function slugUpdate(Incident $incident): void
+    {
+        $incident->setSlug(Sluggable\Urlizer::urlize($incident->getOrigin()->getAddress() . ' ' . $incident->getType()->getSlug() . ' ' . $incident->getDate()->format('Y-m-d-H-i'), '_'));
+    }
+
+    public function priorityUpdate(Incident $incident): void
+    {
+        $repository = $this->om->getRepository(IncidentPriority::class);
+        $priority = $repository->findOneBy(array('impact' => $incident->getImpact()->getSlug(), 'urgency' => $incident->getUrgency()->getSlug()));
+        $incident->setPriority($priority);
     }
 
 }
