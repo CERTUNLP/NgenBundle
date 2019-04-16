@@ -14,6 +14,11 @@ fos_elastica:
             settings:
                 index:
                     max_result_window: 50000
+                    analysis:
+                        analyzer:
+                            email_analyser:
+                                type: custom
+                                tokenizer: uax_url_email
             types:
                 incident:
                     properties:
@@ -114,7 +119,8 @@ fos_elastica:
                                 lastname:
                                     type: keyword
                                 email:
-                                    type: keyword
+                                    type: string
+                                    analyzer: email_analyser
                                 username:
                                     type: keyword
                                 enabled:
@@ -150,6 +156,11 @@ fos_elastica:
             settings:
                 index:
                     max_result_window: 50000
+                    analysis:
+                        analyzer:
+                            email_analyser:
+                                type: custom
+                                tokenizer: uax_url_email
             types:
                 network:
                     properties:
@@ -179,6 +190,14 @@ fos_elastica:
                                     type: keyword
                                 isActive:
                                     type: boolean
+                                contacts:
+                                    type: "nested"
+                                    properties:
+                                        email:
+                                            type: string
+                                            analyzer: email_analyser
+                                        telegram:
+                                            type: string
                         networkEntity:
                             type: "object"
                             properties:
@@ -238,6 +257,11 @@ fos_elastica:
             settings:
                 index:
                     max_result_window: 50000
+                    analysis:
+                        analyzer:
+                            email_analyser:
+                                type: custom
+                                tokenizer: uax_url_email
             types:
                 network_admin:
                     properties:
@@ -253,6 +277,14 @@ fos_elastica:
                             type: date
                         updatedAt:
                             type: date
+                        contacts:
+                            type: "nested"
+                            properties:
+                                email:
+                                    type: string
+                                    analyzer: email_analyser
+                                telegram:
+                                    type: string
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
@@ -572,6 +604,11 @@ fos_elastica:
             settings:
                 index:
                     max_result_window: 50000
+                    analysis:
+                        analyzer:
+                            email_analyser:
+                                type: custom
+                                tokenizer: uax_url_email
             types:
                 users:
                     properties:
@@ -584,7 +621,8 @@ fos_elastica:
                         slug:
                             type: keyword
                         email:
-                            type: keyword
+                            type: string
+                            analyzer: email_analyser
                         lastLogin:
                             type: date
                         isEnabled:
