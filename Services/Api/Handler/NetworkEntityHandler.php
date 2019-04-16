@@ -42,4 +42,8 @@ class NetworkEntityHandler extends Handler
         return $incident_feed;
     }
 
+    protected function createEntityInstance(array $params)
+    {
+        return new $this->entityClass($params['name']);
+    }
 }

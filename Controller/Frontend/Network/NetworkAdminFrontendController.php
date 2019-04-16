@@ -43,6 +43,8 @@ class NetworkAdminFrontendController extends Controller
     }
 
     /**
+     * @Template("CertUnlpNgenBundle:NetworkAdmin/Frontend:home.html.twig")
+
      * @Route("search", name="cert_unlp_ngen_network_search_network_admin")
      * @param Request $request
      * @return array

@@ -26,6 +26,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class IncidentDecisionType extends AbstractType
 {
@@ -63,15 +64,14 @@ class IncidentDecisionType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
-            ->add('network', EntityType::class, array(
-                'empty_value' => 'Choose a network',
+            ->add('network', Select2EntityType::class, [
+                'remote_route' => 'cert_unlp_ngen_network_search_autocomplete',
                 'class' => Network::class,
-                'required' => false,
-                'description' => '(bro|external_report|netflow|shadowserver)',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
-                }))
+                'text_property' => 'value',
+                'minimum_input_length' => 3,
+                'page_limit' => 10,
+                'placeholder' => 'Select a network',
+            ])
             ->add('state', null, array(
                 'class' => IncidentState::class,
                 'empty_value' => 'Choose an incident state',
