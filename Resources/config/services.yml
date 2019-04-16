@@ -53,11 +53,11 @@ services:
     #        class:        CertUnlp\NgenBundle\Services\Communications\IncidentPhone
     #        arguments:    ["@twig","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%","@cert_unlp.ngen.incident.report.factory","%cert_unlp.ngen.incident.internal.report.lang%","%cert_unlp.ngen.team%","@translator.default"]
 
-    cert_unlp.ngen.incident.evidence.manager:
-        class:        CertUnlp\NgenBundle\Services\IncidentEvidenceManager
-        arguments:    ["%cert_unlp.ngen.incident.evidence.path%"]
-        tags:
-            - { name: cert_unlp.ngen.incident.internal.delegate, priority: 0 }
+#    cert_unlp.ngen.incident.evidence.manager:
+#        class:        CertUnlp\NgenBundle\Services\IncidentEvidenceManager
+#        arguments:    ["%cert_unlp.ngen.incident.evidence.path%"]
+#        tags:
+#            - { name: cert_unlp.ngen.incident.internal.delegate, priority: 0 }
 
     cert_unlp.ngen.incident.internal.delegator_chain:
         class:        "%cert_unlp.ngen.incident.internal.delegator_chain.class%"
@@ -76,6 +76,11 @@ services:
             - { name: doctrine.entity_listener }
             - { name: kernel.event_listener, event: cert_unlp.incident.convert_to_incident.event, method: onConvertToIncident }
 
+    cert_unlp.ngen.incident.detected.listener:
+        class: CertUnlp\NgenBundle\Entity\Incident\Listener\IncidentDetectedListener
+        arguments: [ "%cert_unlp.ngen.incident.evidence.path%"]
+        tags:
+            - { name: doctrine.entity_listener }
 
     cert_unlp.ngen.incident.host.listener:
         class: CertUnlp\NgenBundle\Entity\Network\Host\Listener\HostListener
@@ -98,7 +103,7 @@ services:
 
     cert_unlp.ngen.incident.internal.handler:
         class:        "%cert_unlp.ngen.incident.internal.handler.class%"
-        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.internal.class%","%cert_unlp.ngen.incident.internal.form_type.class%","@form.factory", "@security.context","@cert_unlp.ngen.user.handler","@cert_unlp.ngen.host.handler"]
+        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.internal.class%","%cert_unlp.ngen.incident.internal.form_type.class%","@form.factory", "@security.context","@cert_unlp.ngen.user.handler","@cert_unlp.ngen.host.handler","@cert_unlp.ngen.incident.decision.handler"]
 
     cert_unlp.ngen.incident.feed.handler:
         class:        "%cert_unlp.ngen.incident.feed.handler.class%"
@@ -182,13 +187,16 @@ services:
         arguments: ["@doctrine.orm.entity_manager","@form.factory",CertUnlp\NgenBundle\Form\HostType,"@knp_paginator","@fos_elastica.finder.hosts.host","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.incident.internal.frontend.controller:
-    cert_unlp.ngen.incident.internal.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.internal.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.incident","@fos_comment.manager.comment","@fos_comment.manager.thread","@security.token_storage","%cert_unlp.ngen.incident.evidence.path%"]
 
     cert_unlp.ngen.incident.external.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.external.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.incident","@fos_comment.manager.comment","@fos_comment.manager.thread","%cert_unlp.ngen.incident.evidence.path%"]
+
+    cert_unlp.ngen.incident.detected.frontend.controller:
+        class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentDetectedFrontendController
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.internal.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.incident","@fos_comment.manager.comment","@fos_comment.manager.thread","@security.token_storage","%cert_unlp.ngen.incident.evidence.path%"]
 
     cert_unlp.ngen.network.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\NetworkFrontendController

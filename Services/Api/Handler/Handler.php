@@ -96,8 +96,8 @@ abstract class Handler implements ApiHandlerInterface
      */
     protected function processForm($entity_class_instance, $parameters, $method = "PUT", $csrf_protection = true)
     {
-
         $form = $this->formFactory->create(new $this->entityType($this->om), $entity_class_instance, array('csrf_protection' => $csrf_protection, 'method' => $method));
+
         $form->submit($parameters, 'PATCH' !== $method);
 
         if ($form->isValid()) {
@@ -108,6 +108,7 @@ abstract class Handler implements ApiHandlerInterface
             //try {
 
             $this->om->persist($entity_class_instance);
+
             $this->om->flush();
 
             return $entity_class_instance;

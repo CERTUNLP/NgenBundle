@@ -32,7 +32,7 @@ class IncidentDecisionHandler extends Handler
                 return $decision->doDecision($incident);
             }
         }
-        return $decisions->last();
+        return $decisions->last()->doDecision($incident);
     }
 
     public function orderDecisionsByNetworkMask(ArrayCollection $decisions): ArrayIterator

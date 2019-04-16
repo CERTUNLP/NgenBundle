@@ -32,6 +32,7 @@ class AppKernel extends Kernel
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
 //            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle,
         );
 

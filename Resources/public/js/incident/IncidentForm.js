@@ -12,6 +12,7 @@ var IncidentForm = Form.extend({
         $("#tlp").on("change", $.proxy(this.changeTLP, this));
         $("#type").on("change", $.proxy(this.getIncidentDecision, this));
         $("#feed").on("change", $.proxy(this.getIncidentDecision, this));
+        this.changeTLP();
     },
     changeTLP: function () {
         var $valor = $("#tlp option:selected").text();
@@ -29,10 +30,10 @@ var IncidentForm = Form.extend({
     },
     changeDefaults: function (response) {
         if (Object.keys(response).length) {
-            $("#tlp").val(response.responseJSON.tlp.slug);
-            $("#state").val(response.responseJSON.state.slug);
-            $("#impact").val(response.responseJSON.impact.slug);
-            $("#urgency").val(response.responseJSON.urgency.slug);
+            $("#tlp").val(response.responseJSON.tlp.slug).trigger('change') ;
+            $("#state").val(response.responseJSON.state.slug).trigger('change');
+            $("#impact").val(response.responseJSON.impact.slug).trigger('change');
+            $("#urgency").val(response.responseJSON.urgency.slug).trigger('change');
         }
     },
     setIncidentId: function () {

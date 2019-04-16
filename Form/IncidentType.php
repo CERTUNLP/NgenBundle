@@ -31,7 +31,9 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\FormEvents;
 
 class IncidentType extends AbstractType
 {
@@ -149,15 +151,26 @@ class IncidentType extends AbstractType
                 'attr' => array('align_with_widget' => true),
                 'required' => false,
                 'label' => 'Send mail report(if available)',
-                'description' => 'Send a mail report to the host administrator.'))
+                'description' => 'Send a mail report to the host administrator.'
+            ))
             ->add('id', HiddenType::class, array(
+                'required' => false,
+            ))
+            ->add('isNew', HiddenType::class, array(
+                'required' => false,
+            ))
+            ->add('isClosed', HiddenType::class, array(
                 'required' => false,
             ))
             ->add('save', SubmitType::class, array(
                 'attr' => array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => 'slide-down'),
 //                    'description' => "Evidence file that will be attached to the report "
             ))
-            ->addEventSubscriber(new IncidentDefaultFieldsListener($this->doctrine, $this->userLogged));
+            ->addEventSubscriber(new IncidentDefaultFieldsListener($this->doctrine, $this->userLogged))
+            ->addEventListener(
+                FormEvents::PRE_SET_DATA,
+                array($this, 'onPreSetData')
+            );
 
     }
 
@@ -179,6 +192,52 @@ class IncidentType extends AbstractType
     public function getName(): string
     {
         return '';
+    }
+
+    public function onPreSetData(FormEvent $event)
+    {
+
+        // get the form
+        $form = $event->getForm();
+
+        // get the data if 'reviewing' the information
+        /**
+         * @var Invoices
+         */
+        $data = $event->getData();
+
+
+        // disable field if it has been populated with a client already
+        if ( $data and ! $data->isNew() )
+          $form->add('type', null, array(
+        'empty_value' => 'Choose an incident type',
+        'required' => true,
+        'disabled'=>"disabled",
+        'description' => '(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|'
+            . 'dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|'
+            . 'open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|'
+            . 'open_ssdp|phishing|poodle|scan|shellshock|spam)',
+        'query_builder' => function (EntityRepository $er) {
+            return $er->createQueryBuilder('it')
+                ->where('it.isActive = TRUE');
+        }))
+        ->add('address', null, array(
+            'required' => true,
+            'disabled'=>"disabled",
+            'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
+            'label' => 'Address',
+            'description' => 'The network ip and mask',
+        ))
+        ->add('feed', EntityType::class, array(
+            'class' => IncidentFeed::class,
+            'required' => true,
+            'disabled'=>"disabled",
+            'description' => '(bro|external_report|netflow|shadowserver)',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('it')
+                    ->where('it.isActive = TRUE');
+            }));
+
     }
 
 }

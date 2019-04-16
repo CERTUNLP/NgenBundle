@@ -127,10 +127,10 @@ class Incident implements IncidentInterface
     /**
      * @var Collection
      * @JMS\Expose
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentLastTimeDetected",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDetected",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
      * @JMS\Groups({"api"})
      */
-    protected $lastTimeDetected;
+    protected $incidentsDetected;
 
     /**
      * @var Collection
@@ -286,7 +286,7 @@ class Incident implements IncidentInterface
         if ($term) {
             $this->setAddress($term);
         }
-        $this->lastTimeDetected=new ArrayCollection();
+        $this->incidentsDetected=new ArrayCollection();
         $this->changeStateHistory=new ArrayCollection();
     }
 
@@ -296,6 +296,12 @@ class Incident implements IncidentInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+
+    public function getIncident(): Incident
+    {
+        return $this;
     }
 
     /**
@@ -370,11 +376,8 @@ class Incident implements IncidentInterface
         return $this->isClosed;
     }
 
-    /**
-     * @param bool $isClosed
-     * @return Incident
-     */
-    public function setIsClosed(bool $isClosed): Incident
+
+    public function setIsClosed($isClosed = false): Incident
     {
         $this->isClosed = $isClosed;
         return $this;
@@ -550,13 +553,13 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @param bool $lastTimeUpdated
+     * @param bool $alreadyDetected
      * @return int
      * @throws Exception
      */
-    public function getOpenDays(bool $lastTimeDetected = false): int
+    public function getOpenDays(bool $alreadyDetected = false): int
     {
-        if ($lastTimeDetected) {
+        if ($alreadyDetected) {
             $date = $this->getOpenedAt()?: $this->getDate();
         } else {
             $date = $this->getDate();
@@ -569,11 +572,11 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @param bool $lastTimeDetected
+     * @param bool $alreadyDetected
      * @return int
      * @throws Exception
      */
-    public function getResponseMinutes(bool $lastTimeDetected = false): int
+    public function getResponseMinutes(bool $alreadyDetected = false): int
     {
         if (!$this->isNew()){
             return abs((($this->getDate())->getTimestamp()-($this->getOpenedAt())->getTimestamp())/60); //lo devuelvo en minutos eso es el i
@@ -585,11 +588,11 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @param bool $lastTimeDetected
+     * @param bool $alreadyDetected
      * @return int
      * @throws Exception
      */
-    public function getResolutionMinutes(bool $lastTimeDetected = false):int
+    public function getResolutionMinutes(bool $alreadyDetected = false):int
     {
         if (!$this->isClosed()) {
             if (!$this->isNew()) {
@@ -605,11 +608,11 @@ class Incident implements IncidentInterface
         }
     }
     /**
-     * @param bool $lastTimeDetected
+     * @param bool $alreadyDetected
      * @return int
      * @throws Exception
      */
-    public function getNewMinutes(bool $lastTimeDetected = false): int
+    public function getNewMinutes(bool $alreadyDetected = false): int
     {
         if ($this->isNew()){
             return $this->getDate()->diff(new DateTime())->i; //lo devuelvo en minutos eso es el i
@@ -619,27 +622,30 @@ class Incident implements IncidentInterface
     /**
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getLastTimeDetected()
+    public function getIncidentsDetected()
     {
-        return $this->lastTimeDetected;
+        return $this->incidentsDetected;
     }
 
     /**
-     * @param ArrayCollection $lastTimeDetectedCollection
+     * @param ArrayCollection $incidentDetectedCollection
      */
 
-    public function setLastTimeDetected(ArrayCollection $lastTimeDetectedCollection): void
+    public function setIncidentesDetected(ArrayCollection $incidentDetectedCollection): void
     {
-        $this->lastTimeDetected = $lastTimeDetectedCollection;
+        $this->incidentsDetected = $incidentDetectedCollection;
     }
 
+
+
     /**
-     * @param IncidentLastTimeDetected $lastTimeDetected
+     * @param IncidentDetected $incidentDetected
      * @return Incident
      */
-    public function addLastTimeDetected(IncidentFeed $feed): Incident
+    public function addIncidentDetected(Incident $incidentDetected): Incident
     {
-        $this->lastTimeDetected[] = new IncidentLastTimeDetected($this,$feed);
+        $nuevo=new IncidentDetected($incidentDetected,$this);
+        $this->incidentsDetected->add($nuevo);
         return $this;
     }
     /**
@@ -665,7 +671,7 @@ class Incident implements IncidentInterface
      */
     public function addChangeStateHistory(IncidentChangeState $changeState): Incident
     {
-        $this->changeStateHistory[] = $changeState;
+        $this->changeStateHistory->add($changeState);
         return $this;
     }
 
@@ -757,22 +763,65 @@ class Incident implements IncidentInterface
      * @param User $reporter
      * @return Incident
      */
-    public function setStateAndReporter(IncidentState $state = null,User $reporter): Incident
+    public function setStateAndReporter(IncidentState $state, User $reporter): Incident
     {
-        ////FIX hay que trabajar el flujo del estado del incidente DAMIAN HELP
+        if ($this->modifyIncidentStatus($state)) {
+            $this->addChangeStateHistory(new IncidentChangeState($this,$state,$reporter,$this->getState()));
+            $this->setState($state);
 
-        if ($state->isOpening() and $this->isNew()){
-            $this->open();
         }
-        if ($state->isReOpening() and $this->isClosed()){
-            $this->reOpen();
-        }
-        if ($state->isClosing()){
-            $this->close();
-        }
-        $this->addChangeStateHistory(new IncidentChangeState($this,$this->getState(),$reporter,$state));
-        $this->setState($state) ;
         return $this;
+    }
+
+    public function modifyIncidentStatus(IncidentState $state = null): bool
+    {
+        //FIX DAMIAN aca hay q avisar que no se puede cambiar el tipo de incidente
+        if ($this->isNew()){
+            if ($state->isOpening()){
+                $this->open();
+                return true;
+            }
+            elseif ($state->isReOpening())
+            {
+                $this->open();
+                return true;
+            }elseif (!$state->isClosing()){
+                return true;
+            }
+        }
+        if ($this->isClosed()){
+            if ($state->isReOpening())
+            {
+                $this->reOpen();
+                return true;
+            }
+            elseif ($state->isClosing()){
+                return true;
+            }
+        }
+        if (!$this->isClosed() and !$this->isNew()) {
+            if ($state->isOpening() or $state->isReOpening()) {
+                return true;
+            } elseif ($state->isClosing()) {
+                $this->close();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function statusToString(): string
+    {
+        if ($this->isNew()){
+            return "New Incident";
+        }
+        if (!$this->isClosed() and !$this->isNew()) {
+            return "Under treatment";
+        }
+        if ($this->isClosed()){
+            return "Closed";
+        }
+        return "Undefined";
     }
 
     /**
@@ -894,7 +943,7 @@ class Incident implements IncidentInterface
      */
     public function isOpen(): bool
     {
-        return $this->getState()->getSlug() === 'open';
+        return (!$this->isClosed() and !$this->isNew());
     }
 
     /**
@@ -1022,14 +1071,15 @@ class Incident implements IncidentInterface
     public function setEvidenceFile(File $evidenceFile = null): Incident
     {
         $this->evidence_file = $evidenceFile;
-// check if we have an old image path
-        if ($this->getEvidenceFilePath()) {
-// store the old name to delete after the update
-            $this->setEvidenceFileTemp($this->getEvidenceFilePath());
-            $this->setEvidenceFilePath();
-        } else {
-            $this->setEvidenceFilePath('initial');
-        }
+        // check if we have an old image path
+//        if ($this->getEvidenceFilePath()) {
+//        // store the old name to delete after the update
+//            $this->setEvidenceFileTemp($this->getEvidenceFilePath());
+//            $this->setEvidenceFilePath();
+//        } else {
+//            $this->setEvidenceFilePath('initial');
+//        }
+        $this->setEvidenceFilePath($evidenceFile->getFilename());
         return $this;
     }
 
@@ -1050,7 +1100,7 @@ class Incident implements IncidentInterface
                 $pre_path = '';
             }
 
-            return $pre_path . $this . $this->evidence_file_path;
+            return $pre_path . $this->evidence_file_path;
         }
         return '';
     }
@@ -1072,7 +1122,8 @@ class Incident implements IncidentInterface
      */
     public function getEvidenceSubDirectory(): ?string
     {
-        return '/' . $this->getDate()->format('Y') . '/' . $this->getDate()->format('F') . '/' . $this->getDate()->format('d');
+        //return '/'.$this->getId().$this->getSlug();//sha1(sha1($this->getId()).sha1($this->getSlug()));
+      return '/'.$this->getSlug().'/'.sha1($this->getDate()->format('Y-m-d-h-i'));
     }
 
     /**
@@ -1124,6 +1175,7 @@ class Incident implements IncidentInterface
      */
     public function getAddress(): ?string
     {
+
         return $this->getOrigin() ? $this->getOrigin()->getAddress() : $this->address;
     }
 
@@ -1178,9 +1230,7 @@ class Incident implements IncidentInterface
         return $this->isNew;
     }
 
-    /**
-     * @param bool $isNew
-     */
+
     public function setIsNew($isNew=true): Incident
     {
         $this->isNew = $isNew;
@@ -1202,6 +1252,16 @@ class Incident implements IncidentInterface
     public function setOpenedAt($openedAt)
     {
         $this->openedAt = $openedAt;
+    }
+
+    public function updateVariables(Incident $incidentDetected): Incident
+    {
+        $this->setStateAndReporter($incidentDetected->getState(), $incidentDetected->getReporter());
+        if ($this->isNew()) {
+            if ($this->getTlp()->getCode() < $incidentDetected->getTlp()->getCode()){ $this->setTlp($incidentDetected->getTlp()); }
+            if ($this->getPriority()->getCode()> $incidentDetected->getPriority()->getCode() ){ $this->setPriority($incidentDetected->getPriority());}
+        }
+        return $this;
     }
 
 }

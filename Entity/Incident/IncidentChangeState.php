@@ -24,71 +24,42 @@ class IncidentChangeState
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    /**
-     * @var Incident
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="changeStateHistory")
-     *
-     * */
-    protected $incident;
-    /**
-     * @var IncidentState
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
-     * @ORM\JoinColumn(name="newState", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    protected $newState;
-    /**
-     * @var IncidentState
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
-     * @ORM\JoinColumn(name="oldState", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    protected $oldState;
-    /**
-     * @var IncidentStateAction
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateAction")
-     * @ORM\JoinColumn(name="action_applied", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    protected $actionApplied;
-    /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
-     */
-    protected $responsable;
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="method", type="string", length=25)
-     * @JMS\Expose
-     * @JMS\Groups({"api_input"})
-     */
-    protected $method;
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="date", type="datetime",nullable=true)
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
-     */
-    private $date;
 
-    public function __construct(Incident $incident, IncidentState $newState, $responsable, IncidentState $oldState = null, $method = "frontend")
+/**
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return Incident
+     */
+    public function setId(int $id): Incident
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    public function __construct(Incident $incident,IncidentState $newState,$responsable, IncidentState $oldState=null, $method = "frontend" )
     {
         $this->setIncident($incident);
-        if ($oldState) {
-            $this->setOldState($oldState);
-        }
+        if ($oldState){$this->setOldState($oldState);}
         $this->setNewState($newState);
         $this->setDate(new DateTime('now'));
         $this->setMethod($method);
         $this->setResponsable($responsable);
         $this->setActionApplied($newState->getIncidentAction());
     }
+
+    /**
+     * @var Incident
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="changeStateHistory")
+     *
+     * */
+    protected $incident;
 
     /**
      * @return Incident
@@ -141,7 +112,7 @@ class IncidentChangeState
     /**
      * @return IncidentState
      */
-    public function getOldState(): ?IncidentState
+    public function getOldState(): ? IncidentState
     {
         return $this->oldState;
     }
@@ -155,9 +126,50 @@ class IncidentChangeState
     }
 
     /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="date", type="datetime",nullable=true)
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
+     */
+    private $date;
+    /**
+     * @var IncidentState
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
+     * @ORM\JoinColumn(name="newState", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    protected $newState;
+    /**
+     * @var IncidentState
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
+     * @ORM\JoinColumn(name="oldState", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    protected $oldState;
+
+    /**
+     * @var IncidentStateAction
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateAction")
+     * @ORM\JoinColumn(name="action_applied", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    protected $actionApplied;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
+     */
+    protected $responsable;
+
+    /**
      * @return IncidentStateAction
      */
-    public function getActionApplied(): IncidentStateAction
+    public function getActionApplied(): ? IncidentStateAction
     {
         return $this->actionApplied;
     }
@@ -169,6 +181,15 @@ class IncidentChangeState
     {
         $this->actionApplied = $actionApplied;
     }
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="method", type="string", length=25)
+     * @JMS\Expose
+     * @JMS\Groups({"api_input"})
+     */
+    protected $method;
 
     /**
      * @return User

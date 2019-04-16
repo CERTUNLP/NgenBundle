@@ -23,21 +23,27 @@ class HostRepository extends NetworkElementRepository
 {
     public function findOneByAddress($params): ?NetworkElement
     {
-
         $address = explode('/', $params['address']);
         switch (NetworkElement::guessType($address[0])) {
             case FILTER_FLAG_IPV4:
-                return $this->findOneBy(['ip' => $address[0]]);
+                return parent::findOneBy(['address' => $address[0]]);
                 break;
             case FILTER_FLAG_IPV6:
-                return $this->findOneBy(['ip' => $address[0]]);
+                return parent::findOneBy(['address' => $address[0]]);
                 break;
             case FILTER_VALIDATE_DOMAIN:
-                return $this->findOneBy(['domain' => $address[0]]);
+                return parent::findOneBy(['domain' => $address[0]]);
                 break;
             default:
                 return null;
         }
 
     }
+    public function findOneBy(array $criteria, array $orderBy = null)
+    {
+       return $this->findOneByAddress($criteria);
+    }
+
+
+
 }

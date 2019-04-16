@@ -7,15 +7,14 @@
  with this source code in the file LICENSE.
 #}
 
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ngen | {% block title %}{% endblock %}</title>
-    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"/>
-    {#        <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen">#}
-    {#        <link rel="stylesheet" href="{{ asset('bundles/certunlpngen/css/style.css') }}" media="screen" />#}
+    <link rel="shortcut icon" href="{{ asset('bundles/certunlpngen/images/favicon.ico') }}"/>
     {% block stylesheets %}
         {% stylesheets
             'css/bootstrap.css'
@@ -31,7 +30,6 @@
         {% endstylesheets %}
     {% endblock %}
     {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
-    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"/>
 </head>
 <body>
 <div id="wrapper">
