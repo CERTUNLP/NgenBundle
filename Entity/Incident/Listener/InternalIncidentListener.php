@@ -45,6 +45,7 @@ class InternalIncidentListener
 
     public function __construct(DelegatorChain $delegator_chain, IncidentDecisionHandler $decision_handler, IncidentHandler $incident_handler, EntityManager $entityManager, ThreadManagerInterface $thread_manager, Router $router)
     {
+
         $this->delegator_chain = $delegator_chain;
         $this->decision_handler = $decision_handler;
         $this->incident_handler = $incident_handler;
@@ -61,7 +62,6 @@ class InternalIncidentListener
     public function prePersistHandler(Incident $incident, LifecycleEventArgs $event)
     {
 //        $this->incidentPrePersistUpdate($incident, $event);
-
         $this->delegator_chain->prePersistDelegation($incident);
     }
 

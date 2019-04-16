@@ -12,6 +12,7 @@ var IncidentForm = Form.extend({
         $("#tlp").on("change", $.proxy(this.changeTLP, this));
         $("#type").on("change", $.proxy(this.getIncidentDecision, this));
         $("#feed").on("change", $.proxy(this.getIncidentDecision, this));
+        this.changeTLP();
     },
     changeTLP: function () {
         var $valor = $("#tlp option:selected").text();
