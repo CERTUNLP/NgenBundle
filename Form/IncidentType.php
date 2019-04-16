@@ -151,7 +151,8 @@ class IncidentType extends AbstractType
                 'attr' => array('align_with_widget' => true),
                 'required' => false,
                 'label' => 'Send mail report(if available)',
-                'description' => 'Send a mail report to the host administrator.'))
+                'description' => 'Send a mail report to the host administrator.'
+            ))
             ->add('id', HiddenType::class, array(
                 'required' => false,
             ))

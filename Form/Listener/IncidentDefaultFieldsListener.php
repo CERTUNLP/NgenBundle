@@ -44,6 +44,7 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
             $form->get('urgency')->setData($this->doctrine ? $this->doctrine->getReference(IncidentUrgency::class, 'undefined') : null);
             $form->get('assigned')->setData($this->userLogged !== null && $this->doctrine ? $this->doctrine->getReference(User::class, $this->userLogged) : 'null ');
             $form->get('reporter')->setData($this->userLogged !== null && $this->doctrine ? $this->doctrine->getReference(User::class, $this->userLogged) : 'null ');
+
         } else {
             if ($incident->getOrigin()) {
                 $form->get('address')->setData($incident->getOrigin()->getAddress());

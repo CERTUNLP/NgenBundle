@@ -30,6 +30,7 @@ class IncidentHandler extends Handler
 
     public function __construct(ObjectManager $om, string $entityClass, string $entityType, FormFactoryInterface $formFactory, SecurityContext $context, UserHandler $user_handler, HostHandler $host_handler, IncidentDecisionHandler $decision_handler)
     {
+
         parent::__construct($om, $entityClass, $entityType, $formFactory);
         $this->host_handler = $host_handler;
         $this->user_handler = $user_handler;
@@ -159,6 +160,8 @@ class IncidentHandler extends Handler
         if (!isset($parameters['reporter']) || !$parameters['reporter']) {
             $parameters['reporter'] = $this->getReporter()->getId();
         }
+
+
         return parent::processForm($incident, $parameters, $method, $csrf_protection);
     }
 

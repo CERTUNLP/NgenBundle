@@ -376,11 +376,8 @@ class Incident implements IncidentInterface
         return $this->isClosed;
     }
 
-    /**
-     * @param bool $isClosed
-     * @return Incident
-     */
-    public function setIsClosed(bool $isClosed): Incident
+
+    public function setIsClosed($isClosed = false): Incident
     {
         $this->isClosed = $isClosed;
         return $this;
@@ -1233,9 +1230,7 @@ class Incident implements IncidentInterface
         return $this->isNew;
     }
 
-    /**
-     * @param bool $isNew
-     */
+
     public function setIsNew($isNew=true): Incident
     {
         $this->isNew = $isNew;
