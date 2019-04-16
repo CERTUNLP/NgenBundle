@@ -16,10 +16,8 @@
 {% endblock %}
 
 {% block content_body %}
-    {% if (form is not null) %}
         {{ form_errors(form, { 'global_errors': true }) }}
         {{ form(form, {'attr': {'id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal', 'col_size': 'sm' }) }}
-    {% endif %}
 {% endblock %}
 
 
@@ -39,5 +37,6 @@
         var internalIncidentApi = new InternalIncidentApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
         var incident_decision_api = new IncidentDecisionApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
         var internalIncident = new InternalIncident();
+
     </script>
 {% endblock %}
