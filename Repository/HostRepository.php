@@ -32,7 +32,7 @@ class HostRepository extends NetworkElementRepository
                 return parent::findOneBy(['address' => $address[0]]);
                 break;
             case FILTER_VALIDATE_DOMAIN:
-                return parent::findOneBy(['domain' => $address[0]]);
+                return parent::findOneBy(['address' => $address[0]]);
                 break;
             default:
                 return null;

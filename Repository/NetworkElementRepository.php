@@ -157,14 +157,14 @@ class NetworkElementRepository extends EntityRepository
         $address = explode('/', $criteria['address']);
         switch (Network::guessType($address[0])) {
             case FILTER_FLAG_IPV4:
-                if (in_array(1,$address) or in_array('address_mask',$criteria)) {
+                if (in_array(1, $address, true) || in_array('address_mask', $criteria, true)) {
                     return parent::findOneBy(['ip' => $address[0], 'ip_mask' => $address[1] ?? $criteria['address_mask']]);
                 } else {
                     return parent::findOneBy(['ip' => $address[0]]);
                 }
                 break;
             case FILTER_FLAG_IPV6:
-                if (in_array(1,$address) or in_array('address_mask',$criteria)){
+                if (in_array(1, $address, true) || in_array('address_mask', $criteria, true)) {
                     return parent::findOneBy(['ip' => $address[0], 'ip_mask' => $address[1] ?? $criteria['address_mask']]);
                 } else {
                     return parent::findOneBy(['ip' => $address[0]]);
