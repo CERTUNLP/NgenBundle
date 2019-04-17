@@ -181,16 +181,16 @@ class Incident implements IncidentInterface
     /**
      * @var boolean
      *
-     * @ORM\Column(name="is_closed", type="boolean")
+     * @ORM\Column(name="is_closed", type="boolean", options={"default" : 0})
      * @JMS\Expose
      * @JMS\Type("boolean")
      */
-    protected $isClosed = false;
+    protected $isClosed = 0;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="is_new", type="boolean")
+     * @ORM\Column(name="is_new", type="boolean",options={"default" : 1})
      * @JMS\Expose
      * @JMS\Type("boolean")
      */
@@ -371,13 +371,18 @@ class Incident implements IncidentInterface
     /**
      * @return bool
      */
-    public function isClosed(): bool
+    public function isClosed(): ?bool
     {
         return $this->isClosed;
     }
 
-
+    //FIX esto es una porqueria pero el problema ocurre con el  Form/IncidentType, al mandarle el header se pone en null el closed y en flase el new
     public function setIsClosed($isClosed = false): Incident
+    {
+        return $this;
+    }
+
+    public function setAsClosed($isClosed = false): Incident
     {
         $this->isClosed = $isClosed;
         return $this;
@@ -925,7 +930,7 @@ class Incident implements IncidentInterface
      */
     public function close(): Incident
     {
-        return $this->setIsClosed(true);
+        return $this->setAsClosed(true);
     }
 
     /**
@@ -935,7 +940,7 @@ class Incident implements IncidentInterface
     {
         $this->setNeedToCommunicate(true);
         $this->setOpenedAt(new DateTime('now'));
-        return $this->setIsNew(false);
+        return $this->markAsNew(false);
     }
 
     /**
@@ -952,7 +957,7 @@ class Incident implements IncidentInterface
     public function reOpen(): Incident
     {
         $this->setNeedToCommunicate(true);
-        return $this->setIsClosed(false);
+        return $this->setAsClosed(false);
     }
     /**
      * @return array
@@ -1225,16 +1230,21 @@ class Incident implements IncidentInterface
     /**
      * @return bool
      */
-    public function isNew(): bool
+    public function isNew(): ?bool
     {
         return $this->isNew;
     }
 
+//FIX this es horrible
+    public function markAsNew($isNew=true): Incident
+    {
+        echo "llamando".$this->isNew." con ".$isNew;
+        $this->isNew = $isNew;
+        return $this;
+    }
 
     public function setIsNew($isNew=true): Incident
     {
-        $this->isNew = $isNew;
-        $this->setOpenedAt(new DateTime());
         return $this;
     }
 
