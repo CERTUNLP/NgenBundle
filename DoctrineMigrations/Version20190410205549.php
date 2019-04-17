@@ -23,6 +23,13 @@ class Version20190410205549 extends AbstractMigration
         $this->addSql('ALTER TABLE acl_security_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
         $this->addSql('ALTER TABLE acl_object_identities CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
         $this->addSql('ALTER TABLE acl_entries CHANGE id id INT UNSIGNED AUTO_INCREMENT NOT NULL');
+        $this->addSql('update incident_state set incident_state_action= "close"');
+        $this->addSql('update incident_state set incident_state_action= "new" where slug="staging"');
+        $this->addSql('update incident_state set incident_state_action= "new" where slug="stand_by"');
+        $this->addSql('update incident_state set incident_state_action= "new" where slug="undefined"');
+        $this->addSql('update incident_state set incident_state_action= "open" where slug="open"');
+        $this->addSql('update incident_state set incident_state_action= "open" where slug="unresolved"');
+
     }
 
     /**
