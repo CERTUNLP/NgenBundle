@@ -174,10 +174,11 @@
                                 {{ 'Active'|trans }}
                             </td>
                             <td class="">
-                                {{ object.origin.isActive ? 'Yes':'No' }}
+                                {{ object.origin and object.origin.isActive ? 'Yes':'No' }}
+
                             </td>
                         </tr>
-                        {% if object.origin.network %}
+                        {% if object.origin and object.origin.network %}
 
                             <tr>
                                 <td class="">

@@ -290,6 +290,7 @@ class IncidentDecision
         $incident->getImpact() ?: $incident->setImpact($this->getImpact());
         $incident->getUrgency() ?: $incident->setUrgency($this->getUrgency());
         $incident->getState() ?: $incident->setStateAndReporter($this->getState(),$incident->getReporter());
+        $incident->getType() ?: $incident->setType($this->getType());
         return $incident;
     }
 

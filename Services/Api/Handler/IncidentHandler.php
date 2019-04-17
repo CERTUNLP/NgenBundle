@@ -123,8 +123,13 @@ class IncidentHandler extends Handler
      */
     public function checkIfExists($incident, $method)
     {
+        $wasDefined = $incident->isDefined();
         $this->updateIncidentData($incident);
-        $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
+        $incidentDB = false;
+        if ($wasDefined) {
+
+            $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
+        }
         if ($incidentDB && $method === 'POST') {
             if ($incident->getEvidenceFile()) {
                 $incidentDB->setEvidenceFile($incident->getEvidenceFile());
@@ -237,14 +242,16 @@ class IncidentHandler extends Handler
      */
     public function networkUpdate(Incident $incident): void
     {
-        $network = $incident->getNetwork();
-        $network_new = $incident->getOrigin()->getNetwork();
-        if ($network) {
-            if (!$network->equals($network_new) && !$incident->isClosed()) {
+        if ($incident->getAddress()) {
+            $network = $incident->getNetwork();
+            $network_new = $incident->getOrigin()->getNetwork();
+            if ($network) {
+                if (!$network->equals($network_new) && !$incident->isClosed()) {
+                    $incident->setNetwork($network_new);
+                }
+            } else {
                 $incident->setNetwork($network_new);
             }
-        } else {
-            $incident->setNetwork($network_new);
         }
     }
 
@@ -269,7 +276,9 @@ class IncidentHandler extends Handler
      */
     public function slugUpdate(Incident $incident): void
     {
-        $incident->setSlug(Sluggable\Urlizer::urlize($incident->getOrigin()->getAddress() . ' ' . $incident->getType()->getSlug() . ' ' . $incident->getDate()->format('Y-m-d-H-i'), '_'));
+        $firstPart = $incident->getOrigin() ? $incident->getOrigin()->getAddress() : sha1(uniqid(mt_rand()));
+        $secondPart = $incident->getState() ? $incident->getState() : sha1(uniqid(mt_rand()));
+        $incident->setSlug(Sluggable\Urlizer::urlize($firstPart . ' ' . $secondPart . ' ' . $incident->getDate()->format('Y-m-d-H-i'), '_'));
     }
 
     public function priorityUpdate(Incident $incident): void
