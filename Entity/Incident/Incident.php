@@ -1238,7 +1238,6 @@ class Incident implements IncidentInterface
 //FIX this es horrible
     public function markAsNew($isNew=true): Incident
     {
-        echo "llamando".$this->isNew." con ".$isNew;
         $this->isNew = $isNew;
         return $this;
     }
@@ -1274,4 +1273,8 @@ class Incident implements IncidentInterface
         return $this;
     }
 
+    public function isDefined(): ?bool
+    {
+        return ($this->getOrigin() && $this->getType());
+    }
 }
