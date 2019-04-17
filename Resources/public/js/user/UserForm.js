@@ -107,7 +107,6 @@ var UserForm = Form.extend({
             500
         );
     },
-    );
 });
 
 
