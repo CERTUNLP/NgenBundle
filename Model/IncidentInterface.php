@@ -101,7 +101,7 @@ interface IncidentInterface
      *
      * @return bool
      */
-    public function isClosed(): bool;
+    public function isClosed(): ?bool;
 
     /**
      * Get isClosed
