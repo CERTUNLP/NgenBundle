@@ -83,7 +83,7 @@ class IncidentHandler extends Handler
      */
     public function changeState(Incident $incident, $state)
     {
-        $incident->setStateAndReporter($state,$this->getReporter());
+        $incident->setStateAndReporter($state, $this->getReporter());
         return $this->patch($incident, []);
     }
 
@@ -95,7 +95,7 @@ class IncidentHandler extends Handler
         foreach ($incidents as $incident) {
             if ($incident->getOpenDays(true) >= $days) {
                 $incident->setState($state);
-                $this->om->persist($incident,$this->getReporter());
+                $this->om->persist($incident, $this->getReporter());
                 $closedIncidents[$incident->getId()] = ['ip' => $incident->getAddress(),
                     'type' => $incident->getType(),
                     'date' => $incident->getUpdatedAt(),
@@ -132,7 +132,7 @@ class IncidentHandler extends Handler
             $incidentDB->addIncidentDetected($incident);
             $incidentDB->updateVariables($incident);
             $incident = $incidentDB;
-        } else{
+        } else {
             $incident->addIncidentDetected($incident);
 
         }
@@ -187,16 +187,17 @@ class IncidentHandler extends Handler
      */
     public function hostUpdate(Incident $incident): Incident
     {
+        if ($incident->getAddress()) {
+            $host = $incident->getOrigin();
+            $host_new = $this->getHostHandler()->findOneByAddress($incident->getAddress()) ?: $this->getHostHandler()->post(['address' => $incident->getAddress()]);
+            if ($host) {
 
-        $host = $incident->getOrigin();
-        $host_new = $this->getHostHandler()->findOneByAddress($incident->getAddress()) ?: $this->getHostHandler()->post(['address' => $incident->getAddress()]);
-        if ($host) {
-
-            if (!$host->equals($host_new) && !$incident->isClosed()) {
+                if (!$host->equals($host_new) && !$incident->isClosed()) {
+                    $incident->setOrigin($host_new);
+                }
+            } else {
                 $incident->setOrigin($host_new);
             }
-        } else {
-            $incident->setOrigin($host_new);
         }
         return $incident;
     }
@@ -229,7 +230,6 @@ class IncidentHandler extends Handler
         $this->slugUpdate($incident);
         $this->priorityUpdate($incident);
     }
-
 
 
     /**
