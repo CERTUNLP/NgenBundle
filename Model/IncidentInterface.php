@@ -101,7 +101,7 @@ interface IncidentInterface
      *
      * @return bool
      */
-    public function isClosed(): bool;
+    public function isClosed(): ?bool;
 
     /**
      * Get isClosed
@@ -124,6 +124,11 @@ interface IncidentInterface
      * @return Incident
      */
     public function setNetwork(Network $network = null): Incident;
+
+    /**
+     * @return bool
+     */
+    public function isNew(): ?bool;
 
     /**
      * Get network
