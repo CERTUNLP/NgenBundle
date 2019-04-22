@@ -112,15 +112,16 @@ class InternalIncidentListener
         }
     }
 
-    /** @ORM\PreUpdate
-     * @param Incident $incident
-     * @param PreUpdateEventArgs $event
-     */
-    public function preUpdateHandler(Incident $incident, PreUpdateEventArgs $event): void
-    {
-        $this->incident_handler->checkIfExists($incident,"POST");
-        $this->delegator_chain->preUpdateDelegation($incident);
-    }
+//    /** @ORM\PreUpdate
+//     * @param Incident $incident
+//     * @param PreUpdateEventArgs $event
+//     */
+//    public function preUpdateHandler(Incident $incident, PreUpdateEventArgs $event): void
+//    {
+//        echo "iba por aca"; die();
+//        $this->incident_handler->checkIfExists($incident,"POST");
+//        $this->delegator_chain->preUpdateDelegation($incident);
+//    }
 
     /**
      * @param ConvertToIncidentEvent $event
