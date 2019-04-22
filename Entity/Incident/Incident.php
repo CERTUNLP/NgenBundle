@@ -649,6 +649,7 @@ class Incident implements IncidentInterface
      */
     public function addIncidentDetected(Incident $incidentDetected): Incident
     {
+
         $nuevo=new IncidentDetected($incidentDetected,$this);
         $this->incidentsDetected->add($nuevo);
         return $this;

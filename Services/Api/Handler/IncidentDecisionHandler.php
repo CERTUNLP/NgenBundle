@@ -27,11 +27,11 @@ class IncidentDecisionHandler extends Handler
         $ordered_decisions = $this->orderDecisionsByNetworkMask($decisions);
 
         foreach ($ordered_decisions as $decision) {
-
-            if ($incident->getNetwork() && $decision->getNetwork() && $incident->getNetwork()->inRange($decision->getNetwork())) {
+            if (($incident->getNetwork() && $decision->getNetwork() && $incident->getNetwork()->inRange($decision->getNetwork())) || ($decision->getNetwork()=='')) {
                 return $decision->doDecision($incident);
             }
         }
+
         return $decisions->last()->doDecision($incident);
     }
 
@@ -46,11 +46,12 @@ class IncidentDecisionHandler extends Handler
 
     public function getByNetwork(IncidentType $type = null, IncidentFeed $feed = null, Network $network = null): ?IncidentDecision
     {
+
         $decisions = new ArrayCollection($this->repository->findBy(['type' => $type ? $type->getSlug() : 'undefined', 'feed' => $feed ? $feed->getSlug() : 'undefined', 'get_undefined' => true]));
         $ordered_decisions = $this->orderDecisionsByNetworkMask($decisions);
 
         foreach ($ordered_decisions as $decision) {
-            if ($network && $decision->getNetwork() && $network->inRange($decision->getNetwork())) {
+            if ($network && $decision->getNetwork() && $network->inRange($decision->getNetwork())|| ($decision->getNetwork()=='')) {
                 return $decision;
             }
         }

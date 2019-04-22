@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 use CertUnlp\NgenBundle\Entity\User;
+
 /**
  * IncidentDetected
  *
@@ -43,8 +44,7 @@ class IncidentDetected
     protected $id;
 
 
-
-    public function __construct(Incident $incident,Incident $incidentFather)
+    public function __construct(Incident $incident, Incident $incidentFather)
     {
         $this->setIncident($incidentFather);
         $this->setFeed($incident->getFeed());
@@ -53,7 +53,9 @@ class IncidentDetected
         $this->setDate(new DateTime('now'));
         $this->setEvidenceFile($incident->getEvidenceFile());
         $this->setEvidenceFileTemp($incident->getEvidenceFileTemp());
-        $this->setEvidenceFilePath($incidentFather->getEvidenceSubDirectory().$incident->getEvidenceFilePath());
+        if ($incident->getEvidenceFilePath()) {
+            $this->setEvidenceFilePath($incidentFather->getEvidenceSubDirectory() . $incident->getEvidenceFilePath());
+        }
         $this->setNotes($incident->getNotes());
         $this->setReporter($incident->getReporter());
         $this->setState($incident->getState());
@@ -64,10 +66,10 @@ class IncidentDetected
 
     public function __toString(): string
     {
-        return $this->getDate()->format("Y-m-d h:i")." - ". $this->getFeed()->getSlug();
+        return $this->getDate()->format("Y-m-d h:i") . " - " . $this->getFeed()->getSlug();
     }
 
-      /**
+    /**
      * @return Incident
      */
 
@@ -84,7 +86,7 @@ class IncidentDetected
         $this->incident = $incident;
     }
 
-       public function getCountDaysFromDetection()
+    public function getCountDaysFromDetection()
     {
         $dStart = new DateTime('now');
         $dDiff = $dStart->diff($this->getDate());
@@ -214,7 +216,7 @@ class IncidentDetected
     /**
      * @return User
      */
-    public function getAssigned(): ? User
+    public function getAssigned(): ?User
     {
         return $this->assigned;
     }
@@ -222,7 +224,7 @@ class IncidentDetected
     /**
      * @param User $assigned
      */
-    public function setAssigned(User $assigned=null): void
+    public function setAssigned(User $assigned = null): void
     {
         $this->assigned = $assigned;
     }
@@ -238,7 +240,7 @@ class IncidentDetected
     /**
      * @param IncidentType $type
      *
-    */
+     */
     public function setType(IncidentType $type): void
     {
         $this->type = $type;

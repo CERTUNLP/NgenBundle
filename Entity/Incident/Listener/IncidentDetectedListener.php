@@ -57,6 +57,7 @@ class IncidentDetectedListener
         if (!file_exists($uploadDir) && !mkdir($uploadDir, 0777, true) && !is_dir($uploadDir)) {
             die('Failed to create folders...');
         }
+
         if ($incident->getEvidenceFile()) {
             $incident->getEvidenceFile()->move($uploadDir, $incident->getEvidenceFilePath());
         }
