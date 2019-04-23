@@ -11,6 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Exception;
 
+use Symfony\Component\Form\Form;
+
 class InvalidFormException extends \RuntimeException
 {
 
@@ -23,7 +25,7 @@ class InvalidFormException extends \RuntimeException
     }
 
     /**
-     * @return array|null
+     * @return Form
      */
     public function getForm()
     {
