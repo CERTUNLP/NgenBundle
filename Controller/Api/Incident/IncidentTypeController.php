@@ -67,7 +67,7 @@ class IncidentTypeController extends FOSRestController
      *
      * @return array
      */
-    public function getIncidentTypesAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getTypesAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
         return $this->getApiController()->getAll($request, $paramFetcher);
     }
