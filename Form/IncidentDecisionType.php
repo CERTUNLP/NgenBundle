@@ -67,7 +67,6 @@ class IncidentDecisionType extends AbstractType
             ->add('network', Select2EntityType::class, [
                 'remote_route' => 'cert_unlp_ngen_network_search_autocomplete',
                 'class' => Network::class,
-                'text_property' => 'value',
                 'minimum_input_length' => 3,
                 'page_limit' => 10,
                 'placeholder' => 'Select a network',
