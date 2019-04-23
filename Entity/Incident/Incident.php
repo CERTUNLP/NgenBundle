@@ -522,7 +522,7 @@ class Incident implements IncidentInterface
     /**
      * @return DateTime
      */
-    public function getOpenedAt(): DateTime
+    public function getOpenedAt(): ?DateTime
     {
         return $this->openedAt;
     }
@@ -531,7 +531,7 @@ class Incident implements IncidentInterface
      * @param DateTime $openedAt
      * @return Incident
      */
-    public function setOpenedAt(DateTime $openedAt): Incident
+    public function setOpenedAt(DateTime $openedAt = null): Incident
     {
         $this->openedAt = $openedAt;
         return $this;
@@ -577,7 +577,7 @@ class Incident implements IncidentInterface
         return $this->isNew;
     }
 
-    public function setIsNew(bool $isNew = true): Incident
+    public function setIsNew($isNew = true): Incident
     {
         return $this;
     }
@@ -608,7 +608,7 @@ class Incident implements IncidentInterface
         return $this->isClosed;
     }
 
-    public function setIsClosed(bool $isClosed = false): Incident
+    public function setIsClosed($isClosed = false): Incident
     {
         return $this;
     }
@@ -646,9 +646,9 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getIncidentsDetected(): ArrayCollection
+    public function getIncidentsDetected(): Collection
     {
         return $this->incidentsDetected;
     }

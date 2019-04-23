@@ -13,6 +13,7 @@ namespace CertUnlp\NgenBundle\Services\Api\Controller;
 
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
 use CertUnlp\NgenBundle\Services\Api\Handler\Handler;
+use CertUnlp\NgenBundle\Services\FormErrorsSerializer;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandler;
@@ -43,11 +44,11 @@ class ApiController
     /**
      * @param View $view
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function handle($view = null)
     {
-        $view = $view ? $view : $this->view;
+        $view = $view ?: $this->view;
         return $this->viewHandler->handle($view);
     }
 
@@ -89,9 +90,9 @@ class ApiController
 
             $newObject = $this->getCustomHandler()->post($object_data);
 
-            return $this->response([$newObject], Response::HTTP_CREATED);
+            return $this->response([$newObject]);
         } catch (InvalidFormException $exception) {
-            return $exception->getForm();
+            return $this->responseError($exception);
         }
     }
 
@@ -109,7 +110,7 @@ class ApiController
     }
 
     /**
-     * @param  array $data
+     * @param array $data
      * @return View
      */
     public function setData(array $data)
@@ -124,6 +125,17 @@ class ApiController
     public function setStatusCode($statusCode)
     {
         return $this->view->setStatusCode($statusCode);
+    }
+
+    /**
+     * @param InvalidFormException $exception
+     * @return View
+     */
+    public function responseError(InvalidFormException $exception): View
+    {
+        $form_serializer = new FormErrorsSerializer();
+
+        return $this->response(['errors' => $form_serializer->serializeFormErrors($exception->getForm(), true, true), 'code' => Response::HTTP_BAD_REQUEST, 'message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -171,8 +183,8 @@ class ApiController
                 $object, $state);
 
             return $this->response([$object], Response::HTTP_NO_CONTENT);
-        } catch (\Exception $exception) {
-            return null;
+        } catch (InvalidFormException $exception) {
+            return $this->responseError($exception);
         }
     }
 
@@ -190,12 +202,11 @@ class ApiController
         try {
             if ($reactivate) {
                 return $this->doPatchAndReactivate($request, $object);
-            } else {
-                return $this->doPatch($request, $object);
             }
-        } catch (InvalidFormException $exception) {
 
-            return $exception->getForm();
+            return $this->doPatch($request, $object);
+        } catch (InvalidFormException $exception) {
+            return $this->responseError($exception);
         }
     }
 
@@ -239,22 +250,9 @@ class ApiController
 
             return $this->response([$object], $statusCode);
         } catch (InvalidFormException $exception) {
-
-            return $exception->getForm();
+            return $this->responseError($exception);
         }
     }
-
-//    /**
-//     * Create a Object from the submitted data.
-//     *
-//     * @param $params array
-//     *
-//     * @return mixed
-//     */
-//    public function findObjectBy($params)
-//    {
-//        return $this->getCustomHandler()->get($params);
-//    }
 
     /**
      * Update existing object from the submitted data or create a new object at a specific location.
@@ -275,8 +273,7 @@ class ApiController
             );
             return $this->response([$object], Response::HTTP_NO_CONTENT);
         } catch (InvalidFormException $exception) {
-
-            return $exception->getForm();
+            return $this->responseError($exception);
         }
     }
 
@@ -301,8 +298,7 @@ class ApiController
 
             return $this->response([$object], Response::HTTP_NO_CONTENT);
         } catch (InvalidFormException $exception) {
-
-            return $exception->getForm();
+            return $this->responseError($exception);
         }
     }
 
@@ -324,8 +320,7 @@ class ApiController
             );
             return $this->response([$object], Response::HTTP_NO_CONTENT);
         } catch (InvalidFormException $exception) {
-
-            return $exception->getForm();
+            return $this->responseError($exception);
         }
     }
 
@@ -346,8 +341,7 @@ class ApiController
             );
             return $this->response([$object], Response::HTTP_NO_CONTENT);
         } catch (InvalidFormException $exception) {
-
-            return $exception->getForm();
+            return $this->responseError($exception);
         }
     }
 

@@ -12,9 +12,6 @@
 namespace CertUnlp\NgenBundle\Services\Api\Controller;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
-use FOS\RestBundle\View\View;
-use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class IncidentTypeApiController extends ApiController
 {
@@ -29,20 +26,6 @@ class IncidentTypeApiController extends ApiController
     public function findObjectBy($params)
     {
         return $this->getCustomHandler()->get(['name' => $params['name']]);
-    }
-
-    /**
-     * Update existing object from the submitted data or create a new object at a specific location.
-     *
-     * @param Request $request the request object
-     * @param $object
-     * @param bool $reactivate
-     * @return FormTypeInterface|View
-     *
-     */
-    public function patch(Request $request, $object, $reactivate = false)
-    {
-        return parent::patch($request, $object, $reactivate);
     }
 
 }
