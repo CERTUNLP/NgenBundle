@@ -33,19 +33,5 @@ var NetworkForm = Form.extend({
     getNetworkId: function () {
         return this.networkId;
     },
-    handleExtraErrors: function (jqXHR) {
-        $.each(jqXHR.responseJSON.errors.errors, function (k, v) {
-            errorsText = "";
-            if (v.length > 0) {
-                ul = $('<ul class="help-block" ></ul>');
-                ul.append($('<li>' + v + '</li>'));
-                $('#ip_v4').after(ul);
-                $('#ip_v4').closest('div[class="form-group"]').addClass('has-error');
-            } else {
-                $('#ip_v4').closest('div[class="form-group has-error"]').removeClass('has-error');
-                $('#ip_v4').siblings('ul').remove();
-            }
-        });
-    }
 });
 

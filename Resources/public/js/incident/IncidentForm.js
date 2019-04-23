@@ -44,20 +44,6 @@ var IncidentForm = Form.extend({
     },
     getObjectId: function () {
         return this.incidentId;
-    },
-    handleExtraErrors: function (jqXHR) {
-        $.each(jqXHR.responseJSON.errors.errors, function (k, v) {
-            errorsText = "";
-            if (v.length > 0) {
-                ul = $('<ul class="help-block" ></ul>');
-                ul.append($('<li>' + v + '</li>'));
-                $('#type').after(ul);
-                $('#type').closest('div[class="form-group"]').addClass('has-error');
-            } else {
-                $('#type').closest('div[class="form-group has-error"]').removeClass('has-error');
-                $('#type').siblings('ul').remove();
-            }
-        });
     }
 });
 
