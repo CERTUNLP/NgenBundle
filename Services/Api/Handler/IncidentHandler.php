@@ -131,13 +131,14 @@ class IncidentHandler extends Handler
             $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
         }
         if ($incidentDB && $method === 'POST') {
-            if ($incident->getEvidenceFile()) {
-                $incidentDB->setEvidenceFile($incident->getEvidenceFile());
-            }
+//            if ($incident->getEvidenceFile()) {
+//                $incidentDB->setEvidenceFile($incident->getEvidenceFile());
+//            }
             $incidentDB->addIncidentDetected($incident);
             $incidentDB->updateVariables($incident);
             $incident = $incidentDB;
         } else {
+            $incident->updateVariables($incident);
             $incident->addIncidentDetected($incident);
 
         }

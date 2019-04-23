@@ -18,6 +18,7 @@ use FOS\CommentBundle\Event\CommentPersistEvent;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\SignedCommentInterface;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
+use Symfony\Component\HttpFoundation\Response;
 
 class IncidentMailer extends IncidentCommunication
 {
@@ -70,10 +71,15 @@ class IncidentMailer extends IncidentCommunication
                 ->setSender($this->cert_email)
                 ->setTo($emails)
                 ->addPart($html, 'text/html');
+            $evidence_path = $this->upload_directory. "/";
 
-            if ($incident->getEvidenceFilePath()) {
-                $message->attach(\Swift_Attachment::fromPath($this->upload_directory . $incident->getEvidenceFilePath(true)));
+            foreach($incident->getIncidentsDetected() as $detected) {
+                if ($detected->getEvidenceFilePath()){
+                    $message->attach(\Swift_Attachment::fromPath($evidence_path.$detected->getEvidenceFilePath()));
+                }
             }
+
+
 
             if ($incident->getReportMessageId()) {
                 $message->setId($incident->getReportMessageId());
@@ -82,6 +88,30 @@ class IncidentMailer extends IncidentCommunication
             return $this->mailer->send($message);
         }
         return null;
+    }
+
+    public function getEvidenceFileName(Incident $incident)
+    {
+
+        // Create new Zip Archive.
+        $zip = new \ZipArchive();
+
+        // The name of the Zip documents.
+        $evidence_path = $this->upload_directory . $incident->getEvidenceSubDirectory() . "/";
+        $zipName = $evidence_path . 'EvidenceDocuments' . $incident . '.zip';
+        $options = array('remove_all_path' => TRUE);
+        $zip->open($zipName, \ZipArchive::CREATE);
+        foreach($incident->getIncidentsDetected() as $detected) {
+            if ($detected->getEvidenceFilePath()){
+                $zip->addFile($evidence_path.$detected->getEvidenceFilePath(),$detected->getEvidenceFilePath());
+            }
+        }
+        //$zip->addGlob($evidence_path . "*", GLOB_BRACE, $options);
+        $zip->close();
+
+        return $zipName;
+
+
     }
 
     /**
