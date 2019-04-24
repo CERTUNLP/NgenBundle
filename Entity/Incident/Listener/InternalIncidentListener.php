@@ -13,22 +13,15 @@ namespace CertUnlp\NgenBundle\Entity\Incident\Listener;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
-use CertUnlp\NgenBundle\Entity\Network\Host\Host;
-use CertUnlp\NgenBundle\Event\ConvertToIncidentEvent;
-use CertUnlp\NgenBundle\Exception\InvalidFormException;
 use CertUnlp\NgenBundle\Services\Api\Handler\HostHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\IncidentDecisionHandler;
 use CertUnlp\NgenBundle\Services\Api\Handler\IncidentHandler;
 use CertUnlp\NgenBundle\Services\Delegator\DelegatorChain;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\CommentBundle\Model\ThreadManagerInterface;
-use Gedmo\Sluggable\Util as Sluggable;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Router;
 
 
@@ -72,7 +65,6 @@ class InternalIncidentListener
 //    }
 
 
-
     /**
      * @return HostHandler
      */
@@ -109,55 +101,6 @@ class InternalIncidentListener
         $newTLP = $repository->findOneBySlug('white');
         if ($tlp == null) {
             $incident->setTlp($newTLP);
-        }
-    }
-
-//    /** @ORM\PreUpdate
-//     * @param Incident $incident
-//     * @param PreUpdateEventArgs $event
-//     */
-//    public function preUpdateHandler(Incident $incident, PreUpdateEventArgs $event): void
-//    {
-//        echo "iba por aca"; die();
-//        $this->incident_handler->checkIfExists($incident,"POST");
-//        $this->delegator_chain->preUpdateDelegation($incident);
-//    }
-
-    /**
-     * @param ConvertToIncidentEvent $event
-     */
-    public function onConvertToIncident(ConvertToIncidentEvent $event)
-    {
-        $convertible = $event->getConvertible();
-        $entityManager = $this->entityManager;
-        $incidentType = $entityManager->getRepository('CertUnlpNgenBundle:IncidentType')->findOneBySlug($convertible->getType());
-        $incidentFeed = $entityManager->getRepository('CertUnlpNgenBundle:IncidentFeed')->findOneBySlug($convertible->getFeed());
-
-        if ($convertible->getReporter() === 'random') {
-            $incidentReporter = $entityManager->getRepository('CertUnlpNgenBundle:User')->findOneRandom();
-        } else {
-            $incidentReporter = $entityManager->getRepository('CertUnlpNgenBundle:User')->findOneBySlug($convertible->getReporter());
-        }
-
-        if (!$incidentType || !$incidentFeed || !$incidentReporter) {
-            return;
-        }
-
-        $UploadedFile = new File(realpath($convertible->getEvidenceFile()));
-
-        $parameters = [
-            'type' => $convertible->getType(),
-            'feed' => $convertible->getFeed(),
-            'reporter' => $incidentReporter->getId(),
-            'ip' => $convertible->getAddress(),
-            'evidence_file' => $UploadedFile,
-            'sendReport' => true
-        ];
-
-        try {
-            $this->incident_handler->post($parameters, false);
-        } catch (InvalidFormException $exc) {
-            return;
         }
     }
 
