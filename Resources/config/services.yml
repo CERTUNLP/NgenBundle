@@ -26,14 +26,6 @@ services:
         class:     CertUnlp\NgenBundle\Services\IncidentReportFactory
         arguments: ["@twig","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view","%cert_unlp.ngen.team%"]
 
-    #    cert_unlp.ngen.incident.communication.center:
-    #        class:        CertUnlp\NgenBundle\Services\Communications\IncidentCommunication
-    #        arguments:    ["@doctrine.orm.entity_manager","@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","@twig","%cert_unlp.ngen.incident.internal.mailer.sender_address%","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%","@cert_unlp.ngen.incident.report.factory","%cert_unlp.ngen.incident.internal.report.lang%","%cert_unlp.ngen.team%","@translator.default"]
-    #        tags:
-    #            - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
-    #            - { name: cert_unlp.ngen.incident.internal.delegate, priority: 2 }
-    #            -
-
     cert_unlp.ngen.incident.communication.mailer:
         class:        CertUnlp\NgenBundle\Services\Communications\IncidentMailer
         arguments:    ["@doctrine.orm.entity_manager","@fos_comment.manager.comment","%kernel.environment%","%cert_unlp.ngen.incident.internal.report.lang%","%cert_unlp.ngen.team%","@translator.default","@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","%cert_unlp.ngen.incident.internal.mailer.sender_address%","@cert_unlp.ngen.incident.report.factory","%cert_unlp.ngen.incident.evidence.path%"]
@@ -48,16 +40,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
             - { name: cert_unlp.ngen.incident.internal.delegate, priority: 2 }
-
-    #    cert_unlp.ngen.internal.communication.phone:
-    #        class:        CertUnlp\NgenBundle\Services\Communications\IncidentPhone
-    #        arguments:    ["@twig","%cert_unlp.ngen.incident.evidence.path%","@fos_comment.manager.comment","%kernel.environment%","@cert_unlp.ngen.incident.report.factory","%cert_unlp.ngen.incident.internal.report.lang%","%cert_unlp.ngen.team%","@translator.default"]
-
-#    cert_unlp.ngen.incident.evidence.manager:
-#        class:        CertUnlp\NgenBundle\Services\IncidentEvidenceManager
-#        arguments:    ["%cert_unlp.ngen.incident.evidence.path%"]
-#        tags:
-#            - { name: cert_unlp.ngen.incident.internal.delegate, priority: 0 }
 
     cert_unlp.ngen.incident.internal.delegator_chain:
         class:        "%cert_unlp.ngen.incident.internal.delegator_chain.class%"
