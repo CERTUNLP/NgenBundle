@@ -31,38 +31,40 @@ var Form = Class.extend({
             this.laddaButton.start();
         },
         handleErrors: function (jqXHR) {
+            $.publish('/cert_unlp/notify/error', ['The ' + this.getObjectBrief() + ' has errors. Please check the form.']);
+            $('#global-errors').remove();
+            $('.help-block').parents('div.form-group').removeClass('has-error');
+            $('.help-block').remove();
             this.getSubmitButton().addClass('btn-danger');
-            ul = $('<ul></ul>')
-            if (jqXHR.responseJSON.hasOwnProperty('message')) {
-                ul.append($('<li>' + jqXHR.responseJSON.message + '</li>'));
-            }
-            if (jqXHR.responseJSON.errors.hasOwnProperty('global')) {
-                ul = $('<ul></ul>')
+            // if (jqXHR.responseJSON.hasOwnProperty('message')) {
+            //     ul.append($('<li>' + jqXHR.responseJSON.message + '</li>'));
+            // }
+            if (jqXHR.responseJSON.errors.hasOwnProperty('global') && jqXHR.responseJSON.errors.global.length) {
+                ul = $('<ul></ul>');
                 $.each(jqXHR.responseJSON.errors.global, function (n, error) {
                     ul.append($('<li>' + error + '</li>'));
                 });
+                div = $('<div id="global-errors" class="alert alert-danger"></div>');
+                this.form.before(div.append(ul));
             }
-            $.publish('/cert_unlp/notify/error', [ul.html()]);
-            $.publish('/cert_unlp/notify/error', ['The ' + this.getObjectBrief() + ' has errors. Please check the form.']);
             if (jqXHR.responseJSON.hasOwnProperty('errors')) {
                 if (jqXHR.responseJSON.errors.hasOwnProperty('fields')) {
 
                     $.each(jqXHR.responseJSON.errors.fields, function (k, v) {
-                        $('#' + k).closest('div[class="form-group has-error"]').removeClass('has-error');
-                        $('#' + k).siblings('ul').remove();
+
                         if (k.length && v.length) {
                             ul = $('<ul class="help-block" ></ul>');
                             ul.append($('<li>' + v + '</li>'));
-                            $('#' + k).siblings('ul').remove();
                             $('#' + k).after(ul);
                             $('#' + k).closest('div[class="form-group"]').addClass('has-error');
                         }
                     });
-                    this.handleExtraErrors(jqXHR);
                 }
+                this.handleExtraErrors(jqXHR);
             }
-        }
-        ,
+        },
+        handleExtraErrors: function (jqXHR) {
+        },
         clearErrors: function () {
             this.form.children().children().each(function (index) {
                 $(this).closest('div[class="form-group has-error"]').removeClass('has-error');

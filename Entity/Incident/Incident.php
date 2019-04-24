@@ -35,7 +35,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Listener\InternalIncidentListener" })
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
- * @CustomAssert\TypeHasReport
  */
 class Incident implements IncidentInterface
 {
@@ -65,6 +64,7 @@ class Incident implements IncidentInterface
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
+     * @CustomAssert\TypeHasReport
      */
     protected $type;
     /**

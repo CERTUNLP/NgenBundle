@@ -39,20 +39,6 @@ var IncidentReportForm = Form.extend({
         } else {
             $.publish('/cert_unlp/' + this.getObjectBrief() + '/update', [this.getParentObjectId(), this.getObjectId(), this.getFormData(), $.proxy(this.postRequest, this)]);
         }
-    },
-    handleExtraErrors: function (jqXHR) {
-//        $.each(jqXHR.responseJSON.errors.errors, function (k, v) {
-//            errorsText = "";
-//            if (v.length > 0) {
-//                ul = $('<ul class="help-block" ></ul>');
-//                ul.append($('<li>' + v + '</li>'));
-//                $('#ip').after(ul);
-//                $('#ip').closest('div[class="form-group"]').addClass('has-error');
-//            } else {
-//                $('#ip').closest('div[class="form-group has-error"]').removeClass('has-error');
-//                $('#ip').siblings('ul').remove();
-//            }
-//        });
     }
 });
 
