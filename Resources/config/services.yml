@@ -74,7 +74,6 @@ services:
         arguments: [ "@cert_unlp.ngen.incident.internal.delegator_chain","@cert_unlp.ngen.incident.decision.handler","@cert_unlp.ngen.incident.internal.handler","@doctrine.orm.entity_manager","@fos_comment.manager.thread","@router" ]
         tags:
             - { name: doctrine.entity_listener }
-            - { name: kernel.event_listener, event: cert_unlp.incident.convert_to_incident.event, method: onConvertToIncident }
 
     cert_unlp.ngen.incident.detected.listener:
         class: CertUnlp\NgenBundle\Entity\Incident\Listener\IncidentDetectedListener
