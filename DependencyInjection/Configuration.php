@@ -46,7 +46,7 @@ use CertUnlp\NgenBundle\Services\Delegator\ExternalIncidentDelegatorChain;
 use CertUnlp\NgenBundle\Services\Delegator\InternalIncidentDelegatorChain;
 use CertUnlp\NgenBundle\Services\IncidentFactory;
 use CertUnlp\NgenBundle\Services\IncidentRedmine;
-use CertUnlp\NgenBundle\Validator\Constraints\ValidNetworkValidator;
+use CertUnlp\NgenBundle\Validator\Constraints\ValidAddressValidator;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -489,7 +489,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue(ValidNetworkValidator::class)
+            ->defaultValue(ValidAddressValidator::class)
             ->end()
             ->end()
             ->end()

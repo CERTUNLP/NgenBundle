@@ -95,8 +95,7 @@ abstract class NetworkElement
         if (filter_var($term, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
             return FILTER_FLAG_IPV6;
         }
-
-        if (filter_var(gethostbyname($term), FILTER_VALIDATE_DOMAIN)) {
+        if (filter_var($term, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
             return FILTER_VALIDATE_DOMAIN;
 
         }

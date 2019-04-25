@@ -12,17 +12,19 @@
 namespace CertUnlp\NgenBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\IpValidator as IpValidatorConstraint;
+use function get_class;
 
-class IpValidator extends IpValidatorConstraint
+/**
+ * @Annotation
+ */
+class ValidAddress extends Constraint
 {
 
-    public function validate($value, Constraint $constraint)
+    public $message = '"%string%" is not a valid address';
+
+    public function validatedBy()
     {
-        $ipes = explode(',', $value);
-        foreach ($ipes as $ip) {
-            parent::validate($ip, $constraint);
-        }
+        return get_class($this) . 'Validator';
     }
 
 }

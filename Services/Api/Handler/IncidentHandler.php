@@ -14,12 +14,9 @@ namespace CertUnlp\NgenBundle\Services\Api\Handler;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use FOS\CommentBundle\Command\FixAcesCommand;
+use Gedmo\Sluggable\Util as Sluggable;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\SecurityContext;
-use Symfony\Component\Validator\Constraints\DateTime;
-use Gedmo\Sluggable\Util as Sluggable;
 
 class IncidentHandler extends Handler
 {
@@ -87,6 +84,16 @@ class IncidentHandler extends Handler
         return $this->patch($incident, []);
     }
 
+    protected function getReporter()
+    {
+        return $this->getUser();
+    }
+
+    public function getUser()
+    {
+        return $this->context->getToken() ? $this->context->getToken()->getUser() : 'anon.';
+    }
+
     public function closeOldIncidents(int $days = 10): array
     {
         $incidents = $this->all(['isClosed' => false]);
@@ -123,11 +130,9 @@ class IncidentHandler extends Handler
      */
     public function checkIfExists($incident, $method)
     {
-        $wasDefined = $incident->isDefined();
         $this->updateIncidentData($incident);
         $incidentDB = false;
-        if ($wasDefined) {
-
+        if ($incident->isDefined()) {
             $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
         }
         if ($incidentDB && $method === 'POST') {
@@ -145,46 +150,14 @@ class IncidentHandler extends Handler
         return $incident;
     }
 
-    protected function prepareToDeletion($incident, array $parameters)
+    public function updateIncidentData(Incident $incident)
     {
-        $incident->close();
-    }
-
-    /**
-     * Processes the form.
-     *
-     * @param Incident $incident
-     * @param array $parameters
-     * @param String $method
-     *
-     * @param bool $csrf_protection
-     * @return Incident|object
-     *
-     */
-    protected function processForm($incident, $parameters, $method = "PUT", $csrf_protection = true)
-    {
-        if (!isset($parameters['reporter']) || !$parameters['reporter']) {
-            $parameters['reporter'] = $this->getReporter()->getId();
-        }
-
-
-        return parent::processForm($incident, $parameters, $method, $csrf_protection);
-    }
-
-    protected function getReporter()
-    {
-        return $this->getUser();
-    }
-
-    public function getUser()
-    {
-        return $this->context->getToken() ? $this->context->getToken()->getUser() : 'anon.';
-    }
-
-    protected function createEntityInstance(array $params)
-    {
-        return $this->hostUpdate(new $this->entityClass($params['address']));
-
+        $this->hostUpdate($incident);
+        $this->networkUpdate($incident);
+        $this->decisionUpdate($incident);
+        $this->timestampsUpdate($incident);
+        $this->slugUpdate($incident);
+        $this->priorityUpdate($incident);
     }
 
     /**
@@ -225,18 +198,6 @@ class IncidentHandler extends Handler
         $this->host_handler = $host_handler;
         return $this;
     }
-
-
-    public function updateIncidentData(Incident $incident)
-    {
-        $this->hostUpdate($incident);
-        $this->networkUpdate($incident);
-        $this->decisionUpdate($incident);
-        $this->timestampsUpdate($incident);
-        $this->slugUpdate($incident);
-        $this->priorityUpdate($incident);
-    }
-
 
     /**
      * @param Incident $incident
@@ -287,6 +248,37 @@ class IncidentHandler extends Handler
         $repository = $this->om->getRepository(IncidentPriority::class);
         $priority = $repository->findOneBy(array('impact' => $incident->getImpact()->getSlug(), 'urgency' => $incident->getUrgency()->getSlug()));
         $incident->setPriority($priority);
+    }
+
+    protected function prepareToDeletion($incident, array $parameters)
+    {
+        $incident->close();
+    }
+
+    /**
+     * Processes the form.
+     *
+     * @param Incident $incident
+     * @param array $parameters
+     * @param String $method
+     *
+     * @param bool $csrf_protection
+     * @return Incident|object
+     *
+     */
+    protected function processForm($incident, $parameters, $method = "PUT", $csrf_protection = true)
+    {
+        if (!isset($parameters['reporter']) || !$parameters['reporter']) {
+            $parameters['reporter'] = $this->getReporter()->getId();
+        }
+
+        return parent::processForm($incident, $parameters, $method, $csrf_protection);
+    }
+
+    protected function createEntityInstance(array $params)
+    {
+        return new $this->entityClass($params['address']);
+
     }
 
 }

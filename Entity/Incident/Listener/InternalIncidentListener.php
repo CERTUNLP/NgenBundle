@@ -58,13 +58,6 @@ class InternalIncidentListener
         $this->delegator_chain->prePersistDelegation($incident);
     }
 
-//    public function incidentPrePersistUpdate(Incident $incident, LifecycleEventArgs $event)
-//    {
-//
-//        $this->updateIncidentData($incident);
-//    }
-
-
     /**
      * @return HostHandler
      */
