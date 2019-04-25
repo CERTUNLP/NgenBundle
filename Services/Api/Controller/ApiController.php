@@ -102,7 +102,7 @@ class ApiController
      * @param array $headers
      * @return View
      */
-    public function response(array $parameters = array(), $statusCode = Response::HTTP_CREATED, array $headers = array())
+    public function response(array $parameters = array(), int $statusCode = Response::HTTP_CREATED, array $headers = array())
     {
         $this->setData($parameters);
         $this->setStatusCode($statusCode);
@@ -203,7 +203,6 @@ class ApiController
             if ($reactivate) {
                 return $this->doPatchAndReactivate($request, $object);
             }
-
             return $this->doPatch($request, $object);
         } catch (InvalidFormException $exception) {
             return $this->responseError($exception);
@@ -271,7 +270,7 @@ class ApiController
             $object = $this->getCustomHandler()->patch(
                 $object, $parameters
             );
-            return $this->response([$object], Response::HTTP_NO_CONTENT);
+            return $this->response([$object], Response::HTTP_OK);
         } catch (InvalidFormException $exception) {
             return $this->responseError($exception);
         }
@@ -296,7 +295,7 @@ class ApiController
                 $object, $request->request->all()
             );
 
-            return $this->response([$object], Response::HTTP_NO_CONTENT);
+            return $this->response([$object], Response::HTTP_OK);
         } catch (InvalidFormException $exception) {
             return $this->responseError($exception);
         }
