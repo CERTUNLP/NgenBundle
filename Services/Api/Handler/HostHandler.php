@@ -63,7 +63,7 @@ class HostHandler extends Handler
     {
         $entity_class_instance = new $this->entityClass($params['address']);
 
-        return $entity_class_instance->guessAddress($entity_class_instance->getIp() ?? $entity_class_instance->getDomain());
+        return $entity_class_instance;
     }
 
 

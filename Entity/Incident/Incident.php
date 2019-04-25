@@ -257,6 +257,9 @@ class Incident implements IncidentInterface
      * @JMS\Groups({"api"})
      */
     private $network;
+    /**
+     * @CustomAssert\ValidAddress()
+     */
     private $address;
 
     /**
@@ -1090,7 +1093,6 @@ class Incident implements IncidentInterface
      */
     public function getAddress(): ?string
     {
-
         return $this->getOrigin() ? $this->getOrigin()->getAddress() : $this->address;
     }
 

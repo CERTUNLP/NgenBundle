@@ -227,20 +227,6 @@ services:
         class:         CertUnlp\NgenBundle\Services\Api\Handler\IncidentPriorityHandler
         arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Incident\IncidentPriority,CertUnlp\NgenBundle\Form\IncidentPriorityType,"@form.factory"]
 
-    cert_unlp.ngen.incident.report.markdown.parser:
-        class: CertUnlp\NgenBundle\Services\IncidentMarkdowReportParser
-
-    cert_unlp.ngen.network.validator:
-        class: "%cert_unlp.ngen.network.validator.class%"
-        arguments:    ["@doctrine.orm.entity_manager","@cert_unlp.ngen.network.handler"]
-        tags:
-            - { name: validator.constraint_validator, alias: valid.network.validator }
-
-    cert_unlp.ngen.network.ip.validator:
-        class: CertUnlp\NgenBundle\Validator\Constraints\IpValidator
-        tags:
-            - { name: validator.constraint_validator, alias: ip.validator }
-
     cert_unlp.ngen.type.has_type.validator:
         class: CertUnlp\NgenBundle\Validator\Constraints\TypeHasReportValidator
         arguments:    ["%ngen_lang%"]
