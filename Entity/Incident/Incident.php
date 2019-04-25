@@ -260,6 +260,27 @@ class Incident implements IncidentInterface
     private $address;
 
     /**
+    * @ORM\Column(name="ltd_count", type="integer")
+    */
+    protected $ltdCount=0;
+
+    /**
+     * @return mixed
+     */
+    public function getLtdCount()
+    {
+        return $this->ltdCount;
+    }
+
+    /**
+     * @param mixed $ltdCount
+     */
+    public function increaseLtdCount(): void
+    {
+        $this->ltdCount =$this->ltdCount + 1 ;
+    }
+
+    /**
      * Incident constructor.
      * @param string|null $term
      */
@@ -670,13 +691,14 @@ class Incident implements IncidentInterface
     {
         $nuevo = new IncidentDetected($incidentDetected, $this);
         $this->incidentsDetected->add($nuevo);
+        $this->increaseLtdCount();
         return $this;
     }
 
     /**
      * @return ArrayCollection
      */
-    public function getChangeStateHistory(): ArrayCollection
+    public function getChangeStateHistory()
     {
         return $this->changeStateHistory;
     }
