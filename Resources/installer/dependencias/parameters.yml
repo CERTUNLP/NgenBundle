@@ -23,4 +23,8 @@ parameters:
     session_max_idle_time: SESSION_TIMEOUT
     elastic_host: ELASTIC_HOST
     elastic_port: ELASTIC_PORT
+    # Options {localhost:993/imap/ssl/novalidate-cert}INBOX {localhost:143}INBOX
+    imap_server: IMAP_SERVER
+    imap_username: IMAP_USERNAME
+    imap_password: IMAP_PASSWORD
 	

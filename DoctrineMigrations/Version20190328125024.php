@@ -20,7 +20,6 @@ class Version20190328125024 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE incident DROP host_address');
-        $this->addSql('DROP INDEX ip ON host');
         $this->addSql('ALTER TABLE network_admin DROP emails');
     }
 
