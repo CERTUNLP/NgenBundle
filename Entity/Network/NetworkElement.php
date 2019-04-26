@@ -121,11 +121,7 @@ abstract class NetworkElement
      */
     public function setAddress(string $address): NetworkElement
     {
-        if (!$this->address) {
-            $this->guessAddress($address);
-        }
-
-        return $this->address->setAddress($address);
+        return $this->guessAddress($address);
     }
 
     /**

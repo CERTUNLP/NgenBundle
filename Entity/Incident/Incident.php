@@ -1104,8 +1104,9 @@ class Incident implements IncidentInterface
      */
     public function setAddress(string $address): Incident
     {
-        if ($this->getOrigin()) {
-            $this->getOrigin()->setAddress($address);
+        if ($this->getOrigin() && $this->getOrigin()->getAddress() !== $address) {
+            $this->setOrigin(null);
+            $this->address = $address;
 
         } else {
             $this->address = $address;
@@ -1125,7 +1126,7 @@ class Incident implements IncidentInterface
      * @param Host $origin
      * @return Incident
      */
-    public function setOrigin(Host $origin): Incident
+    public function setOrigin(Host $origin = null): Incident
     {
         $this->origin = $origin;
         return $this;
