@@ -18,7 +18,7 @@ class Version20181101151730 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE incident CHANGE comments notes VARCHAR(500) DEFAULT NULL');
+       # $this->addSql('ALTER TABLE incident CHANGE comments notes VARCHAR(500) DEFAULT NULL');
     }
 
     /**
