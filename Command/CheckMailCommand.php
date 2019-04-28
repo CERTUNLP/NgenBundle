@@ -54,6 +54,7 @@ class CheckMailCommand extends ContainerAwareCommand
                     $raw=$ngen_Connection->getMail($email,false);
                     $mensaje= preg_replace('#(^\w.+:\n)?(^>.*(\n|$))+#mi', '', $raw->textPlain);
                     print_r($raw);
+                    print_r($raw);
                     //$from=$raw->FromName."<".$raw->FromAddress.">";
                     $incident_id['id']=134000;
                     $incident=$this->findIncidentToUpdate($incident_id['id']);
