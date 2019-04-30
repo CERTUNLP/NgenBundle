@@ -305,6 +305,14 @@ class Incident implements IncidentInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isNeedToCommunicateComment(): bool
+    {
+        return $this->isOpen();
+    }
+
+    /**
      * @param bool $needToCommunicate
      */
     public function setNeedToCommunicate(bool $needToCommunicate): void
@@ -1243,6 +1251,7 @@ class Incident implements IncidentInterface
         $this->setOpenedAt(new DateTime('now'));
         return $this->markAsNew(false);
     }
+
 
     public function markAsNew(bool $isNew = true): Incident
     {
