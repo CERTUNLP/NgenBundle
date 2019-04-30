@@ -15,6 +15,7 @@ use CertUnlp\NgenBundle\Entity\Network\Address\Address;
 use CertUnlp\NgenBundle\Entity\Network\Address\DomainAddress;
 use CertUnlp\NgenBundle\Entity\Network\Address\IpV4Address;
 use CertUnlp\NgenBundle\Entity\Network\Address\IpV6Address;
+use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -33,7 +34,7 @@ abstract class NetworkElement
      * @JMS\Expose
      * @JMS\SerializedName("address")
      * @JMS\Groups({"api"})
-     * @Assert\Ip(version="all")
+     * @CustomAssert\ValidAddress()
      */
     protected $ip;
 
@@ -44,12 +45,13 @@ abstract class NetworkElement
      * @JMS\Expose
      * @JMS\SerializedName("address")
      * @JMS\Groups({"api"})
-     *
+     * @CustomAssert\ValidAddress()
      */
     protected $domain;
 
     /**
      * @var Address
+     * @Assert\NotNull(message="not a valid address")
      */
     protected $address;
 
@@ -112,7 +114,7 @@ abstract class NetworkElement
      */
     public function getAddress(): string
     {
-        return $this->address->getAddress();
+        return $this->address ? $this->address->getAddress() : '';
     }
 
     /**
@@ -129,7 +131,7 @@ abstract class NetworkElement
      */
     public function getAddressMask(): string
     {
-        return $this->address->getAddressMask();
+        return $this->address ? $this->address->getAddressMask() : '';
     }
 
 

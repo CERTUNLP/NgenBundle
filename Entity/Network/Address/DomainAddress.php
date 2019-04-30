@@ -62,6 +62,11 @@ class DomainAddress extends Address
         return '';
     }
 
+    public function getAddressMask(): string
+    {
+        return '';
+    }
+
     public function getCustomNumericAddressMask(): string
     {
         return '';
