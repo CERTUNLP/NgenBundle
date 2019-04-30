@@ -42,7 +42,9 @@ abstract class IncidentCommunication
 
     public function postPersistDelegation($incident)
     {
-        $this->comunicate($incident);
+        if ($incident->isNeedToCommunicate()) {
+            $this->comunicate($incident);
+        }
     }
 
     abstract public function comunicate(Incident $incident): void;
