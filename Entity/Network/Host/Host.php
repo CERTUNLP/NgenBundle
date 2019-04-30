@@ -15,6 +15,7 @@ use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -40,7 +41,7 @@ class Host extends NetworkElement
     private $id;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      * @JMS\Expose
@@ -50,7 +51,7 @@ class Host extends NetworkElement
     private $createdAt;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
      * @JMS\Expose
@@ -147,36 +148,36 @@ class Host extends NetworkElement
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @param \DateTime $createdAt
+     * @param DateTime $createdAt
      * @return Host
      */
-    public function setCreatedAt(\DateTime $createdAt): Host
+    public function setCreatedAt(DateTime $createdAt): Host
     {
         $this->createdAt = $createdAt;
         return $this;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
 
     /**
-     * @param \DateTime $updatedAt
+     * @param DateTime $updatedAt
      * @return Host
      */
-    public function setUpdatedAt(\DateTime $updatedAt): Host
+    public function setUpdatedAt(DateTime $updatedAt): Host
     {
         $this->updatedAt = $updatedAt;
         return $this;

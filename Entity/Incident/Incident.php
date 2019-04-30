@@ -237,6 +237,10 @@ class Incident implements IncidentInterface
      */
     protected $notes;
     /**
+     * @ORM\Column(name="ltd_count", type="integer")
+     */
+    protected $ltdCount = 0;
+    /**
      * @var Host|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_origin")
      * @JMS\Expose
@@ -263,27 +267,6 @@ class Incident implements IncidentInterface
     private $address;
 
     /**
-    * @ORM\Column(name="ltd_count", type="integer")
-    */
-    protected $ltdCount=0;
-
-    /**
-     * @return mixed
-     */
-    public function getLtdCount()
-    {
-        return $this->ltdCount;
-    }
-
-    /**
-     * @param mixed $ltdCount
-     */
-    public function increaseLtdCount(): void
-    {
-        $this->ltdCount =$this->ltdCount + 1 ;
-    }
-
-    /**
      * Incident constructor.
      * @param string|null $term
      */
@@ -294,6 +277,14 @@ class Incident implements IncidentInterface
         }
         $this->incidentsDetected = new ArrayCollection();
         $this->changeStateHistory = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLtdCount()
+    {
+        return $this->ltdCount;
     }
 
     /**
@@ -397,8 +388,6 @@ class Incident implements IncidentInterface
         return $this->urgency;
     }
 
-    //FIX esto es una porqueria pero el problema ocurre con el  Form/IncidentType, al mandarle el header se pone en null el closed y en flase el new
-
     /**
      * @param IncidentUrgency $urgency
      * @return Incident
@@ -408,6 +397,8 @@ class Incident implements IncidentInterface
         $this->urgency = $urgency;
         return $this;
     }
+
+    //FIX esto es una porqueria pero el problema ocurre con el  Form/IncidentType, al mandarle el header se pone en null el closed y en flase el new
 
     /**
      * @return IncidentImpact
@@ -696,6 +687,14 @@ class Incident implements IncidentInterface
         $this->incidentsDetected->add($nuevo);
         $this->increaseLtdCount();
         return $this;
+    }
+
+    /**
+     * @param mixed $ltdCount
+     */
+    public function increaseLtdCount(): void
+    {
+        $this->ltdCount = $this->ltdCount + 1;
     }
 
     /**
@@ -1029,7 +1028,7 @@ class Incident implements IncidentInterface
      * @param string $fullPath
      * @return string
      */
-        public function getEvidenceFilePath(string $fullPath = null): string
+    public function getEvidenceFilePath(string $fullPath = null): string
     {
 
         if ($this->evidence_file_path) {
