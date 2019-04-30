@@ -22,7 +22,6 @@ class ValidAddressValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         if ($value && !empty($constraint->message) && !NetworkElement::guessType($value)) {
-
             $this->context->addViolation(
                 $constraint->message, array('%string%' => $value)
             );
