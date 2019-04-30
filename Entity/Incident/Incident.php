@@ -1026,7 +1026,7 @@ class Incident implements IncidentInterface
      * @param string $fullPath
      * @return string
      */
-    public function getEvidenceFilePath(string $fullPath = null): string
+        public function getEvidenceFilePath(string $fullPath = null): string
     {
 
         if ($this->evidence_file_path) {

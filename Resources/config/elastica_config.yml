@@ -39,7 +39,7 @@ fos_elastica:
                         evidence_file_path:
                             type: keyword
                         ltdCount:
-                            type:integer
+                            type: integer
                         origin:
                             type: "object"
                             properties:
