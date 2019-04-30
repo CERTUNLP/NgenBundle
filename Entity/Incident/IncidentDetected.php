@@ -53,7 +53,7 @@ class IncidentDetected
         $this->setDate(new DateTime('now'));
         $this->setEvidenceFile($incident->getEvidenceFile());
         $this->setEvidenceFileTemp($incident->getEvidenceFileTemp());
-        if ($incident->getEvidenceFilePath()) {
+        if ($incident->getEvidenceFilePath() && $incident->getEvidenceFile()) {
             $this->setEvidenceFilePath($incidentFather->getEvidenceSubDirectory() . $incident->getEvidenceFilePath());
         }
         $this->setNotes($incident->getNotes());

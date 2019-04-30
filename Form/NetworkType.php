@@ -53,7 +53,6 @@ class NetworkType extends AbstractType
             ->add('networkEntity', Select2EntityType::class, [
                 'remote_route' => 'cert_unlp_ngen_network_entity_search_autocomplete',
                 'class' => NetworkEntity::class,
-                'text_property' => 'value',
                 'minimum_input_length' => 3,
                 'page_limit' => 10,
                 'placeholder' => 'Select an entity',
@@ -61,7 +60,6 @@ class NetworkType extends AbstractType
             ->add('networkAdmin', Select2EntityType::class, array(
                 'remote_route' => 'cert_unlp_ngen_network_admin_search_autocomplete',
                 'class' => NetworkAdmin::class,
-                'text_property' => 'value',
                 'minimum_input_length' => 3,
                 'page_limit' => 10,
                 'placeholder' => 'Select an admin',
