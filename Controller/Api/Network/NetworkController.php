@@ -123,14 +123,41 @@ class NetworkController extends FOSRestController
      * @param Network $network
      * @return Network
      *
-     * @FOS\Get("/networks/{domain}", name="_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
-     * @FOS\Get("/networks/{ip_v4}/{ip_v4_mask}", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_v4_mask"="^[1-3]?[0-9]$"} )
-     * @FOS\Get("/networks/{ip_v6}/{ip_v6_mask}", name="_ip_v6",  requirements={"ip_v6"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$","ip_v6_mask"="^(([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$"} )
+     * @FOS\Get("/networks/{ip}/{ip_mask}", name="_ip_v4",  requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_mask"="^[1-3]?[0-9]$"} )
+     * @FOS\Get("/networks/{ip}/{ip_mask}", name="_ip_v6",  requirements={"ip"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$","ip_mask"="^(([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$"} )
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneByIpAndMask","map_method_signature"=true})
      * @FOS\View(
      *  templateVar="network"
      * )
      */
     public function getNetworkAction(Network $network)
+    {
+        return $network;
+    }
+
+    /**
+     * Gets a Network for a given id.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Gets a Network for a given id",
+     *   output = "CertUnlp\NgenBundle\Entity\Network\Network",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the network is not found"
+     *   }
+     * )
+     *
+     * @param Network $network
+     * @return Network
+     *
+     * @FOS\Get("/networks/{domain}", name="_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneByDomain","map_method_signature"=true})
+     * @FOS\View(
+     *  templateVar="network"
+     * )
+     */
+    public function getDomainNetworkAction(Network $network)
     {
         return $network;
     }
@@ -180,11 +207,39 @@ class NetworkController extends FOSRestController
      * @param Network $network
      * @return FormTypeInterface|View
      *
-     * @FOS\Patch("/networks/{domain}", name="_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
-     * @FOS\Patch("/networks/{ip_v4}/{ip_v4_mask}", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_v4_mask"="^[1-3]?[0-9]$"} )
-     * @FOS\Patch("/networks/{ip_v6}/{ip_v6_mask}", name="_ip_v6",  requirements={"ip_v6"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$","ip_v6_mask"="^(([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$"} )
+     * @FOS\Patch("/networks/{ip}/{ip_mask}", name="_ip_v4",  requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_mask"="^[1-3]?[0-9]$"} )
+     * @FOS\Patch("/networks/{ip}/{ip_mask}", name="_ip_v6",  requirements={"ip"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$","ip_mask"="^(([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$"} )
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneByIpAndMask","map_method_signature"=true})
      */
     public function patchNetworkAction(Request $request, Network $network)
+    {
+        return $this->getApiController()->patch($request, $network, true);
+    }
+
+    /**
+     * Update existing network from the submitted data or create a new network at a specific location.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
+     *   statusCodes = {
+     *     204 = "Returned when successful",
+     *     400 = "Returned when the form has errors"
+     *   }
+     * )
+     *
+     * @FOS\View(
+     *  templateVar = "network"
+     * )
+     *
+     * @param Request $request the request object
+     * @param Network $network
+     * @return FormTypeInterface|View
+     *
+     * @FOS\Patch("/networks/{domain}", name="_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneByDomain","map_method_signature"=true})
+     */
+    public function patchDomainNetworkAction(Request $request, Network $network)
     {
         return $this->getApiController()->patch($request, $network, true);
     }
@@ -206,13 +261,13 @@ class NetworkController extends FOSRestController
      * @param Network $network
      * @return FormTypeInterface|View
      *
-     * @FOS\Patch("/networks/{domain}/activate", name="_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
-     * @FOS\Patch("/networks/{ip_v4}/{ip_v4_mask}/activate", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_v4_mask"="^[1-3]?[0-9]$"} )
-     * @FOS\Patch("/networks/{ip_v6}/{ip_v6_mask}/activate", name="_ip_v6",  requirements={"ip_v6"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$","ip_v6_mask"="^(([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$"} )
+     *
      * @FOS\View(
      *  templateVar = "network"
      * )
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneBy"})
+     * @FOS\Patch("/networks/{ip}/{ip_mask}/activate", name="_ip_v4",  requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_mask"="^[1-3]?[0-9]$"} )
+     * @FOS\Patch("/networks/{ip}/{ip_mask}/activate", name="_ip_v6",  requirements={"ip"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$","ip_mask"="^(([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$"} )
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneByIpAndMask","map_method_signature"=true})
      */
     public function patchNetworkActivateAction(Request $request, Network $network)
     {
@@ -237,15 +292,73 @@ class NetworkController extends FOSRestController
      * @param Network $network
      * @return FormTypeInterface|View
      *
-     * @FOS\Patch("/networks/{domain}/desactivate", name="_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
-     * @FOS\Patch("/networks/{ip_v4}/{ip_v4_mask}/desactivate", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_v4_mask"="^[1-3]?[0-9]$"} )
-     * @FOS\Patch("/networks/{ip_v6}/{ip_v6_mask}/desactivate", name="_ip_v6",  requirements={"ip_v6"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$","ip_v6_mask"="^(([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$"} )
+     *
      * @FOS\View(
      *  templateVar = "network"
      * )
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneBy"})
+     * @FOS\Patch("/networks/{domain}/activate", name="_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneByDomain","map_method_signature"=true})
+     */
+    public function patchDomainNetworkActivateAction(Request $request, Network $network)
+    {
+
+        return $this->getApiController()->activate($request, $network);
+    }
+
+    /**
+     * Update existing network from the submitted data or create a new network at a specific location.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
+     *   statusCodes = {
+     *     204 = "Returned when successful",
+     *     400 = "Returned when the form has errors"
+     *   }
+     * )
+     *
+     *
+     * @param Request $request the request object
+     * @param Network $network
+     * @return FormTypeInterface|View
+     *
+     * @FOS\View(
+     *  templateVar = "network"
+     * )
+     * @FOS\Patch("/networks/{ip}/{ip_mask}/desactivate", name="_ip_v4",  requirements={"ip"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_mask"="^[1-3]?[0-9]$"} )
+     * @FOS\Patch("/networks/{ip}/{ip_mask}/desactivate", name="_ip_v6",  requirements={"ip"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$","ip_mask"="^(([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$"} )
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneByIpAndMask","map_method_signature"=true})
      */
     public function patchNetworkDesactivateAction(Request $request, Network $network)
+    {
+
+        return $this->getApiController()->desactivate($request, $network);
+    }
+
+    /**
+     * Update existing network from the submitted data or create a new network at a specific location.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
+     *   statusCodes = {
+     *     204 = "Returned when successful",
+     *     400 = "Returned when the form has errors"
+     *   }
+     * )
+     *
+     *
+     * @param Request $request the request object
+     * @param Network $network
+     * @return FormTypeInterface|View
+     *
+     * @FOS\View(
+     *  templateVar = "network"
+     * )
+     * @FOS\Patch("/networks/{domain}/desactivate", name="_domain",requirements={"domain"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneByDomain","map_method_signature"=true})
+     */
+    public function patchDomainNetworkDesactivateAction(Request $request, Network $network)
     {
 
         return $this->getApiController()->desactivate($request, $network);
