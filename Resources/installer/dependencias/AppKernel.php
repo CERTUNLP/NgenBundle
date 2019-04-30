@@ -33,6 +33,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
+            new SecIT\ImapBundle\ImapBundle(),
 //            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle,
         );
 

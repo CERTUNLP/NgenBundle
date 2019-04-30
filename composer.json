@@ -57,7 +57,8 @@
     "darsyn/ip": "^4.0",
     "tetranz/select2entity-bundle": "^2.9",
     "ext-json": "*",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "secit-pl/imap-bundle":"*"
   },
   "require-dev": {
     "symfony/assetic-bundle": "^2.7",

@@ -38,6 +38,8 @@ fos_elastica:
                             type: date
                         evidence_file_path:
                             type: keyword
+                        ltdCount:
+                            type: integer
                         origin:
                             type: "object"
                             properties:
