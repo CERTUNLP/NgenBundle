@@ -95,6 +95,10 @@ class NetworkType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => Network::class,
             'csrf_protection' => false,
+            'error_mapping' => [
+                'domain' => 'address',
+                'ip' => 'address',
+            ],
         ));
     }
 
