@@ -13,7 +13,6 @@ namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
-use Doctrine\Common\Collections\Collection;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -200,12 +199,13 @@ class IncidentController extends FOSRestController
         return $this->getApiController($incident)->delete($request, $incident);
     }
 
+    public function getPriority()
+    {
+        return $this->getDoctrine()->getRepository(IncidentPriority::class)->find($this->getImpact(), $this->getUrgency());
+    }
+
     private function isInternal(string $ip)
     {
         return $this->get('cert_unlp.ngen.network.handler')->getByHostAddress($ip);
-    }
-
-    public function getPriority(){
-      return  $this->getDoctrine()->getRepository(IncidentPriority::class)->find($this->getImpact(),$this->getUrgency());
     }
 }
