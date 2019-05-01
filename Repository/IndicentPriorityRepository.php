@@ -15,8 +15,8 @@ class IndicentPriorityRepository extends \Doctrine\ORM\EntityRepository
         if (isset($criteria['urgency'], $criteria['impact'])) {
             return parent::findOneBy(array('urgency' => $criteria['urgency'], 'impact' => $criteria['impact']));
         }
-        if (!isset($criteria['urgency'], $criteria['feed'])) {
-            return parent::findOneBy(array('feed' => 'undefined', 'type' => 'undefined'));
+        if (!isset($criteria['urgency'], $criteria['impact'])) {
+            return parent::findOneBy(array('urgency' => 'undefined', 'impact' => 'undefined'));
         }
         return parent::findOneBy($criteria, $orderBy);
     }

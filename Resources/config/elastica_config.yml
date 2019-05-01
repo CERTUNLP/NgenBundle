@@ -328,7 +328,7 @@ fos_elastica:
                             insert: true
                             update: true
                             delete: true
-        network_entitys:
+        network_entities:
             index_name: network_entitys_%kernel.environment%
             settings:
                 index:
@@ -366,7 +366,7 @@ fos_elastica:
                 index:
                     max_result_window: 50000
             types:
-                feeds:
+                feed:
                     properties:
                         name:
                             type: keyword
@@ -397,7 +397,7 @@ fos_elastica:
                 index:
                     max_result_window: 50000
             types:
-                states:
+                state:
                     properties:
                         name:
                             type: keyword
@@ -450,7 +450,7 @@ fos_elastica:
                 index:
                     max_result_window: 50000
             types:
-                priorities:
+                priority:
                     properties:
                         name:
                             type: keyword
@@ -491,7 +491,7 @@ fos_elastica:
                 index:
                     max_result_window: 50000
             types:
-                decisions:
+                decision:
                     properties:
                         id:
                             type: integer
@@ -557,7 +557,7 @@ fos_elastica:
                 index:
                     max_result_window: 50000
             types:
-                types:
+                type:
                     properties:
                         name:
                             type: keyword
@@ -595,7 +595,7 @@ fos_elastica:
                 index:
                     max_result_window: 50000
             types:
-                reports:
+                report:
                     properties:
                         lang:
                             type: keyword
@@ -641,7 +641,7 @@ fos_elastica:
                                 type: custom
                                 tokenizer: uax_url_email
             types:
-                users:
+                user:
                     properties:
                         username:
                             type: keyword
