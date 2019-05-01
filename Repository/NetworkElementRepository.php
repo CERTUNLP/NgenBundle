@@ -24,7 +24,7 @@ use Doctrine\ORM\Query;
  */
 class NetworkElementRepository extends EntityRepository
 {
-    public function findOneByStringAddress( $params): ?NetworkElement
+    public function findOneByStringAddress($params): ?NetworkElement
     {
         return $this->findOneByAddress(['address' => $params]);
     }
@@ -157,18 +157,17 @@ class NetworkElementRepository extends EntityRepository
         $address = explode('/', $criteria['address']);
         switch (Network::guessType($address[0])) {
             case FILTER_FLAG_IPV4:
-                if (in_array(1, $address, true) || in_array('address_mask', $criteria, true)) {
+                if (isset($address[1]) || isset($criteria['address_mask'])) {
                     return parent::findOneBy(['ip' => $address[0], 'ip_mask' => $address[1] ?? $criteria['address_mask']]);
-                } else {
-                    return parent::findOneBy(['ip' => $address[0]]);
                 }
+                return parent::findOneBy(['ip' => $address[0]]);
                 break;
             case FILTER_FLAG_IPV6:
-                if (in_array(1, $address, true) || in_array('address_mask', $criteria, true)) {
+                if (isset($address[1]) || isset($criteria['address_mask'])) {
                     return parent::findOneBy(['ip' => $address[0], 'ip_mask' => $address[1] ?? $criteria['address_mask']]);
-                } else {
-                    return parent::findOneBy(['ip' => $address[0]]);
                 }
+
+                return parent::findOneBy(['ip' => $address[0]]);
                 break;
             case FILTER_VALIDATE_DOMAIN:
                 return parent::findOneBy(['domain' => $address[0]]);

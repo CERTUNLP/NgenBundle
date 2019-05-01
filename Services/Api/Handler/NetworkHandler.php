@@ -38,7 +38,7 @@ class NetworkHandler extends Handler
      */
     public function get(array $parameters)
     {
-        return $this->repository->findOneByAddress($parameters);
+        return $this->repository->findOneBy($parameters);
     }
 
     public function post(array $parameters, bool $csrf_protection = false, $entity_class_instance = null)
