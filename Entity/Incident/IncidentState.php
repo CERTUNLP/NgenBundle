@@ -12,6 +12,9 @@
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
 use CertUnlp\NgenBundle\Entity\Contact\ContactCase;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -27,6 +30,14 @@ use JMS\Serializer\Annotation as JMS;
 class IncidentState
 {
     /**
+     * @var IncidentStateAction
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateAction", inversedBy="incident_state")
+     * @ORM\JoinColumn(name="incident_state_action", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    private $incident_action;
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100)
@@ -34,7 +45,6 @@ class IncidentState
      * @JMS\Groups({"api_input"})
      */
     private $name;
-
     /**
      * @var string
      * @ORM\Id
@@ -44,7 +54,6 @@ class IncidentState
      * @JMS\Groups({"api_input"})
      * */
     private $slug;
-
     /**
      * @var boolean
      *
@@ -52,15 +61,12 @@ class IncidentState
      * @JMS\Expose
      */
     private $isActive = true;
-
     /**
      * @var ContactCase
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_assigned", referencedColumnName="slug")
      */
     private $mailAssigned;
-
-
     /**
      * @var ContactCase
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
@@ -68,7 +74,6 @@ class IncidentState
      */
 
     private $mailTeam;
-
     /**
      * @var ContactCase
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
@@ -76,8 +81,6 @@ class IncidentState
      */
 
     private $mailAdmin;
-
-
     /**
      * @var ContactCase
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
@@ -86,7 +89,7 @@ class IncidentState
 
     private $mailReporter;
     /**
-     * @var \DateTime
+     * @var DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      * @JMS\Expose
@@ -94,26 +97,33 @@ class IncidentState
      */
     private $createdAt;
     /**
-     * @var \DateTime
+     * @var DateTime
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
      * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
-
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state")) */
-
+    /**
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state"))
+     */
     private $incidents;
 
     /**
-     * @var IncidentStateAction
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateAction", inversedBy="incident_state")
-     * @ORM\JoinColumn(name="incident_state_action", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * Constructor
      */
-    protected $incident_action;
+    public function __construct()
+    {
+        $this->incidents = new ArrayCollection();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOpening(): bool
+    {
+        return $this->getIncidentAction()->isOpen();
+    }
 
     /**
      * @return IncidentStateAction
@@ -134,18 +144,9 @@ class IncidentState
     /**
      * @return bool
      */
-    public function isOpening(): bool
-    {
-        return $this->getIncidentAction()->isOpen();
-    }
-
-
-    /**
-     * @return bool
-     */
     public function isClosing(): bool
     {
-       return $this->getIncidentAction()->isClose();
+        return $this->getIncidentAction()->isClose();
     }
 
     /**
@@ -157,78 +158,80 @@ class IncidentState
     }
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
      * @return ContactCase
      */
-    public function getMailAssigned()
+    public function getMailAssigned(): ContactCase
     {
         return $this->mailAssigned;
     }
 
     /**
      * @param ContactCase $mailAssigned
+     * @return IncidentState
      */
-    public function setMailAssigned($mailAssigned)
+    public function setMailAssigned(ContactCase $mailAssigned): IncidentState
     {
         $this->mailAssigned = $mailAssigned;
+        return $this;
     }
 
     /**
      * @return ContactCase
      */
-    public function getMailTeam()
+    public function getMailTeam(): ContactCase
     {
         return $this->mailTeam;
     }
 
     /**
      * @param ContactCase $mailTeam
+     * @return IncidentState
      */
-    public function setMailTeam($mailTeam)
+    public function setMailTeam(ContactCase $mailTeam): IncidentState
     {
         $this->mailTeam = $mailTeam;
+        return $this;
     }
 
     /**
      * @return ContactCase
      */
-    public function getMailAdmin()
+    public function getMailAdmin(): ContactCase
     {
         return $this->mailAdmin;
     }
 
     /**
      * @param ContactCase $mailAdmin
+     * @return IncidentState
      */
-    public function setMailAdmin($mailAdmin)
+    public function setMailAdmin(ContactCase $mailAdmin): IncidentState
     {
         $this->mailAdmin = $mailAdmin;
+        return $this;
+
     }
 
     /**
      * @return ContactCase
      */
-    public function getMailReporter()
+    public function getMailReporter(): ContactCase
     {
         return $this->mailReporter;
     }
 
     /**
      * @param ContactCase $mailReporter
+     * @return IncidentState
      */
-    public function setMailReporter($mailReporter)
+    public function setMailReporter(ContactCase $mailReporter): IncidentState
     {
         $this->mailReporter = $mailReporter;
+        return $this;
+
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }
@@ -238,7 +241,7 @@ class IncidentState
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -249,7 +252,7 @@ class IncidentState
      * @param string $name
      * @return IncidentState
      */
-    public function setName($name)
+    public function setName(string $name): IncidentState
     {
         $this->name = $name;
 
@@ -261,7 +264,7 @@ class IncidentState
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->getSlug();
     }
@@ -271,7 +274,7 @@ class IncidentState
      *
      * @return string
      */
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -282,7 +285,7 @@ class IncidentState
      * @param string $slug
      * @return IncidentState
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug): IncidentState
     {
         $this->slug = $slug;
 
@@ -294,7 +297,7 @@ class IncidentState
      *
      * @return boolean
      */
-    public function getIsActive()
+    public function getIsActive(): bool
     {
         return $this->isActive;
     }
@@ -305,7 +308,7 @@ class IncidentState
      * @param boolean $isActive
      * @return IncidentState
      */
-    public function setIsActive($isActive)
+    public function setIsActive(bool $isActive): IncidentState
     {
         $this->isActive = $isActive;
 
@@ -315,9 +318,9 @@ class IncidentState
     /**
      * Get createdAt
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
@@ -325,10 +328,10 @@ class IncidentState
     /**
      * Set createdAt
      *
-     * @param \DateTime $createdAt
+     * @param DateTime $createdAt
      * @return IncidentState
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(DateTime $createdAt): IncidentState
     {
         $this->createdAt = $createdAt;
 
@@ -338,9 +341,9 @@ class IncidentState
     /**
      * Get updatedAt
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
@@ -348,10 +351,10 @@ class IncidentState
     /**
      * Set updatedAt
      *
-     * @param \DateTime $updatedAt
+     * @param DateTime $updatedAt
      * @return IncidentState
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(DateTime $updatedAt): IncidentState
     {
         $this->updatedAt = $updatedAt;
 
@@ -365,7 +368,7 @@ class IncidentState
      *
      * @return IncidentState
      */
-    public function addIncident(Incident $incident)
+    public function addIncident(Incident $incident): IncidentState
     {
         $this->incidents[] = $incident;
 
@@ -376,28 +379,20 @@ class IncidentState
      * Remove incident
      *
      * @param Incident $incident
+     * @return bool
      */
-    public function removeIncident(Incident $incident)
+    public function removeIncident(Incident $incident): bool
     {
-        $this->incidents->removeElement($incident);
+        return $this->incidents->removeElement($incident);
     }
 
     /**
      * Get incidents
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getIncidents()
     {
         return $this->incidents;
-    }
-
-    public function getContacts(int $incidentPriority, bool $force): array
-    {
-        $contactos = [];
-        if ($this->notificar_admin($incidentPriority))
-            if ($force) {
-                return $contactos;
-            }
     }
 }

@@ -14,11 +14,10 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
-
 class IncidentStateAction
 {
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="name", type="string", length=45, nullable=true)
      * @JMS\Expose
@@ -26,7 +25,7 @@ class IncidentStateAction
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
@@ -34,7 +33,7 @@ class IncidentStateAction
      * */
     private $slug;
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="description", type="string", length=250, nullable=true)
      * @JMS\Expose
@@ -45,21 +44,42 @@ class IncidentStateAction
      * @JMS\Exclude()
      */
     private $incident_state;
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="open", type="boolean")
+     * @JMS\Expose
+     */
+    private $open = false;
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="close", type="boolean")
+     * @JMS\Expose
+     */
+    private $close = false;
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="re_open", type="boolean")
+     * @JMS\Expose
+     */
+    private $reOpen = false;
 
     /**
-     * @return mixed
+     * @return IncidentState
      */
-    public function getIncidentState()
+    public function getIncidentState(): IncidentState
     {
         return $this->incident_state;
     }
 
     /**
-     * @param mixed $incident_state
+     * @param IncidentState $incident_state
      */
-    public function setIncidentState($incident_state): void
+    public function setIncidentState(IncidentState $incident_state): void
     {
-        $this->incidnet_state = $incident_state;
+        $this->incident_state = $incident_state;
     }
 
     /**
@@ -76,46 +96,6 @@ class IncidentStateAction
     public function setDescription(string $description): void
     {
         $this->description = $description;
-    }
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="open", type="boolean")
-     * @JMS\Expose
-     */
-    private $open = false;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="close", type="boolean")
-     * @JMS\Expose
-     */
-    private $close = false;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="re_open", type="boolean")
-     * @JMS\Expose
-     */
-    private $reOpen = false;
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name): void
-    {
-        $this->name = $name;
     }
 
     /**
@@ -139,7 +119,7 @@ class IncidentStateAction
      */
     public function isClose(): bool
     {
-          return $this->close;
+        return $this->close;
     }
 
     /**
@@ -171,7 +151,7 @@ class IncidentStateAction
      *
      * @return string
      */
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -180,16 +160,33 @@ class IncidentStateAction
      * Set slug
      *
      * @param string $slug
-     * @return IncidentTlp
+     * @return IncidentStateAction
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug): IncidentStateAction
     {
         $this->slug = $slug;
 
         return $this;
     }
-    public function __toString()
+
+    public function __toString(): string
     {
         return $this->getName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
     }
 }
