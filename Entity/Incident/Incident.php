@@ -280,9 +280,9 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getLtdCount()
+    public function getLtdCount(): int
     {
         return $this->ltdCount;
     }
@@ -571,11 +571,10 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @param bool $alreadyDetected
      * @return int
      * @throws Exception
      */
-    public function getResponseMinutes(bool $alreadyDetected = false): int
+    public function getResponseMinutes(): int
     {
         if (!$this->isNew()) {
             return abs(($this->getDate()->getTimestamp() - $this->getOpenedAt()->getTimestamp()) / 60); //lo devuelvo en minutos eso es el i
@@ -598,11 +597,10 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @param bool $alreadyDetected
      * @return int
      * @throws Exception
      */
-    public function getResolutionMinutes(bool $alreadyDetected = false): int
+    public function getResolutionMinutes(): int
     {
         if (!$this->isClosed()) {
             if (!$this->isNew()) {
@@ -651,7 +649,7 @@ class Incident implements IncidentInterface
      * @return int
      * @throws Exception
      */
-    public function getNewMinutes(bool $alreadyDetected = false): int
+    public function getNewMinutes(): int
     {
         if ($this->isNew()) {
             return $this->getDate()->diff(new DateTime())->i; //lo devuelvo en minutos eso es el i
@@ -689,12 +687,9 @@ class Incident implements IncidentInterface
         return $this;
     }
 
-    /**
-     * @param mixed $ltdCount
-     */
     public function increaseLtdCount(): void
     {
-        $this->ltdCount = $this->ltdCount + 1;
+        ++$this->ltdCount;
     }
 
     /**
@@ -1010,14 +1005,6 @@ class Incident implements IncidentInterface
     public function setEvidenceFile(File $evidenceFile = null): Incident
     {
         $this->evidence_file = $evidenceFile;
-        // check if we have an old image path
-//        if ($this->getEvidenceFilePath()) {
-//        // store the old name to delete after the update
-//            $this->setEvidenceFileTemp($this->getEvidenceFilePath());
-//            $this->setEvidenceFilePath();
-//        } else {
-//            $this->setEvidenceFilePath('initial');
-//        }
         $this->setEvidenceFilePath($evidenceFile->getFilename());
         return $this;
     }
@@ -1126,7 +1113,7 @@ class Incident implements IncidentInterface
     public function setAddress(string $address): Incident
     {
         if ($this->getOrigin() && $this->getOrigin()->getAddress() !== $address) {
-            $this->setOrigin(null);
+            $this->setOrigin();
             $this->address = $address;
 
         } else {
@@ -1191,7 +1178,7 @@ class Incident implements IncidentInterface
         return $this;
     }
 
-    public function modifyIncidentStatus(IncidentState $state = null): bool
+    public function modifyIncidentStatus(IncidentState $state): bool
     {
         //FIX DAMIAN aca hay q avisar que no se puede cambiar el tipo de incidente
         if ($this->isNew()) {
@@ -1255,10 +1242,9 @@ class Incident implements IncidentInterface
     public function reOpen(): Incident
     {
         $this->setNeedToCommunicate(true);
-        return $this->setAsClosed(false);
+        return $this->setAsClosed();
     }
 
-//FIX this es horrible
 
     public function setAsClosed(bool $isClosed = false): Incident
     {

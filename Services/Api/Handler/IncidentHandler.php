@@ -84,7 +84,7 @@ class IncidentHandler extends Handler
         return $this->patch($incident, []);
     }
 
-    protected function getReporter()
+    public function getReporter()
     {
         return $this->getUser();
     }
