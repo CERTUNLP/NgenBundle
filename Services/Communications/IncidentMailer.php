@@ -79,8 +79,6 @@ class IncidentMailer extends IncidentCommunication
                 }
             }
 
-
-
             if ($incident->getReportMessageId()) {
                 $message->setId($incident->getReportMessageId());
             }
@@ -138,13 +136,12 @@ class IncidentMailer extends IncidentCommunication
     public function onCommentPrePersist(CommentPersistEvent $event)
     {
         $comment = $event->getComment();
-
-        if (!$this->commentManager->isNewComment($comment)) {
+        if (!$this->commentManager->isNewComment($comment) or !$comment->getThread()->getIncident()->isNeedToCommunicateComment()){
             return;
         }
         if ($comment instanceof SignedCommentInterface) {
             $author = $comment->getAuthor();
-            if ($author->getUsername() === 'mailbot') {
+            if ($author->getUserName() === 'mailbot') {
                 return;
             }
         }
