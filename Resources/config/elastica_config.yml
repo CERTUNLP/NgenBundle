@@ -199,6 +199,8 @@ fos_elastica:
                             type: integer
                         ip:
                             type: ip
+                        type:
+                            type: keyword
                         addressAndMask:
                             type: keyword
                             index: not_analyzed
