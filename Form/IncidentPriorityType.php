@@ -11,18 +11,17 @@
 
 namespace CertUnlp\NgenBundle\Form;
 
-use Doctrine\ORM\EntityRepository;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use DateTime;
 
 class IncidentPriorityType extends AbstractType
 {
-    public function __construct($doctrine=null) {
+    public function __construct($doctrine = null)
+    {
         $this->doctrine = $doctrine;
     }
 
@@ -37,7 +36,7 @@ class IncidentPriorityType extends AbstractType
             ->add('impact', null, array(
                 'empty_value' => 'Choose a impact level',
                 'attr' => array('help_text' => 'If none is selected, the assigned impact will be Low.'),
-                'description' => "If none is selected, the assigned impact will be Low",
+                'description' => 'If none is selected, the assigned impact will be Low',
             ))
             ->add('urgency', null, array(
                 'empty_value' => 'Choose a urgency level',
@@ -56,8 +55,8 @@ class IncidentPriorityType extends AbstractType
             ->add('response_time', NumberType::class, array(
                 'required' => true,
             ))
-            ->add('save', 'submit', array(
-                'attr' => array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => "slide-down"),
+            ->add('save', SubmitType::class, array(
+                'attr' => array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => 'slide-down'),
             ));
 
     }
@@ -68,7 +67,7 @@ class IncidentPriorityType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'CertUnlp\NgenBundle\Entity\Incident\IncidentPriority',
+            'data_class' => IncidentPriority::class,
             'csrf_protection' => false,
         ));
     }

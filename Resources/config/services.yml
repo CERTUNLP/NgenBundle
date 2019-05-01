@@ -189,35 +189,35 @@ services:
 
     cert_unlp.ngen.incident.feed.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFeedFrontendController
-        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.feed.form_type.class%","@knp_paginator","@fos_elastica.finder.feeds.feeds","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.feed.form_type.class%","@knp_paginator","@fos_elastica.finder.feeds.feed","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.incident.state.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentStateFrontendController
-        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.state.form_type.class%","@knp_paginator","@fos_elastica.finder.states.states","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.state.form_type.class%","@knp_paginator","@fos_elastica.finder.states.state","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.incident.type.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
-        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.type.form_type.class%","@knp_paginator","@fos_elastica.finder.types.types","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.type.form_type.class%","@knp_paginator","@fos_elastica.finder.types.type","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.incident.report.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentReportFrontendController
-        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.type.report.form_type.class%","@knp_paginator","@fos_elastica.finder.reports.reports","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.type.report.form_type.class%","@knp_paginator","@fos_elastica.finder.reports.report","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.user.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\UserFrontendController
-        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.user.form_type.class%","@knp_paginator","@fos_elastica.finder.users.users","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.user.form_type.class%","@knp_paginator","@fos_elastica.finder.users.user","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.network_entity.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
-        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.network_entity.form_type.class%","@knp_paginator","@fos_elastica.finder.network_entitys.network_entity","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.network_entity.form_type.class%","@knp_paginator","@fos_elastica.finder.network_entities.network_entity","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.incident.decision.frontend.controller:
         class:     CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
-        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.decision.form_type.class%","@knp_paginator","@fos_elastica.finder.decisions.decisions","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.decision.form_type.class%","@knp_paginator","@fos_elastica.finder.decisions.decision","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.incident.priority.frontend.controller:
         class:     CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
-        arguments: ["@doctrine.orm.entity_manager","@form.factory",CertUnlp\NgenBundle\Form\IncidentPriorityType,"@knp_paginator","@fos_elastica.finder.priorities.priorities","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+        arguments: ["@doctrine.orm.entity_manager","@form.factory",CertUnlp\NgenBundle\Form\IncidentPriorityType,"@knp_paginator","@fos_elastica.finder.priorities.priority","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.incident.priority.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\ApiController

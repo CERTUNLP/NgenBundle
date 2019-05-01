@@ -160,7 +160,7 @@ class IncidentState
     /**
      * @return ContactCase
      */
-    public function getMailAssigned(): ContactCase
+    public function getMailAssigned(): ?ContactCase
     {
         return $this->mailAssigned;
     }
@@ -178,7 +178,7 @@ class IncidentState
     /**
      * @return ContactCase
      */
-    public function getMailTeam(): ContactCase
+    public function getMailTeam(): ?ContactCase
     {
         return $this->mailTeam;
     }
@@ -196,7 +196,7 @@ class IncidentState
     /**
      * @return ContactCase
      */
-    public function getMailAdmin(): ContactCase
+    public function getMailAdmin(): ?ContactCase
     {
         return $this->mailAdmin;
     }
@@ -215,7 +215,7 @@ class IncidentState
     /**
      * @return ContactCase
      */
-    public function getMailReporter(): ContactCase
+    public function getMailReporter(): ?ContactCase
     {
         return $this->mailReporter;
     }
@@ -241,7 +241,7 @@ class IncidentState
      *
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -262,9 +262,9 @@ class IncidentState
     /**
      * Get id
      *
-     * @return integer
+     * @return string
      */
-    public function getId(): int
+    public function getId(): string
     {
         return $this->getSlug();
     }
@@ -274,7 +274,7 @@ class IncidentState
      *
      * @return string
      */
-    public function getSlug(): string
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
