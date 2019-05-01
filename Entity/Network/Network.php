@@ -144,6 +144,12 @@ abstract class Network extends NetworkElement implements NetworkInterface
         $this->incidents = new ArrayCollection();
     }
 
+    public function getType(): string
+    {
+        $array = explode('\\', static::class);
+        return strtolower(str_replace('Network', '', array_pop($array)));
+    }
+
     /**
      * Get startAddress
      *
