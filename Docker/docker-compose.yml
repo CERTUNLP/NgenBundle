@@ -38,7 +38,7 @@ services:
         - "8002:3306"
       networks: ['ngen']
     ngen-app:
-      image: einar1/ngen:0.6.30
+      image: einar1/ngen:0.6.36
       networks: ['ngen']
       depends_on: ['ngen-db','ngen-elastic']
       ports:
@@ -75,6 +75,9 @@ services:
         - ELASTIC_HOST=ngen-elastic
         - ELASTIC_PORT=9200
         - SESSION_TIMEOUT=1800
+        - IMAP_SERVER=localhost:993/imap/ssl/novalidate-cert
+        - IMAP_USERNAME=pepe
+        - IMAP_PASSWORD=pass
       links:
         - ngen-elastic:ngen-elastic
         - ngen-db:ngen-db

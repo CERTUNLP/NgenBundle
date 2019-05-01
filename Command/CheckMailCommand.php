@@ -54,7 +54,6 @@ class CheckMailCommand extends ContainerAwareCommand
         }
         if (!empty($emails)) {
             //Loop through the emails.
-            echo "entrando";
             foreach ($emails as $email) {
                 $output->writeln("<info>Procesando email con id " . $email . '<info>');
                 $subject = $ngen_Connection->getMailHeader($email)->subject;

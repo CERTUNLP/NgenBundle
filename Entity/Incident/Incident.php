@@ -84,6 +84,7 @@ class Incident implements IncidentInterface
      * @JMS\Groups({"api"})
      */
     protected $state;
+    protected $lastState;
     /**
      * @var IncidentTlp
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp", inversedBy="incidents")
@@ -791,6 +792,7 @@ class Incident implements IncidentInterface
      */
     public function setState(IncidentState $state = null): Incident
     {
+        $this->lastState=$this->state;
         $this->state = $state;
         return $this;
     }
@@ -1195,6 +1197,15 @@ class Incident implements IncidentInterface
             $this->addChangeStateHistory(new IncidentChangeState($this, $state, $reporter, $this->getState()));
             $this->setState($state);
 
+        }
+        return $this;
+    }
+    public function patchStateAndReporter(User $reporter): Incident
+    {
+        if (($this->lastState) && ($this->getState() !== $this->lastState )){
+            if ($this->modifyIncidentStatus($this->getState())) {
+                $this->addChangeStateHistory(new IncidentChangeState($this, $this->getState(), $reporter, $this->lastState));
+            }
         }
         return $this;
     }
