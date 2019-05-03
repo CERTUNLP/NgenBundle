@@ -4,7 +4,7 @@
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <a class="navbar-brand" href="{{ path('cert_unlp_ngen_internal_incident_frontend_home') }}">
-                <img style="max-height: 2em;" src="{{ asset('bundles/certunlpngen/images/ngen01.svg')}}">
+                <img style="max-height: 2em;" src="{{ asset('bundles/certunlpngen/images/ngen01.svg') }}">
             </a>
         </div>
         {% if app.user %}
@@ -44,11 +44,11 @@
                                     {#                                    {% if 'incident' in app.request.getUri %} ::before {% endif %}#}
                                     <li>
                                         <a href="{{ path('cert_unlp_ngen_internal_incident_frontend_home') }}" {{ ('incident' in app.request.getUri)? 'class="active"' : '' }}>
-                                            {{ icon('exclamation-circle fa-fw') }} Incidents</a>
+                                            {{ icon('exclamation-circle fa-fw') }}  {{ 'Incidents'|trans }}</a>
                                     </li>
                                     <li>
                                         <a href="{{ path('cert_unlp_ngen_host_frontend_home') }}" {{ ('host' in app.request.get('_route'))? 'class="active"' : '' }}>
-                                            {{ icon('cube fa-fw') }} Hosts</a>
+                                            {{ icon('cube fa-fw') }} {{ 'Hosts'|trans }}</a>
                                     </li>
 
                                 </ul>
@@ -57,34 +57,34 @@
                             <li {{ ('network' in app.request.getUri)? 'class="active"' : '' }}>
 
                                 <a href="#" {{ ('network' in app.request.getUri)? 'class="active"' : '' }}>
-                                    {{ icon('share-alt-square fa-fw') }} Networks
+                                    {{ icon('share-alt-square fa-fw') }} {{ 'Networks'| trans }}
                                     <span class="fa arrow"></span>
                                 </a>
                                 <ul class="nav nav-second-level collapse{{ ('network' in app.request.getUri)? 'in' : '' }}"
                                     aria-expanded="{{ ('network' in app.request.getUri)? 'true' : 'false' }}" {{ ('network' in app.request.getUri)? '' : 'style="height: 0px;"' }}>
                                     <li>
                                         <a href="{{ path('cert_unlp_ngen_network_frontend_home') }}" {{ ('network_frontend' in app.request.getUri)? 'class="active"' : '' }}>{{ icon('share-alt fa-fw') }}
-                                            Networks</a>
+                                            {{ 'Networks'| trans }}</a>
                                     </li>
                                     <li>
                                         <a href="{{ path('cert_unlp_ngen_network_admin_frontend_home') }}" {{ ('admin' in app.request.getUri)? 'class="active"' : '' }}>{{ icon('users fa-fw') }}
-                                            Admins</a>
+                                            {{ 'Admins'| trans }}</a>
                                     </li>
                                     <li>
                                         <a href="{{ path('cert_unlp_ngen_network_network_entity_frontend_home') }}" {{ ('academic' in app.request.getUri)? 'class="active"' : '' }}>{{ icon('cubes fa-fw') }}
-                                            Network Entities</a>
+                                            {{ 'Entities'| trans }}</a>
                                     </li>
                                 </ul>
 
                             </li>
                             <li>
                                 <a href="{{ path('cert_unlp_ngen_user_frontend_home') }}" {{ ('user' in app.request.getUri)? 'class="active"' : '' }}>{{ icon('users fa-fw') }}
-                                    Users</a>
+                                    {{ 'Users'| trans }}</a>
                             </li>
 
                             <li {{ ('administration' in app.request.getUri)? 'class="active"' : '' }}>
                                 <a href="#" {{ ('administration' in app.request.getUri)? 'class="active"' : '' }}>
-                                    {{ icon('sliders') }} Administration
+                                    {{ icon('sliders') }} {{ 'Administration'| trans }}
                                     <span class="fa arrow"></span>
                                 </a>
                                 <ul class="nav nav-second-level collapse{{ ('administration' in app.request.getUri)? 'in' : '' }}"
@@ -105,10 +105,10 @@
                                         <a href="{{ path('cert_unlp_ngen_incident_decision_frontend_home') }}" {{ ('decision' in app.request.getUri)? 'class="active"' : '' }}>{{ icon('unlock-alt fa-fw') }}
                                             {{ 'Incident Decisions'| trans }}</a>
                                     </li>
-{#                                    <li>#}
-{#                                        <a href="{{ path('cert_unlp_ngen_incident_priority_frontend_home') }}" {{ ('priority' in app.request.getUri)? 'class="active"' : '' }}>{{ icon('unlock-alt fa-fw') }}#}
-{#                                            {{ 'Incident Priority'| trans }}</a>#}
-{#                                    </li>#}
+                                    {#                                    <li>#}
+                                    {#                                        <a href="{{ path('cert_unlp_ngen_incident_priority_frontend_home') }}" {{ ('priority' in app.request.getUri)? 'class="active"' : '' }}>{{ icon('unlock-alt fa-fw') }}#}
+                                    {#                                            {{ 'Incident Priority'| trans }}</a>#}
+                                    {#                                    </li>#}
 
                                 </ul>
                             </li>

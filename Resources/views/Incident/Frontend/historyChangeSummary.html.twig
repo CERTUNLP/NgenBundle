@@ -8,34 +8,34 @@
 #}
 <table class="table table-striped table-bordered table-hover dataTable no-footer">
     <tr role="row">
-        <th>{{  'Responsable'|trans }}</th>
+        <th>{{ 'Responsable'|trans }}</th>
         <th>{{ 'Date'|trans }}</th>
         <th>{{ 'Old State'|trans }}</th>
         <th>{{ 'New State'|trans }}</th>
         <th>{{ 'Action'|trans }}</th>
     </tr>
     <tbody>
-        {% for changeHistory in incident.getChangeStateHistory %}
-            <tr>
-                <td>
-                    {{ changeHistory.responsable }}
-                </td>
-                <td>
-                    {{ changeHistory.date|date('Y-m-d H:i') }}
-                </td>
-                <td>
-                  {{ changeHistory.oldState  }}
-                </td>
-                <td>
-                {{ changeHistory.newState  }}
-                </td>
-                <td>
-                {{ changeHistory.actionApplied  }}
-                </td>
+    {% for changeHistory in incident.getChangeStateHistory %}
+        <tr>
+            <td>
+                {{ changeHistory.responsable }}
+            </td>
+            <td>
+                {{ changeHistory.date|date('Y-m-d H:i') }}
+            </td>
+            <td>
+                {{ changeHistory.oldState | trans }}
+            </td>
+            <td>
+                {{ changeHistory.newState |trans }}
+            </td>
+            <td>
+                {{ changeHistory.actionApplied |trans }}
+            </td>
 
-            </tr>    
+        </tr>
 
-        {% endfor %}
+    {% endfor %}
     </tbody>
 
 </table>

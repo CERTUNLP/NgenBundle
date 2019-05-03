@@ -9,7 +9,8 @@
 
 {% extends 'CertUnlpNgenBundle::NetworkAdmin/Frontend/frontend.html.twig' %}
 {% block content_header %}
-    <h1 class="page-header"> {{ object }}             {% include "CertUnlpNgenBundle:NetworkAdmin:Frontend/list/stateLabel.html.twig" with {'networkAdmin': object} %}
+    <h1 class="page-header"> {{ object }}
+        {% include "CertUnlpNgenBundle:NetworkAdmin:Frontend/list/stateLabel.html.twig" with {'networkAdmin': object} %}
     </h1>
 {% endblock %}
 {% block content_body %}
@@ -24,7 +25,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <td class="">
-                                    {{ "System Id"|trans}}
+                                    {{ "System Id"|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.id }}
@@ -32,7 +33,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Name
+                                    {{ 'Name'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.name }}
@@ -40,7 +41,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Email
+                                    {{ 'Email'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.emailsAsString }}
@@ -48,7 +49,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Created at
+                                    {{ 'Created at'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.createdAt|date('Y-m-d') }}
@@ -57,7 +58,7 @@
 
                             <tr>
                                 <td class="">
-                                    Last Update
+                                    {{ 'Last Update'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.updatedAt|date('Y-m-d') }}
@@ -65,7 +66,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Active
+                                    {{ 'Active'|trans }}
                                 </td>
                                 <td class="">
                                     {% include "CertUnlpNgenBundle:NetworkAdmin:Frontend/list/stateLabel.html.twig" with {'networkAdmin': object} %}
@@ -73,13 +74,13 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Network Admins
+                                    {{ 'Network Admins'|trans }}
                                 </td>
                                 <td class="">
                                     <a target="_blank" type="button" class="btn btn-sm btn-primary" role="button"
                                        href="{{ path('cert_unlp_ngen_network_search_network',{'term': '"'~object.name~'"'~ "&&" ~'"'~object.emails| join('"&&"') ~'"'}) }}">
                                         <span>{{ label_info(object.networks.count) }} </span>
-                                        <span>search</span>
+                                        <span>{{ 'search'|trans }}</span>
                                     </a>
                                 </td>
                             </tr>

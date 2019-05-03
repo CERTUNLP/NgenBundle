@@ -46,7 +46,7 @@
         </table>
     </div>
     <div class="pagination-centered">
-        {{ knp_pagination_render(my_objects, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}
+        {{ knp_pagination_render(my_objects, null, {}, { "prev_label": "Previous" | trans , "next_label": "Next"| trans, "first_label": "First"| trans, "last_label": "Last"| trans}) }}
     </div>
 
     <div class="panel panel-default">
@@ -86,7 +86,7 @@
         </table>
     </div>
     <div class="pagination-centered">
-        {{ knp_pagination_render(unassigned_objects, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}
+        {{ knp_pagination_render(unassigned_objects, null, {}, { "prev_label": "Previous"| trans, "next_label": "Next"| trans, "first_label": "First"| trans, "last_label": "Last"| trans}) }}
     </div>
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -122,7 +122,7 @@
         </table>
     </div>
     <div class="pagination-centered">
-        {{ knp_pagination_render(objects, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}
+        {{ knp_pagination_render(objects, null, {}, { "prev_label": "Previous"| trans, "next_label": "Next"| trans, "first_label": "First"| trans, "last_label": "Last"| trans}) }}
     </div>
 
 {% endblock %}
@@ -134,9 +134,8 @@
         <div class="pull-right">
             <a class="btn btn-primary btn-bg"
                href="{{ path('cert_unlp_ngen_internal_incident_frontend_new_incident') }}">
-                {{ icon('plus-circle fa-fw') }}add incident
+                {{ icon('plus-circle fa-fw') }}{{ "add incident" | trans }}
             </a>
-
         </div>
     </h1>
 {% endblock %}
