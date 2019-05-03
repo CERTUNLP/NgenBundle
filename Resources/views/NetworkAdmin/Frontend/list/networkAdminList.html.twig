@@ -8,21 +8,21 @@
 #}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong>{{ icon('users fa-fw') }} Network admins</strong>
+        <strong>{{ icon('users fa-fw') }} {{ 'Network admins'|trans }}</strong>
         <strong>({{ objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount }})</strong>
         <div class="pull-right">
             <div class="btn-group">
                 <a class="btn btn-default btn-xs" href="{{ path('cert_unlp_ngen_network_new_network_admin') }}">
-                    {{ icon('plus-circle fa-fw') }}add network admins
+                    {{ icon('plus-circle fa-fw') }}{{ 'add network admins'|trans }}
                 </a>
             </div>
         </div>
     </div>
     <table class="table table-striped table-bordered table-hover dataTable no-footer">
         <tr role="row">
-            <th>{{ knp_pagination_sortable(networkAdmins, 'Name', 'slug') }}</th>
-            <th>{{ knp_pagination_sortable(networkAdmins, 'Emails', 'emails') }}</th>
-            <th>{{ knp_pagination_sortable(networkAdmins, 'active', 'isActive') }}</th>
+            <th>{{ knp_pagination_sortable(networkAdmins, 'Name'|trans, 'slug') }}</th>
+            <th>{{ knp_pagination_sortable(networkAdmins, 'Emails'|trans, 'emails') }}</th>
+            <th>{{ knp_pagination_sortable(networkAdmins, 'Active'|trans, 'isActive') }}</th>
             <th>Action</th>
         </tr>
         <tbody>
@@ -34,5 +34,5 @@
     </table>
 </div>
 <div class="pagination-centered">
-    {{ knp_pagination_render(networkAdmins, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}
+    {{ knp_pagination_render(networkAdmins, null, {}, { "prev_label": "Previous"|trans, "next_label": "Next"|trans, "first_label": "First"|trans, "last_label": "Last"|trans}) }}
 </div>

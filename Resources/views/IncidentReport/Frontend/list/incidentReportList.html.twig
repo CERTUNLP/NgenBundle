@@ -8,21 +8,21 @@
 #}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong>{{ icon('cubes fa-fw') }} Incident Reports</strong>
+        <strong>{{ icon('cubes fa-fw') }} {{ 'Incident Reports'| trans }}</strong>
         <strong>({{ objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount }})</strong>
         <div class="pull-right">
             <div class="btn-group">
                 <a class="btn btn-default btn-xs"
                    href="{{ path('cert_unlp_ngen_incident_type_report_new',{'term': term}) }}">
-                    {{ icon('plus-circle fa-fw') }}add incident report
+                    {{ icon('plus-circle fa-fw') }}{{ 'add incident report'| trans }}
                 </a>
             </div>
         </div>
     </div>
     <table class="table table-striped table-bordered table-hover dataTable no-footer">
         <tr role="row">
-            <th>{{ knp_pagination_sortable(objects, 'lang', 'lang') }}</th>
-            <th>{{ knp_pagination_sortable(objects, 'active', 'isActive') }}</th>
+            <th>{{ knp_pagination_sortable(objects, 'Lang'|trans, 'lang') }}</th>
+            <th>{{ knp_pagination_sortable(objects, 'Active'|trans, 'isActive') }}</th>
             <th>Action</th>
         </tr>
         <tbody>
@@ -34,5 +34,5 @@
     </table>
 </div>
 <div class="pagination-centered">
-    {{ knp_pagination_render(objects, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}
+    {{ knp_pagination_render(objects, null, {}, { "prev_label": "Previous"|trans, "next_label": "Next"|trans, "first_label": "First"|trans, "last_label": "Last"|trans}) }}
 </div>

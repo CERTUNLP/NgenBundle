@@ -39,7 +39,7 @@
                                 {{ 'Type'|trans }}
                             </td>
                             <td class="">
-                                {{ object.type }}
+                                {{ object.type | trans }}
                             </td>
                         </tr>
 
@@ -57,7 +57,7 @@
                             </td>
                             <td>
                                 <span class="label tlp-{{ object.tlp|lower }} left">
-                                    TLP-{{ object.tlp }}
+                                    TLP-{{ object.tlp | trans }}
                                 </span>
                             </td>
                         </tr>
@@ -80,7 +80,7 @@
                         {% if object.openedAt %}
                             <tr>
                                 <td class="">
-                                    {{ 'Opened at '| trans }}
+                                    {{ 'Opened at'| trans }}
                                 </td>
                                 <td class="">
                                     {{ object.openedAt |date('Y-m-d H:i') }}
@@ -109,7 +109,7 @@
 
                         <tr>
                             <td class="">
-                                {{ 'PriorityImpact/Urgency' |trans }}
+                                {{ 'Priority Impact/Urgency' |trans }}
                             </td>
                             <td class="">
                                 {{ object.priority.impact }}/{{ object.priority.urgency }}
@@ -143,7 +143,7 @@
                                     {{ 'Evidence File'|trans }}
                                 </td>
                                 <td class="">
-                                    <a href="{{ path('cert_unlp_ngen_internal_incident_frontend_evidence_incident',{'slug':object.slug}) }}">Evidence
+                                    <a href="{{ path('cert_unlp_ngen_internal_incident_frontend_evidence_incident',{'slug':object.slug}) }}">{{ 'Evidence'| trans }}
                                         (.zip)</a>
                                 </td>
                             </tr>
@@ -157,7 +157,7 @@
         <div class="col-lg-6">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Host info</h3>
+                    <h3 class="panel-title">{{ 'Host info'| trans }}</h3>
                 </div>
                 <div class="panel-body table-responsive">
                     <table class="table table-bordered">
@@ -174,7 +174,7 @@
                                 {{ 'Active'|trans }}
                             </td>
                             <td class="">
-                                {{ object.origin and object.origin.isActive ? 'Yes':'No' }}
+                                {{ object.origin and object.origin.isActive ? 'Yes'|trans:'No'|trans }}
 
                             </td>
                         </tr>
@@ -227,7 +227,7 @@
                                     {{ 'Active'|trans }}
                                 </td>
                                 <td class="">
-                                    {{ object.network.isActive ? 'Yes':'No' }}
+                                    {{ object.network.isActive ? 'Yes'|trans:'No'|trans }}
                                 </td>
                             </tr>
                             <tr>
@@ -252,7 +252,6 @@
                                 </td>
                                 <td class="">
                                     {{ object.network.networkAdmin.emailsAsString }}
-
                                 </td>
                             </tr>
                         </table>
@@ -333,13 +332,13 @@
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <h3 class="panel-title">{{ 'Historical Detections'|trans }}
-                            {% if not object.incidentsDetected is empty%}
-                            <span class="label label-warning"> {{  'Detected '|trans}}{{ object.incidentsDetected|length }}{{ ' times'|trans}}</span>
-                            <span class="label label-warning"> {{  'LAST: '|trans}}{{ object.incidentsDetected|last }}</span>
+                            {% if not object.incidentsDetected is empty %}
+                                <span class="label label-warning"> {{ 'Detected'|trans }}{{ object.incidentsDetected|length }}{{ 'times'|trans }}</span>
+                                <span class="label label-warning"> {{ 'LAST:'|trans }}{{ object.incidentsDetected|last }}</span>
 
-{% endif %}
+                            {% endif %}
 
-</h3>
+                        </h3>
                     </div>
                     <div class="panel-body table-responsive">
                         {% include "@CertUnlpNgen/Incident/Frontend/redetectedTable.html.twig" with {'incident': object,'incidentsDetected':object.incidentsDetected} %}
@@ -353,7 +352,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title">{{ 'Historical Status Changes'|trans }}{{ ' -  Detected'|trans}} {{ label_info(object.getChangeStateHistory|length) }} {{ ' changes'|trans}}</h3>
+                        <h3 class="panel-title">{{ 'Historical Status Changes'|trans }}{{ 'Detected'|trans }} {{ label_info(object.getChangeStateHistory|length) }} {{ 'changes'|trans }}</h3>
                     </div>
                     <div class="panel-body table-responsive">
                         {% include "CertUnlpNgenBundle:Incident:Frontend/historyChangeSummary.html.twig" with {'incident': object} %}
@@ -362,13 +361,13 @@
             </div>
         {% endif %}
     {% endblock %}
-     {% block comments %}
+    {% block comments %}
 
         <div class="col-lg-12">
             <div class="row">
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Comments</h3>
+                        <h3 class="panel-title">{{ 'Comments'|trans }}</h3>
                     </div>
                     <div class="panel-body">
 
@@ -399,7 +398,7 @@
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_internal_incident_search_incident') }}{% endblock %}
 
 {% block content_header %}
-    <h2 class="page-header">{{ icon('arrow-circle-down fa-fw') }}incident [ID: {{ object.id }}
+    <h2 class="page-header">{{ icon('arrow-circle-down fa-fw') }}{{ 'incident'|trans }} [{{ 'ID'|trans }}:{{ object.id }}
         ][{{ object.type }}
         ]{% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object} %}</h2>
 {% endblock %}

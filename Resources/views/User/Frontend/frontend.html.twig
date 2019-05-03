@@ -8,10 +8,10 @@
 #}
 {% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
 
-{% block title %}Users{% endblock %}
+{% block title %}{{ 'Users'|trans }}{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{ icon('user fa-fw') }} Users</h1>
+    <h1 class="page-header">{{ icon('user fa-fw') }} {{ 'Users'|trans }}</h1>
 {% endblock %}
 
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_user_search_user') }}{% endblock %}

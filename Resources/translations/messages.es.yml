@@ -1,42 +1,213 @@
-subject_mail_incidente: Incidente de tipo "%s" en %s
+subject_mail_incidente: 'Incidente de tipo "%s" en %s'
 subject_mail_renotificacion: Renotificación
-firma_ngen: Este reporte ha sido generado con <a href="https://github.com/CERTUNLP/NgenBundle">https://github.com/CERTUNLP/NgenBundle</a>
-thanks: Le agradeceríamos que nos notifique al solucionar el incidente. No dude en consultarnos ante cualquier inquietud.
-farewell: Un saludo cordial,
+firma_ngen: 'Este reporte ha sido generado con <a href="https://github.com/CERTUNLP/NgenBundle">https://github.com/CERTUNLP/NgenBundle</a>'
+thanks: 'Le agradeceríamos que nos notifique al solucionar el incidente. No dude en consultarnos ante cualquier inquietud.'
+farewell: 'Un saludo cordial,'
 greeting: Estimado
-incident_notes_title: Notas del incidente
-derivated_problem_title: Problemas derivados
-verification_title: Cómo verificar el problema
+incident_notes_title: 'Notas del incidente'
+derivated_problem_title: 'Problemas derivados'
+verification_title: 'Cómo verificar el problema'
 recomendations_title: Recomendaciones
-more_information_title: Mas información
+more_information_title: 'Mas información'
 Type: Tipo
 Network: Red
 Impact: Impacto
 Urgency: Urgencia
 Active: Activo
 Action: Acciones
-add incident Decision: Agregar Decision
-Incident Decisions: Decisiones
-Incident Priority: 'Prioridades'
-Do nothing: 'No hacer nada'
+'add incident Decision': 'Agregar Decision'
+'Incident Decisions': Decisiones
+'Incident Priority': Prioridades
+'Do nothing': 'No hacer nada'
 All: Todos
 States: Estados
 Types: Tipos
 Name: Nombre
 Contacts: Contactos
-Username: Nombre de Usuario
-Encryption key: Clave de cifrado
-When to use it?: Cuando usarlo?
+Username: 'Nombre de Usuario'
+'Encryption key': 'Clave de cifrado'
+'When to use it?': 'Cuando usarlo?'
 Contact: Contacto
 Telegram: Telegram
 Mail: Mail
 Phone: Teléfono
 Save: Guardar
-Force edit: Forzar edición
+'Force edit': 'Forzar edición'
 id: id
-Only critical: Sólo críticos
-Dont use it: No usar
+'Only critical': 'Sólo críticos'
+'Dont use it': 'No usar'
 Feeds: Feeds
-Contact type: Tipo de contacto
-Note/Comment: 'Nota/Comentario'
+'Contact type': 'Tipo de contacto'
+Note/Comment: Nota/Comentario
 telegram_message: '%s Incidente en el host "*%s*" del tipo "*%s*" con un riesgo "*%s*" TLP: %s(%s)'
+'System Id': 'Id del sistema'
+'Send messages to Admin': 'Enviar mensajes al Admin'
+'Send messages to Assigned': 'Enviar mensajes al Asignado'
+'Send messages to Reporter': 'Enviar mensajes al reportero'
+'Send messages to Team': 'Enviar mensajes al Equipo'
+'Network Admin Information': '__Network Admin Information'
+Hosts: Hosts
+'add Host': 'agregar un Host'
+Address: Dirección
+Login: Login
+'Incident Priorities': Prioridades
+'add incident Priority': 'agregar Prioridad'
+Code: Codigo
+Description: Descripción
+'Response Time': 'Tiempo de Respuesta'
+'Resolution Time': 'Tiempo de Resolusión'
+active: activo
+'Priority Information': 'Informacion de la Prioridad'
+Priority: Prioridad
+Feed: Feed
+State: Estado
+TLP: TLP
+Decision: Desición
+'Decision Filter': 'Filtro de Desición'
+'Decision Properties': 'Propiedades de la Desición'
+'Waiting for response': 'Esperando por respuesta,'
+'minutes left': 'minutos quedan'
+'Responsed on time': '  Respondido a tiempo'
+'minutes delayed': 'minutos atrasado'
+'Response delayed for': 'Respuesta atrasada por'
+minutes: minutos
+'Waiting for resolution': 'Esperando por resolusión,'
+'Resolution delayed for': 'Resolusión atrasada por'
+'Resolved on time': 'Resuelto a tiempo'
+Detected: Detectado
+times: veces
+LAST: 'Ultimo:'
+Responsable: Responsable
+Date: Fecha
+'Old State': 'Estado anterior'
+'New State': 'Estado nuevo'
+'Incident Information': 'Información del incidente'
+'Host/Network Involved': 'Host/Red Involucrada'
+'Original Date': 'Fecha Original'
+'Created at': 'Creado el'
+'Opened at': 'Abierto el'
+'Last Time Detected': 'Ultima vez detectado'
+'Last Update': 'Ultima Actualización'
+'Priority Impact/Urgency': 'Prioridad Impacto/Urgencia'
+RT/Rt: RT/Rt
+Notes: Notas
+'Evidence File': 'Archivo de evidencia'
+ip: ip
+'Network Entity': 'Entidad de la red'
+'Network Admin': 'Administrador de la red'
+'Network info': 'Información de la red'
+IP/mask: IP/Mascara
+'Reporter info': 'Informacion del reportero'
+Email: Email
+'Assigned Info': 'Información del asignado'
+'Historical Detections': 'Detecciones historicas'
+'Historical Status Changes': 'Cambio de estado historicos'
+changes: cambios
+Evidence: Evidencia
+Download: Descargar
+'My Incidents': 'Mis Incidentes'
+Status: Estado
+Assigned: Asignado
+'Response Time/Resolution Time': ' Tiempo/Resolusion de Respuesta'
+LTD: LTD
+'Unassigned Incidents': 'Incidentes no Asignados'
+'All Incidents': 'Todos los Incidentes'
+Incidents: Incidentes
+Open: Abierto
+'Under treatment': 'Bajo tratamiento'
+Undefined: Indefinido
+'New Incident': 'Nuevo Incidente'
+Removed: Eliminado
+Closed: Cerrado
+'Stand by': 'En espera'
+Staging: 'En espera'
+GREEN: VERDE
+RED: ROJO
+AMBER: AMBAR
+WHITE: BLANCO
+green: verde
+red: rojo
+amber: ambar
+white: blanco
+'Notify to admin': 'Notificar al admin'
+Details: Detalles
+Actions: Acciones
+Edit: Editar
+Reactivate: Reactivar
+Desactivate: Desactivar
+innactive: Inactivo
+'Incident Feeds': 'Feeds de incidentes'
+'add incident feed': 'agregar feed'
+Previous: Anterior
+Next: Siguiente
+First: Primera
+Last: Ultima
+feed: feed
+'Feed Information': 'Informacion del feed'
+Networks: Redes
+'add network': 'agregar red'
+Ip/Mask: Ip/Mask
+type: tipo
+Entity: Entidad
+Admin: Administrador
+'Network Information': 'Informacion de red'
+search: buscar
+'Network Entity Information': 'Informacion de la entidad'
+'add Network Entity': 'agregar entidad'
+'Network Entities': 'Entidades de red'
+'Incident States': 'Estados de incidente'
+'add incident state': 'agregar estado'
+'Mail to Reporter': 'Mail al reportero'
+'Mail to Assigned': '__Mail al asignado'
+'Mail to Admin': '__Mail al administrador'
+'Mail to Team': '__Mail al equipo'
+state: estado
+'State Information': 'Informacion del estado'
+'Network admins': 'Administradores de red'
+'add network admins': 'agregar administrador'
+Emails: Emails
+'Network Admins': 'Administradores de red'
+'Add Network Admin': 'agregar admin'
+'Host Information': 'Informacion del host'
+host: host
+Users: Usuarios
+'add user': 'agregar usuario'
+'Last login': 'Ultimo login'
+'User Login': 'Login de usuario'
+'Please Sign In': 'Registrarse'
+'Remember me': 'Recuerdame'
+'Sign in': 'Registrarse'
+'Forgot password?': 'Olvidó su contraseña?'
+'User Information': '__User Information'
+Userame: Username
+Forgot: Olvidó
+'Change password': 'Cambiar contraseña'
+Admins: Administradores
+Entities: Entidades
+Administration: Administración
+report: reporte
+'Incident Reports': 'Reportes de incidentes'
+'add incident report': 'agregar reporte'
+Lang: Lenguaje
+'Report Information': 'Información del reporte'
+'Report content': 'Contenido del reporte'
+Problem: Problema
+'Derivated problem': 'Problema derivado'
+Verification: Verificación
+Recomendations: Recomendaciones
+'More information': 'Mas información'
+'Decision Information': 'Informacion de la decision'
+Detail: Detalle
+'LAST:': '__LAST:'
+'Host info': '__Host info'
+'Yes': __Yes
+'No': __No
+Comments: __Comments
+incident: __incident
+ID: __ID
+'add incident': 'agregar incidente'
+Profile: Perfil
+Logout: Salir
+'Incident Types': 'Tipos de incidente'
+'add incident type': 'agregar tipo'
+'Type Information': 'Informacion del tipo'

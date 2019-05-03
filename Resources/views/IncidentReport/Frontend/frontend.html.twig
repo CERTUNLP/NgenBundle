@@ -8,10 +8,10 @@
 #}
 {% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
 
-{% block title %}Incident Reports{% endblock %}
+{% block title %}{{ 'Incident Reports'|trans }}{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{ icon('cubes fa-fw') }} Incident Reports</h1>
+    <h1 class="page-header">{{ icon('cubes fa-fw') }} {{ 'Incident Reports'|trans }}</h1>
 {% endblock %}
 
 {#{% block sideBar_search_path %}{{path('cert_unlp_ngen_incident_report_search')}}{% endblock %}#}

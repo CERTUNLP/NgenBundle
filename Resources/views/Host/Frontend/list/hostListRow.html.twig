@@ -15,7 +15,7 @@
     </td>
     <td id="host_label_holder" class="col-md-1">
         <div class="label-holder">
-            {{ Host.network | default('empty')}}
+            {{ Host.network | default('empty') }}
         </div>
     </td>
     <td id="state_label_holder" class="col-md-1">
@@ -28,7 +28,7 @@
         <div class="btn-group inline pull-left dropdown action-dropdown">
             <a class="btn btn-sm btn-primary" role="button"
                href="{{ path('cert_unlp_ngen_host_detail',{'id': Host.id}) }}">
-                Details
+                {{ 'Details'|trans }}
             </a>
             {#<button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" type="button"#}
             {#id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">#}

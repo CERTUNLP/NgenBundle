@@ -17,7 +17,7 @@
         <div class="col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">State Information</h3>
+                    <h3 class="panel-title">{{ 'State Information'|trans }}</h3>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -32,7 +32,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Name
+                                    {{ 'Name'|trans}}
                                 </td>
                                 <td class="">
                                     {{ object.name }}
@@ -75,7 +75,7 @@
 
                             <tr>
                                 <td class="">
-                                    Created at
+                                    {{ 'Created at'|trans}}
                                 </td>
                                 <td class="">
                                     {{ object.createdAt|date('Y-m-d') }}
@@ -84,7 +84,7 @@
 
                             <tr>
                                 <td class="">
-                                    Last Update
+                                   {{ 'Last Update'|trans}}
                                 </td>
                                 <td class="">
                                     {{ object.updatedAt|date('Y-m-d') }}
@@ -92,7 +92,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Active
+                                    {{ 'Active'|trans}}
                                 </td>
                                 <td class="">
                                     {% include "CertUnlpNgenBundle:IncidentState:Frontend/list/stateLabel.html.twig" with {'incidentState': object} %}
@@ -100,7 +100,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Incidents
+                                    {{ 'Incidents'|trans }}
                                 </td>
                                 <td class="">
                                     {#                                    <a target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~object.name~'"'~ "&&" ~'"'~object.email~'"'})}}">#}

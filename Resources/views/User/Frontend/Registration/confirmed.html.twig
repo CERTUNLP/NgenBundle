@@ -8,9 +8,12 @@
 #}
 
 {% extends 'CertUnlpNgenBundle::User/Frontend/frontend.html.twig' %}
+{% trans_default_domain 'FOSUserBundle' %}
 
 {% block content_body %}
-    Congrats {{ user.username }}, your account is now activated.
-{% endblock %}
+    <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
+    {% if targetUrl %}
+        <p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>
+    {% endif %}{% endblock %}
 {% block javascripts %}
 {% endblock %}

@@ -8,10 +8,10 @@
 #}
 {% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
 
-{% block title %}Networks{% endblock %}
+{% block title %}{{ 'Networks'|trans }}{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{ icon('share-alt fa-fw') }} Networks</h1>
+    <h1 class="page-header">{{ icon('share-alt fa-fw') }} {{ 'Networks'|trans }}</h1>
 {% endblock %}
 
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_network_frontend_home') }}{% endblock %}
