@@ -12,6 +12,7 @@ var ApiClient = Class.extend({
         this.apiKey = apiKey;
         this.apiUrl = apiUrl;
         this.api = new $.RestClient(apiUrl, {
+            apikey: apiKey,
             verbs: {
                 'create': 'POST',
                 'read': 'GET',
@@ -36,15 +37,15 @@ var ApiClient = Class.extend({
         return {};
     },
     create: function (data, callback) {
-        var request = this.defaultChannel.create(data, {apikey: this.apiKey});
+        var request = this.defaultChannel.create(data);
         this.doRequest(request, callback);
     },
     update: function (id, data, callback) {
-        var request = this.defaultChannel.create(id, data, {apikey: this.apiKey});
+        var request = this.defaultChannel.create(id, data);
         this.doRequest(request, callback);
     },
     get: function (id, callback) {
-        var request = this.defaultChannel.read(id, {}, {apikey: this.apiKey});
+        var request = this.defaultChannel.read(id, {});
         this.doRequest(request, callback);
     }
 
