@@ -94,7 +94,11 @@ Notes: Notas
 'Evidence File': 'Archivo de evidencia'
 ip: ip
 'Network Entity': 'Entidad de la red'
+'Network entity': 'Entidad de la red'
 'Network Admin': 'Administrador de la red'
+'Network admin': 'Administrador de la red'
+'Select an admin': 'Selecciona un administrador'
+'Select a network': 'Seleccione una red'
 'Network info': 'Información de la red'
 IP/mask: IP/Mascara
 'Reporter info': 'Informacion del reportero'
@@ -211,3 +215,34 @@ Logout: Salir
 'Incident Types': 'Tipos de incidente'
 'add incident type': 'agregar tipo'
 'Type Information': 'Informacion del tipo'
+'Choose an incident type': 'Selecciona un tipo de incidente'
+'IPV(4|6)/mask or domain': 'IPv(4|6)/mascara o dominio'
+'Add some notes/evidence in text format, it will be attached to the mail report.': 'Agrega algunas notas/evidencia en formato texto. Seran agregadas al reporte automaticamente.'
+'Report attachment': 'Archivo adjunto'
+'If no date is selected, the date will be today.': 'Si ninguna fecha es seleccionada, la fecha será el dia de hoy'
+'Choose an incident state': 'Selecciona un estado de incidente'
+'If none is selected, it may be selected by incident decisions.': 'Si ninguno es seleccionado, puede llegar a ser seleccionado por una decision del incidente.'
+'Choose an incident TLP': 'Seleccione un TLP'
+'Reporter': 'Reportero'
+'Choose a reporter': 'Selecciona un reportero'
+'Choose a responsable': 'Seleccione un responsable'
+'If none is selected, the reporter will be the logged user.': 'Si ninguno es seleccionado, el reportero sea el usuario logeado.'
+'If none is selected, the assigned will be empty.': 'Si ninguno es seleccionado, el responsable será vacio.'
+'Choose an impact level': 'Seleccione un nivel de impacto'
+'Choose an urgency level.': 'Seleccione un nivel de urgencia'
+'Send report': 'Enviar el reporte'
+'Internal': Interno
+'internal': interno
+'External': Externo
+'external': externo
+'Select an entity': 'Selecciona una entidad'
+'If it set to true the network will be edited and not replaced.(this can harm the network history)': 'Si es seleccionada la red será editada y no reemplazada. Esto puede corromper el historial de redes.'
+'Email/Phone Number/Telegram chat': 'Email/Numero de telefono/Telegram chat'
+'GPG public key': 'Lave publica GPG'
+'Lastname': Apellido
+'Send mail to reporter(if available)': 'Enviar mail al reportero.(si está disponible)'
+'Send mail to the one who has it assigned (if available)': 'Enviar mail al asignado.(si está disponible)'
+'Send mail to Admin Responsable(if available)': 'Enviar mail al administrador.(si está disponible)'
+'Send mail to the team': 'Enviar mail al equipo'
+'Spanish': Español
+'English': Ingles
