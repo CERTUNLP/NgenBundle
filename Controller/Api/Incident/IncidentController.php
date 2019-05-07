@@ -208,4 +208,30 @@ class IncidentController extends FOSRestController
     {
         return $this->get('cert_unlp.ngen.network.handler')->getByHostAddress($ip);
     }
+    /**
+     * List all incidents.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   statusCodes = {
+     *     200 = "Returned when successful"
+     *   }
+     * )
+     * @FOS\QueryParam(name="from", requirements="\d+", description="Minor Date")
+     * @FOS\QueryParam(name="to", requirements="\d+", description="Mayor Date")
+     * @FOS\View(
+     *  templateVar="incidents"
+     * )
+     * @param Request $request the request object
+     * @param Date $from
+     * @param Date $to
+     *
+     * @return array
+     */
+    public function getIncidentsBeetwenDatesAction(Request $request, Date $from, Date $to): array
+    {
+
+        ##return null
+        return $this->getApiController()->getAll($request, $from,$to);
+    }
 }
