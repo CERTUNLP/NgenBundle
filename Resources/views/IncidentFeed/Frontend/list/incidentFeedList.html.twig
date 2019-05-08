@@ -8,21 +8,21 @@
 #}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong>{{ icon('feed fa-fw') }} Incident Feeds</strong>
+        <strong>{{ icon('feed fa-fw') }} {{ 'Incident Feeds'|trans }}</strong>
         <strong>({{ objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount }})</strong>
         <div class="pull-right">
             <div class="btn-group">
                 <a class="btn btn-default btn-xs" href="{{ path('cert_unlp_ngen_incident_feed_new') }}">
-                    {{ icon('plus-circle fa-fw') }}add incident feed
+                    {{ icon('plus-circle fa-fw') }}{{ 'add incident feed'|trans }}
                 </a>
             </div>
         </div>
     </div>
     <table class="table table-striped table-bordered table-hover dataTable no-footer">
         <tr role="row">
-            <th>{{ knp_pagination_sortable(incidentFeeds, 'Name', 'slug') }}</th>
-            <th>{{ knp_pagination_sortable(incidentFeeds, 'active', 'isActive') }}</th>
-            <th>Action</th>
+            <th>{{ knp_pagination_sortable(incidentFeeds, 'Name'|trans, 'slug') }}</th>
+            <th>{{ knp_pagination_sortable(incidentFeeds, 'Active'|trans, 'isActive') }}</th>
+            <th>{{ 'Action'|trans }}</th>
         </tr>
         <tbody>
         {% for incidentFeed in incidentFeeds %}
@@ -33,5 +33,5 @@
     </table>
 </div>
 <div class="pagination-centered">
-    {{ knp_pagination_render(incidentFeeds, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}
+    {{ knp_pagination_render(incidentFeeds, null, {}, { "prev_label": "Previous"|trans, "next_label": "Next"|trans, "first_label": "First"|trans, "last_label": "Last"|trans}) }}
 </div>

@@ -103,7 +103,7 @@ class IncidentType extends AbstractType
             ->add('state', EntityType::class, array(
                 'class' => IncidentState::class,
                 'empty_value' => 'Choose an incident state',
-                'attr' => array('help_text' => 'If none is selected, the state will be \'open\'.'),
+                'attr' => array('help_text' => 'If none is selected, it may be selected by incident decisions.'),
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
                 'query_builder' => function (EntityRepository $er) {
                  return $er->createQueryBuilder('it')
@@ -111,8 +111,8 @@ class IncidentType extends AbstractType
                 }))
             ->add('tlp', EntityType::class, array(
                 'class' => IncidentTlp::class,
-                'empty_value' => 'Choose an incident tlp',
-                'attr' => array('help_text' => 'If none is selected, the state will be \'green\'.'),
+                'empty_value' => 'Choose an incident TLP',
+                'attr' => array('help_text' => 'If none is selected, it may be selected by incident decisions.'),
                 'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
             ))
             ->add('reporter', EntityType::class, array(
@@ -135,14 +135,14 @@ class IncidentType extends AbstractType
                 }))
             ->add('impact', EntityType::class, array(
                 'class' => IncidentImpact::class,
-                'empty_value' => 'Choose a impact level',
-                'attr' => array('help_text' => 'If none is selected, the assigned impact will be Low.'),
+                'empty_value' => 'Choose an impact level',
+                'attr' => array('help_text' => 'If none is selected, it may be selected by incident decisions.'),
                 'description' => 'If none is selected, the assigned impact will be Low',
             ))
             ->add('urgency', EntityType::class, array(
                 'class' => IncidentUrgency::class,
-                'empty_value' => 'Choose an Urgency',
-                'attr' => array('help_text' => 'If none is selected, the assigned urgency will be Low'),
+                'empty_value' => 'Choose an urgency level.',
+                'attr' => array('help_text' => 'If none is selected, it may be selected by incident decisions.'),
                 'description' => 'If none is selected, the assigned urgency will be Low',
             ))
             ->add('sendReport', CheckboxType::class, array(
@@ -150,7 +150,7 @@ class IncidentType extends AbstractType
                 'mapped' => true,
                 'attr' => array('align_with_widget' => true),
                 'required' => false,
-                'label' => 'Send mail report(if available)',
+                'label' => 'Send report',
                 'description' => 'Send a mail report to the host administrator.'
             ))
             ->add('id', HiddenType::class, array(

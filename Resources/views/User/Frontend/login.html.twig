@@ -9,7 +9,7 @@
 
 {% extends 'CertUnlpNgenBundle::base.html.twig' %}
 
-{% block title %}User Login{% endblock %}
+{% block title %}{{ 'User Login'|trans }}{% endblock %}
 {% block id 'login' %}
 
     {% block body %}
@@ -17,7 +17,7 @@
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Please Sign In</h3>
+                        <h3 class="panel-title">{{ 'Please Sign In'|trans }}</h3>
                     </div>
                     <div class="panel-body">
                         <form role="form" class="form-signin" _lpchecked="1"
@@ -46,14 +46,17 @@
                             </fieldset>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" id="remember_me" name="_remember_me" checked/> Remember me
+                                    <input type="checkbox" id="remember_me" name="_remember_me"
+                                           checked/> {{ 'Remember me'|trans }}
                                 </label>
                             </div>
                             <div class="form-group">
-                                <a class="pull-left btn btn-link" href="{{ path('fos_user_registration_register') }}">Sign
-                                    in</a>
-                                <a class="pull-right btn btn-link" href="{{ path('fos_user_resetting_request') }}">Forgot
-                                    password?</a>
+                                <a class="pull-left btn btn-link"
+                                   href="{{ path('fos_user_registration_register') }}">{{ 'Sign in'|trans }}
+                                </a>
+                                <a class="pull-right btn btn-link" href="{{ path('fos_user_resetting_request') }}">
+                                    {{ 'Forgot password?'|trans }}
+                                </a>
                             </div>
                             <div class="form-group">
 

@@ -9,9 +9,10 @@
 
 {% extends 'CertUnlpNgenBundle::User/Frontend/frontend.html.twig' %}
 
+{% trans_default_domain 'FOSUserBundle' %}
+
 {% block content_body %}
-    <p>An email has been sent to {{ user.email }}. It contains an activation link you must click to activate your
-        account.</p>
+    <p>{{ 'registration.check_email'|trans({'%email%': user.email}) }}</p>
 {% endblock %}
 {% block javascripts %}
 {% endblock %}

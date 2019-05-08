@@ -9,7 +9,8 @@
 
 {% extends 'CertUnlpNgenBundle::User/Frontend/frontend.html.twig' %}
 {% block content_header %}
-    <h1 class="page-header"> {{ object }}             {% include "CertUnlpNgenBundle:User:Frontend/list/stateLabel.html.twig" with {'user': object} %}
+    <h1 class="page-header"> {{ object }}
+        {% include "CertUnlpNgenBundle:User:Frontend/list/stateLabel.html.twig" with {'user': object} %}
     </h1>
 {% endblock %}
 {% block content_body %}
@@ -17,14 +18,14 @@
         <div class="col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">User Information</h3>
+                    <h3 class="panel-title">{{ 'User Information'|trans }}</h3>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <tr>
                                 <td class="">
-                                    {{ "System Id"|trans}}
+                                    {{ "System Id"|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.id }}
@@ -32,7 +33,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Userame
+                                    {{ 'Userame'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.username }}
@@ -40,7 +41,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Name
+                                    {{ 'Name'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.name ~" "~object.lastname }}
@@ -48,7 +49,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Last login
+                                    Last login{{ 'Forgot'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.lastLogin|date('Y-m-d') }}
@@ -56,7 +57,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Created at
+                                    {{ 'Created at'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.createdAt|date('Y-m-d') }}
@@ -65,7 +66,7 @@
 
                             <tr>
                                 <td class="">
-                                    Last Update
+                                    {{ 'Last Update'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.updatedAt|date('Y-m-d') }}
@@ -73,7 +74,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Active
+                                    {{ 'Active'|trans }}
                                 </td>
                                 <td class="">
                                     {% include "CertUnlpNgenBundle:User:Frontend/list/stateLabel.html.twig" with {'user': object} %}
@@ -81,7 +82,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Incidents
+                                    {{ 'Incidents'|trans }}
                                 </td>
                                 <td class="">
                                     {#                                    <a target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~object.ip~'"'~ "&&" ~'"'~object.ipMask~'"'})}}">#}

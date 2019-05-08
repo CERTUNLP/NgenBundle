@@ -17,7 +17,7 @@
         <div class="col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">{{  'Priority Information'|trans }} </h3>
+                    <h3 class="panel-title">{{ 'Priority Information'|trans }} </h3>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -27,7 +27,7 @@
                                     {{ 'Urgency'| trans }}
                                 </td>
                                 <td class="">
-                                    {{ object.urgency }}
+                                    {{ object.urgency| trans }}
                                 </td>
                             </tr>
                             <tr>
@@ -35,7 +35,7 @@
                                     {{ 'Impact'| trans }}
                                 </td>
                                 <td class="">
-                                    {{ object.impact }}
+                                    {{ object.impact | trans }}
                                 </td>
                             </tr>
                             <tr>
@@ -48,7 +48,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Active
+                                    {{ 'Active'| trans }}
                                 </td>
                                 <td class="">
                                     {% include "CertUnlpNgenBundle:IncidentPriority:Frontend/list/incidentPriorityLabel.html.twig" with {'incidentPriority': object} %}

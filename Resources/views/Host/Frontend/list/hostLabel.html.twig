@@ -8,7 +8,7 @@
 #}
 
 {% if host.isActive %}
-    {{ label_success("active") }}
+    {{ label_success("active"|trans) }}
 {% else %}
-    {{ label_danger("innactive") }}
+    {{ label_danger("innactive"|trans) }}
 {% endif %}

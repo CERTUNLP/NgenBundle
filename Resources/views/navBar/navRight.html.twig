@@ -4,18 +4,17 @@
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
             {{ icon('caret-down') }}{{ icon('user fa-fw') }}{{ app.user.username }}
         </a>
-        </a>
         <ul class="dropdown-menu dropdown-user">
             <li>
-                <a href="{{ path('fos_user_change_password') }}">{{ icon('key fa-fw') }} Change password</a>
+                <a href="{{ path('fos_user_change_password') }}">{{ icon('key fa-fw') }}{{ 'Change password'|trans }}</a>
             </li>
             <li>
-                <a href="{{ path('fos_user_profile_show') }}">{{ icon('user fa-fw') }} Profile</a>
+                <a href="{{ path('fos_user_profile_show') }}">{{ icon('user fa-fw') }} {{ 'Profile'|trans }}</a>
             </li>
             <li class="divider"></li>
             </li>
             <li>
-                <a href="{{ path('fos_user_security_logout') }}">{{ icon('sign-out fa-fw') }} Logout</a>
+                <a href="{{ path('fos_user_security_logout') }}">{{ icon('sign-out fa-fw') }} {{ 'Logout'|trans }}</a>
             </li>
         </ul>
         <!-- /.dropdown-user -->

@@ -8,24 +8,24 @@
 #}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong>{{ icon('unlock-alt fa-fw') }} Incident States</strong>
+        <strong>{{ icon('unlock-alt fa-fw') }} {{ 'Incident States'|trans }}</strong>
         <strong>({{ objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount }})</strong>
         <div class="pull-right">
             <div class="btn-group">
                 <a class="btn btn-default btn-xs" href="{{ path('cert_unlp_ngen_incident_state_new') }}">
-                    {{ icon('plus-circle fa-fw') }}add incident state
+                    {{ icon('plus-circle fa-fw') }}add incident state{{ 'add incident state'|trans }}
                 </a>
             </div>
         </div>
     </div>
     <table class="table table-striped table-bordered table-hover dataTable no-footer">
         <tr role="row">
-            <th>{{ knp_pagination_sortable(incidentStates, 'Name', 'slug') }}</th>
-            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Reporter', 'mailReporter.slug') }}</th>
-            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Assigned', 'mailAssigned.slug') }}</th>
-            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Admin', 'mailAdmin.slug') }}</th>
-            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Team', 'mailTeam.slug') }}</th>
-            <th>{{ knp_pagination_sortable(incidentStates, 'active', 'isActive') }}</th>
+            <th>{{ knp_pagination_sortable(incidentStates, 'Name'|trans, 'slug') }}</th>
+            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Reporter'|trans, 'mailReporter.slug') }}</th>
+            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Assigned'|trans, 'mailAssigned.slug') }}</th>
+            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Admin'|trans, 'mailAdmin.slug') }}</th>
+            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Team'|trans, 'mailTeam.slug') }}</th>
+            <th>{{ knp_pagination_sortable(incidentStates, 'active'|trans, 'isActive') }}</th>
             <th>Action</th>
         </tr>
         <tbody>
@@ -37,5 +37,5 @@
     </table>
 </div>
 <div class="pagination-centered">
-    {{ knp_pagination_render(incidentStates, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}
+    {{ knp_pagination_render(incidentStates, null, {}, { "prev_label": "Previous"|trans, "next_label": "Next"|trans, "first_label": "First"|trans, "last_label": "Last"|trans}) }}
 </div>

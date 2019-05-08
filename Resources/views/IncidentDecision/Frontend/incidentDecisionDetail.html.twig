@@ -17,7 +17,7 @@
         <div class="col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">decision Information</h3>
+                    <h3 class="panel-title">{{ 'Decision Information'|trans }}</h3>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -32,7 +32,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Name
+                                    {{ 'Name'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object }}
@@ -40,7 +40,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Created at
+                                   {{ 'Created at'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.createdAt|date('Y-m-d') }}
@@ -49,7 +49,7 @@
 
                             <tr>
                                 <td class="">
-                                    Last Update
+                                    {{ 'Last Update'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.updatedAt|date('Y-m-d') }}
@@ -57,7 +57,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    Active
+                                    {{ 'Active'|trans }}
                                 </td>
                                 <td class="">
                                     {% include "CertUnlpNgenBundle:IncidentDecision:Frontend/list/incidentDecisionLabel.html.twig" with {'incidentDecision': object} %}

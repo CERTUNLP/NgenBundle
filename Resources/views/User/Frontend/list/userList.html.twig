@@ -8,23 +8,23 @@
 #}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong>{{ icon('share-alt fa-fw') }} Users</strong>
+        <strong>{{ icon('share-alt fa-fw') }} {{ 'Users'|trans }}</strong>
         <strong>({{ objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount }})</strong>
         <div class="pull-right">
             <div class="btn-group">
                 <a class="btn btn-default btn-xs" href="{{ path('cert_unlp_ngen_user_new_user') }}">
-                    {{ icon('plus-circle fa-fw') }}add user
+                    {{ icon('plus-circle fa-fw') }}{{ 'add user'|trans }}
                 </a>
             </div>
         </div>
     </div>
     <table class="table table-striped table-bordered table-hover dataTable no-footer">
         <tr role="row">
-            <th>{{ knp_pagination_sortable(users, 'Username', 'username') }}</th>
-            <th>{{ knp_pagination_sortable(users, 'Name', 'slug') }}</th>
-            <th>{{ knp_pagination_sortable(users, 'Email', 'email') }}</th>
-            <th>{{ knp_pagination_sortable(users, 'Last login', 'lastLogin') }}</th>
-            <th>{{ knp_pagination_sortable(users, 'active', 'isEnabled') }}</th>
+            <th>{{ knp_pagination_sortable(users, 'Username'|trans, 'username') }}</th>
+            <th>{{ knp_pagination_sortable(users, 'Name'|trans, 'slug') }}</th>
+            <th>{{ knp_pagination_sortable(users, 'Email'|trans, 'email') }}</th>
+            <th>{{ knp_pagination_sortable(users, 'Last login'|trans, 'lastLogin') }}</th>
+            <th>{{ knp_pagination_sortable(users, 'Active'|trans, 'isEnabled') }}</th>
             <th>Action</th>
         </tr>
         <tbody>
@@ -36,5 +36,5 @@
     </table>
 </div>
 <div class="pagination-centered">
-    {{ knp_pagination_render(users, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}
+    {{ knp_pagination_render(users, null, {}, { "prev_label": "Previous"|trans, "next_label": "Next"|trans, "first_label": "First"|trans, "last_label": "Last"|trans}) }}
 </div>
