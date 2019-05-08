@@ -9,7 +9,7 @@
 
 {% extends 'CertUnlpNgenBundle::NetworkAdmin/Frontend/frontend.html.twig' %}
 {% block content_header %}
-    <h1 class="page-header">{{ icon('plus-circle fa-fw') }}Add Network Admin</h1>
+    <h1 class="page-header">{{ icon('plus-circle fa-fw') }}{{ 'Add Network Admin'|trans }}</h1>
 {% endblock %}
 {% block content_body %}
     {% if (form is not null) %}

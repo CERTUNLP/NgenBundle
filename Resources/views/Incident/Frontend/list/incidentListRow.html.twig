@@ -43,18 +43,19 @@
     </td>
 
     <td>
-        <span class=" left label tlp-{{ incident.tlp | lower }}" id="tlp">TLP: {{ incident.tlp }}</span>
+        <span class=" left label tlp-{{ incident.tlp | lower | trans }}"
+              id="tlp">{{ 'TLP'|trans }}: {{ incident.tlp }}</span>
 
     </td>
     <td>
         <div class="btn-group inline pull-left dropdown action-dropdown">
             <a class="btn btn-sm btn-primary" role="button"
                href="{{ path('cert_unlp_ngen_internal_incident_frontend_detail_incident',{'slug':incident.slug}) }}">
-                Detail
+                {{ 'Detail'|trans }}
             </a>
             <a class="btn btn-sm btn-primary" role="button"
                href="{{ path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': incident.id}) }}">
-                Edit
+                {{ 'Edit'|trans }}
             </a>
             {#            <button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" type="button"#}
             {#                    id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">#}

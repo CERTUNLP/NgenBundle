@@ -11,5 +11,8 @@
 
 {% block content_body %}
     {% include "CertUnlpNgenBundle:User:Frontend/Profile/show_content.html.twig" %}
-<a class="btn btn-info" href="{{ path('fos_user_profile_edit') }}">Edit<a>
-        {% endblock %}
+    <a class="btn btn-info" href="{{ path('fos_user_profile_edit') }}">
+        {{ 'Edit'|trans }}
+    </a>
+
+{% endblock %}

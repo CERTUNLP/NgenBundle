@@ -52,7 +52,7 @@ class IncidentDecisionType extends AbstractType
                     . 'dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|'
                     . 'open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|'
                     . 'open_ssdp|phishing|poodle|scan|shellshock|spam)',
-                'query_builder' => function (EntityRepository $er) {
+                'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
@@ -60,7 +60,7 @@ class IncidentDecisionType extends AbstractType
                 'class' => IncidentFeed::class,
                 'required' => true,
                 'description' => '(bro|external_report|netflow|shadowserver)',
-                'query_builder' => function (EntityRepository $er) {
+                'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
@@ -75,23 +75,23 @@ class IncidentDecisionType extends AbstractType
                 'class' => IncidentState::class,
                 'empty_value' => 'Choose an incident state',
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
-                'query_builder' => function (EntityRepository $er) {
+                'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
             ->add('tlp', null, array(
                 'class' => IncidentTlp::class,
-                'empty_value' => 'Choose an incident tlp',
+                'empty_value' => 'Choose an incident TLP',
                 'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
             ))
             ->add('impact', null, array(
                 'class' => IncidentImpact::class,
-                'empty_value' => 'Choose a impact level',
+                'empty_value' => 'Choose an impact level',
                 'description' => 'If none is selected, the assigned impact will be Low',
             ))
             ->add('urgency', null, array(
                 'class' => IncidentUrgency::class,
-                'empty_value' => 'Choose a urgency level',
+                'empty_value' => 'Choose an urgency level.',
                 'description' => 'If none is selected, the assigned urgency will be Low',
             ))
             ->add('id', HiddenType::class)

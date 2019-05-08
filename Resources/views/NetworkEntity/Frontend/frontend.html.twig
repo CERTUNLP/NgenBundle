@@ -8,10 +8,10 @@
 #}
 {% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
 
-{% block title %}Network Entities{% endblock %}
+{% block title %}{{ 'Network Entities'|trans }}{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{ icon('users fa-fw') }} Network Entities</h1>
+    <h1 class="page-header">{{ icon('users fa-fw') }} {{ 'Network Entities'|trans }}</h1>
 {% endblock %}
 
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_network_entity_search') }}{% endblock %}

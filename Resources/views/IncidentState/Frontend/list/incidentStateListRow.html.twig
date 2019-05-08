@@ -9,26 +9,26 @@
 
 <tr data-id="{{ incidentState.slug }}">
     <td class="col-md-1">
-        {{ incidentState.name }}
+        {{ incidentState.name |trans }}
     </td>
     <td id="state_label_holder" class="col-md-1">
         <div class="label-holder">
-            {{ incidentState.mailReporter }}
+            {{ incidentState.mailReporter |trans }}
         </div>
     </td>
     <td id="state_label_holder" class="col-md-1">
         <div class="label-holder">
-            {{ incidentState.mailAssigned }}
+            {{ incidentState.mailAssigned |trans }}
         </div>
     </td>
     <td id="state_label_holder" class="col-md-1">
         <div class="label-holder">
-            {{  incidentState.mailAdmin }}
+            {{ incidentState.mailAdmin |trans }}
         </div>
     </td>
     <td id="state_label_holder" class="col-md-1">
         <div class="label-holder">
-            {{ incidentState.mailTeam }}
+            {{ incidentState.mailTeam |trans }}
 
         </div>
     </td>
@@ -43,11 +43,11 @@
         <div class="btn-group inline pull-left dropdown action-dropdown">
             <a class="btn btn-sm btn-primary" role="button"
                href="{{ path('cert_unlp_ngen_incident_state_detail',{'slug': incidentState.slug}) }}">
-                Details
+                {{  'Details'|trans}}
             </a>
             <button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" type="button"
                     id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                Actions
+                {{ 'Actions'|trans }}
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
@@ -61,14 +61,14 @@
                     <a {% if incidentState.isActive %}style="display: none;"{% endif %} class="state-label"
                        data-action="reactivate" data-state-slug="active" data-state-name="active" role="menuitem"
                        tabindex="-1" href="#">{{ icon('repeat alert-info') }} <span
-                                class="action-text">Reactivate</span></a>
+                                class="action-text"> {{  'Reactivate'|trans}}</span></a>
                 </li>
 
                 <li role="presentation">
                     <a {% if not incidentState.isActive %}style="display: none;"{% endif %} class="state-label"
                        data-action="desactivate" data-state-slug="innactive" data-state-name="innactive" role="menuitem"
                        tabindex="-1" href="#">{{ icon('lock alert-success') }} <span
-                                class="action-text">Desactivate</span></a>
+                                class="action-text">{{ 'Desactivate'|trans }}</span></a>
                 </li>
             </ul>
         </div>
