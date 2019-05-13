@@ -32,8 +32,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class IncidentType extends AbstractType
 {
@@ -106,12 +106,13 @@ class IncidentType extends AbstractType
                 'attr' => array('help_text' => 'If none is selected, it may be selected by incident decisions.'),
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
                 'query_builder' => function (EntityRepository $er) {
-                 return $er->createQueryBuilder('it')
+                    return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
             ->add('tlp', EntityType::class, array(
                 'class' => IncidentTlp::class,
                 'empty_value' => 'Choose an incident TLP',
+                'choice_label' => 'name',
                 'attr' => array('help_text' => 'If none is selected, it may be selected by incident decisions.'),
                 'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
             ))
@@ -136,12 +137,15 @@ class IncidentType extends AbstractType
             ->add('impact', EntityType::class, array(
                 'class' => IncidentImpact::class,
                 'empty_value' => 'Choose an impact level',
+                'choice_label' => 'name',
+
                 'attr' => array('help_text' => 'If none is selected, it may be selected by incident decisions.'),
                 'description' => 'If none is selected, the assigned impact will be Low',
             ))
             ->add('urgency', EntityType::class, array(
                 'class' => IncidentUrgency::class,
                 'empty_value' => 'Choose an urgency level.',
+                'choice_label' => 'name',
                 'attr' => array('help_text' => 'If none is selected, it may be selected by incident decisions.'),
                 'description' => 'If none is selected, the assigned urgency will be Low',
             ))
@@ -208,35 +212,35 @@ class IncidentType extends AbstractType
 
 
         // disable field if it has been populated with a client already
-        if ( $data and ! $data->isNew() )
-          $form->add('type', null, array(
-        'empty_value' => 'Choose an incident type',
-        'required' => true,
-        'disabled'=>"disabled",
-        'description' => '(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|'
-            . 'dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|'
-            . 'open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|'
-            . 'open_ssdp|phishing|poodle|scan|shellshock|spam)',
-        'query_builder' => function (EntityRepository $er) {
-            return $er->createQueryBuilder('it')
-                ->where('it.isActive = TRUE');
-        }))
-        ->add('address', null, array(
-            'required' => true,
-            'disabled'=>"disabled",
-            'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
-            'label' => 'Address',
-            'description' => 'The network ip and mask',
-        ))
-        ->add('feed', EntityType::class, array(
-            'class' => IncidentFeed::class,
-            'required' => true,
-            'disabled'=>"disabled",
-            'description' => '(bro|external_report|netflow|shadowserver)',
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('it')
-                    ->where('it.isActive = TRUE');
-            }));
+        if ($data and !$data->isNew())
+            $form->add('type', null, array(
+                'empty_value' => 'Choose an incident type',
+                'required' => true,
+                'disabled' => "disabled",
+                'description' => '(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|'
+                    . 'dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|'
+                    . 'open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|'
+                    . 'open_ssdp|phishing|poodle|scan|shellshock|spam)',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('it')
+                        ->where('it.isActive = TRUE');
+                }))
+                ->add('address', null, array(
+                    'required' => true,
+                    'disabled' => "disabled",
+                    'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
+                    'label' => 'Address',
+                    'description' => 'The network ip and mask',
+                ))
+                ->add('feed', EntityType::class, array(
+                    'class' => IncidentFeed::class,
+                    'required' => true,
+                    'disabled' => "disabled",
+                    'description' => '(bro|external_report|netflow|shadowserver)',
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('it')
+                            ->where('it.isActive = TRUE');
+                    }));
 
     }
 

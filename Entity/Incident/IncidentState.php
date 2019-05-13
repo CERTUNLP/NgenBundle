@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -27,7 +28,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentState
+class IncidentState implements Translatable
 {
     /**
      * @var IncidentStateAction
@@ -38,11 +39,18 @@ class IncidentState
      */
     private $incident_action;
     /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100)
      * @JMS\Expose
      * @JMS\Groups({"api_input"})
+     * @Gedmo\Translatable
      */
     private $name;
     /**
@@ -115,6 +123,11 @@ class IncidentState
     public function __construct()
     {
         $this->incidents = new ArrayCollection();
+    }
+
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
     }
 
     /**

@@ -272,6 +272,23 @@ services:
         calls:
             - [ setAnnotationReader, [ "@annotation_reader" ] ]
 
+    extension.listener:
+        class: CertUnlp\NgenBundle\Doctrine\DoctrineExtensionListener
+        calls:
+            - [ setContainer, [ "@service_container" ] ]
+        tags:
+            # translatable sets locale after router processing
+            - { name: kernel.event_listener, event: kernel.request, method: onLateKernelRequest, priority: -10 }
+
+    gedmo.listener.translatable:
+        class: Gedmo\Translatable\TranslatableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ "@annotation_reader" ] ]
+            - [ setTranslatableLocale, [ %ngen_lang% ] ]
+            - [ setTranslationFallback, [ false ] ]
+
     app.image_type_extension:
         class: CertUnlp\NgenBundle\Form\Extension\DateTimeTypeExtension
         tags:
