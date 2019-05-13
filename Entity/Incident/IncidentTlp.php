@@ -2,8 +2,10 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 use JMS\Serializer\Annotation as JMS;
 
 
@@ -14,13 +16,14 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentTlp
+class IncidentTlp implements Translatable
 {
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=45, nullable=true)
      * @JMS\Expose
+     * @Gedmo\Translatable
      */
     private $name;
 
@@ -98,7 +101,7 @@ class IncidentTlp
      */
     public function __construct()
     {
-        $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->incidents = new ArrayCollection();
     }
 
     /**
@@ -253,6 +256,11 @@ class IncidentTlp
         $this->slug = $slug;
 
         return $this;
+    }
+
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
     }
 
     /**

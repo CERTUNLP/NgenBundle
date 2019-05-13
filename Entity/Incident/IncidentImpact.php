@@ -5,6 +5,7 @@ namespace CertUnlp\NgenBundle\Entity\Incident;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -14,16 +15,23 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentImpact
+class IncidentImpact implements Translatable
 {
     /**
      * @var string|null
      *
      * @ORM\Column(name="name", type="string")
      * @JMS\Expose()
+     * @Gedmo\Translatable
      */
     private $name;
 
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
     /**
      * @var string|null
      * @ORM\Id
@@ -32,7 +40,6 @@ class IncidentImpact
      * @JMS\Expose()
      * */
     private $slug;
-
     /**
      * @var string|null
      *
@@ -40,15 +47,16 @@ class IncidentImpact
      * @JMS\Expose()
      */
     private $description;
-
-
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority",mappedBy="impact"))
      */
-
     private $incidentsPriorities;
 
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+    }
 
     /**
      * @return Collection

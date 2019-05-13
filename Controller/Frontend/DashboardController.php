@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend;
 
+use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -30,11 +31,19 @@ class DashboardController extends Controller
      */
     public function homeAction()
     {
-//        $address = $this->getDoctrine()->getRepository(Network::class)->findOneByAddress(['address' => '163.10.42.242']);
-//        $address = new NetworkInternal('2001:4860::/32');
-//        $this->getDoctrine()->getManager()->persist($address);
-//        $this->getDoctrine()->getManager()->flush();
-        return $this->redirect($this->generateUrl('cert_unlp_ngen_internal_incident_frontend_home'));
+//        $article = $this->get('doctrine')->getManager()->find(IncidentState::class, 'open' /*article id*/);
+//        $repository = $this->get('doctrine')->getManager()->getRepository(Translation::class);
+//        $translations = $repository->findTranslations($article);
+//        var_dump($translations);
+//        die;
+
+
+        $article = new IncidentState();
+        $article->setName('asdasda');
+
+        $this->get('doctrine')->getManager()->persist($article);
+        $this->get('doctrine')->getManager()->flush();
+        die;
 
     }
 }

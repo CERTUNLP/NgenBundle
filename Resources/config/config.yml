@@ -50,6 +50,13 @@ doctrine:
                 inet6_aton: DoctrineExtensions\Query\Mysql\Inet6Aton
                 inet6_ntoa: DoctrineExtensions\Query\Mysql\Inet6Ntoa
                 substring_index: DoctrineExtensions\Query\Mysql\SubstringIndex
+        mappings:
+            translatable:
+                type: annotation
+                alias: Gedmo
+                prefix: Gedmo\Translatable\Entity
+                # make sure vendor library location is correct
+                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
     dbal:
         types:
             ip: Darsyn\IP\Doctrine\MultiType

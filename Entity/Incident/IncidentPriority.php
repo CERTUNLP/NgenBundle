@@ -2,8 +2,11 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use DateInterval;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -13,7 +16,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IndicentPriorityRepository")
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentPriority
+class IncidentPriority implements Translatable
 {
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="incidentsPriorities")
@@ -21,19 +24,73 @@ class IncidentPriority
      * @JMS\Expose
      */
     protected $impact;
-
     /**
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency", inversedBy="incidentsPriorities")
      * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
      * @JMS\Expose
      */
     protected $urgency;
-
     /**
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="priority"))
      */
 
     protected $incidents;
+    /**
+     * @var string|null
+     * @ORM\Id
+     * @ORM\Column(name="slug", type="string", length=255, unique=true)
+     * @JMS\Expose
+     */
+
+    private $slug;
+    /**
+     * @var string|null
+     * @ORM\Column(name="name", type="string", length=255)
+     * @JMS\Expose
+     * @Gedmo\Translatable
+     */
+
+    private $name;
+    /**
+     * @var DateTime|null
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    private $createdAt;
+    /**
+     * @var DateTime|null
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="updated_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    private $updatedAt;
+    /**
+     * @var integer|null
+     * @ORM\Column(name="response_time", type="integer")
+     * @JMS\Expose
+     */
+    private $responseTime;
+    /**
+     * @var integer|null
+     * @ORM\Column(name="resolution_time", type="integer")
+     * @JMS\Expose
+     */
+    private $resolutionTime;
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="code", type="integer")
+     * @JMS\Expose
+     */
+    private $code;
+
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+    }
 
     /**
      * @return mixed
@@ -51,79 +108,8 @@ class IncidentPriority
         $this->incidents = $incidents;
     }
 
-
     /**
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $slug
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-    }
-
-    /**
-     * @var string
-     * @ORM\Id
-     * @ORM\Column(name="slug", type="string", length=255, unique=true)
-     * @JMS\Expose
-     */
-
-    private $slug;
-
-
-
-    /**
-     * @var string
-     * @ORM\Column(name="name", type="string", length=255)
-     * @JMS\Expose
-     */
-
-    private $name;
-    /**
-     * @var \DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-    /**
-     * @var \DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
-    /**
-     * @var integer
-     * @ORM\Column(name="response_time", type="integer")
-     * @JMS\Expose
-     */
-    private $responseTime;
-    /**
-     * @var integer
-     * @ORM\Column(name="resolution_time", type="integer")
-     * @JMS\Expose
-     */
-    private $resolutionTime;
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="code", type="integer")
-     * @JMS\Expose
-     */
-    private $code;
-
-    /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreatedAt()
     {
@@ -131,7 +117,7 @@ class IncidentPriority
     }
 
     /**
-     * @param \DateTime $createdAt
+     * @param DateTime $createdAt
      */
     public function setCreatedAt($createdAt)
     {
@@ -139,7 +125,7 @@ class IncidentPriority
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getUpdatedAt()
     {
@@ -147,7 +133,7 @@ class IncidentPriority
     }
 
     /**
-     * @param \DateTime $updatedAt
+     * @param DateTime $updatedAt
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -194,6 +180,22 @@ class IncidentPriority
     public function getId()
     {
         return $this->getSlug();
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
     }
 
     /**
@@ -247,7 +249,7 @@ class IncidentPriority
     /**
      * Get resolutionTime
      *
-     * @return dateinterval
+     * @return int|null
      */
     public function getResolutionTime()
     {
@@ -296,6 +298,7 @@ class IncidentPriority
     {
         return $this->name;
     }
+
     /**
      * @return bool
      */
