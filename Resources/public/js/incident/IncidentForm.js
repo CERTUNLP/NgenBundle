@@ -15,9 +15,8 @@ var IncidentForm = Form.extend({
         this.changeTLP();
     },
     changeTLP: function () {
-        var $valor = $("#tlp option:selected").text();
-        $("#tlp_label").first().html("TLP:" + $valor.toUpperCase());
-        $("#tlp_label").attr('class', "tlp-" + $valor.toLowerCase());
+        $("#tlp_label").first().html("TLP:" + $("#tlp option:selected").text());
+        $("#tlp_label").attr('class', "tlp-" + $("#tlp option:selected").val());
     },
     getIncidentDecision: function () {
         let $ip = $("#address").val();
@@ -30,7 +29,7 @@ var IncidentForm = Form.extend({
     },
     changeDefaults: function (response) {
         if (Object.keys(response).length) {
-            $("#tlp").val(response.responseJSON.tlp.slug).trigger('change') ;
+            $("#tlp").val(response.responseJSON.tlp.slug).trigger('change');
             $("#state").val(response.responseJSON.state.slug).trigger('change');
             $("#impact").val(response.responseJSON.impact.slug).trigger('change');
             $("#urgency").val(response.responseJSON.urgency.slug).trigger('change');
