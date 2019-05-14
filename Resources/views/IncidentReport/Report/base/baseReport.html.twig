@@ -40,7 +40,7 @@
                                                 {% if(report.problem) %}
                                                     <tr>
                                                         <td>
-                                                            {{ report.problem|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                            {{ report.problem|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
                                                         </td>
                                                         <td class="expander"></td>
                                                     </tr>
@@ -53,7 +53,7 @@
                                                                 {% block incident_notes_title %}
                                                                 {% endblock %}
                                                             </p>
-                                                            {{ incident.notes|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                            {{ incident.notes|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
                                                         </td>
                                                         <td class="expander"></td>
                                                     </tr>
@@ -66,7 +66,7 @@
                                                                 {% block derivated_problem_title %}
                                                                 {% endblock %}
                                                             </p>
-                                                            {{ report.derivatedProblem|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                            {{ report.derivatedProblem|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
                                                         </td>
                                                         <td class="expander"></td>
                                                     </tr>
@@ -78,7 +78,7 @@
                                                                 {% block verification_title %}
                                                                 {% endblock %}
                                                             </p>
-                                                            {{ report.verification|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                            {{ report.verification|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
                                                         </td>
                                                         <td class="expander"></td>
                                                     </tr>
@@ -90,7 +90,7 @@
                                                                 {% block recomendations_title %}
                                                                 {% endblock %}
                                                             </p>
-                                                            {{ report.recomendations|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                            {{ report.recomendations|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
                                                         </td>
                                                         <td class="expander"></td>
                                                     </tr>
@@ -102,7 +102,7 @@
                                                                 {% block more_information_title %}
                                                                 {% endblock %}
                                                             </p>
-                                                            {{ report.moreInformation|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                            {{ report.moreInformation|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
                                                         </td>
                                                         <td class="expander"></td>
                                                     </tr>
