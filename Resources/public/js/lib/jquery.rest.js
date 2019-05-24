@@ -76,6 +76,7 @@
         stripTrailingSlash: false,
         password: null,
         username: null,
+        apikey: null,
         verbs: {
             'create': 'POST',
             'read': 'GET',
@@ -344,6 +345,9 @@
             if (this.opts.username && this.opts.password) {
                 encoded = encode64(this.opts.username + ":" + this.opts.password);
                 headers.Authorization = "Basic " + encoded;
+            }
+            if (this.opts.apikey) {
+                headers["apikey"] = this.opts.apikey;
             }
             if (data && this.opts.stringifyData && (method !== 'GET' && method !== 'HEAD')) {
                 data = stringify(data);

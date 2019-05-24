@@ -11,6 +11,13 @@
 #    resource: 'CertUnlp\NgenBundle\Controller\IncidentReportController'
 #    name_prefix:  api_
 
+
+cert_ngen_api_status:
+    type: rest
+    prefix: /status
+    resource: '@CertUnlpNgenBundle/Controller/Api/Ngen/NgenController.php'
+    name_prefix:  api_
+
 cert_ngen_incident_api:
     type: rest
     prefix: /
