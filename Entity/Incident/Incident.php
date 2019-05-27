@@ -85,6 +85,7 @@ class Incident implements IncidentInterface
      */
     protected $state;
     protected $lastState;
+    protected $reportReporter;
     /**
      * @var IncidentTlp
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp", inversedBy="incidents")
@@ -787,8 +788,19 @@ class Incident implements IncidentInterface
      */
     public function setState(IncidentState $state = null): Incident
     {
-        $this->lastState=$this->state;
-        $this->state = $state;
+
+        if ($this->getReporter()) {
+            $reporter = $this->getReporter();
+        } else {
+            $reporter = $this->reportReporter;
+        }
+        if ($this->modifyIncidentStatus($state)) {
+            if ($this->state != $state) {
+                $this->addChangeStateHistory(new IncidentChangeState($this, $state, $reporter, $this->getState()));
+                $this->lastState = $this->state;
+                $this->state = $state;
+            }
+        }
         return $this;
     }
 
@@ -1180,19 +1192,15 @@ class Incident implements IncidentInterface
      */
     public function setStateAndReporter(IncidentState $state, User $reporter): Incident
     {
-        if ($this->modifyIncidentStatus($state)) {
-            $this->addChangeStateHistory(new IncidentChangeState($this, $state, $reporter, $this->getState()));
-            $this->setState($state);
-
-        }
+        $this->reportReporter = $reporter;
+        $this->setState($state);
         return $this;
     }
+
     public function patchStateAndReporter(User $reporter): Incident
     {
-        if (($this->lastState) && ($this->getState() !== $this->lastState )){
-            if ($this->modifyIncidentStatus($this->getState())) {
-                $this->addChangeStateHistory(new IncidentChangeState($this, $this->getState(), $reporter, $this->lastState));
-            }
+        if (($this->lastState) && ($this->getState() !== $this->lastState)) {
+            $this->setStateAndReporter($this->getState(),$reporter);
         }
         return $this;
     }
