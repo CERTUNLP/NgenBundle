@@ -135,11 +135,9 @@ class IncidentHandler extends Handler
         if ($incident->isDefined()) {
             $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
         }
-        if ($incidentDB){echo "\nsdsa\n";}
-
         if ($incidentDB && $method === 'POST') {
-            $incidentDB->addIncidentDetected($incident);
             $incidentDB->updateVariables($incident);
+            $incidentDB->addIncidentDetected($incident);
             $incident = $incidentDB;
         } elseif($incidentDB && $method === 'PATCH') {
              $incidentDB->patchStateAndReporter($this->getUser());
