@@ -1,7 +1,6 @@
 .tlp-red {
     color: #ff0033;
     background: #000;
-    float:right;
     border-radius: 10px;
 }
 
@@ -9,20 +8,17 @@
     color: #ffc000;
     background: #000;
     border-radius: 10px;
-    float:right;
 }
 
 .tlp-green {
     color: #33ff00;
     background: #000;
-    float:right;
     border-radius: 10px;
 }
 
 .tlp-white {
     color: #fff;
     background: #000;
-    float:right;
     border-radius: 10px;
 }
 
