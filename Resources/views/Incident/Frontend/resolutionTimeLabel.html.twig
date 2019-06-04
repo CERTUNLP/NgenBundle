@@ -11,15 +11,15 @@
  {% if not incident.isNew %}
  {% if not incident.isClosed %}
      {%   if atrasado > 0 %}
-         <span class="label label-success" > {{ 'Waiting for resolution'|trans}} {{ atrasado }}{{ 'minutes left'|trans }}</span>
+         <span class="label label-success" > {{ 'Waiting for resolution'|trans}} {{ atrasado }}{{ ' minutes left'|trans }}</span>
     {%  else %}
-        <span class="label label-danger" > {{ 'Resolution delayed for'|trans}}{{ atrasado * -1 }}{{ 'minutes'|trans }}</span>
+        <span class="label label-danger" > {{ 'Resolution delayed for'|trans}}{{ atrasado * -1 }}{{ ' minutes'|trans }}</span>
      {% endif %}
  {% else %}
      {%   if atrasado > 0 %}
-         <span class="label label-success" > {{ 'Resolved on time'|trans}} {{ atrasado}}{{ 'minutes left'|trans }}</span>
+         <span class="label label-success" > {{ 'Resolved on time'|trans}} {{ atrasado}}{{ ' minutes left'|trans }}</span>
      {% else %}
-         <span class="label label-danger" > {{ 'Resolution delayed for'|trans}}{{ atrasado * -1 }}{{ 'minutes'|trans }}</span>
+         <span class="label label-danger" > {{ 'Resolution delayed for'|trans}}{{ atrasado * -1 }}{{ ' minutes'|trans }}</span>
     {% endif %}
 
  {% endif %}

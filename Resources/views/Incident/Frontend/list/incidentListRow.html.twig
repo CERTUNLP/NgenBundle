@@ -29,73 +29,65 @@
     <td>
         {{ incident.date|date('Y-m-d H:i') }}
     </td>
-
     <td>
         {{ incident.priority }}
     </td>
     <td>
-        {% include "CertUnlpNgenBundle:Incident:Frontend/responseTimeLabel.html.twig" with {'incident': incident,'incidentsDetected':incident.incidentsDetected} %}
-        {% include "CertUnlpNgenBundle:Incident:Frontend/resolutionTimeLabel.html.twig" with {'incident': incident,'incidentsDetected':incident.incidentsDetected} %}
-    </td>
-
-    <td>
         {% include "CertUnlpNgenBundle:Incident:Frontend/ltdLabel.html.twig" with {'incident': incident,'incidentsDetected':incident.incidentsDetected} %}
     </td>
-
     <td>
-        <span class=" left label tlp-{{ incident.tlp | lower | trans }}"
-              id="tlp">{{ 'TLP'|trans }}: {{ incident.tlp }}</span>
 
-    </td>
-    <td>
         <div class="btn-group inline pull-left dropdown action-dropdown">
             <a class="btn btn-sm btn-primary" role="button"
-               href="{{ path('cert_unlp_ngen_internal_incident_frontend_detail_incident',{'slug':incident.slug}) }}">
+               href="{{ path('cert_unlp_ngen_internal_incident_frontend_detail_incident',{'slug':incident.id}) }}">
                 {{ 'Detail'|trans }}
             </a>
             <a class="btn btn-sm btn-primary" role="button"
                href="{{ path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': incident.id}) }}">
                 {{ 'Edit'|trans }}
             </a>
-            {#            <button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" type="button"#}
-            {#                    id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">#}
-            {#                Actions#}
-            {#                <span class="caret"></span>#}
-            {#            </button>#}
-            {#            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">#}
+            <button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" type="button"
+                    id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                {{ 'Actions'| trans }}
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 
-            {#                <li role="presentation">#}
-            {#                    <a {% if incident.isClosed == false %}style="display: none;"{% endif %} class="state-label"#}
-            {#                       data-state-slug="open" data-state-name="Open" role="menuitem" tabindex="-1"#}
-            {#                       href="#">{{ icon('repeat alert-info') }} <span class="action-text">Open</span></a>#}
-            {#                </li>#}
+                {% if incident.isNew == true %}
+                    <li class="list-group-item" role="presentation">
+                        <a class="state-label"
+                           data-state-slug="open" data-state-name="Open" tabindex="-1"
+                           href="#">{{ icon('  alert-info') }} <span class="action-text"> {{ 'Open'|trans }}</span></a>
+                    </li>
+                    <li class="list-group-item" role="presentation">
+                        <a class="state-label" data-state-slug="removed" data-state-name="Removed" role="menuitem"
+                           tabindex="-1" href="#">{{ icon('remove alert-danger') }} <span
+                                    class="action-text"> {{ 'Discard'| trans }}</span></a>
+                    </li>
 
-            {#                <li role="presentation">#}
-            {#                    <a role="menuitem" tabindex="-1"#}
-            {#                       href="{{ path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': incident.id}) }}">{{ icon('edit alert-info') }}#}
-            {#                        <span class="action-text">Edit</span></a>#}
-            {#                </li>#}
+                {% endif %}
 
-            {#                <li role="presentation">#}
-            {#                    <a class="state-label" data-state-slug="closed" data-state-name="Closed" role="menuitem"#}
-            {#                       tabindex="-1" href="#">{{ icon('lock alert-success') }} <span#}
-            {#                                class="action-text">Close</span></a>#}
-            {#                </li>#}
-            {#                <li role="presentation">#}
-            {#                    <a class="state-label" data-state-slug="closed_by_inactivity" data-state-name="Closed by inactivity"#}
-            {#                       role="menuitem" tabindex="-1" href="#">{{ icon('hourglass alert-danger') }} <span#}
-            {#                                class="action-text">Close by inactivity</span></a>#}
-            {#                </li>#}
-            {#                <li role="presentation">#}
-            {#                    <a class="state-label" data-state-slug="unresolved" data-state-name="Unresolved" role="menuitem"#}
-            {#                       tabindex="-1" href="#">{{ icon('thumbs-down alert-danger') }} <span class="action-text">Unresolved</span></a>#}
-            {#                </li>#}
-            {#                <li role="presentation">#}
-            {#                    <a class="state-label" data-state-slug="removed" data-state-name="Removed" role="menuitem"#}
-            {#                       tabindex="-1" href="#">{{ icon('remove-sign alert-danger') }} <span#}
-            {#                                class="action-text">Remove</span></a>#}
-            {#                </li>#}
-            {#            </ul>#}
+                {% if incident.isNew == false %}
+                    <li class="list-group-item" role="presentation">
+                        <a class="state-label" data-state-slug="closed" data-state-name="Closed" role="menuitem"
+                           tabindex="-1" href="#">{{ icon('lock alert-success') }} <span
+                                    class="action-text">{{ 'Close'|trans }}</span></a>
+                    </li>
+                    <li  class="list-group-item" role="presentation">
+                        <a class="state-label" data-state-slug="closed_by_inactivity"
+                           data-state-name="Closed by inactivity"
+                           role="menuitem" tabindex="-1" href="#">{{ icon('hourglass alert-danger') }} <span
+                                    class="action-text">{{ 'Close by inactivity'|trans }}</span></a>
+                    </li>
+                {% endif %}
+
+                <li  class="list-group-item" role="presentation">
+                    <a role="menuitem" tabindex="-1"
+                       href="{{ path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': incident.id}) }}">{{ icon('edit alert-info') }}
+                        <span class="action-text">Edit{{ incident.isNew }}</span></a>
+                </li>
+
+            </ul>
         </div>
     </td>
 </tr>
