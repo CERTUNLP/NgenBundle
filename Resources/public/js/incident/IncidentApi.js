@@ -18,7 +18,7 @@ var IncidentApi = ApiClient.extend({
 
     },
     changeState: function (incidentId, state, callback) {
-        var request = this.defaultChannel.states.update(incidentId, state, {}, {apikey: this.apiKey});
+        var request = this.defaultChannel.states.update(incidentId, state, {});
         this.doRequest(request, callback);
     },
     addDefaultChannel: function () {
