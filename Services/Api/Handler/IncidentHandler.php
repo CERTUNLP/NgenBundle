@@ -94,6 +94,11 @@ class IncidentHandler extends Handler
         return $this->context->getToken() ? $this->context->getToken()->getUser() : 'anon.';
     }
 
+    public function getToNotificateIncidents(): array
+    {
+        return $this->repository->findNotificables();
+    }
+
     public function closeOldIncidents(int $days = 10): array
     {
         $incidents = $this->all(['isClosed' => false]);

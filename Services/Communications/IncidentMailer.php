@@ -73,9 +73,13 @@ class IncidentMailer extends IncidentCommunication
                 ->addPart($html, 'text/html');
             $evidence_path = $this->upload_directory. "/";
 
-            foreach($incident->getIncidentsDetected() as $detected) {
-                if ($detected->getEvidenceFilePath()){
-                    $message->attach(\Swift_Attachment::fromPath($evidence_path.$detected->getEvidenceFilePath()));
+            foreach ($incident->getIncidentsDetected() as $detected) {
+                if ($detected->getEvidenceFilePath()) {
+                    if (file_exists($detected->getEvidenceFilePath())) {
+                        $message->attach(\Swift_Attachment::fromPath($evidence_path . $detected->getEvidenceFilePath()));
+                    } else {
+                        $detected->setEvidenceFilePath(null);
+                    }
                 }
             }
 
