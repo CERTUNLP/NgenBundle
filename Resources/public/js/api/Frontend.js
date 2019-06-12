@@ -29,6 +29,11 @@ var Frontend = Class.extend({
         this.laddaButton.start();
         this.doChangeState();
     },
+    updateListRow: function(jqXHR){
+        label = this.eventTarget.parents('tr');
+        label.html("<td><h1>hola</h1></td>")
+    }
+    ,
     stateLabelChange: function () {
         label = this.eventTarget.parents('tr').children('#state_label_holder').children('div.label-holder').children('span');
         label.text(this.eventTarget.data('state-name'));
@@ -51,7 +56,8 @@ var Frontend = Class.extend({
             $.publish('/cert_unlp/notify/error', ["The state was not changed. An error occurred."]);
         } else {
             $.publish('/cert_unlp/notify/success', ["The state has been changed successfully"]);
-            this.stateLabelChange();
+            this.updateListRow(jqXHR);
+
             this.dropDownChangeLinks();
         }
         this.laddaButton.stop();

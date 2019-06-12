@@ -95,7 +95,6 @@ class NetworkHandler extends Handler
 
     protected function checkIfExists($network, $method)
     {
-
         $networkDB = $this->repository->findOneBy(['address' => $network->getAddress(), 'address_mask' => $network->getAddressMask()]);
 
         if ($networkDB && $method === 'POST') {
