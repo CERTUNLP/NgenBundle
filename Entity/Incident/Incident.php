@@ -203,27 +203,33 @@ class Incident implements IncidentInterface
      *
      */
     protected $needToCommunicate = false;
+    
     /**
      * @Assert\File(maxSize = "500k")
      */
     protected $evidence_file;
+
     /**
      * @ORM\Column(name="evidence_file_path", type="string",nullable=true)
      */
     protected $evidence_file_path;
+
     /**
      * @var string
      * @ORM\Column(name="report_message_id", type="string",nullable=true)
      */
     protected $report_message_id;
+
     /**
      * @var $evidence_file_temp
      */
     protected $evidence_file_temp;
+
     /**
      * @var bool
      */
     protected $sendReport = false;
+
     /**
      * @var string
      *
@@ -233,15 +239,18 @@ class Incident implements IncidentInterface
      * @JMS\Groups({"api"})
      * */
     protected $slug;
+
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
      */
     protected $notes;
+
     /**
      * @ORM\Column(name="ltd_count", type="integer")
      */
     protected $ltdCount = 0;
+
     /**
      * @var Host|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_origin")
@@ -249,6 +258,7 @@ class Incident implements IncidentInterface
      * @JMS\Groups({"api"})
      */
     private $origin;
+
     /**
      * @var Host|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_destination")
@@ -256,6 +266,7 @@ class Incident implements IncidentInterface
      * @JMS\Groups({"api"})
      */
     private $destination;
+
     /**
      * @var Network|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network", inversedBy="incidents")
@@ -263,6 +274,7 @@ class Incident implements IncidentInterface
      * @JMS\Groups({"api"})
      */
     private $network;
+
     /**
      * @CustomAssert\ValidAddress()
      */
