@@ -19,7 +19,6 @@ use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandler;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ApiController
@@ -182,7 +181,7 @@ class ApiController
             $object = $this->getCustomHandler()->changeState(
                 $object, $state);
 
-            return $this->response([$object], Response::HTTP_OK);
+            return $this->response([$object], Response::HTTP_NO_CONTENT);
         } catch (InvalidFormException $exception) {
             return $this->responseError($exception);
         }

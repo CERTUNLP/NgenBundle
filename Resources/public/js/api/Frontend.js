@@ -23,6 +23,7 @@ var Frontend = Class.extend({
         }
     },
     changeState: function (event) {
+        event.preventDefault();
         this.eventTarget = $(event.currentTarget);
         actionButton = this.eventTarget.parents('ul').siblings('button');
         this.laddaButton = Ladda.create(actionButton.get(0));
@@ -30,8 +31,16 @@ var Frontend = Class.extend({
         this.doChangeState();
     },
     updateListRow: function(jqXHR){
-        label = this.eventTarget.parents('tr');
-        label.html("<td><h1>hola</h1></td>")
+
+        id = this.eventTarget.parents('tr').data('id');
+        tr=this.eventTarget.parents('tr');
+        $.get( id+"/getListRow", function( data ) {
+            tr.html($( data ).html());
+            $.publish('/cert_unlp/notify/success', ["The state has been changed successfully"]);
+            tr.focus();
+        });
+
+
     }
     ,
     stateLabelChange: function () {
@@ -55,9 +64,7 @@ var Frontend = Class.extend({
         if (jqXHR.status > '300') {
             $.publish('/cert_unlp/notify/error', ["The state was not changed. An error occurred."]);
         } else {
-            $.publish('/cert_unlp/notify/success', ["The state has been changed successfully"]);
             this.updateListRow(jqXHR);
-
             this.dropDownChangeLinks();
         }
         this.laddaButton.stop();
