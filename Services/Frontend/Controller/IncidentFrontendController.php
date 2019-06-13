@@ -11,6 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Services\Frontend\Controller;
 
+use CertUnlp\NgenBundle\CertUnlpNgenBundle;
+use CertUnlp\NgenBundle\Form\IncidentSearchType;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\ThreadManagerInterface;
@@ -99,8 +101,8 @@ class IncidentFrontendController extends FrontendController
         $term3->addMust($open);
         $term3->addMust($unasiggned_term);
 
-
-        return array('objects'=>$this->searchEntity($request, $term, $limit,$defaultSortFieldName,$defaultSortDirection,'pageobject','object')['objects'],'my_objects'=>$this->searchEntity($request, $term2, $limit,$defaultSortFieldName,$defaultSortDirection,'pagemy','my')['objects'],'unassigned_objects'=>$this->searchEntity($request, $term3, $limit,$defaultSortFieldName,$defaultSortDirection,'pageunassigned','unassigned')['objects'],'term'=> $term);
+        $quickSearchForm=$this->formFactory->createBuilder('CertUnlp\NgenBundle\Form\IncidentSearchType',(new Incident),array('csrf_protection' => true));
+        return array('objects'=>$this->searchEntity($request, $term, $limit,$defaultSortFieldName,$defaultSortDirection,'pageobject','object')['objects'],'search_form'=>$quickSearchForm->getForm()->createView());
 
     }
 }

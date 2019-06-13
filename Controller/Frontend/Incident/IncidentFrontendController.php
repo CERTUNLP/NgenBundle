@@ -106,5 +106,15 @@ class IncidentFrontendController extends Controller
         return $this->getFrontendController()->commentsEntity($incident, $request);
     }
 
+    /**
+     * @Template("CertUnlpNgenBundle:Incident:Frontend/list/incidentListRow.html.twig")
+     * @Route("{id}/getListRow", name="cert_unlp_ngen_incident_frontend_get_list_row_incident_id", requirements={"id"="\d+"})
+     * @param Incident $incident
+     * @return array
+     */
 
+    public function getListRow(Incident $incident)
+    {
+        return array('incident'=>$incident);
+    }
 }
