@@ -298,6 +298,14 @@ class Incident implements IncidentInterface
     }
 
     /**
+     * @param bool $needToCommunicate
+     */
+    public function setNeedToCommunicate(bool $needToCommunicate): void
+    {
+        $this->needToCommunicate = $needToCommunicate;
+    }
+
+    /**
      * @return bool
      */
     public function isNeedToCommunicateComment(): bool
@@ -306,11 +314,37 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @param bool $needToCommunicate
+     * @return bool
      */
-    public function setNeedToCommunicate(bool $needToCommunicate): void
+    public function isOpen(): bool
     {
-        $this->needToCommunicate = $needToCommunicate;
+        return (!$this->isClosed() and !$this->isNew());
+    }
+
+    /**
+     * @return bool
+     */
+    public function isClosed(): ?bool
+    {
+        return $this->isClosed;
+    }
+
+    public function setIsClosed($isClosed = false): Incident
+    {
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNew(): ?bool
+    {
+        return $this->isNew;
+    }
+
+    public function setIsNew($isNew = true): Incident
+    {
+        return $this;
     }
 
     /**
@@ -362,6 +396,8 @@ class Incident implements IncidentInterface
         return $this->createdAt;
     }
 
+    //FIX esto es una porqueria pero el problema ocurre con el  Form/IncidentType, al mandarle el header se pone en null el closed y en flase el new
+
     /**
      * @param DateTime $createdAt
      * @return Incident
@@ -407,8 +443,6 @@ class Incident implements IncidentInterface
         $this->urgency = $urgency;
         return $this;
     }
-
-    //FIX esto es una porqueria pero el problema ocurre con el  Form/IncidentType, al mandarle el header se pone en null el closed y en flase el new
 
     /**
      * @return IncidentImpact
@@ -594,19 +628,6 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @return bool
-     */
-    public function isNew(): ?bool
-    {
-        return $this->isNew;
-    }
-
-    public function setIsNew($isNew = true): Incident
-    {
-        return $this;
-    }
-
-    /**
      * @return int
      * @throws Exception
      */
@@ -621,19 +642,6 @@ class Incident implements IncidentInterface
         }
 
         return abs(($this->getUpdatedAt()->getTimestamp() - $this->getOpenedAt()->getTimestamp()) / 60);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isClosed(): ?bool
-    {
-        return $this->isClosed;
-    }
-
-    public function setIsClosed($isClosed = false): Incident
-    {
-        return $this;
     }
 
     /**
@@ -788,17 +796,21 @@ class Incident implements IncidentInterface
      */
     public function setState(IncidentState $state = null): Incident
     {
+        if ($this->getState() && $this->getState()->canChangeTo($state)) {
 
-        if ($this->getReporter()) {
-            $reporter = $this->getReporter();
-        } else {
-            $reporter = $this->reportReporter;
-        }
-        if ($this->modifyIncidentStatus($state)) {
-            if ($this->state != $state) {
-                $this->addChangeStateHistory(new IncidentChangeState($this, $state, $reporter, $this->getState()));
-                $this->lastState = $this->state;
-                $this->state = $state;
+            //TODO: esto aca no deberia ir
+            if ($this->getReporter()) {
+                $reporter = $this->getReporter();
+            } else {
+                $reporter = $this->reportReporter;
+            }
+            //TODO: esto se va con el state pattern
+            if ($this->modifyIncidentStatus($state)) {
+                if ($this->state != $state) {
+                    $this->addChangeStateHistory(new IncidentChangeState($this, $state, $reporter, $this->getState()));
+                    $this->lastState = $this->state;
+                    $this->state = $state;
+                }
             }
         }
         return $this;
@@ -888,6 +900,97 @@ class Incident implements IncidentInterface
         return $this;
     }
 
+    public function modifyIncidentStatus(IncidentState $state): bool
+    {
+        //FIX DAMIAN aca hay q avisar que no se puede cambiar el tipo de incidente
+        if ($this->isNew()) {
+            if ($state->isOpening()) {
+                $this->open();
+                return true;
+            }
+
+            if ($state->isReOpening()) {
+                $this->open();
+                return true;
+            }
+
+            if (!$state->isClosing()) {
+                return true;
+            }
+        }
+        if ($this->isClosed()) {
+            if ($state->isReOpening()) {
+                $this->reOpen();
+                return true;
+            }
+
+            if ($state->isClosing()) {
+                return true;
+            }
+        }
+        if (!$this->isClosed() && !$this->isNew()) {
+            if ($state->isOpening() || $state->isReOpening()) {
+                return true;
+            }
+
+            if ($state->isClosing()) {
+                $this->close();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return Incident
+     * @throws Exception
+     */
+    public function open(): Incident
+    {
+        $this->setNeedToCommunicate(true);
+        $this->setOpenedAt(new DateTime('now'));
+        return $this->markAsNew(false);
+    }
+
+    public function markAsNew(bool $isNew = true): Incident
+    {
+        $this->isNew = $isNew;
+        return $this;
+    }
+
+    /**
+     * @return Incident
+     */
+    public function reOpen(): Incident
+    {
+        $this->setNeedToCommunicate(true);
+        return $this->setAsClosed();
+    }
+
+    public function setAsClosed(bool $isClosed = false): Incident
+    {
+        $this->isClosed = $isClosed;
+        return $this;
+    }
+
+    /**
+     * @return Incident
+     */
+    public function close(): Incident
+    {
+        return $this->setAsClosed(true);
+    }
+
+    /**
+     * @param IncidentChangeState $changeState
+     * @return Incident
+     */
+    public function addChangeStateHistory(IncidentChangeState $changeState): Incident
+    {
+        $this->changeStateHistory->add($changeState);
+        return $this;
+    }
+
     public function statusToString(): string
     {
         if ($this->isNew()) {
@@ -900,14 +1003,6 @@ class Incident implements IncidentInterface
             return 'Closed';
         }
         return 'Undefined';
-    }
-
-    /**
-     * @return bool
-     */
-    public function isOpen(): bool
-    {
-        return (!$this->isClosed() and !$this->isNew());
     }
 
     /**
@@ -1197,107 +1292,6 @@ class Incident implements IncidentInterface
         return $this;
     }
 
-    public function patchStateAndReporter(User $reporter): Incident
-    {
-        if (($this->lastState) && ($this->getState() !== $this->lastState)) {
-            $this->setStateAndReporter($this->getState(),$reporter);
-        }
-        return $this;
-    }
-
-    public function modifyIncidentStatus(IncidentState $state): bool
-    {
-        //FIX DAMIAN aca hay q avisar que no se puede cambiar el tipo de incidente
-        if ($this->isNew()) {
-            if ($state->isOpening()) {
-                $this->open();
-                return true;
-            }
-
-            if ($state->isReOpening()) {
-                $this->open();
-                return true;
-            }
-
-            if (!$state->isClosing()) {
-                return true;
-            }
-        }
-        if ($this->isClosed()) {
-            if ($state->isReOpening()) {
-                $this->reOpen();
-                return true;
-            }
-
-            if ($state->isClosing()) {
-                return true;
-            }
-        }
-        if (!$this->isClosed() && !$this->isNew()) {
-            if ($state->isOpening() || $state->isReOpening()) {
-                return true;
-            }
-
-            if ($state->isClosing()) {
-                $this->close();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * @return Incident
-     * @throws Exception
-     */
-    public function open(): Incident
-    {
-        $this->setNeedToCommunicate(true);
-        $this->setOpenedAt(new DateTime('now'));
-        return $this->markAsNew(false);
-    }
-
-
-    public function markAsNew(bool $isNew = true): Incident
-    {
-        $this->isNew = $isNew;
-        return $this;
-    }
-
-    /**
-     * @return Incident
-     */
-    public function reOpen(): Incident
-    {
-        $this->setNeedToCommunicate(true);
-        return $this->setAsClosed();
-    }
-
-
-    public function setAsClosed(bool $isClosed = false): Incident
-    {
-        $this->isClosed = $isClosed;
-        return $this;
-    }
-
-    /**
-     * @return Incident
-     */
-    public function close(): Incident
-    {
-        return $this->setAsClosed(true);
-    }
-
-    /**
-     * @param IncidentChangeState $changeState
-     * @return Incident
-     */
-    public function addChangeStateHistory(IncidentChangeState $changeState): Incident
-    {
-        $this->changeStateHistory->add($changeState);
-        return $this;
-    }
-
     /**
      * @return IncidentTlp
      */
@@ -1313,6 +1307,14 @@ class Incident implements IncidentInterface
     public function setTlp(IncidentTlp $tlp): Incident
     {
         $this->tlp = $tlp;
+        return $this;
+    }
+
+    public function patchStateAndReporter(User $reporter): Incident
+    {
+        if (($this->lastState) && ($this->getState() !== $this->lastState)) {
+            $this->setStateAndReporter($this->getState(), $reporter);
+        }
         return $this;
     }
 

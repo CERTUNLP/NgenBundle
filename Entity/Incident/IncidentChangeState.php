@@ -51,7 +51,7 @@ class IncidentChangeState
         $this->setDate(new DateTime('now'));
         $this->setMethod($method);
         $this->setResponsable($responsable);
-        $this->setActionApplied($newState->getIncidentAction());
+        $this->setActionApplied($newState->getIncidentStatebehavior());
     }
 
     /**
@@ -152,8 +152,8 @@ class IncidentChangeState
     protected $oldState;
 
     /**
-     * @var IncidentStateAction
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateAction")
+     * @var IncidentStateBehavior
+     * @ORM\ManyToOne(targetEntity="IncidentStateBehavior")
      * @ORM\JoinColumn(name="action_applied", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
@@ -167,17 +167,17 @@ class IncidentChangeState
     protected $responsable;
 
     /**
-     * @return IncidentStateAction
+     * @return IncidentStateBehavior
      */
-    public function getActionApplied(): ? IncidentStateAction
+    public function getActionApplied(): ? IncidentStateBehavior
     {
         return $this->actionApplied;
     }
 
     /**
-     * @param IncidentStateAction $actionApplied
+     * @param IncidentStateBehavior $actionApplied
      */
-    public function setActionApplied(IncidentStateAction $actionApplied): void
+    public function setActionApplied(IncidentStateBehavior $actionApplied): void
     {
         $this->actionApplied = $actionApplied;
     }
