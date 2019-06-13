@@ -31,19 +31,21 @@ use JMS\Serializer\Annotation as JMS;
 class IncidentState implements Translatable
 {
     /**
-     * @var IncidentStateAction
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateAction", inversedBy="incident_state")
-     * @ORM\JoinColumn(name="incident_state_action", referencedColumnName="slug")
+     * @var IncidentStateBehavior
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateBehavior", inversedBy="states")
+     * @ORM\JoinColumn(name="incident_state_behavior", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    private $incident_action;
+    private $incident_state_behavior;
+
     /**
      * @Gedmo\Locale
      * Used locale to override Translation listener`s locale
      * this is not a mapped field of entity metadata, just a simple property
      */
     private $locale;
+
     /**
      * @var string
      *
@@ -53,6 +55,7 @@ class IncidentState implements Translatable
      * @Gedmo\Translatable
      */
     private $name;
+
     /**
      * @var string
      * @ORM\Id
@@ -62,6 +65,7 @@ class IncidentState implements Translatable
      * @JMS\Groups({"api_input"})
      * */
     private $slug;
+
     /**
      * @var boolean
      *
@@ -69,12 +73,14 @@ class IncidentState implements Translatable
      * @JMS\Expose
      */
     private $isActive = true;
+
     /**
      * @var ContactCase
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_assigned", referencedColumnName="slug")
      */
     private $mailAssigned;
+
     /**
      * @var ContactCase
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
@@ -82,6 +88,7 @@ class IncidentState implements Translatable
      */
 
     private $mailTeam;
+
     /**
      * @var ContactCase
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
@@ -89,6 +96,7 @@ class IncidentState implements Translatable
      */
 
     private $mailAdmin;
+
     /**
      * @var ContactCase
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
@@ -96,6 +104,7 @@ class IncidentState implements Translatable
      */
 
     private $mailReporter;
+
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="create")
@@ -104,6 +113,7 @@ class IncidentState implements Translatable
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
+
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="update")
@@ -112,10 +122,22 @@ class IncidentState implements Translatable
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
+
     /**
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state"))
      */
     private $incidents;
+
+    /**
+     * @var IncidentStateEdge[]|Collection
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateEdge",mappedBy="oldState")
+     */
+    private $edgesAsOldState;
+    /**
+     * @var IncidentStateEdge[]|Collection
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateEdge",mappedBy="newState")
+     */
+    private $edgesAsNewState;
 
     /**
      * Constructor
@@ -123,11 +145,87 @@ class IncidentState implements Translatable
     public function __construct()
     {
         $this->incidents = new ArrayCollection();
+        $this->edgesAsNewState = new ArrayCollection();
+        $this->edgesAsOldState = new ArrayCollection();
     }
 
-    public function setTranslatableLocale($locale)
+    /**
+     * @return mixed
+     */
+    public function getIncidents(): Collection
+    {
+        return $this->incidents;
+    }
+
+    /**
+     * @param mixed $incidents
+     * @return IncidentState
+     */
+    public function setIncidents(Collection $incidents): IncidentState
+    {
+        $this->incidents = $incidents;
+        return $this;
+    }
+
+    /**
+     * @return IncidentStateEdge[]|Collection
+     */
+    public function getEdgesAsNewState(): Collection
+    {
+        return $this->edgesAsNewState;
+    }
+
+    /**
+     * @param IncidentStateEdge[]|Collection $edgesAsNewState
+     * @return IncidentState
+     */
+    public function setEdgesAsNewState(Collection $edgesAsNewState): IncidentState
+    {
+        $this->edgesAsNewState = $edgesAsNewState;
+        return $this;
+    }
+
+    /**
+     * @param IncidentState $newState
+     * @return bool
+     */
+    public function canChangeTo(IncidentState $newState): bool
+    {
+        return $this->getNewStates()->contains($newState);
+    }
+
+    /**
+     * @return IncidentState[]|ArrayCollection
+     */
+    public function getNewStates(): ArrayCollection
+    {
+        return $this->getEdgesAsOldState()->map(static function (IncidentStateEdge $edge) {
+            return $edge->getNewState();
+        });
+    }
+
+    /**
+     * @return IncidentStateEdge[]|Collection
+     */
+    public function getEdgesAsOldState(): Collection
+    {
+        return $this->edgesAsOldState;
+    }
+
+    /**
+     * @param IncidentStateEdge[]|Collection $edgesAsOldState
+     * @return IncidentState
+     */
+    public function setEdgesAsOldState(Collection $edgesAsOldState): IncidentState
+    {
+        $this->edgesAsOldState = $edgesAsOldState;
+        return $this;
+    }
+
+    public function setTranslatableLocale(string $locale): IncidentState
     {
         $this->locale = $locale;
+        return $this;
     }
 
     /**
@@ -135,23 +233,23 @@ class IncidentState implements Translatable
      */
     public function isOpening(): bool
     {
-        return $this->getIncidentAction()->isOpen();
+        return $this->getIncidentStatebehavior()->isCanOpen();
     }
 
     /**
-     * @return IncidentStateAction
+     * @return IncidentStateBehavior
      */
-    public function getIncidentAction(): IncidentStateAction
+    public function getIncidentStatebehavior(): IncidentStateBehavior
     {
-        return $this->incident_action;
+        return $this->incident_state_behavior;
     }
 
     /**
-     * @param IncidentStateAction $incident_action
+     * @param IncidentStateBehavior $incident_state_behavior
      */
-    public function setIncidentAction(IncidentStateAction $incident_action): void
+    public function setIncidentStatebehavior(IncidentStateBehavior $incident_state_behavior): void
     {
-        $this->incident_action = $incident_action;
+        $this->incident_state_behavior = $incident_state_behavior;
     }
 
     /**
@@ -159,7 +257,7 @@ class IncidentState implements Translatable
      */
     public function isClosing(): bool
     {
-        return $this->getIncidentAction()->isClose();
+        return $this->getIncidentStatebehavior()->isCanClose();
     }
 
     /**
@@ -167,7 +265,7 @@ class IncidentState implements Translatable
      */
     public function isReOpening(): bool
     {
-        return $this->getIncidentAction()->isReOpen();
+        return $this->getIncidentStatebehavior()->isCanReOpen();
     }
 
     /**
@@ -254,7 +352,7 @@ class IncidentState implements Translatable
      *
      * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -397,15 +495,5 @@ class IncidentState implements Translatable
     public function removeIncident(Incident $incident): bool
     {
         return $this->incidents->removeElement($incident);
-    }
-
-    /**
-     * Get incidents
-     *
-     * @return Collection
-     */
-    public function getIncidents()
-    {
-        return $this->incidents;
     }
 }
