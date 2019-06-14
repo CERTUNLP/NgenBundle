@@ -14,6 +14,7 @@ namespace CertUnlp\NgenBundle\Form;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentImpact;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
@@ -57,68 +58,64 @@ class IncidentSearchType extends AbstractType
     {
         $builder
             ->add('type', null, array(
-                'empty_value' => 'Choose an incident type',
-                'required' => true,
+                'label' => false,
+                'empty_value' => 'All',
                 'description' => '(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|'
                     . 'dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|'
                     . 'open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|'
                     . 'open_ssdp|phishing|poodle|scan|shellshock|spam)',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
-                }))
+                'attr' => array('class' => 'select-filter','search'=>'slug')
+            ))
             ->add('feed', EntityType::class, array(
                 'class' => IncidentFeed::class,
-                'required' => true,
+                'empty_value' => 'All',
+                'label' => false,
                 'description' => '(bro|external_report|netflow|shadowserver)',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
-                }))
+                'attr' => array('class' => 'select-filter','search'=>'slug')
+            ))
+            ->add('date', DateTimeType::class, array(
+                'required' => false,
+                'label' => false,
+                'html5' => true,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'attr' => array('class' => 'select-filter','type' => 'datetime-local','search'=>'id'),
+                'description' => 'If no date is selected, the date will be today.',
+            ))
             ->add('state', EntityType::class, array(
+                'label' => false,
                 'class' => IncidentState::class,
-                'empty_value' => 'Choose an incident state',
-                'attr' => array('help_text' => 'If none is selected, it may be selected by incident decisions.'),
+                'empty_value' => 'All',
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
-                'query_builder' => function (EntityRepository $er) {
-                 return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
-                }))
+                'attr' => array('class' => 'select-filter','search'=>'slug')
+            ))
             ->add('tlp', EntityType::class, array(
+                'label' => false,
                 'class' => IncidentTlp::class,
-                'empty_value' => 'Choose an incident TLP',
-                'attr' => array('help_text' => 'If none is selected, it may be selected by incident decisions.'),
+                'empty_value' => 'All',
                 'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
+                'attr' => array('class' => 'select-filter','search'=>'slug')
             ))
             ->add('reporter', EntityType::class, array(
+                'label' => false,
                 'class' => User::class,
-                'empty_value' => 'Choose a reporter',
-                'attr' => array('help_text' => 'If none is selected, the reporter will be the logged user.'),
+                'empty_value' => 'All',
                 'description' => 'The reporter ID. If none was selected, the reporter will be the logged user or the apikey user.',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.enabled = TRUE');
-                }))
+                'attr' => array('class' => 'select-filter','search'=>'id')
+                ))
             ->add('assigned', EntityType::class, array(
+                'label' => false,
                 'class' => User::class,
-                'empty_value' => 'Choose a responsable',
-                'attr' => array('help_text' => 'If none is selected, the assigned will be empty.'),
+                'empty_value' => 'All',
                 'description' => 'If none was selected, the incident will remain unassigned.',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.enabled = TRUE');
-                }))
-            ->add('impact', EntityType::class, array(
-                'class' => IncidentImpact::class,
-                'empty_value' => 'Choose an impact level',
-                'attr' => array('help_text' => 'If none is selected, it may be selected by incident decisions.'),
+                'attr' => array('class' => 'select-filter','search'=>'id')
+                ))
+            ->add('priority', EntityType::class, array(
+                'label' => false,
+                'class' => IncidentPriority::class,
+                'empty_value' => 'All',
                 'description' => 'If none is selected, the assigned impact will be Low',
-            ))
-            ->add('urgency', EntityType::class, array(
-                'class' => IncidentUrgency::class,
-                'empty_value' => 'Choose an urgency level.',
-                'attr' => array('help_text' => 'If none is selected, it may be selected by incident decisions.'),
-                'description' => 'If none is selected, the assigned urgency will be Low',
+                'attr' => array('class' => 'select-filter','search'=>'slug')
             ));
 
         }
@@ -131,7 +128,7 @@ class IncidentSearchType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Incident::class,
-            'csrf_protection' => false,
+            'csrf_protection' => true,
         ));
     }
 

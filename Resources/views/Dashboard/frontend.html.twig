@@ -28,6 +28,6 @@
     {% endjavascripts %}
 
     <script>
-        var incident = new InternalIncident("{{ path("api_get") }}", "{{ app.user.apiKey }}");
+        var incident = new Incident("{{ path("api_get") }}", "{{ app.user.apiKey }}");
     </script>
 {% endblock %}
