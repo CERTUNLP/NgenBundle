@@ -27,16 +27,16 @@
     {{ parent() }}
     {% javascripts
         '@CertUnlpNgenBundle/Resources/public/js/incident/IncidentForm.js'
-        '@CertUnlpNgenBundle/Resources/public/js/incident/InternalIncident.js'
-        '@CertUnlpNgenBundle/Resources/public/js/incident/InternalIncidentApi.js'
+        '@CertUnlpNgenBundle/Resources/public/js/incident/Incident.js'
+        '@CertUnlpNgenBundle/Resources/public/js/incident/IncidentApi.js'
         '@CertUnlpNgenBundle/Resources/public/js/incident/decision/IncidentDecisionApi.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
         var incidentForm = new IncidentForm();
-        var internalIncidentApi = new InternalIncidentApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
+        var IncidentApi = new IncidentApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
         var incident_decision_api = new IncidentDecisionApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
-        var internalIncident = new InternalIncident();
+        var Incident = new Incident();
 
     </script>
 {% endblock %}

@@ -10,8 +10,8 @@ var Frontend = Class.extend({
     init: function () {
         this.eventTarget = null;
         $(".action-dropdown").delegate("a.state-label", "click", $.proxy(this.changeState, this));
+        $('.select-filter').on('change', $.proxy(this.search, this));           ;
         this.addEventBinds();
-
     },
     addEventBinds: function () {
     },
@@ -30,6 +30,19 @@ var Frontend = Class.extend({
         this.laddaButton.start();
         this.doChangeState();
     },
+    search: function(event){
+        query='*';
+        $(".select-filter").each(function() {
+            if ($(this).val() != null && $(this).val().length > 0){
+                query=(query) +' && '+$(this).attr('name')+'.'+$(this).attr('search')+':'+$(this).val();
+            }
+        });
+        this.query=query;
+        this.doSearch();
+
+
+    },
+
     updateListRow: function(jqXHR){
 
         id = this.eventTarget.parents('tr').data('id');
@@ -41,8 +54,8 @@ var Frontend = Class.extend({
         });
 
 
-    }
-    ,
+    },
+
     stateLabelChange: function () {
         label = this.eventTarget.parents('tr').children('#state_label_holder').children('div.label-holder').children('span');
         label.text(this.eventTarget.data('state-name'));
@@ -68,5 +81,16 @@ var Frontend = Class.extend({
             this.dropDownChangeLinks();
         }
         this.laddaButton.stop();
+    },
+
+    searched: function (response, jqXHR) {
+
+        if (jqXHR.status > '300') {
+            $.publish('/cert_unlp/notify/error', ["The state was not changed. An error occurred."]);
+        } else {
+            this.updateListComplete(jqXHR);
+        }
+        this.laddaButton.stop();
     }
+
 });

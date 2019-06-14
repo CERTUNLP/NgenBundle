@@ -12,8 +12,14 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
+            <div class="dropdown">
             <strong>{{ icon('arrow-circle-down fa-fw') }} {{ "Incidents" | trans }} </strong>
             <strong>({{ objects.getPaginationData.lastItemNumber~'/'~objects.getTotalItemCount }})</strong>
+
+
+            <button id="btnFilter" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> <strong>{{ icon('filter') }}</strong>
+       <span class="caret"></span></button>
+           </div>
             <div class="pull-right">
                 <div class="btn-group">
 
@@ -32,8 +38,14 @@
                 <th>{{ knp_pagination_sortable(objects, 'Reportes'| trans, 'ltdCount') }}</th>
                 <th>{{ 'Actions'|trans }}</th>
             </tr>
-            <tr role="row">
-                <td>
+                <tr id="filtrosMostrar" class="filtrosMostrar"  style="display: none;"  >
+
+                <th>
+                    <form method='post' action="filter" role="search">
+                        {{ form_row(search_form.state) }}
+                    </form>
+                </th>
+                <th>
                     <form method='post' action="filter" role="search">
                     <div class="input-group custom-search-form">
                         <input type="text" name="termState" class="form-control" value="{{ term | default('') }}" placeholder="Search...">
@@ -42,70 +54,37 @@
                         </span>
                     </div>
                 </form>
-                </td>
-                <td>
+                </th>
+                <th>
                     <form method='post' action="filter" role="search">
-                        {{ form_row(search_form.state) }}
+                        {{ form_row(search_form.assigned) }}
+                    </form>
+                </th>
 
-                        <div class="input-group custom-search-form">
-                            <input type="text" name="termState" class="form-control" value="{{ term | default('') }}" placeholder="Search...">
-                            <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">{{ icon('filter') }}</button>
-                        </span>
-                        </div>
-                    </form>
-                </td>
-                <td>
+                <th>
                     <form method='post' action="filter" role="search">
-                        <div class="input-group custom-search-form">
-                            <input type="text" name="termState" class="form-control" value="{{ term | default('') }}" placeholder="Search...">
-                            <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">{{ icon('filter') }}</button>
-                        </span>
-                        </div>
+                        {{ form_row(search_form.type) }}
                     </form>
-                </td>
-                <td>
+                </th>
+
+                <th>
                     <form method='post' action="filter" role="search">
-                        <div class="input-group custom-search-form">
-                            <input type="text" name="termState" class="form-control" value="{{ term | default('') }}" placeholder="Search...">
-                            <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">{{ icon('filter') }}</button>
-                        </span>
-                        </div>
+                        {{ form_row(search_form.feed) }}
                     </form>
-                </td>
-                <td>
+                </th>
+                <th>
                     <form method='post' action="filter" role="search">
-                        <div class="input-group custom-search-form">
-                            <input type="text" name="termState" class="form-control" value="{{ term | default('') }}" placeholder="Search...">
-                            <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">{{ icon('filter') }}</button>
-                        </span>
-                        </div>
+                        {{ form_row(search_form.date) }}
                     </form>
-                </td>
-                <td>
+                </th>
+                <th>
                     <form method='post' action="filter" role="search">
-                        <div class="input-group custom-search-form">
-                            <input type="text" name="termState" class="form-control" value="{{ term | default('') }}" placeholder="Search...">
-                            <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">{{ icon('filter') }}</button>
-                        </span>
-                        </div>
+                        {{ form_row(search_form.priority) }}
                     </form>
-                </td><td>
-                    <form method='post' action="filter" role="search">
-                        <div class="input-group custom-search-form">
-                            <input type="text" name="termState" class="form-control" value="{{ term | default('') }}" placeholder="Search...">
-                            <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">{{ icon('filter') }}</button>
-                        </span>
-                        </div>
-                    </form>
-                </td>
-                <td></td>
-                <td></td>
+                </th>
+
+                <th></th>
+                <th></th>
             </tr>
             <tbody>
             {% for incident in objects %}
@@ -141,13 +120,18 @@
     {{ parent() }}
 
     {% javascripts
-        '@CertUnlpNgenBundle/Resources/public/js/incident/InternalIncident.js'
-        '@CertUnlpNgenBundle/Resources/public/js/incident/InternalIncidentApi.js' %}
+        '@CertUnlpNgenBundle/Resources/public/js/incident/Incident.js'
+        '@CertUnlpNgenBundle/Resources/public/js/incident/IncidentApi.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
     <script>
-        var internalIncidentApi = new InternalIncidentApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
-        var internalIncident = new InternalIncident();
+        var IncidentApi = new IncidentApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
+        var Incident = new Incident();
+        $('#btnFilter').on('click', function (e) {
+            e.preventDefault();
+            var elem = $('#filtrosMostrar');
+            elem.toggle('slow');
+        });
     </script>
 {% endblock %}

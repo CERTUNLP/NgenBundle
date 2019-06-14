@@ -18,5 +18,8 @@ var Incident = Frontend.extend({
 
         $.publish('/cert_unlp/incident/state/change', [this.eventTarget.parents('tr').data('id'), this.eventTarget.data('state-slug'), $.proxy(this.stateChanged, this)]);
 
-    }
+    },
+    doSearch: function (event){
+        $.publish('/cert_unlp/incident/search', [this.query, $.proxy(this.search, this)]);
+}
 });
