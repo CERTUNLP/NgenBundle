@@ -21,7 +21,7 @@ class IncidentApiController extends ApiController
      * @param $slug
      * @return Response
      */
-    public function reportHtmlAction($slug)
+            public function reportHtmlAction($slug)
     {
         $data = array('state' => $slug);
         $this->getView()->setTemplate('CertUnlpNgenBundle:Incident:Report/Twig/incidentReportHtml.html.twig');

@@ -96,6 +96,19 @@ class IncidentFrontendController extends Controller
     }
 
     /**
+     * @Template("CertUnlpNgenBundle:Incident:Frontend/home.html.twig")
+     * @Route("ajaxsearch", name="cert_unlp_ngen_incident_ajax_search_incident")
+     * @param Request $request
+     * @return array
+     */
+    public function searchAjaxIncidentAction(Request $request)
+
+    {
+        echo "aca estaria bien";
+        return $this->getFrontendController()->homeEntity($request);
+    }
+
+    /**
      * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentComments.html.twig")
      * @param Incident $incident
      * @param Request $request
