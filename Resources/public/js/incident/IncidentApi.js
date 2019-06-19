@@ -11,7 +11,7 @@ var IncidentApi = ApiClient.extend({
 //        this.api.add("incidents", {isSingle: true, stripTrailingSlash: true})
 //        this.defaultChannel = this.api.incidents;
         this.defaultChannel.add("states", {stripTrailingSlash: true});
-        this.defaultChannel.add("searchs", {stripTrailingSlash: true});
+        this.api.add("ajaxsearch", {url: 'incidents/search',stripTrailingSlash: true});
         this.defaultChannel.add("report", {stripTrailingSlash: true});
         $.subscribe('/cert_unlp/incident/state/change', $.proxy(this.changeState, this));
         $.subscribe('/cert_unlp/incident/new', $.proxy(this.create, this));
@@ -29,7 +29,7 @@ var IncidentApi = ApiClient.extend({
         this.defaultChannel = this.api.incidents;
     },
     search: function (query, callback) {
-        var request = this.defaultChannel.searchs.read(query, 'einar',{});
+        var request = this.api.ajaxsearch.read(query, {stripTrailingSlash: true});
         this.doRequest(request, callback);
     },
 });

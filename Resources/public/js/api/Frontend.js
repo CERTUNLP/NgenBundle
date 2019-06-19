@@ -37,7 +37,7 @@ var Frontend = Class.extend({
                 query=(query) +' && '+$(this).attr('name')+'.'+$(this).attr('search')+':'+$(this).val();
             }
         });
-        this.query=query;
+        this.query=query+""+"";
         this.doSearch();
 
 
