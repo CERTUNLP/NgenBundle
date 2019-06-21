@@ -11,12 +11,14 @@ var IncidentApi = ApiClient.extend({
 //        this.api.add("incidents", {isSingle: true, stripTrailingSlash: true})
 //        this.defaultChannel = this.api.incidents;
         this.defaultChannel.add("states", {stripTrailingSlash: true});
-        this.api.add("ajaxsearch", {url: 'incidents/search',stripTrailingSlash: true});
         this.defaultChannel.add("report", {stripTrailingSlash: true});
         $.subscribe('/cert_unlp/incident/state/change', $.proxy(this.changeState, this));
         $.subscribe('/cert_unlp/incident/new', $.proxy(this.create, this));
         $.subscribe('/cert_unlp/incident/update', $.proxy(this.update, this));
-        $.subscribe('/cert_unlp/incident/search', $.proxy(this.search, this));
+
+        //Esto es para la busqueda por api
+        // this.api.add("ajaxsearch", {url: 'incidents/search',stripTrailingSlash: true});
+        // $.subscribe('/cert_unlp/incident/search', $.proxy(this.search, this));
 
     },
     changeState: function (incidentId, state, callback) {
@@ -28,8 +30,9 @@ var IncidentApi = ApiClient.extend({
         this.api.add("incidents", {stripTrailingSlash: true})
         this.defaultChannel = this.api.incidents;
     },
-    search: function (query, callback) {
-        var request = this.api.ajaxsearch.read(query, {stripTrailingSlash: true});
-        this.doRequest(request, callback);
-    },
+    // search: function (query, callback) {
+    //
+    //     var request = this.api.ajaxsearch.read({"query": query}, {});
+    //     this.doRequest(request, callback);
+    // },
 });

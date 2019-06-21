@@ -37,8 +37,8 @@ var Frontend = Class.extend({
                 query=(query) +' && '+$(this).attr('name')+'.'+$(this).attr('search')+':'+$(this).val();
             }
         });
-        this.query=query+""+"";
-        this.doSearch();
+        this.query=query;
+        this.filterListComplete(this.query);
 
 
     },
@@ -82,15 +82,17 @@ var Frontend = Class.extend({
         }
         this.laddaButton.stop();
     },
+    filterListComplete: function(query){
+        juan=$('table tbody');
+        $.get( "getFilterList",{ "term":query}, function( data ) {
+            $('#tabla_incidentes > tbody:last').html(data.tabla);
+            $('#incidentcount').html(data.indice.lastItemNumber+"/"+data.indice.totalCount);
+            $('#paginatorbar').html(data.paginador);
 
-    searched: function (response, jqXHR) {
+            $.publish('/cert_unlp/notify/success', ["The list was filtered"]);
+        });
 
-        if (jqXHR.status > '300') {
-            $.publish('/cert_unlp/notify/error', ["The state was not changed. An error occurred."]);
-        } else {
-            this.updateListComplete(jqXHR);
-        }
-        this.laddaButton.stop();
-    }
+
+    },
 
 });

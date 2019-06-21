@@ -81,26 +81,6 @@ class IncidentFrontendController extends FrontendController
         if (!$term) {
             $term = $request->get('term') ? $request->get('term') : '*';
         }
-
-        $match = new \Elastica\Query\QueryString();
-        $match->setQuery($term);
-
-        $term3 = new \Elastica\Query\BoolQuery();
-        $term2 = new \Elastica\Query\BoolQuery();
-
-        $assigned_term=new \Elastica\Query\Match("assigned.id",$this->userLogged->getId());
-        $term2->addMust($match);
-        $term2->addMust($assigned_term);
-
-
-        $unasiggned_term = new \Elastica\Query\BoolQuery();
-        $existQuery = new \Elastica\Query\Exists('assigned.id');
-        $open=new \Elastica\Query\Match("isClosed",'0');
-        $unasiggned_term->addMustNot($existQuery);
-        $term3->addMust($match);
-        $term3->addMust($open);
-        $term3->addMust($unasiggned_term);
-
         $quickSearchForm=$this->formFactory->createBuilder('CertUnlp\NgenBundle\Form\IncidentSearchType',(new Incident),array('csrf_protection' => true));
         return array('objects'=>$this->searchEntity($request, $term, $limit,$defaultSortFieldName,$defaultSortDirection,'pageobject','object')['objects'],'search_form'=>$quickSearchForm->getForm()->createView());
 

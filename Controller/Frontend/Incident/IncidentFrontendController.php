@@ -16,7 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 class IncidentFrontendController extends Controller
 {
 
@@ -95,18 +95,7 @@ class IncidentFrontendController extends Controller
         return $this->getFrontendController()->homeEntity($request);
     }
 
-    /**
-     * @Template("CertUnlpNgenBundle:Incident:Frontend/home.html.twig")
-     * @Route("ajaxsearch", name="cert_unlp_ngen_incident_ajax_search_incident")
-     * @param Request $request
-     * @return array
-     */
-    public function searchAjaxIncidentAction(Request $request)
 
-    {
-        echo "aca estaria bien";
-        return $this->getFrontendController()->homeEntity($request);
-    }
 
     /**
      * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentComments.html.twig")
@@ -129,5 +118,21 @@ class IncidentFrontendController extends Controller
     public function getListRow(Incident $incident)
     {
         return array('incident'=>$incident);
+    }
+
+    /**
+     * @Route("getFilterList", name="cert_unlp_ngen_incident_ajax_search_incident")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getFilterIncidentListAction(Request $request)
+
+    {
+        $datos=$this->getFrontendController()->homeEntity($request);
+        $tabla=$this->renderView("CertUnlpNgenBundle:Incident:Frontend/list/filterList.html.twig",$datos);
+        $paginador=$this->renderView("CertUnlpNgenBundle:Incident:Frontend/list/filterListPaginator.html.twig",$datos);
+        $indice=$datos['objects']->getPaginationData();
+        return new JsonResponse(array('tabla'=>$tabla,'indice'=>$indice,'paginador'=>$paginador));
+
     }
 }
