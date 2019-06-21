@@ -107,10 +107,17 @@ class IncidentController extends FOSRestController
      *     200 = "Returned when successful"
      *   }
      * )
+     * * @param Request $request the request object
+     * @param Incident $incident
+     * @param IncidentState $state
+     * @return FormTypeInterface|View
+     * @FOS\Patch("/incidents/{id}/states/{state}", name="_id",requirements={"id"="\d+"}))
+     * @FOS\Patch("/incidents/{slug}/states/{state}")
+     *
      * @FOS\Get("/incidents/search/{query}")
      * @FOS\QueryParam(name="query", requirements="\d+", default="*", description="Elastic Query.")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incidents.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", default="100", description="How many in    cidents to return.")
+     * @FOS\QueryParam(name="limit", requirements="\d+", default="100", description="How many incidents to return.")
      * @FOS\View(
      *  templateVar="incidents"
      * )
@@ -119,9 +126,9 @@ class IncidentController extends FOSRestController
      *
      * @return array
      */
-    public function getIncidentsSearchAction(Request $request, Incident $incident, IncidentState $state)
+    public function getIncidentsSearchAction(Request $request)
     {
-        print_r($request);
+        #print_r($request);
         echo "voy bien"; die();
         return $this->getApiController($incident)->patchState($request, $incident, $state);
     }
