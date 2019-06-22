@@ -70,7 +70,7 @@ class IncidentType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
-            ->add('address', null, array(
+            ->add('origin', null, array(
                 'required' => true,
                 'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
                 'label' => 'Address',

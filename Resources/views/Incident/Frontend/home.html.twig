@@ -47,13 +47,8 @@
                 </th>
                 <th>
                     <form method='post' action="filter" role="search">
-                    <div class="input-group custom-search-form">
-                        <input type="text" name="termState" class="form-control" value="{{ term | default('') }}" placeholder="Search...">
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">{{ icon('filter') }}</button>
-                        </span>
-                    </div>
-                </form>
+                        {{ form_row(search_form.origin) }}
+                    </form>
                 </th>
                 <th>
                     <form method='post' action="filter" role="search">
