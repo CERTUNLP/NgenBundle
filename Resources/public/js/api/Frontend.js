@@ -11,6 +11,8 @@ var Frontend = Class.extend({
         this.eventTarget = null;
         $(".action-dropdown").delegate("a.state-label", "click", $.proxy(this.changeState, this));
         $('.select-filter').on('change', $.proxy(this.search, this));           ;
+        $('.term-filter').on('submit', $.proxy(this.search, this));           ;
+        $('.data-filter').on('change', $.proxy(this.search, this));           ;
         this.addEventBinds();
     },
     addEventBinds: function () {
@@ -31,14 +33,26 @@ var Frontend = Class.extend({
         this.doChangeState();
     },
     search: function(event){
+        alert("hola");
         query='*';
         $(".select-filter").each(function() {
             if ($(this).val() != null && $(this).val().length > 0){
                 query=(query) +' && '+$(this).attr('name')+'.'+$(this).attr('search')+':'+$(this).val();
             }
         });
+        $(".multiple-select-filter").each(function() {
+            if ($(this).val() != null && $(this).val().length > 0){
+                query=(query) +' && '+$(this).attr('name')+'.'+$(this).attr('search')+':'+$(this).val();
+            }
+        });
+        $(".term-filter").each(function() {
+            if ($(this).val() != null && $(this).val().length > 0){
+                query=(query) +' && '+$(this).attr('name')+'.'+$(this).attr('search')+':'+$(this).val();
+            }
+        });
         this.query=query;
         this.filterListComplete(this.query);
+        return false;
 
 
     },
@@ -88,7 +102,14 @@ var Frontend = Class.extend({
             $('#tabla_incidentes > tbody:last').html(data.tabla);
             $('#incidentcount').html(data.indice.lastItemNumber+"/"+data.indice.totalCount);
             $('#paginatorbar').html(data.paginador);
-
+            $("#paginatorbar").on("click",".pagination", function(){
+                $.get(event.target.href, function(data) {
+                    $('#tabla_incidentes > tbody:last').html(data.tabla);
+                    $('#incidentcount').html(data.indice.lastItemNumber+"/"+data.indice.totalCount);
+                    $('#paginatorbar').html(data.paginador);
+                });
+                return false;
+            });
             $.publish('/cert_unlp/notify/success', ["The list was filtered"]);
         });
 

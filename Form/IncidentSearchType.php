@@ -13,28 +13,17 @@ namespace CertUnlp\NgenBundle\Form;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentImpact;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
 use CertUnlp\NgenBundle\Entity\User;
-use CertUnlp\NgenBundle\Form\Listener\IncidentDefaultFieldsListener;
-use DateTime;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormEvents;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class IncidentSearchType extends AbstractType
 {
@@ -72,6 +61,15 @@ class IncidentSearchType extends AbstractType
                 'label' => false,
                 'description' => '(bro|external_report|netflow|shadowserver)',
                 'attr' => array('class' => 'select-filter','search'=>'slug')
+            ))
+            ->add('origin', Select2EntityType::class, array(
+                'remote_route' => 'cert_unlp_ngen_host_search_autocomplete',
+                'minimum_input_length' => 3,
+                'page_limit' => 10,
+                'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
+                'label' => false,
+                'description' => 'The network ip and mask',
+                'attr' => array('class' => 'multiple-select-filter','search'=>json_encode(['ip','domain']))
             ))
             ->add('date', DateTimeType::class, array(
                 'required' => false,
