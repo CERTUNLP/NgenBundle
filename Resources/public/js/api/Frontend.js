@@ -32,37 +32,51 @@ var Frontend = Class.extend({
         this.laddaButton.start();
         this.doChangeState();
     },
-    search: function(event){
-        alert("hola");
-        query='*';
-        $(".select-filter").each(function() {
-            if ($(this).val() != null && $(this).val().length > 0){
-                query=(query) +' && '+$(this).attr('name')+'.'+$(this).attr('search')+':'+$(this).val();
+    search: function (event) {
+        query = '*';
+        $(".multiple-select-filter").each(function () {
+            if ($(this).val() != null && $(this).val().length > 0) {
+                subquery = '(';
+                parametros = JSON.parse($(this).attr('search'));
+                valor = $(this).val();
+                if ($(this).attr('index') != null && $(this).attr('index').length > 0) {
+                    name = $(this).attr('index');
+                } else {
+                    name = $(this).attr('name');
+                }
+                parametros.forEach(function (element, index) {
+                    if (index == 0) {
+                        subquery = subquery + name + '.' + element + ':' + valor;
+                    } else {
+                        subquery = subquery + ' || ' + name + '.' + element + ':' + valor;
+                    }
+                });
+                query = (query) + ' && ' + subquery + ')';
             }
         });
-        $(".multiple-select-filter").each(function() {
-            if ($(this).val() != null && $(this).val().length > 0){
-                query=(query) +' && '+$(this).attr('name')+'.'+$(this).attr('search')+':'+$(this).val();
+        $(".select-filter").each(function () {
+            if ($(this).val() != null && $(this).val().length > 0) {
+                query = (query) + ' && ' + $(this).attr('name') + '.' + $(this).attr('search') + ':' + $(this).val();
             }
         });
-        $(".term-filter").each(function() {
-            if ($(this).val() != null && $(this).val().length > 0){
-                query=(query) +' && '+$(this).attr('name')+'.'+$(this).attr('search')+':'+$(this).val();
+        $(".term-filter").each(function () {
+            if ($(this).val() != null && $(this).val().length > 0) {
+                query = (query) + ' && ' + $(this).attr('name') + '.' + $(this).attr('search') + ':' + $(this).val();
             }
         });
-        this.query=query;
+        this.query = query;
         this.filterListComplete(this.query);
         return false;
 
 
     },
 
-    updateListRow: function(jqXHR){
+    updateListRow: function (jqXHR) {
 
         id = this.eventTarget.parents('tr').data('id');
-        tr=this.eventTarget.parents('tr');
-        $.get( id+"/getListRow", function( data ) {
-            tr.html($( data ).html());
+        tr = this.eventTarget.parents('tr');
+        $.get(id + "/getListRow", function (data) {
+            tr.html($(data).html());
             $.publish('/cert_unlp/notify/success', ["The state has been changed successfully"]);
             tr.focus();
         });

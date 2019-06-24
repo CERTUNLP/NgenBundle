@@ -62,14 +62,13 @@ class IncidentSearchType extends AbstractType
                 'description' => '(bro|external_report|netflow|shadowserver)',
                 'attr' => array('class' => 'select-filter','search'=>'slug')
             ))
-            ->add('origin', Select2EntityType::class, array(
-                'remote_route' => 'cert_unlp_ngen_host_search_autocomplete',
-                'minimum_input_length' => 3,
-                'page_limit' => 10,
+            ->add('address', null, array(
+                'required' => true,
                 'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
                 'label' => false,
+                'mapped'=> false,
                 'description' => 'The network ip and mask',
-                'attr' => array('class' => 'multiple-select-filter','search'=>json_encode(['ip','domain']))
+                'attr' => array('class' => 'multiple-select-filter','search'=>json_encode(['ip','domain']),'index'=>'origin')
             ))
             ->add('date', DateTimeType::class, array(
                 'required' => false,
