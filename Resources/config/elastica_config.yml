@@ -45,6 +45,9 @@ fos_elastica:
                             properties:
                                 ip:
                                     type: ip
+                                    fields:
+                                        raw:
+                                          type:  keyword
                                 domain:
                                     type: keyword
                         network:
