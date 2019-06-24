@@ -11,8 +11,10 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Contact\ContactCase;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 
@@ -40,14 +42,14 @@ class IncidentStateEdge
 
     /**
      * @var IncidentState
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState", inversedBy="edgesAsOldState")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState", inversedBy="edges")
      * @ORM\JoinColumn(name="oldState", referencedColumnName="slug")
      */
     protected $oldState;
 
     /**
      * @var IncidentState
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState", inversedBy="edgesAsNewState")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
      * @ORM\JoinColumn(name="newState", referencedColumnName="slug")
      */
     protected $newState;
@@ -78,28 +80,160 @@ class IncidentStateEdge
      */
     private $updatedAt;
 
+
     /**
-     * @return int
+     * @var ContactCase|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
+     * @ORM\JoinColumn(name="mail_assigned", referencedColumnName="slug")
      */
-    public function getId(): int
+    private $mailAssigned;
+
+    /**
+     * @var ContactCase|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
+     * @ORM\JoinColumn(name="mail_team", referencedColumnName="slug")
+     */
+
+    private $mailTeam;
+
+    /**
+     * @var ContactCase|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
+     * @ORM\JoinColumn(name="mail_admin", referencedColumnName="slug")
+     */
+
+    private $mailAdmin;
+
+    /**
+     * @var ContactCase|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
+     * @ORM\JoinColumn(name="mail_reporter", referencedColumnName="slug")
+     */
+
+    private $mailReporter;
+
+    /**
+     * @return ContactCase
+     */
+    public function getMailAssigned(): ContactCase
     {
-        return $this->id;
+        return $this->mailAssigned;
     }
 
     /**
-     * @param int $id
+     * @param ContactCase $mailAssigned
      * @return IncidentStateEdge
      */
-    public function setId(int $id): IncidentStateEdge
+    public function setMailAssigned(ContactCase $mailAssigned): IncidentStateEdge
     {
-        $this->id = $id;
+        $this->mailAssigned = $mailAssigned;
         return $this;
+    }
+
+    /**
+     * @return ContactCase
+     */
+    public function getMailTeam(): ContactCase
+    {
+        return $this->mailTeam;
+    }
+
+    /**
+     * @param ContactCase $mailTeam
+     * @return IncidentStateEdge
+     */
+    public function setMailTeam(ContactCase $mailTeam): IncidentStateEdge
+    {
+        $this->mailTeam = $mailTeam;
+        return $this;
+    }
+
+    /**
+     * @return ContactCase
+     */
+    public function getMailAdmin(): ContactCase
+    {
+        return $this->mailAdmin;
+    }
+
+    /**
+     * @param ContactCase $mailAdmin
+     * @return IncidentStateEdge
+     */
+    public function setMailAdmin(ContactCase $mailAdmin): IncidentStateEdge
+    {
+        $this->mailAdmin = $mailAdmin;
+        return $this;
+    }
+
+    /**
+     * @return ContactCase
+     */
+    public function getMailReporter(): ContactCase
+    {
+        return $this->mailReporter;
+    }
+
+    /**
+     * @param ContactCase $mailReporter
+     * @return IncidentStateEdge
+     */
+    public function setMailReporter(ContactCase $mailReporter): IncidentStateEdge
+    {
+        $this->mailReporter = $mailReporter;
+        return $this;
+    }
+
+
+    /**
+     * @param Incident $incident
+     * @return Incident
+     * @throws Exception
+     */
+    public function changeIncidentState(Incident $incident): Incident
+    {
+        if ($this->isOpening()) {
+            $incident->setNeedToCommunicate(true);
+            $incident->setOpenedAt(new DateTime('now'));
+        }
+        if ($this->isClosing()) {
+        }
+        if ($this->isReopening()) {
+            $incident->setNeedToCommunicate(true);
+        }
+
+        if ($this->isUpdating()) {
+
+        }
+        return $incident;
+
+    }
+
+
+    /**
+     * @return bool
+     */
+    public
+    function isOpening(): bool
+    {
+        return $this->isNewToOpen();
+    }
+
+    /**
+     * @return bool
+     */
+    public
+    function isNewToOpen(): bool
+    {
+
+        return $this->getOldState()->isNew() && $this->getOldState()->isOpen();
     }
 
     /**
      * @return IncidentState
      */
-    public function getOldState(): IncidentState
+    public
+    function getOldState(): IncidentState
     {
         return $this->oldState;
     }
@@ -108,16 +242,126 @@ class IncidentStateEdge
      * @param IncidentState $oldState
      * @return IncidentStateEdge
      */
-    public function setOldState(IncidentState $oldState): IncidentStateEdge
+    public
+    function setOldState(IncidentState $oldState): IncidentStateEdge
     {
         $this->oldState = $oldState;
         return $this;
     }
 
     /**
+     * @return bool
+     */
+    public
+    function isClosing(): bool
+    {
+
+        return $this->isOpenToClose() || $this->isNewToClose();
+    }
+
+    /**
+     * @return bool
+     */
+    public
+    function isOpenToClose(): bool
+    {
+
+        return $this->getOldState()->isOpen() || $this->getOldState()->isClosed();
+    }
+
+    /**
+     * @return bool
+     */
+    public
+    function isNewToClose(): bool
+    {
+
+        return $this->getOldState()->isNew() && $this->getOldState()->isClosed();
+    }
+
+    /**
+     * @return bool
+     */
+    public
+    function isReopening(): bool
+    {
+        return $this->isCloseToOpen();
+    }
+
+    /**
+     * @return bool
+     */
+    public
+    function isCloseToOpen(): bool
+    {
+
+        return $this->getOldState()->isClosed() && $this->getOldState()->isOpen();
+    }
+
+    /**
+     * @return bool
+     */
+    public
+    function isUpdating(): bool
+    {
+        return $this->isOpenToOpen() || $this->isCloseToClose() || $this->isNewToNew();
+    }
+
+    /**
+     * @return bool
+     */
+    public
+    function isOpenToOpen(): bool
+    {
+
+        return $this->getOldState()->isOpen() && $this->getOldState()->isOpen();
+    }
+
+    /**
+     * @return bool
+     */
+    public
+    function isCloseToClose(): bool
+    {
+
+        return $this->getOldState()->isOpen() && $this->getOldState()->isOpen();
+    }
+
+    /**
+     * @return bool
+     */
+    public
+    function isNewToNew(): bool
+    {
+
+        return $this->getOldState()->isNew() && $this->getOldState()->isNew();
+    }
+
+    /**
+     * @return int
+     */
+    public
+    function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return IncidentStateEdge
+     */
+    public
+    function setId(int $id): IncidentStateEdge
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * @return IncidentState
      */
-    public function getNewState(): IncidentState
+    public
+    function getNewState(): IncidentState
     {
         return $this->newState;
     }
@@ -126,7 +370,8 @@ class IncidentStateEdge
      * @param IncidentState $newState
      * @return IncidentStateEdge
      */
-    public function setNewState(IncidentState $newState): IncidentStateEdge
+    public
+    function setNewState(IncidentState $newState): IncidentStateEdge
     {
         $this->newState = $newState;
         return $this;
@@ -135,7 +380,8 @@ class IncidentStateEdge
     /**
      * @return bool
      */
-    public function isActive(): bool
+    public
+    function isActive(): bool
     {
         return $this->isActive;
     }
@@ -144,7 +390,8 @@ class IncidentStateEdge
      * @param bool $isActive
      * @return IncidentStateEdge
      */
-    public function setIsActive(bool $isActive): IncidentStateEdge
+    public
+    function setIsActive(bool $isActive): IncidentStateEdge
     {
         $this->isActive = $isActive;
         return $this;
@@ -153,7 +400,8 @@ class IncidentStateEdge
     /**
      * @return DateTime|null
      */
-    public function getCreatedAt(): ?DateTime
+    public
+    function getCreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
@@ -162,7 +410,8 @@ class IncidentStateEdge
      * @param DateTime|null $createdAt
      * @return IncidentStateEdge
      */
-    public function setCreatedAt(?DateTime $createdAt): IncidentStateEdge
+    public
+    function setCreatedAt(?DateTime $createdAt): IncidentStateEdge
     {
         $this->createdAt = $createdAt;
         return $this;
@@ -171,7 +420,8 @@ class IncidentStateEdge
     /**
      * @return DateTime|null
      */
-    public function getUpdatedAt(): ?DateTime
+    public
+    function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }
@@ -180,11 +430,11 @@ class IncidentStateEdge
      * @param DateTime|null $updatedAt
      * @return IncidentStateEdge
      */
-    public function setUpdatedAt(?DateTime $updatedAt): IncidentStateEdge
+    public
+    function setUpdatedAt(?DateTime $updatedAt): IncidentStateEdge
     {
         $this->updatedAt = $updatedAt;
         return $this;
     }
-
 
 }

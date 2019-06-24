@@ -11,7 +11,6 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Contact\ContactCase;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -74,36 +73,6 @@ class IncidentState implements Translatable
      */
     private $isActive = true;
 
-    /**
-     * @var ContactCase
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
-     * @ORM\JoinColumn(name="mail_assigned", referencedColumnName="slug")
-     */
-    private $mailAssigned;
-
-    /**
-     * @var ContactCase
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
-     * @ORM\JoinColumn(name="mail_team", referencedColumnName="slug")
-     */
-
-    private $mailTeam;
-
-    /**
-     * @var ContactCase
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
-     * @ORM\JoinColumn(name="mail_admin", referencedColumnName="slug")
-     */
-
-    private $mailAdmin;
-
-    /**
-     * @var ContactCase
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
-     * @ORM\JoinColumn(name="mail_reporter", referencedColumnName="slug")
-     */
-
-    private $mailReporter;
 
     /**
      * @var DateTime
@@ -130,14 +99,9 @@ class IncidentState implements Translatable
 
     /**
      * @var IncidentStateEdge[]|Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateEdge",mappedBy="oldState")
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateEdge",mappedBy="oldState",cascade={"persist"},orphanRemoval=true)
      */
-    private $edgesAsOldState;
-    /**
-     * @var IncidentStateEdge[]|Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateEdge",mappedBy="newState")
-     */
-    private $edgesAsNewState;
+    private $edges;
 
     /**
      * Constructor
@@ -145,8 +109,7 @@ class IncidentState implements Translatable
     public function __construct()
     {
         $this->incidents = new ArrayCollection();
-        $this->edgesAsNewState = new ArrayCollection();
-        $this->edgesAsOldState = new ArrayCollection();
+        $this->edges = new ArrayCollection();
     }
 
     /**
@@ -168,26 +131,21 @@ class IncidentState implements Translatable
     }
 
     /**
-     * @return IncidentStateEdge[]|Collection
+     * @param Incident $incident
+     * @param IncidentState $newState
+     * @return bool
      */
-    public function getEdgesAsNewState(): Collection
+    public function changeIncidentState(Incident $incident, IncidentState $newState): bool
     {
-        return $this->edgesAsNewState;
-    }
-
-    /**
-     * @param IncidentStateEdge[]|Collection $edgesAsNewState
-     * @return IncidentState
-     */
-    public function setEdgesAsNewState(Collection $edgesAsNewState): IncidentState
-    {
-        $this->edgesAsNewState = $edgesAsNewState;
-        return $this;
+        if ($this->canChangeTo($newState)) {
+            $edge = $this->getNewStateEdge($newState);
+            $edge->changeIncidentState($incident);
+        }
     }
 
     /**
      * @param IncidentState $newState
-     * @return bool
+     * @return boolBusco
      */
     public function canChangeTo(IncidentState $newState): bool
     {
@@ -199,7 +157,7 @@ class IncidentState implements Translatable
      */
     public function getNewStates(): ArrayCollection
     {
-        return $this->getEdgesAsOldState()->map(static function (IncidentStateEdge $edge) {
+        return $this->getEdges()->map(static function (IncidentStateEdge $edge) {
             return $edge->getNewState();
         });
     }
@@ -207,166 +165,43 @@ class IncidentState implements Translatable
     /**
      * @return IncidentStateEdge[]|Collection
      */
-    public function getEdgesAsOldState(): Collection
+    public function getEdges(): Collection
     {
-        return $this->edgesAsOldState;
+        return $this->edges;
     }
 
     /**
-     * @param IncidentStateEdge[]|Collection $edgesAsOldState
+     * @param IncidentStateEdge $edges
      * @return IncidentState
      */
-    public function setEdgesAsOldState(Collection $edgesAsOldState): IncidentState
+    public function setEdges(IncidentStateEdge $edges): IncidentState
     {
-        $this->edgesAsOldState = $edgesAsOldState;
-        return $this;
-    }
-
-    public function setTranslatableLocale(string $locale): IncidentState
-    {
-        $this->locale = $locale;
+        $this->edges = $edges;
         return $this;
     }
 
     /**
-     * @return bool
+     * @param IncidentState $newState
+     * @return IncidentStateEdge | null
      */
-    public function isOpening(): bool
+    public function getNewStateEdge(IncidentState $newState): ?IncidentStateEdge
     {
-        return $this->getIncidentStatebehavior()->isCanOpen();
+        return $this->getEdges()->filter(static function (IncidentStateEdge $edge) use ($newState) {
+            return $edge->getNewState() === $newState;
+        })->first() ?: null;
+
     }
 
     /**
-     * @return IncidentStateBehavior
-     */
-    public function getIncidentStatebehavior(): IncidentStateBehavior
-    {
-        return $this->incident_state_behavior;
-    }
-
-    /**
-     * @param IncidentStateBehavior $incident_state_behavior
-     */
-    public function setIncidentStatebehavior(IncidentStateBehavior $incident_state_behavior): void
-    {
-        $this->incident_state_behavior = $incident_state_behavior;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isClosing(): bool
-    {
-        return $this->getIncidentStatebehavior()->isCanClose();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isReOpening(): bool
-    {
-        return $this->getIncidentStatebehavior()->isCanReOpen();
-    }
-
-    /**
-     * @return ContactCase
-     */
-    public function getMailAssigned(): ?ContactCase
-    {
-        return $this->mailAssigned;
-    }
-
-    /**
-     * @param ContactCase $mailAssigned
+     * @param IncidentStateEdge $edge
      * @return IncidentState
      */
-    public function setMailAssigned(ContactCase $mailAssigned): IncidentState
+    public function addEdge(IncidentStateEdge $edge): IncidentState
     {
-        $this->mailAssigned = $mailAssigned;
-        return $this;
-    }
-
-    /**
-     * @return ContactCase
-     */
-    public function getMailTeam(): ?ContactCase
-    {
-        return $this->mailTeam;
-    }
-
-    /**
-     * @param ContactCase $mailTeam
-     * @return IncidentState
-     */
-    public function setMailTeam(ContactCase $mailTeam): IncidentState
-    {
-        $this->mailTeam = $mailTeam;
-        return $this;
-    }
-
-    /**
-     * @return ContactCase
-     */
-    public function getMailAdmin(): ?ContactCase
-    {
-        return $this->mailAdmin;
-    }
-
-    /**
-     * @param ContactCase $mailAdmin
-     * @return IncidentState
-     */
-    public function setMailAdmin(ContactCase $mailAdmin): IncidentState
-    {
-        $this->mailAdmin = $mailAdmin;
-        return $this;
-
-    }
-
-    /**
-     * @return ContactCase
-     */
-    public function getMailReporter(): ?ContactCase
-    {
-        return $this->mailReporter;
-    }
-
-    /**
-     * @param ContactCase $mailReporter
-     * @return IncidentState
-     */
-    public function setMailReporter(ContactCase $mailReporter): IncidentState
-    {
-        $this->mailReporter = $mailReporter;
-        return $this;
-
-    }
-
-    public function __toString(): string
-    {
-        return $this->getName();
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return IncidentState
-     */
-    public function setName(string $name): IncidentState
-    {
-        $this->name = $name;
-
+        if ($this->getEdges()->contains($edge)) {
+            return null;
+        }
+        $this->edges[$edge->getNewState()->getId()] = $edge;
         return $this;
     }
 
@@ -399,6 +234,101 @@ class IncidentState implements Translatable
     public function setSlug(string $slug): IncidentState
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function removeEdge(IncidentStateEdge $edge): void
+    {
+        $this->getEdges()->removeElement($edge);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOpen(): bool
+    {
+        return $this->getIncidentStatebehavior()->isOpen();
+    }
+
+    /**
+     * @return IncidentStateBehavior
+     */
+    public function getIncidentStatebehavior(): IncidentStateBehavior
+    {
+        return $this->incident_state_behavior;
+    }
+
+    /**
+     * @param IncidentStateBehavior $incident_state_behavior
+     */
+    public function setIncidentStatebehavior(IncidentStateBehavior $incident_state_behavior): void
+    {
+        $this->incident_state_behavior = $incident_state_behavior;
+    }
+
+    public function setTranslatableLocale(string $locale): IncidentState
+    {
+        $this->locale = $locale;
+        return $this;
+    }
+
+    /**
+     * @return IncidentStateBehavior
+     */
+    public function getBehavior(): IncidentStateBehavior
+    {
+        return $this->incident_state_behavior;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isClosed(): bool
+    {
+        return $this->getIncidentStatebehavior()->isClosed();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNew(): bool
+    {
+        return $this->getIncidentStatebehavior()->isNew();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReOpen(): bool
+    {
+        return $this->getIncidentStatebehavior()->isReOpen();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return IncidentState
+     */
+    public function setName(string $name): IncidentState
+    {
+        $this->name = $name;
 
         return $this;
     }

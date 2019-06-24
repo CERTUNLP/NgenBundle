@@ -60,8 +60,7 @@ interface IncidentInterface
     /**
      * Set IncidentDecision
      *
-     * @param $state
-     * @param $responsable
+     * @param IncidentState $state
      * @return Incident
      */
     public function setState(IncidentState $state): Incident;
@@ -87,14 +86,6 @@ interface IncidentInterface
      * @return string
      */
     public function getAddress(): ?string;
-
-    /**
-     * Set isClosed
-     *
-     * @param bool $isClosed
-     * @return Incident
-     */
-    public function setIsClosed(bool $isClosed): Incident;
 
     /**
      * Get isClosed
@@ -158,9 +149,9 @@ interface IncidentInterface
     /**
      * Get date
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getDate(): ?\DateTime;
+    public function getDate(): ?DateTime;
 
     /**
      * @return string

@@ -55,7 +55,7 @@ class IncidentStateBehavior
      * @ORM\Column( type="boolean")
      * @JMS\Expose
      */
-    private $canOpen = false;
+    private $isOpen = false;
 
     /**
      * @var boolean
@@ -63,7 +63,7 @@ class IncidentStateBehavior
      * @ORM\Column( type="boolean")
      * @JMS\Expose
      */
-    private $canClose = false;
+    private $isClosed = false;
 
     /**
      * @var boolean
@@ -71,7 +71,7 @@ class IncidentStateBehavior
      * @ORM\Column( type="boolean")
      * @JMS\Expose
      */
-    private $canReOpen = false;
+    private $isReOpen = false;
 
     /**
      * @var boolean
@@ -82,23 +82,12 @@ class IncidentStateBehavior
     private $isActive = true;
 
     /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
+     * @var boolean
+     *
+     * @ORM\Column(name="is_new", type="boolean")
      * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
-    private $createdAt;
-
-    /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
-
+    private $isNew = false;
 
     /**
      * @var boolean
@@ -132,10 +121,99 @@ class IncidentStateBehavior
      */
     private $canComunicate = true;
 
+    /**
+     * @var DateTime|null
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    private $createdAt;
+
+    /**
+     * @var DateTime|null
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="updated_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    private $updatedAt;
 
     public function __construct()
     {
         $this->states = new ArrayCollection();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOpen(): bool
+    {
+        return $this->isOpen;
+    }
+
+    /**
+     * @param bool $isOpen
+     * @return IncidentStateBehavior
+     */
+    public function setIsOpen(bool $isOpen): IncidentStateBehavior
+    {
+        $this->isOpen = $isOpen;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isClosed(): bool
+    {
+        return $this->isClosed;
+    }
+
+    /**
+     * @param bool $isClosed
+     * @return IncidentStateBehavior
+     */
+    public function setIsClosed(bool $isClosed): IncidentStateBehavior
+    {
+        $this->isClosed = $isClosed;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReOpen(): bool
+    {
+        return $this->isReOpen;
+    }
+
+    /**
+     * @param bool $isReOpen
+     * @return IncidentStateBehavior
+     */
+    public function setIsReOpen(bool $isReOpen): IncidentStateBehavior
+    {
+        $this->isReOpen = $isReOpen;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNew(): bool
+    {
+        return $this->isNew;
+    }
+
+    /**
+     * @param bool $isNew
+     * @return IncidentStateBehavior
+     */
+    public function setIsNew(bool $isNew): IncidentStateBehavior
+    {
+        $this->isNew = $isNew;
+        return $this;
     }
 
     /**
@@ -154,6 +232,14 @@ class IncidentStateBehavior
     {
         $this->canComunicate = $canComunicate;
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canComunicate(): bool
+    {
+        return $this->canComunicate;
     }
 
     /**
@@ -196,6 +282,14 @@ class IncidentStateBehavior
     /**
      * @return bool
      */
+    public function canEdit(): bool
+    {
+        return $this->canEdit;
+    }
+
+    /**
+     * @return bool
+     */
     public function isCanEnrich(): bool
     {
         return $this->canEnrich;
@@ -214,6 +308,14 @@ class IncidentStateBehavior
     /**
      * @return bool
      */
+    public function canEnrich(): bool
+    {
+        return $this->canEnrich;
+    }
+
+    /**
+     * @return bool
+     */
     public function isCanAddHistory(): bool
     {
         return $this->canAddHistory;
@@ -227,6 +329,14 @@ class IncidentStateBehavior
     {
         $this->canAddHistory = $canAddHistory;
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canAddHistory(): bool
+    {
+        return $this->canAddHistory;
     }
 
     /**
@@ -341,51 +451,5 @@ class IncidentStateBehavior
         $this->description = $description;
     }
 
-    /**
-     * @return bool
-     */
-    public function isCanOpen(): bool
-    {
-        return $this->canOpen;
-    }
 
-    /**
-     * @param bool $canOpen
-     */
-    public function setCanOpen(bool $canOpen): void
-    {
-        $this->canOpen = $canOpen;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCanClose(): bool
-    {
-        return $this->canClose;
-    }
-
-    /**
-     * @param bool $canClose
-     */
-    public function setCanClose(bool $canClose): void
-    {
-        $this->canClose = $canClose;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCanReOpen(): bool
-    {
-        return $this->canReOpen;
-    }
-
-    /**
-     * @param bool $canReOpen
-     */
-    public function setCanReOpen(bool $canReOpen): void
-    {
-        $this->canReOpen = $canReOpen;
-    }
 }
