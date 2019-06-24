@@ -11,7 +11,7 @@ var Frontend = Class.extend({
         this.eventTarget = null;
         $(".action-dropdown").delegate("a.state-label", "click", $.proxy(this.changeState, this));
         $('.select-filter').on('change', $.proxy(this.search, this));           ;
-        $('.term-filter').on('submit', $.proxy(this.search, this));           ;
+        $('.multiple-select-filter').on('blur', $.proxy(this.search, this));           ;
         $('.data-filter').on('change', $.proxy(this.search, this));           ;
         this.addEventBinds();
     },
@@ -55,11 +55,6 @@ var Frontend = Class.extend({
             }
         });
         $(".select-filter").each(function () {
-            if ($(this).val() != null && $(this).val().length > 0) {
-                query = (query) + ' && ' + $(this).attr('name') + '.' + $(this).attr('search') + ':' + $(this).val();
-            }
-        });
-        $(".term-filter").each(function () {
             if ($(this).val() != null && $(this).val().length > 0) {
                 query = (query) + ' && ' + $(this).attr('name') + '.' + $(this).attr('search') + ':' + $(this).val();
             }

@@ -48,6 +48,7 @@ class IncidentSearchType extends AbstractType
         $builder
             ->add('type', null, array(
                 'label' => false,
+                'required'=>false,
                 'empty_value' => 'All',
                 'description' => '(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|'
                     . 'dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|'
@@ -58,12 +59,13 @@ class IncidentSearchType extends AbstractType
             ->add('feed', EntityType::class, array(
                 'class' => IncidentFeed::class,
                 'empty_value' => 'All',
+                'required'=>false,
                 'label' => false,
                 'description' => '(bro|external_report|netflow|shadowserver)',
                 'attr' => array('class' => 'select-filter','search'=>'slug')
             ))
             ->add('address', null, array(
-                'required' => true,
+                'required' => false,
                 'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
                 'label' => false,
                 'mapped'=> false,
@@ -81,6 +83,7 @@ class IncidentSearchType extends AbstractType
             ))
             ->add('state', EntityType::class, array(
                 'label' => false,
+                'required'=>false,
                 'class' => IncidentState::class,
                 'empty_value' => 'All',
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
@@ -88,6 +91,7 @@ class IncidentSearchType extends AbstractType
             ))
             ->add('tlp', EntityType::class, array(
                 'label' => false,
+                'required'=>false,
                 'class' => IncidentTlp::class,
                 'empty_value' => 'All',
                 'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
@@ -95,6 +99,7 @@ class IncidentSearchType extends AbstractType
             ))
             ->add('reporter', EntityType::class, array(
                 'label' => false,
+                'required'=>false,
                 'class' => User::class,
                 'empty_value' => 'All',
                 'description' => 'The reporter ID. If none was selected, the reporter will be the logged user or the apikey user.',
@@ -102,6 +107,7 @@ class IncidentSearchType extends AbstractType
                 ))
             ->add('assigned', EntityType::class, array(
                 'label' => false,
+                'required'=>false,
                 'class' => User::class,
                 'empty_value' => 'All',
                 'description' => 'If none was selected, the incident will remain unassigned.',
@@ -109,6 +115,7 @@ class IncidentSearchType extends AbstractType
                 ))
             ->add('priority', EntityType::class, array(
                 'label' => false,
+                'required'=>false,
                 'class' => IncidentPriority::class,
                 'empty_value' => 'All',
                 'description' => 'If none is selected, the assigned impact will be Low',

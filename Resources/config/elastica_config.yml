@@ -44,10 +44,10 @@ fos_elastica:
                             type: "object"
                             properties:
                                 ip:
-                                    type: ip
+                                    type: keyword
                                     fields:
-                                        raw:
-                                          type:  keyword
+                                        ip:
+                                          type:  ip
                                 domain:
                                     type: keyword
                         network:
