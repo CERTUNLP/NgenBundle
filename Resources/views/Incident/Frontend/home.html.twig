@@ -15,14 +15,12 @@
             <div class="dropdown">
             <strong>{{ icon('arrow-circle-down fa-fw') }} {{ "Incidents" | trans }} </strong>
             <strong id="incidentcount">({{ objects.getPaginationData.lastItemNumber~'/'~objects.getTotalItemCount }})</strong>
-
-
             <button id="btnFilter" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> <strong>{{ icon('filter') }}</strong>
-       <span class="caret"></span></button>
-           </div>
+                 <span class="caret"></span>
+            </button>
+            </div>
             <div class="pull-right">
                 <div class="btn-group">
-
                 </div>
             </div>
         </div>
@@ -33,52 +31,62 @@
                 <th>{{ knp_pagination_sortable(objects, 'Assigned'| trans , 'assigned.username') }}</th>
                 <th>{{ knp_pagination_sortable(objects, 'Type'| trans, 'type.name') }}</th>
                 <th>{{ knp_pagination_sortable(objects, 'Feed'| trans, 'feed.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Date'| trans, 'date') }}</th>
+                <th>{{ knp_pagination_sortable(objects, 'Date'| trans, 'date.date') }}</th>
                 <th>{{ knp_pagination_sortable(objects, 'Priority'| trans, 'priority.name') }}</th>
                 <th>{{ knp_pagination_sortable(objects, 'Reportes'| trans, 'ltdCount') }}</th>
                 <th>{{ 'Actions'|trans }}</th>
             </tr>
-                <tr id="filtrosMostrar" class="filtrosMostrar"  style="display: none;"  >
+
+            <tr id="filtrosMostrar" class="filtrosMostrar"  style="display: none;"  >
 
                 <th>
-                    <form method='post' action="filter" role="search">
+                    <form method='post' action="javascript:void(0);" role="search">
                         {{ form_row(search_form.state) }}
                     </form>
                 </th>
                 <th>
-                    <form method='post' action="filter" role="search">
+                    <form method='post' class="form-inline" action="javascript:void(0);" role="search">
                         {{ form_row(search_form.address) }}
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" checked>
+                        <label class="form-check-label" for="inlineCheckbox1">*</label>
                     </form>
                 </th>
                 <th>
-                    <form method='post' action="filter" role="search">
+                    <form method='post' action="javascript:void(0);" role="search">
                         {{ form_row(search_form.assigned) }}
                     </form>
                 </th>
 
                 <th>
-                    <form method='post' action="filter" role="search">
+                    <form method='post' action="javascript:void(0);" role="search">
                         {{ form_row(search_form.type) }}
                     </form>
                 </th>
 
                 <th>
-                    <form method='post' action="filter" role="search">
+                    <form method='post' action="javascript:void(0);" role="search">
                         {{ form_row(search_form.feed) }}
                     </form>
                 </th>
                 <th>
-                    <form method='post' action="filter" role="search">
-                        {{ form_row(search_form.date) }}
+                    <form method='post' class="form-inline" action="javascript:void(0);" role="search">
+                        {{ form_row(search_form.dates) }}
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" checked>
+                        <label class="form-check-label" for="inlineCheckbox1">*</label>
                     </form>
                 </th>
                 <th>
-                    <form method='post' action="filter" role="search">
+                    <form method='post' action="javascript:void(0);" role="search">
                         {{ form_row(search_form.priority) }}
                     </form>
                 </th>
-
-                <th></th>
+                <th>
+                        <form method='post' class="form-inline" action="javascript:void(0);" role="search">
+                           {{ form_row(search_form.updatesAt) }}
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" checked>
+                            <label class="form-check-label" for="inlineCheckbox1">*</label>
+                        </form>
+                </th>
                 <th></th>
             </tr>
             <tbody>
@@ -89,7 +97,6 @@
 
             {% endfor %}
             </tbody>
-
         </table>
     </div>
     <div id="paginatorbar" class="pagination-centered">

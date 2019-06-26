@@ -2,6 +2,14 @@
 {% block body %}
     {% block navigation_block %}
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <ul class="nav navbar-top-links navbar-right">
+            <li>
+                <!--menu toggle button -->
+                <button id="menu-toggle" type="button" data-toggle="button" class="btn btn-default btn-xs">
+                    <i class="fa fa-exchange fa-fw"></i>
+                </button>
+            </li>
+        </ul>
         <div class="navbar-header">
             <a class="navbar-brand" href="{{ path('cert_unlp_ngen_internal_incident_frontend_home') }}">
                 <img style="max-height: 2em;" src="{{ asset('bundles/certunlpngen/images/ngen01.svg') }}">
@@ -131,4 +139,6 @@
             {% endblock %}
         </div>
     {% endblock %}
+
 {% endblock %}
+

@@ -46,6 +46,7 @@ var Notify = Class.extend({
     notifyInfo: function (text) {
         this.notificationsDiv.append(this.getInfoAlert(text));
     }
+
 });
 
 var CertUnlp = Class.extend({
@@ -54,3 +55,13 @@ var CertUnlp = Class.extend({
     },
 });
 
+$(document).ready(function() {
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+
+        $("#wrapper").toggleClass("toggled");
+
+        $('#wrapper.toggled').find("#sidebar-wrapper").find(".collapse").collapse('hide');
+
+    });
+});

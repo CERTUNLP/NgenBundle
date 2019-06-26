@@ -25,11 +25,17 @@ fos_elastica:
                         id:
                             type: integer
                         date:
-                            type: date
+                            type: keyword
+                            fields:
+                                date:
+                                    type: date
                         createdAt:
                             type: date
                         updatedAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                date:
+                                    type: date
                         isClosed:
                             type: boolean
                         isNew:
