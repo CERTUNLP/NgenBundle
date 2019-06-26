@@ -85,4 +85,5 @@ class IncidentFrontendController extends FrontendController
         return array('objects'=>$this->searchEntity($request, $term, $limit,$defaultSortFieldName,$defaultSortDirection,'pageobject','object')['objects'],'search_form'=>$quickSearchForm->getForm()->createView());
 
     }
+
 }

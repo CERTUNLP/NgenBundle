@@ -68,17 +68,23 @@ class IncidentSearchType extends AbstractType
                 'required' => false,
                 'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
                 'label' => false,
+                'empty_data'=>'google',
                 'mapped'=> false,
                 'description' => 'The network ip and mask',
                 'attr' => array('class' => 'multiple-select-filter','search'=>json_encode(['ip','domain']),'index'=>'origin')
             ))
-            ->add('date', DateTimeType::class, array(
+            ->add('dates', null, array(
                 'required' => false,
                 'label' => false,
-                'html5' => true,
-                'input' => 'datetime',
-                'widget' => 'single_text',
-                'attr' => array('class' => 'select-filter','type' => 'datetime-local','search'=>'id'),
+                'mapped'=> false,
+                'attr' => array('class' => 'select-filter','index'=>'date','size'=>11),
+                'description' => 'If no date is selected, the date will be today.',
+            ))
+            ->add('updatesAt', null, array(
+                'required' => false,
+                'label' => false,
+                'mapped'=> false,
+                'attr' => array('class' => 'select-filter','index'=>'updatedAt','size'=>11),
                 'description' => 'If no date is selected, the date will be today.',
             ))
             ->add('state', EntityType::class, array(
