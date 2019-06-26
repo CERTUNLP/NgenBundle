@@ -16,7 +16,6 @@ use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\User;
-use CertUnlp\NgenBundle\Model\IncidentInterface;
 use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -36,7 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
  */
-class Incident implements IncidentInterface
+class Incident
 {
 
     /**
@@ -318,17 +317,7 @@ class Incident implements IncidentInterface
      */
     public function setter(&$property, $value): void
     {
-        if ($this->canEdit()) {
-            $property = $value;
-        }
-    }
-
-    /**
-     * @return bool
-     */
-    public function canEdit(): bool
-    {
-        return $this->getBehavior()->canEdit();
+        $this->getBehavior()->setter($this, $property, $value);
     }
 
     /**
@@ -353,6 +342,7 @@ class Incident implements IncidentInterface
      * Set state
      * @param IncidentState $state
      * @return Incident
+     * @throws Exception
      */
     public function setState(IncidentState $state = null): Incident
     {
@@ -365,15 +355,8 @@ class Incident implements IncidentInterface
                 $reporter = $this->getReportReporter();
             }
             $this->addChangeStateHistory(new IncidentChangeState($this, $state, $reporter, $this->getState()));
-            $this->setLastState($this->state);
+            $this->setLastState($this->getState());
             $this->getState()->changeIncidentState($this, $state);
-
-            //TODO: esto se va con el state pattern
-            // TODO: ya quedaria, pero hay q ver q open(), close() etc q ahora estan en Edge sirven ahi o no. Creo q queda de mas pero hay q ver q hacemos con eso
-//            if ($this->modifyIncidentStatus($state)) {
-//                if ($this->state != $state) {
-//                }
-//            }
         }
         return $this;
     }
@@ -402,38 +385,27 @@ class Incident implements IncidentInterface
      */
     public function addChangeStateHistory(IncidentChangeState $changeState): Incident
     {
-        if ($this->canEnrich()) {
-            $this->changeStateHistory->add($changeState);
-        }
+        return $this->getBehavior()->addChangeStateHistory($this, $changeState);
+    }
 
+    /**
+     * Set state
+     * @param IncidentState $state
+     * @return Incident
+     */
+    public function changeState(IncidentState $state): Incident
+    {
+        $this->state = $state;
         return $this;
     }
 
     /**
      * @return bool
      */
-    public function canEnrich(): bool
+    public function canEdit(): bool
     {
-        return $this->getBehavior()->canEnrich();
+        return $this->getBehavior()->canEdit();
     }
-
-    /**
-     * @return bool
-     */
-    public function isNew(): ?bool
-    {
-        return $this->getBehavior()->isNew();
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isClosed(): ?bool
-    {
-        return $this->getBehavior()->isClosed();
-    }
-
 
     /**
      * @return int
@@ -725,11 +697,15 @@ class Incident implements IncidentInterface
      */
     public function getResponseMinutes(): int
     {
-        if (!$this->isNew()) {
-            return abs(($this->getDate()->getTimestamp() - $this->getOpenedAt()->getTimestamp()) / 60); //lo devuelvo en minutos eso es el i
-        }
+        return $this->getBehavior()->getResponseMinutes($this);
+    }
 
-        return abs(((new DateTime())->getTimestamp() - $this->getDate()->getTimestamp()) / 60);
+    /**
+     * @return bool
+     */
+    public function isNew(): ?bool
+    {
+        return $this->getBehavior()->isNew();
     }
 
     /**
@@ -738,15 +714,15 @@ class Incident implements IncidentInterface
      */
     public function getResolutionMinutes(): int
     {
-        if (!$this->isClosed()) {
-            if (!$this->isNew()) {
-                return abs(((new DateTime())->getTimestamp() - $this->getOpenedAt()->getTimestamp()) / 60); //lo devuelvo en minutos eso es el i
-            }
+        return $this->getBehavior()->getResolutionMinutes($this);
+    }
 
-            return 0;
-        }
-
-        return abs(($this->getUpdatedAt()->getTimestamp() - $this->getOpenedAt()->getTimestamp()) / 60);
+    /**
+     * @return bool
+     */
+    public function isClosed(): ?bool
+    {
+        return $this->getBehavior()->isClosed();
     }
 
     /**
@@ -773,11 +749,7 @@ class Incident implements IncidentInterface
      */
     public function getNewMinutes(): int
     {
-        if ($this->isNew()) {
-            return $this->getDate()->diff(new DateTime())->i; //lo devuelvo en minutos eso es el i
-        }
-
-        return 0;
+        return $this->getBehavior()->getNewMinutes($this);
     }
 
     /**
@@ -803,12 +775,15 @@ class Incident implements IncidentInterface
      */
     public function addIncidentDetected(Incident $incidentDetected): Incident
     {
-        if ($this->canEnrich()) {
-            $nuevo = new IncidentDetected($incidentDetected, $this);
-            $this->incidentsDetected->add($nuevo);
-            $this->increaseLtdCount();
-        }
-        return $this;
+        return $this->getBehavior()->addIncidentDetected($this, $incidentDetected);
+    }
+
+    /**
+     * @return bool
+     */
+    public function canEnrich(): bool
+    {
+        return $this->getBehavior()->canEnrich();
     }
 
     public function increaseLtdCount(): void
@@ -1189,18 +1164,18 @@ class Incident implements IncidentInterface
         return $this->getAddress();
     }
 
+    /**
+     * @param Incident $incidentDetected
+     * @return Incident
+     */
     public function updateVariables(Incident $incidentDetected): Incident
     {
         $this->setStateAndReporter($incidentDetected->getState(), $incidentDetected->getReporter());
-        if ($this->isNew()) {
-            if ($this->getTlp()->getCode() < $incidentDetected->getTlp()->getCode()) {
-                $this->setTlp($incidentDetected->getTlp());
-            }
-            if ($this->getPriority()->getCode() > $incidentDetected->getPriority()->getCode()) {
-                $this->setPriority($incidentDetected->getPriority());
-            }
-        }
+        $this->updateTlp($incidentDetected);
+        $this->updatePriority($incidentDetected);
+
         return $this;
+
     }
 
     /**
@@ -1214,6 +1189,26 @@ class Incident implements IncidentInterface
         $this->setter($this->reportReporter, $reporter);
         $this->setState($state);
         return $this;
+    }
+
+
+    /**
+     * @param Incident $incidentDetected
+     * @return Incident
+     */
+    public function updateTlp(Incident $incidentDetected): Incident
+    {
+        return $this->getBehavior()->updateTlp($this, $incidentDetected);
+
+    }
+
+    /**
+     * @param Incident $incidentDetected
+     * @return Incident
+     */
+    public function updatePriority(Incident $incidentDetected): Incident
+    {
+        return $this->getBehavior()->updatePriority($this, $incidentDetected);
     }
 
     /**

@@ -15,6 +15,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 use JMS\Serializer\Annotation as JMS;
@@ -134,32 +135,27 @@ class IncidentState implements Translatable
      * @param Incident $incident
      * @param IncidentState $newState
      * @return bool
+     * @throws Exception
      */
     public function changeIncidentState(Incident $incident, IncidentState $newState): bool
     {
-        if ($this->canChangeTo($newState)) {
-            $edge = $this->getNewStateEdge($newState);
+        $edge = $this->getNewStateEdge($newState);
+
+        if ($edge) {
             $edge->changeIncidentState($incident);
         }
     }
 
     /**
      * @param IncidentState $newState
-     * @return boolBusco
+     * @return IncidentStateEdge | null
      */
-    public function canChangeTo(IncidentState $newState): bool
+    public function getNewStateEdge(IncidentState $newState): ?IncidentStateEdge
     {
-        return $this->getNewStates()->contains($newState);
-    }
+        return $this->getEdges()->filter(static function (IncidentStateEdge $edge) use ($newState) {
+            return $edge->getNewState() === $newState;
+        })->first() ?: null;
 
-    /**
-     * @return IncidentState[]|ArrayCollection
-     */
-    public function getNewStates(): ArrayCollection
-    {
-        return $this->getEdges()->map(static function (IncidentStateEdge $edge) {
-            return $edge->getNewState();
-        });
     }
 
     /**
@@ -182,14 +178,21 @@ class IncidentState implements Translatable
 
     /**
      * @param IncidentState $newState
-     * @return IncidentStateEdge | null
+     * @return bool
      */
-    public function getNewStateEdge(IncidentState $newState): ?IncidentStateEdge
+    public function canChangeTo(IncidentState $newState): bool
     {
-        return $this->getEdges()->filter(static function (IncidentStateEdge $edge) use ($newState) {
-            return $edge->getNewState() === $newState;
-        })->first() ?: null;
+        return $this->getNewStates()->contains($newState);
+    }
 
+    /**
+     * @return IncidentState[]|ArrayCollection
+     */
+    public function getNewStates(): ArrayCollection
+    {
+        return $this->getEdges()->map(static function (IncidentStateEdge $edge) {
+            return $edge->getNewState();
+        });
     }
 
     /**
@@ -297,13 +300,6 @@ class IncidentState implements Translatable
         return $this->getIncidentStatebehavior()->isNew();
     }
 
-    /**
-     * @return bool
-     */
-    public function isReOpen(): bool
-    {
-        return $this->getIncidentStatebehavior()->isReOpen();
-    }
 
     public function __toString(): string
     {

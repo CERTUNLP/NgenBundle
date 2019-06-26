@@ -205,6 +205,7 @@ class IncidentStateEdge
         if ($this->isUpdating()) {
 
         }
+        $incident->changeState($this->getNewState());
         return $incident;
 
     }
@@ -338,26 +339,6 @@ class IncidentStateEdge
     }
 
     /**
-     * @return int
-     */
-    public
-    function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     * @return IncidentStateEdge
-     */
-    public
-    function setId(int $id): IncidentStateEdge
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
      * @return IncidentState
      */
     public
@@ -374,6 +355,26 @@ class IncidentStateEdge
     function setNewState(IncidentState $newState): IncidentStateEdge
     {
         $this->newState = $newState;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public
+    function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return IncidentStateEdge
+     */
+    public
+    function setId(int $id): IncidentStateEdge
+    {
+        $this->id = $id;
         return $this;
     }
 
