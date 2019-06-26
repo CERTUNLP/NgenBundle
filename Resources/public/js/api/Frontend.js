@@ -11,7 +11,8 @@ var Frontend = Class.extend({
         this.eventTarget = null;
         $(".action-dropdown").delegate("a.state-label", "click", $.proxy(this.changeState, this));
         $('.select-filter').on('change', $.proxy(this.search, this));           ;
-        $('.multiple-select-filter').on('blur', $.proxy(this.search, this));           ;
+        $('.multiple-select-filter').on('blur', $.proxy(this.search, this));
+        $('.form-check-input').on('change', $.proxy(this.search, this));;
         $('.data-filter').on('change', $.proxy(this.search, this));           ;
         this.addEventBinds();
     },
@@ -40,10 +41,9 @@ var Frontend = Class.extend({
                 subquery = '(';
                 parametros = JSON.parse($(this).attr('search'));
                 valor = $(this).val();
-                if ($(this).parent().parent().children('.form-check-input')[0].checked){
+                if ($(this).parent().parent().children('.form-check-input')[0]!= null && $(this).parent().parent().children('.form-check-input')[0].checked){
                     valor= valor+'*';
                 }
-
 
                 if ($(this).attr('index') != null && $(this).attr('index').length > 0) {
                     name = $(this).attr('index');
@@ -68,7 +68,7 @@ var Frontend = Class.extend({
             }
             if ($(this).val() != null && $(this).val().length > 0) {
                 valor = $(this).val();
-                if ($(this).parent().parent().children('.form-check-input')[0].checked){
+                if ($(this).parent().parent().children('.form-check-input')[0]!= null && $(this).parent().parent().children('.form-check-input')[0].checked){
                     valor= valor+'*';
                 }
                 if ($(this).attr('search') != null && $(this).attr('search').length > 0) {
