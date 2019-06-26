@@ -31,19 +31,29 @@ class DashboardController extends Controller
      */
     public function homeAction()
     {
-//        $article = $this->get('doctrine')->getManager()->find(IncidentState::class, 'open' /*article id*/);
+
+
+        /** @var IncidentState $article */
+        $article = $this->get('doctrine')->getRepository(IncidentState::class)->findOneBy(['slug' => 'open'] /*article id*/);
+        $article2 = $this->get('doctrine')->getRepository(IncidentState::class)->findOneBy(['slug' => 'staging'] /*article id*/);
+//        $article2 = $this->get('doctrine')->getRepository(IncidentState::class)->findOneBy(['slug' => 'closed'] /*article id*/);
 //        $repository = $this->get('doctrine')->getManager()->getRepository(Translation::class);
 //        $translations = $repository->findTranslations($article);
-//        var_dump($translations);
-//        die;
-
-
-        $article = new IncidentState();
-        $article->setName('asdasda');
-
-        $this->get('doctrine')->getManager()->persist($article);
-        $this->get('doctrine')->getManager()->flush();
+        var_dump($article->getNewStateEdge($article2));
+//        $article->setName('asdasdas');
+//        var_dump($article->getName());
+//        var_dump($article->getNewStates()->map(function($state){
+//            return $state->getName();
+//        }));
         die;
+
+
+//        $article = new IncidentState();
+//        $article->setName('asdasda');
+//
+//        $this->get('doctrine')->getManager()->persist($article);
+//        $this->get('doctrine')->getManager()->flush();
+//        die;
 
     }
 }
