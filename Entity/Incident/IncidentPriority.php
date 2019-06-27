@@ -114,6 +114,51 @@ class IncidentPriority
      * @JMS\Expose
      */
     private $resolutionTime;
+
+    /**
+     * @return int
+     */
+    public function getUnresponseTime(): int
+    {
+        return $this->unresponseTime;
+    }
+
+    /**
+     * @param int $unresponseTime
+     */
+    public function setUnresponseTime(int $unresponseTime): void
+    {
+        $this->unresponseTime = $unresponseTime;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUnresolutionTime(): int
+    {
+        return $this->unresolutionTime;
+    }
+
+    /**
+     * @param int $unresolutionTime
+     */
+    public function setUnresolutionTime(int $unresolutionTime): void
+    {
+        $this->unresolutionTime = $unresolutionTime;
+    }
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="unresponse_time", type="integer")
+     * @JMS\Expose
+     */
+    private $unresponseTime;
+    /**
+     * @var integer
+     * @ORM\Column(name="unresolution_time", type="integer")
+     * @JMS\Expose
+     */
+    private $unresolutionTime;
     /**
      * @var int
      *
