@@ -60,7 +60,6 @@ $(document).ready(function() {
         e.preventDefault();
 
         $("#wrapper").toggleClass("toggled");
-
         $('#wrapper.toggled').find("#sidebar-wrapper").find(".collapse").collapse('hide');
 
     });

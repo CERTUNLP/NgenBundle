@@ -7,8 +7,8 @@
  with this source code in the file LICENSE.
 #}
 
-<tr data-id="{{ incident.id }}" role="row">
-    <td id="state_label_holder">
+<tr data-id="{{ incident.id }}" role="row" >
+    <td id="state_label_holder" class="align-middle">
         <div class="label-holder">
             <span>
                 {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': incident} %}
@@ -19,25 +19,25 @@
         {{ incident.address }}
     </td>
 
-    <td>
+    <td class="align-middle">
         {{ incident.assigned }}
-    </td>
-    <td>
+    </td class="align-middle">
+    <td class="align-middle">
         {{ incident.type }}
     </td>
-    <td>
+    <td class="align-middle">
         {{ incident.feed }}
     </td>
-    <td>
+    <td class="align-middle">
         {{ incident.date|date('Y-m-d H:i') }}
     </td>
-    <td>
+    <td class="align-middle">
         {{ incident.priority }}
     </td>
-    <td>
+    <td class="align-middle">
         {% include "CertUnlpNgenBundle:Incident:Frontend/ltdLabel.html.twig" with {'incident': incident,'incidentsDetected':incident.incidentsDetected} %}
     </td>
-    <td class="col-sm-1">
+    <td class="col-sm-1 align-middle">
 
         <div class="btn-group inline pull-left dropdown action-dropdown">
             <a class="btn btn-sm btn-primary"
