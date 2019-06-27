@@ -15,7 +15,7 @@
             <div class="dropdown">
             <strong>{{ icon('arrow-circle-down fa-fw') }} {{ "Incidents" | trans }} </strong>
             <strong id="incidentcount">({{ objects.getPaginationData.lastItemNumber~'/'~objects.getTotalItemCount }})</strong>
-            <button id="btnFilter" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> <strong>{{ icon('filter') }}</strong>
+            <button id="btnFilter" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true"> <strong>{{ icon('filter') }}</strong>
                  <span class="caret"></span>
             </button>
             </div>
@@ -37,7 +37,7 @@
                 <th>{{ 'Actions'|trans }}</th>
             </tr>
 
-            <tr id="filtrosMostrar" class="filtrosMostrar"  style="display: none;"  >
+            <tr id="filtrosMostrar" class="filtrosMostrar"  style="display: true;"  >
 
                 <th>
                     <form method='post' action="javascript:void(0);" role="search">
@@ -45,11 +45,12 @@
                     </form>
                 </th>
                 <th>
-                    <form method='post' class="form-inline" action="javascript:void(0);" role="search">
+                    <form method='post' class="data-filter form-inline" action="javascript:void(0);" role="search">
                         {{ form_row(search_form.address) }}
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" checked>
-                        <label class="form-check-label" for="inlineCheckbox1">*</label>
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" style="display:none" value="option1" checked>
+                        <label class="form-check-label" for="inlineCheckbox1" style="display:none">*</label>
                     </form>
+
                 </th>
                 <th>
                     <form method='post' action="javascript:void(0);" role="search">
@@ -69,10 +70,10 @@
                     </form>
                 </th>
                 <th>
-                    <form method='post' class="form-inline" action="javascript:void(0);" role="search">
+                    <form method='post' class="data-filter form-inline" action="javascript:void(0);" role="search">
                         {{ form_row(search_form.dates) }}
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" checked>
-                        <label class="form-check-label" for="inlineCheckbox1">*</label>
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" style="display:none" value="option1" checked>
+                        <label class="form-check-label" for="inlineCheckbox1" style="display:none">*</label>
                     </form>
                 </th>
                 <th>
@@ -81,10 +82,10 @@
                     </form>
                 </th>
                 <th>
-                        <form method='post' class="form-inline" action="javascript:void(0);" role="search">
+                        <form method='post' class="data-filter form-inline" action="javascript:void(0);" role="search">
                            {{ form_row(search_form.updatesAt) }}
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" checked>
-                            <label class="form-check-label" for="inlineCheckbox1">*</label>
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" style="display:none" value="option1" checked>
+                            <label class="form-check-label" for="inlineCheckbox1" style="display:none">*</label>
                         </form>
                 </th>
                 <th></th>

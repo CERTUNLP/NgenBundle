@@ -13,7 +13,7 @@ var Frontend = Class.extend({
         $('.select-filter').on('change', $.proxy(this.search, this));           ;
         $('.multiple-select-filter').on('blur', $.proxy(this.search, this));
         $('.form-check-input').on('change', $.proxy(this.search, this));;
-        $('.data-filter').on('change', $.proxy(this.search, this));           ;
+        $('.data-filter').on('submit', $.proxy(this.search, this));           ;
         this.addEventBinds();
     },
     addEventBinds: function () {
