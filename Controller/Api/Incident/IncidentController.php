@@ -128,8 +128,6 @@ class IncidentController extends FOSRestController
      */
     public function getIncidentsSearchAction(Request $request)
     {
-        #print_r($request);
-        echo "voy bien"; die();
         return $this->getApiController($incident)->patchState($request, $incident, $state);
     }
 

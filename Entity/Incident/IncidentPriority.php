@@ -27,7 +27,18 @@ class IncidentPriority
      * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
      * @JMS\Expose
      */
+
     protected $urgency;
+
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     * @JMS\Expose
+     */
+    private $isActive = true;
+
 
     /**
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="priority"))
@@ -35,9 +46,33 @@ class IncidentPriority
 
     protected $incidents;
 
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="unresponse_time", type="integer")
+     * @JMS\Expose
+     */
+    private $unresponseTime;
+    /**
+     * @var integer
+     * @ORM\Column(name="unresolution_time", type="integer")
+     * @JMS\Expose
+     */
+    private $unresolutionTime;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="code", type="integer")
+     * @JMS\Expose
+     */
+    private $code;
+
+
     /**
      * @return mixed
      */
+
     public function getIncidents()
     {
         return $this->incidents;
@@ -76,8 +111,6 @@ class IncidentPriority
      */
 
     private $slug;
-
-
 
     /**
      * @var string
@@ -146,26 +179,7 @@ class IncidentPriority
     {
         $this->unresolutionTime = $unresolutionTime;
     }
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="unresponse_time", type="integer")
-     * @JMS\Expose
-     */
-    private $unresponseTime;
-    /**
-     * @var integer
-     * @ORM\Column(name="unresolution_time", type="integer")
-     * @JMS\Expose
-     */
-    private $unresolutionTime;
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="code", type="integer")
-     * @JMS\Expose
-     */
-    private $code;
+
 
     /**
      * @return \DateTime
@@ -348,5 +362,29 @@ class IncidentPriority
     {
         return true;
     }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return IncidentPriority
+     */
+    public function setIsActive(bool $isActive): IncidentPriority
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
 }
 

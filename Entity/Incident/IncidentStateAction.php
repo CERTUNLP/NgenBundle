@@ -54,6 +54,30 @@ class IncidentStateAction
     /**
      * @var boolean
      *
+     * @ORM\Column(name="discard", type="boolean")
+     * @JMS\Expose
+     */
+    private $discard = false;
+
+    /**
+     * @return bool
+     */
+    public function isDiscard(): bool
+    {
+        return $this->discard;
+    }
+
+    /**
+     * @param bool $discard
+     */
+    public function setDiscard(bool $discard): void
+    {
+        $this->discard = $discard;
+    }
+
+    /**
+     * @var boolean
+     *
      * @ORM\Column(name="close", type="boolean")
      * @JMS\Expose
      */
