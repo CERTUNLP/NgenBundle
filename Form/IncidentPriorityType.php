@@ -13,6 +13,7 @@ namespace CertUnlp\NgenBundle\Form;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -52,7 +53,13 @@ class IncidentPriorityType extends AbstractType
             ->add('resolution_time', NumberType::class, array(
                 'required' => true,
             ))
+            ->add('unresolution_time', NumberType::class, array(
+                'required' => true,
+            ))
             ->add('response_time', NumberType::class, array(
+                'required' => true,
+            ))
+            ->add('unresponse_time', NumberType::class, array(
                 'required' => true,
             ))
             ->add('save', SubmitType::class, array(

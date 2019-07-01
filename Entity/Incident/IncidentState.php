@@ -126,6 +126,14 @@ class IncidentState
     }
 
     /**
+     * @return bool
+     */
+    public function isDiscarding(): bool
+    {
+        return $this->getIncidentAction()->isDiscard();
+    }
+
+    /**
      * @return IncidentStateAction
      */
     public function getIncidentAction(): IncidentStateAction

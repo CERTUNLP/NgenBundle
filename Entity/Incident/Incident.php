@@ -192,6 +192,15 @@ class Incident implements IncidentInterface
     /**
      * @var boolean
      *
+     * @ORM\Column(name="is_discarded", type="boolean", options={"default" : 0})
+     * @JMS\Expose
+     * @JMS\Type("boolean")
+     */
+    protected $isDiscarded = 0;
+
+    /**
+     * @var boolean
+     *
      * @ORM\Column(name="is_new", type="boolean",options={"default" : 1})
      * @JMS\Expose
      * @JMS\Type("boolean")
@@ -1210,6 +1219,7 @@ class Incident implements IncidentInterface
     {
         //FIX DAMIAN aca hay q avisar que no se puede cambiar el tipo de incidente
         if ($this->isNew()) {
+
             if ($state->isOpening()) {
                 $this->open();
                 return true;
@@ -1217,6 +1227,10 @@ class Incident implements IncidentInterface
 
             if ($state->isReOpening()) {
                 $this->open();
+                return true;
+            }
+            if ($state->isDiscarding()) {
+                $this->discard();
                 return true;
             }
 
@@ -1245,6 +1259,24 @@ class Incident implements IncidentInterface
             }
         }
         return false;
+    }
+
+
+    /**
+     * @return Incident
+     * @throws Exception
+     */
+    public function discard(): Incident
+    {
+        $this->markAsNew(false);
+        return $this->setAsDiscarded(true);
+    }
+
+
+    public function setAsDiscarded(bool $isDiscarded = false): Incident
+    {
+        $this->isDiscarded = $isDiscarded;
+        return $this;
     }
 
     /**

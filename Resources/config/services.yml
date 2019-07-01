@@ -220,7 +220,7 @@ services:
         arguments: ["@doctrine.orm.entity_manager","@form.factory",CertUnlp\NgenBundle\Form\IncidentPriorityType,"@knp_paginator","@fos_elastica.finder.priorities.priority","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 
     cert_unlp.ngen.incident.priority.api.controller:
-        class: CertUnlp\NgenBundle\Services\Api\Controller\ApiController
+      class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentPriorityApiController
         arguments: ["@cert_unlp.ngen.incident.priority.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
 
     cert_unlp.ngen.incident.priority.handler:
