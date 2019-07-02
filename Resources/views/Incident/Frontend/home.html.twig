@@ -26,15 +26,7 @@
         </div>
         <table id="tabla_incidentes" class="table table-striped table-bordered table-hover dataTable no-footer">
             <tr rote="row" id="filters">
-                <th>{{ knp_pagination_sortable(objects, 'Status'| trans, 'state.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Address'| trans , 'origin.ip') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Assigned'| trans , 'assigned.username') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Type'| trans, 'type.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Feed'| trans, 'feed.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Date'| trans, 'date.date') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Priority'| trans, 'priority.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Reportes'| trans, 'ltdCount') }}</th>
-                <th>{{ 'Actions'|trans }}</th>
+                {% include '@CertUnlpNgen/Incident/Frontend/list/filterHeadersPaginator.html.twig' with {'objects': objects} %}
             </tr>
 
             <tr id="filtrosMostrar" class="filtrosMostrar"  style="display: true;"  >
@@ -44,6 +36,7 @@
                         {{ form_row(search_form.state) }}
                     </form>
                 </th>
+                <th></th>
                 <th>
                     <form method='post' class="data-filter form-inline" action="javascript:void(0);" role="search">
                         {{ form_row(search_form.address) }}
@@ -52,6 +45,7 @@
                     </form>
 
                 </th>
+
                 <th>
                     <form method='post' action="javascript:void(0);" role="search">
                         {{ form_row(search_form.assigned) }}
