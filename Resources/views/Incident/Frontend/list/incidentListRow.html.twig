@@ -15,10 +15,16 @@
                 </span>
         </div>
     </td>
+    <td id="state_label_holder" class="align-middle">
+        <div class="label-holder">
+            <span>
+                {% include "CertUnlpNgenBundle:Incident:Frontend/list/statusLabel.html.twig" with {'incident': incident} %}
+                </span>
+        </div>
+    </td>
     <td class="align-middle">
         {{ incident.address }}
     </td>
-
     <td class="align-middle">
         {{ incident.assigned }}
     </td class="align-middle">

@@ -131,8 +131,9 @@ class IncidentFrontendController extends Controller
         $datos=$this->getFrontendController()->homeEntity($request);
         $tabla=$this->renderView("CertUnlpNgenBundle:Incident:Frontend/list/filterList.html.twig",$datos);
         $paginador=$this->renderView("CertUnlpNgenBundle:Incident:Frontend/list/filterListPaginator.html.twig",$datos);
+        $filters=$this->renderView("CertUnlpNgenBundle:Incident:Frontend/list/filterHeadersPaginator.html.twig",$datos);
         $indice=$datos['objects']->getPaginationData();
-        return new JsonResponse(array('tabla'=>$tabla,'indice'=>$indice,'paginador'=>$paginador));
+        return new JsonResponse(array('tabla'=>$tabla,'indice'=>$indice,'paginador'=>$paginador,'filters'=>$filters));
 
     }
 }

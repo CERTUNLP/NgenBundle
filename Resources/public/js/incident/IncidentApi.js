@@ -29,10 +29,5 @@ var IncidentApi = ApiClient.extend({
     addDefaultChannel: function () {
         this.api.add("incidents", {stripTrailingSlash: true})
         this.defaultChannel = this.api.incidents;
-    },
-    // search: function (query, callback) {
-    //
-    //     var request = this.api.ajaxsearch.read({"query": query}, {});
-    //     this.doRequest(request, callback);
-    // },
+    }
 });
