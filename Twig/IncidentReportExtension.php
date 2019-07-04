@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Twig;
 
 use Twig_Extension;
+use Twig_SimpleFunction;
 
 class IncidentReportExtension extends Twig_Extension
 {
@@ -91,5 +92,90 @@ class IncidentReportExtension extends Twig_Extension
     {
         return 'incident_report_extension';
     }
+
+    public function getFunctions()
+{
+    $options = array('pre_escape' => 'html', 'is_safe' => array('html'));
+
+    return array(
+        new Twig_SimpleFunction('label', array($this, 'labelFunction'), $options),
+        new Twig_SimpleFunction('label_primary', array($this, 'labelPrimaryFunction'), $options),
+        new Twig_SimpleFunction('label_success', array($this, 'labelSuccessFunction'), $options),
+        new Twig_SimpleFunction('label_info', array($this, 'labelInfoFunction'), $options),
+        new Twig_SimpleFunction('label_warning', array($this, 'labelWarningFunction'), $options),
+        new Twig_SimpleFunction('label_danger', array($this, 'labelDangerFunction'), $options)
+    );
+}
+
+/**
+ * Returns the HTML code for a label.
+ *
+ * @param string $text The text of the label
+ * @param string $type The type of label
+ *
+ * @return string The HTML code of the label
+ */
+public function labelFunction($text, $type = 'default')
+{
+    return sprintf('<span class="badge%s">%s</span>', ($type ? ' badge-' . $type : ''), $text);
+}
+
+/**
+ * @param string $text
+ *
+ * @return string
+ */
+public function labelPrimaryFunction($text)
+{
+    return $this->labelFunction($text, 'primary');
+}
+
+/**
+ * Returns the HTML code for a success label.
+ *
+ * @param string $text The text of the label
+ *
+ * @return string The HTML code of the label
+ */
+public function labelSuccessFunction($text)
+{
+    return $this->labelFunction($text, 'success');
+}
+
+/**
+ * Returns the HTML code for a warning label.
+ *
+ * @param string $text The text of the label
+ *
+ * @return string The HTML code of the label
+ */
+public function labelWarningFunction($text)
+{
+    return $this->labelFunction($text, 'warning');
+}
+
+/**
+ * Returns the HTML code for a important label.
+ *
+ * @param string $text The text of the label
+ *
+ * @return string The HTML code of the label
+ */
+public function labelDangerFunction($text)
+{
+    return $this->labelFunction($text, 'danger');
+}
+
+/**
+ * Returns the HTML code for a info label.
+ *
+ * @param string $text The text of the label
+ *
+ * @return string The HTML code of the label
+ */
+public function labelInfoFunction($text)
+{
+    return $this->labelFunction($text, 'info');
+}
 
 }

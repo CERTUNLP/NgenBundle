@@ -21,7 +21,25 @@ assetic:
     bundles:
         - CertUnlpNgenBundle
         - FOSCommentBundle
-
+    assets:
+        fontawesome_css:
+            inputs:
+                - %kernel.root_dir%/../vendor/fortawesome/font-awesome/css/all.css
+            filters:
+                - cssrewrite
+            output: css/fontawesome-all.css
+        botsprap_css:
+            inputs:
+                - %kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.css
+            output: css/bootstrap4.css
+    #
+#        fontawesome_fonts:
+#            inputs:
+#                - %kernel.root_dir%/../vendor/fortawesome/font-awesome/webfonts/
+##            filters:
+##                    - less
+##                    - cssrewrite
+#            output: webfonts
 swiftmailer:
     mailers:
         cert_unlp.ngen.incident.mailer:
@@ -103,20 +121,17 @@ imap:
            username: "%imap_username%"
            password: "%imap_password%"
 
-braincrafted_bootstrap:
-    assets_dir: "%kernel.root_dir%/../vendor/twbs/bootstrap"
-    jquery_path: "%kernel.root_dir%/../vendor/components/jquery/jquery.min.js"
-    fonts_dir: "%kernel.root_dir%/../web/fonts"
-    icon_prefix: fa
-    auto_configure:
-        assetic: true
-        twig: true
-        knp_menu: true
-        knp_paginator: true
-    customize:
-        variables_file: ~
-        bootstrap_output: "%kernel.root_dir%/Resources/less/bootstrap.less"
-        bootstrap_template: BraincraftedBootstrapBundle:Bootstrap:bootstrap.less.twig
+#braincrafted_bootstrap:
+#    assets_dir: "%kernel.root_dir%/../vendor/twbs/bootstrap"
+#    jquery_path: "%kernel.root_dir%/../vendor/components/jquery/jquery.min.js"
+#    fonts_dir: "%kernel.root_dir%/../web/fonts"
+#    icon_prefix: fa
+#    css_preprocessor: none
+#    auto_configure:
+#        assetic: true
+#        twig: true
+#        knp_menu: true
+#        knp_paginator: true
 
 #knp_markdown:
 #    parser:
