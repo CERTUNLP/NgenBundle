@@ -17,7 +17,8 @@
     <link rel="shortcut icon" href="{{ asset('bundles/certunlpngen/images/favicon.ico') }}"/>
     {% block stylesheets %}
         {% stylesheets
-            'css/bootstrap.css'
+            'css/bootstrap4.css'
+            'css/fontawesome-all.css'
             '@CertUnlpNgenBundle/Resources/public/css/plugins/metisMenu/metisMenu.min.css'
             '@CertUnlpNgenBundle/Resources/public/css/sb-admin-2.css'
             '@CertUnlpNgenBundle/Resources/public/css/sbadmin2-sidebar-toggle.css'
@@ -30,12 +31,11 @@
             <link rel="stylesheet" type="text/css" href="{{ asset_url }}"/>
         {% endstylesheets %}
     {% endblock %}
-    {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
 </head>
 <body>
 <div id="wrapper">
     <div id="notifications" class="notifications">
-        {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
+{#        {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}#}
     </div>
     {% block body %}
     {% endblock %}
