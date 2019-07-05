@@ -10,24 +10,24 @@
 
 {% block content_body %}
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <div class="dropdown">
-            <strong>{{ icon('arrow-circle-down fa-fw') }} {{ "Incidents" | trans }} </strong>
-            <strong id="incidentcount">({{ objects.getPaginationData.lastItemNumber~'/'~objects.getTotalItemCount }})</strong>
-            <button id="btnFilter" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true"> <strong>{{ icon('filter') }}</strong>
-                 <span class="caret"></span>
-            </button>
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary"><strong>{{ icon('arrow-circle-down fa-fw') }} {{ "Incidents" | trans }} </strong>
+                <strong id="incidentcount">({{ objects.getPaginationData.lastItemNumber~'/'~objects.getTotalItemCount }})</strong>
+                <button id="btnFilter" class="btn btn-primary dropdown-toggle"
+                        type="button" data-toggle="dropdown" aria-expanded="true"><strong>{{ icon('filter') }}</strong>
+                    <span class="caret"></span>
+                </button>
+              </h6>
             </div>
-            <div class="pull-right">
-                <div class="btn-group">
-                </div>
-            </div>
-        </div>
-        <table id="tabla_incidentes" class="table table-striped table-bordered table-hover dataTable no-footer">
-            <tr rote="row" id="filters">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table id="tabla_incidentes" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                     <thead>
+
+               <tr rote="row" id="filters">
                 {% include '@CertUnlpNgen/Incident/Frontend/list/filterHeadersPaginator.html.twig' with {'objects': objects} %}
-            </tr>
+               </tr>
 
             <tr id="filtrosMostrar" class="filtrosMostrar"  style="display: true;"  >
 
@@ -84,6 +84,8 @@
                 </th>
                 <th></th>
             </tr>
+                 </thead>
+
             <tbody>
             {% for incident in objects %}
                 {% block list_body %}
@@ -92,25 +94,44 @@
 
             {% endfor %}
             </tbody>
+            <tfoot>
+              <tr rote="row" id="filters">
+                {% include '@CertUnlpNgen/Incident/Frontend/list/filterHeadersPaginator.html.twig' with {'objects': objects} %}
+               </tr>
+             </tfoot>
         </table>
     </div>
     <div id="paginatorbar" class="pagination-centered">
         {{ knp_pagination_render(objects, null, {}, { "prev_label": "Previous" | trans , "next_label": "Next"| trans, "first_label": "First"| trans, "last_label": "Last"| trans}) }}
     </div>
 
+
+                    <tr>
+                      <th>Name</th>
+                      <th>Position</th>
+                      <th>Office</th>
+                      <th>Age</th>
+                      <th>Start date</th>
+                      <th>Salary</th>
+                    </tr>
+
+
+
+
+
+
+
+
+
+
+
 {% endblock %}
 
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_internal_incident_search_incident') }}{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{ icon('arrow-circle-down fa-fw') }} {{ "Incidents" | trans }}
-        <div class="pull-right">
-            <a class="btn btn-primary btn-bg"
-               href="{{ path('cert_unlp_ngen_internal_incident_frontend_new_incident') }}">
-                {{ icon('plus-circle fa-fw') }}{{ "add incident" | trans }}
-            </a>
-        </div>
-    </h1>
+    <h1 class="h3 mb-0 text-gray-800">{{ icon('arrow-circle-down fa-fw') }} {{ "Incidents" | trans }}</h1>
+    <a href="{{ path('cert_unlp_ngen_internal_incident_frontend_new_incident') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus-circle fa-sm text-white-50"></i> {{ "add incident" | trans }}</a>
 {% endblock %}
 
 {% block javascripts %}

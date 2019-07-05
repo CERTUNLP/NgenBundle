@@ -25,8 +25,6 @@ assetic:
         fontawesome_css:
             inputs:
                 - %kernel.root_dir%/../vendor/fortawesome/font-awesome/css/all.css
-            filters:
-                - cssrewrite
             output: css/fontawesome-all.css
         botsprap_css:
             inputs:
