@@ -252,6 +252,11 @@ services:
         tags:
             - { name: twig.extension }
 
+    acme.twig.form_extension:
+        class: CertUnlp\NgenBundle\Twig\BootstrapFormExtension
+        tags:
+            - { name: twig.extension }
+
     twig.stringloader:
         class: Twig_Loader_Array
         arguments: [[]]

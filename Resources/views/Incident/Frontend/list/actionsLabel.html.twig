@@ -1,0 +1,53 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+<div class="btn-group inline pull-left dropdown action-dropdown">
+    <a class="btn btn-sm btn-primary"
+       href="{{ path('cert_unlp_ngen_internal_incident_frontend_detail_incident',{'slug':incident.id}) }}"
+       title="{{ 'Details'|trans }}">
+        {{ icon('eye') }}
+    </a>
+    <a class="btn btn-sm btn-primary" role="button"
+       href="{{ path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': incident.id}) }}"
+       title=" {{ 'Edit'|trans }}">
+        {{ icon('edit') }}
+    </a>
+
+    <button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" type="button"
+            id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+        {{ icon('menu') }}
+        <span class="caret"></span>
+    </button>
+
+    <div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        {% if incident.isNew == true %}
+
+            <a class="state-label dropdown-item"
+                   data-state-slug="open" data-state-name="Open" tabindex="-1"
+                   href="#"><i class="fas fa-lock-open"></i><span
+                            class="action-text"> {{ 'Open'|trans }}</span></a>
+                <a class="state-label dropdown-item" data-state-slug="removed" data-state-name="Removed" role="menuitem"
+                   tabindex="-1" href="#"><i class="fas fa-ban"></i> <span
+                            class="action-text"> {{ 'Discard'| trans }}</span></a>
+        {% endif %}
+
+        {% if incident.isNew == false %}
+
+                <a class="state-label dropdown-item" data-state-slug="closed"
+                   data-state-name="Closed" role="menuitem"
+                   tabindex="-1" href="#"><i class="fas fa-lock"></i> <span
+                            class="action-text">{{ 'Close'|trans }}</span></a>
+
+                <a class="state-label dropdown-item" data-state-slug="closed_by_inactivity"
+                   data-state-name="Closed by inactivity"
+                   role="menuitem" tabindex="-1" href="#">{{ icon('hourglass alert-danger') }} <span
+                            class="action-text">{{ 'Close by inactivity'|trans }}</span></a>
+        {% endif %}
+    </div>
+
+</div>

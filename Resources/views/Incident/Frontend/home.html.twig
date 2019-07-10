@@ -31,12 +31,18 @@
 
             <tr id="filtrosMostrar" class="filtrosMostrar"  style="display: true;"  >
 
+            <th></th>
                 <th>
                     <form method='post' action="javascript:void(0);" role="search">
                         {{ form_row(search_form.state) }}
                     </form>
                 </th>
                 <th></th>
+                <th>
+                    <form method='post' action="javascript:void(0);" role="search">
+                        {{ form_row(search_form.priority) }}
+                    </form>
+                </th>
                 <th>
                     <form method='post' class="data-filter form-inline" action="javascript:void(0);" role="search">
                         {{ form_row(search_form.address) }}
@@ -46,11 +52,6 @@
 
                 </th>
 
-                <th>
-                    <form method='post' action="javascript:void(0);" role="search">
-                        {{ form_row(search_form.assigned) }}
-                    </form>
-                </th>
 
                 <th>
                     <form method='post' action="javascript:void(0);" role="search">
@@ -71,18 +72,27 @@
                     </form>
                 </th>
                 <th>
-                    <form method='post' action="javascript:void(0);" role="search">
-                        {{ form_row(search_form.priority) }}
-                    </form>
-                </th>
-                <th>
                         <form method='post' class="data-filter form-inline" action="javascript:void(0);" role="search">
                            {{ form_row(search_form.updatesAt) }}
                             <input class="form-check-input" type="checkbox" id="inlineCheckbox1" style="display:none" value="option1" checked>
                             <label class="form-check-label" for="inlineCheckbox1" style="display:none">*</label>
                         </form>
                 </th>
-                <th></th>
+                <th>
+                    <form method='post' action="javascript:void(0);" role="search">
+                        {{ form_row(search_form.ltdCount) }}
+                    </form>
+                </th>
+                <th>
+                    <form method='post' action="javascript:void(0);" role="search">
+                        {{ form_row(search_form.assigned) }}
+                    </form>
+                </th>
+                <th>
+                    <form method='post' action="javascript:void(0);" role="search">
+                        {{ form_row(search_form.tlp) }}
+                    </form>
+                </th>
             </tr>
                  </thead>
 
@@ -104,26 +114,6 @@
     <div id="paginatorbar" class="pagination-centered">
         {{ knp_pagination_render(objects, null, {}, { "prev_label": "Previous" | trans , "next_label": "Next"| trans, "first_label": "First"| trans, "last_label": "Last"| trans}) }}
     </div>
-
-
-                    <tr>
-                      <th>Name</th>
-                      <th>Position</th>
-                      <th>Office</th>
-                      <th>Age</th>
-                      <th>Start date</th>
-                      <th>Salary</th>
-                    </tr>
-
-
-
-
-
-
-
-
-
-
 
 {% endblock %}
 
