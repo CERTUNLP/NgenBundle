@@ -8,11 +8,15 @@
 #}
 
 <tr data-id="{{ incident.id }}" role="row" >
+
+    <td class="col-sm-1 align-middle">
+        {% include "CertUnlpNgenBundle:Incident:Frontend/list/actionsLabel.html.twig" with {'incident': incident,'incidentsDetected':incident.incidentsDetected} %}
+    </td>
     <td id="state_label_holder" class="align-middle">
         <div class="label-holder">
             <span>
                 {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': incident} %}
-                </span>
+            </span>
         </div>
     </td>
     <td id="state_label_holder" class="align-middle">
@@ -23,11 +27,11 @@
         </div>
     </td>
     <td class="align-middle">
-        {{ incident.address }}
+        {{ incident.priority }}
     </td>
     <td class="align-middle">
-        {{ incident.assigned }}
-    </td class="align-middle">
+        {{ incident.address }}
+    </td>
     <td class="align-middle">
         {{ incident.type }}
     </td>
@@ -38,64 +42,21 @@
         {{ incident.date|date('Y-m-d H:i') }}
     </td>
     <td class="align-middle">
-        {{ incident.priority }}
+        {{ incident.updatedAt|date('Y-m-d H:i') }}
     </td>
     <td class="align-middle">
-        {% include "CertUnlpNgenBundle:Incident:Frontend/ltdLabel.html.twig" with {'incident': incident,'incidentsDetected':incident.incidentsDetected} %}
+        {{  incident.ltdCount }}
     </td>
-    <td class="col-sm-1 align-middle">
-
-        <div class="btn-group inline pull-left dropdown action-dropdown">
-            <a class="btn btn-sm btn-primary"
-               href="{{ path('cert_unlp_ngen_internal_incident_frontend_detail_incident',{'slug':incident.id}) }}"
-               title="{{ 'Details'|trans }}">
-                {{ icon('eye') }}
-            </a>
-            <a class="btn btn-sm btn-primary" role="button"
-               href="{{ path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': incident.id}) }}"
-               title=" {{ 'Edit'|trans }}">
-                {{ icon('edit') }}
-            </a>
-
-            <button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" type="button"
-                    id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                {{ icon('menu') }}
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                {% if incident.isNew == true %}
-
-                <li role="presentation">
-                    <a class="state-label"
-                       data-state-slug="open" data-state-name="Open" tabindex="-1"
-                       href="#">{{ icon('check  alert-info') }} <span
-                                class="action-text"> {{ 'Open'|trans }}</span></a>
-                </li>
-                <li role="presentation">
-                    <a class="state-label" data-state-slug="removed" data-state-name="Removed" role="menuitem"
-                       tabindex="-1" href="#">{{ icon('remove alert-danger') }} <span
-                                class="action-text"> {{ 'Discard'| trans }}</span></a>
-                </li>
-                {% endif %}
-
-                {% if incident.isNew == false %}
-
-                <li role="presentation">
-                    <a class="state-label" data-state-slug="closed"
-                       data-state-name="Closed" role="menuitem"
-                       tabindex="-1" href="#">{{ icon('lock alert-success') }} <span
-                                class="action-text">{{ 'Close'|trans }}</span></a>
-                </li>
-                <li role="presentation">
-
-                <a class="state-label" data-state-slug="closed_by_inactivity"
-                       data-state-name="Closed by inactivity"
-                       role="menuitem" tabindex="-1" href="#">{{ icon('hourglass alert-danger') }} <span
-                                class="action-text">{{ 'Close by inactivity'|trans }}</span></a>
-                </li>
-                {% endif %}
-            </ul>
-
-            </div>
+    <td class="align-middle">
+        {{ incident.assigned }}
     </td>
+    <td id="tlp_label_holder" class="align-middle">
+        <div class="label-holder">
+            <span>
+                {% include "CertUnlpNgenBundle:Incident:Frontend/list/tlpLabel.html.twig" with {'incident': incident} %}
+                </span>
+        </div>
+    </td>
+
+
 </tr>

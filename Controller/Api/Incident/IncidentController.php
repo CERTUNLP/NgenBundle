@@ -99,39 +99,6 @@ class IncidentController extends FOSRestController
     }
 
     /**
-     * List filtered incidents.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
-     * )
-     * * @param Request $request the request object
-     * @param Incident $incident
-     * @param IncidentState $state
-     * @return FormTypeInterface|View
-     * @FOS\Patch("/incidents/{id}/states/{state}", name="_id",requirements={"id"="\d+"}))
-     * @FOS\Patch("/incidents/{slug}/states/{state}")
-     *
-     * @FOS\Get("/incidents/search/{query}")
-     * @FOS\QueryParam(name="query", requirements="\d+", default="*", description="Elastic Query.")
-     * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incidents.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", default="100", description="How many incidents to return.")
-     * @FOS\View(
-     *  templateVar="incidents"
-     * )
-     * @param Request $request the request object
-     * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
-     * @return array
-     */
-    public function getIncidentsSearchAction(Request $request)
-    {
-        return $this->getApiController($incident)->patchState($request, $incident, $state);
-    }
-
-    /**
      * Update existing incident from the submitted data or create a new incident at a specific location.
      *
      * @ApiDoc(

@@ -119,6 +119,11 @@ class IncidentSearchType extends AbstractType
                 'description' => 'If none was selected, the incident will remain unassigned.',
                 'attr' => array('class' => 'select-filter','search'=>'id')
                 ))
+            ->add('ltdCount', null, array(
+                'label' => false,
+                'required'=>false,
+                'attr' => array('class' => 'select-filter')
+            ))
             ->add('priority', EntityType::class, array(
                 'label' => false,
                 'required'=>false,
