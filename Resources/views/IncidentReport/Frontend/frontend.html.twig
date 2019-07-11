@@ -10,11 +10,12 @@
 
 {% block title %}{{ 'Incident Reports'|trans }}{% endblock %}
 
-{% block content_header %}
-    <h1 class="page-header">{{ icon('cubes fa-fw') }} {{ 'Incident Reports'|trans }}</h1>
-{% endblock %}
 
-{#{% block sideBar_search_path %}{{path('cert_unlp_ngen_incident_report_search')}}{% endblock %}#}
+    {% block content_header %}
+        <h1 class="h3 mb-0 text-gray-800">{{ icon('fa fa-fas fa-syringe') }} {{ 'Incident Reports'|trans }}</h1>
+        <a href="{{ path('cert_unlp_ngen_incident_type_report_new') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus-circle fa-sm text-white-50"></i>{{ 'add report'|trans }} </a>
+    {% endblock %}
+
 
 {% block content_body %}
     {% include 'CertUnlpNgenBundle:IncidentReport:Frontend/list/incidentReportList.html.twig' with {'incidentReports': objects  } %}
