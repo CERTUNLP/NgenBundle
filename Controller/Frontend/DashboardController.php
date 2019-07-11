@@ -14,27 +14,22 @@ namespace CertUnlp\NgenBundle\Controller\Frontend;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class DashboardController extends Controller
 {
 
-    public function getFrontendController()
-    {
-        return $this->get('cert_unlp.ngen.incident.external.frontend.controller');
-    }
 
     /**
-     * @Template()
+     * @Template("CertUnlpNgenBundle:Dashboard:frontend.html.twig")
      * @Route("/")
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param Request $request
+     * @return array
      */
-    public function homeAction()
+    public function homeAction(Request $request)
     {
-//        $address = $this->getDoctrine()->getRepository(Network::class)->findOneByAddress(['address' => '163.10.42.242']);
-//        $address = new NetworkInternal('2001:4860::/32');
-//        $this->getDoctrine()->getManager()->persist($address);
-//        $this->getDoctrine()->getManager()->flush();
-        return $this->redirect($this->generateUrl('cert_unlp_ngen_internal_incident_frontend_home'));
-
+        return array("externalDashboard"=>$this->container->getParameter('cert_unlp.ngen.grafana.external.url'),"internalDashboard"=>$this->container->getParameter('cert_unlp.ngen.grafana.internal.url'));
     }
+
 }
