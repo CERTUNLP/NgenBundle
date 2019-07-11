@@ -44,7 +44,7 @@
             <a class="collapse-item" href="{{ path('cert_unlp_ngen_internal_incident_frontend_home') }}" >
                 {{ icon('exclamation-circle fa-fw') }}  {{ 'Incidents'|trans }}</a>
             <a class="collapse-item" href="{{ path('cert_unlp_ngen_host_frontend_home') }}" >
-                {{ icon('cube fa-fw') }} {{ 'Hosts'|trans }}</a>
+                {{ icon('fas fa-laptop') }} {{ 'Hosts'|trans }}</a>
         </div>
     </div>
 </li>
@@ -64,10 +64,10 @@
      </a>
      <div id="collapseNetworks" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
          <div class="bg-white py-2 collapse-inner rounded">
-             <h6 class="collapse-header">Custom Utilities:</h6>
-             <a class="collapse-item" href="{{ path('cert_unlp_ngen_network_frontend_home') }}">  {{ 'Networks'| trans }}</a>
-             <a class="collapse-item" href="{{ path('cert_unlp_ngen_network_admin_frontend_home') }}">{{ 'Admins'| trans }}</a>
-             <a class="collapse-item" href="{{ path('cert_unlp_ngen_network_network_entity_frontend_home') }}">{{ 'Entities'| trans }}</a>
+             <h6 class="collapse-header"></h6>
+             <a class="collapse-item" href="{{ path('cert_unlp_ngen_network_frontend_home') }}"> {{ icon('fa fa-share-alt fa-fw') }} {{ 'Networks'| trans }}</a>
+             <a class="collapse-item" href="{{ path('cert_unlp_ngen_network_admin_frontend_home') }}">{{ icon('fa fa-users fa-fw') }} {{ 'Admins'| trans }}</a>
+             <a class="collapse-item" href="{{ path('cert_unlp_ngen_network_network_entity_frontend_home') }}">{{ icon('fas fa-sitemap') }} {{ 'Entities'| trans }}</a>
          </div>
      </div>
  </li>
@@ -84,18 +84,18 @@
 
  <li class="nav-item">
      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="true" aria-controls="collapseUtilities">
-         {{ icon('sliders-h fa-fw') }} {{ 'Administration'| trans }}
+         <span>   {{ icon('sliders-h fa-fw') }} {{ 'Administration'| trans }}</span>
      </a>
      <div id="collapseAdmin" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
          <div class="bg-white py-2 collapse-inner rounded">
              <h6 class="collapse-header"></h6>
-             <a href="{{ path('cert_unlp_ngen_administration_feed_frontend_home') }}" class="collapse-item" >{{ icon('feed fa-fw') }}
+             <a href="{{ path('cert_unlp_ngen_administration_feed_frontend_home') }}" class="collapse-item" >{{ icon('fas fa-syringe') }}
                  {{ 'Feeds'| trans }}</a>
              <a href="{{ path('cert_unlp_ngen_administration_state_frontend_home') }}" class="collapse-item">{{ icon('fas fa-thermometer') }}
                  {{ 'States'| trans }}</a>
              <a href="{{ path('cert_unlp_ngen_administration_type_frontend_home') }}" class="collapse-item">{{ icon('cubes fa-fw') }}
                  {{ 'Types'| trans }}</a>
-             <a href="{{ path('cert_unlp_ngen_incident_decision_frontend_home') }}" class="collapse-item"> {{ icon('unlock-alt fa-fw') }}
+             <a href="{{ path('cert_unlp_ngen_incident_decision_frontend_home') }}" class="collapse-item"> {{ icon('fas fa-question') }}
                  {{ 'Incident Decisions'| trans }}</a>
              <a href="{{ path('cert_unlp_ngen_incident_priority_frontend_home') }}" class="collapse-item">{{ icon('list-ol fa-fw') }}
                  {{ 'Incident Priorities'| trans }}</a>
@@ -115,11 +115,11 @@
 
  <li class="nav-item">
      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSettings" aria-expanded="true" aria-controls="collapseUtilities">
-         {{ icon('cog fa-fw') }} {{ 'Settings'| trans }}
+        <span> {{ icon('cog fa-fw') }} {{ 'Settings'| trans }}</span>
      </a>
      <div id="collapseSettings" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
          <div class="bg-white py-2 collapse-inner rounded">
-             <h6 class="collapse-header">AAAA</h6>
+             <h6 class="collapse-header"></h6>
              <a href="{{ path('cert_unlp_ngen_user_frontend_home') }}" class="collapse-item">{{ icon('users fa-fw') }}{{ 'Users'| trans }}</a>
          </div>
      </div>
