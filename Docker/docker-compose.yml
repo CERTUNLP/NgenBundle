@@ -78,6 +78,10 @@ services:
         - IMAP_SERVER=localhost:993/imap/ssl/novalidate-cert
         - IMAP_USERNAME=pepe
         - IMAP_PASSWORD=pass
+        - EXTERNAL_DASHBOARD_GRAFANA=http://localhost:3000/dashboard/snapshot/16hkyv3p3sVte5AyeYBhc6cp4RZPGIDu?orgId=0
+        - INTERNAL_DASHBOARD_GRAFANA=http://localhost:3000/dashboard/snapshot/16hkyv3p3sVte5AyeYBhc6cp4RZPGIDu?orgId=0
+        - USER_GRAFANA=admin
+        - PASS_GRAFANA=admin
       links:
         - ngen-elastic:ngen-elastic
         - ngen-db:ngen-db
