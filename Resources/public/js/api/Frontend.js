@@ -28,7 +28,7 @@ var Frontend = Class.extend({
     changeState: function (event) {
         event.preventDefault();
         this.eventTarget = $(event.currentTarget);
-        actionButton = this.eventTarget.parents('ul').siblings('button');
+        actionButton = this.eventTarget.parents('div').siblings('button');
         this.laddaButton = Ladda.create(actionButton.get(0));
         this.laddaButton.start();
         this.doChangeState();

@@ -1,11 +1,57 @@
+{#
+ This file is part of the Ngen - CSIRT Incident Report System.
+ z
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+
 {% trans_default_domain 'FOSUserBundle' %}
 
-<form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
-    <div>
-        <label for="username">{{ 'resetting.request.username'|trans }}</label>
-        <input type="text" id="username" name="username" required="required"/>
+
+    <div class="container">
+
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+        <div class="col-xl-10 col-lg-12 col-md-9">
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+
+                    <div class="row">
+                        <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">{{ 'Resseting your credentials!'|trans }}</h1>
+                                </div>
+                                <form role="form" action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="user fos_user_resetting_request">
+                                     <input type="hidden" name="_csrf_token"
+                                           value="{{ csrf_token('authenticate') }}"/>
+                                    <div class="form-group">
+                                        <input type="text" id="username" name="username" required="required" class="form-control form-control-user" placeholder="{{ 'resetting.request.username'|trans }}" />
+                                    </div>
+                                    <div class="form-group">
+
+                                        <input class="btn btn-primary btn-user btn-block" type="submit"
+                                               name="login"
+                                               value="{{ 'resetting.request.submit'|trans }}"/>
+                                    </div>
+                                </form>
+
+                                <hr>
+                                <div class="text-center">
+                                    <a class="small pull-right btn btn-link"
+                                       href="{{ path('fos_user_security_login') }}">
+                                        {{ 'Back to Login'|trans }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <input type="submit" value="{{ 'resetting.request.submit'|trans }}"/>
-    </div>
-</form>

@@ -10,14 +10,14 @@
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
 
 {% block content_header %}
-    <h1 class="page-header">{{ icon('plus-circle fa-fw') }}{{ 'add incident'|trans }}
+    <h2 class="page-header">{{ icon('plus-circle fa-fw') }}{{ 'add incident'|trans }}
         <span class="tlp-green" id="tlp_label">&nbsp;</span>
-    </h1>
+    </h2>
 {% endblock %}
 
 {% block content_body %}
     {{ form_errors(form, { 'global_errors': true }) }}
-    {{ form(form, {'attr': {'id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal', 'col_size': 'sm' }) }}
+    {{ form(form, {'attr': {'role':'form','id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal', 'col_size': 'sm' }) }}
 {% endblock %}
 
 

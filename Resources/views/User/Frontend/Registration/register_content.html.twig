@@ -1,8 +1,32 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
-{{ form_widget(form) }}
-<div>
-    <input type="submit" value="{{ 'registration.submit'|trans }}"/>
+
+<div class="container" role="form">
+{% block content_header %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="h3 mb-0 text-gray-800">{{ icon('plus-circle fa-fw') }}{{ 'Request new account    '|trans }}
+            </h1>
+            <hr>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block content_body %}
+    <div class="row">
+        <div class="col-md-12">
+
+        {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'form-horizontal fos_user_registration_register', 'role':'form'} }) }}
+    {{ form_errors(form, { 'global_errors': true }) }}
+    {{ form_widget(form) }}
+    <div>
+        <input type="submit" class="btn btn-primary btn-block" value="{{ 'registration.submit'|trans }}"/>
+    </div>
+    {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
 </div>
-{{ form_end(form) }}
+

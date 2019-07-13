@@ -11,15 +11,14 @@
 {% block content_body %}
 
           <div class="card shadow mb-4">
-            <div class="card-header py-3">
+            <div class="card-header py-3 d-sm-flex align-items-center justify-content-between mb-4">
               <h6 class="m-0 font-weight-bold text-primary">
                 <strong>{{ 'Showing'|trans }}</strong>
                 <strong id="incidentcount">({{ objects.getPaginationData.lastItemNumber~'/'~objects.getTotalItemCount }})</strong>
-                <button id="btnFilter" class="btn btn-primary dropdown-toggle"
-                        type="button" data-toggle="dropdown" aria-expanded="true"><strong>{{ icon('filter') }}</strong>
-                    <span class="caret"></span>
-                </button>
               </h6>
+                <button id="btnFilter" class="btn btn-primary active" type="button"  data-toggle="button" aria-pressed="true" autocomplete="off"><strong>{{ icon('filter') }}</strong>
+                </button>
+
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -112,6 +111,8 @@
              </tfoot>
         </table>
     </div>
+            </div>
+          </div>
     <div id="paginatorbar" class="pagination  justify-content-center">
         {{ knp_pagination_render(objects, null, {}, { "prev_label": "Previous" | trans , "next_label": "Next"| trans, "first_label": "First"| trans, "last_label": "Last"| trans}) }}
     </div>

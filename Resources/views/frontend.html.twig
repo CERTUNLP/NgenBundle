@@ -11,15 +11,13 @@
 {% block title %}Incidents{% endblock %}
 {% block content %}
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            {% block content_header %}
-            {% endblock %}
-        </div>
+        {% block content_header %}
+        {% endblock %}
+    </div>
     <div class="row">
         <div class="col-xl-12">
             {% block content_body %}
             {% endblock %}
         </div>
     </div>
-
-
 {% endblock %}

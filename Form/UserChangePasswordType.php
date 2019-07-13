@@ -28,7 +28,7 @@ class UserChangePasswordType extends AbstractType
             'first_options' => array('label' => 'Password'),
             'second_options' => array('label' => 'Repeat Password')))
             ->add('save', 'submit', array('attr' =>
-                array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => "slide-down"),
+                array('class' => 'save btn btn-primary btn-block', 'data-style' => "slide-down"),
             ));
     }
 
