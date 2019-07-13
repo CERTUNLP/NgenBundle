@@ -11,8 +11,39 @@
 
 {% trans_default_domain 'FOSUserBundle' %}
 
-{% block content_body %}
-    <p>{{ 'registration.check_email'|trans({'%email%': user.email}) }}</p>
+
+{% block body %}
+
+    <div class="container">
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="p-5">
+                                    <div class="alert alert-success" role="alert">
+                                        <h4 class="alert-heading">{{ 'Account registered'|trans }}</h4>
+                                        <p class="alert alert-warning">{{ '(This is valid only if you provide a valid address / username)'|trans }}</p>
+                                        <hr>
+                                        <p class="mb-0">{{ 'registration.check_email'|trans({'%email%': user.email}) }}</p>
+                                    </div>
+                                    <div class="alert alert-primary" role="alert">
+                                        <a href={{ path("fos_user_security_login") }}>&larr; {{ 'Back to Login'|trans }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block javascripts %}
 {% endblock %}

@@ -23,7 +23,7 @@ class DashboardController extends Controller
 
     /**
      * @Template("CertUnlpNgenBundle:Dashboard:frontend.html.twig")
-     * @Route("/")
+     * @Route("/",name="cert_unlp_ngen_dashboard")
      * @param Request $request
      * @return array
      */

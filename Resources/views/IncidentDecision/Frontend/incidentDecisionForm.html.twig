@@ -9,12 +9,12 @@
 
 {% extends 'CertUnlpNgenBundle::IncidentDecision/Frontend/frontend.html.twig' %}
 {% block content_header %}
-    <h1 class="page-header">{{ icon('plus-circle fa-fw') }} {{"Decision" | trans  }}</h1>
+    <h2 class="page-header">{{ icon('plus-circle fa-fw') }} {{"Decision" | trans  }}</h2>
 {% endblock %}
 {% block content_body %}
 
     {% if (form is not null) %}
-        {{ form_start(form,{'attr': {'id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal'}) }}
+        {{ form_start(form,{'attr': {'role':'form','id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal'}) }}
         {{ form_errors(form, { 'global_errors': true }) }}
 
         <fieldset class="scheduler-border" style="border:#0d70b7 2px solid;width:80%;margin:1em 1em 1em 1em">

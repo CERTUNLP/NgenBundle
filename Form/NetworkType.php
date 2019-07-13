@@ -75,7 +75,7 @@ class NetworkType extends AbstractType
         }
 
         $builder->add('save', SubmitType::class, array('attr' =>
-            array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => 'slide-down'),
+            array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
         ));
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {

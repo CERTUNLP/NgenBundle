@@ -97,7 +97,7 @@ cert_ngen_administration_type_reports:
     prefix:   /incidents/types
 
 cert_ngen_root:
-    resource: '@CertUnlpNgenBundle/Controller/Frontend/DashboardController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentFrontendController.php'
     type:     annotation
     prefix:   /
 
@@ -109,7 +109,7 @@ cert_ngen_root:
 cert_ngen_dashboard:
     resource: '@CertUnlpNgenBundle/Controller/Frontend/DashboardController.php'
     type:     annotation
-    prefix:   /
+    prefix:   /dashboard
 
 cert_ngen_api:
     type: rest

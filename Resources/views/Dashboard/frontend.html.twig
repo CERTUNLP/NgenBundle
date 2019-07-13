@@ -12,19 +12,11 @@
 
 {% block content_header %}
     <h1 class="h3 mb-0 text-gray-800">{{ icon('fas fa-laptop') }} {{ 'Dashboards'|trans }}</h1>
-    <script>
-        function resizeIframe(obj) {
-            obj.style.height = 0;
-            obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-        }
-    </script>
 {% endblock %}
 
 {% block sideBar_search_path %}{% endblock %}
 
 {% block content_body %}
-
-
     <div class="embed-container">
         <iframe src="{{ externalDashboard }}" width="100%" frameborder="0" allowfullscreen>
         </iframe>
@@ -34,7 +26,6 @@
         <iframe src="{{ internalDashboard }}" width="100%" frameborder="0" allowfullscreen>
         </iframe>
     </div>
-
 {% endblock %}
 
 
