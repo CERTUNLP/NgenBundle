@@ -8,15 +8,15 @@
 #}
 
 <tr data-id="{{ networkEntity.slug }}">
-    <td class="col-md-1">
+    <td class="align-middle">
         {{ networkEntity.name }}
     </td>
-    <td id="state_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="state_label_holder" class="align-middle">
+        <div>
             {% include "CertUnlpNgenBundle:NetworkEntity:Frontend/list/stateLabel.html.twig" with {'networkEntity': networkEntity} %}
         </div>
     </td>
-    <td class="col-sm-1">
+    <td class="align-middle">
 
         <div class="btn-group inline pull-left dropdown action-dropdown">
             <a class="btn btn-sm btn-primary" role="button"
