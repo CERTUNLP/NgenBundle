@@ -12,11 +12,9 @@
     <td class="align-middle">
         {% include "CertUnlpNgenBundle:Incident:Frontend/list/actionsLabel.html.twig" with {'incident': incident,'incidentsDetected':incident.incidentsDetected} %}
     </td>
-    <td id="state_label_holder" class="align-middle">
+    <td id="state_label_holder" class="align-middle" align="center">
         <div>
-            <span>
                 {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': incident} %}
-            </span>
         </div>
     </td>
     <td id="state_label_holder" class="align-middle">
@@ -44,13 +42,13 @@
     <td class="align-middle">
         {{ incident.updatedAt|date('Y-m-d H:i') }}
     </td>
-    <td class="align-middle">
+    <td class="align-middle" align="center">
         {{  incident.ltdCount }}
     </td>
     <td class="align-middle">
         {{ incident.assigned }}
     </td>
-    <td id="tlp_label_holder" class="align-middle">
+    <td id="tlp_label_holder" class="align-middle" align="center">
         <div>
             <span>
                 {% include "CertUnlpNgenBundle:Incident:Frontend/list/tlpLabel.html.twig" with {'incident': incident} %}
