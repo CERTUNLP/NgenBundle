@@ -38,13 +38,13 @@ services:
         - "8002:3306"
       networks: ['ngen']
     ngen-app:
-      image: einar1/ngen:0.6.40-rc4
+      image: einar1/ngen:0.6.40-rc5
       networks: ['ngen']
       depends_on: ['ngen-db','ngen-elastic']
       ports:
         - "8000:80"
       volumes:
-        #- '../:/application/ngen_basic/vendor/certunlp/ngen-bundle/'
+        - '../:/application/ngen_basic/vendor/certunlp/ngen-bundle/'
         - ngen-incidentes:/application/ngen_basic/app/Resources/incident
         - ngen-feeds:/application/ngen_basic/app/Resources/app/Resources/feed/
       environment:

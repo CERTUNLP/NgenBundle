@@ -8,24 +8,24 @@
 #}
 
 <tr data-id="{{ network.addressAndMask }}">
-    <td class="col-md-1">
+    <td class="align-middle">
         {{ network.addressAndMask }}
     </td>
-    <td class="col-md-1">
+    <td class="align-middle">
         {{ network.type |trans }}
     </td>
-    <td class="col-md-1">
+    <td class="align-middle">
         {{ network.networkEntity }}
     </td>
-    <td class="col-md-1">
+    <td class="align-middle">
         {{ network.networkAdmin }}
     </td>
-    <td id="state_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="state_label_holder" class="align-middle">
+        <div>
             {% include "CertUnlpNgenBundle:Network:Frontend/list/stateLabel.html.twig" with {'network': network} %}
         </div>
     </td>
-    <td class="col-sm-1">
+    <td class="align-middle">
 
         <div class="btn-group inline pull-left dropdown action-dropdown">
             <a class="btn btn-sm btn-primary" role="button"
