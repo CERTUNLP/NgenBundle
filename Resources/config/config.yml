@@ -24,11 +24,11 @@ assetic:
     assets:
         fontawesome_css:
             inputs:
-                - %kernel.root_dir%/vendor/fortawesome/font-awesome/css/all.css
+                - %kernel.root_dir%/../vendor/fortawesome/font-awesome/css/all.css
             output: css/fontawesome-all.css
         botsprap_css:
             inputs:
-                - %kernel.root_dir%/vendor/twbs/bootstrap/dist/css/bootstrap.css
+                - %kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.css
             output: css/bootstrap4.css
     #
 #        fontawesome_fonts:
