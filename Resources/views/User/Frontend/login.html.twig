@@ -11,9 +11,15 @@
 
 {% block title %}{{ 'User Login'|trans }}{% endblock %}
 {% block id 'login' %}
-
 {% block body %}
 
+    <style>
+        .login-image-ngen{
+            background:url({{ asset('bundles/certunlpngen/images/ngen01.svg') }});
+            background-position: center;
+            background-size: contain;
+        }
+    </style>
     <div class="container">
 
         <!-- Outer Row -->
@@ -25,7 +31,7 @@
                     <div class="card-body p-0">
 
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6 d-none d-lg-block login-image-ngen" ></div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
