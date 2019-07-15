@@ -32,19 +32,19 @@
             <tr id="filtrosMostrar" class="filtrosMostrar"  style="display: true;"  >
 
             <th></th>
-                <th>
+                <th class="align-middle">
                     <form method='post' action="javascript:void(0);" role="search">
                         {{ form_row(search_form.state) }}
                     </form>
                 </th>
                 <th></th>
-                <th>
+                <th class="align-middle">
                     <form method='post' action="javascript:void(0);" role="search">
                         {{ form_row(search_form.priority) }}
                     </form>
                 </th>
-                <th>
-                    <form method='post' class="data-filter form-inline" action="javascript:void(0);" role="search">
+                <th class="align-middle">
+                    <form method='post' class="data-filter" action="javascript:void(0);" role="search">
                         {{ form_row(search_form.address) }}
                         <input class="form-check-input" type="checkbox" id="inlineCheckbox1" style="display:none" value="option1" checked>
                         <label class="form-check-label" for="inlineCheckbox1" style="display:none">*</label>
@@ -53,42 +53,42 @@
                 </th>
 
 
-                <th>
+                <th class="align-middle">
                     <form method='post' action="javascript:void(0);" role="search">
                         {{ form_row(search_form.type) }}
                     </form>
                 </th>
 
-                <th>
+                <th class="align-middle">
                     <form method='post' action="javascript:void(0);" role="search">
                         {{ form_row(search_form.feed) }}
                     </form>
                 </th>
-                <th>
-                    <form method='post' class="data-filter form-inline" action="javascript:void(0);" role="search">
+                <th class="align-middle">
+                    <form method='post' class="data-filter" action="javascript:void(0);" role="search">
                         {{ form_row(search_form.dates) }}
                         <input class="form-check-input" type="checkbox" id="inlineCheckbox1" style="display:none" value="option1" checked>
                         <label class="form-check-label" for="inlineCheckbox1" style="display:none">*</label>
                     </form>
                 </th>
-                <th>
-                        <form method='post' class="data-filter form-inline" action="javascript:void(0);" role="search">
+                <th class="align-middle">
+                        <form method='post' class="data-filter" action="javascript:void(0);" role="search">
                            {{ form_row(search_form.updatesAt) }}
                             <input class="form-check-input" type="checkbox" id="inlineCheckbox1" style="display:none" value="option1" checked>
                             <label class="form-check-label" for="inlineCheckbox1" style="display:none">*</label>
                         </form>
                 </th>
-                <th>
+                <th class="align-middle">
                     <form method='post' action="javascript:void(0);" role="search">
                         {{ form_row(search_form.ltdCount) }}
                     </form>
                 </th>
-                <th>
+                <th class="align-middle">
                     <form method='post' action="javascript:void(0);" role="search">
                         {{ form_row(search_form.assigned) }}
                     </form>
                 </th>
-                <th>
+                <th class="align-middle">
                     <form method='post' action="javascript:void(0);" role="search">
                         {{ form_row(search_form.tlp) }}
                     </form>

@@ -128,7 +128,7 @@ class IncidentReportExtension extends Twig_Extension
  */
 public function labelFunction($text, $type = 'default')
 {
-    return sprintf('<span class="badge%s">%s</span>', ($type ? ' badge-' . $type : ''), $text);
+    return sprintf('<span class="label%s">%s</span>', ($type ? ' badge-' . $type : ''), $text);
 }
 
 /**
