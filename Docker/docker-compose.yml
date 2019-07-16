@@ -84,6 +84,7 @@ services:
         - PASS_GRAFANA=admin
       links:
         - ngen-elastic:ngen-elastic
+        - ngen-grafana:ngen-grafana
         - ngen-db:ngen-db
         - ngen-mail:ngen-mail
     ngen-proxy:
