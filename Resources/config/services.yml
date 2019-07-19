@@ -257,6 +257,14 @@ services:
         tags:
             - { name: twig.extension }
 
+    acme.twig.incident_extension:
+        class: CertUnlp\NgenBundle\Twig\IncidentExtension
+        arguments:
+            doctrine: "@doctrine"
+        tags:
+            - { name: twig.extension }
+
+
     twig.stringloader:
         class: Twig_Loader_Array
         arguments: [[]]

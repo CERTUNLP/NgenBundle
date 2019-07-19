@@ -57,6 +57,9 @@ class UserProfileFrontendController extends ProfileController
      */
     public function editAction(Request $request)
     {
+        echo "asadasdsadassakdas";
+        die();
+
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
