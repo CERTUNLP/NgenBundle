@@ -158,7 +158,7 @@ class IncidentHandler extends Handler
         $this->updateIncidentData($incident);
         $incidentDB = false;
         if ($incident->isDefined()) {
-            $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'address' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
+            $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
         }
         if ($incidentDB && $method === 'POST') {
             $incidentDB->updateVariables($incident);
