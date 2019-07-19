@@ -597,6 +597,7 @@ class Incident implements IncidentInterface
     public function getResponseMinutes(): int
     {
         if (!$this->isNew()) {
+
             return abs(($this->getDate()->getTimestamp() - $this->getOpenedAt()->getTimestamp()) / 60); //lo devuelvo en minutos eso es el i
         }
 

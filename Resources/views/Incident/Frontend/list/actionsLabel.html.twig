@@ -25,29 +25,14 @@
     </button>
 
     <div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-        {% if incident.isNew == true %}
 
-            <a class="state-label dropdown-item"
-                   data-state-slug="open" data-state-name="Open" tabindex="-1"
-                   href="#"><i class="fas fa-lock-open"></i><span
-                            class="action-text"> {{ 'Open'|trans }}</span></a>
-                <a class="state-label dropdown-item" data-state-slug="removed" data-state-name="Removed" role="menuitem"
-                   tabindex="-1" href="#"><i class="fas fa-ban"></i> <span
-                            class="action-text"> {{ 'Discard'| trans }}</span></a>
+    {%  for change in findPosibleStates(incident)  %}
+               {%  if change.slug != incident.state.slug %}
+            <a class="state-label dropdown-item" data-state-slug="{{ change.slug }}" data-state-name="{{ change.name }}" tabindex="-1" href="#">{{ getIconForStateAction(change.incidentAction.slug)|raw }}
+                   <span class="action-text">{{ change.name |trans }}</span>
+               </a>
         {% endif %}
-
-        {% if incident.isNew == false %}
-
-                <a class="state-label dropdown-item" data-state-slug="closed"
-                   data-state-name="Closed" role="menuitem"
-                   tabindex="-1" href="#"><i class="fas fa-lock"></i> <span
-                            class="action-text">{{ 'Close'|trans }}</span></a>
-
-                <a class="state-label dropdown-item" data-state-slug="closed_by_inactivity"
-                   data-state-name="Closed by inactivity"
-                   role="menuitem" tabindex="-1" href="#">{{ icon('hourglass alert-danger') }} <span
-                            class="action-text">{{ 'Close by inactivity'|trans }}</span></a>
-        {% endif %}
+        {% endfor %}
     </div>
 
 </div>

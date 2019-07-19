@@ -24,7 +24,7 @@ use JMS\Serializer\Annotation as JMS;
  *
  * @author dam
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentStateRepository")
  * @JMS\ExclusionPolicy("all")
  */
 class IncidentState
@@ -403,4 +403,5 @@ class IncidentState
     {
         return $this->incidents;
     }
+
 }
