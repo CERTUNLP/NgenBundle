@@ -9,15 +9,11 @@
 var Frontend = Class.extend({
     init: function () {
         this.eventTarget = null;
-        $(".action-dropdown").delegate("a.state-label", "click", $.proxy(this.changeState, this));
-        $('.select-filter').on('change', $.proxy(this.search, this));           ;
+        $(document).on("click", 'a.state-label', $.proxy(this.changeState, this));
+        $('.select-filter').on('change', $.proxy(this.search, this));
         $('.multiple-select-filter').on('blur', $.proxy(this.search, this));
-        $('.form-check-input').on('change', $.proxy(this.search, this));;
-        $('.data-filter').on('submit', $.proxy(this.search, this));           ;
-        this.addEventBinds();
-    },
-    addEventBinds: function () {
-        $(".action-dropdown").delegate("a.state-label", "click", $.proxy(this.changeState, this));
+        $('.form-check-input').on('change', $.proxy(this.search, this));
+        $('.data-filter').on('submit', $.proxy(this.search, this));
     },
     dropDownChangeLinks: function () {
         if (this.eventTarget.data('state-slug') == "open") {
@@ -95,10 +91,6 @@ var Frontend = Class.extend({
             tr.html($(data).html());
             $.publish('/cert_unlp/notify/success', ["The state has been changed successfully"]);
             tr.focus();
-
-        })
-            .done(function() {
-            Incident.addEventBinds();
         });
 
 

@@ -110,7 +110,7 @@ services:
         - "9200:9200"
       networks: ['ngen']
     ngen-grafana:
-      image: einar1/ngen-grafana:0.3
+      image: einar1/ngen-grafana:0.2
       ports:
         - "3000:3000"
       volumes:
