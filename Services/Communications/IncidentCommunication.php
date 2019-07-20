@@ -52,6 +52,7 @@ abstract class IncidentCommunication
     public function postUpdateDelegation(Incident $incident)
     {
         if ($incident->isNeedToCommunicate()) {
+
             $this->comunicate($incident);
         }
     }
