@@ -124,7 +124,7 @@ services:
 
     cert_unlp.ngen.incident.state.edge.handler:
         class:        CertUnlp\NgenBundle\Services\Api\Handler\IncidentStateEdgeHandler
-        arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Incident\IncidentStateEdge,CertUnlp\NgenBundle\Form\IncidentStateEdgeType,"@form.factory"]
+        arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Incident\State\IncidentStateEdge,CertUnlp\NgenBundle\Form\IncidentStateEdgeType,"@form.factory"]
 
     cert_unlp.ngen.incident.state.machine:
         class:        CertUnlp\NgenBundle\Services\StateMachine\StateMachine

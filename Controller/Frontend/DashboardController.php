@@ -11,7 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend;
 
-use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -33,15 +34,15 @@ class DashboardController extends Controller
     {
 
 
-        /** @var IncidentState $article */
-        $article = $this->get('doctrine')->getRepository(IncidentState::class)->findOneBy(['slug' => 'open'] /*article id*/);
-        $article2 = $this->get('doctrine')->getRepository(IncidentState::class)->findOneBy(['slug' => 'staging'] /*article id*/);
-//        $article2 = $this->get('doctrine')->getRepository(IncidentState::class)->findOneBy(['slug' => 'closed'] /*article id*/);
+        /** @var Incident $article */
+        $article = $this->get('doctrine')->getRepository(Incident::class)->findOneBy(['id' => '35'] /*article id*/);
+        $closed = $this->get('doctrine')->getRepository(IncidentState::class)->findOneBy(['slug' => 'closed'] /*article id*/);
+        $open = $this->get('doctrine')->getRepository(IncidentState::class)->findOneBy(['slug' => 'open'] /*article id*/);
 //        $repository = $this->get('doctrine')->getManager()->getRepository(Translation::class);
 //        $translations = $repository->findTranslations($article);
-        var_dump($article->getNewStateEdge($article2));
-//        $article->setName('asdasdas');
-//        var_dump($article->getName());
+        var_dump($article->getState()->getName());
+        $article->setState($open);
+        $article->setState($closed);
 //        var_dump($article->getNewStates()->map(function($state){
 //            return $state->getName();
 //        }));

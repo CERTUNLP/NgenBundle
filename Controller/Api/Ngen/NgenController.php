@@ -11,14 +11,9 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Ngen;
 
-use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Request\ParamFetcherInterface;
-use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class NgenController extends FOSRestController
@@ -56,12 +51,12 @@ class NgenController extends FOSRestController
      * )
      *
      * @param Request $request
-     * @return array
+     * @return string
      * @FOS\Get("/ngen/version")
      */
     public function getVersionAction(Request $request)
     {
-        return "0.0.2";
+        return '0.0.2';
     }
 
 }
