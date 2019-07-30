@@ -12,6 +12,9 @@
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
 use CertUnlp\NgenBundle\Entity\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
+use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
@@ -81,24 +84,20 @@ class Incident
     protected $feed;
 
     /**
-     * @var IncidentState
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState", inversedBy="incidents")
-     * @ORM\JoinColumn(name="state", referencedColumnName="slug")
+     * @var StateEdge
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge", inversedBy="incidents")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    protected $state;
-
+    protected $state_edge;
     /**
      * @var IncidentState
      */
     protected $lastState;
-
     /**
      * @var User
      */
     protected $reportReporter;
-
     /**
      * @var IncidentTlp
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp", inversedBy="incidents")
@@ -107,7 +106,6 @@ class Incident
      * @JMS\Groups({"api"})
      */
     protected $tlp;
-
     /**
      * @var IncidentPriority
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority", inversedBy="incidents")
@@ -116,23 +114,19 @@ class Incident
      * @JMS\Groups({"api"})
      */
     protected $priority;
-
     /**
      * @var IncidentImpact
      */
     protected $impact;
-
     /**
      * @var IncidentUrgency
      */
     protected $urgency;
-
     /**
      * @var IncidentCommentThread
      * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread",mappedBy="incident",fetch="EXTRA_LAZY"))
      */
     protected $comment_thread;
-
     /**
      * @var DateTime
      *
@@ -142,7 +136,6 @@ class Incident
      * @JMS\Groups({"api"})
      */
     protected $date;
-
     /**
      * @var Collection
      * @JMS\Expose
@@ -150,7 +143,6 @@ class Incident
      * @JMS\Groups({"api"})
      */
     protected $incidentsDetected;
-
     /**
      * @var Collection
      * @JMS\Expose
@@ -158,7 +150,6 @@ class Incident
      * @JMS\Groups({"api"})
      */
     protected $changeStateHistory;
-
     /**
      * @var DateTime
      *
@@ -168,7 +159,6 @@ class Incident
      * @JMS\Groups({"api"})
      */
     protected $renotificationDate;
-
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="create")
@@ -178,7 +168,6 @@ class Incident
      * @JMS\Groups({"api"})
      */
     protected $createdAt;
-
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="update")
@@ -188,7 +177,6 @@ class Incident
      * @JMS\Groups({"api"})
      */
     protected $updatedAt;
-
     /**
      * @var DateTime
      * @ORM\Column(name="opened_at", type="datetime", nullable=true)
@@ -197,38 +185,31 @@ class Incident
      * @JMS\Groups({"api"})
      */
     protected $openedAt;
-
     /**
      * @var boolean
      */
     protected $needToCommunicate = false;
-
     /**
      * @Assert\File(maxSize = "500k")
      */
     protected $evidence_file;
-
     /**
      * @ORM\Column(name="evidence_file_path", type="string",nullable=true)
      */
     protected $evidence_file_path;
-
     /**
      * @var string
      * @ORM\Column(name="report_message_id", type="string",nullable=true)
      */
     protected $report_message_id;
-
     /**
      * @var $evidence_file_temp
      */
     protected $evidence_file_temp;
-
     /**
      * @var bool
      */
     protected $sendReport = false;
-
     /**
      * @var string
      *
@@ -238,18 +219,15 @@ class Incident
      * @JMS\Groups({"api"})
      * */
     protected $slug;
-
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
      */
     protected $notes;
-
     /**
      * @ORM\Column(name="ltd_count", type="integer")
      */
     protected $ltdCount = 0;
-
     /**
      * @var Host|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_origin")
@@ -257,7 +235,6 @@ class Incident
      * @JMS\Groups({"api"})
      */
     private $origin;
-
     /**
      * @var Host|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_destination")
@@ -265,7 +242,6 @@ class Incident
      * @JMS\Groups({"api"})
      */
     private $destination;
-
     /**
      * @var Network|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network", inversedBy="incidents")
@@ -273,7 +249,6 @@ class Incident
      * @JMS\Groups({"api"})
      */
     private $network;
-
     /**
      * @CustomAssert\ValidAddress()
      */
@@ -293,37 +268,28 @@ class Incident
     }
 
     /**
-     * @return mixed
-     */
-    public function getReportReporter(): User
-    {
-        return $this->reportReporter;
-    }
-
-    /**
-     * @param mixed $reportReporter
+     * Set state
+     * @param StateEdge $stateEdge
      * @return Incident
      */
-    public function setReportReporter(User $reportReporter): Incident
+    public function changeState(StateEdge $stateEdge): Incident
     {
-        $this->setter($this->reportReporter, $reportReporter);
+        $this->setStateEdge($stateEdge);
         return $this;
     }
 
     /**
-     * @param $property
-     * @param $value
-     * @return void
+     * @return bool
      */
-    public function setter(&$property, $value): void
+    public function canEdit(): bool
     {
-        $this->getBehavior()->setter($this, $property, $value);
+        return $this->getBehavior()->canEdit();
     }
 
     /**
-     * @return IncidentStateBehavior
+     * @return StateBehavior
      */
-    public function getBehavior(): IncidentStateBehavior
+    public function getBehavior(): StateBehavior
     {
         return $this->getState()->getBehavior();
     }
@@ -335,76 +301,25 @@ class Incident
      */
     public function getState(): ?IncidentState
     {
-        return $this->state;
+        return $this->getStateEdge()->getNewState();
     }
 
     /**
-     * Set state
-     * @param IncidentState $state
-     * @return Incident
-     * @throws Exception
+     * @return StateEdge
      */
-    public function setState(IncidentState $state = null): Incident
+    public function getStateEdge(): ?StateEdge
     {
-        if ($state && $this->getState() && $this->getState()->canChangeTo($state)) {
+        return $this->state_edge;
+    }
 
-            //TODO: esto aca no deberia ir
-            if ($this->getReporter()) {
-                $reporter = $this->getReporter();
-            } else {
-                $reporter = $this->getReportReporter();
-            }
-            $this->addChangeStateHistory(new IncidentChangeState($this, $state, $reporter, $this->getState()));
-            $this->setLastState($this->getState());
-            $this->getState()->changeIncidentState($this, $state);
-        }
+    /**
+     * @param StateEdge $state_edge
+     * @return Incident
+     */
+    public function setStateEdge(StateEdge $state_edge): Incident
+    {
+        $this->state_edge = $state_edge;
         return $this;
-    }
-
-    /**
-     * @return User
-     */
-    public function getReporter(): ?User
-    {
-        return $this->reporter;
-    }
-
-    /**
-     * @param User $reporter
-     * @return Incident
-     */
-    public function setReporter(User $reporter = null): Incident
-    {
-        $this->setter($this->reporter, $reporter);
-        return $this;
-    }
-
-    /**
-     * @param IncidentChangeState $changeState
-     * @return Incident
-     */
-    public function addChangeStateHistory(IncidentChangeState $changeState): Incident
-    {
-        return $this->getBehavior()->addChangeStateHistory($this, $changeState);
-    }
-
-    /**
-     * Set state
-     * @param IncidentState $state
-     * @return Incident
-     */
-    public function changeState(IncidentState $state): Incident
-    {
-        $this->state = $state;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function canEdit(): bool
-    {
-        return $this->getBehavior()->canEdit();
     }
 
     /**
@@ -447,6 +362,17 @@ class Incident
     {
         $this->setter($this->id, $id);
         return $this;
+    }
+
+    /**
+     * @param mixed $property
+     * @param mixed $value
+     * @param bool $fundamental
+     * @return bool
+     */
+    public function setter(&$property, $value, bool $fundamental = false): bool
+    {
+        return $this->getBehavior()->setter($property, $value, $fundamental);
     }
 
     /**
@@ -499,7 +425,7 @@ class Incident
      */
     public function setFeed(IncidentFeed $feed): Incident
     {
-        $this->setter($this->feed, $feed);
+        $this->setter($this->feed, $feed, true);
         return $this;
     }
 
@@ -792,9 +718,9 @@ class Incident
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getChangeStateHistory(): ArrayCollection
+    public function getChangeStateHistory(): Collection
     {
         return $this->changeStateHistory;
     }
@@ -887,6 +813,24 @@ class Incident
             return $this->getReporter()->getContacts($this->getPriority()->getCode());
         }
         return new ArrayCollection();
+    }
+
+    /**
+     * @return User
+     */
+    public function getReporter(): ?User
+    {
+        return $this->reporter;
+    }
+
+    /**
+     * @param User $reporter
+     * @return Incident
+     */
+    public function setReporter(User $reporter = null): Incident
+    {
+        $this->setter($this->reporter, $reporter);
+        return $this;
     }
 
     /**
@@ -1129,11 +1073,14 @@ class Incident
     public function setAddress(string $address): Incident
     {
         if ($this->getOrigin() && $this->getOrigin()->getAddress() !== $address) {
+            $old_origin = $this->getOrigin();
             $this->setOrigin();
-            $this->setter($this->address, $address);
+            if (!$this->setter($this->address, $address, true)) {
+                $this->setOrigin($old_origin);
+            }
 
         } else {
-            $this->setter($this->address, $address);
+            $this->setter($this->address, $address, true);
         }
         return $this;
     }
@@ -1183,6 +1130,7 @@ class Incident
      * @param IncidentState $state
      * @param User $reporter
      * @return Incident
+     * @throws Exception
      */
     public function setStateAndReporter(IncidentState $state, User $reporter): Incident
     {
@@ -1191,6 +1139,51 @@ class Incident
         return $this;
     }
 
+    /**
+     * Set state
+     * @param IncidentState $state
+     * @return Incident
+     * @throws Exception
+     */
+    public function setState(IncidentState $state): Incident
+    {
+        //TODO: esto aca no deberia ir
+        if ($this->getReporter()) {
+            $reporter = $this->getReporter();
+        } else {
+            $reporter = $this->getReportReporter();
+        }
+        $this->addChangeStateHistory(new IncidentChangeState($this, $state, $reporter, $this->getStateEdge()));
+        $this->getState()->changeIncidentState($this, $state);
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReportReporter(): User
+    {
+        return $this->reportReporter;
+    }
+
+    /**
+     * @param mixed $reportReporter
+     * @return Incident
+     */
+    public function setReportReporter(User $reportReporter): Incident
+    {
+        $this->setter($this->reportReporter, $reportReporter);
+        return $this;
+    }
+
+    /**
+     * @param IncidentChangeState $changeState
+     * @return Incident
+     */
+    public function addChangeStateHistory(IncidentChangeState $changeState): Incident
+    {
+        return $this->getBehavior()->addChangeStateHistory($this, $changeState);
+    }
 
     /**
      * @param Incident $incidentDetected
@@ -1242,18 +1235,7 @@ class Incident
      */
     public function getLastState(): IncidentState
     {
-        return $this->lastState;
-    }
-
-    /**
-     * @param IncidentState $lastState
-     * @return Incident
-     */
-    public function setLastState(IncidentState $lastState): Incident
-    {
-        $this->setter($this->lastState, $lastState);
-
-        return $this;
+        return $this->getStateEdge()->getOldState();
     }
 
     public function isDefined(): ?bool
@@ -1275,7 +1257,7 @@ class Incident
      */
     public function setType(IncidentType $type = null): Incident
     {
-        $this->setter($this->type, $type);
+        $this->setter($this->type, $type, true);
         return $this;
     }
 }

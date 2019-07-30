@@ -2,11 +2,12 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
+use CertUnlp\NgenBundle\Entity\User;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
-use CertUnlp\NgenBundle\Entity\User;
 
 /**
  * IncidentDetected
@@ -19,22 +20,6 @@ use CertUnlp\NgenBundle\Entity\User;
 class IncidentDetected
 {
     /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
@@ -42,75 +27,12 @@ class IncidentDetected
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-
-    public function __construct(Incident $incident, Incident $incidentFather)
-    {
-        $this->setIncident($incidentFather);
-        $this->setFeed($incident->getFeed());
-        $this->setType($incident->getType());
-        $this->setAssigned($incident->getAssigned());
-        $this->setDate(new DateTime('now'));
-        $this->setEvidenceFile($incident->getEvidenceFile());
-        $this->setEvidenceFileTemp($incident->getEvidenceFileTemp());
-        if ($incident->getEvidenceFilePath() && $incident->getEvidenceFile()) {
-            $this->setEvidenceFilePath($incidentFather->getEvidenceSubDirectory() . $incident->getEvidenceFilePath());
-        }
-        $this->setNotes($incident->getNotes());
-        $this->setReporter($incident->getReporter());
-        $this->setState($incident->getState());
-        $this->setTlp($incident->getTlp());
-        $this->setPriority($incident->getPriority());
-
-    }
-
-    public function __toString(): string
-    {
-        return $this->getDate()->format("Y-m-d h:i") . " - " . $this->getFeed()->getSlug();
-    }
-
-    /**
-     * @return Incident
-     */
-
-    public function getIncident()
-    {
-        return $this->incident;
-    }
-
-    /**
-     * @param Incident $incident
-     */
-    public function setIncident($incident)
-    {
-        $this->incident = $incident;
-    }
-
-    public function getCountDaysFromDetection()
-    {
-        $dStart = new DateTime('now');
-        $dDiff = $dStart->diff($this->getDate());
-        return $dDiff->days;
-    }
-
     /**
      * @var Incident
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="incidentsDetected")
      *
      * */
     protected $incident;
-
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="date", type="datetime",nullable=true)
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
-     */
-    private $date;
-
-
     protected $reporter;
     /**
      * @var User
@@ -136,7 +58,7 @@ class IncidentDetected
     protected $feed;
     /**
      * @var IncidentState
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState", inversedBy="incidents")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState", inversedBy="incidents")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
@@ -150,7 +72,6 @@ class IncidentDetected
      * @JMS\Groups({"api"})
      */
     protected $tlp;
-
     /**
      * @var IncidentPriority
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority", inversedBy="incidents")
@@ -159,8 +80,6 @@ class IncidentDetected
      * @JMS\Groups({"api"})
      */
     protected $priority;
-
-
     /**
      * @Assert\File(maxSize = "500k")
      */
@@ -173,13 +92,61 @@ class IncidentDetected
      * @var $evidence_file_temp
      */
     protected $evidence_file_temp;
-
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
      */
     protected $notes;
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="date", type="datetime",nullable=true)
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
+     */
+    private $date;
 
+    public function __construct(Incident $incident, Incident $incidentFather)
+    {
+        $this->setIncident($incidentFather);
+        $this->setFeed($incident->getFeed());
+        $this->setType($incident->getType());
+        $this->setAssigned($incident->getAssigned());
+        $this->setDate(new DateTime('now'));
+        $this->setEvidenceFile($incident->getEvidenceFile());
+        $this->setEvidenceFileTemp($incident->getEvidenceFileTemp());
+        if ($incident->getEvidenceFilePath() && $incident->getEvidenceFile()) {
+            $this->setEvidenceFilePath($incidentFather->getEvidenceSubDirectory() . $incident->getEvidenceFilePath());
+        }
+        $this->setNotes($incident->getNotes());
+        $this->setReporter($incident->getReporter());
+        $this->setState($incident->getState());
+        $this->setTlp($incident->getTlp());
+        $this->setPriority($incident->getPriority());
+
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getDate()->format("Y-m-d h:i") . " - " . $this->getFeed()->getSlug();
+    }
 
     /**
      * @return DateTime
@@ -195,6 +162,46 @@ class IncidentDetected
     public function setDate(DateTime $date): void
     {
         $this->date = $date;
+    }
+
+    /**
+     * @return IncidentFeed
+     */
+    public function getFeed(): IncidentFeed
+    {
+        return $this->feed;
+    }
+
+    /**
+     * @param IncidentFeed $feed
+     */
+    public function setFeed(IncidentFeed $feed): void
+    {
+        $this->feed = $feed;
+    }
+
+    /**
+     * @return Incident
+     */
+
+    public function getIncident()
+    {
+        return $this->incident;
+    }
+
+    /**
+     * @param Incident $incident
+     */
+    public function setIncident($incident)
+    {
+        $this->incident = $incident;
+    }
+
+    public function getCountDaysFromDetection()
+    {
+        $dStart = new DateTime('now');
+        $dDiff = $dStart->diff($this->getDate());
+        return $dDiff->days;
     }
 
     /**
@@ -244,22 +251,6 @@ class IncidentDetected
     public function setType(IncidentType $type): void
     {
         $this->type = $type;
-    }
-
-    /**
-     * @return IncidentFeed
-     */
-    public function getFeed(): IncidentFeed
-    {
-        return $this->feed;
-    }
-
-    /**
-     * @param IncidentFeed $feed
-     */
-    public function setFeed(IncidentFeed $feed): void
-    {
-        $this->feed = $feed;
     }
 
     /**

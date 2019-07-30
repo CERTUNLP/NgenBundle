@@ -439,7 +439,7 @@ fos_elastica:
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Incident\IncidentState
+                        model: CertUnlp\NgenBundle\Entity\Incident\State\IncidentState
                         provider: ~
                         finder: ~
                         listener:

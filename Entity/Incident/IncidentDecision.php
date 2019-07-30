@@ -79,7 +79,7 @@ class IncidentDecision
 
     protected $tlp;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState",)
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState",)
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose()
      */
@@ -289,7 +289,7 @@ class IncidentDecision
         $incident->getTlp() ?: $incident->setTlp($this->getTlp());
         $incident->getImpact() ?: $incident->setImpact($this->getImpact());
         $incident->getUrgency() ?: $incident->setUrgency($this->getUrgency());
-        $incident->getState() ?: $incident->setStateAndReporter($this->getState(),$incident->getReporter());
+        $incident->getState() ?: $incident->setStateAndReporter($this->getState(), $incident->getReporter());
         $incident->getType() ?: $incident->setType($this->getType());
         return $incident;
     }

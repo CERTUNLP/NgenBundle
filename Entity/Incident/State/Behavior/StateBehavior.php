@@ -1,7 +1,11 @@
 <?php
 
-namespace CertUnlp\NgenBundle\Entity\Incident;
+namespace CertUnlp\NgenBundle\Entity\Incident\State\Behavior;
 
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentChangeState;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,10 +19,13 @@ use JMS\Serializer\Annotation as JMS;
  * IncidentTlp
  *
  * @ORM\Table(name="incident_state_behavior")
- * @ORM\Entity
+ * @ORM\Entity()
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"closed" = "ClosedBehavior", "on_treatment" = "OnTreatmentBehavior", "new" = "NewBehavior", "discarded" = "DiscardedBehavior", "behavior" = "StateBehavior"})
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentStateBehavior
+class StateBehavior
 {
     /**
      * @var string|null
@@ -44,27 +51,11 @@ class IncidentStateBehavior
      */
     private $description;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState",mappedBy="incident_state_behavior"))
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState",mappedBy="incident_state_behavior"))
      * @ORM\JoinColumn(name="states", referencedColumnName="slug")
      * @JMS\Exclude()
      */
     private $states;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column( type="boolean")
-     * @JMS\Expose
-     */
-    private $isOpen = false;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column( type="boolean")
-     * @JMS\Expose
-     */
-    private $isClosed = false;
 
     /**
      * @var boolean
@@ -77,14 +68,6 @@ class IncidentStateBehavior
     /**
      * @var boolean
      *
-     * @ORM\Column(name="is_new", type="boolean")
-     * @JMS\Expose
-     */
-    private $isNew = false;
-
-    /**
-     * @var boolean
-     *
      * @ORM\Column(type="boolean")
      * @JMS\Expose
      */
@@ -93,11 +76,17 @@ class IncidentStateBehavior
     /**
      * @var boolean
      *
+     * @ORM\Column(type="boolean")
+     * @JMS\Expose
+     */
+    private $canEditFundamentals = true;
+    /**
+     * @var boolean
+     *
      * @ORM\Column( type="boolean")
      * @JMS\Expose
      */
     private $canEnrich = true;
-
     /**
      * @var boolean
      *
@@ -105,7 +94,6 @@ class IncidentStateBehavior
      * @JMS\Expose
      */
     private $canAddHistory = true;
-
     /**
      * @var boolean
      *
@@ -122,7 +110,6 @@ class IncidentStateBehavior
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
-
     /**
      * @var DateTime|null
      * @Gedmo\Timestampable(on="update")
@@ -140,18 +127,18 @@ class IncidentStateBehavior
     /**
      * @return bool
      */
-    public function isOpen(): bool
+    public function isCanEditFundamentals(): bool
     {
-        return $this->isOpen;
+        return $this->canEditFundamentals;
     }
 
     /**
-     * @param bool $isOpen
-     * @return IncidentStateBehavior
+     * @param bool $canEditFundamentals
+     * @return StateBehavior
      */
-    public function setIsOpen(bool $isOpen): IncidentStateBehavior
+    public function setCanEditFundamentals(bool $canEditFundamentals): StateBehavior
     {
-        $this->isOpen = $isOpen;
+        $this->canEditFundamentals = $canEditFundamentals;
         return $this;
     }
 
@@ -165,7 +152,7 @@ class IncidentStateBehavior
 
     /**
      * @param bool $canComunicate
-     * @return IncidentStateBehavior
+     * @return StateBehavior
      */
     public function setCanComunicate(bool $canComunicate): self
     {
@@ -191,7 +178,7 @@ class IncidentStateBehavior
 
     /**
      * @param IncidentState $states
-     * @return IncidentStateBehavior
+     * @return StateBehavior
      */
     public function setStates(IncidentState $states): self
     {
@@ -209,7 +196,7 @@ class IncidentStateBehavior
 
     /**
      * @param bool $canEdit
-     * @return IncidentStateBehavior
+     * @return StateBehavior
      */
     public function setCanEdit(bool $canEdit): self
     {
@@ -227,7 +214,7 @@ class IncidentStateBehavior
 
     /**
      * @param bool $canEnrich
-     * @return IncidentStateBehavior
+     * @return StateBehavior
      */
     public function setCanEnrich(bool $canEnrich): self
     {
@@ -245,7 +232,7 @@ class IncidentStateBehavior
 
     /**
      * @param bool $canAddHistory
-     * @return IncidentStateBehavior
+     * @return StateBehavior
      */
     public function setCanAddHistory(bool $canAddHistory): self
     {
@@ -273,7 +260,7 @@ class IncidentStateBehavior
      * Set slug
      *
      * @param string $slug
-     * @return IncidentStateBehavior
+     * @return StateBehavior
      */
     public function setSlug(string $slug): self
     {
@@ -292,7 +279,7 @@ class IncidentStateBehavior
 
     /**
      * @param bool $isActive
-     * @return IncidentStateBehavior
+     * @return StateBehavior
      */
     public function setIsActive(bool $isActive): self
     {
@@ -310,7 +297,7 @@ class IncidentStateBehavior
 
     /**
      * @param DateTime|null $createdAt
-     * @return IncidentStateBehavior
+     * @return StateBehavior
      */
     public function setCreatedAt(?DateTime $createdAt): self
     {
@@ -362,52 +349,17 @@ class IncidentStateBehavior
      */
     public function getResolutionMinutes(Incident $incident): int
     {
-        if (!$this->isClosed()) {
-            if (!$this->isNew()) {
-                return abs(((new DateTime())->getTimestamp() - $incident->getOpenedAt()->getTimestamp()) / 60); //lo devuelvo en minutos eso es el i
-            }
+//        if (!$this->isClosed()) {
+//            if (!$this->isNew()) {
+//                return abs(((new DateTime())->getTimestamp() - $incident->getOpenedAt()->getTimestamp()) / 60); //lo devuelvo en minutos eso es el i
+//            }
 
-            return 0;
-        }
+        return 0;
+//        }
 
-        return abs(($incident->getUpdatedAt()->getTimestamp() - $incident->getOpenedAt()->getTimestamp()) / 60);
+//        return abs(($incident->getUpdatedAt()->getTimestamp() - $incident->getOpenedAt()->getTimestamp()) / 60);
     }
 
-    /**
-     * @return bool
-     */
-    public function isClosed(): bool
-    {
-        return $this->isClosed;
-    }
-
-    /**
-     * @param bool $isClosed
-     * @return IncidentStateBehavior
-     */
-    public function setIsClosed(bool $isClosed): IncidentStateBehavior
-    {
-        $this->isClosed = $isClosed;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNew(): bool
-    {
-        return $this->isNew;
-    }
-
-    /**
-     * @param bool $isNew
-     * @return IncidentStateBehavior
-     */
-    public function setIsNew(bool $isNew): IncidentStateBehavior
-    {
-        $this->isNew = $isNew;
-        return $this;
-    }
 
     /**
      * @param Incident $incident
@@ -449,13 +401,19 @@ class IncidentStateBehavior
     /**
      * @param $property
      * @param $value
-     * @return void
+     * @param bool $fundamental
+     * @return bool
      */
-    public function setter($incident, $property, $value): void
+    public function setter(&$property, $value, bool $fundamental = false): bool
     {
         if ($this->canEdit()) {
-            $incident->$property = $value;
+            if ($fundamental && !$this->canEditFundamentals()) {
+                return false;
+            }
+            $property = $value;
+            return true;
         }
+        return false;
     }
 
     /**
@@ -464,6 +422,14 @@ class IncidentStateBehavior
     public function canEdit(): bool
     {
         return $this->canEdit;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canEditFundamentals(): bool
+    {
+        return $this->canEditFundamentals;
     }
 
     public function updateTlp(Incident $incident, Incident $incidentDetected): Incident
@@ -481,11 +447,12 @@ class IncidentStateBehavior
      */
     public function getResponseMinutes(Incident $incident): int
     {
-        if (!$this->isNew()) {
-            return abs(($incident->getDate()->getTimestamp() - $incident->getOpenedAt()->getTimestamp()) / 60); //lo devuelvo en minutos eso es el i
-        }
+//        if ($this->isOpen()) {
+//            return abs(($incident->getDate()->getTimestamp() - $incident->getOpenedAt()->getTimestamp()) / 60); //lo devuelvo en minutos eso es el i
+//        }
 
-        return abs(((new DateTime())->getTimestamp() - $incident->getDate()->getTimestamp()) / 60);
+//        return abs(((new DateTime())->getTimestamp() - $incident->getDate()->getTimestamp()) / 60);
+        return 0;
     }
 
     public function updatePriority(Incident $incident, Incident $incidentDetected): Incident
@@ -520,7 +487,7 @@ class IncidentStateBehavior
 
     /**
      * @param DateTime|null $updatedAt
-     * @return IncidentStateBehavior
+     * @return StateBehavior
      */
     public function setUpdatedAt(?DateTime $updatedAt): self
     {

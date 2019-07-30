@@ -12,8 +12,8 @@
 namespace CertUnlp\NgenBundle\Form;
 
 use CertUnlp\NgenBundle\Entity\Contact\ContactCase;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentStateEdge;
+use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -67,7 +67,7 @@ class IncidentStateEdgeType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => IncidentStateEdge::class,
+            'data_class' => StateEdge::class,
             'csrf_protection' => false,
         ));
     }

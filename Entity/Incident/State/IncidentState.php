@@ -9,8 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Entity\Incident;
+namespace CertUnlp\NgenBundle\Entity\Incident\State;
 
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
+use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -31,8 +34,8 @@ use JMS\Serializer\Annotation as JMS;
 class IncidentState implements Translatable
 {
     /**
-     * @var IncidentStateBehavior
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateBehavior", inversedBy="states")
+     * @var StateBehavior
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior", inversedBy="states")
      * @ORM\JoinColumn(name="incident_state_behavior", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
@@ -94,13 +97,8 @@ class IncidentState implements Translatable
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state"))
-     */
-    private $incidents;
-
-    /**
-     * @var IncidentStateEdge[]|Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateEdge",mappedBy="oldState",cascade={"persist"},orphanRemoval=true)
+     * @var StateEdge[]|Collection
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge",mappedBy="oldState",cascade={"persist"},orphanRemoval=true)
      */
     private $edges;
 
@@ -109,7 +107,6 @@ class IncidentState implements Translatable
      */
     public function __construct()
     {
-        $this->incidents = new ArrayCollection();
         $this->edges = new ArrayCollection();
     }
 
@@ -143,23 +140,25 @@ class IncidentState implements Translatable
 
         if ($edge) {
             $edge->changeIncidentState($incident);
+            return true;
         }
+        return false;
     }
 
     /**
      * @param IncidentState $newState
-     * @return IncidentStateEdge | null
+     * @return StateEdge | null
      */
-    public function getNewStateEdge(IncidentState $newState): ?IncidentStateEdge
+    public function getNewStateEdge(IncidentState $newState): ?StateEdge
     {
-        return $this->getEdges()->filter(static function (IncidentStateEdge $edge) use ($newState) {
+        return $this->getEdges()->filter(static function (StateEdge $edge) use ($newState) {
             return $edge->getNewState() === $newState;
         })->first() ?: null;
 
     }
 
     /**
-     * @return IncidentStateEdge[]|Collection
+     * @return StateEdge[]|Collection
      */
     public function getEdges(): Collection
     {
@@ -167,10 +166,10 @@ class IncidentState implements Translatable
     }
 
     /**
-     * @param IncidentStateEdge $edges
+     * @param StateEdge $edges
      * @return IncidentState
      */
-    public function setEdges(IncidentStateEdge $edges): IncidentState
+    public function setEdges(StateEdge $edges): IncidentState
     {
         $this->edges = $edges;
         return $this;
@@ -190,16 +189,16 @@ class IncidentState implements Translatable
      */
     public function getNewStates(): ArrayCollection
     {
-        return $this->getEdges()->map(static function (IncidentStateEdge $edge) {
+        return $this->getEdges()->map(static function (StateEdge $edge) {
             return $edge->getNewState();
         });
     }
 
     /**
-     * @param IncidentStateEdge $edge
+     * @param StateEdge $edge
      * @return IncidentState
      */
-    public function addEdge(IncidentStateEdge $edge): IncidentState
+    public function addEdge(StateEdge $edge): IncidentState
     {
         if ($this->getEdges()->contains($edge)) {
             return null;
@@ -241,7 +240,7 @@ class IncidentState implements Translatable
         return $this;
     }
 
-    public function removeEdge(IncidentStateEdge $edge): void
+    public function removeEdge(StateEdge $edge): void
     {
         $this->getEdges()->removeElement($edge);
     }
@@ -255,17 +254,17 @@ class IncidentState implements Translatable
     }
 
     /**
-     * @return IncidentStateBehavior
+     * @return StateBehavior
      */
-    public function getIncidentStatebehavior(): IncidentStateBehavior
+    public function getIncidentStatebehavior(): StateBehavior
     {
         return $this->incident_state_behavior;
     }
 
     /**
-     * @param IncidentStateBehavior $incident_state_behavior
+     * @param StateBehavior $incident_state_behavior
      */
-    public function setIncidentStatebehavior(IncidentStateBehavior $incident_state_behavior): void
+    public function setIncidentStatebehavior(StateBehavior $incident_state_behavior): void
     {
         $this->incident_state_behavior = $incident_state_behavior;
     }
@@ -277,9 +276,9 @@ class IncidentState implements Translatable
     }
 
     /**
-     * @return IncidentStateBehavior
+     * @return StateBehavior
      */
-    public function getBehavior(): IncidentStateBehavior
+    public function getBehavior(): StateBehavior
     {
         return $this->incident_state_behavior;
     }

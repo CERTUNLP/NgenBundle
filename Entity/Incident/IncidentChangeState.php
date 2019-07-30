@@ -2,6 +2,9 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentStateBehavior;
 use CertUnlp\NgenBundle\Entity\User;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,29 +34,12 @@ class IncidentChangeState
      * */
     protected $incident;
     /**
-     * @var IncidentState
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
-     * @ORM\JoinColumn(name="newState", referencedColumnName="slug")
+     * @var StateEdge
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    protected $newState;
-    /**
-     * @var IncidentState
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
-     * @ORM\JoinColumn(name="oldState", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    protected $oldState;
-    /**
-     * @var IncidentStateBehavior
-     * @ORM\ManyToOne(targetEntity="IncidentStateBehavior")
-     * @ORM\JoinColumn(name="action_applied", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    protected $actionApplied;
+    protected $stateEdge;
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
@@ -77,17 +63,14 @@ class IncidentChangeState
      */
     private $date;
 
-    public function __construct(Incident $incident, IncidentState $newState, User $responsable, IncidentState $oldState = null, string $method = 'frontend')
+    public function __construct(Incident $incident, StateEdge $stateEdge, User $responsable, string $method = 'frontend')
     {
         $this->setIncident($incident);
-        if ($oldState) {
-            $this->setOldState($oldState);
-        }
-        $this->setNewState($newState);
+
+        $this->setStateEdge($stateEdge);
         $this->setDate(new DateTime('now'));
         $this->setMethod($method);
         $this->setResponsable($responsable);
-        $this->setActionApplied($newState->getIncidentStatebehavior());
     }
 
     /**
@@ -145,15 +128,25 @@ class IncidentChangeState
      */
     public function getNewState(): IncidentState
     {
-        return $this->newState;
+        return $this->getStateEdge()->getNewState();
     }
 
     /**
-     * @param IncidentState $newState
+     * @return StateEdge
      */
-    public function setNewState(IncidentState $newState): void
+    public function getStateEdge(): StateEdge
     {
-        $this->newState = $newState;
+        return $this->stateEdge;
+    }
+
+    /**
+     * @param StateEdge $stateEdge
+     * @return IncidentChangeState
+     */
+    public function setStateEdge(StateEdge $stateEdge): IncidentChangeState
+    {
+        $this->stateEdge = $stateEdge;
+        return $this;
     }
 
     /**
@@ -161,32 +154,18 @@ class IncidentChangeState
      */
     public function getOldState(): ?IncidentState
     {
-        return $this->oldState;
+        return $this->getStateEdge()->getOldState();
     }
 
-    /**
-     * @param IncidentState $oldState
-     */
-    public function setOldState(IncidentState $oldState): void
-    {
-        $this->oldState = $oldState;
-    }
 
     /**
-     * @return IncidentStateBehavior
+     * @return StateEdge
      */
-    public function getActionApplied(): ?IncidentStateBehavior
+    public function getActionApplied(): ?StateEdge
     {
-        return $this->actionApplied;
+        return $this->getStateEdge();
     }
 
-    /**
-     * @param IncidentStateBehavior $actionApplied
-     */
-    public function setActionApplied(IncidentStateBehavior $actionApplied): void
-    {
-        $this->actionApplied = $actionApplied;
-    }
 
     /**
      * @return User
