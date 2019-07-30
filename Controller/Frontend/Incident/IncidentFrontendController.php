@@ -16,7 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 class IncidentFrontendController extends Controller
 {
 
@@ -95,6 +95,8 @@ class IncidentFrontendController extends Controller
         return $this->getFrontendController()->homeEntity($request);
     }
 
+
+
     /**
      * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentComments.html.twig")
      * @param Incident $incident
@@ -106,5 +108,32 @@ class IncidentFrontendController extends Controller
         return $this->getFrontendController()->commentsEntity($incident, $request);
     }
 
+    /**
+     * @Template("CertUnlpNgenBundle:Incident:Frontend/list/incidentListRow.html.twig")
+     * @Route("{id}/getListRow", name="cert_unlp_ngen_incident_frontend_get_list_row_incident_id", requirements={"id"="\d+"})
+     * @param Incident $incident
+     * @return array
+     */
 
+    public function getListRow(Incident $incident)
+    {
+        return array('incident'=>$incident);
+    }
+
+    /**
+     * @Route("getFilterList", name="cert_unlp_ngen_incident_ajax_search_incident")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getFilterIncidentListAction(Request $request)
+
+    {
+        $datos=$this->getFrontendController()->homeEntity($request);
+        $tabla=$this->renderView("CertUnlpNgenBundle:Incident:Frontend/list/filterList.html.twig",$datos);
+        $paginador=$this->renderView("CertUnlpNgenBundle:Incident:Frontend/list/filterListPaginator.html.twig",$datos);
+        $filters=$this->renderView("CertUnlpNgenBundle:Incident:Frontend/list/filterHeadersPaginator.html.twig",$datos);
+        $indice=$datos['objects']->getPaginationData();
+        return new JsonResponse(array('tabla'=>$tabla,'indice'=>$indice,'paginador'=>$paginador,'filters'=>$filters));
+
+    }
 }

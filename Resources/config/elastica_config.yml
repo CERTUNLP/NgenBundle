@@ -25,11 +25,17 @@ fos_elastica:
                         id:
                             type: integer
                         date:
-                            type: date
+                            type: keyword
+                            fields:
+                                date:
+                                    type: date
                         createdAt:
                             type: date
                         updatedAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                date:
+                                    type: date
                         isClosed:
                             type: boolean
                         isNew:
@@ -44,7 +50,10 @@ fos_elastica:
                             type: "object"
                             properties:
                                 ip:
-                                    type: ip
+                                    type: keyword
+                                    fields:
+                                        ip:
+                                          type:  ip
                                 domain:
                                     type: keyword
                         network:

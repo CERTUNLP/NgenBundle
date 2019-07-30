@@ -64,7 +64,7 @@ class UserType extends AbstractType
                     ),
                 ))
             ->add('save', SubmitType::class, array(
-                'attr' => array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => 'slide-down')));
+                'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down')));
     }
 
     private function roleChoices()

@@ -96,7 +96,7 @@ class IncidentDecisionType extends AbstractType
             ))
             ->add('id', HiddenType::class)
             ->add('save', SubmitType::class, array(
-                'attr' => array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => 'slide-down'),
+                'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
 //                    'description' => "Evidence file that will be attached to the report "
             ));
         $doctrine = $this->doctrine;

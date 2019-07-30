@@ -11,50 +11,25 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend;
 
-use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class DashboardController extends Controller
 {
 
-    public function getFrontendController()
-    {
-        return $this->get('cert_unlp.ngen.incident.external.frontend.controller');
-    }
 
     /**
-     * @Template()
-     * @Route("/")
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Template("CertUnlpNgenBundle:Dashboard:frontend.html.twig")
+     * @Route("/",name="cert_unlp_ngen_dashboard")
+     * @param Request $request
+     * @return array
      */
-    public function homeAction()
+    public function homeAction(Request $request)
     {
-
-
-        /** @var Incident $article */
-        $article = $this->get('doctrine')->getRepository(Incident::class)->findOneBy(['id' => '35'] /*article id*/);
-        $closed = $this->get('doctrine')->getRepository(IncidentState::class)->findOneBy(['slug' => 'closed'] /*article id*/);
-        $open = $this->get('doctrine')->getRepository(IncidentState::class)->findOneBy(['slug' => 'open'] /*article id*/);
-//        $repository = $this->get('doctrine')->getManager()->getRepository(Translation::class);
-//        $translations = $repository->findTranslations($article);
-        var_dump($article->getState()->getName());
-        $article->setState($open);
-        $article->setState($closed);
-//        var_dump($article->getNewStates()->map(function($state){
-//            return $state->getName();
-//        }));
-        die;
-
-
-//        $article = new IncidentState();
-//        $article->setName('asdasda');
-//
-//        $this->get('doctrine')->getManager()->persist($article);
-//        $this->get('doctrine')->getManager()->flush();
-//        die;
-
+        return array("externalDashboard"=>$this->container->getParameter('cert_unlp.ngen.grafana.external.url'),"internalDashboard"=>$this->container->getParameter('cert_unlp.ngen.grafana.internal.url'));
     }
+
 }

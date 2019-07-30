@@ -16,9 +16,14 @@ var IncidentApi = ApiClient.extend({
         $.subscribe('/cert_unlp/incident/new', $.proxy(this.create, this));
         $.subscribe('/cert_unlp/incident/update', $.proxy(this.update, this));
 
+        //Esto es para la busqueda por api
+        // this.api.add("ajaxsearch", {url: 'incidents/search',stripTrailingSlash: true});
+        // $.subscribe('/cert_unlp/incident/search', $.proxy(this.search, this));
+
     },
     changeState: function (incidentId, state, callback) {
         var request = this.defaultChannel.states.update(incidentId, state, {});
+
         this.doRequest(request, callback);
     },
     addDefaultChannel: function () {

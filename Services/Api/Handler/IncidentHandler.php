@@ -17,6 +17,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Gedmo\Sluggable\Util as Sluggable;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\SecurityContext;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
 
 class IncidentHandler extends Handler
 {
@@ -94,24 +95,48 @@ class IncidentHandler extends Handler
         return $this->context->getToken() ? $this->context->getToken()->getUser() : 'anon.';
     }
 
-    public function closeOldIncidents(int $days = 10): array
+    public function getToNotificateIncidents(): array
     {
+        return $this->repository->findNotificables();
+    }
+
+    public function closeOldIncidents($unattendedState, $unresolvedState): array
+    {
+
         $incidents = $this->all(['isClosed' => false]);
-        $state = $this->om->getRepository('CertUnlp\NgenBundle\Entity\Incident\State\IncidentState')->findOneBySlug('closed_by_inactivity');
+        $uastate = $this->om->getRepository(IncidentState::class)->findOneBySlug($unattendedState);
+        $urstate = $this->om->getRepository(IncidentState::class)->findOneBySlug($unresolvedState);
         $closedIncidents = [];
         foreach ($incidents as $incident) {
-            if ($incident->getOpenDays(true) >= $days) {
-                $incident->setState($state);
-                $this->om->persist($incident, $this->getReporter());
-                $closedIncidents[$incident->getId()] = ['ip' => $incident->getAddress(),
-                    'type' => $incident->getType(),
-                    'date' => $incident->getUpdatedAt(),
-                    'lastTimeDetected' => $incident->getUpdatedAt(),
-                    'openDays' => $incident->getOpenDays(true)];
+            $close = false;
+            if ($this->closeByUnresolved($incident)) {
+                $close = true;
+                $incident->setState($urstate);
+            } elseif ($this->discardByUnattended($incident)) {
+                $close = true;
+                $incident->setState($uastate);
+
+            }
+            //$this->om->persist($incident);
+            if ($close) {
+                $closedIncidents[$incident->getId()] = ['id' => $incident->getSlug(),
+                    'type' => $incident->getType()->getSlug(),
+                    'newState' => $incident->getState()->getSlug()];
             }
         }
-        $this->om->flush();
+        //$this->om->flush();
         return $closedIncidents;
+    }
+
+    private function discardByUnattended(Incident $incident)
+    {
+        return ($incident->isNew() and ($incident->getPriority()->getUnresponseTime() <= $incident->getResponseMinutes()));
+    }
+
+    private function closeByUnresolved(Incident $incident)
+    {
+
+        return ((!$incident->isNew()) and ($incident->getPriority()->getUnresolutionTime() <= $incident->getResolutionMinutes()));
     }
 
     /**

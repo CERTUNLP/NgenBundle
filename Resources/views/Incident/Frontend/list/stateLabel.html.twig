@@ -13,45 +13,12 @@
 {#{{ label_info(translatedState) }}#}
 
 
-
-{%  set responseLeft= incident.priority.responsetime-incident.responseMinutes %}
-{%  set resolutionLeft= incident.priority.resolutiontime-incident.resolutionMinutes %}
-
-
 {% if incident.isNew %}
 <p> {{ label_danger(translatedState) }}
-    {% if (responseLeft > 0) %}
-        <p><span class="label label-warning"> {{ 'Unanswered '|trans }}({{ responseLeft }})</span>
-    {% else %}
-<p><span class="label label-danger"> {{ 'Unanswered '|trans }}({{ responseLeft * -1 }})</span>
-    {% endif %}
-{% else %}
-    {% if incident.isClosed %}
+    {% elseif incident.isClosed %}
 <p>     {{ label_success(translatedState) }}
     {% else %}
 <p>     {{ label_info(translatedState) }}
     {% endif %}
-    {% if (responseLeft > 0) %}
-<p>     <span class="label label-success"> {{ 'Response on time  '|trans }}</span>
-    {% else %}
-<p>     <span class="label label-danger"> {{ ' Response delayed '|trans }}({{ responseLeft * -1 }})</span>
-    {% endif %}
-    {% if incident.isClosed %}
-        {% if resolutionLeft > 0 %}
-<p>         <span class="label label-success"> {{ 'Solved '|trans }} </span>
-        {% else %}
-<p>         <span class="label label-danger"> {{ 'Solved '|trans }}({{ resolutionLeft * -1 }})</span>
-        {% endif %}
-    {% else %}
-        {% if resolutionLeft > 0 %}
-<p>         <span class="label label-info"> {{ 'Unsolved '|trans }}({{ resolutionLeft }})</span>
-        {% else %}
-<p>         <span class="label label-danger"> {{ 'Unsolved '|trans }}({{ resolutionLeft * -1 }})</span>
-        {% endif %}
-    {% endif %}
 
-{% endif %}
-
-<p>    <span class="label tlp-{{ incident.tlp | lower }}"
-             id="tlp">{{ 'TLP'|trans }}: {{ incident.tlp }}</span>
 

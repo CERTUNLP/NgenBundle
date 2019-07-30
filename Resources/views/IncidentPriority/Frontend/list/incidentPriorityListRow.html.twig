@@ -9,42 +9,52 @@
 
 <tr data-id="{{ IncidentPriority.slug }}">
 
-    <td id="priority_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="priority_label_holder" class="align-middle">
+        <div>
             {{ IncidentPriority.code }}
         </div>
     </td>
-    <td id="priority_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="priority_label_holder" class="align-middle">
+        <div>
             {{ IncidentPriority.name |trans }}
         </div>
     </td>
-    <td id="priority_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="priority_label_holder" class="align-middle">
+        <div>
             {{ IncidentPriority.impact |trans }}
         </div>
     </td>
-    <td id="priority_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="priority_label_holder" class="align-middle">
+        <div>
             {{ IncidentPriority.urgency |trans }}
         </div>
     </td>
-    <td id="priority_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="priority_label_holder" class="align-middle">
+        <div>
             {{ IncidentPriority.responseTime }}
         </div>
     </td>
-    <td id="priority_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="priority_label_holder" class="align-middle">
+        <div>
+            {{ IncidentPriority.unresponseTime }}
+        </div>
+    </td>
+    <td id="priority_label_holder" class="align-middle">
+        <div>
             {{ IncidentPriority.resolutionTime }}
         </div>
     </td>
-    <td id="state_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="priority_label_holder" class="align-middle">
+        <div>
+            {{ IncidentPriority.unresolutionTime }}
+        </div>
+    </td>
+    <td id="state_label_holder" class="align-middle">
+        <div>
             {% include "CertUnlpNgenBundle:IncidentPriority:Frontend/list/incidentPriorityLabel.html.twig" with {'incidentPriority': IncidentPriority} %}
         </div>
     </td>
-    <td class="col-sm-1">
+    <td class="align-middle">
 
         <div class="btn-group inline pull-left dropdown action-dropdown">
             <a class="btn btn-sm btn-primary" role="button"

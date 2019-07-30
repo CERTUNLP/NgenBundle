@@ -21,7 +21,23 @@ assetic:
     bundles:
         - CertUnlpNgenBundle
         - FOSCommentBundle
-
+    assets:
+        fontawesome_css:
+            inputs:
+                - %kernel.root_dir%/../vendor/fortawesome/font-awesome/css/all.css
+            output: css/fontawesome-all.css
+        botsprap_css:
+            inputs:
+                - %kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.css
+            output: css/bootstrap4.css
+    #
+#        fontawesome_fonts:
+#            inputs:
+#                - %kernel.root_dir%/../vendor/fortawesome/font-awesome/webfonts/
+##            filters:
+##                    - less
+##                    - cssrewrite
+#            output: webfonts
 swiftmailer:
     mailers:
         cert_unlp.ngen.incident.mailer:
@@ -110,24 +126,36 @@ imap:
            username: "%imap_username%"
            password: "%imap_password%"
 
-braincrafted_bootstrap:
-    assets_dir: "%kernel.root_dir%/../vendor/twbs/bootstrap"
-    jquery_path: "%kernel.root_dir%/../vendor/components/jquery/jquery.min.js"
-    fonts_dir: "%kernel.root_dir%/../web/fonts"
-    icon_prefix: fa
-    auto_configure:
-        assetic: true
-        twig: true
-        knp_menu: true
-        knp_paginator: true
-    customize:
-        variables_file: ~
-        bootstrap_output: "%kernel.root_dir%/Resources/less/bootstrap.less"
-        bootstrap_template: BraincraftedBootstrapBundle:Bootstrap:bootstrap.less.twig
+#braincrafted_bootstrap:
+#    assets_dir: "%kernel.root_dir%/../vendor/twbs/bootstrap"
+#    jquery_path: "%kernel.root_dir%/../vendor/components/jquery/jquery.min.js"
+#    fonts_dir: "%kernel.root_dir%/../web/fonts"
+#    icon_prefix: fa
+#    css_preprocessor: none
+#    auto_configure:
+#        assetic: true
+#        twig: true
+#        knp_menu: true
+#        knp_paginator: true
 
 #knp_markdown:
 #    parser:
 #        service: cert_unlp.ngen.incident.report.markdown.parser
+
+knp_paginator:
+    page_range: 7                       # number of links showed in the pagination menu (e.g: you have 10 pages, a page_range of 3, on the 5th page you'll see links to page 4, 5, 6)
+    default_options:
+        page_name: page                 # page query parameter name
+        sort_field_name: sort           # sort field query parameter name
+        sort_direction_name: direction  # sort direction query parameter name
+        distinct: true                  # ensure distinct results, useful when ORM queries are using GROUP BY statements
+        filter_field_name: filterField  # filter field query parameter name
+        filter_value_name: filterValue  # filter value query parameter name
+    template:
+        pagination: '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig'     # sliding pagination controls template
+        sortable: '@KnpPaginator/Pagination/sortable_link.html.twig' # sort link template
+        filtration: '@KnpPaginator/Pagination/filtration.html.twig'  # filters template
+
 
 fos_comment:
     db_driver: orm
@@ -189,3 +217,4 @@ twig:
         sign: '%ngen_sign%'
     form_themes:
       - 'TetranzSelect2EntityBundle:Form:fields.html.twig'
+      - 'CertUnlpNgenBundle:Form:bootstrap_4_layout.html.twig'

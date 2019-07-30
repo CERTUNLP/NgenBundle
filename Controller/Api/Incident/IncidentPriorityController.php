@@ -107,17 +107,17 @@ class IncidentPriorityController extends FOSRestController
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
+     * Update existing priority from the submitted data or create a new priority at a specific location.
      *
      * @ApiDoc(
      *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
+     *   input = "CertUnlp\NgenBundle\Form\IncidentPriorityType",
      *   statusCodes = {
      *     204 = "Returned when successful",
      *     400 = "Returned when the form has errors"
      *   }
      * )
-     * @FOS\Patch("/priorities/{id}")
+     * @FOS\Patch("/priorities/{impact}/{urgency}")
      * @param Request $request the request object
      * @param IncidentPriority $incident_priority
      * @return FormTypeInterface|View
@@ -147,6 +147,7 @@ class IncidentPriorityController extends FOSRestController
      */
     public function patchIncidentPriorityBySlugAction(Request $request, IncidentPriority $incident_priority)
     {
+        echo "die";
         return $this->getApiController()->patch($request, $incident_priority);
     }
 

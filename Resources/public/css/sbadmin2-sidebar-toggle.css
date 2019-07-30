@@ -1,0 +1,69 @@
+/* Sidebar toggle css styles */
+
+#wrapper.toggled #sidebar-wrapper .sidebar {
+    width: 50px;
+}
+
+#wrapper.toggled #sidebar-wrapper ul li .masked {
+    display: none;
+}
+
+#wrapper.toggled #sidebar-wrapper ul li ul {
+    position: absolute;
+    left: 51px;
+    margin-top: -40px;
+    background-color: rgba(234, 234, 234, 0.2);
+    width: 200px;
+    z-index: 17;
+}
+
+#wrapper.toggled #sidebar-wrapper ul li ul li ul {
+    position: relative;
+    margin-top: 0px;
+    margin-left: -51px;
+}
+
+#wrapper.toggled #page-wrapper {
+    margin: 0 0 0 50px;
+}
+
+.scrollable-menu {
+    overflow-y: scroll;
+    height: 100vh;
+    margin-bottom: -101px;
+}
+
+.scrollable-sub-menu {
+    max-height: 400px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+@media(max-width:768px) {
+    #wrapper.toggled #sidebar-wrapper .sidebar {
+        width: 100%;
+    }
+    #wrapper.toggled #page-wrapper {
+        margin: 0;
+    }
+    #menu-toggle {
+        display: none;
+    }
+    #wrapper.toggled #sidebar-wrapper ul li .masked {
+        display: inline-block;
+    }
+    #wrapper.toggled #sidebar-wrapper ul li ul {
+        position: relative;
+        left: 0px;
+        margin-top: 0px;
+        background-color: none;
+        width: 100%;
+        z-index: 17;
+    }
+    #wrapper.toggled #sidebar-wrapper ul li ul li ul {
+        margin-left: 0px;
+    }
+    #wrapper.toggled #sidebar-wrapper ul li .masked {
+        display: initial;
+    }
+}

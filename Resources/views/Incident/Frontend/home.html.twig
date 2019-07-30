@@ -10,117 +10,111 @@
 
 {% block content_body %}
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <strong>{{ icon('arrow-circle-down fa-fw') }} {{ "My Incidents" | trans }} </strong>
-            <strong>({{ my_objects.getPaginationData.lastItemNumber~"/"~my_objects.getTotalItemCount }})</strong>
-            <div class="pull-right">
-                <div class="btn-group">
+          <div class="card shadow mb-4">
+            <div class="card-header py-3 d-sm-flex align-items-center justify-content-between mb-4">
+              <h6 class="m-0 font-weight-bold text-primary">
+                <strong>{{ 'Showing'|trans }}</strong>
+                <strong id="incidentcount">({{ objects.getPaginationData.lastItemNumber~'/'~objects.getTotalItemCount }})</strong>
+              </h6>
+                <button id="btnFilter" class="btn btn-primary active" type="button"  data-toggle="button" aria-pressed="true" autocomplete="off"><strong>{{ icon('filter') }}</strong>
+                </button>
 
-                </div>
             </div>
-        </div>
-        <table class="table table-striped table-bordered table-hover dataTable no-footer">
-            <tr role="row">
-                <th>{{ knp_pagination_sortable(objects, 'Status'| trans, 'state.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Address'| trans , 'origin.ip') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Assigned'| trans , 'assigned.username') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Type'| trans, 'type.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Feed'| trans, 'feed.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Date'| trans, 'date') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Priority'| trans, 'priority.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Reportes'| trans, 'ltdCount') }}</th>
-                <th>{{ 'Actions'|trans }}</th>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table id="tabla_incidentes" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                     <thead>
+
+               <tr rote="row" id="filters">
+                {% include '@CertUnlpNgen/Incident/Frontend/list/filterHeadersPaginator.html.twig' with {'objects': objects} %}
+               </tr>
+
+            <tr id="filtrosMostrar" class="filtrosMostrar"  style="display: true;"  >
+
+            <th></th>
+                <th class="align-middle">
+                    <form method='post' action="javascript:void(0);" role="search">
+                        {{ form_row(search_form.state) }}
+                    </form>
+                </th>
+                <th></th>
+                <th class="align-middle">
+                    <form method='post' action="javascript:void(0);" role="search">
+                        {{ form_row(search_form.priority) }}
+                    </form>
+                </th>
+                <th class="align-middle">
+                    <form method='post' class="data-filter" action="javascript:void(0);" role="search">
+                        {{ form_row(search_form.address) }}
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" style="display:none" value="option1" checked>
+                        <label class="form-check-label" for="inlineCheckbox1" style="display:none">*</label>
+                    </form>
+
+                </th>
+
+
+                <th class="align-middle">
+                    <form method='post' action="javascript:void(0);" role="search">
+                        {{ form_row(search_form.type) }}
+                    </form>
+                </th>
+
+                <th class="align-middle">
+                    <form method='post' action="javascript:void(0);" role="search">
+                        {{ form_row(search_form.feed) }}
+                    </form>
+                </th>
+                <th class="align-middle">
+                    <form method='post' class="data-filter" action="javascript:void(0);" role="search">
+                        {{ form_row(search_form.dates) }}
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" style="display:none" value="option1" checked>
+                        <label class="form-check-label" for="inlineCheckbox1" style="display:none">*</label>
+                    </form>
+                </th>
+                <th class="align-middle">
+                        <form method='post' class="data-filter" action="javascript:void(0);" role="search">
+                           {{ form_row(search_form.updatesAt) }}
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" style="display:none" value="option1" checked>
+                            <label class="form-check-label" for="inlineCheckbox1" style="display:none">*</label>
+                        </form>
+                </th>
+                <th class="align-middle">
+                    <form method='post' action="javascript:void(0);" role="search">
+                        {{ form_row(search_form.ltdCount) }}
+                    </form>
+                </th>
+                <th class="align-middle">
+                    <form method='post' action="javascript:void(0);" role="search">
+                        {{ form_row(search_form.assigned) }}
+                    </form>
+                </th>
+                <th class="align-middle">
+                    <form method='post' action="javascript:void(0);" role="search">
+                        {{ form_row(search_form.tlp) }}
+                    </form>
+                </th>
             </tr>
+                 </thead>
+
             <tbody>
-            {% for incident in my_objects %}
+            {% for incident in objects %}
                 {% block list_body %}
                     {% include 'CertUnlpNgenBundle:Incident:Frontend/list/incidentListRow.html.twig' with {'incident': incident} %}
                 {% endblock %}
 
             {% endfor %}
             </tbody>
-
+            <tfoot>
+              <tr rote="row" id="filters">
+                {% include '@CertUnlpNgen/Incident/Frontend/list/filterHeadersPaginator.html.twig' with {'objects': objects} %}
+               </tr>
+             </tfoot>
         </table>
     </div>
-    <div class="pagination-centered">
-        {{ knp_pagination_render(my_objects, null, {}, { "prev_label": "Previous" | trans , "next_label": "Next"| trans, "first_label": "First"| trans, "last_label": "Last"| trans}) }}
-    </div>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <strong>{{ icon('arrow-circle-down fa-fw') }} {{ "Unassigned Incidents" | trans }} </strong>
-            <strong>({{ unassigned_objects.getPaginationData.lastItemNumber~"/"~unassigned_objects.getTotalItemCount }}
-                )</strong>
-            <div class="pull-right">
-                <div class="btn-group">
-
-                </div>
             </div>
-        </div>
-        <table class="table table-striped table-bordered table-hover dataTable no-footer">
-            <tr role="row">
-                <th>{{ knp_pagination_sortable(objects, 'Status'| trans, 'state.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Address'| trans , 'origin.ip') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Assigned'| trans , 'assigned.username') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Type'| trans, 'type.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Feed'| trans, 'feed.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Date'| trans, 'date') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Priority'| trans, 'priority.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Response Time/Resolution Time'| trans, 'updatedAt') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'LTD'| trans, 'ltdCount') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'TLP'| trans, 'tlp.slug') }}</th>
-                <th>Action</th>
-            </tr>
-            <tbody>
-            {% for incident in unassigned_objects %}
-                {% block list_unasigned_body %}
-                    {% include 'CertUnlpNgenBundle:Incident:Frontend/list/incidentListRow.html.twig' with {'incident': incident} %}
-                {% endblock %}
-
-            {% endfor %}
-            </tbody>
-
-        </table>
-    </div>
-    <div class="pagination-centered">
-        {{ knp_pagination_render(unassigned_objects, null, {}, { "prev_label": "Previous"| trans, "next_label": "Next"| trans, "first_label": "First"| trans, "last_label": "Last"| trans}) }}
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            {% block list_header %}
-                <strong>{{ icon('arrow-circle-down fa-fw') }} {{ "All Incidents" | trans }} </strong>
-            {% endblock %}
-            <strong>({{ objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount }})</strong>
-
-        </div>
-        <table class="table table-striped table-bordered table-hover dataTable no-footer">
-            <tr role="row">
-                <th>{{ knp_pagination_sortable(objects, 'Status'| trans, 'state.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Address'| trans , 'origin.ip') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Assigned'| trans , 'assigned.username') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Type'| trans, 'type.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Feed'| trans, 'feed.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Date'| trans, 'date') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Priority'| trans, 'priority.name') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'Response Time/Resolution Time'| trans, 'updatedAt') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'LTD'| trans, 'ltdCount') }}</th>
-                <th>{{ knp_pagination_sortable(objects, 'TLP'| trans, 'tlp.slug') }}</th>
-                <th>Action</th>
-            </tr>
-            <tbody>
-            {% for incident in objects %}
-                {% block listmine_body %}
-                    {% include 'CertUnlpNgenBundle:Incident:Frontend/list/incidentListRow.html.twig' with {'incident': incident} %}
-                {% endblock %}
-
-            {% endfor %}
-            </tbody>
-
-        </table>
-    </div>
-    <div class="pagination-centered">
-        {{ knp_pagination_render(objects, null, {}, { "prev_label": "Previous"| trans, "next_label": "Next"| trans, "first_label": "First"| trans, "last_label": "Last"| trans}) }}
+          </div>
+    <div id="paginatorbar" class="pagination  justify-content-center">
+        {{ knp_pagination_render(objects, null, {}, { "prev_label": "Previous" | trans , "next_label": "Next"| trans, "first_label": "First"| trans, "last_label": "Last"| trans}) }}
     </div>
 
 {% endblock %}
@@ -128,27 +122,26 @@
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_internal_incident_search_incident') }}{% endblock %}
 
 {% block content_header %}
-    <h1 class="page-header">{{ icon('arrow-circle-down fa-fw') }} {{ "Incidents" | trans }}
-        <div class="pull-right">
-            <a class="btn btn-primary btn-bg"
-               href="{{ path('cert_unlp_ngen_internal_incident_frontend_new_incident') }}">
-                {{ icon('plus-circle fa-fw') }}{{ "add incident" | trans }}
-            </a>
-        </div>
-    </h1>
+    <h1 class="h3 mb-0 text-gray-800">{{ icon('arrow-circle-down fa-fw') }} {{ "Incidents" | trans }}</h1>
+    <a href="{{ path('cert_unlp_ngen_internal_incident_frontend_new_incident') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus-circle fa-sm text-white-50"></i> {{ "add incident" | trans }}</a>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
 
     {% javascripts
-        '@CertUnlpNgenBundle/Resources/public/js/incident/InternalIncident.js'
-        '@CertUnlpNgenBundle/Resources/public/js/incident/InternalIncidentApi.js' %}
+        '@CertUnlpNgenBundle/Resources/public/js/incident/Incident.js'
+        '@CertUnlpNgenBundle/Resources/public/js/incident/IncidentApi.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
     <script>
-        var internalIncidentApi = new InternalIncidentApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
-        var internalIncident = new InternalIncident();
+        var IncidentApi = new IncidentApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
+        var Incident = new Incident();
+        $('#btnFilter').on('click', function (e) {
+            e.preventDefault();
+            var elem = $('#filtrosMostrar');
+            elem.toggle('slow');
+        });
     </script>
 {% endblock %}

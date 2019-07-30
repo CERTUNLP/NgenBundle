@@ -11,62 +11,85 @@
 
 {% block title %}{{ 'User Login'|trans }}{% endblock %}
 {% block id 'login' %}
+{% block body %}
 
-    {% block body %}
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{{ 'Please Sign In'|trans }}</h3>
-                    </div>
-                    <div class="panel-body">
-                        <form role="form" class="form-signin" _lpchecked="1"
-                              action="{{ path('fos_user_security_check') }}" method="post">
-                            <fieldset>
-                                {#                                {% if csrf_token %}#}
-                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-                                {#                                {% endif %}#}
-                                {% if error %}
-                                    <div class="alert-danger">{{ error.message }}</div>
-                                {% endif %}
-                                <div class="form-group">
-                                    <input value="{{ last_username }}" type="text" id="username" name="_username"
-                                           class="form-control" placeholder="Username" required="" autofocus=""
-                                           autocomplete="off"
-                                           style="background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDhss3LcOZQAAAU5JREFUOMvdkzFLA0EQhd/bO7iIYmklaCUopLAQA6KNaawt9BeIgnUwLHPJRchfEBR7CyGWgiDY2SlIQBT/gDaCoGDudiy8SLwkBiwz1c7y+GZ25i0wnFEqlSZFZKGdi8iiiOR7aU32QkR2c7ncPcljAARAkgckb8IwrGf1fg/oJ8lRAHkR2VDVmOQ8AKjqY1bMHgCGYXhFchnAg6omJGcBXEZRtNoXYK2dMsaMt1qtD9/3p40x5yS9tHICYF1Vn0mOxXH8Uq/Xb389wff9PQDbQRB0t/QNOiPZ1h4B2MoO0fxnYz8dOOcOVbWhqq8kJzzPa3RAXZIkawCenHMjJN/+GiIqlcoFgKKq3pEMAMwAuCa5VK1W3SAfbAIopum+cy5KzwXn3M5AI6XVYlVt1mq1U8/zTlS1CeC9j2+6o1wuz1lrVzpWXLDWTg3pz/0CQnd2Jos49xUAAAAASUVORK5CYII=); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
+    <style>
+        .login-image-ngen{
+            background:url({{ asset('bundles/certunlpngen/images/ngen01.svg') }});
+            background-position: center;
+            background-size: contain;
+        }
+    </style>
+    <div class="container">
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block login-image-ngen" ></div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">{{ 'Welcome Back!'|trans }}</h1>
+                                    </div>
+                                    <form role="form" class="user" _lpchecked="1"
+                                          action="{{ path('fos_user_security_check') }}" method="post">
+                                        <input type="hidden" name="_csrf_token"
+                                               value="{{ csrf_token('authenticate') }}"/>
+                                        {% if error %}
+                                            <div class="alert-danger">{{ error.message }}</div>
+                                        {% endif %}
+                                        <div class="form-group">
+                                            <input value="{{ last_username }}" type="text" id="username"
+                                                   name="_username"
+                                                   class="form-control form-control-user" placeholder="Username"
+                                                   required="" autofocus=""
+                                                   autocomplete="off">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" id="password" name="_password"
+                                                   class="form-control form-control-user"
+                                                   placeholder="Password" required="" autocomplete="off">
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox small">
+                                                <input type="checkbox" class="custom-control-input" id="remember_me"
+                                                       checked>
+                                                <label class="custom-control-label"
+                                                       for="remember_me">{{ 'Remember me'|trans }}</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+
+                                            <input class="btn btn-primary btn-user btn-block" type="submit"
+                                                   name="login"
+                                                   value="{{ "Login" | trans }}"/>
+                                        </div>
+                                    </form>
+
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small pull-right btn btn-link"
+                                           href="{{ path('fos_user_resetting_request') }}">
+                                            {{ 'Forgot password?'|trans }}
+                                        </a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="small pull-left btn btn-link"
+                                           href="{{ path('fos_user_registration_register') }}">{{ 'Sign in'|trans }}
+                                        </a>
+                                    </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <input type="password" id="password" name="_password" class="form-control"
-                                           placeholder="Password" required="" autocomplete="off"
-                                           style="background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDhss3LcOZQAAAU5JREFUOMvdkzFLA0EQhd/bO7iIYmklaCUopLAQA6KNaawt9BeIgnUwLHPJRchfEBR7CyGWgiDY2SlIQBT/gDaCoGDudiy8SLwkBiwz1c7y+GZ25i0wnFEqlSZFZKGdi8iiiOR7aU32QkR2c7ncPcljAARAkgckb8IwrGf1fg/oJ8lRAHkR2VDVmOQ8AKjqY1bMHgCGYXhFchnAg6omJGcBXEZRtNoXYK2dMsaMt1qtD9/3p40x5yS9tHICYF1Vn0mOxXH8Uq/Xb389wff9PQDbQRB0t/QNOiPZ1h4B2MoO0fxnYz8dOOcOVbWhqq8kJzzPa3RAXZIkawCenHMjJN/+GiIqlcoFgKKq3pEMAMwAuCa5VK1W3SAfbAIopum+cy5KzwXn3M5AI6XVYlVt1mq1U8/zTlS1CeC9j2+6o1wuz1lrVzpWXLDWTg3pz/0CQnd2Jos49xUAAAAASUVORK5CYII=); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
-                                </div>
-
-
-                            </fieldset>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" id="remember_me" name="_remember_me"
-                                           checked/> {{ 'Remember me'|trans }}
-                                </label>
                             </div>
-                            <div class="form-group">
-                                <a class="pull-left btn btn-link"
-                                   href="{{ path('fos_user_registration_register') }}">{{ 'Sign in'|trans }}
-                                </a>
-                                <a class="pull-right btn btn-link" href="{{ path('fos_user_resetting_request') }}">
-                                    {{ 'Forgot password?'|trans }}
-                                </a>
-                            </div>
-                            <div class="form-group">
-
-                                <input class="btn btn-lg btn-success btn-block" type="submit" name="login"
-                                       value="{{ "Login" | trans }}"/>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-    {% endblock %}
+{% endblock %}

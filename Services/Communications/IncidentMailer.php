@@ -78,10 +78,13 @@ class IncidentMailer extends IncidentCommunication
 
             foreach ($incident->getIncidentsDetected() as $detected) {
                 if ($detected->getEvidenceFilePath()) {
-                    $message->attach(Swift_Attachment::fromPath($evidence_path . $detected->getEvidenceFilePath()));
+                    if (file_exists($evidence_path . $detected->getEvidenceFilePath())) {
+                        $message->attach(\Swift_Attachment::fromPath($evidence_path . $detected->getEvidenceFilePath()));
+                    } else {
+                        $detected->setEvidenceFilePath(null);
+                    }
                 }
             }
-
             if ($incident->getReportMessageId()) {
                 $message->setId($incident->getReportMessageId());
             }

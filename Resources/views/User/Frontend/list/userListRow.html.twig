@@ -8,24 +8,24 @@
 #}
 
 <tr data-id="{{ user.username }}">
-    <td class="col-md-1">
+    <td class="align-middle">
         {{ user.username }}
     </td>
-    <td class="col-md-1">
+    <td class="align-middle">
         {{ user.name ~" "~ user.lastname }}
     </td>
-    <td class="col-md-1">
+    <td class="align-middle">
         {{ user.email }}
     </td>
-    <td class="col-md-1">
+    <td class="align-middle">
         {{ user.lastLogin | date('Y-m-d') }}
     </td>
-    <td id="state_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="state_label_holder" class="align-middle">
+        <div>
             {% include "CertUnlpNgenBundle:User:Frontend/list/stateLabel.html.twig" with {'user': user} %}
         </div>
     </td>
-    <td class="col-sm-1">
+    <td class="align-middle">
 
         <div class="btn-group inline pull-left dropdown action-dropdown">
             <a class="btn btn-sm btn-primary" role="button"

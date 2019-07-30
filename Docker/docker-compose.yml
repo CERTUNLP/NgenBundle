@@ -38,7 +38,7 @@ services:
         - "8002:3306"
       networks: ['ngen']
     ngen-app:
-      image: einar1/ngen:0.6.36
+      image: einar1/ngen:0.6.40-rc7
       networks: ['ngen']
       depends_on: ['ngen-db','ngen-elastic']
       ports:
@@ -78,8 +78,13 @@ services:
         - IMAP_SERVER=localhost:993/imap/ssl/novalidate-cert
         - IMAP_USERNAME=pepe
         - IMAP_PASSWORD=pass
+        - EXTERNAL_DASHBOARD_GRAFANA=http://localhost:3000/dashboard/snapshot/16hkyv3p3sVte5AyeYBhc6cp4RZPGIDu?orgId=0
+        - INTERNAL_DASHBOARD_GRAFANA=http://localhost:3000/dashboard/snapshot/16hkyv3p3sVte5AyeYBhc6cp4RZPGIDu?orgId=0
+        - USER_GRAFANA=admin
+        - PASS_GRAFANA=admin
       links:
         - ngen-elastic:ngen-elastic
+        - ngen-grafana:ngen-grafana
         - ngen-db:ngen-db
         - ngen-mail:ngen-mail
     ngen-proxy:
@@ -105,7 +110,7 @@ services:
         - "9200:9200"
       networks: ['ngen']
     ngen-grafana:
-      image: einar1/ngen-grafana:0.1
+      image: einar1/ngen-grafana:0.2
       ports:
         - "3000:3000"
       volumes:

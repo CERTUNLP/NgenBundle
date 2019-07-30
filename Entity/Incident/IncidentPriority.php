@@ -29,20 +29,91 @@ class IncidentPriority implements Translatable
      * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
      * @JMS\Expose
      */
+
     protected $urgency;
+
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     * @JMS\Expose
+     */
+    private $isActive = true;
+
+
     /**
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="priority"))
      */
 
     protected $incidents;
+
+
     /**
-     * @var string|null
+     * @var int
+     *
+     * @ORM\Column(name="unresponse_time", type="integer")
+     * @JMS\Expose
+     */
+    private $unresponseTime;
+    /**
+     * @var integer
+     * @ORM\Column(name="unresolution_time", type="integer")
+     * @JMS\Expose
+     */
+    private $unresolutionTime;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="code", type="integer")
+     * @JMS\Expose
+     */
+    private $code;
+
+
+    /**
+     * @return mixed
+     */
+
+    public function getIncidents()
+    {
+        return $this->incidents;
+    }
+
+    /**
+     * @param mixed $incidents
+     */
+    public function setIncidents($incidents)
+    {
+        $this->incidents = $incidents;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
+    /**
+     * @var string
      * @ORM\Id
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
      * @JMS\Expose
      */
 
     private $slug;
+
     /**
      * @var string|null
      * @ORM\Column(name="name", type="string", length=255)
@@ -79,13 +150,39 @@ class IncidentPriority implements Translatable
      * @JMS\Expose
      */
     private $resolutionTime;
+
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="code", type="integer")
-     * @JMS\Expose
+     * @return int
      */
-    private $code;
+    public function getUnresponseTime(): int
+    {
+        return $this->unresponseTime;
+    }
+
+    /**
+     * @param int $unresponseTime
+     */
+    public function setUnresponseTime(int $unresponseTime): void
+    {
+        $this->unresponseTime = $unresponseTime;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUnresolutionTime(): int
+    {
+        return $this->unresolutionTime;
+    }
+
+    /**
+     * @param int $unresolutionTime
+     */
+    public function setUnresolutionTime(int $unresolutionTime): void
+    {
+        $this->unresolutionTime = $unresolutionTime;
+    }
+
 
     public function setTranslatableLocale($locale)
     {
@@ -101,15 +198,7 @@ class IncidentPriority implements Translatable
     }
 
     /**
-     * @param mixed $incidents
-     */
-    public function setIncidents($incidents)
-    {
-        $this->incidents = $incidents;
-    }
-
-    /**
-     * @return DateTime
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -306,5 +395,29 @@ class IncidentPriority implements Translatable
     {
         return true;
     }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return IncidentPriority
+     */
+    public function setIsActive(bool $isActive): IncidentPriority
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
 }
 

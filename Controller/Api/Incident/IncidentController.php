@@ -146,6 +146,8 @@ class IncidentController extends FOSRestController
         return $this->getApiController($incident)->patchState($request, $incident, $state);
     }
 
+
+
     /**
      * Update existing incident from the submitted data.
      *
