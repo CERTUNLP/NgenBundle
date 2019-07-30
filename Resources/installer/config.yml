@@ -94,7 +94,12 @@ cert_unlp_ngen:
     networks:
         default_network: '%default_network%'
     global:
-        sign: false
+        sign: true
+    grafana:
+        external: '%external_dashboard_grafana%'
+        internal: '%internal_dashboard_grafana%'
+        user: '%grafana_user%'
+        password: '%grafana_password%'
 monolog:
     handlers:
         main:

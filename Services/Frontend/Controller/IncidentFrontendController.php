@@ -11,6 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Services\Frontend\Controller;
 
+use CertUnlp\NgenBundle\CertUnlpNgenBundle;
+use CertUnlp\NgenBundle\Form\IncidentSearchType;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\ThreadManagerInterface;
@@ -79,28 +81,9 @@ class IncidentFrontendController extends FrontendController
         if (!$term) {
             $term = $request->get('term') ? $request->get('term') : '*';
         }
-
-        $match = new \Elastica\Query\QueryString();
-        $match->setQuery($term);
-
-        $term3 = new \Elastica\Query\BoolQuery();
-        $term2 = new \Elastica\Query\BoolQuery();
-
-        $assigned_term=new \Elastica\Query\Match("assigned.id",$this->userLogged->getId());
-        $term2->addMust($match);
-        $term2->addMust($assigned_term);
-
-
-        $unasiggned_term = new \Elastica\Query\BoolQuery();
-        $existQuery = new \Elastica\Query\Exists('assigned.id');
-        $open=new \Elastica\Query\Match("isClosed",'0');
-        $unasiggned_term->addMustNot($existQuery);
-        $term3->addMust($match);
-        $term3->addMust($open);
-        $term3->addMust($unasiggned_term);
-
-
-        return array('objects'=>$this->searchEntity($request, $term, $limit,$defaultSortFieldName,$defaultSortDirection,'pageobject','object')['objects'],'my_objects'=>$this->searchEntity($request, $term2, $limit,$defaultSortFieldName,$defaultSortDirection,'pagemy','my')['objects'],'unassigned_objects'=>$this->searchEntity($request, $term3, $limit,$defaultSortFieldName,$defaultSortDirection,'pageunassigned','unassigned')['objects'],'term'=> $term);
+        $quickSearchForm=$this->formFactory->createBuilder('CertUnlp\NgenBundle\Form\IncidentSearchType',(new Incident),array('csrf_protection' => true));
+        return array('objects'=>$this->searchEntity($request, $term, $limit,$defaultSortFieldName,$defaultSortDirection,'pageobject','object')['objects'],'search_form'=>$quickSearchForm->getForm()->createView());
 
     }
+
 }

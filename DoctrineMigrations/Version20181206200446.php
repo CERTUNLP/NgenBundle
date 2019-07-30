@@ -33,7 +33,7 @@ class Version20181206200446 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE incident_priority DROP FOREIGN KEY FK_9A63B854C409C007');
+            $this->addSql('ALTER TABLE incident_priority DROP FOREIGN KEY FK_9A63B854C409C007');
         $this->addSql('ALTER TABLE incident_priority DROP FOREIGN KEY FK_9A63B854677C3782');
         $this->addSql('DROP INDEX IDX_9A63B854C409C007 ON incident_priority');
         $this->addSql('DROP INDEX IDX_9A63B854677C3782 ON incident_priority');

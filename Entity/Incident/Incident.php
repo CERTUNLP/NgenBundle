@@ -33,7 +33,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentRepository")
  * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Listener\InternalIncidentListener" })
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")

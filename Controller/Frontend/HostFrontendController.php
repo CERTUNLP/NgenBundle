@@ -97,4 +97,14 @@ class HostFrontendController extends Controller
         return $this->getFrontendController()->commentsEntity($incident, $request);
     }
 
+    /**
+     * @Route("search/autocomplete", name="cert_unlp_ngen_host_search_autocomplete")
+     * @param Request $request
+     * @return array
+     */
+    public function searchAutocompleteHostAction(Request $request)
+    {
+        return $this->getFrontendController()->searchAutocompleteEntity($request);
+
+    }
 }

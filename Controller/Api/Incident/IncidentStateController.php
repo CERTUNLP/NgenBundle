@@ -134,7 +134,7 @@ class IncidentStateController extends FOSRestController
      *
      * @ApiDoc(
      *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
+     *   input = "CertUnlp\NgenBundle\Form\IncidentStateType",
      *   statusCodes = {
      *     204 = "Returned when successful",
      *     400 = "Returned when the form has errors"

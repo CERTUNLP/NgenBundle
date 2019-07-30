@@ -37,76 +37,86 @@
                                                 <td class="expander"></td>
                                             </tr>
                                             {% block report_content %}
-                                                {% if(report.problem) %}
-                                                    <tr>
-                                                        <td>
-                                                            {{ report.problem|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
-                                                        </td>
-                                                        <td class="expander"></td>
-                                                    </tr>
-                                                {% endif %}
-
-                                                {% if(incident.notes) %}
-                                                    <tr>
+                                            {% if(report.problem) %}
+                                                <tr>
+                                                    <td>
+                                                        {{ report.problem|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                    </td>
+                                                    <td class="expander"></td>
+                                                </tr>
+                                            {% endif %}
+                                            {% set titulos=0 %}
+                                            {% for detected in incident.incidentsDetected %}
+                                                {% if(detected.notes) %}
+                                                    {% if titulos == 0 %}
+                                                        {% set titulos=1 %}
+                                                        <tr>
                                                         <td>
                                                             <p class="lead">
                                                                 {% block incident_notes_title %}
                                                                 {% endblock %}
                                                             </p>
-                                                            {{ incident.notes|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
-                                                        </td>
-                                                        <td class="expander"></td>
-                                                    </tr>
+                                                        <ul>
+                                                    {% endif %}
+                                                     <li> {{ detected.notes|striptags('<div>,<a>,<pre>,<code>')|raw }} </li>
 
                                                 {% endif %}
-                                                {% if(report.derivatedProblem) %}
-                                                    <tr>
-                                                        <td>
-                                                            <p class="lead">
-                                                                {% block derivated_problem_title %}
-                                                                {% endblock %}
-                                                            </p>
-                                                            {{ report.derivatedProblem|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
+                                            {% endfor %}
+                                            {% if titulos == 1 %}
+                                                        </ul>
                                                         </td>
                                                         <td class="expander"></td>
-                                                    </tr>
-                                                {% endif %}
-                                                {% if(report.verification) %}
-                                                    <tr>
-                                                        <td>
-                                                            <p class="lead">
-                                                                {% block verification_title %}
-                                                                {% endblock %}
-                                                            </p>
-                                                            {{ report.verification|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
-                                                        </td>
-                                                        <td class="expander"></td>
-                                                    </tr>
-                                                {% endif %}
-                                                {% if(report.recomendations) %}
-                                                    <tr>
-                                                        <td>
-                                                            <p class="lead">
-                                                                {% block recomendations_title %}
-                                                                {% endblock %}
-                                                            </p>
-                                                            {{ report.recomendations|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
-                                                        </td>
-                                                        <td class="expander"></td>
-                                                    </tr>
-                                                {% endif %}
-                                                {% if(report.moreInformation) %}
-                                                    <tr>
-                                                        <td>
-                                                            <p class="lead">
-                                                                {% block more_information_title %}
-                                                                {% endblock %}
-                                                            </p>
-                                                            {{ report.moreInformation|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
-                                                        </td>
-                                                        <td class="expander"></td>
-                                                    </tr>
-                                                {% endif %}
+                                                         </tr>
+                                            {% endif %}
+
+                                            {% if(report.derivatedProblem) %}
+                                                <tr>
+                                                    <td>
+                                                        <p class="lead">
+                                                            {% block derivated_problem_title %}
+                                                            {% endblock %}
+                                                        </p>
+                                                        {{ report.derivatedProblem|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                    </td>
+                                                    <td class="expander"></td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if(report.verification) %}
+                                                <tr>
+                                                    <td>
+                                                        <p class="lead">
+                                                            {% block verification_title %}
+                                                            {% endblock %}
+                                                        </p>
+                                                        {{ report.verification|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                    </td>
+                                                    <td class="expander"></td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if(report.recomendations) %}
+                                                <tr>
+                                                    <td>
+                                                        <p class="lead">
+                                                            {% block recomendations_title %}
+                                                            {% endblock %}
+                                                        </p>
+                                                        {{ report.recomendations|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                    </td>
+                                                    <td class="expander"></td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if(report.moreInformation) %}
+                                                <tr>
+                                                    <td>
+                                                        <p class="lead">
+                                                            {% block more_information_title %}
+                                                            {% endblock %}
+                                                        </p>
+                                                        {{ report.moreInformation|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                    </td>
+                                                    <td class="expander"></td>
+                                                </tr>
+                                            {% endif %}
                                             {% endblock report_content %}
                                         </table>
                                     </td>

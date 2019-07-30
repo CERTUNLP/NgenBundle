@@ -8,48 +8,48 @@
 #}
 
 <tr data-id="{{ IncidentDecision.id }}">
-    <td id="decision_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="decision_label_holder" class="align-middle">
+        <div>
             {{ IncidentDecision.type  }}
         </div>
     </td>
-    <td id="decision_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="decision_label_holder" class="align-middle">
+        <div>
             {{ IncidentDecision.feed }}
         </div>
     </td>
-    <td id="decision_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="decision_label_holder" class="align-middle">
+        <div>
             {{ IncidentDecision.network ?: 'Do nothing' | trans }}
         </div>
     </td>
-    <td id="decision_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="decision_label_holder" class="align-middle">
+        <div>
             {{ IncidentDecision.state |trans }}
         </div>
     </td>
-    <td id="decision_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="decision_label_holder" class="align-middle">
+        <div>
             <span class="label tlp-{{ IncidentDecision.tlp | lower }} left"
                   id="tlp">{{ 'TLP'|trans }}:{{ IncidentDecision.tlp|trans }}</span>
         </div>
     </td>
-    <td id="decision_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="decision_label_holder" class="align-middle">
+        <div>
             {{ IncidentDecision.impact  ?:'Do nothing' | trans }}
         </div>
     </td>
-    <td id="decision_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="decision_label_holder" class="align-middle">
+        <div>
             {{ IncidentDecision.urgency ?:'Do nothing' | trans }}
         </div>
     </td>
-    <td id="state_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="state_label_holder" class="align-middle">
+        <div>
             {% include "CertUnlpNgenBundle:IncidentDecision:Frontend/list/incidentDecisionLabel.html.twig" with {'incidentDecision': IncidentDecision} %}
         </div>
     </td>
-    <td class="col-sm-1">
+    <td class="align-middle">
 
         <div class="btn-group inline pull-left dropdown action-dropdown">
             <a class="btn btn-sm btn-primary" role="button"

@@ -93,6 +93,7 @@ class Configuration implements ConfigurationInterface
             ->end();
 
         $this->addConfigGlobal($rootNode);
+        $this->addConfigGrafana($rootNode);
         $this->addIncidentSection($rootNode);
         $this->addMessagesSection($rootNode);
         $this->addUserSection($rootNode);
@@ -112,6 +113,30 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->booleanNode('sign')
             ->defaultValue('true')
+            ->end()
+            ->end()
+            ->end()
+            ->end();
+    }
+
+    private function addConfigGrafana(ArrayNodeDefinition $rootNode): void
+    {
+        $rootNode
+            ->children()
+            ->arrayNode('grafana')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('external')
+            ->defaultValue('http://localhost:8001')
+            ->end()
+            ->scalarNode('internal')
+            ->defaultValue('http://localhost:3000')
+            ->end()
+            ->scalarNode('user')
+            ->defaultValue('admin')
+            ->end()
+            ->scalarNode('password')
+            ->defaultValue('admin')
             ->end()
             ->end()
             ->end()
@@ -313,8 +338,6 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('class')
             ->defaultValue(IncidentFeed::class)
             ->end()
-//                                ->end()
-//                                ->end()
             ->arrayNode('handler')
             ->addDefaultsIfNotSet()
             ->children()

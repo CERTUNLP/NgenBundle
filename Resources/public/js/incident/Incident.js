@@ -15,7 +15,6 @@ var Incident = Frontend.extend({
         }
     },
     doChangeState: function (event) {
-
         $.publish('/cert_unlp/incident/state/change', [this.eventTarget.parents('tr').data('id'), this.eventTarget.data('state-slug'), $.proxy(this.stateChanged, this)]);
 
     }

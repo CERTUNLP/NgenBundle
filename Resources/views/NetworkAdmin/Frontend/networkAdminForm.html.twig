@@ -9,7 +9,7 @@
 
 {% extends 'CertUnlpNgenBundle::NetworkAdmin/Frontend/frontend.html.twig' %}
 {% block content_header %}
-    <h1 class="page-header">{{ icon('plus-circle fa-fw') }}{{ 'Add Network Admin'|trans }}</h1>
+    <h2 class="page-header">{{ icon('plus-circle fa-fw') }}{{ 'Add Network Admin'|trans }}</h2>
 {% endblock %}
 {% block content_body %}
     {% if (form is not null) %}
@@ -17,7 +17,7 @@
         {%  form_theme form
             'jquery.collection.html.twig'
             'CertUnlpNgenBundle:NetworkAdmin/Frontend:contacts.html.twig' %}
-        {{ form(form, {'attr': {'id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal', 'col_size': 'sm' }) }}
+        {{ form(form, {'attr': {'role':'form','id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal', 'col_size': 'sm' }) }}
 
     {% endif %}
 

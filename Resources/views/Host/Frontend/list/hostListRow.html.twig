@@ -8,18 +8,18 @@
 #}
 
 <tr data-id="{{ Host.id }}">
-    <td id="host_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="host_label_holder" class="align-middle">
+        <div>
             {{ Host.address }}
         </div>
     </td>
-    <td id="host_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="host_label_holder" class="align-middle">
+        <div>
             {{ Host.network | default('empty') }}
         </div>
     </td>
-    <td id="state_label_holder" class="col-md-1">
-        <div class="label-holder">
+    <td id="state_label_holder" class="align-middle">
+        <div>
             {% include "CertUnlpNgenBundle:Host:Frontend/list/hostLabel.html.twig" with {'host': Host} %}
         </div>
     </td>

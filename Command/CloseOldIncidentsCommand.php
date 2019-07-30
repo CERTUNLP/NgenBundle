@@ -22,27 +22,21 @@ class CloseOldIncidentsCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('cert_unlp:incidents:close-old')
-            ->setDescription('Walk through incidents that have a date of 6 day ago or more and closes them.')
-            ->addOption('days', '-d', InputOption::VALUE_OPTIONAL, 'Close incidents of days ago', 10);
+            ->setName('cert_unlp:incidents:close-by-inactivity')
+            ->setDescription('Walk through incidents to make an automatic close.')
+            ->addOption('unattended-state', '-ua', InputOption::VALUE_OPTIONAL, 'Discard incidents unattended', "discarded-by-unattended")
+            ->addOption('unresolved-state', '-ur', InputOption::VALUE_OPTIONAL, 'Close unsolved incidents of days ago', "closed-by-unresolved");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('[incidents]: Starting.');
         $output->writeln('[incidents]: Closing old incidents...');
-        $output->writeln('[incidents]: Internals...');
-        $closedInternalIncidents = $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->closeOldIncidents($input->getOption('days'));
-        $output->writeln('[incidents]: Externals...');
-        $closedExternalIncidents = $this->getContainer()->get('cert_unlp.ngen.incident.external.handler')->closeOldIncidents($input->getOption('days'));
-
-        $output->writeln('[incidents]: Closed internal incidents: ' . count($closedInternalIncidents));
-        $output->writeln('[incidents]: Closed external incidents: ' . count($closedExternalIncidents));
-//        if ($output->isVerbose()) {
-//            foreach ($closedIncidents as $id => $incident) {
-//                $output->writeln('[incidents]: #' . $id . ' hostAdress: ' . $incident['ip'] . ' type: ' . $incident['type'] . ' date: ' . $incident['ip'] . ' lastTimeDetected:' . $incident['lastTimeDetected'] . ' openDays:' . $incident['openDays']);
-//            }
-//        }
+        $closedIncidents = $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->closeOldIncidents($input->getOption('unattended-state'), $input->getOption('unresolved-state'));
+        foreach ($closedIncidents as $closedIncident) {
+            $output->writeln('[incidents]: Closed incidents: ' . print_r($closedIncident));
+        }
+        $output->writeln('[incidents]: Closed incidents: ' . count($closedIncidents));
         $output->writeln('[incidents]: Done.');
     }
 

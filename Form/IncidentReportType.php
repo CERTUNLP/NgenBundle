@@ -58,7 +58,7 @@ class IncidentReportType extends AbstractType
                 'required' => false,
             ))
             ->add('save', SubmitType::class, array('attr' =>
-                array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => 'slide-down'),
+                array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
             ));
 
 
@@ -73,7 +73,7 @@ class IncidentReportType extends AbstractType
 //
 //
 //        $builder->add('save', 'submit', array('attr' =>
-//            array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => "slide-down"),
+//            array('class' => 'save btn btn-primary btn-block', 'data-style' => "slide-down"),
 //        ));
     }
 

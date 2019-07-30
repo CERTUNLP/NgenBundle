@@ -1,0 +1,38 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+<div class="btn-group inline pull-left dropdown action-dropdown">
+    <a class="btn btn-sm btn-primary"
+       href="{{ path('cert_unlp_ngen_internal_incident_frontend_detail_incident',{'slug':incident.id}) }}"
+       title="{{ 'Details'|trans }}">
+        {{ icon('eye') }}
+    </a>
+    <a class="btn btn-sm btn-primary" role="button"
+       href="{{ path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': incident.id}) }}"
+       title=" {{ 'Edit'|trans }}">
+        {{ icon('edit') }}
+    </a>
+
+    <button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" type="button"
+            id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+        {{ icon('menu') }}
+        <span class="caret"></span>
+    </button>
+
+    <div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+
+    {%  for change in findPosibleStates(incident)  %}
+               {%  if change.slug != incident.state.slug %}
+            <a class="state-label dropdown-item" data-state-slug="{{ change.slug }}" data-state-name="{{ change.name }}" tabindex="-1" href="#">{{ getIconForStateAction(change.incidentAction.slug)|raw }}
+                   <span class="action-text">{{ change.name |trans }}</span>
+               </a>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+</div>

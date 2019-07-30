@@ -57,9 +57,9 @@ class CheckMailCommand extends ContainerAwareCommand
             foreach ($emails as $email) {
                 $output->writeln("<info>Procesando email con id " . $email . '<info>');
                 $subject = $ngen_Connection->getMailHeader($email)->subject;
+                $raw = $ngen_Connection->getMail($email, $mark);
                 if (preg_match("/^Re\:/", $subject) && preg_match('/\[CERTUNLP\]/', $subject)) {
                     preg_match('/\[ID:(?P<id>\d+)\]/', $subject, $incident_id);
-                    $raw = $ngen_Connection->getMail($email, $mark);
                     $mensaje = preg_replace('#(^\w.+:\n)?(^>.*(\n|$))+#mi', '', $raw->textPlain);
                     $mensaje2 = explode("--", $mensaje);
                     $mensaje = substr($mensaje2[0], 0, strrpos($mensaje2[0], "\n"));
@@ -77,6 +77,29 @@ class CheckMailCommand extends ContainerAwareCommand
                         $output->writeln('<error>[Messages]: The incident ' . $incident_id['id'] . ' does not exist.</error>');
 
                     }
+                } else {
+                    #Quiere decir que es un nuevo reporte
+                    $body = $raw->fromName . " <" . $raw->fromAddress . ">  answered: " . print_r($raw);
+                    if ($raw->textPlain) {
+                        $note = $raw->textPlain;
+                    } elseif ($raw->textHtml) {
+                        $note = $raw->textHtml;
+                    }
+                    $body = $raw->fromName . " <" . $raw->fromAddress . ">  answered: " . $note;
+
+                    echo "EINAR:" . $body;
+                    $incident = $this->newIncident();
+                    if ($incident) {
+                        $thread = $comment_thread_manager->findThreadById($incident->getId());
+                        $comment = $comment_manager->createComment($thread);
+                        $comment->setBody($body);
+                        $comment->setAuthor($userMailbot);
+                        $comment_manager->saveComment($comment);
+                        $output->writeln('<info>[Messages]: Persisting comment for incident ' . $incident->getSlug() . ' messages.</info>');
+                    } else {
+                        $output->writeln('<error>[Messages]: Some problem occur with email id: ' . $email . '.</>');
+                    }
+
                 }
             }
         }
@@ -91,6 +114,15 @@ class CheckMailCommand extends ContainerAwareCommand
     private function findIncidentToUpdate($id): ?Incident
     {
         return $this->getContainer()->get('doctrine')->getRepository(Incident::class)->findOneBy(['id' => $id]);
+    }
+
+    /**
+     * @return Incident
+     */
+    private function newIncident(): ?Incident
+    {
+        return  new Incident();
+        //($this->getContainer()->get('doctrine')->getRepository(Incident::class));
     }
 
     /**

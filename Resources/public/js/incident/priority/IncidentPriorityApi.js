@@ -17,20 +17,20 @@ var IncidentPriorityApi = ApiClient.extend({
         $.subscribe('/cert_unlp/incident/priority/update', $.proxy(this.update, this));
     },
     addDefaultChannel: function () {
-        this.api.add("descisions", {stripTrailingSlash: true, url: 'incidents/priorities'});
-        this.defaultChannel = this.api.descisions;
+        this.api.add("priorities", {stripTrailingSlash: true, url: 'incidents/priorities'});
+        this.defaultChannel = this.api.priorities;
     },
-    changeState: function (networkId, isActive, callback) {
+    changeState: function (priorityId, isActive, callback) {
 
-        var request = this.defaultChannel.update(networkId + "/" + (isActive ? "activate" : "desactivate"), {}, {apikey: this.apiKey});
+        var request = this.defaultChannel.update(priorityId + "/" + (isActive ? "activate" : "desactivate"), {}, {apikey: this.apiKey});
         this.doRequest(request, callback);
 
     },
-    activate: function (networkId, callback) {
-        this.changeState(networkId, true, callback);
+    activate: function (priorityId, callback) {
+        this.changeState(priorityId, true, callback);
     },
-    desactivate: function (networkId, callback) {
-        this.changeState(networkId, false, callback);
+    desactivate: function (priorityId, callback) {
+        this.changeState(priorityId, false, callback);
 
     },
 });

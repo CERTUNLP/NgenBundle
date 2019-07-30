@@ -49,5 +49,13 @@ class IncidentRepository extends NetworkElementRepository
 
         return $query->getQuery()->getResult();
     }
+    public function findNotificables($parameters = [])
+    {
+        $query = $this->createQueryBuilder('i')
+          ->where('i.id = :id')
+          ->setParameter('id', 135592);
+
+        return $query->getQuery()->getResult();
+    }
 
 }

@@ -8,7 +8,9 @@
 #}
 
 {% if not incident.incidentsDetected is empty%}
-        <span class="label label-warning"> {{ incident.incidentsDetected|length }}</span>
-        <span class="label label-warning"> {{  'LAST: '|trans}}{{ incident.incidentsDetected|last }}</span>
-
+        <ul>
+                <li>{{ 'Count'|trans }}: <span class="label label-warning"> {{ incident.incidentsDetected|length }}</span>
+                        <li>  <span class="label label-warning"> {{ (incident.incidentsDetected|last).feed }}</span>
+                <li><span class="label label-warning"> {{ (incident.incidentsDetected|last).date|date('Y-m-d') }} </span>
+        </ul>
 {% endif %}
