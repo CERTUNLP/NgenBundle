@@ -2,8 +2,6 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use DateInterval;
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
@@ -31,8 +29,11 @@ class IncidentPriority implements Translatable
      */
 
     protected $urgency;
+    /**
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="priority"))
+     */
 
-
+    protected $incidents;
     /**
      * @var boolean
      *
@@ -40,15 +41,6 @@ class IncidentPriority implements Translatable
      * @JMS\Expose
      */
     private $isActive = true;
-
-
-    /**
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="priority"))
-     */
-
-    protected $incidents;
-
-
     /**
      * @var int
      *
@@ -69,42 +61,6 @@ class IncidentPriority implements Translatable
      * @JMS\Expose
      */
     private $code;
-
-
-    /**
-     * @return mixed
-     */
-
-    public function getIncidents()
-    {
-        return $this->incidents;
-    }
-
-    /**
-     * @param mixed $incidents
-     */
-    public function setIncidents($incidents)
-    {
-        $this->incidents = $incidents;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $slug
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-    }
-
     /**
      * @var string
      * @ORM\Id
@@ -113,7 +69,6 @@ class IncidentPriority implements Translatable
      */
 
     private $slug;
-
     /**
      * @var string|null
      * @ORM\Column(name="name", type="string", length=255)
@@ -151,6 +106,23 @@ class IncidentPriority implements Translatable
      */
     private $resolutionTime;
 
+
+    /**
+     * @return mixed
+     */
+    public function getIncidents()
+    {
+        return $this->incidents;
+    }
+
+    /**
+     * @param mixed $incidents
+     */
+    public function setIncidents($incidents)
+    {
+        $this->incidents = $incidents;
+    }
+
     /**
      * @return int
      */
@@ -183,18 +155,9 @@ class IncidentPriority implements Translatable
         $this->unresolutionTime = $unresolutionTime;
     }
 
-
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getIncidents()
-    {
-        return $this->incidents;
     }
 
     /**
@@ -389,14 +352,6 @@ class IncidentPriority implements Translatable
     }
 
     /**
-     * @return bool
-     */
-    public function isActive()
-    {
-        return true;
-    }
-
-    /**
      * Get isActive
      *
      * @return boolean
@@ -404,6 +359,14 @@ class IncidentPriority implements Translatable
     public function getIsActive(): bool
     {
         return $this->isActive;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        return true;
     }
 
     /**

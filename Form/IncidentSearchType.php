@@ -14,7 +14,7 @@ namespace CertUnlp\NgenBundle\Form;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
 use CertUnlp\NgenBundle\Entity\User;
 use Doctrine\ORM\EntityManager;

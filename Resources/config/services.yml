@@ -307,8 +307,8 @@ services:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
             - [ setAnnotationReader, [ "@annotation_reader" ] ]
-            - [ setTranslatableLocale, [ %ngen_lang% ] ]
-            - [ setTranslationFallback, [ false ] ]
+            - [ setTranslatableLocale, [ "%ngen_lang%" ] ]
+            - [ setTranslationFallback, [ true ] ]
 
     app.image_type_extension:
         class: CertUnlp\NgenBundle\Form\Extension\DateTimeTypeExtension

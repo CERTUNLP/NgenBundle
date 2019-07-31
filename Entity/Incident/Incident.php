@@ -301,7 +301,7 @@ class Incident
      */
     public function getState(): ?IncidentState
     {
-        return $this->getStateEdge()->getNewState();
+        return $this->getStateEdge() ? $this->getStateEdge()->getNewState() : null;
     }
 
     /**
@@ -1235,7 +1235,7 @@ class Incident
      */
     public function getLastState(): IncidentState
     {
-        return $this->getStateEdge()->getOldState();
+        return $this->getStateEdge() ? $this->getStateEdge()->getOldState() : null;
     }
 
     public function isDefined(): ?bool

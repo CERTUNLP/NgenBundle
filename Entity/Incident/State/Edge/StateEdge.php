@@ -13,6 +13,7 @@ namespace CertUnlp\NgenBundle\Entity\Incident\State\Edge;
 
 use CertUnlp\NgenBundle\Entity\Contact\ContactCase;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use DateTime;
 use Doctrine\Common\Collections\Collection;
@@ -59,9 +60,14 @@ abstract class StateEdge
 
     /**
      * @var Incident[] | Collection |null
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state"))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state_edge"))
      */
     private $incidents;
+    /**
+     * @var IncidentDetected[] | Collection |null
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDetected",mappedBy="state_edge"))
+     */
+    private $incidents_detected;
     /**
      * @var boolean
      *
@@ -114,9 +120,27 @@ abstract class StateEdge
     private $mailReporter;
 
     /**
+     * @return IncidentDetected[]|Collection|null
+     */
+    public function getIncidentsDetected(): ?Collection
+    {
+        return $this->incidents_detected;
+    }
+
+    /**
+     * @param IncidentDetected[]|Collection|null $incidents_detected
+     * @return StateEdge
+     */
+    public function setIncidentsDetected(Collection $incidents_detected): self
+    {
+        $this->incidents_detected = $incidents_detected;
+        return $this;
+    }
+
+    /**
      * @return Incident[]|Collection
      */
-    public function getIncidents()
+    public function getIncidents(): Collection
     {
         return $this->incidents;
     }
@@ -125,7 +149,7 @@ abstract class StateEdge
      * @param Incident[]|Collection $incidents
      * @return StateEdge
      */
-    public function setIncidents($incidents)
+    public function setIncidents(Collection $incidents): self
     {
         $this->incidents = $incidents;
         return $this;

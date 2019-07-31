@@ -28,7 +28,7 @@
 
     {%  for change in findPosibleStates(incident)  %}
                {%  if change.slug != incident.state.slug %}
-            <a class="state-label dropdown-item" data-state-slug="{{ change.slug }}" data-state-name="{{ change.name }}" tabindex="-1" href="#">{{ getIconForStateAction(change.incidentAction.slug)|raw }}
+            <a class="state-label dropdown-item" data-state-slug="{{ change.slug }}" data-state-name="{{ change.name }}" tabindex="-1" href="#">{{ getIconForStateAction(change.behavior.slug)|raw }}
                    <span class="action-text">{{ change.name |trans }}</span>
                </a>
         {% endif %}
