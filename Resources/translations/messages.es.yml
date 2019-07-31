@@ -45,7 +45,7 @@ telegram_message: '%s Incidente en el host "*%s*" del tipo "*%s*" con un riesgo 
 'Send messages to Assigned': 'Enviar mensajes al Asignado'
 'Send messages to Reporter': 'Enviar mensajes al reportero'
 'Send messages to Team': 'Enviar mensajes al Equipo'
-'Network Admin Information': '__Network Admin Information'
+'Network Admin Information': 'Información del Administrador de Red'
 Hosts: Hosts
 'add Host': 'agregar un Host'
 Address: Dirección
@@ -162,9 +162,9 @@ search: buscar
 'Incident States': 'Estados de incidente'
 'add incident state': 'agregar estado'
 'Mail to Reporter': 'Mail al reportero'
-'Mail to Assigned': '__Mail al asignado'
-'Mail to Admin': '__Mail al administrador'
-'Mail to Team': '__Mail al equipo'
+'Mail to Assigned': 'Mail al asignado'
+'Mail to Admin': 'Mail al administrador'
+'Mail to Team': 'Mail al equipo'
 state: estado
 'State Information': 'Informacion del estado'
 'Network admins': 'Administradores de red'
@@ -182,7 +182,7 @@ Users: Usuarios
 'Remember me': 'Recuerdame'
 'Sign in': 'Registrarse'
 'Forgot password?': 'Olvidó su contraseña?'
-'User Information': '__User Information'
+'User Information': 'Información del Usuario'
 Userame: Username
 Forgot: Olvidó
 'Change password': 'Cambiar contraseña'
@@ -202,13 +202,13 @@ Recomendations: Recomendaciones
 'More information': 'Mas información'
 'Decision Information': 'Informacion de la decision'
 Detail: Detalle
-'LAST:': '__LAST:'
-'Host info': '__Host info'
-'Yes': __Yes
-'No': __No
-Comments: __Comments
-incident: __incident
-ID: __ID
+'LAST:': 'ULTIMO:'
+'Host info': 'Información del Host'
+'Yes': Si
+'No': No
+Comments: Comentarios
+incident: Incidente
+ID: ID
 'add incident': 'agregar incidente'
 Profile: Perfil
 Logout: Salir

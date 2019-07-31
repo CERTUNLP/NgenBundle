@@ -4,6 +4,7 @@ namespace CertUnlp\NgenBundle\Repository;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use Doctrine\ORM\EntityRepository;
+
 /**
  * IncidentStateRepository
  *
@@ -17,18 +18,22 @@ class IncidentStateRepository extends EntityRepository
      * Get list of posible changes
      *
      *
-     *
+     * @param Incident $incident
+     * @return array
      */
-    public function getPosibleChanges(Incident $incident){
+    public function getPosibleChanges(Incident $incident): array
+    {
         //FIX DAMIAN supongo q lo arreglaste en tu version a esto y capaz no deberia estar aca sino en incident action
         if ($incident->isNew()) {
-            return(parent::findBy(array('incident_action' => array('open','discard','new','open and close'))));
+            return $this->findBy(array('incident_action' => array('open', 'discard', 'new', 'open and close')));
         }
-        elseif ($incident->isClosed()) {
-            return(parent::findBy(array('incident_action' => array('close','reopen'))));
+
+        if ($incident->isClosed()) {
+            return $this->findBy(array('incident_action' => array('close', 'reopen')));
         }
-        elseif (!$incident->isClosed() && !$incident->isNew()) {
-            return parent::findBy(array('incident_action' => array('close','open')));
+
+        if (!$incident->isClosed() && !$incident->isNew()) {
+            return $this->findBy(array('incident_action' => array('close', 'open')));
 
         }
         return array();

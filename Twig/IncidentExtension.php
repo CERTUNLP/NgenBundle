@@ -11,15 +11,23 @@
 
 namespace CertUnlp\NgenBundle\Twig;
 
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Twig_Extension;
 use Twig_SimpleFunction;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
 
-
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class IncidentExtension extends Twig_Extension
 {
+    protected $doctrine;
+
+    public function __construct(RegistryInterface $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
+    // Retrieve doctrine from the constructor
+
     public function getFunctions()
     {
         // Register the function in twig :
@@ -31,43 +39,32 @@ class IncidentExtension extends Twig_Extension
         );
     }
 
-    protected $doctrine;
-    // Retrieve doctrine from the constructor
-    public function __construct(RegistryInterface $doctrine)
+    public function findPosibleStates(Incident $incident)
     {
-        $this->doctrine = $doctrine;
+        return $incident->getState()->getNewStates();
     }
 
-    public function findPosibleStates($slug_state){
-        $em = $this->doctrine->getManager();
-        $myRepo = $em->getRepository('CertUnlpNgenBundle:Incident\IncidentState');
-        return $myRepo->getPosibleChanges($slug_state);
-    }
-
-    public function getIconForStateAction($state_action){
+    public function getIconForStateAction(string $state_action)
+    {
         $text = '<i class="fas fa-exclamation-circle"></i>';
-        if ($state_action === 'open'){
-          $text = '<i class="fas fa-lock-open"></i>';
-        }
-        elseif ($state_action === 'close'){
+        if ($state_action === 'open') {
+            $text = '<i class="fas fa-lock-open"></i>';
+        } elseif ($state_action === 'close') {
             $text = '<i class="fas fa-lock"></i>';
-        }
-        elseif ($state_action === 'discard'){
+        } elseif ($state_action === 'discard') {
             $text = '<i class="fas fa-trash-alt"></i>';
-        }
-        elseif ($state_action === 'new') {
+        } elseif ($state_action === 'new') {
             $text = '<i class="fas fa-circle-notch"></i>';
-        }
-        elseif ($state_action === 'open and close') {
+        } elseif ($state_action === 'open and close') {
             $text = '<i class="fas fa-envelope"></i>';
-        }
-        elseif ($state_action === 'reopen') {
+        } elseif ($state_action === 'reopen') {
             $text = '<i class="fas fa-recycle"></i>';
         }
         return $text;
 
     }
-            public function getName()
+
+    public function getName()
     {
         return 'Twig Incident Extensions';
     }

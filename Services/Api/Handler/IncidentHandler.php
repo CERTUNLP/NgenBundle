@@ -13,11 +13,11 @@ namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use Doctrine\Common\Persistence\ObjectManager;
 use Gedmo\Sluggable\Util as Sluggable;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\SecurityContext;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
 
 class IncidentHandler extends Handler
 {
@@ -128,15 +128,15 @@ class IncidentHandler extends Handler
         return $closedIncidents;
     }
 
-    private function discardByUnattended(Incident $incident)
-    {
-        return ($incident->isNew() and ($incident->getPriority()->getUnresponseTime() <= $incident->getResponseMinutes()));
-    }
-
     private function closeByUnresolved(Incident $incident)
     {
 
         return ((!$incident->isNew()) and ($incident->getPriority()->getUnresolutionTime() <= $incident->getResolutionMinutes()));
+    }
+
+    private function discardByUnattended(Incident $incident)
+    {
+        return ($incident->isNew() and ($incident->getPriority()->getUnresponseTime() <= $incident->getResponseMinutes()));
     }
 
     /**
@@ -164,12 +164,11 @@ class IncidentHandler extends Handler
             $incidentDB->updateVariables($incident);
             $incidentDB->addIncidentDetected($incident);
             $incident = $incidentDB;
-        } elseif($incidentDB && $method === 'PATCH') {
-             $incidentDB->patchStateAndReporter($this->getUser());
-             $incidentDB->addIncidentDetected($incident);
-             $incident = $incidentDB;
-        }
-        else {
+        } elseif ($incidentDB && $method === 'PATCH') {
+            $incidentDB->patchStateAndReporter($this->getUser());
+            $incidentDB->addIncidentDetected($incident);
+            $incident = $incidentDB;
+        } else {
             $incident->updateVariables($incident);
             $incident->addIncidentDetected($incident);
 
@@ -265,8 +264,8 @@ class IncidentHandler extends Handler
      */
     public function slugUpdate(Incident $incident): void
     {
-        $firstPart = $incident->getOrigin() ? $incident->getOrigin()->getAddress() : sha1(uniqid(mt_rand()));
-        $secondPart = $incident->getState() ? $incident->getState() : sha1(uniqid(mt_rand()));
+        $firstPart = $incident->getOrigin() ? $incident->getOrigin()->getAddress() : sha1(uniqid(mt_rand(), true));
+        $secondPart = $incident->getState() ? $incident->getState() : sha1(uniqid(mt_rand(), true));
         $incident->setSlug(Sluggable\Urlizer::urlize($firstPart . ' ' . $secondPart . ' ' . $incident->getDate()->format('Y-m-d-H-i'), '_'));
     }
 

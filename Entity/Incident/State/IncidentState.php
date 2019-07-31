@@ -111,24 +111,6 @@ class IncidentState implements Translatable
     }
 
     /**
-     * @return mixed
-     */
-    public function getIncidents(): Collection
-    {
-        return $this->incidents;
-    }
-
-    /**
-     * @param mixed $incidents
-     * @return IncidentState
-     */
-    public function setIncidents(Collection $incidents): IncidentState
-    {
-        $this->incidents = $incidents;
-        return $this;
-    }
-
-    /**
      * @param Incident $incident
      * @param IncidentState $newState
      * @return bool
