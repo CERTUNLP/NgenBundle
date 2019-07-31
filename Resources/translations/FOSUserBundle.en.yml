@@ -1,0 +1,17 @@
+profile.show.username: __profile.show.username
+profile.show.email: __profile.show.email
+'Api key': '__Api key'
+profile.edit.submit: __profile.edit.submit
+change_password.submit: __change_password.submit
+resetting.check_email: __resetting.check_email
+resetting.reset.submit: __resetting.reset.submit
+resetting.request.username: __resetting.request.username
+resetting.request.submit: __resetting.request.submit
+resetting.email.subject: __resetting.email.subject
+resetting.email.message: __resetting.email.message
+registration.check_email: __registration.check_email
+registration.submit: __registration.submit
+registration.email.subject: __registration.email.subject
+registration.email.message: __registration.email.message
+registration.confirmed: __registration.confirmed
+registration.back: __registration.back
