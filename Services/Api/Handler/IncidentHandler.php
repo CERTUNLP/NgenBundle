@@ -102,41 +102,40 @@ class IncidentHandler extends Handler
 
     public function closeOldIncidents($unattendedState, $unresolvedState): array
     {
-
         $incidents = $this->all(['isClosed' => false]);
-        $uastate = $this->om->getRepository(IncidentState::class)->findOneBySlug($unattendedState);
-        $urstate = $this->om->getRepository(IncidentState::class)->findOneBySlug($unresolvedState);
         $closedIncidents = [];
         foreach ($incidents as $incident) {
             $close = false;
-            if ($this->closeByUnresolved($incident)) {
-                $close = true;
-                $incident->setState($urstate);
+            if ($this->closeByUnsolved($incident)) {
+                $incident->setState($incident->getUnsolvedState());
+                $close = $incident->getState() == $incident->getUnsolvedState();
             } elseif ($this->discardByUnattended($incident)) {
-                $close = true;
-                $incident->setState($uastate);
+                $incident->setState($incident->getUnattendedState());
+                $close = $incident->getState() == $incident->getUnattendedState();
 
             }
-            //$this->om->persist($incident);
             if ($close) {
+                $this->om->persist($incident);
                 $closedIncidents[$incident->getId()] = ['id' => $incident->getSlug(),
                     'type' => $incident->getType()->getSlug(),
+                    'date' => $incident->getDate()->format('Y-m-d H:i:s'),
+                    'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
                     'newState' => $incident->getState()->getSlug()];
             }
         }
-        //$this->om->flush();
+        $this->om->flush();
         return $closedIncidents;
     }
 
     private function discardByUnattended(Incident $incident)
     {
-        return ($incident->isNew() and ($incident->getPriority()->getUnresponseTime() <= $incident->getResponseMinutes()));
+        return (($incident->getUnattendedState() != null and $incident->getUnattendedState() != 'undefined' and $incident->getUnattendedState() != $incident->getState()) and ($incident->isNew() and ($incident->getPriority()->getUnresponseTime() <= $incident->getResponseMinutes())));
     }
 
-    private function closeByUnresolved(Incident $incident)
+    private function closeByUnsolved(Incident $incident)
     {
 
-        return ((!$incident->isNew()) and ($incident->getPriority()->getUnresolutionTime() <= $incident->getResolutionMinutes()));
+        return (($incident->getUnattendedState() != null and $incident->getUnsolvedState() != 'undefined' and $incident->getUnsolvedState() != $incident->getState()) and (!$incident->isNew()) and ($incident->getPriority()->getUnresolutionTime() <= $incident->getResolutionMinutes()));
     }
 
     /**

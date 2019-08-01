@@ -56,9 +56,7 @@ class IncidentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('reporter', HiddenType::class, array(
-                'data' => $this->userLogged,
-            ))
+
             ->add('type', null, array(
                 'empty_value' => 'Choose an incident type',
                 'required' => true,
@@ -157,6 +155,10 @@ class IncidentType extends AbstractType
                 'description' => 'Send a mail report to the host administrator.'
             ))
             ->add('id', HiddenType::class, array(
+                'required' => false,
+            ))
+            ->add('reporter', HiddenType::class, array(
+                'data' => $this->userLogged,
                 'required' => false,
             ))
             ->add('isNew', HiddenType::class, array(
