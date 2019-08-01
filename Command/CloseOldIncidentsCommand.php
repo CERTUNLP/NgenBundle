@@ -34,7 +34,7 @@ class CloseOldIncidentsCommand extends ContainerAwareCommand
         $output->writeln('[incidents]: Closing old incidents...');
         $closedIncidents = $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->closeOldIncidents($input->getOption('unattended-state'), $input->getOption('unresolved-state'));
         foreach ($closedIncidents as $closedIncident) {
-            $output->writeln('[incidents]: Closed incidents: ' . print_r($closedIncident));
+            $output->writeln('[incident closed]: ' . print_r($closedIncident));
         }
         $output->writeln('[incidents]: Closed incidents: ' . count($closedIncidents));
         $output->writeln('[incidents]: Done.');

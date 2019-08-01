@@ -9,38 +9,45 @@
 
 {% extends 'CertUnlpNgenBundle::IncidentDecision/Frontend/frontend.html.twig' %}
 {% block content_header %}
-    <h2 class="page-header">{{ icon('plus-circle fa-fw') }} {{"Decision" | trans  }}</h2>
+    <h1 class="h3 mb-0 text-gray-800">{{ icon('plus-circle fa-fw') }} {{ "Decision" | trans }}</h1>
 {% endblock %}
 {% block content_body %}
-
     {% if (form is not null) %}
         {{ form_start(form,{'attr': {'role':'form','id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal'}) }}
         {{ form_errors(form, { 'global_errors': true }) }}
 
-        <fieldset class="scheduler-border" style="border:#0d70b7 2px solid;width:80%;margin:1em 1em 1em 1em">
-            <legend class="scheduler-border">{{ "Decision Filter"|trans }}</legend>
-
-         <div class="form-group" style="width:100%">
-
-        {{ form_row(form.type) }}
-        {{ form_row(form.feed) }}
-        {{ form_row(form.network) }}
-
-         </div>
+        <fieldset class="form-group row">
+            <div class="container row border border-primary rounded p-2">
+                <legend class="col-form-label col-sm-2 pt-5">{{ "Decision Filter"|trans }}</legend>
+                <div class="col-sm-10">
+                    {{ form_row(form.type) }}
+                    {{ form_row(form.feed) }}
+                    {{ form_row(form.network) }}
+                </div>
+            </div>
         </fieldset>
-          <fieldset class="scheduler-border" style="border:#0d70b7 2px solid;width:80%;margin:1em 1em 1em 1em">
-            <legend class="scheduler-border">{{ "Decision Properties" |trans }}</legend>
-        <div class="form-group" style="width:100%">
-        {{ form_row(form.state) }}
+
+        <fieldset class="form-group row">
+            <div class=" container row border border-primary rounded p-2">
+                <legend class="col-form-label col-sm-2 pt-5">{{ "Decision Properties" |trans }}</legend>
+                <div class="col-sm-10">
+                    {{ form_row(form.state) }}
+                    {{ form_row(form.unattendState) }}
+                    {{ form_row(form.unsolvedState) }}
         {{ form_row(form.tlp) }}
         {{ form_row(form.impact) }}
         {{ form_row(form.urgency) }}
         {{ form_row(form.id) }}
+                </div>
+            </div>
+
+        </fieldset>
+
+        <div class="container row ">
+            <div class="col-sm-12">
+                {{ form_row(form.save) }}
+            </div>
         </div>
-          </fieldset>
-         <div class="form-group" style="width:80%;float:left;margin:1em 1em 1em 1em">
-        {{ form_row(form.save) }}
-         </div>
         {{ form_end(form) }}
 
 
