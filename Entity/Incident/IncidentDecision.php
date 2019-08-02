@@ -4,6 +4,7 @@ namespace CertUnlp\NgenBundle\Entity\Incident;
 
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 
@@ -283,6 +284,7 @@ class IncidentDecision
     /**
      * @param Incident $incident
      * @return Incident
+     * @throws Exception
      */
     public function doDecision(Incident $incident): Incident
     {

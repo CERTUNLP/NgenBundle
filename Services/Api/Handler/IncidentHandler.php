@@ -15,6 +15,7 @@ use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use Doctrine\Common\Persistence\ObjectManager;
+use Exception;
 use Gedmo\Sluggable\Util as Sluggable;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -78,6 +79,7 @@ class IncidentHandler extends Handler
      * @param Incident $incident
      * @param $state
      * @return Incident|object
+     * @throws Exception
      */
     public function changeState(Incident $incident, $state)
     {
@@ -151,14 +153,15 @@ class IncidentHandler extends Handler
      * @param $incident Incident
      * @param $method
      * @return object|null
-     * @throws \Exception
+     * @throws Exception
      */
     public function checkIfExists($incident, $method)
     {
         $this->updateIncidentData($incident);
         $incidentDB = false;
         if ($incident->isDefined()) {
-            $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
+            //TODO: saque el isClosed, hay q ver como checkear si esta cerrado o volver a poner el bool
+            $incidentDB = $this->repository->findOneBy([ 'origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
         }
         if ($incidentDB && $method === 'POST') {
             $incidentDB->updateVariables($incident);
@@ -196,7 +199,6 @@ class IncidentHandler extends Handler
             $host = $incident->getOrigin();
             $host_new = $this->getHostHandler()->findOneByAddress($incident->getAddress()) ?: $this->getHostHandler()->post(['address' => $incident->getAddress()]);
             if ($host) {
-
                 if (!$host->equals($host_new) && !$incident->isClosed()) {
                     $incident->setOrigin($host_new);
                 }
@@ -254,7 +256,7 @@ class IncidentHandler extends Handler
         if ($incident->getDate() == null) {
             try {
                 $incident->setDate(new \DateTime('now'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
             }
         }
     }

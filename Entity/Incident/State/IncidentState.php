@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Entity\Incident\State;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentChangeState;
 use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
 use DateTime;
@@ -119,9 +120,9 @@ class IncidentState implements Translatable
     public function changeIncidentState(Incident $incident, IncidentState $newState): bool
     {
         $edge = $this->getNewStateEdge($newState);
-
         if ($edge) {
             $edge->changeIncidentState($incident);
+            $incident->addChangeStateHistory(new IncidentChangeState($incident, $edge));
             return true;
         }
         return false;
