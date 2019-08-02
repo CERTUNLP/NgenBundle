@@ -13,10 +13,8 @@ namespace CertUnlp\NgenBundle\Entity\Incident\State\Edge;
 
 use CertUnlp\NgenBundle\Entity\Contact\ContactCase;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use DateTime;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -48,6 +46,7 @@ abstract class StateEdge
      * @var IncidentState
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState", inversedBy="edges")
      * @ORM\JoinColumn(name="oldState", referencedColumnName="slug")
+     * @JMS\Expose
      */
     protected $oldState;
 
@@ -55,19 +54,10 @@ abstract class StateEdge
      * @var IncidentState
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="newState", referencedColumnName="slug")
+     * @JMS\Expose
      */
     protected $newState;
 
-    /**
-     * @var Incident[] | Collection |null
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state_edge"))
-     */
-    private $incidents;
-    /**
-     * @var IncidentDetected[] | Collection |null
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDetected",mappedBy="state_edge"))
-     */
-    private $incidents_detected;
     /**
      * @var boolean
      *
@@ -75,6 +65,7 @@ abstract class StateEdge
      * @JMS\Expose
      */
     private $isActive = true;
+
     /**
      * @var DateTime|null
      * @Gedmo\Timestampable(on="create")
@@ -97,6 +88,7 @@ abstract class StateEdge
      * @ORM\JoinColumn(name="mail_assigned", referencedColumnName="slug")
      */
     private $mailAssigned;
+
     /**
      * @var ContactCase|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
@@ -104,56 +96,20 @@ abstract class StateEdge
      */
 
     private $mailTeam;
+
     /**
      * @var ContactCase|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_admin", referencedColumnName="slug")
      */
-
     private $mailAdmin;
+
     /**
      * @var ContactCase|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_reporter", referencedColumnName="slug")
      */
-
     private $mailReporter;
-
-    /**
-     * @return IncidentDetected[]|Collection|null
-     */
-    public function getIncidentsDetected(): ?Collection
-    {
-        return $this->incidents_detected;
-    }
-
-    /**
-     * @param IncidentDetected[]|Collection|null $incidents_detected
-     * @return StateEdge
-     */
-    public function setIncidentsDetected(Collection $incidents_detected): self
-    {
-        $this->incidents_detected = $incidents_detected;
-        return $this;
-    }
-
-    /**
-     * @return Incident[]|Collection
-     */
-    public function getIncidents(): Collection
-    {
-        return $this->incidents;
-    }
-
-    /**
-     * @param Incident[]|Collection $incidents
-     * @return StateEdge
-     */
-    public function setIncidents(Collection $incidents): self
-    {
-        $this->incidents = $incidents;
-        return $this;
-    }
 
     public function __toString(): string
     {
@@ -240,12 +196,30 @@ abstract class StateEdge
     public function changeIncidentState(Incident $incident): Incident
     {
         $this->changeIncidentStateAction($incident);
-        $incident->changeState($this);
+        $incident->changeState($this->getNewState());
         return $incident;
 
     }
 
     abstract public function changeIncidentStateAction(Incident $incident): Incident;
+
+    /**
+     * @return IncidentState
+     */
+    public function getNewState(): IncidentState
+    {
+        return $this->newState;
+    }
+
+    /**
+     * @param IncidentState $newState
+     * @return StateEdge
+     */
+    public function setNewState(IncidentState $newState): StateEdge
+    {
+        $this->newState = $newState;
+        return $this;
+    }
 
     /**
      * @return bool
@@ -279,24 +253,6 @@ abstract class StateEdge
     public function setOldState(IncidentState $oldState): StateEdge
     {
         $this->oldState = $oldState;
-        return $this;
-    }
-
-    /**
-     * @return IncidentState
-     */
-    public function getNewState(): IncidentState
-    {
-        return $this->newState;
-    }
-
-    /**
-     * @param IncidentState $newState
-     * @return StateEdge
-     */
-    public function setNewState(IncidentState $newState): StateEdge
-    {
-        $this->newState = $newState;
         return $this;
     }
 

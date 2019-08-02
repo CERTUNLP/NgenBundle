@@ -30,41 +30,6 @@ class ClosedBehavior extends StateBehavior
         return 0;
     }
 
-
-    /**
-     * @param Incident $incident
-     * @param Incident $incidentDetected
-     * @return Incident
-     */
-    public function addIncidentDetected(Incident $incident, Incident $incidentDetected): Incident
-    {
-        if ($this->canEnrich()) {
-            $nuevo = new IncidentDetected($incidentDetected, $incident);
-            $incident->getIncidentsDetected()->add($nuevo);
-            $incident->increaseLtdCount();
-        }
-        return $incident;
-    }
-
-    /**
-     * @param $property
-     * @param $value
-     * @param bool $fundamental
-     * @return bool
-     */
-    public function setter(&$property, $value, bool $fundamental = false): bool
-    {
-        if ($this->canEdit()) {
-            if ($fundamental && !$this->canEditFundamentals()) {
-                return false;
-            }
-            $property = $value;
-            return true;
-        }
-        return false;
-    }
-
-
     public function updateTlp(Incident $incident, Incident $incidentDetected): Incident
     {
         return $incident;

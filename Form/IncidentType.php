@@ -14,9 +14,9 @@ namespace CertUnlp\NgenBundle\Form;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentImpact;
-use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Form\Listener\IncidentDefaultFieldsListener;
 use DateTime;
@@ -163,12 +163,12 @@ class IncidentType extends AbstractType
             ->add('id', HiddenType::class, array(
                 'required' => false,
             ))
-            ->add('isNew', HiddenType::class, array(
-                'required' => false,
-            ))
-            ->add('isClosed', HiddenType::class, array(
-                'required' => false,
-            ))
+//            ->add('isNew', HiddenType::class, array(
+//                'required' => false,
+//            ))
+//            ->add('isClosed', HiddenType::class, array(
+//                'required' => false,
+//            ))
             ->add('save', SubmitType::class, array(
                 'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
 //                    'description' => "Evidence file that will be attached to the report "
@@ -209,28 +209,27 @@ class IncidentType extends AbstractType
 
         // get the data if 'reviewing' the information
         /**
-         * @var Invoices
+         * @var Incident
          */
         $data = $event->getData();
 
-
         // disable field if it has been populated with a client already
-        if ($data and !$data->isNew())
+        if ($data && !$data->canEditFundamentals()) {
             $form->add('type', null, array(
                 'empty_value' => 'Choose an incident type',
                 'required' => true,
-                'disabled' => "disabled",
+                'disabled' => 'disabled',
                 'description' => '(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|'
                     . 'dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|'
                     . 'open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|'
                     . 'open_ssdp|phishing|poodle|scan|shellshock|spam)',
-                'query_builder' => function (EntityRepository $er) {
+                'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
                 ->add('address', null, array(
                     'required' => true,
-                    'disabled' => "disabled",
+                    'disabled' => 'disabled',
                     'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
                     'label' => 'Address',
                     'description' => 'The network ip and mask',
@@ -238,12 +237,13 @@ class IncidentType extends AbstractType
                 ->add('feed', EntityType::class, array(
                     'class' => IncidentFeed::class,
                     'required' => true,
-                    'disabled' => "disabled",
+                    'disabled' => 'disabled',
                     'description' => '(bro|external_report|netflow|shadowserver)',
-                    'query_builder' => function (EntityRepository $er) {
+                    'query_builder' => static function (EntityRepository $er) {
                         return $er->createQueryBuilder('it')
                             ->where('it.isActive = TRUE');
                     }));
+        }
 
     }
 

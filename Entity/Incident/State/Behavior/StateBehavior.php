@@ -368,19 +368,12 @@ class StateBehavior
      */
     public function addChangeStateHistory(Incident $incident, IncidentChangeState $changeState): Incident
     {
-        if ($this->canEnrich()) {
-            $incident->getChangeStateHistory()->add($changeState);
-        }
+//        if ($this->canEnrich()) {
+//        var_dump($changeState->getId());
+        $incident->getChangeStateHistory()->add($changeState);
+//        }
 
         return $incident;
-    }
-
-    /**
-     * @return bool
-     */
-    public function canEnrich(): bool
-    {
-        return $this->canEnrich;
     }
 
     /**
@@ -399,6 +392,14 @@ class StateBehavior
     }
 
     /**
+     * @return bool
+     */
+    public function canEnrich(): bool
+    {
+        return $this->canEnrich;
+    }
+
+    /**
      * @param $property
      * @param $value
      * @param bool $fundamental
@@ -406,14 +407,18 @@ class StateBehavior
      */
     public function setter(&$property, $value, bool $fundamental = false): bool
     {
-        if ($this->canEdit()) {
-            if ($fundamental && !$this->canEditFundamentals()) {
-                return false;
+        if ($property) {
+            if ($this->canEdit()) {
+                if ($fundamental && !$this->canEditFundamentals()) {
+                    return false;
+                }
+                $property = $value;
+                return true;
             }
-            $property = $value;
-            return true;
+            return false;
         }
-        return false;
+        $property = $value;
+        return true;
     }
 
     /**

@@ -251,7 +251,7 @@
                                 <td class="">
                                 </td>
                                 <td class="">
-                                    {{ object.network.networkAdmin.emailsAsString }}
+                                    {{ object.network.networkAdmin? object.network.networkAdmin.emailsAsString: '' }}
                                 </td>
                             </tr>
                         </table>
@@ -398,7 +398,8 @@
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_internal_incident_search_incident') }}{% endblock %}
 
 {% block content_header %}
-    <h2 class="page-header">{{ icon('arrow-circle-down fa-fw') }}{{ 'incident'|trans }} [{{ 'ID'|trans }}:{{ object.id }}
+    <h2 class="page-header">{{ icon('arrow-circle-down fa-fw') }}{{ 'incident'|trans }} [{{ 'ID'|trans }}
+        :{{ object.id }}
         ][{{ object.type }}
         ]{% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object} %}</h2>
 {% endblock %}

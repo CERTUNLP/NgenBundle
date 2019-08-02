@@ -2,7 +2,6 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
 use DateTime;
@@ -58,12 +57,13 @@ class IncidentDetected
      */
     protected $feed;
     /**
-     * @var StateEdge
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge", inversedBy="incidents_detected")
+     * @var IncidentState
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
+     * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    protected $state_edge;
+    protected $state;
     /**
      * @var IncidentTlp
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp", inversedBy="incidents")
@@ -258,33 +258,15 @@ class IncidentDetected
      */
     public function getState(): IncidentState
     {
-        return $this->getStateEdge()->getNewState();
+        return $this->state;
     }
 
     /**
-     * @return StateEdge
+     * @param IncidentState $state
      */
-    public function getStateEdge(): StateEdge
+    public function setState(IncidentState $state): void
     {
-        return $this->state_edge;
-    }
-
-    /**
-     * @param StateEdge $state_edge
-     * @return IncidentDetected
-     */
-    public function setStateEdge(StateEdge $state_edge): IncidentDetected
-    {
-        $this->state_edge = $state_edge;
-        return $this;
-    }
-
-    /**
-     * @return IncidentState
-     */
-    public function getLastState(): IncidentState
-    {
-        return $this->getStateEdge()->getOldState();
+        $this->state = $state;
     }
 
     /**
