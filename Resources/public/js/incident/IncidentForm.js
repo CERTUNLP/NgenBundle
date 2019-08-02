@@ -34,6 +34,15 @@ var IncidentForm = Form.extend({
             $("#state").val(response.responseJSON.state.slug).trigger('change');
             $("#impact").val(response.responseJSON.impact.slug).trigger('change');
             $("#urgency").val(response.responseJSON.urgency.slug).trigger('change');
+            $("#unattendedState").val(response.responseJSON.unattended_state.slug).trigger('change');
+            $("#unsolvedState").val(response.responseJSON.unsolved_state.slug).trigger('change');
+            $.publish('/cert_unlp/incident/priority/read', [response.responseJSON.impact.slug+'_'+response.responseJSON.urgency.slug, $.proxy(this.changePriorityTimes, this)]);
+        }
+    },
+    changePriorityTimes: function(response){
+        if (Object.keys(response).length) {
+            $("#timeToAttend").text(response.responseJSON.response_time).trigger('change');
+            $("#timeToSolve").text(response.responseJSON.resolution_time).trigger('change');
         }
     },
     setIncidentId: function () {

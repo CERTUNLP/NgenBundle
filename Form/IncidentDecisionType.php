@@ -94,7 +94,7 @@ class IncidentDecisionType extends AbstractType
                 'empty_value' => 'Choose an urgency level.',
                 'description' => 'If none is selected, the assigned urgency will be Low',
             ))
-            ->add('unattendState', null, array(
+            ->add('unattendedState', null, array(
                 'class' => IncidentState::class,
                 'empty_value' => 'Choose an incident state',
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
@@ -126,7 +126,7 @@ class IncidentDecisionType extends AbstractType
                 $form->get('type')->setData($doctrine->getReference(\CertUnlp\NgenBundle\Entity\Incident\IncidentType::class, 'undefined'));
                 $form->get('feed')->setData($doctrine->getReference(IncidentFeed::class, 'undefined'));
                 $form->get('state')->setData($doctrine->getReference(IncidentState::class, 'undefined'));
-                $form->get('unattendState')->setData($doctrine->getReference(IncidentState::class, 'undefined'));
+                $form->get('unattendedState')->setData($doctrine->getReference(IncidentState::class, 'undefined'));
                 $form->get('unsolvedState')->setData($doctrine->getReference(IncidentState::class, 'undefined'));
                 $form->get('impact')->setData($doctrine->getReference(IncidentImpact::class, 'undefined'));
                 $form->get('urgency')->setData($doctrine->getReference(IncidentUrgency::class, 'undefined'));

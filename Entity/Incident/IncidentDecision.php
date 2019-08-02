@@ -79,27 +79,25 @@ class IncidentDecision
 
     protected $tlp;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState",)
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose()
      */
+
     protected $state;
 
     /**
-     * @var IncidentState
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
-     * @ORM\JoinColumn(name="unattend_state", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @ORM\JoinColumn(name="unattended_state", referencedColumnName="slug")
+     * @JMS\Expose()
      */
-    protected $unattendState;
+
+    protected $unattendedState;
 
     /**
-     * @var IncidentState
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
      * @ORM\JoinColumn(name="unsolved_state", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
      */
     protected $unsolvedState;
 
