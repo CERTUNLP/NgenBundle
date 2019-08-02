@@ -154,6 +154,24 @@ class IncidentType extends AbstractType
                 'label' => 'Send report',
                 'description' => 'Send a mail report to the host administrator.'
             ))
+            ->add('unattendedState', EntityType::class, array(
+                'class' => IncidentState::class,
+                'empty_value' => 'Choose an incident state',
+                'attr' => array('help_text' => 'If none is selected, it may be selected by incident decisions.'),
+                'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('it')
+                        ->where('it.isActive = TRUE');
+                }))
+            ->add('unsolvedState', EntityType::class, array(
+                'class' => IncidentState::class,
+                'empty_value' => 'Choose an incident state',
+                'attr' => array('help_text' => 'If none is selected, it may be selected by incident decisions.'),
+                'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('it')
+                        ->where('it.isActive = TRUE');
+                }))
             ->add('id', HiddenType::class, array(
                 'required' => false,
             ))

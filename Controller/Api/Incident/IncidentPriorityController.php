@@ -75,7 +75,7 @@ class IncidentPriorityController extends FOSRestController
      * @FOS\View(
      *  templateVar="incident_priority"
      * )
-     * @ParamConverter("incident_priority", class="CertUnlpNgenBundle:IncidentPriority")
+     * @ParamConverter("incident_priority", class="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority")
      * @FOS\Get("/priorities/{id}")
      */
     public function getIncidentPriorityAction(IncidentPriority $incident_priority)
