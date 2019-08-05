@@ -12,6 +12,7 @@ var IncidentForm = Form.extend({
         $("#tlp").on("change", $.proxy(this.changeTLP, this));
         $("#type").on("change", $.proxy(this.getIncidentDecision, this));
         $("#feed").on("change", $.proxy(this.getIncidentDecision, this));
+        $(".incidentFilter").on("change", $.proxy(this.getIncident, this));
         this.changeTLP();
     },
     changeTLP: function () {
@@ -26,7 +27,11 @@ var IncidentForm = Form.extend({
         this.laddaButton.start();
         $.publish('/cert_unlp/incident/decision/read', [$id, $.proxy(this.changeDefaults, this)]);
         this.laddaButton.stop();
-
+    },
+    getIncident: function () {
+        let $ip = $("#address").val();
+        var $data = $("#type option:selected").val() + ($ip ? '/' + $ip : '');
+        $.publish('/cert_unlp/incident/search', [$data, $.proxy(this.changeIncidentInfo, this)]);
     },
     changeDefaults: function (response) {
         if (Object.keys(response).length) {
@@ -53,6 +58,19 @@ var IncidentForm = Form.extend({
     },
     getObjectId: function () {
         return this.incidentId;
+    },
+    changeIncidentInfo: function(response){
+        if (response.responseJSON.length == 1) {
+            $('#incidentInfo').html('<hr>Incident exist!<a href="'+response.responseJSON[0].id+'/edit">Edit</a>');
+            disableIncidentFields();
+        }
+        else if (response.responseJSON.length > 1){
+            $('#incidentInfo').html('<hr><a href="">More than one incident with this information.</a>');
+        }
+        else{
+            $('#incidentInfo').html('<hr>This is a new Incident');
+        }
+
     }
 });
 

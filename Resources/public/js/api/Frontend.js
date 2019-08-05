@@ -41,7 +41,6 @@ var Frontend = Class.extend({
                 if ($(this).parent().parent().children('.form-check-input')[0]!= null && $(this).parent().parent().children('.form-check-input')[0].checked){
                     valor= valor+'*';
                 }
-
                 if ($(this).attr('index') != null && $(this).attr('index').length > 0) {
                     name = $(this).attr('index');
                 } else {
@@ -63,7 +62,7 @@ var Frontend = Class.extend({
             } else {
                 name = $(this).attr('name');
             }
-            if ($(this).val() != null && $(this).val().length > 0) {
+            if ($(this).val() != null && $(this).val() !=0 && $(this).val().length > 0) {
                 valor = $(this).val();
                 if ($(this).parent().parent().children('.form-check-input')[0]!= null && $(this).parent().parent().children('.form-check-input')[0].checked){
                     valor= valor+'*';
