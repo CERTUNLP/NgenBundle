@@ -100,7 +100,7 @@ class IncidentHandler extends Handler
         return $this->repository->findNotificables();
     }
 
-    public function closeOldIncidents($unattendedState, $unresolvedState): array
+    public function closeOldIncidents(): array
     {
         $incidents = $this->all(['isClosed' => false]);
         $closedIncidents = [];

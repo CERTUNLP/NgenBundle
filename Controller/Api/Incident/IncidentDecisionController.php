@@ -61,7 +61,6 @@ class IncidentDecisionController extends FOSRestController
     }
 
     /**
-     * Gets a Network for a given id.
      *
      * @ApiDoc(
      *   resource = true,

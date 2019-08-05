@@ -122,6 +122,7 @@ class IncidentSearchType extends AbstractType
             ->add('ltdCount', null, array(
                 'label' => false,
                 'required'=>false,
+                'empty_data'=>'',
                 'attr' => array('class' => 'select-filter')
             ))
             ->add('priority', EntityType::class, array(
