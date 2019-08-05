@@ -665,15 +665,6 @@ class Incident
     }
 
     /**
-     * @return int
-     * @throws Exception
-     */
-    public function getResponseMinutes(): int
-    {
-        return $this->getBehavior()->getResponseMinutes($this);
-    }
-
-    /**
      * @return bool
      */
     public function isNew(): ?bool
@@ -891,6 +882,24 @@ class Incident
     {
         $this->setter($this->network, $network);
         return $this;
+    }
+
+    /**
+     * @return int
+     * @throws Exception
+     */
+    public function getDelayedMinutes(): int
+    {
+        return $this->getPriority()->getResponseTime() - $this->getResponseMinutes();
+    }
+
+    /**
+     * @return int
+     * @throws Exception
+     */
+    public function getResponseMinutes(): int
+    {
+        return $this->getBehavior()->getResponseMinutes($this);
     }
 
     public function statusToString(): string
