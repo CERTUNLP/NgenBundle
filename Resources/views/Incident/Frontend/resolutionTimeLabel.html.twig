@@ -7,20 +7,19 @@
  with this source code in the file LICENSE.
 #}
 
-{%  set atrasado= incident.priority.resolutiontime-incident.resolutionMinutes %}
  {% if not incident.isNew %}
- {% if not incident.isClosed %}
-     {%   if atrasado > 0 %}
-         <span class="label label-success" > {{ 'Waiting for resolution'|trans}} {{ atrasado }}{{ ' minutes left'|trans }}</span>
-    {%  else %}
-        <span class="label label-danger" > {{ 'Resolution delayed for'|trans}}{{ atrasado * -1 }}{{ ' minutes'|trans }}</span>
-     {% endif %}
- {% else %}
-     {%   if atrasado > 0 %}
-         <span class="label label-success" > {{ 'Resolved on time'|trans}} {{ atrasado}}{{ ' minutes left'|trans }}</span>
+     {% if not incident.isClosed %}
+         {% if incident.delayedMinutes > 0 %}
+             <span class="label label-success"> {{ 'Waiting for resolution'|trans }} {{ incident.delayedMinutes }}{{ 'minutes left'|trans }}</span>
+         {% else %}
+             <span class="label label-danger"> {{ 'Resolution delayed for'|trans }}{{ incident.delayedMinutes * -1 }}{{ 'minutes'|trans }}</span>
+         {% endif %}
      {% else %}
-         <span class="label label-danger" > {{ 'Resolution delayed for'|trans}}{{ atrasado * -1 }}{{ ' minutes'|trans }}</span>
-    {% endif %}
+         {% if incident.delayedMinutes > 0 %}
+             <span class="label label-success"> {{ 'Resolved on time'|trans }} {{ incident.delayedMinutes }}{{ 'minutes left'|trans }}</span>
+         {% else %}
+             <span class="label label-danger"> {{ 'Resolution delayed for'|trans }}{{ incident.delayedMinutes * -1 }}{{ 'minutes'|trans }}</span>
+         {% endif %}
 
- {% endif %}
+     {% endif %}
  {% endif %}
