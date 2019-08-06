@@ -13,15 +13,13 @@ namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
-use CertUnlp\NgenBundle\Entity\Network\Address\Address;
-use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
+use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -151,7 +149,6 @@ class IncidentController extends FOSRestController
     }
 
 
-
     /**
      * Update existing incident from the submitted data.
      *
@@ -210,11 +207,6 @@ class IncidentController extends FOSRestController
         return $this->getDoctrine()->getRepository(IncidentPriority::class)->find($this->getImpact(), $this->getUrgency());
     }
 
-    private function isInternal(string $ip)
-    {
-        return $this->get('cert_unlp.ngen.network.handler')->getByHostAddress($ip);
-    }
-
     /**
      * List all incidents.
      *
@@ -239,7 +231,7 @@ class IncidentController extends FOSRestController
     {
 
         ##return null
-        return $this->getApiController()->getAll($request, $from,$to);
+        return $this->getApiController()->getAll($request, $from, $to);
     }
 
     /**
@@ -267,7 +259,12 @@ class IncidentController extends FOSRestController
 
     public function getIncidentSearchAction(IncidentType $type, $ip_v4 = null, host $ip_v6 = null, Host $domains = null)
     {
-        return $this->getDoctrine()->getRepository(Incident::class)->findByTypeAndAddress( $type, $ip_v4 ?? $ip_v6 ?? $domains);
+        return $this->getDoctrine()->getRepository(Incident::class)->findByTypeAndAddress($type, $ip_v4 ?? $ip_v6 ?? $domains);
+    }
+
+    private function isInternal(string $ip)
+    {
+        return $this->get('cert_unlp.ngen.network.handler')->getByHostAddress($ip);
     }
 
 }

@@ -13,7 +13,6 @@ namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
-use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use Doctrine\Common\Persistence\ObjectManager;
 use Exception;
 use Gedmo\Sluggable\Util as Sluggable;
@@ -129,21 +128,15 @@ class IncidentHandler extends Handler
         return $closedIncidents;
     }
 
-    private function closeByUnresolved(Incident $incident)
+    private function closeByUnsolved(Incident $incident)
     {
 
-        return ((!$incident->isNew()) and ($incident->getPriority()->getUnresolutionTime() <= $incident->getResolutionMinutes()));
+        return (($incident->getUnattendedState() != null and $incident->getUnsolvedState() != 'undefined' and $incident->getUnsolvedState() != $incident->getState()) and (!$incident->isNew()) and ($incident->getPriority()->getUnresolutionTime() <= $incident->getResolutionMinutes()));
     }
 
     private function discardByUnattended(Incident $incident)
     {
         return (($incident->getUnattendedState() != null and $incident->getUnattendedState() != 'undefined' and $incident->getUnattendedState() != $incident->getState()) and ($incident->isNew() and ($incident->getPriority()->getUnresponseTime() <= $incident->getResponseMinutes())));
-    }
-
-    private function closeByUnsolved(Incident $incident)
-    {
-
-        return (($incident->getUnattendedState() != null and $incident->getUnsolvedState() != 'undefined' and $incident->getUnsolvedState() != $incident->getState()) and (!$incident->isNew()) and ($incident->getPriority()->getUnresolutionTime() <= $incident->getResolutionMinutes()));
     }
 
     /**
@@ -166,7 +159,7 @@ class IncidentHandler extends Handler
         $incidentDB = false;
         if ($incident->isDefined()) {
             //TODO: saque el isClosed, hay q ver como checkear si esta cerrado o volver a poner el bool
-            $incidentDB = $this->repository->findOneBy([ 'origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
+            $incidentDB = $this->repository->findOneBy(['origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
         }
         if ($incidentDB && $method === 'POST') {
             $incidentDB->updateVariables($incident);
@@ -312,6 +305,12 @@ class IncidentHandler extends Handler
     {
         return new $this->entityClass($params['address']);
 
+    }
+
+    private function closeByUnresolved(Incident $incident)
+    {
+
+        return ((!$incident->isNew()) and ($incident->getPriority()->getUnresolutionTime() <= $incident->getResolutionMinutes()));
     }
 
 }
