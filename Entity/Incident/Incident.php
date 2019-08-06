@@ -114,57 +114,6 @@ class Incident
      * @JMS\Groups({"api"})
      */
     protected $unsolvedState;
-
-    /**
-     * @return IncidentState
-     */
-    public function getUnattendedState(): ?IncidentState
-    {
-        return $this->unattendedState;
-    }
-
-    /**
-     * @param IncidentState $unattendedState
-     */
-    public function setUnattendedState(IncidentState $unattendedState = null): void
-    {
-        $this->unattendedState = $unattendedState;
-    }
-
-    /**
-     * @return IncidentState
-     */
-    public function getUnsolvedState(): ?IncidentState
-    {
-        return $this->unsolvedState;
-    }
-
-    /**
-     * @param IncidentState $unsolvedState
-     */
-    public function setUnsolvedState(IncidentState $unsolvedState = null): void
-    {
-        $this->unsolvedState = $unsolvedState;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isDiscarded(): bool
-    {
-        return $this->isDiscarded;
-    }
-
-    /**
-     * @param bool $isDiscarded
-     */
-    public function setIsDiscarded(bool $isDiscarded): void
-    {
-        $this->isDiscarded = $isDiscarded;
-    }
-
-
-
     /**
      * @var User
      */
@@ -336,6 +285,54 @@ class Incident
         }
         $this->incidentsDetected = new ArrayCollection();
         $this->changeStateHistory = new ArrayCollection();
+    }
+
+    /**
+     * @return IncidentState
+     */
+    public function getUnattendedState(): ?IncidentState
+    {
+        return $this->unattendedState;
+    }
+
+    /**
+     * @param IncidentState $unattendedState
+     */
+    public function setUnattendedState(IncidentState $unattendedState = null): void
+    {
+        $this->unattendedState = $unattendedState;
+    }
+
+    /**
+     * @return IncidentState
+     */
+    public function getUnsolvedState(): ?IncidentState
+    {
+        return $this->unsolvedState;
+    }
+
+    /**
+     * @param IncidentState $unsolvedState
+     */
+    public function setUnsolvedState(IncidentState $unsolvedState = null): void
+    {
+        $this->unsolvedState = $unsolvedState;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDiscarded(): bool
+    {
+        return $this->isDiscarded;
+    }
+
+    /**
+     * @param bool $isDiscarded
+     */
+    public function setIsDiscarded(bool $isDiscarded): void
+    {
+        $this->isDiscarded = $isDiscarded;
     }
 
     /**

@@ -34,15 +34,15 @@ var IncidentApi = ApiClient.extend({
         this.api.add("incidents", {stripTrailingSlash: true})
         this.defaultChannel = this.api.incidents;
     },
-    searchPriority: function(priorityId,callback){
+    searchPriority: function (priorityId, callback) {
 
         var request = this.api.priorities.read(priorityId, {});
         this.doRequest(request, callback);
     },
-    searchIncident: function(data,callback){
+    searchIncident: function (data, callback) {
 
         var request = this.api.incidentSearch.read(data, {});
         this.doRequest(request, callback);
     }
 
-    });
+});

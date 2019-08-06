@@ -101,6 +101,33 @@ class IncidentDecision
      * @JMS\Expose()
      */
     protected $unsolvedState;
+    /**
+     * @var string
+     * @ORM\Column(name="slug", type="string", length=100)
+     * @Gedmo\Slug(handlers={
+     *      @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\RelativeSlugHandler", options={
+     *          @Gedmo\SlugHandlerOption(name="relationField", value="type"),
+     *          @Gedmo\SlugHandlerOption(name="relationSlugField", value="slug"),
+     *          @Gedmo\SlugHandlerOption(name="separator", value="_")
+     *      })
+     * }, fields={"id"})
+     *
+     */
+    protected $slug;
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="auto_saved", type="boolean")
+     * @JMS\Expose()
+     */
+    private $autoSaved = false;
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     * @JMS\Expose()
+     */
+    private $isActive = true;
 
     /**
      * @return IncidentState
@@ -133,38 +160,6 @@ class IncidentDecision
     {
         $this->unsolvedState = $unsolvedState;
     }
-
-
-    /**
-     * @var string
-     * @ORM\Column(name="slug", type="string", length=100)
-     * @Gedmo\Slug(handlers={
-     *      @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\RelativeSlugHandler", options={
-     *          @Gedmo\SlugHandlerOption(name="relationField", value="type"),
-     *          @Gedmo\SlugHandlerOption(name="relationSlugField", value="slug"),
-     *          @Gedmo\SlugHandlerOption(name="separator", value="_")
-     *      })
-     * }, fields={"id"})
-     *
-     */
-    protected $slug;
-
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="auto_saved", type="boolean")
-     * @JMS\Expose()
-     */
-    private $autoSaved = false;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose()
-     */
-    private $isActive = true;
 
     public function __toString()
     {

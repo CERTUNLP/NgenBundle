@@ -49,30 +49,33 @@ class IncidentRepository extends NetworkElementRepository
 
         return $query->getQuery()->getResult();
     }
+
     public function findNotificables($parameters = [])
     {
         $query = $this->createQueryBuilder('i')
-          ->where('i.id = :id')
-          ->setParameter('id', 135592);
+            ->where('i.id = :id')
+            ->setParameter('id', 135592);
 
         return $query->getQuery()->getResult();
     }
-public function findByTypeAndAddress($type,$address) {
-    $qb = $this->createQueryBuilder('i');
 
-    $qb->select('i')
-        ->innerJoin('i.origin', 'h')
-        ->where($qb->expr()->orX(
-            $qb->expr()->eq('h.ip', ':address'),
-            $qb->expr()->eq('h.domain', ':address')
-        ))
-        ->andWhere('i.type = :type')
-        ->andWhere('i.isClosed = :closed')
-        ->setParameter('type', $type)
-        ->setParameter('address', $address)
-        ->setParameter('closed', FALSE);
+    public function findByTypeAndAddress($type, $address)
+    {
+        $qb = $this->createQueryBuilder('i');
 
-    return $qb->getQuery()->getResult();
+        $qb->select('i')
+            ->innerJoin('i.origin', 'h')
+            ->where($qb->expr()->orX(
+                $qb->expr()->eq('h.ip', ':address'),
+                $qb->expr()->eq('h.domain', ':address')
+            ))
+            ->andWhere('i.type = :type')
+            ->andWhere('i.isClosed = :closed')
+            ->setParameter('type', $type)
+            ->setParameter('address', $address)
+            ->setParameter('closed', FALSE);
+
+        return $qb->getQuery()->getResult();
 
     }
 

@@ -38,8 +38,8 @@ var Frontend = Class.extend({
                 subquery = '(';
                 parametros = JSON.parse($(this).attr('search'));
                 valor = $(this).val();
-                if ($(this).parent().parent().children('.form-check-input')[0]!= null && $(this).parent().parent().children('.form-check-input')[0].checked){
-                    valor= valor+'*';
+                if ($(this).parent().parent().children('.form-check-input')[0] != null && $(this).parent().parent().children('.form-check-input')[0].checked) {
+                    valor = valor + '*';
                 }
                 if ($(this).attr('index') != null && $(this).attr('index').length > 0) {
                     name = $(this).attr('index');
@@ -62,10 +62,10 @@ var Frontend = Class.extend({
             } else {
                 name = $(this).attr('name');
             }
-            if ($(this).val() != null && $(this).val() !=0 && $(this).val().length > 0) {
+            if ($(this).val() != null && $(this).val() != 0 && $(this).val().length > 0) {
                 valor = $(this).val();
-                if ($(this).parent().parent().children('.form-check-input')[0]!= null && $(this).parent().parent().children('.form-check-input')[0].checked){
-                    valor= valor+'*';
+                if ($(this).parent().parent().children('.form-check-input')[0] != null && $(this).parent().parent().children('.form-check-input')[0].checked) {
+                    valor = valor + '*';
                 }
                 if ($(this).attr('search') != null && $(this).attr('search').length > 0) {
                     query = (query) + ' && ' + name + '.' + $(this).attr('search') + ':' + valor;
@@ -121,30 +121,30 @@ var Frontend = Class.extend({
         }
         this.laddaButton.stop();
     },
-    filterListComplete: function(query){
-        $.get( "getFilterList",{ "term":query}, function( data ) {
+    filterListComplete: function (query) {
+        $.get("getFilterList", {"term": query}, function (data) {
             $('#tabla_incidentes > tbody:last').html(data.tabla);
-            $('#incidentcount').html(data.indice.lastItemNumber+"/"+data.indice.totalCount);
+            $('#incidentcount').html(data.indice.lastItemNumber + "/" + data.indice.totalCount);
             $('#filters').html(data.filters);
             $('#paginatorbar').html(data.paginador);
-            $("#paginatorbar").on("click",".pagination", function(){
-                $.get(event.target.href, function(data) {
+            $("#paginatorbar").on("click", ".pagination", function () {
+                $.get(event.target.href, function (data) {
                     $('#tabla_incidentes > tbody:last').html(data.tabla);
-                    $('#incidentcount').html(data.indice.lastItemNumber+"/"+data.indice.totalCount);
+                    $('#incidentcount').html(data.indice.lastItemNumber + "/" + data.indice.totalCount);
                     $('#paginatorbar').html(data.paginador);
                     $('#filters').html(data.filters);
                 });
                 return false;
             });
-            $("#filters").on("click",".header",function(){
-            $.get(event.target.href, function(data) {
-                $('#tabla_incidentes > tbody:last').html(data.tabla);
-                $('#incidentcount').html(data.indice.lastItemNumber+"/"+data.indice.totalCount);
-                $('#paginatorbar').html(data.paginador);
-                $('#filters').html(data.filters);
+            $("#filters").on("click", ".header", function () {
+                $.get(event.target.href, function (data) {
+                    $('#tabla_incidentes > tbody:last').html(data.tabla);
+                    $('#incidentcount').html(data.indice.lastItemNumber + "/" + data.indice.totalCount);
+                    $('#paginatorbar').html(data.paginador);
+                    $('#filters').html(data.filters);
+                });
+                return false;
             });
-            return false;
-        });
 
             $.publish('/cert_unlp/notify/success', ["The list was filtered"]);
         });
