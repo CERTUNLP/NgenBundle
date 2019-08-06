@@ -12,12 +12,16 @@
 namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
+use CertUnlp\NgenBundle\Entity\Network\Address\Address;
+use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -210,6 +214,7 @@ class IncidentController extends FOSRestController
     {
         return $this->get('cert_unlp.ngen.network.handler')->getByHostAddress($ip);
     }
+
     /**
      * List all incidents.
      *
@@ -236,4 +241,33 @@ class IncidentController extends FOSRestController
         ##return null
         return $this->getApiController()->getAll($request, $from,$to);
     }
+
+    /**
+     * Get single Incident using type and address.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   output = "CertUnlp\NgenBundle\Entity\Incident\Incident",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when the incident is not found",
+     *     409 = "More than one incident"
+     *   }
+     * )
+     * @FOS\View(
+     *  templateVar="incident_existing"
+     * )
+     * @param IncidentType $type
+     * @return Incident
+     * @FOS\Get("/incidents/search/{type}")
+     * @FOS\Get("/incidents/search/{type}/{domains}", name="_domain",requirements={"domains"="^(?:[-A-Za-z0-9]+\.)+[A-Za-z0-9]{2,6}$"} )
+     * @FOS\Get("/incidents/search/{type}/{ip_v4}", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"} )
+     * @FOS\Get("/incidents/search/{type}/{ip_v6}", name="_ip_v6",  requirements={"ip_v6"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$"} )
+     */
+
+    public function getIncidentSearchAction(IncidentType $type, $ip_v4 = null, host $ip_v6 = null, Host $domains = null)
+    {
+        return $this->getDoctrine()->getRepository(Incident::class)->findByTypeAndAddress( $type, $ip_v4 ?? $ip_v6 ?? $domains);
+    }
+
 }
