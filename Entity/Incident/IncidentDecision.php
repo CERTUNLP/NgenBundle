@@ -80,11 +80,61 @@ class IncidentDecision
 
     protected $tlp;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState",)
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose()
      */
+
     protected $state;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
+     * @ORM\JoinColumn(name="unattended_state", referencedColumnName="slug")
+     * @JMS\Expose()
+     */
+
+    protected $unattendedState;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
+     * @ORM\JoinColumn(name="unsolved_state", referencedColumnName="slug")
+     * @JMS\Expose()
+     */
+    protected $unsolvedState;
+
+    /**
+     * @return IncidentState
+     */
+    public function getUnattendedState(): IncidentState
+    {
+        return $this->unattendedState;
+    }
+
+    /**
+     * @param IncidentState $unattendedState
+     */
+    public function setUnattendedState(IncidentState $unattendedState): void
+    {
+        $this->unattendedState = $unattendedState;
+    }
+
+    /**
+     * @return IncidentState
+     */
+    public function getUnsolvedState(): IncidentState
+    {
+        return $this->unsolvedState;
+    }
+
+    /**
+     * @param IncidentState $unsolvedState
+     */
+    public function setUnsolvedState(IncidentState $unsolvedState): void
+    {
+        $this->unsolvedState = $unsolvedState;
+    }
+
+
     /**
      * @var string
      * @ORM\Column(name="slug", type="string", length=100)

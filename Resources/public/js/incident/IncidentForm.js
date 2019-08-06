@@ -12,6 +12,7 @@ var IncidentForm = Form.extend({
         $("#tlp").on("change", $.proxy(this.changeTLP, this));
         $("#type").on("change", $.proxy(this.getIncidentDecision, this));
         $("#feed").on("change", $.proxy(this.getIncidentDecision, this));
+        $(".incidentFilter").on("change", $.proxy(this.getIncident, this));
         this.changeTLP();
     },
     changeTLP: function () {
@@ -25,7 +26,11 @@ var IncidentForm = Form.extend({
         this.laddaButton.start();
         $.publish('/cert_unlp/incident/decision/read', [$id, $.proxy(this.changeDefaults, this)]);
         this.laddaButton.stop();
-
+    },
+    getIncident: function () {
+        let $ip = $("#address").val();
+        var $data = $("#type option:selected").val() + ($ip ? '/' + $ip : '');
+        $.publish('/cert_unlp/incident/search', [$data, $.proxy(this.changeIncidentInfo, this)]);
     },
     changeDefaults: function (response) {
         if (Object.keys(response).length) {
@@ -33,6 +38,15 @@ var IncidentForm = Form.extend({
             $("#state").val(response.responseJSON.state.slug).trigger('change');
             $("#impact").val(response.responseJSON.impact.slug).trigger('change');
             $("#urgency").val(response.responseJSON.urgency.slug).trigger('change');
+            $("#unattendedState").val(response.responseJSON.unattended_state.slug).trigger('change');
+            $("#unsolvedState").val(response.responseJSON.unsolved_state.slug).trigger('change');
+            $.publish('/cert_unlp/incident/priority/read', [response.responseJSON.impact.slug+'_'+response.responseJSON.urgency.slug, $.proxy(this.changePriorityTimes, this)]);
+        }
+    },
+    changePriorityTimes: function(response){
+        if (Object.keys(response).length) {
+            $("#timeToAttend").text(response.responseJSON.response_time).trigger('change');
+            $("#timeToSolve").text(response.responseJSON.resolution_time).trigger('change');
         }
     },
     setIncidentId: function () {
@@ -43,6 +57,19 @@ var IncidentForm = Form.extend({
     },
     getObjectId: function () {
         return this.incidentId;
+    },
+    changeIncidentInfo: function(response){
+        if (response.responseJSON.length == 1) {
+            $('#incidentInfo').html('<hr>Incident exist!<a href="'+response.responseJSON[0].id+'/edit">Edit</a>');
+            disableIncidentFields();
+        }
+        else if (response.responseJSON.length > 1){
+            $('#incidentInfo').html('<hr><a href="">More than one incident with this information.</a>');
+        }
+        else{
+            $('#incidentInfo').html('<hr>This is a new Incident');
+        }
+
     }
 });
 
