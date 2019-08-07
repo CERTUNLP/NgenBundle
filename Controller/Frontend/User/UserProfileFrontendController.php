@@ -55,7 +55,8 @@ class UserProfileFrontendController extends ProfileController
      * @param Request $request
      * @return null|RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request)
+
+    public function editAction(Request $request=null)
     {
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
