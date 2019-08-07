@@ -182,10 +182,6 @@ class IncidentType extends AbstractType
             ->add('id', HiddenType::class, array(
                 'required' => false,
             ))
-            ->add('reporter', HiddenType::class, array(
-                'data' => $this->userLogged,
-                'required' => false,
-            ))
             ->add('isNew', HiddenType::class, array(
                 'required' => false,
             ))
