@@ -18,12 +18,12 @@
 
 {% block content_body %}
     <div class="embed-container">
-        <iframe id="internal" width="100%" frameborder="0" allowfullscreen>
+        <iframe id="internal-dashboard" width="100%" frameborder="0" allowfullscreen>
         </iframe>
     </div>
 
     <div class="embed-container" >
-        <iframe id="external" width="100%" frameborder="0" allowfullscreen>
+        <iframe id="external-dashboard" width="100%" frameborder="0" allowfullscreen>
         </iframe>
     </div>
 {% endblock %}
@@ -31,17 +31,23 @@
 
 {% block javascripts %}
     {{ parent() }}
-   <script>
-       $.ajax({
-           url: "/secure/{{ externalDashboard }}",
-           beforeSend: function(xhr) { xhr.setRequestHeader("Authorization", "Basic " + btoa("auth" + ":" + "{{ app.user.apiKey }}")); },
-           method: "GET",
-       });
-       $.ajax({
-           url: "/secure/{{ internalDashboard }}",
-           beforeSend: function(xhr) { xhr.setRequestHeader("Authorization", "Basic " + btoa("auth" + ":" + "{{ app.user.apiKey }}")); },
-           method: "GET",
-       });
-   </script>
 
+    <script type="text/javascript">
+        $.ajax(
+            {
+                type: 'GET',
+                url: "/secure/{{ internalDashboard }}",
+                contentType: 'application/json',
+                beforeSend: function(xhr, settings) {
+                    xhr.setRequestHeader(
+                        'Authorization', 'Basic ' + window.btoa("auth" + ":" + "{{ app.user.apiKey }}")
+                    );
+                },
+                success: function(data) {
+                    $('#internal-dashboard').attr('src', "/secure/{{ internalDashboard }}");
+                    $('#internal-dashboard').contents().find('html').html(data);
+                }
+            }
+        );
+    </script>
 {% endblock %}
