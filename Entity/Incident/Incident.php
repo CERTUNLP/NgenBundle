@@ -196,6 +196,58 @@ class Incident implements IncidentInterface
     protected $date;
 
     /**
+     * @return DateTime
+     */
+    public function getResponseDeadLine(): DateTime
+    {
+        return $this->responseDeadLine;
+    }
+
+    /**
+     * @param DateTime $responseDeadLine
+     */
+    public function setResponseDeadLine(DateTime $responseDeadLine): void
+    {
+        $this->responseDeadLine = $responseDeadLine;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getSolveDeadLine(): DateTime
+    {
+        return $this->solveDeadLine;
+    }
+
+    /**
+     * @param DateTime $solveDeadLine
+     */
+    public function setSolveDeadLine(DateTime $solveDeadLine): void
+    {
+        $this->solveDeadLine = $solveDeadLine;
+    }
+
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="response_dead_line", type="datetime",nullable=true))
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
+     */
+    protected $responseDeadLine;
+
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="solve_dead_line", type="datetime",nullable=true))
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
+     */
+    protected $solveDeadLine;
+
+    /**
      * @var Collection
      * @JMS\Expose
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDetected",mappedBy="incident",cascade={"persist"},orphanRemoval=true)

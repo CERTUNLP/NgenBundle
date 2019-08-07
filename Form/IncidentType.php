@@ -170,6 +170,16 @@ class IncidentType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
+
+            ->add('responseDeadLine', DateTimeType::class, array(
+                'required' => false,
+                'html5' => true,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'data' => new DateTime(),
+                'attr' => array('class'=>'incidentDataFilter','type' => 'datetime-local', 'help_text' => 'If no date is selected, the date will be today.'),
+                'description' => 'If no date is selected, the date will be today.',
+            ))
             ->add('unsolvedState', EntityType::class, array(
                 'class' => IncidentState::class,
                 'empty_value' => 'Choose an incident state',
@@ -179,6 +189,16 @@ class IncidentType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
+
+            ->add('solveDeadLine', DateTimeType::class, array(
+                'required' => false,
+                'html5' => true,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'data' => new DateTime(),
+                'attr' => array('class'=>'incidentDataFilter','type' => 'datetime-local', 'help_text' => 'If no date is selected, the date will be today.'),
+                'description' => 'If no date is selected, the date will be today.',
+            ))
             ->add('id', HiddenType::class, array(
                 'required' => false,
             ))

@@ -18,12 +18,12 @@
 
 {% block content_body %}
     <div class="embed-container">
-        <iframe src="{{ externalDashboard }}" width="100%" frameborder="0" allowfullscreen>
+        <iframe id="internal" width="100%" frameborder="0" allowfullscreen>
         </iframe>
     </div>
 
-    <div class="embed-container">
-        <iframe src="{{ internalDashboard }}" width="100%" frameborder="0" allowfullscreen>
+    <div class="embed-container" >
+        <iframe id="external" width="100%" frameborder="0" allowfullscreen>
         </iframe>
     </div>
 {% endblock %}
@@ -31,4 +31,17 @@
 
 {% block javascripts %}
     {{ parent() }}
+   <script>
+       $.ajax({
+           url: "/secure/{{ externalDashboard }}",
+           beforeSend: function(xhr) { xhr.setRequestHeader("Authorization", "Basic " + btoa("auth" + ":" + "{{ app.user.apiKey }}")); },
+           method: "GET",
+       });
+       $.ajax({
+           url: "/secure/{{ internalDashboard }}",
+           beforeSend: function(xhr) { xhr.setRequestHeader("Authorization", "Basic " + btoa("auth" + ":" + "{{ app.user.apiKey }}")); },
+           method: "GET",
+       });
+   </script>
+
 {% endblock %}
