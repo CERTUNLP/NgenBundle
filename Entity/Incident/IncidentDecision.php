@@ -104,7 +104,7 @@ class IncidentDecision
     /**
      * @return IncidentState
      */
-    public function getUnattendedState(): IncidentState
+    public function getUnattendedState(): ?IncidentState
     {
         return $this->unattendedState;
     }
@@ -120,7 +120,7 @@ class IncidentDecision
     /**
      * @return IncidentState
      */
-    public function getUnsolvedState(): IncidentState
+    public function getUnsolvedState(): ?IncidentState
     {
         return $this->unsolvedState;
     }

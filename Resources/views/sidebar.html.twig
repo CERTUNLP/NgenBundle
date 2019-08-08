@@ -13,7 +13,7 @@
     <form method="post" action="{% block sideBar_search_path %}{% endblock %}"
           role="search">
         <div class="input-group custom-search-form">
-            <input type="text" name="term" class="form-control" value="{{ term | default('') }}"
+            <input type="text" name="term" class="generalSearch form-control" value="{{ term | default('') }}"
                    placeholder="Search...">
             <span class="input-group-btn">
                                         <button type="submit" class="btn btn-secondary">{{ icon('search') }}</button>
