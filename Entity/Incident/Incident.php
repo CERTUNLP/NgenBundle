@@ -49,19 +49,19 @@ class Incident
      * @ORM\GeneratedValue(strategy="AUTO")
      * @JMS\Expose
      */
-    protected $id;
+    private $id;
 
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="incidents")
      */
-    protected $reporter;
+    private $reporter;
 
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="assignedIncidents")
      */
-    protected $assigned;
+    private $assigned;
 
     /**
      * @var IncidentType
@@ -71,7 +71,7 @@ class Incident
      * @JMS\Groups({"api"})
      * @CustomAssert\TypeHasReport
      */
-    protected $type;
+    private $type;
 
     /**
      * @var IncidentFeed
@@ -81,7 +81,7 @@ class Incident
      * @JMS\Groups({"api"})
      * @Assert\NotNull
      */
-    protected $feed;
+    private $feed;
 
     /**
      * @var IncidentState
@@ -90,34 +90,34 @@ class Incident
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    protected $state;
+    private $state;
 
     /**
      * @var IncidentState
      */
-    protected $lastState;
+    private $lastState;
 
     /**
      * @var IncidentState
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unattended_state", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    protected $unattendedState;
+    private $unattendedState;
 
     /**
      * @var IncidentState
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unsolved_state", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    protected $unsolvedState;
+    private $unsolvedState;
     /**
      * @var User
      */
-    protected $reportReporter;
+    private $reportReporter;
     /**
      * @var IncidentTlp
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp", inversedBy="incidents")
@@ -125,7 +125,7 @@ class Incident
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    protected $tlp;
+    private $tlp;
     /**
      * @var IncidentPriority
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority", inversedBy="incidents")
@@ -133,20 +133,20 @@ class Incident
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    protected $priority;
+    private $priority;
     /**
      * @var IncidentImpact
      */
-    protected $impact;
+    private $impact;
     /**
      * @var IncidentUrgency
      */
-    protected $urgency;
+    private $urgency;
     /**
      * @var IncidentCommentThread
      * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread",mappedBy="incident",fetch="EXTRA_LAZY"))
      */
-    protected $comment_thread;
+    private $comment_thread;
     /**
      * @var DateTime
      *
@@ -155,21 +155,21 @@ class Incident
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      * @JMS\Groups({"api"})
      */
-    protected $date;
+    private $date;
     /**
      * @var Collection
      * @JMS\Expose
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDetected",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
      * @JMS\Groups({"api"})
      */
-    protected $incidentsDetected;
+    private $incidentsDetected;
     /**
      * @var Collection
      * @JMS\Expose
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentChangeState",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
      * @JMS\Groups({"api"})
      */
-    protected $changeStateHistory;
+    private $changeStateHistory;
     /**
      * @var DateTime
      *
@@ -178,7 +178,7 @@ class Incident
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      * @JMS\Groups({"api"})
      */
-    protected $renotificationDate;
+    private $renotificationDate;
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="create")
@@ -187,7 +187,7 @@ class Incident
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      * @JMS\Groups({"api"})
      */
-    protected $createdAt;
+    private $createdAt;
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="update")
@@ -196,7 +196,7 @@ class Incident
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      * @JMS\Groups({"api"})
      */
-    protected $updatedAt;
+    private $updatedAt;
     /**
      * @var DateTime
      * @ORM\Column(name="opened_at", type="datetime", nullable=true)
@@ -204,32 +204,32 @@ class Incident
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      * @JMS\Groups({"api"})
      */
-    protected $openedAt;
+    private $openedAt;
     /**
      * @var boolean
      */
-    protected $needToCommunicate = false;
+    private $needToCommunicate = false;
     /**
      * @Assert\File(maxSize = "500k")
      */
-    protected $evidence_file;
+    private $evidence_file;
     /**
      * @ORM\Column(name="evidence_file_path", type="string",nullable=true)
      */
-    protected $evidence_file_path;
+    private $evidence_file_path;
     /**
      * @var string
      * @ORM\Column(name="report_message_id", type="string",nullable=true)
      */
-    protected $report_message_id;
+    private $report_message_id;
     /**
      * @var $evidence_file_temp
      */
-    protected $evidence_file_temp;
+    private $evidence_file_temp;
     /**
      * @var bool
      */
-    protected $sendReport = false;
+    private $sendReport = false;
     /**
      * @var string
      *
@@ -238,16 +238,16 @@ class Incident
      * @JMS\Expose
      * @JMS\Groups({"api"})
      * */
-    protected $slug;
+    private $slug;
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
      */
-    protected $notes;
+    private $notes;
     /**
      * @ORM\Column(name="ltd_count", type="integer")
      */
-    protected $ltdCount = 0;
+    private $ltdCount = 0;
     /**
      * @var Host|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_origin")
@@ -367,14 +367,12 @@ class Incident
      * @return Incident
      * @throws Exception
      */
-    public function setState(IncidentState $state): Incident
+    public function setState(IncidentState $state = null): ?Incident
     {
         if ($this->getState()) {
-            $this->getState()->changeIncidentState($this, $state);
-        } else {
-            $this->changeState($state);
+            return $this->getState()->changeIncidentState($this, $state);
         }
-        return $this;
+        return $this->changeState($state);
     }
 
     /**
@@ -382,7 +380,7 @@ class Incident
      * @param IncidentState $state
      * @return Incident
      */
-    public function changeState(IncidentState $state): Incident
+    public function changeState(IncidentState $state = null): Incident
     {
         $this->state = $state;
         return $this;

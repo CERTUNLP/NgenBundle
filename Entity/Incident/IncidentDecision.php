@@ -2,6 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
@@ -88,7 +89,7 @@ class IncidentDecision
     protected $state;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unattended_state", referencedColumnName="slug")
      * @JMS\Expose()
      */
@@ -96,7 +97,7 @@ class IncidentDecision
     protected $unattendedState;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unsolved_state", referencedColumnName="slug")
      * @JMS\Expose()
      */
@@ -336,7 +337,7 @@ class IncidentDecision
         $incident->getTlp() ?: $incident->setTlp($this->getTlp());
         $incident->getImpact() ?: $incident->setImpact($this->getImpact());
         $incident->getUrgency() ?: $incident->setUrgency($this->getUrgency());
-        $incident->getState() ?: $incident->setStateAndReporter($this->getState(), $incident->getReporter());
+        $incident->setStateAndReporter($this->getState(), $incident->getReporter());
         $incident->getType() ?: $incident->setType($this->getType());
         return $incident;
     }

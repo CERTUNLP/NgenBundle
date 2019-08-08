@@ -26,7 +26,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity()
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"opening" = "OpeningEdge", "closing" = "ClosingEdge", "reopening" = "ReopeningEdge", "updating" = "UpdatingEdge", "discarding" = "DiscardingEdge", "edge" = "StateEdge"})
+ * @ORM\DiscriminatorMap({"initializing"= "InitializingEdge", "opening" = "OpeningEdge", "closing" = "ClosingEdge", "reopening" = "ReopeningEdge", "updating" = "UpdatingEdge", "discarding" = "DiscardingEdge", "edge" = "StateEdge"})
  * @JMS\ExclusionPolicy("all")
  */
 abstract class StateEdge
@@ -222,23 +222,6 @@ abstract class StateEdge
     }
 
     /**
-     * @return bool
-     */
-    public function isOpening(): bool
-    {
-        return $this->isNewToOpen();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNewToOpen(): bool
-    {
-
-        return $this->getOldState()->isNew() && $this->getNewState()->isOpen();
-    }
-
-    /**
      * @return IncidentState
      */
     public function getOldState(): IncidentState
@@ -254,84 +237,6 @@ abstract class StateEdge
     {
         $this->oldState = $oldState;
         return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isClosing(): bool
-    {
-
-        return $this->isOpenToClose() || $this->isNewToClose();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isOpenToClose(): bool
-    {
-        return $this->getOldState()->isOpen() && $this->getNewState()->isClosed();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNewToClose(): bool
-    {
-
-        return $this->getOldState()->isNew() && $this->getNewState()->isClosed();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isReopening(): bool
-    {
-        return $this->isCloseToOpen();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCloseToOpen(): bool
-    {
-
-        return $this->getOldState()->isClosed() && $this->getNewState()->isOpen();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isUpdating(): bool
-    {
-        return $this->isOpenToOpen() || $this->isCloseToClose() || $this->isNewToNew();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isOpenToOpen(): bool
-    {
-
-        return $this->getOldState()->isOpen() && $this->getNewState()->isOpen();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCloseToClose(): bool
-    {
-
-        return $this->getOldState()->isOpen() && $this->getNewState()->isOpen();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNewToNew(): bool
-    {
-
-        return $this->getOldState()->isNew() && $this->getNewState()->isNew();
     }
 
     /**

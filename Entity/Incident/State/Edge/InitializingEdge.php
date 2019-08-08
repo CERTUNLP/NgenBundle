@@ -12,7 +12,6 @@
 namespace CertUnlp\NgenBundle\Entity\Incident\State\Edge;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
@@ -24,7 +23,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity()
  * @JMS\ExclusionPolicy("all")
  */
-class OpeningEdge extends StateEdge
+class InitializingEdge extends StateEdge
 {
 
     /**
@@ -32,7 +31,7 @@ class OpeningEdge extends StateEdge
      */
     public function isOpening(): bool
     {
-        return true;
+        return false;
     }
 
 
@@ -75,13 +74,11 @@ class OpeningEdge extends StateEdge
      */
     public function isInitializing(): bool
     {
-        return false;
+        return true;
     }
 
     public function changeIncidentStateAction(Incident $incident): Incident
     {
-        $incident->setNeedToCommunicate(true);
-        $incident->setOpenedAt(new DateTime('now'));
         return $incident;
     }
 

@@ -69,6 +69,14 @@ class UpdatingEdge extends StateEdge
     }
 
     /**
+     * @return bool
+     */
+    public function isInitializing(): bool
+    {
+        return false;
+    }
+
+    /**
      * @param Incident $incident
      * @return Incident
      */

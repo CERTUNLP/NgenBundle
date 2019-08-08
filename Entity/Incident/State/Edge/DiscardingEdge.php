@@ -69,6 +69,14 @@ class DiscardingEdge extends StateEdge
         return true;
     }
 
+    /**
+     * @return bool
+     */
+    public function isInitializing(): bool
+    {
+        return false;
+    }
+
     public function changeIncidentStateAction(Incident $incident): Incident
     {
         return $incident;

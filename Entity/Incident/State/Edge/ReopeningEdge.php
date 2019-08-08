@@ -68,6 +68,14 @@ class ReopeningEdge extends StateEdge
         return false;
     }
 
+    /**
+     * @return bool
+     */
+    public function isInitializing(): bool
+    {
+        return false;
+    }
+
     public function changeIncidentStateAction(Incident $incident): Incident
     {
         $incident->setNeedToCommunicate(true);
