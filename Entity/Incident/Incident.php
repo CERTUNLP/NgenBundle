@@ -198,7 +198,7 @@ class Incident implements IncidentInterface
     /**
      * @return DateTime
      */
-    public function getResponseDeadLine(): DateTime
+    public function getResponseDeadLine(): ?DateTime
     {
         return $this->responseDeadLine;
     }
@@ -214,7 +214,7 @@ class Incident implements IncidentInterface
     /**
      * @return DateTime
      */
-    public function getSolveDeadLine(): DateTime
+    public function getSolveDeadLine(): ?DateTime
     {
         return $this->solveDeadLine;
     }
@@ -920,7 +920,6 @@ class Incident implements IncidentInterface
      */
     public function setState(IncidentState $state = null): Incident
     {
-
         if ($this->getReporter()) {
             $reporter = $this->getReporter();
         } else {
