@@ -33,18 +33,21 @@
     {{ parent() }}
 
     <script type="text/javascript">
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader(
+                    'Authorization', 'Basic ' + window.btoa("auth" + ":" + "{{ app.user.apiKey }}")
+                );
+            },
+        });
         $.ajax(
             {
                 type: 'GET',
                 url: "/secure/{{ internalDashboard }}",
                 contentType: 'application/json',
-                beforeSend: function(xhr, settings) {
-                    xhr.setRequestHeader(
-                        'Authorization', 'Basic ' + window.btoa("auth" + ":" + "{{ app.user.apiKey }}")
-                    );
-                },
                 success: function(data) {
-                    $('#internal-dashboard').attr('src', "/secure/{{ internalDashboard }}");
+                    {#$('#internal-dashboard').attr('src', "/secure/{{ internalDashboard }}");#}
+                    $('#internal-dashboard').attr('src',"data:text/html;charset=utf-8," + escape(data));
                     $('#internal-dashboard').contents().find('html').html(data);
                 }
             }
