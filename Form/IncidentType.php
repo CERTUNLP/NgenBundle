@@ -22,6 +22,7 @@ use CertUnlp\NgenBundle\Form\Listener\IncidentDefaultFieldsListener;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Exception;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -31,8 +32,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class IncidentType extends AbstractType
@@ -50,7 +49,7 @@ class IncidentType extends AbstractType
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
-     * @throws \Exception
+     * @throws Exception
      */
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -71,10 +70,9 @@ class IncidentType extends AbstractType
             ))
             ->add('address', null, array(
                 'required' => true,
-                'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
+                'attr' => array('class' => 'incidentFilter', 'help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
                 'label' => 'Address',
                 'description' => 'The network ip and mask',
-                'attr' => array('class' => 'incidentFilter'),
             ))
             ->add('feed', EntityType::class, array(
                 'class' => IncidentFeed::class,
@@ -184,10 +182,6 @@ class IncidentType extends AbstractType
             ->add('id', HiddenType::class, array(
                 'required' => false,
             ))
-            ->add('reporter', HiddenType::class, array(
-                'data' => $this->userLogged,
-                'required' => false,
-            ))
 //            ->add('isNew', HiddenType::class, array(
 //                'required' => false,
 //            ))
@@ -198,11 +192,7 @@ class IncidentType extends AbstractType
                 'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
 //                    'description' => "Evidence file that will be attached to the report "
             ))
-            ->addEventSubscriber(new IncidentDefaultFieldsListener($this->doctrine, $this->userLogged))
-            ->addEventListener(
-                FormEvents::PRE_SET_DATA,
-                array($this, 'onPreSetData')
-            );
+            ->addEventSubscriber(new IncidentDefaultFieldsListener($this->doctrine, $this->userLogged));
 
     }
 
@@ -226,41 +216,5 @@ class IncidentType extends AbstractType
         return '';
     }
 
-    public function onPreSetData(FormEvent $event)
-    {
 
-        // get the form
-        $form = $event->getForm();
-
-        // get the data if 'reviewing' the information
-        /**
-         * @var Incident
-         */
-        $data = $event->getData();
-
-        // disable field if it has been populated with a client already
-        if ($data && !$data->canEditFundamentals()) {
-            $form->add('type', null, array(
-                'empty_value' => 'Choose an incident type',
-                'required' => true,
-                'disabled' => 'disabled',
-                'description' => '(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|'
-                    . 'dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|'
-                    . 'open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|'
-                    . 'open_ssdp|phishing|poodle|scan|shellshock|spam)',
-                'query_builder' => static function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
-                }))
-                ->add('address', null, array(
-                    'required' => true,
-                    'disabled' => 'disabled',
-                    'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
-                    'label' => 'Address',
-                    'description' => 'The network ip and mask',
-                ));
-
-        }
-
-    }
 }
