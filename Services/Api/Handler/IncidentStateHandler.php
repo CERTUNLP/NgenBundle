@@ -17,8 +17,6 @@ class IncidentStateHandler extends Handler
 {
 
     /**
-     * Delete a Network.
-     *
      * @param IncidentState $incident_state
      * @param array $parameters
      *
@@ -29,6 +27,19 @@ class IncidentStateHandler extends Handler
         $incident_state->setIsActive(FALSE);
     }
 
+    /**
+     * @return IncidentState
+     */
+    public function getInitialState(): IncidentState
+    {
+        return $this->get(['slug' => 'initial']);
+    }
+
+    /**
+     * @param $incident_state IncidentState
+     * @param $method string
+     * @return object|null
+     */
     protected function checkIfExists($incident_state, $method)
     {
         $incident_stateDB = $this->repository->findOneBy(['slug' => $incident_state->getSlug()]);

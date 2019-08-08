@@ -114,18 +114,20 @@ class IncidentState implements Translatable
     /**
      * @param Incident $incident
      * @param IncidentState $newState
-     * @return bool
+     * @return Incident
      * @throws Exception
      */
-    public function changeIncidentState(Incident $incident, IncidentState $newState): bool
+    public function changeIncidentState(Incident $incident, IncidentState $newState = null): ?Incident
     {
-        $edge = $this->getNewStateEdge($newState);
-        if ($edge) {
-            $edge->changeIncidentState($incident);
-            $incident->addChangeStateHistory(new IncidentChangeState($incident, $edge));
-            return true;
+        if ($newState) {
+            $edge = $this->getNewStateEdge($newState);
+            if ($edge) {
+                $edge->changeIncidentState($incident);
+                $incident->addChangeStateHistory(new IncidentChangeState($incident, $edge));
+                return $incident;
+            }
         }
-        return false;
+        return null;
     }
 
     /**

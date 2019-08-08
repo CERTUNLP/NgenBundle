@@ -13,6 +13,7 @@ namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use Doctrine\Common\Persistence\ObjectManager;
 use Exception;
 use Gedmo\Sluggable\Util as Sluggable;
@@ -25,15 +26,35 @@ class IncidentHandler extends Handler
     private $context;
     private $host_handler;
     private $decision_handler;
+    private $incidentStateHandler;
 
-    public function __construct(ObjectManager $om, string $entityClass, string $entityType, FormFactoryInterface $formFactory, SecurityContext $context, UserHandler $user_handler, HostHandler $host_handler, IncidentDecisionHandler $decision_handler)
+    public function __construct(ObjectManager $om, string $entityClass, string $entityType, FormFactoryInterface $formFactory, SecurityContext $context, UserHandler $user_handler, HostHandler $host_handler, IncidentDecisionHandler $decision_handler, IncidentStateHandler $incidentStateHandler)
     {
 
         parent::__construct($om, $entityClass, $entityType, $formFactory);
         $this->host_handler = $host_handler;
         $this->user_handler = $user_handler;
         $this->decision_handler = $decision_handler;
+        $this->incidentStateHandler = $incidentStateHandler;
         $this->context = $context;
+    }
+
+    /**
+     * @return IncidentDecisionHandler
+     */
+    public function getDecisionHandler(): IncidentDecisionHandler
+    {
+        return $this->decision_handler;
+    }
+
+    /**
+     * @param IncidentDecisionHandler $decision_handler
+     * @return IncidentHandler
+     */
+    public function setDecisionHandler(IncidentDecisionHandler $decision_handler): IncidentHandler
+    {
+        $this->decision_handler = $decision_handler;
+        return $this;
     }
 
     /**
@@ -131,12 +152,12 @@ class IncidentHandler extends Handler
     private function closeByUnsolved(Incident $incident)
     {
 
-        return (($incident->getUnattendedState() != null and $incident->getUnsolvedState() != 'undefined' and $incident->getUnsolvedState() != $incident->getState()) and (!$incident->isNew()) and ($incident->getPriority()->getUnresolutionTime() <= $incident->getResolutionMinutes()));
+        return (($incident->getUnattendedState() and $incident->getUnsolvedState() != 'undefined' and $incident->getUnsolvedState() != $incident->getState()) and (!$incident->isNew()) and ($incident->getPriority()->getUnresolutionTime() <= $incident->getResolutionMinutes()));
     }
 
     private function discardByUnattended(Incident $incident)
     {
-        return (($incident->getUnattendedState() != null and $incident->getUnattendedState() != 'undefined' and $incident->getUnattendedState() != $incident->getState()) and ($incident->isNew() and ($incident->getPriority()->getUnresponseTime() <= $incident->getResponseMinutes())));
+        return (($incident->getUnattendedState() and $incident->getUnattendedState() != 'undefined' and $incident->getUnattendedState() != $incident->getState()) and ($incident->isNew() and ($incident->getPriority()->getUnresponseTime() <= $incident->getResponseMinutes())));
     }
 
     /**
@@ -303,8 +324,36 @@ class IncidentHandler extends Handler
 
     protected function createEntityInstance(array $params)
     {
-        return new $this->entityClass($params['address']);
+        $incident = new $this->entityClass($params['address']);
+        $incident->setState($this->getInitialState());
+        return $incident;
 
+    }
+
+    /**
+     * @return IncidentState
+     */
+    public function getInitialState(): IncidentState
+    {
+        return $this->getIncidentStateHandler()->getInitialState();
+    }
+
+    /**
+     * @return IncidentStateHandler
+     */
+    public function getIncidentStateHandler(): IncidentStateHandler
+    {
+        return $this->incidentStateHandler;
+    }
+
+    /**
+     * @param IncidentStateHandler $incidentStateHandler
+     * @return IncidentHandler
+     */
+    public function setIncidentStateHandler(IncidentStateHandler $incidentStateHandler): IncidentHandler
+    {
+        $this->incidentStateHandler = $incidentStateHandler;
+        return $this;
     }
 
     private function closeByUnresolved(Incident $incident)
