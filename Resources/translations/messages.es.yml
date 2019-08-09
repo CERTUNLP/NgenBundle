@@ -192,6 +192,7 @@ Administration: Administración
 report: reporte
 'Incident Reports': 'Reportes de incidentes'
 'add incident report': 'agregar reporte'
+Incident: Incidente
 Lang: Lenguaje
 'Report Information': 'Información del reporte'
 'Report content': 'Contenido del reporte'
@@ -246,3 +247,4 @@ Logout: Salir
 'Send mail to the team': 'Enviar mail al equipo'
 'Spanish': Español
 'English': Ingles
+'ID': 'ID'

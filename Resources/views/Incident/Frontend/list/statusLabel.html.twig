@@ -17,12 +17,9 @@
 {%  set responseLeft= incident.priority.responsetime-incident.responseMinutes %}
 {%  set resolutionLeft= incident.priority.resolutiontime-incident.resolutionMinutes %}
 
-
-
-
 {% if incident.isNew %}
     {% if (responseLeft > 0) %}
-            <i class="fa fa-phone-slash" style="color:green" title="{{ 'Unanswered '|trans }}({{ responseLeft }} {{ ' minutes left'|trans }})"></i>
+            <i class="fa fa-phone-slash" style="color:#f0ad4e" title="{{ 'Unanswered '|trans }}({{ responseLeft }} {{ ' minutes left'|trans }})"></i>
     {% else %}
             <i class="fa fa-phone-slash" style="color:red" title="{{ 'Unanswered '|trans }}({{ responseLeft * -1 }}{{ ' minutes late'|trans }})"></i>
     {% endif %}
