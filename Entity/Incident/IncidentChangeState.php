@@ -42,7 +42,8 @@ class IncidentChangeState
     protected $stateEdge;
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")}
+     * @JMS\Expose
      */
     protected $responsable;
     /**

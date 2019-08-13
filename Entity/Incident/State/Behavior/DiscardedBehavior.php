@@ -60,15 +60,23 @@ class DiscardedBehavior extends StateBehavior
     /**
      * @return bool
      */
-    public function isNew(): ?bool
+    public function isAttended(): bool
     {
-        return false;
+        return true;
     }
 
     /**
      * @return bool
      */
-    public function isClosed(): ?bool
+    public function isResolved(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAddressed(): bool
     {
         return false;
     }

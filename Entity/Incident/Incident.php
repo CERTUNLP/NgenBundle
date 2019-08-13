@@ -54,12 +54,14 @@ class Incident
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="incidents")
+     * @JMS\Expose
      */
     private $reporter;
 
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="assignedIncidents")
+     * @JMS\Expose
      */
     private $assigned;
 
@@ -397,7 +399,7 @@ class Incident
     /**
      * @return mixed
      */
-    public function getReportReporter(): User
+    public function getReportReporter(): ?User
     {
         return $this->reportReporter;
     }
@@ -501,24 +503,6 @@ class Incident
     public function setRenotificationDate(DateTime $renotificationDate): Incident
     {
         $this->setter($this->renotificationDate, $renotificationDate);
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     * @return Incident
-     */
-    public function setCreatedAt(DateTime $createdAt): Incident
-    {
-        $this->setter($this->createdAt, $createdAt);
         return $this;
     }
 
@@ -737,15 +721,6 @@ class Incident
     }
 
     /**
-     * @return int
-     * @throws Exception
-     */
-    public function getResolutionMinutes(): int
-    {
-        return $this->getBehavior()->getResolutionMinutes($this);
-    }
-
-    /**
      * @return bool
      */
     public function isClosed(): ?bool
@@ -952,7 +927,99 @@ class Incident
      * @return int
      * @throws Exception
      */
-    public function getDelayedMinutes(): int
+    public function getResolutionDelayedMinutes(): int
+    {
+        return $this->getPriority()->getResolutionTime() - $this->getResolutionMinutes();
+    }
+
+    /**
+     * @return int
+     * @throws Exception
+     */
+    public function getResolutionMinutes(): int
+    {
+        return $this->getResolvedTime() / 60;
+    }
+
+    /**
+     * @return int
+     */
+    public function getResolvedTime(): int
+    {
+        if ($this->getResolvedDate()) {
+            return abs($this->getResolvedDate()->getTimestamp() - $this->getCreatedAt()->getTimestamp());
+        }
+        return 0;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getResolvedDate(): ?DateTime
+    {
+        if (!$this->getResolvedChangeStates()->isEmpty()) {
+            return $this->getResolvedChangeStates()->last()->getDate();
+        }
+        return null;
+    }
+
+    /**
+     *
+     * i->s
+     * s->o   respos 1-2
+     * o->o
+     * o->c   resolve 1-4
+     * @return IncidentChangeState[] | Collection
+     */
+    public function getResolvedChangeStates(): Collection
+    {
+        if ($this->getChangeStateHistory()) {
+            return $this->getChangeStateHistory()->filter(static function (IncidentChangeState $changeState) {
+                return !$changeState->getNewState()->isResolved();
+            });
+        }
+        return new ArrayCollection();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getChangeStateHistory(): Collection
+    {
+        return $this->changeStateHistory;
+    }
+
+    /**
+     * @param ArrayCollection $changeStateHistory
+     */
+    public function setChangeStateHistory(ArrayCollection $changeStateHistory): void
+    {
+        $this->setter($this->changeStateHistory, $changeStateHistory);
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param DateTime $createdAt
+     * @return Incident
+     */
+    public function setCreatedAt(DateTime $createdAt): Incident
+    {
+        $this->setter($this->createdAt, $createdAt);
+        return $this;
+    }
+
+    /**
+     * @return int
+     * @throws Exception
+     */
+    public function getResponseDelayedMinutes(): int
     {
         return $this->getPriority()->getResponseTime() - $this->getResponseMinutes();
     }
@@ -963,7 +1030,42 @@ class Incident
      */
     public function getResponseMinutes(): int
     {
-        return $this->getBehavior()->getResponseMinutes($this);
+        return $this->getAttendedTime() / 60;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAttendedTime(): int
+    {
+        if ($this->getAttendedDate()) {
+            return abs($this->getCreatedAt()->getTimestamp() - $this->getAttendedDate()->getTimestamp());
+        }
+        return 0;
+    }
+
+    /**
+     * @return DateTime | null
+     */
+    public function getAttendedDate(): ?DateTime
+    {
+        if (!$this->getAttendedChangeStates()->isEmpty()) {
+            return $this->getAttendedChangeStates()->last()->getDate();
+        }
+        return null;
+    }
+
+    /**
+     * @return IncidentChangeState[] | Collection
+     */
+    public function getAttendedChangeStates(): Collection
+    {
+        if ($this->getChangeStateHistory()) {
+            return $this->getChangeStateHistory()->filter(static function (IncidentChangeState $changeState) {
+                return !$changeState->getNewState()->isAttended();
+            });
+        }
+        return new ArrayCollection();
     }
 
     public function statusToString(): string
@@ -1231,7 +1333,7 @@ class Incident
      */
     public function setStateAndReporter(IncidentState $state, User $reporter): Incident
     {
-        $this->setter($this->reportReporter, $reporter);
+        $this->setReportReporter($reporter);
         $this->setState($state);
         return $this;
     }
@@ -1299,22 +1401,6 @@ class Incident
 
         }
         return null;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getChangeStateHistory(): Collection
-    {
-        return $this->changeStateHistory;
-    }
-
-    /**
-     * @param ArrayCollection $changeStateHistory
-     */
-    public function setChangeStateHistory(ArrayCollection $changeStateHistory): void
-    {
-        $this->setter($this->changeStateHistory, $changeStateHistory);
     }
 
     public function isDefined(): ?bool

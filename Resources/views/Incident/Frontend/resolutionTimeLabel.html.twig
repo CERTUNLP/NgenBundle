@@ -1,4 +1,4 @@
-{# 
+{#
  This file is part of the Ngen - CSIRT Incident Report System.
  
  (c) CERT UNLP <support@cert.unlp.edu.ar>
@@ -9,16 +9,16 @@
 
  {% if not incident.isNew %}
      {% if not incident.isClosed %}
-         {% if incident.delayedMinutes > 0 %}
-             <span class="label label-success"> {{ 'Waiting for resolution'|trans }} {{ incident.delayedMinutes }}{{ 'minutes left'|trans }}</span>
+         {% if incident.resolutionDelayedMinutes > 0 %}
+             <span class="label label-success"> {{ 'Waiting for resolution'|trans }} {{ incident.resolutionDelayedMinutes }}{{ 'minutes left'|trans }}</span>
          {% else %}
-             <span class="label label-danger"> {{ 'Resolution delayed for'|trans }}{{ incident.delayedMinutes * -1 }}{{ 'minutes'|trans }}</span>
+             <span class="label label-danger"> {{ 'Resolution delayed for'|trans }}{{ incident.resolutionDelayedMinutes * -1 }}{{ 'minutes'|trans }}</span>
          {% endif %}
      {% else %}
-         {% if incident.delayedMinutes > 0 %}
-             <span class="label label-success"> {{ 'Resolved on time'|trans }} {{ incident.delayedMinutes }}{{ 'minutes left'|trans }}</span>
+         {% if incident.resolutionDelayedMinutes > 0 %}
+             <span class="label label-success"> {{ 'Resolved on time'|trans }} {{ incident.resolutionDelayedMinutes }}{{ 'minutes left'|trans }}</span>
          {% else %}
-             <span class="label label-danger"> {{ 'Resolution delayed for'|trans }}{{ incident.delayedMinutes * -1 }}{{ 'minutes'|trans }}</span>
+             <span class="label label-danger"> {{ 'Resolution delayed for'|trans }}{{ incident.resolutionDelayedMinutes * -1 }}{{ 'minutes'|trans }}</span>
          {% endif %}
 
      {% endif %}

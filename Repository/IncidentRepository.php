@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Repository;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * IncidentRepository
@@ -79,5 +80,42 @@ class IncidentRepository extends NetworkElementRepository
 
     }
 
+    public function queryAllUnsolved()
+    {
+        $this->queryAllOnTreatment()
+            ->andWhere('i.unattendedState != undefined')
+            ->andWhere('i.unattendedState != i.state');
+    }
 
+    public function queryAllOnTreatment(): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('i');
+        $qb->select('i')
+            ->andWhere('i.state.behavior.slug = on_treatment');
+        return $qb;
+    }
+
+    public function queryAllClosed(): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('i');
+        $qb->select('i')
+            ->andWhere('i.state.behavior.slug = closed');
+        return $qb;
+    }
+
+    public function queryAllDiscarded(): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('i');
+        $qb->select('i')
+            ->andWhere('i.state.behavior.slug = discarded');
+        return $qb;
+    }
+
+    public function queryAllNew(): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('i');
+        $qb->select('i')
+            ->andWhere('i.state.behavior.slug = new');
+        return $qb;
+    }
 }
