@@ -240,7 +240,7 @@ class Incident implements IncidentInterface
     /**
      * @param DateTime $responseDeadLine
      */
-    public function setResponseDeadLine(DateTime $responseDeadLine): void
+    public function setResponseDeadLine($responseDeadLine ): void
     {
         $this->responseDeadLine = $responseDeadLine;
     }
@@ -256,7 +256,7 @@ class Incident implements IncidentInterface
     /**
      * @param DateTime $solveDeadLine
      */
-    public function setSolveDeadLine(DateTime $solveDeadLine): void
+    public function setSolveDeadLine($solveDeadLine): void
     {
         $this->solveDeadLine = $solveDeadLine;
     }

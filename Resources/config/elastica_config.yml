@@ -665,13 +665,9 @@ fos_elastica:
                         email:
                             type: string
                             analyzer: email_analyser
-                        lastLogin:
-                            type: date
                         isEnabled:
                             type: boolean
                         createdAt:
-                            type: date
-                        updatedAt:
                             type: date
                     persistence:
                         identifier: slug
