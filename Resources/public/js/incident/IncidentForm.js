@@ -45,8 +45,11 @@ var IncidentForm = Form.extend({
     },
     changePriorityTimes: function (response) {
         if (Object.keys(response).length) {
-            $("#timeToAttend").text(response.responseJSON.response_time).trigger('change');
-            $("#timeToSolve").text(response.responseJSON.resolution_time).trigger('change');
+            var $calculo= new Date(new Date($("#solveDeadLine").val()).getTime()+ response.responseJSON.unresponse_time*60000);
+            $("#solveDeadLine").val($calculo.toISOString().substring(0, 19));
+            var $calculo2= new Date(new Date($("#responseDeadLine").val()).getTime()+ response.responseJSON.unresolution_time*60000);
+            $("#responseDeadLine").val($calculo2.toISOString().substring(0, 19));
+
         }
     },
     setIncidentId: function () {

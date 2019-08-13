@@ -6,18 +6,19 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
+{% set incident.responseDelayedMinutes= incident.priority.responsetime-incident.responseMinutes %}
 
 {% if (incident.responseDelayedMinutes > 0) %}
     {% if  incident.isNew %}
-        <span class="label label-warning"> {{ 'Waiting for response'|trans }}, {{ incident.responseDelayedMinutes }}{{ 'minutes left'|trans }}</span>
+        {{ label_warning('Waiting for response '|trans ~ incident.responseDelayedMinutes ~ ' minutes left'|trans) }}
     {% else %}
-        <span class="label label-success"> {{ 'Responsed on time'|trans }} {{ incident.responseDelayedMinutes }}{{ 'minutes left'|trans }}</span>
+        {{ label_success('Response on time '|trans ~ incident.responseDelayedMinutes ~ ' minutes left'|trans) }}
     {% endif %}
 {% else %}
     {% if incident.isNew %}
-        <span class="label label-danger"> {{ 'Waiting for response'|trans }}, {{ incident.responseDelayedMinutes * -1 }}{{ 'minutes delayed'|trans }}</span>
+        {{ label_danger('Waiting for response '|trans ~ (incident.responseDelayedMinutes * -1) ~ ' minutes delayed'|trans) }}
     {% else %}
-        <span class="label label-danger"> {{ 'Response delayed for'|trans }} {{ incident.responseDelayedMinutes * -1 }}{{ 'minutes'|trans }}</span>
+        {{ label_danger('Response delayed for '|trans ~ (incident.responseDelayedMinutes * -1) ~ ' minutes '|trans) }}
     {% endif %}
 
 {% endif %}

@@ -99,6 +99,41 @@ class Incident
      */
     private $lastState;
 
+    protected $temporalNotes;
+    protected $temporalEvidenceFile;
+
+    /**
+     * @return mixed
+     */
+    public function getTemporalNotes()
+    {
+        return $this->temporalNotes;
+    }
+
+    /**
+     * @param mixed $temporalNotes
+     */
+    public function setTemporalNotes($temporalNotes): void
+    {
+        $this->temporalNotes = $temporalNotes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTemporalEvidenceFile()
+    {
+        return $this->temporalEvidenceFile;
+    }
+
+    /**
+     * @param mixed $temporalEvidenceFile
+     */
+    public function setTemporalEvidenceFile($temporalEvidenceFile): void
+    {
+        $this->temporalEvidenceFile = $temporalEvidenceFile;
+    }
+
     /**
      * @var IncidentState
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
@@ -158,6 +193,59 @@ class Incident
      * @JMS\Groups({"api"})
      */
     private $date;
+
+    /**
+     * @return DateTime
+     */
+    public function getResponseDeadLine(): ?DateTime
+    {
+        return $this->responseDeadLine;
+    }
+
+    /**
+     * @param DateTime $responseDeadLine
+     */
+    public function setResponseDeadLine(DateTime $responseDeadLine): void
+    {
+        $this->responseDeadLine = $responseDeadLine;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getSolveDeadLine(): ?DateTime
+    {
+        return $this->solveDeadLine;
+    }
+
+    /**
+     * @param DateTime $solveDeadLine
+     */
+    public function setSolveDeadLine(DateTime $solveDeadLine): void
+    {
+        $this->solveDeadLine = $solveDeadLine;
+    }
+
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="response_dead_line", type="datetime",nullable=true))
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
+     */
+    protected $responseDeadLine;
+
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="solve_dead_line", type="datetime",nullable=true))
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
+     */
+    protected $solveDeadLine;
+
     /**
      * @var Collection
      * @JMS\Expose
@@ -628,7 +716,7 @@ class Incident
      */
     public function setNotes(string $notes): Incident
     {
-        $this->setter($this->notes, $notes);
+        $this->setter($this->temporalNotes, $notes);
         return $this;
     }
 
@@ -1180,8 +1268,8 @@ class Incident
      */
     public function setEvidenceFile(File $evidenceFile = null): Incident
     {
-        $this->setter($this->evidence_file, $evidenceFile);
-        $this->setEvidenceFilePath($evidenceFile->getFilename());
+        $this->setter($this->temporalEvidenceFile, $evidenceFile);
+//        $this->setEvidenceFilePath($evidenceFile->getFilename());
         return $this;
     }
 

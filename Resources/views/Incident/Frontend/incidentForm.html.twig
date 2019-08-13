@@ -52,6 +52,7 @@
                     {{ form_row(form.impact) }}
                     {{ form_row(form.urgency) }}
                     {{ form_row(form.assigned) }}
+                    {{ form_row(form.reporter) }}
 
                 </div>
             </div>
@@ -66,8 +67,7 @@
                             {{ form_row(form.unattendedState) }}
                         </div>
                         <div class="col-sm-3">
-                            {{ 'Time to change state:' }}
-                            <div id="timeToAttend" name="timeToAttend">--</div>
+                        {{ form_row(form.responseDeadLine) }}
                         </div>
                     </div>
                     <div class="row">
@@ -75,8 +75,7 @@
                             {{ form_row(form.unsolvedState) }}
                         </div>
                         <div class="col-sm-3">
-                            {{ 'Time to change state:' }}
-                            <div id="timeToSolve" name="timeToSolve">--</div>
+                            {{ form_row(form.solveDeadLine) }}
                         </div>
                     </div>
                 </div>
