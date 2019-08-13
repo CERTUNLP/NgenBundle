@@ -61,12 +61,23 @@ class IncidentState
      * @JMS\Expose
      */
     private $isActive = true;
+
     /**
      * @var ContactCase
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_assigned", referencedColumnName="slug")
      */
+
     private $mailAssigned;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="description", type="string", length=250, nullable=true)
+     * @JMS\Expose
+     */
+    private $description;
+
     /**
      * @var ContactCase
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
@@ -182,6 +193,24 @@ class IncidentState
         $this->mailAssigned = $mailAssigned;
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string|null $description
+     */
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
 
     /**
      * @return ContactCase
