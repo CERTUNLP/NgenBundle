@@ -105,15 +105,6 @@ class IncidentType extends AbstractType
                 'attr' => array('class' => 'incidentDataFilter', 'type' => 'datetime-local', 'help_text' => 'If no date is selected, the date will be today.'),
                 'description' => 'If no date is selected, the date will be today.',
             ))
-            ->add('state', EntityType::class, array(
-                'class' => IncidentState::class,
-                'empty_value' => 'Choose an incident state',
-                'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, it may be selected by incident decisions.'),
-                'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
-                'query_builder' => static function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
-                }))
             ->add('tlp', EntityType::class, array(
                 'class' => IncidentTlp::class,
                 'empty_value' => 'Choose an incident TLP',
@@ -138,6 +129,15 @@ class IncidentType extends AbstractType
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.enabled = TRUE');
+                }))
+            ->add('state', EntityType::class, array(
+                'class' => IncidentState::class,
+                'empty_value' => 'Choose an incident state',
+                'attr' => array('class'=>'incidentDataFilter','help_text' => 'If none is selected, it may be selected by incident decisions.'),
+                'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('it')
+                        ->where('it.isActive = TRUE');
                 }))
             ->add('impact', EntityType::class, array(
                 'class' => IncidentImpact::class,
@@ -170,6 +170,16 @@ class IncidentType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
+
+            ->add('responseDeadLine', DateTimeType::class, array(
+                'required' => false,
+                'html5' => true,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'data' => new DateTime(),
+                'attr' => array('class'=>'incidentDataFilter','type' => 'datetime-local', 'help_text' => 'If no date is selected, the date will be today.'),
+                'description' => 'If no date is selected, the date will be today.',
+            ))
             ->add('unsolvedState', EntityType::class, array(
                 'class' => IncidentState::class,
                 'empty_value' => 'Choose an incident state',
@@ -179,6 +189,16 @@ class IncidentType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
+
+            ->add('solveDeadLine', DateTimeType::class, array(
+                'required' => false,
+                'html5' => true,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'data' => new DateTime(),
+                'attr' => array('class'=>'incidentDataFilter','type' => 'datetime-local', 'help_text' => 'If no date is selected, the date will be today.'),
+                'description' => 'If no date is selected, the date will be today.',
+            ))
             ->add('id', HiddenType::class, array(
                 'required' => false,
             ))

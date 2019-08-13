@@ -1,4 +1,4 @@
-{#
+{# 
  This file is part of the Ngen - CSIRT Incident Report System.
  
  (c) CERT UNLP <support@cert.unlp.edu.ar>
@@ -7,18 +7,19 @@
  with this source code in the file LICENSE.
 #}
 
+{% set atrasado= incident.priority.resolutiontime-incident.resolutionMinutes %}
  {% if not incident.isNew %}
      {% if not incident.isClosed %}
          {% if incident.resolutionDelayedMinutes > 0 %}
-             <span class="label label-success"> {{ 'Waiting for resolution'|trans }} {{ incident.resolutionDelayedMinutes }}{{ 'minutes left'|trans }}</span>
+             {{ label_success('Waiting for resolution '|trans ~ incident.resolutionDelayedMinutes ~ ' minutes left'|trans) }}
          {% else %}
-             <span class="label label-danger"> {{ 'Resolution delayed for'|trans }}{{ incident.resolutionDelayedMinutes * -1 }}{{ 'minutes'|trans }}</span>
+             {{ label_danger('Resolution delayed for '|trans ~ (incident.resolutionDelayedMinutes * -1) ~ ' minutes '|trans) }}
          {% endif %}
      {% else %}
          {% if incident.resolutionDelayedMinutes > 0 %}
-             <span class="label label-success"> {{ 'Resolved on time'|trans }} {{ incident.resolutionDelayedMinutes }}{{ 'minutes left'|trans }}</span>
+             {{ label_success('Resolved on time '|trans ~ incident.resolutionDelayedMinutes ~ ' minutes left'|trans) }}
          {% else %}
-             <span class="label label-danger"> {{ 'Resolution delayed for'|trans }}{{ incident.resolutionDelayedMinutes * -1 }}{{ 'minutes'|trans }}</span>
+             {{ label_danger('Resolution delayed for '|trans ~ (incident.resolutionDelayedMinutes * -1) ~ ' minutes '|trans) }}
          {% endif %}
 
      {% endif %}

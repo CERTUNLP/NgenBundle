@@ -14,6 +14,7 @@ var Frontend = Class.extend({
         $('.multiple-select-filter').on('blur', $.proxy(this.search, this));
         $('.form-check-input').on('change', $.proxy(this.search, this));
         $('.data-filter').on('submit', $.proxy(this.search, this));
+        $('.generalSearch').on('submit', $.proxy(this.search, this));
     },
     dropDownChangeLinks: function () {
         if (this.eventTarget.data('state-slug') == "open") {
@@ -72,6 +73,15 @@ var Frontend = Class.extend({
                 } else {
                     query = (query) + ' && ' + name + ':' + valor;
                 }
+
+            }
+        });
+
+        $(".generalSearch").each(function () {
+            if ($(this).find('input[name="term"]').val() != null && $(this).find('input[name="term"]').val().length > 0) {
+                valor = $(this).find('input[name="term"]').val();
+                name= 'term';
+               query = (query) + ' && '+ valor;
 
             }
         });

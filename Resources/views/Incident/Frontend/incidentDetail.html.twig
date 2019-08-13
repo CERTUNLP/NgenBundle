@@ -8,369 +8,389 @@
 #}
 
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
+{% block content_header %}
+    <h2 class="page-header">{{ icon('arrow-circle-down fa-fw') }}{{ 'Incident'|trans }} [{{ 'ID'|trans }}
+        :{{ object.id }}
+        ][{{ object.type }}] <a class="btn btn-sm btn-primary" role="button"
+                                href="{{ path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': object.id}) }}"
+                                title=" {{ 'Edit'|trans }}">
+            {{ icon('edit') }}
+        </a>
+    </h2>
+{% endblock %}
 
 {% block content_body %}
-    {% block incident_body %}
-        <div class="col-lg-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title"{{ 'Incident Information' | trans }}</h3>
-                </div>
-                <div class="panel-body table-responsive">
-                    <table class="table table-bordered">
-                        <tr>
-                            <td class="">
-                                {{ 'Host/Network Involved'|trans }}
-                            </td>
-                            <td class="">
-                                {{ object.address }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="">
-                                {{ 'State'|trans }}
-                            </td>
-                            <td class="">
-                                {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object} %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="">
-                                {{ 'Type'|trans }}
-                            </td>
-                            <td class="">
-                                {{ object.type | trans }}
-                            </td>
-                        </tr>
+    <div class="row">
+        {% block incident_body %}
+            <div class="col-lg-5">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        {{ "Incident Information"|trans }}
+                    </div>
+                    <div class="card-body">
 
-                        <tr>
-                            <td class="">
-                                {{ 'Feed'|trans }}
-                            </td>
-                            <td class="">
-                                {{ object.feed }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="">
+                        <div class="row">
+                            <div class="col-6 col-sm-6 border">
+                                {{ 'Host/Network Involved'|trans }}
+                            </div>
+                            <div class="col-6 col-sm-6 border">
+                                {{ object.address }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-sm-6 border">
+                                {{ 'State'|trans }}
+                            </div>
+                            <div class="col-6 col-sm-6 border">
+                                {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object} %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6 col-sm-6 border">
+                                {{ 'Type'|trans }}
+                            </div>
+                            <div class="col-6 col-sm-6 border">
+                                {{ object.type | trans }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6 col-sm-6 border">
                                 {{ 'TLP'|trans }}
-                            </td>
-                            <td>
-                                <span class="label tlp-{{ object.tlp|lower }} left">
+                            </div>
+                            <div class="col-6 col-sm-6 border">
+                <span class="label tlp-{{ object.tlp|lower }} left">
                                     TLP-{{ object.tlp | trans }}
                                 </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="">
-                                {{ 'Original Date'| trans }}
-                            </td>
-                            <td class="">
-                                {{ object.date |date('Y-m-d H:i') }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="">
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-sm-6 border">
                                 {{ 'Created at'|trans }}
-                            </td>
-                            <td class="">
+                            </div>
+                            <div class="col-6 col-sm-6 border">
                                 {{ object.createdAt|date('Y-m-d H:i') }}
-                            </td>
-                        </tr>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-sm-6 border">
+                                {{ 'Original Date'| trans }}
+                            </div>
+                            <div class="col-6 col-sm-6 border">
+                                {{ object.date |date('Y-m-d H:i') }}
+                            </div>
+                        </div>
+
                         {% if object.openedAt %}
-                            <tr>
-                                <td class="">
+                            <div class="row">
+                                <div class="col-6 col-sm-6 border">
                                     {{ 'Opened at'| trans }}
-                                </td>
-                                <td class="">
+                                </div>
+                                <div class="col-6 col-sm-6 border">
                                     {{ object.openedAt |date('Y-m-d H:i') }}
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
                         {% endif %}
 
-                        {% if object.incidentsDetected|length > 1 %}
-                            <tr>
-                                <td class="">
-                                    {{ 'Last Time Detected'|trans }}
-                                </td>
-                                <td class="">
-                                    {% include "CertUnlpNgenBundle:Incident:Frontend/incidentsDetectedSummary.html.twig" with {'incident': object, 'alreadyDetected':true} %}
-                                </td>
-                            </tr>
-                        {% endif %}
-                        <tr>
-                            <td class="">
+
+                        <div class="row">
+                            <div class="col-6 col-sm-6 border">
                                 {{ 'Last Update'|trans }}
-                            </td>
-                            <td class="">
+                            </div>
+                            <div class="col-6 col-sm-6 border">
                                 {{ object.updatedAt |date('Y-m-d H:i') }}
-                            </td>
-                        </tr>
+                            </div>
+                        </div>
 
-                        <tr>
-                            <td class="">
+                        <div class="row">
+                            <div class="col-6 col-sm-6 border">
                                 {{ 'Priority Impact/Urgency' |trans }}
-                            </td>
-                            <td class="">
+                            </div>
+                            <div class="col-6 col-sm-6 border">
                                 {{ object.priority.impact }}/{{ object.priority.urgency }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="">
-                                {{ 'RT/Rt' |trans }}
-                            </td>
-                            <td class="">
-                                {% include "CertUnlpNgenBundle:Incident:Frontend/responseTimeLabel.html.twig" with {'incident': object,'alreadyDetected':object.incidentsDetected} %}
-                                {% include "CertUnlpNgenBundle:Incident:Frontend/resolutionTimeLabel.html.twig" with {'incident': object,'alreadyDetected':object.incidentsDetected} %}
-                            </td>
-                        </tr>
-                        {% if object.notes %}
-
-                            <tr>
-                                <td class="">
-                                    {{ 'Notes' |trans }}
-                                </td>
-                                <td class="">
-                                    {{ object.notes }}
-                                </td>
-                            </tr>
+                            </div>
+                        </div>
+                        {% if object.incidentsDetected|length > 1 %}
+                            <div class="row">
+                                <div class="col-6 col-sm-6 border">
+                                    {{ 'Times Detected'|trans }}
+                                </div>
+                                <div class="col-6 col-sm-6 border">
+                                    {{ 'Detected'|trans }}{{ ' ' }}{{ label_info(object.incidentsDetected|length) }}{{ ' ' }}{{ 'times'|trans }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-6 border">
+                                    {{ 'Last Time Detected'|trans }}
+                                </div>
+                                <div class="col-6 col-sm-6 border">
+                                    {{ object.incidentsDetected|last.date|date('Y-m-d H:i') }}
+                                </div>
+                            </div>
                         {% endif %}
+
 
                         {% if object.evidenceFilePath %}
-                            <tr>
-                                <td class="">
+
+                            <div class="row">
+                                <div class="col-6 col-sm-6 border">
                                     {{ 'Evidence File'|trans }}
-                                </td>
-                                <td class="">
+                                </div>
+                                <div class="col-6 col-sm-6 border">
                                     <a href="{{ path('cert_unlp_ngen_internal_incident_frontend_evidence_incident',{'slug':object.slug}) }}">{{ 'Evidence'| trans }}
                                         (.zip)</a>
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
                         {% endif %}
-                    </table>
+                        <div class="row">
+                            <div class="col-6 col-sm-6 border">
+                                {{ 'Response Time' |trans }}
+                            </div>
+                            <div class="col-6 col-sm-6 border">
+                                {% include "CertUnlpNgenBundle:Incident:Frontend/responseTimeLabel.html.twig" with {'incident': object,'alreadyDetected':object.incidentsDetected} %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-sm-6 border">
+                                {{ 'Resolution Time' |trans }}
+                            </div>
+                            <div class="col-6 col-sm-6 border">
+                                {% include "CertUnlpNgenBundle:Incident:Frontend/resolutionTimeLabel.html.twig" with {'incident': object,'alreadyDetected':object.incidentsDetected} %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-sm-6 border">
+                                {{ 'Unresponse State' |trans }}
+                            </div>
+                            <div class="col-6 col-sm-6 border">
+                                {{ object.unattendedState }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-sm-6 border">
+                                {{ 'Unresolve State' |trans }}
+                            </div>
+                            <div class="col-6 col-sm-6 border">
+                                {{ object.unsolvedState }}
+                            </div>
+                        </div>
+
+
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endblock %}
-    {% block host_body %}
-        <div class="col-lg-6">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{ 'Host info'| trans }}</h3>
-                </div>
-                <div class="panel-body table-responsive">
-                    <table class="table table-bordered">
-                        <tr>
-                            <td class="">
+        {% endblock %}
+        <div class="col-lg-5">
+            {% block host_body %}
+                <div class="card mb-4">
+                    <div class="card-header">
+                        {{ "Host Information"|trans }}
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6 col-sm-6 border">
                                 {{ 'ip'|trans }}
-                            </td>
-                            <td class="">
+                            </div>
+                            <div class="col-6 col-sm-6 border">
                                 {{ object.address }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-sm-6 border">
                                 {{ 'Active'|trans }}
-                            </td>
-                            <td class="">
+                            </div>
+                            <div class="col-6 col-sm-6 border">
                                 {{ object.origin and object.origin.isActive ? 'Yes'|trans:'No'|trans }}
 
-                            </td>
-                        </tr>
+                            </div>
+                        </div>
                         {% if object.origin and object.origin.network %}
 
-                            <tr>
-                                <td class="">
+                            <div class="row">
+                                <div class="col-6 col-sm-6 border">
                                     {{ 'Network Entity'|trans }}
-                                </td>
-                                <td class="">
+                                </div>
+                                <div class="col-6 col-sm-6 border">
                                     {{ object.origin.network.networkEntity }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-6 border">
                                     {{ 'Network Admin'|trans }}
-                                </td>
-                                <td class="">
+                                </div>
+                                <div class="col-6 col-sm-6 border">
                                     {{ object.origin.network.networkAdmin }}
 
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
                         {% endif %}
-
-                    </table>
+                    </div>
                 </div>
-            </div>
+            {% endblock %}
+            {% block network_body %}
+                <div class="card mb-4">
+                    <div class="card-header">
+                        {{ "Network Information"|trans }}
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            {% if object.network %}
+                                <table class="table table-bordered">
+                                    <div class="row">
+                                        <div class="col-6 col-sm-6 border">
+                                            {{ 'IP/mask'|trans }}
+                                        </div>
+                                        <div class="col-6 col-sm-6 border">
+                                            {{ object.network }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 col-sm-6 border">
+                                            {{ 'Active'|trans }}
+                                        </div>
+                                        <div class="col-6 col-sm-6 border">
+                                            {{ object.network.isActive ? 'Yes'|trans:'No'|trans }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 col-sm-6 border">
+                                            {{ 'Network Entity'|trans }}
+                                        </div>
+                                        <div class="col-6 col-sm-6 border">
+                                            {{ object.network.networkEntity }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 col-sm-6 border">
+                                            {{ 'Network Admin'|trans }}
+                                        </div>
+                                        <div class="col-6 col-sm-6 border">
+                                            {{ object.network.networkAdmin }}
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 col-sm-6 border">
+                                        </div>
+                                        <div class="col-6 col-sm-6 border">
+                                            {{ object.network.networkAdmin? object.network.networkAdmin.emailsAsString: '' }}
+                                        </div>
+                                    </div>
+                                </table>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
         </div>
-    {% endblock %}
-    {% block network_body %}
-
-        <div class="col-lg-6">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{ 'Network info'|trans }}</h3>
-                </div>
-                <div class="panel-body table-responsive">
-                    {% if object.network %}
-                        <table class="table table-bordered">
-                            <tr>
-                                <td class="">
-                                    {{ 'IP/mask'|trans }}
-                                </td>
-                                <td class="">
-                                    {{ object.network }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    {{ 'Active'|trans }}
-                                </td>
-                                <td class="">
-                                    {{ object.network.isActive ? 'Yes'|trans:'No'|trans }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    {{ 'Network Entity'|trans }}
-                                </td>
-                                <td class="">
-                                    {{ object.network.networkEntity }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    {{ 'Network Admin'|trans }}
-                                </td>
-                                <td class="">
-                                    {{ object.network.networkAdmin }}
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                </td>
-                                <td class="">
-                                    {{ object.network.networkAdmin? object.network.networkAdmin.emailsAsString: '' }}
-                                </td>
-                            </tr>
-                        </table>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-    {% endblock %}
-    {% block reporter_body %}
-        <div class="col-lg-6">
-
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{ 'Reporter info' |trans }}</h3>
-                </div>
-                <div class="panel-body table-responsive">
-
-                    <table class="table table-bordered">
-                        <tr>
-                            <td class="">
+    </div>
+    <div class="row">
+        <div class="col-lg-5">
+            {% block reporter_body %}
+                <div class="card mb-4">
+                    <div class="card-header">
+                        {{ "Reporter Information"|trans }}
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6 col-sm-6 border">
                                 {{ 'Name'|trans }}
-                            </td>
-                            <td class="">
+                            </div>
+                            <div class="col-6 col-sm-6 border">
                                 {{ object.reporter }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-sm-6 border">
                                 {{ 'Email'|trans }}
-                            </td>
-                            <td class="">
+                            </div>
+                            <div class="col-6 col-sm-6 border">
                                 {{ object.reporter.emailsAsString }}
-                            </td>
-                        </tr>
-                    </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            {% endblock %}
         </div>
-    {% endblock %}
-    {% block asigned_body %}
-        {% if object.assigned %}
-            <div class="col-lg-6">
-
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{{ 'Assigned Info' |trans }}</h3>
-                    </div>
-                    <div class="panel-body table-responsive">
-
-                        <table class="table table-bordered">
-                            <tr>
-                                <td class="">
+        <div class="col-lg-5">
+            {% block asigned_body %}
+                {% if object.assigned %}
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            {{ "Assigned Information"|trans }}
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6 col-sm-6 border">
                                     {{ 'Name'|trans }}
-                                </td>
-                                <td class="">
+                                </div>
+                                <div class="col-6 col-sm-6 border">
                                     {{ object.assigned }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-sm-6 border">
                                     {{ 'Email'|trans }}
-                                </td>
-                                <td class="">
+                                </div>
+                                <div class="col-6 col-sm-6 border">
                                     {{ object.assigned.emailsAsString }}
-                                </td>
-                            </tr>
-                        </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        {% endif %}
-
-    {% endblock %}
+                {% endif %}
+            {% endblock %}
+        </div>
+    </div>
     {% block redetected_body %}
         {% if object.incidentsDetected %}
-            <div class="col-lg-12">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{{ 'Historical Detections'|trans }}
+            <div class="row">
+                <div class="col-lg-10">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            {{ "Historical Detections"|trans }}
                             {% if not object.incidentsDetected is empty %}
-                                <span class="label label-warning"> {{ 'Detected'|trans }}{{ object.incidentsDetected|length }}{{ 'times'|trans }}</span>
+                                <span class="label label-warning"> {{ 'Detected'|trans }}{{ ' ' }}{{ label_info(object.incidentsDetected|length) }}{{ ' ' }}{{ 'times'|trans }}</span>
                                 <span class="label label-warning"> {{ 'LAST:'|trans }}{{ object.incidentsDetected|last }}</span>
-
                             {% endif %}
-
-                        </h3>
-                    </div>
-                    <div class="panel-body table-responsive">
-                        {% include "@CertUnlpNgen/Incident/Frontend/redetectedTable.html.twig" with {'incident': object,'incidentsDetected':object.incidentsDetected} %}
+                            </legend>
+                        </div>
+                        <div class="card-body">
+                            {% include "@CertUnlpNgen/Incident/Frontend/redetectedTable.html.twig" with {'incident': object,'incidentsDetected':object.incidentsDetected} %}
+                        </div>
                     </div>
                 </div>
             </div>
+
         {% endif %}
     {% endblock %}
+
     {% block state_history %}
         {% if object.getChangeStateHistory|length > 0 %}
-            <div class="col-lg-12">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{{ 'Historical Status Changes'|trans }}{{ 'Detected'|trans }} {{ label_info(object.getChangeStateHistory|length) }} {{ 'changes'|trans }}</h3>
-                    </div>
-                    <div class="panel-body table-responsive">
-                        {% include "CertUnlpNgenBundle:Incident:Frontend/historyChangeSummary.html.twig" with {'incident': object} %}
+            <div class="row">
+                <div class="col-lg-10">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            {{ 'Historical Status Changes'|trans }}{{ 'Detected'|trans }} {{ label_info(object.getChangeStateHistory|length) }} {{ 'changes'|trans }}
+                        </div>
+                        <div class="card-body">
+                            {% include "CertUnlpNgenBundle:Incident:Frontend/historyChangeSummary.html.twig" with {'incident': object} %}
+                        </div>
                     </div>
                 </div>
             </div>
         {% endif %}
     {% endblock %}
     {% block comments %}
-
-        <div class="col-lg-12">
-            <div class="row">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{{ 'Comments'|trans }}</h3>
+        <div class="row">
+            <div class="col-lg-10">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        {{ 'Comments'|trans }}
                     </div>
-                    <div class="panel-body">
-
+                    <div class="card-body">
                         {% block comments_body %}
                             {{ render(controller('CertUnlpNgenBundle:Frontend/Incident/IncidentFrontend:incidentComments', {'incident': object, 'request': app.request})) }}
                         {% endblock %}
@@ -381,27 +401,21 @@
     {% endblock %}
 {% endblock %}
 
-{% block javascripts %}
+    {% block javascripts %}
+        {{ parent() }}
+        <script>
+            $(document).ready(function () {
+                window.api_key = '{{ app.user.apikey }}';
+            });
+        </script>
+        {% javascripts '@CertUnlpNgenBundle/Resources/public/js/incident/comments.js' %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
 
-    {{ parent() }}
-    <script>
-        $(document).ready(function () {
-            window.api_key = '{{ app.user.apikey }}';
-        });
-    </script>
-    {% javascripts '@CertUnlpNgenBundle/Resources/public/js/incident/comments.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    {% endblock %}
 
-{% endblock %}
+    {% block sideBar_search_path %}{{ path('cert_unlp_ngen_internal_incident_search_incident') }}{% endblock %}
 
-{% block sideBar_search_path %}{{ path('cert_unlp_ngen_internal_incident_search_incident') }}{% endblock %}
 
-{% block content_header %}
-    <h2 class="page-header">{{ icon('arrow-circle-down fa-fw') }}{{ 'incident'|trans }} [{{ 'ID'|trans }}
-        :{{ object.id }}
-        ][{{ object.type }}
-        ]{% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object} %}</h2>
-{% endblock %}
 
 

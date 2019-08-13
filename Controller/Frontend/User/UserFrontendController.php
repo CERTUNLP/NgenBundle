@@ -60,7 +60,7 @@ class UserFrontendController extends Controller
 
     /**
      * @Template("CertUnlpNgenBundle:User:Frontend/userForm.html.twig")
-     * @Route("/{username}/edit", name="cert_unlp_ngen_user_edit_user")
+     * @Route("/edit/{username}", name="cert_unlp_ngen_user_edit_user")
      * @param User $user
      * @return array
      */

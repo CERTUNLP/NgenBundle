@@ -11,7 +11,7 @@
 
 <li class="nav-item active">
     <form method="post" action="{% block sideBar_search_path %}{% endblock %}"
-          role="search">
+          class="generalSearch" role="search">
         <div class="input-group custom-search-form">
             <input type="text" name="term" class="form-control" value="{{ term | default('') }}"
                    placeholder="Search...">

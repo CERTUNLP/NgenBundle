@@ -14,11 +14,11 @@
 
 
 {% if incident.isNew %}
-<p> {{ label_danger(translatedState) }}
+ {{ label_danger(translatedState) }}
     {% elseif incident.isClosed %}
-<p>     {{ label_success(translatedState) }}
+    {{ label_success(translatedState) }}
     {% else %}
-<p>     {{ label_info(translatedState) }}
+    {{ label_info(translatedState) }}
     {% endif %}
 
 
