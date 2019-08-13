@@ -19,7 +19,7 @@ You can search in any screen of Ngen using the search box at the top left.
 ![alt text](https://github.com/CERTUNLP/NgenBundle/raw/master/Resources/doc/imagenes/ngenfilters.png)
 
 
-* In the way it works the differents termas and filters you enter are going to be aggregated as and.  
+* In the way it works the differents terms and filters you enter are going to be aggregated as 'and' clause.  
  
 ![alt text](https://github.com/CERTUNLP/NgenBundle/raw/master/Resources/doc/imagenes/ngenfilters.png)
 
