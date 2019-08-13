@@ -23,15 +23,7 @@ class NewBehavior extends StateBehavior
      */
     public function getResolutionMinutes(Incident $incident): int
     {
-//        if (!$this->isClosed()) {
-//            if (!$this->isNew()) {
-//                return abs(((new DateTime())->getTimestamp() - $incident->getOpenedAt()->getTimestamp()) / 60); //lo devuelvo en minutos eso es el i
-//            }
-
         return 0;
-//        }
-
-//        return abs(($incident->getUpdatedAt()->getTimestamp() - $incident->getOpenedAt()->getTimestamp()) / 60);
     }
 
 
@@ -78,11 +70,35 @@ class NewBehavior extends StateBehavior
     {
         return true;
     }
-    
+
     /**
      * @return bool
      */
     public function isClosed(): ?bool
+    {
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAttended(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isResolved(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAddressed(): bool
     {
         return false;
     }

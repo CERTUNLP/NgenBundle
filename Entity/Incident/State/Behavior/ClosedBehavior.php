@@ -3,7 +3,6 @@
 namespace CertUnlp\NgenBundle\Entity\Incident\State\Behavior;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
@@ -24,10 +23,7 @@ class ClosedBehavior extends StateBehavior
      */
     public function getResolutionMinutes(Incident $incident): int
     {
-        if ($incident->getOpenedAt()) {
-            return abs(($incident->getUpdatedAt()->getTimestamp() - $incident->getOpenedAt()->getTimestamp()) / 60);
-        }
-        return 0;
+        return abs(($incident->getUpdatedAt()->getTimestamp() - $incident->getOpenedAt()->getTimestamp()) / 60);
     }
 
     public function updateTlp(Incident $incident, Incident $incidentDetected): Incident
@@ -63,16 +59,24 @@ class ClosedBehavior extends StateBehavior
     /**
      * @return bool
      */
-    public function isNew(): ?bool
+    public function isAttended(): bool
     {
-        return false;
+        return true;
     }
 
     /**
      * @return bool
      */
-    public function isClosed(): ?bool
+    public function isResolved(): bool
     {
         return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAddressed(): bool
+    {
+        return false;
     }
 }

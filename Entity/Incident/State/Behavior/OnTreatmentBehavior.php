@@ -3,6 +3,7 @@
 namespace CertUnlp\NgenBundle\Entity\Incident\State\Behavior;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use JMS\Serializer\Annotation as JMS;
@@ -23,18 +24,7 @@ class OnTreatmentBehavior extends StateBehavior
      */
     public function getResolutionMinutes(Incident $incident): int
     {
-//        if (!$this->isClosed()) {
-//            if (!$this->isNew()) {
-//                return abs(((new DateTime())->getTimestamp() - $incident->getOpenedAt()->getTimestamp()) / 60); //lo devuelvo en minutos eso es el i
-//            }
-//
-//            return 0;
-//        }
-        if ($incident->getOpenedAt()) {
-            return abs(($incident->getUpdatedAt()->getTimestamp() - $incident->getOpenedAt()->getTimestamp()) / 60);
-        }
-        return 0;
-
+        return abs(((new DateTime())->getTimestamp() - $incident->getOpenedAt()->getTimestamp()) / 60); //lo devuelvo en minutos eso es el i
     }
 
 
@@ -51,10 +41,7 @@ class OnTreatmentBehavior extends StateBehavior
      */
     public function getResponseMinutes(Incident $incident): int
     {
-        if ($incident->getOpenedAt()) {
-            return abs(($incident->getDate()->getTimestamp() - $incident->getOpenedAt()->getTimestamp()) / 60); //lo devuelvo en minutos eso es el i
-        }
-        return 0;
+        return abs(($incident->getOpenedAt()->getTimestamp() - $incident->getDate()->getTimestamp()) / 60);
 
     }
 
@@ -76,7 +63,15 @@ class OnTreatmentBehavior extends StateBehavior
     /**
      * @return bool
      */
-    public function isNew(): ?bool
+    public function isAttended(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isResolved(): bool
     {
         return false;
     }
@@ -84,8 +79,8 @@ class OnTreatmentBehavior extends StateBehavior
     /**
      * @return bool
      */
-    public function isClosed(): ?bool
+    public function isAddressed(): bool
     {
-        return false;
+        return true;
     }
 }

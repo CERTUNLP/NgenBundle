@@ -7,17 +7,17 @@
  with this source code in the file LICENSE.
 #}
 
-{% if (incident.delayedMinutes > 0) %}
+{% if (incident.responseDelayedMinutes > 0) %}
     {% if  incident.isNew %}
-        <span class="label label-warning"> {{ 'Waiting for response'|trans }}, {{ incident.delayedMinutes }}{{ 'minutes left'|trans }}</span>
+        <span class="label label-warning"> {{ 'Waiting for response'|trans }}, {{ incident.responseDelayedMinutes }}{{ 'minutes left'|trans }}</span>
     {% else %}
-        <span class="label label-success"> {{ 'Responsed on time'|trans }} {{ incident.delayedMinutes }}{{ 'minutes left'|trans }}</span>
+        <span class="label label-success"> {{ 'Responsed on time'|trans }} {{ incident.responseDelayedMinutes }}{{ 'minutes left'|trans }}</span>
     {% endif %}
 {% else %}
     {% if incident.isNew %}
-        <span class="label label-danger"> {{ 'Waiting for response'|trans }}, {{ incident.delayedMinutes * -1 }}{{ 'minutes delayed'|trans }}</span>
+        <span class="label label-danger"> {{ 'Waiting for response'|trans }}, {{ incident.responseDelayedMinutes * -1 }}{{ 'minutes delayed'|trans }}</span>
     {% else %}
-        <span class="label label-danger"> {{ 'Response delayed for'|trans }} {{ incident.delayedMinutes * -1 }}{{ 'minutes'|trans }}</span>
+        <span class="label label-danger"> {{ 'Response delayed for'|trans }} {{ incident.responseDelayedMinutes * -1 }}{{ 'minutes'|trans }}</span>
     {% endif %}
 
 {% endif %}

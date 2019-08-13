@@ -161,6 +161,38 @@ class IncidentState implements Translatable
     }
 
     /**
+     * @return bool
+     */
+    public function isAttended(): bool
+    {
+        return $this->getBehavior()->isAttended();
+    }
+
+    /**
+     * @return StateBehavior
+     */
+    public function getBehavior(): StateBehavior
+    {
+        return $this->incident_state_behavior;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isResolved(): bool
+    {
+        return $this->getBehavior()->isResolved();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAddressed(): bool
+    {
+        return $this->getBehavior()->isAddressed();
+    }
+
+    /**
      * @param IncidentState $newState
      * @return bool
      */
@@ -258,14 +290,6 @@ class IncidentState implements Translatable
     {
         $this->locale = $locale;
         return $this;
-    }
-
-    /**
-     * @return StateBehavior
-     */
-    public function getBehavior(): StateBehavior
-    {
-        return $this->incident_state_behavior;
     }
 
     /**

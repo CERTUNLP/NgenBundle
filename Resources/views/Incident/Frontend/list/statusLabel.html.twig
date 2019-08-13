@@ -8,41 +8,36 @@
 #}
 
 {% set translatedState = incident.state.name|trans %}
-{#{% set translatedStatus = incident.statusToString|trans %}#}
-
-{#{{ label_info(translatedState) }}#}
-
-
-
-{%  set responseLeft= incident.priority.responsetime-incident.responseMinutes %}
-{%  set resolutionLeft= incident.priority.resolutiontime-incident.resolutionMinutes %}
-
-
-
 
 {% if incident.isNew %}
-    {% if (responseLeft > 0) %}
-            <i class="fa fa-phone-slash" style="color:green" title="{{ 'Unanswered'|trans }}({{ responseLeft }} {{ ' minutes left'|trans }})"></i>
+    {% if (incident.responseDelayedMinutes > 0) %}
+        <i class="fa fa-phone-slash" style="color:green"
+           title="{{ 'Unanswered'|trans }}({{ incident.responseDelayedMinutes }} {{ ' minutes left'|trans }})"></i>
     {% else %}
-            <i class="fa fa-phone-slash" style="color:red" title="{{ 'Unanswered'|trans }}({{ responseLeft * -1 }}{{ ' minutes late'|trans }})"></i>
+        <i class="fa fa-phone-slash" style="color:red"
+           title="{{ 'Unanswered'|trans }}({{ incident.responseDelayedMinutes * -1 }}{{ ' minutes late'|trans }})"></i>
     {% endif %}
 {% else %}
-    {% if (responseLeft > 0) %}
-     <i class="fa fa-phone" style="color:green" title="{{ 'Responsed on time'|trans }}"></i>
+    {% if (incident.responseDelayedMinutes > 0) %}
+        <i class="fa fa-phone" style="color:green" title="{{ 'Responsed on time'|trans }}"></i>
     {% else %}
-        <i class="fa fa-phone" style="color:lightblue" title="{{ 'Answer delayed'|trans }}({{ responseLeft * -1 }}{{ ' minutes late'|trans }})"></i>
+        <i class="fa fa-phone" style="color:lightblue"
+           title="{{ 'Answer delayed'|trans }}({{ incident.responseDelayedMinutes * -1 }}{{ ' minutes late'|trans }})"></i>
     {% endif %}
     {% if incident.isClosed %}
-        {% if resolutionLeft > 0 %}
+        {% if incident.resolutionDelayedMinutes > 0 %}
             <i class="fas fa-check-double" style="color:green" title="{{ 'Solved'|trans }}"></i>
         {% else %}
-            <i class="fas fa-check-double" style="color:lightblue" title="{{ 'Solved'|trans }}({{ resolutionLeft * -1 }}{{ ' minutes late'|trans }})"></i>
+            <i class="fas fa-check-double" style="color:lightblue"
+               title="{{ 'Solved'|trans }}({{ incident.resolutionDelayedMinutes * -1 }}{{ ' minutes late'|trans }})"></i>
         {% endif %}
     {% else %}
-        {% if resolutionLeft > 0 %}
-            <i class="fas fa-hourglass-start" style="color:green" title="{{ 'Unsolved'|trans }}({{ resolutionLeft }} {{ ' minutes left'|trans }})"></i>
+        {% if incident.resolutionDelayedMinutes > 0 %}
+            <i class="fas fa-hourglass-start" style="color:green"
+               title="{{ 'Unsolved'|trans }}({{ incident.resolutionDelayedMinutes }} {{ ' minutes left'|trans }})"></i>
         {% else %}
-            <i class="fas fa-hourglass-end" style="color:red" title="{{ 'Unsolved'|trans }}({{ resolutionLeft * -1 }} {{ ' minutes late'|trans }})"></i>
+            <i class="fas fa-hourglass-end" style="color:red"
+               title="{{ 'Unsolved'|trans }}({{ incident.resolutionDelayedMinutes * -1 }} {{ ' minutes late'|trans }})"></i>
         {% endif %}
     {% endif %}
 {% endif %}

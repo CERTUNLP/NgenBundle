@@ -25,7 +25,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\DiscriminatorMap({"closed" = "ClosedBehavior", "on_treatment" = "OnTreatmentBehavior", "new" = "NewBehavior", "discarded" = "DiscardedBehavior", "behavior" = "StateBehavior"})
  * @JMS\ExclusionPolicy("all")
  */
-class StateBehavior
+abstract class StateBehavior
 {
     /**
      * @var string|null
@@ -360,7 +360,6 @@ class StateBehavior
 //        return abs(($incident->getUpdatedAt()->getTimestamp() - $incident->getOpenedAt()->getTimestamp()) / 60);
     }
 
-
     /**
      * @param Incident $incident
      * @param IncidentChangeState $changeState
@@ -446,18 +445,21 @@ class StateBehavior
     }
 
     /**
+     * @return bool
+     */
+    public function isNew(): ?bool
+    {
+        return true;
+    }
+
+    /**
      * @param Incident $incident
      * @return int
      * @throws Exception
      */
     public function getResponseMinutes(Incident $incident): int
     {
-//        if ($this->isOpen()) {
-//            return abs(($incident->getDate()->getTimestamp() - $incident->getOpenedAt()->getTimestamp()) / 60); //lo devuelvo en minutos eso es el i
-//        }
-
-//        return abs(((new DateTime())->getTimestamp() - $incident->getDate()->getTimestamp()) / 60);
-        return 0;
+        return abs(($incident->getCreatedAt()->getTimestamp() - (new DateTime())->getTimestamp()) / 60);
     }
 
     public function updatePriority(Incident $incident, Incident $incidentDetected): Incident
@@ -499,4 +501,18 @@ class StateBehavior
         $this->updatedAt = $updatedAt;
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function isClosed(): ?bool
+    {
+        return false;
+    }
+
+    abstract public function isAttended(): bool;
+
+    abstract public function isResolved(): bool;
+
+    abstract public function isAddressed(): bool;
 }
