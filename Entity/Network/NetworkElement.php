@@ -167,7 +167,7 @@ abstract class NetworkElement
     /**
      * @return Address
      */
-    public function getAddressObject(): Address
+    public function getAddressObject(): ?Address
     {
         return $this->address;
     }

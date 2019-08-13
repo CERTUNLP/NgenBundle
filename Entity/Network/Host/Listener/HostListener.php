@@ -61,12 +61,14 @@ class HostListener
     {
         $network = $host->getNetwork();
         $network_new = $this->network_handler->getByHostAddress($host->getAddress());
-        if ($network) {
-            if (!$network->equals($network_new)) {
+        if ($network_new) {
+            if ($network) {
+                if (!$network->equals($network_new)) {
+                    $host->setNetwork($network_new);
+                }
+            } else {
                 $host->setNetwork($network_new);
             }
-        } else {
-            $host->setNetwork($network_new);
         }
     }
 
