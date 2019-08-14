@@ -22,6 +22,7 @@ Ngen uses context for searchs at input 'search' box. For example, if you are in 
 
  ## Advanced Search
  
- * Take a look at Resosurces/config/elastica_config.yml to see all the parameters you can use.
- * Some examples:
+ * Take a look at [Resosurces/config/elastica_config.yml](https://github.com/CERTUNLP/NgenBundle/blob/master/Resources/config/elastica_config.yml) to see all the parameters you can use.
+ * As example you can search an Elastic query like 'network.discr:"internal" && vnc' with filters feed 'Shadowserver' and state 'staging'.
+![alt text](https://github.com/CERTUNLP/NgenBundle/raw/master/Resources/doc/imagenes/advancedsearch2.png)
  
