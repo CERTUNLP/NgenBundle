@@ -11,7 +11,6 @@
 
 namespace CertUnlp\NgenBundle\Repository;
 
-use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -23,33 +22,6 @@ use Doctrine\ORM\QueryBuilder;
 class IncidentRepository extends NetworkElementRepository
 {
 
-    public function findByHostDateType($parameters): ?Incident
-    {
-        $query = $this->createQueryBuilder('i')
-            ->where('i.type = :type')
-            ->andWhere('i.ip = :ip')
-            ->andWhere('i.date = :date')
-//                ->andWhere('i.isClosed = :closed')
-            ->setParameter('type', $parameters['type'])
-            ->setParameter('ip', $parameters['ip'])
-//                ->setParameter('closed', FALSE)
-            ->setParameter('date', $parameters['date']);
-
-        return $query->getQuery()->getOneOrNullResult();
-    }
-
-    public function findRenotificables($parameters = [])
-    {
-        $query = $this->createQueryBuilder('i')
-//                ->select('count(i)')
-            ->where('i.isClosed = :closed')
-//                ->andWhere('DATE_DIFF(:date,i.date) = 15')
-//                ->orWhere('DATE_DIFF(:date,i.renotificationDate) = 5')
-            ->setParameter('closed', FALSE)
-            ->setParameter('date', new \DateTime('-1 days'));
-
-        return $query->getQuery()->getResult();
-    }
 
     public function findNotificables($parameters = [])
     {
@@ -80,42 +52,63 @@ class IncidentRepository extends NetworkElementRepository
 
     }
 
+    public function findAllUnsolved()
+    {
+        return $this->queryAllUnsolved()->getQuery()->getResult();
+    }
+
     public function queryAllUnsolved()
     {
-        $this->queryAllOnTreatment()
-            ->andWhere('i.unattendedState != undefined')
-            ->andWhere('i.unattendedState != i.state');
+        return $this->queryAllOnTreatment()
+            ->andWhere('i.unsolvedState != :undefined_state')
+            ->andWhere('i.unsolvedState != i.state')
+            ->andWhere('i.solveDeadLine <=  CURRENT_TIMESTAMP()')
+            ->setParameter('undefined_state', 'undefined');
     }
 
     public function queryAllOnTreatment(): QueryBuilder
     {
+        return $this->queryAllByBehavior('on_treatment');
+    }
+
+    public function queryAllByBehavior(string $behavior): QueryBuilder
+    {
         $qb = $this->createQueryBuilder('i');
         $qb->select('i')
-            ->andWhere('i.state.behavior.slug = on_treatment');
+            ->innerJoin('i.state', 'state')
+            ->andWhere('state.incident_state_behavior = :behavior')
+            ->setParameter('behavior', $behavior);
         return $qb;
+
+    }
+
+    public function findAllUnattended()
+    {
+        return $this->queryAllUnattended()->getQuery()->getResult();
+    }
+
+    public function queryAllUnattended()
+    {
+        return $this->queryAllOnTreatment()
+            ->andWhere('i.unattendedState != :undefined_state')
+            ->andWhere('i.unattendedState != i.state')
+            ->andWhere('i.responseDeadLine <=  CURRENT_TIMESTAMP()')
+            ->setParameter('undefined_state', 'undefined');
     }
 
     public function queryAllClosed(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('i');
-        $qb->select('i')
-            ->andWhere('i.state.behavior.slug = closed');
-        return $qb;
+        return $this->queryAllByBehavior('closed');
     }
 
     public function queryAllDiscarded(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('i');
-        $qb->select('i')
-            ->andWhere('i.state.behavior.slug = discarded');
-        return $qb;
+        return $this->queryAllByBehavior('discarded');
     }
 
     public function queryAllNew(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('i');
-        $qb->select('i')
-            ->andWhere('i.state.behavior.slug = new');
-        return $qb;
+        return $this->queryAllByBehavior('new');
+
     }
 }
