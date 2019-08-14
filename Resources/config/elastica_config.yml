@@ -420,26 +420,26 @@ fos_elastica:
                             type: date
                         updatedAt:
                             type: date
-                        mailAdmin:
-                            type: "object"
-                            properties:
-                                slug:
-                                    type: keyword
-                        mailTeam:
-                            type: "object"
-                            properties:
-                                slug:
-                                    type: keyword
-                        mailReporter:
-                            type: "object"
-                            properties:
-                                slug:
-                                    type: keyword
-                        mailAssigned:
-                            type: "object"
-                            properties:
-                                slug:
-                                    type: keyword
+#                        mailAdmin:
+#                            type: "object"
+#                            properties:
+#                                slug:
+#                                    type: keyword
+#                        mailTeam:
+#                            type: "object"
+#                            properties:
+#                                slug:
+#                                    type: keyword
+#                        mailReporter:
+#                            type: "object"
+#                            properties:
+#                                slug:
+#                                    type: keyword
+#                        mailAssigned:
+#                            type: "object"
+#                            properties:
+#                                slug:
+#                                    type: keyword
 
 
                     persistence:

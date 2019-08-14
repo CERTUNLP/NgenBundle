@@ -122,21 +122,12 @@ class IncidentHandler extends Handler
         return $this->repository->findNotificables();
     }
 
-    public function closeOldIncidents(): array
+    public function closeUnsolvedIncidents(): array
     {
-        $incidents = $this->all(['isClosed' => false]);
+        $incidents = $this->findAllUnsolved();
         $closedIncidents = [];
         foreach ($incidents as $incident) {
-            $close = false;
-            if ($this->closeByUnsolved($incident)) {
-                $incident->setState($incident->getUnsolvedState());
-                $close = $incident->getState() == $incident->getUnsolvedState();
-            } elseif ($this->discardByUnattended($incident)) {
-                $incident->setState($incident->getUnattendedState());
-                $close = $incident->getState() == $incident->getUnattendedState();
-
-            }
-            if ($close) {
+            if ($incident->setState($incident->getUnsolvedState())) {
                 $this->om->persist($incident);
                 $closedIncidents[$incident->getId()] = ['id' => $incident->getSlug(),
                     'type' => $incident->getType()->getSlug(),
@@ -149,24 +140,34 @@ class IncidentHandler extends Handler
         return $closedIncidents;
     }
 
-    private function closeByUnsolved(Incident $incident)
+    public function findAllUnsolved()
     {
-
-        return (($incident->getUnattendedState() and $incident->getUnsolvedState() != 'undefined' and $incident->getUnsolvedState() != $incident->getState()) and (!$incident->isNew()) and ($incident->getPriority()->getUnresolutionTime() <= $incident->getResolutionMinutes()));
+        return $this->repository->findAllUnsolved();
     }
 
-    private function discardByUnattended(Incident $incident)
+    public function closeUnattendedIncidents(): array
     {
-        return (($incident->getUnattendedState() and $incident->getUnattendedState() != 'undefined' and $incident->getUnattendedState() != $incident->getState()) and ($incident->isNew() and ($incident->getPriority()->getUnresponseTime() <= $incident->getResponseMinutes())));
+        $incidents = $this->findAllUnattended();
+        $closedIncidents = [];
+        foreach ($incidents as $incident) {
+            if ($incident->setState($incident->getUnattendedState())) {
+                $this->om->persist($incident);
+                $closedIncidents[$incident->getId()] = ['id' => $incident->getSlug(),
+                    'type' => $incident->getType()->getSlug(),
+                    'date' => $incident->getDate()->format('Y-m-d H:i:s'),
+                    'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
+                    'newState' => $incident->getState()->getSlug()];
+            }
+        }
+        $this->om->flush();
+        return $closedIncidents;
     }
 
-    /**
-     * @return mixed
-     */
-    public function renotificateIncidents()
+    public function findAllUnattended()
     {
-        return $this->repository->findRenotificables();
+        return $this->repository->findAllUnattended();
     }
+
 
     /**
      * @param $incident Incident
@@ -356,10 +357,5 @@ class IncidentHandler extends Handler
         return $this;
     }
 
-    private function closeByUnresolved(Incident $incident)
-    {
-
-        return ((!$incident->isNew()) and ($incident->getPriority()->getUnresolutionTime() <= $incident->getResolutionMinutes()));
-    }
 
 }
