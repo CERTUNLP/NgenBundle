@@ -8,6 +8,7 @@
 #}
 
 
+
 {% if network.addressObject.type == 'ip_v4' %}
     {{ path('cert_unlp_ngen_network_'~action~'_network_ip_v4',{"ip": network.address,"ip_mask":network.addressMask}) }}
 {% elseif network.addressObject.type == 'ip_v6' %}

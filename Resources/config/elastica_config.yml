@@ -49,6 +49,8 @@ fos_elastica:
                         origin:
                             type: "object"
                             properties:
+                                address:
+                                    type: keyword
                                 ip:
                                     type: keyword
                                     fields:
@@ -210,6 +212,8 @@ fos_elastica:
                             type: ip
                         type:
                             type: keyword
+                        address:
+                            type: keyword
                         addressAndMask:
                             type: keyword
                             index: not_analyzed
@@ -275,11 +279,18 @@ fos_elastica:
                             type: "object"
                             properties:
                                 ip:
-                                    type: ip
+                                    type: keyword
+                                    fields:
+                                        ip:
+                                            type:  ip
+                                domain:
+                                    type: keyword
                         updatedAt:
                             type: date
                         ip:
                             type: ip
+                        address:
+                            type: keyword
                         isActive:
                             type: boolean
                     persistence:

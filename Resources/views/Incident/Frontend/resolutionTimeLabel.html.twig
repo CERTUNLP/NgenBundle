@@ -13,7 +13,7 @@
          {% if atrasado > 0 %}
              {{ label_success('Waiting for resolution '|trans ~ atrasado ~ ' minutes left'|trans) }}
          {% else %}
-             {{ label_danger('Resolution delayed for '|trans ~ (atrasado1 * -1) ~ ' minutes '|trans) }}
+             {{ label_danger('Resolution delayed for '|trans ~ (atrasado * -1) ~ ' minutes '|trans) }}
          {% endif %}
      {% else %}
          {% if atrasado > 0 %}
