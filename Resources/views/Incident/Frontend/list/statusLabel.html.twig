@@ -7,45 +7,8 @@
  with this source code in the file LICENSE.
 #}
 
-{% set translatedState = incident.state.name|trans %}
-
-{% if incident.isNew %}
-    {% if (incident.responseDelayedMinutes > 0) %}
-            <i class="fa fa-phone-slash" style="color:#f0ad4e" title="{{ 'Unanswered '|trans }}({{ incident.responseDelayedMinutes }} {{ ' minutes left'|trans }})"></i>
-    {% else %}
-        <i class="fa fa-phone-slash" style="color:red"
-           title="{{ 'Unanswered'|trans }}({{ incident.responseDelayedMinutes * -1 }}{{ ' minutes late'|trans }})"></i>
-    {% endif %}
-{% else %}
-    {% if (incident.responseDelayedMinutes > 0) %}
-        <i class="fa fa-phone" style="color:green" title="{{ 'Responsed on time'|trans }}"></i>
-    {% else %}
-        <i class="fa fa-phone" style="color:lightblue"
-           title="{{ 'Answer delayed'|trans }}({{ incident.responseDelayedMinutes * -1 }}{{ ' minutes late'|trans }})"></i>
-    {% endif %}
-    {% if incident.isClosed %}
-        {% if incident.resolutionDelayedMinutes > 0 %}
-            <i class="fas fa-check-double" style="color:green" title="{{ 'Solved '|trans }}"></i>
-        {% else %}
-            <i class="fas fa-check-double" style="color:lightblue" title="{{ 'Solved'|trans }}({{ incident.resolutionDelayedMinutes * -1 }}{{ ' minutes late'|trans }})"></i>
-        {% endif %}
-    {% else %}
-        {% if incident.resolutionDelayedMinutes > 0 %}
-            <i class="fas fa-hourglass-start" style="color:green" title="{{ 'Unsolved '|trans }}({{ incident.resolutionDelayedMinutes }} {{ ' minutes left'|trans }})"></i>
-        {% else %}
-            <i class="fas fa-hourglass-end" style="color:red" title="{{ 'Unsolved '|trans }}({{ incident.resolutionDelayedMinutes * -1 }} {{ ' minutes late'|trans }})"></i>
-        {% if incident.resolutionDelayedMinutes > 0 %}
-            <i class="fas fa-check-double" style="color:green" title="{{ 'Solved'|trans }}"></i>
-            <i class="fas fa-check-double" style="color:lightblue"
-               title="{{ 'Solved'|trans }}({{ incident.resolutionDelayedMinutes * -1 }}{{ ' minutes late'|trans }})"></i>
-        {% if incident.resolutionDelayedMinutes > 0 %}
-            <i class="fas fa-hourglass-start" style="color:green"
-               title="{{ 'Unsolved'|trans }}({{ incident.resolutionDelayedMinutes }} {{ ' minutes left'|trans }})"></i>
-            <i class="fas fa-hourglass-end" style="color:red"
-               title="{{ 'Unsolved'|trans }}({{ incident.resolutionDelayedMinutes * -1 }} {{ ' minutes late'|trans }})"></i>
-        {% endif %}
-    {% endif %}
-{% endif %}
+{% include "@CertUnlpNgen/Incident/Frontend/list/responseStatusLabel.html.twig" %}
+{% include "@CertUnlpNgen/Incident/Frontend/list/resolutionStatusLabel.html.twig" %}
 
 
 

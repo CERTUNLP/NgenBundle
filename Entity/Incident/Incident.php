@@ -41,6 +41,26 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Incident
 {
 
+    protected $temporalNotes;
+    protected $temporalEvidenceFile;
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="response_dead_line", type="datetime",nullable=true))
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
+     */
+    protected $responseDeadLine;
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="solve_dead_line", type="datetime",nullable=true))
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
+     */
+    protected $solveDeadLine;
     /**
      * @var integer
      *
@@ -50,21 +70,18 @@ class Incident
      * @JMS\Expose
      */
     private $id;
-
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="incidents")
      * @JMS\Expose
      */
     private $reporter;
-
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="assignedIncidents")
      * @JMS\Expose
      */
     private $assigned;
-
     /**
      * @var IncidentType
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="incidents")
@@ -74,7 +91,6 @@ class Incident
      * @CustomAssert\TypeHasReport
      */
     private $type;
-
     /**
      * @var IncidentFeed
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed", inversedBy="incidents")
@@ -84,7 +100,6 @@ class Incident
      * @Assert\NotNull
      */
     private $feed;
-
     /**
      * @var IncidentState
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
@@ -93,47 +108,10 @@ class Incident
      * @JMS\Groups({"api"})
      */
     private $state;
-
     /**
      * @var IncidentState
      */
     private $lastState;
-
-    protected $temporalNotes;
-    protected $temporalEvidenceFile;
-
-    /**
-     * @return mixed
-     */
-    public function getTemporalNotes()
-    {
-        return $this->temporalNotes;
-    }
-
-    /**
-     * @param mixed $temporalNotes
-     */
-    public function setTemporalNotes($temporalNotes): void
-    {
-        $this->temporalNotes = $temporalNotes;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTemporalEvidenceFile()
-    {
-        return $this->temporalEvidenceFile;
-    }
-
-    /**
-     * @param mixed $temporalEvidenceFile
-     */
-    public function setTemporalEvidenceFile($temporalEvidenceFile): void
-    {
-        $this->temporalEvidenceFile = $temporalEvidenceFile;
-    }
-
     /**
      * @var IncidentState
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
@@ -142,7 +120,6 @@ class Incident
      * @JMS\Groups({"api"})
      */
     private $unattendedState;
-
     /**
      * @var IncidentState
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
@@ -193,59 +170,6 @@ class Incident
      * @JMS\Groups({"api"})
      */
     private $date;
-
-    /**
-     * @return DateTime
-     */
-    public function getResponseDeadLine(): ?DateTime
-    {
-        return $this->responseDeadLine;
-    }
-
-    /**
-     * @param DateTime $responseDeadLine
-     */
-    public function setResponseDeadLine(DateTime $responseDeadLine): void
-    {
-        $this->responseDeadLine = $responseDeadLine;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getSolveDeadLine(): ?DateTime
-    {
-        return $this->solveDeadLine;
-    }
-
-    /**
-     * @param DateTime $solveDeadLine
-     */
-    public function setSolveDeadLine(DateTime $solveDeadLine): void
-    {
-        $this->solveDeadLine = $solveDeadLine;
-    }
-
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="response_dead_line", type="datetime",nullable=true))
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
-     */
-    protected $responseDeadLine;
-
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="solve_dead_line", type="datetime",nullable=true))
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
-     */
-    protected $solveDeadLine;
-
     /**
      * @var Collection
      * @JMS\Expose
@@ -375,6 +299,70 @@ class Incident
         }
         $this->incidentsDetected = new ArrayCollection();
         $this->changeStateHistory = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTemporalNotes()
+    {
+        return $this->temporalNotes;
+    }
+
+    /**
+     * @param mixed $temporalNotes
+     */
+    public function setTemporalNotes($temporalNotes): void
+    {
+        $this->temporalNotes = $temporalNotes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTemporalEvidenceFile()
+    {
+        return $this->temporalEvidenceFile;
+    }
+
+    /**
+     * @param mixed $temporalEvidenceFile
+     */
+    public function setTemporalEvidenceFile($temporalEvidenceFile): void
+    {
+        $this->temporalEvidenceFile = $temporalEvidenceFile;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getResponseDeadLine(): ?DateTime
+    {
+        return $this->responseDeadLine;
+    }
+
+    /**
+     * @param DateTime $responseDeadLine
+     */
+    public function setResponseDeadLine(DateTime $responseDeadLine): void
+    {
+        $this->responseDeadLine = $responseDeadLine;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getSolveDeadLine(): ?DateTime
+    {
+        return $this->solveDeadLine;
+    }
+
+    /**
+     * @param DateTime $solveDeadLine
+     */
+    public function setSolveDeadLine(DateTime $solveDeadLine): void
+    {
+        $this->solveDeadLine = $solveDeadLine;
     }
 
     /**
@@ -1014,10 +1002,72 @@ class Incident
     /**
      * @return int
      * @throws Exception
+     * @example if int positive incident is on time, if int is negative incident is delayed
+     */
+    public function getResponseDelayedDate()
+    {
+        $fecha = new DateTime();
+        $intervalo = 'PT' . $this->getResponseDelayedMinutes() . 'M';
+        $date_interval = new \DateInterval($intervalo);
+        $fecha->sub($date_interval);
+
+        return $fecha->diff(new DateTime());
+    }
+
+    /**
+     * @return int
+     * @throws Exception
+     * @example if int positive incident is on time, if int is negative incident is delayed
+     */
+    public function getResponseDelayedMinutes(): int
+    {
+        $minutes = $this->getPriority()->getResponseTime() - $this->getCreatedAt()->diff(new DateTime())->i;
+        return $minutes >= 0 ? $minutes : $minutes * -1;
+
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param DateTime $createdAt
+     * @return Incident
+     */
+    public function setCreatedAt(DateTime $createdAt): Incident
+    {
+        $this->setter($this->createdAt, $createdAt);
+        return $this;
+    }
+
+    /**
+     * @return int
+     * @throws Exception
+     * @example if int positive incident is on time, if int is negative incident is delayed
+     */
+    public function getResolutionDelayedDate()
+    {
+        $fecha = new DateTime();
+        $intervalo = 'PT' . $this->getResolutionDelayedMinutes() . 'M';
+        $date_interval = new \DateInterval($intervalo);
+        $fecha->sub($date_interval);
+
+        return $fecha->diff(new DateTime());
+    }
+
+    /**
+     * @return int
+     * @throws Exception
      */
     public function getResolutionDelayedMinutes(): int
     {
-        return $this->getPriority()->getResolutionTime() - $this->getResolutionMinutes();
+        $minutes = $this->getPriority()->getResolutionTime() - $this->getResolutionMinutes();
+
+        return $minutes >= 0 ? $minutes : $minutes * -1;
     }
 
     /**
@@ -1086,61 +1136,37 @@ class Incident
     }
 
     /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     * @return Incident
-     */
-    public function setCreatedAt(DateTime $createdAt): Incident
-    {
-        $this->setter($this->createdAt, $createdAt);
-        return $this;
-    }
-
-    /**
-     * @return int
-     * @throws Exception
-     */
-    public function getResponseDelayedMinutes(): int
-    {
-        return $this->getPriority()->getResponseTime() - $this->getResponseMinutes();
-    }
-
-    /**
      * @return int
      * @throws Exception
      */
     public function getResponseMinutes(): int
     {
-        return $this->getAttendedTime() / 60;
+        return $this->getResponseTime() / 60;
     }
 
     /**
      * @return int
+     * @throws Exception
      */
-    public function getAttendedTime(): int
+    public function getResponseTime(): int
     {
-        if ($this->getAttendedDate()) {
-            return abs($this->getCreatedAt()->getTimestamp() - $this->getAttendedDate()->getTimestamp());
+        if ($this->getResponsedDate()) {
+            return abs($this->getCreatedAt()->getTimestamp() - $this->getResponsedDate()->getTimestamp());
         }
+
         return 0;
     }
 
     /**
-     * @return DateTime | null
+     * @return DateTime
+     * @throws Exception
      */
-    public function getAttendedDate(): ?DateTime
+    public function getResponsedDate(): DateTime
     {
         if (!$this->getAttendedChangeStates()->isEmpty()) {
             return $this->getAttendedChangeStates()->last()->getDate();
         }
-        return null;
+        return new DateTime();
     }
 
     /**
@@ -1154,6 +1180,16 @@ class Incident
             });
         }
         return new ArrayCollection();
+    }
+
+    public function isAttended(): bool
+    {
+        return $this->getState()->isAttended();
+    }
+
+    public function isResolved(): bool
+    {
+        return $this->getState()->isResolved();
     }
 
     public function statusToString(): string
