@@ -177,7 +177,7 @@ class IncidentChangeState
     /**
      * @return User
      */
-    public function getResponsable(): User
+    public function getResponsable(): ?User
     {
         return $this->responsable;
     }

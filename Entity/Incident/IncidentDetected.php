@@ -145,7 +145,7 @@ class IncidentDetected
 
     public function __toString(): string
     {
-        return $this->getDate()->format("Y-m-d h:i") . " - " . $this->getFeed()->getSlug();
+        return $this->getDate()->format('Y-m-d h:i') . ' - ' . $this->getFeed()->getSlug();
     }
 
     /**
@@ -256,7 +256,7 @@ class IncidentDetected
     /**
      * @return IncidentState
      */
-    public function getState(): IncidentState
+    public function getState(): ?IncidentState
     {
         return $this->state;
     }
