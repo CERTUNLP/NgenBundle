@@ -58,8 +58,9 @@
                                                             </p>
                                                         <ul>
                                                     {% endif %}
-                                                     <li> {{ detected.notes|striptags('<div>,<a>,<pre>,<code>')|raw }} </li>
-
+                                                    {% for note in detected.notes | trim | split("\n") %}
+                                                        <li> {{ note|striptags('<div>,<a>,<pre>,<code>')|nl2br }} </li>
+                                                     {% endfor %}
                                                 {% endif %}
                                             {% endfor %}
                                             {% if titulos == 1 %}
