@@ -112,7 +112,7 @@ abstract class NetworkElement
     /**
      * @return string
      */
-    public function getAddress(): string
+    public function getAddress(): ?string
     {
         return $this->address ? $this->address->getAddress() : '';
     }
@@ -167,7 +167,7 @@ abstract class NetworkElement
     /**
      * @return Address
      */
-    public function getAddressObject(): Address
+    public function getAddressObject(): ?Address
     {
         return $this->address;
     }

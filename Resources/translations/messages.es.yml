@@ -15,7 +15,7 @@ Impact: Impacto
 Urgency: Urgencia
 Active: Activo
 Action: Acciones
-'add incident Decision': 'Agregar Decision'
+'add incident Decision': 'Agregar Decisión'
 'Incident Decisions': Decisiones
 'Incident Priority': Prioridades
 'Do nothing': 'No hacer nada'
@@ -55,9 +55,9 @@ Login: Login
 Code: Codigo
 Description: Descripción
 'Response Time': 'Tiempo de Respuesta'
-'Resolution Time': 'Tiempo de Resolusión'
+'Resolution Time': 'Tiempo de Resolución'
 active: activo
-'Priority Information': 'Informacion de la Prioridad'
+'Priority Information': 'Información de la Prioridad'
 Priority: Prioridad
 Feed: Feed
 State: Estado
@@ -71,12 +71,12 @@ Decision: Decisión
 'minutes delayed': 'minutos atrasado'
 'Response delayed for': 'Respuesta atrasada por'
 minutes: minutos
-'Waiting for resolution': 'Esperando por resolusión,'
-'Resolution delayed for': 'Resolusión atrasada por'
+'Waiting for resolution': 'Esperando por resolución,'
+'Resolution delayed for': 'Resolución atrasada por'
 'Resolved on time': 'Resuelto a tiempo'
 Detected: Detectado
 times: veces
-LAST: 'Ultimo:'
+LAST: 'Último:'
 Responsable: Responsable
 Date: Fecha
 'Old State': 'Estado anterior'
@@ -86,8 +86,8 @@ Date: Fecha
 'Original Date': 'Fecha Original'
 'Created at': 'Creado el'
 'Opened at': 'Abierto el'
-'Last Time Detected': 'Ultima vez detectado'
-'Last Update': 'Ultima Actualización'
+'Last Time Detected': 'Última vez detectado'
+'Last Update': 'Última Actualización'
 'Priority Impact/Urgency': 'Prioridad Impacto/Urgencia'
 RT/Rt: RT/Rt
 Notes: Notas
@@ -101,18 +101,18 @@ ip: ip
 'Select a network': 'Seleccione una red'
 'Network info': 'Información de la red'
 IP/mask: IP/Mascara
-'Reporter info': 'Informacion del reportero'
+'Reporter info': 'Información del reportero'
 Email: Email
 'Assigned Info': 'Información del asignado'
-'Historical Detections': 'Detecciones historicas'
-'Historical Status Changes': 'Cambio de estado historicos'
+'Historical Detections': 'Detecciones históricas'
+'Historical Status Changes': 'Cambio de estado históricos'
 changes: cambios
 Evidence: Evidencia
 Download: Descargar
 'My Incidents': 'Mis Incidentes'
 Status: Estado
 Assigned: Asignado
-'Response Time/Resolution Time': ' Tiempo/Resolusion de Respuesta'
+'Response Time/Resolution Time': ' Tiempo respuesta/Tiempo de resolución'
 LTD: LTD
 'Unassigned Incidents': 'Incidentes no Asignados'
 'All Incidents': 'Todos los Incidentes'
@@ -147,16 +147,16 @@ Next: Siguiente
 First: Primera
 Last: Ultima
 feed: feed
-'Feed Information': 'Informacion del feed'
+'Feed Information': 'Información del feed'
 Networks: Redes
 'add network': 'agregar red'
 Ip/Mask: Ip/Mask
 type: tipo
 Entity: Entidad
 Admin: Administrador
-'Network Information': 'Informacion de red'
+'Network Information': 'Información de red'
 search: buscar
-'Network Entity Information': 'Informacion de la entidad'
+'Network Entity Information': 'Información de la entidad'
 'add Network Entity': 'agregar entidad'
 'Network Entities': 'Entidades de red'
 'Incident States': 'Estados de incidente'
@@ -166,13 +166,13 @@ search: buscar
 'Mail to Admin': '__Mail al administrador'
 'Mail to Team': '__Mail al equipo'
 state: estado
-'State Information': 'Informacion del estado'
+'State Information': 'Información del estado'
 'Network admins': 'Administradores de red'
 'add network admins': 'agregar administrador'
 Emails: Emails
 'Network Admins': 'Administradores de red'
 'Add Network Admin': 'agregar admin'
-'Host Information': 'Informacion del host'
+'Host Information': 'Información del host'
 host: host
 Users: Usuarios
 'add user': 'agregar usuario'
@@ -192,6 +192,7 @@ Administration: Administración
 report: reporte
 'Incident Reports': 'Reportes de incidentes'
 'add incident report': 'agregar reporte'
+Incident: Incidente
 Lang: Lenguaje
 'Report Information': 'Información del reporte'
 'Report content': 'Contenido del reporte'
@@ -200,7 +201,7 @@ Problem: Problema
 Verification: Verificación
 Recomendations: Recomendaciones
 'More information': 'Mas información'
-'Decision Information': 'Informacion de la decision'
+'Decision Information': 'Información de la decisión'
 Detail: Detalle
 'LAST:': '__LAST:'
 'Host info': '__Host info'
@@ -214,7 +215,7 @@ Profile: Perfil
 Logout: Salir
 'Incident Types': 'Tipos de incidente'
 'add incident type': 'agregar tipo'
-'Type Information': 'Informacion del tipo'
+'Type Information': 'Información del tipo'
 'Choose an incident type': 'Selecciona un tipo de incidente'
 'IPV(4|6)/mask or domain': 'IPv(4|6)/mascara o dominio'
 'Add some notes/evidence in text format, it will be attached to the mail report.': 'Agrega algunas notas/evidencia en formato texto. Seran agregadas al reporte automaticamente.'
@@ -238,7 +239,7 @@ Logout: Salir
 'Select an entity': 'Selecciona una entidad'
 'If it set to true the network will be edited and not replaced.(this can harm the network history)': 'Si es seleccionada la red será editada y no reemplazada. Esto puede corromper el historial de redes.'
 'Email/Phone Number/Telegram chat': 'Email/Numero de telefono/Telegram chat'
-'GPG public key': 'Lave publica GPG'
+'GPG public key': 'Lave pública GPG'
 'Lastname': Apellido
 'Send mail to reporter(if available)': 'Enviar mail al reportero.(si está disponible)'
 'Send mail to the one who has it assigned (if available)': 'Enviar mail al asignado.(si está disponible)'
@@ -246,3 +247,4 @@ Logout: Salir
 'Send mail to the team': 'Enviar mail al equipo'
 'Spanish': Español
 'English': Ingles
+'ID': 'ID'

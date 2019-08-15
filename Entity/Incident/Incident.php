@@ -85,6 +85,40 @@ class Incident implements IncidentInterface
      */
     protected $state;
     protected $lastState;
+    protected $temporalNotes;
+    protected $temporalEvidenceFile;
+
+    /**
+     * @return mixed
+     */
+    public function getTemporalNotes()
+    {
+        return $this->temporalNotes;
+    }
+
+    /**
+     * @param mixed $temporalNotes
+     */
+    public function setTemporalNotes($temporalNotes): void
+    {
+        $this->temporalNotes = $temporalNotes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTemporalEvidenceFile()
+    {
+        return $this->temporalEvidenceFile;
+    }
+
+    /**
+     * @param mixed $temporalEvidenceFile
+     */
+    public function setTemporalEvidenceFile($temporalEvidenceFile): void
+    {
+        $this->temporalEvidenceFile = $temporalEvidenceFile;
+    }
 
     /**
      * @var IncidentState
@@ -206,7 +240,7 @@ class Incident implements IncidentInterface
     /**
      * @param DateTime $responseDeadLine
      */
-    public function setResponseDeadLine(DateTime $responseDeadLine): void
+    public function setResponseDeadLine($responseDeadLine ): void
     {
         $this->responseDeadLine = $responseDeadLine;
     }
@@ -222,7 +256,7 @@ class Incident implements IncidentInterface
     /**
      * @param DateTime $solveDeadLine
      */
-    public function setSolveDeadLine(DateTime $solveDeadLine): void
+    public function setSolveDeadLine($solveDeadLine): void
     {
         $this->solveDeadLine = $solveDeadLine;
     }
@@ -627,7 +661,7 @@ class Incident implements IncidentInterface
      */
     public function setNotes(string $notes): Incident
     {
-        $this->notes = $notes;
+        $this->temporalNotes = $notes;
         return $this;
     }
 
@@ -1157,8 +1191,8 @@ class Incident implements IncidentInterface
      */
     public function setEvidenceFile(File $evidenceFile = null): Incident
     {
-        $this->evidence_file = $evidenceFile;
-        $this->setEvidenceFilePath($evidenceFile->getFilename());
+        $this->temporalEvidenceFile = $evidenceFile;
+       // $this->setEvidenceFilePath($evidenceFile->getFilename());
         return $this;
     }
 

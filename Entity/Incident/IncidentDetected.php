@@ -51,12 +51,12 @@ class IncidentDetected
         $this->setType($incident->getType());
         $this->setAssigned($incident->getAssigned());
         $this->setDate(new DateTime('now'));
-        $this->setEvidenceFile($incident->getEvidenceFile());
+        $this->setEvidenceFile($incident->getTemporalEvidenceFile());
         $this->setEvidenceFileTemp($incident->getEvidenceFileTemp());
         if ($incident->getEvidenceFilePath() && $incident->getEvidenceFile()) {
             $this->setEvidenceFilePath($incidentFather->getEvidenceSubDirectory() . $incident->getEvidenceFilePath());
         }
-        $this->setNotes($incident->getNotes());
+        $this->setNotes($incident->getTemporalNotes());
         $this->setReporter($incident->getReporter());
         $this->setState($incident->getState());
         $this->setTlp($incident->getTlp());

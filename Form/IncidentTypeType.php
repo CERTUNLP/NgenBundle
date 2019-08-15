@@ -28,6 +28,9 @@ class IncidentTypeType extends AbstractType
         $builder
             ->add('name', null, array(
                 'required' => true,
+            ))
+            ->add('description', null, array(
+                'required' => true,
             ));
 
         if ($builder->getData()) {
