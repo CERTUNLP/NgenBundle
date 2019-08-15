@@ -22,5 +22,14 @@ var UserForm = Form.extend({
     getUserId: function () {
         return this.userId;
     },
+    handleExtraErrors: function (jqXHR){
+        if(jqXHR.responseJSON.errors.fields.hasOwnProperty("plainPassword")){
+            k="plainPassword_first";
+            ul = $('<ul class="help-block" ></ul>');
+            ul.append($('<li>' + jqXHR.responseJSON.errors.fields.plainPassword + '</li>'));
+            $('#' + k).after(ul);
+            $('#' + k).closest('div[class="form-group"]').addClass('has-error');
+        }
+        },
 });
 

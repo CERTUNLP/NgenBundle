@@ -9,8 +9,6 @@
 var Frontend = Class.extend({
     init: function () {
         this.eventTarget = null;
-        $(document).on("click", 'a.state-label', $.proxy(this.changeState, this));
-        $('.form-check-input').on('change', $.proxy(this.search, this));
     },
     dropDownChangeLinks: function () {
         if (this.eventTarget.data('state-slug') == "open") {
