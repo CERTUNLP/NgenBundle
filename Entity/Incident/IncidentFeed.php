@@ -79,6 +79,14 @@ class IncidentFeed
      */
     private $updatedAt;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="description", type="string", length=250, nullable=true)
+     * @JMS\Expose
+     */
+    private $description;
+
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="feed")) */
     private $incidents;
 
@@ -116,6 +124,22 @@ class IncidentFeed
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string|null $description
+     */
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
     }
 
     /**

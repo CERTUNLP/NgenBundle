@@ -10,11 +10,7 @@ var Frontend = Class.extend({
     init: function () {
         this.eventTarget = null;
         $(document).on("click", 'a.state-label', $.proxy(this.changeState, this));
-        $('.select-filter').on('change', $.proxy(this.search, this));
-        $('.multiple-select-filter').on('blur', $.proxy(this.search, this));
         $('.form-check-input').on('change', $.proxy(this.search, this));
-        $('.data-filter').on('submit', $.proxy(this.search, this));
-        $('.generalSearch').on('submit', $.proxy(this.search, this));
     },
     dropDownChangeLinks: function () {
         if (this.eventTarget.data('state-slug') == "open") {
@@ -78,21 +74,10 @@ var Frontend = Class.extend({
         });
 
         $(".generalSearch").each(function () {
-            if ($(this).attr('index') != null && $(this).attr('index').length > 0) {
-                name = $(this).attr('index');
-            } else {
-                name = $(this).attr('name');
-            }
-            if ($(this).val() != null && $(this).val() !=0 && $(this).val().length > 0) {
-                valor = $(this).val();
-                if ($(this).parent().parent().children('.form-check-input')[0]!= null && $(this).parent().parent().children('.form-check-input')[0].checked){
-                    valor= valor+'*';
-                }
-                if ($(this).attr('search') != null && $(this).attr('search').length > 0) {
-                    query = (query) + ' && ' + name + '.' + $(this).attr('search') + ':' + valor;
-                } else {
-                    query = (query) + ' && ' + name + ':' + valor;
-                }
+            if ($(this).find('input[name="term"]').val() != null && $(this).find('input[name="term"]').val().length > 0) {
+                valor = $(this).find('input[name="term"]').val();
+                name= 'term';
+               query = (query) + ' && '+ valor;
 
             }
         });

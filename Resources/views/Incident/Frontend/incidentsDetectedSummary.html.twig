@@ -18,6 +18,6 @@
 
 {% if not incident.incidentsDetected is empty%}
     <span class="label label-warning"> {{  'Detected'|trans}}{{ incident.incidentsDetected|length }}{{ 'times'|trans}}</span>
-    <span class="label label-warning"> {{  'LAST:'|trans}}{{ incident.incidentsDetected|last.date|date('Y-m-d H:i')     }}</span>
+    <span class="label label-warning"> {{  'LAST:'|trans}}{{ incident.incidentsDetected|last.date|date('Y-m-d H:i') }}</span>
 
 {% endif %}

@@ -106,7 +106,7 @@ class User extends BaseUser implements ReporterInterface
      *
      * @return string
      */
-    public function getEmailsAsString(): ? string
+    public function getEmailsAsString(): ?string
     {
         return implode(',', $this->getEmails());
     }

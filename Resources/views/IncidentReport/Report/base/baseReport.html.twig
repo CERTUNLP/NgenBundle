@@ -58,7 +58,8 @@
                                                             </p>
                                                         <ul>
                                                     {% endif %}
-                                                     <li> {{ detected.notes|striptags('<div>,<a>,<pre>,<code>')|raw }} </li>
+
+                                                        {{ detected.notes| striptags('<div>,<a>,<pre>,<code>,<li>,<ul>,<br>')|raw|nl2br }}
 
                                                 {% endif %}
                                             {% endfor %}
