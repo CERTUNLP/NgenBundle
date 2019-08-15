@@ -48,7 +48,7 @@ In NGEN, to define your constituency, you need to define:
 
 To define your constituency you will have to create, one or more, *network entities*, *network admins* and *networks*, clicking on **Networks** in the left bar:
 
-![image](images/consituency-networks.png)
+![image](images/community.png)
 
 * First, add a new entity clicking on **Entities** in the left side bar to see the entities created and then click on **(+)add Network Entity** to create a new one:
 
