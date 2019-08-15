@@ -111,3 +111,13 @@ In the same view, you can see:
 * A place where operators can store comments of related information in the incident treatment. Also, is posible to report some of these comments to the contact admin by posting a comment and selecting the **Notify to admin** option:
 
 ![image](images/incident-detail2.png)
+
+Finally, you can use the main incident interface to view the list of incidents registered:
+
+![image](images/incident-list.png)
+
+On the left of every incident you have buttons to access to:
+* the inspection page
+* the edit page
+* direct access for change incident state.
+
