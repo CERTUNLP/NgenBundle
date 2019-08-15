@@ -171,17 +171,16 @@ class IncidentHandler extends Handler
 
     /**
      * @param $incident Incident
-     * @param $method
+     * @param string $method
      * @return object|null
      * @throws Exception
      */
     public function checkIfExists($incident, $method)
     {
         $this->updateIncidentData($incident);
-        $incidentDB = false;
+        $incidentDB = null;
         if ($incident->isDefined()) {
-            //TODO: saque el isClosed, hay q ver como checkear si esta cerrado o volver a poner el bool
-            $incidentDB = $this->repository->findOneBy(['origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
+            $incidentDB = $this->repository->findOneLiveBy(['origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
         }
         if ($incidentDB && $method === 'POST') {
             $incidentDB->updateVariables($incident);
