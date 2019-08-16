@@ -29,7 +29,7 @@ class DashboardController extends Controller
      */
     public function homeAction(Request $request)
     {
-        return array("externalDashboard"=>$this->container->getParameter('cert_unlp.ngen.grafana.external.url'),"internalDashboard"=>$this->container->getParameter('cert_unlp.ngen.grafana.internal.url'));
+        return array('externalDashboard' => $this->container->getParameter('cert_unlp.ngen.grafana.external.url'), 'internalDashboard' => $this->container->getParameter('cert_unlp.ngen.grafana.internal.url'));
     }
 
 }
