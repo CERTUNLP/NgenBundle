@@ -44,7 +44,7 @@ services:
       ports:
         - "8000:80"
       volumes:
-        #- '../:/application/ngen_basic/vendor/certunlp/ngen-bundle/'
+        - '../:/application/ngen_basic/vendor/certunlp/ngen-bundle/'
         - ngen-incidentes:/application/ngen_basic/app/Resources/incident
         - ngen-feeds:/application/ngen_basic/app/Resources/app/Resources/feed/
       environment:
