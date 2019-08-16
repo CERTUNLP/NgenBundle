@@ -24,6 +24,7 @@ class IncidentDecisionHandler extends Handler
     public function getByIncident(Incident $incident): ?Incident
     {
         $decisions = new ArrayCollection($this->all(['type' => $incident->getType() ? $incident->getType()->getSlug() : 'undefined', 'feed' => $incident->getFeed() ? $incident->getFeed()->getSlug() : 'undefined', 'get_undefined' => true]));
+
         $ordered_decisions = $this->orderDecisionsByNetworkMask($decisions);
 
         foreach ($ordered_decisions as $decision) {
