@@ -14,6 +14,7 @@ namespace CertUnlp\NgenBundle\Entity\Incident;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Description of IncidentClosingType
@@ -21,6 +22,10 @@ use JMS\Serializer\Annotation as JMS;
  * @author dam
  * @ORM\Table()
  * @ORM\Entity
+ * @UniqueEntity(
+ *     fields={"name"},
+ *     message="This feed is already in use."
+ * )
  * @JMS\ExclusionPolicy("all")
  */
 class IncidentFeed

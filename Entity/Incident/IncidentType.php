@@ -14,6 +14,7 @@ namespace CertUnlp\NgenBundle\Entity\Incident;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 //use Doctrine\Common\Collections\Collection;
@@ -23,6 +24,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentTypeRepository")
+ * @UniqueEntity(
+ *     fields={"name"},
+ *     message="This type is already in use."
+ * )
  * @JMS\ExclusionPolicy("all")
  */
 class IncidentType

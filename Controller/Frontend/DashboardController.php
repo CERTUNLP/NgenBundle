@@ -23,13 +23,24 @@ class DashboardController extends Controller
 
     /**
      * @Template("CertUnlpNgenBundle:Dashboard:frontend.html.twig")
-     * @Route("/",name="cert_unlp_ngen_dashboard")
+     * @Route("/internal",name="cert_unlp_ngen_dashboard_internal")
      * @param Request $request
      * @return array
      */
     public function homeAction(Request $request)
     {
-        return array("externalDashboard"=>$this->container->getParameter('cert_unlp.ngen.grafana.external.url'),"internalDashboard"=>$this->container->getParameter('cert_unlp.ngen.grafana.internal.url'));
+        return array("dashboard"=>$this->container->getParameter('cert_unlp.ngen.grafana.internal.url'));
+    }
+
+    /**
+     * @Template("CertUnlpNgenBundle:Dashboard:frontend.html.twig")
+     * @Route("/external",name="cert_unlp_ngen_dashboard_external")
+     * @param Request $request
+     * @return array
+     */
+    public function externalAction(Request $request)
+    {
+        return array("dashboard"=>$this->container->getParameter('cert_unlp.ngen.grafana.external.url'));
     }
 
 }
