@@ -15,7 +15,7 @@ In ngen we can configure:
 
 ## Initial Configuration
 
-To start operating with NGEN it is necessary to define the users that will use NGEN. The users of NGEN are CSIRT members. Then, it is equally important, to define our constituency or target community.
+To start operating with NGEN it is necessary to define the users that will use NGEN. The NGEN users are CSIRT members. Then, it is equally important, to define our constituency or target community.
 
 To start operation log in to NGEN using default credentials (admin / admin).
 
