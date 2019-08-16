@@ -4,9 +4,9 @@
 
 NGEN is an open source security incident response system. It is integrable with several information feeds that provides you cyber security intelligence.
 
-The handling of incidents in NGEN is carried out by the NGEN users (CSIRT members). NGEN has information about out constituency or target community (Areas or departments / IP Networks / Network Admins).
+The incident handling in NGEN is carried out by the NGEN users (CSIRT members). NGEN has information about our constituency or target community (Areas or departments / IP Networks / Network Administrators).
 
-In ngen everything is configurable:
+In ngen we can configure:
 * *incidents types*, *reports* and *states*.
 * Information feeds about cyber security intelligence.
 * Priorities: an importance given to the incident type.
@@ -15,7 +15,7 @@ In ngen everything is configurable:
 
 ## Initial Configuration
 
-One of the first things to do to start operating with NGEN is to define the users that will use NGEN. The users of NGEN are CSIRT members. Then, it is equally important, to define our constituency or target community.
+To start operating with NGEN it is necessary to define the users that will use NGEN. The users of NGEN are CSIRT members. Then, it is equally important, to define our constituency or target community.
 
 To start operation log in to NGEN using default credentials (admin / admin).
 
@@ -71,7 +71,7 @@ An incident can be created in NGEN in different ways:
 * an operator can create it manually
 * Depending on the information feed, NGEN can be informed and the incident is created automatically
 
-Each time an incident is created, the user who creates it or the feed that reports it will be the *"reporter"*. The incident can also have *assigned* an operator that will be responsible of the incident threatment.
+Each time an incident is created, the user who creates it or the feed that reports it will be the *"reporter"*. The incident can also have *assigned* an operator that will be responsible of the incident treatment.
 
 #### Create a new incident
 
@@ -94,21 +94,21 @@ Then, you can report a new incident clicking on **(+)add Incident**:
 
 In this case, the **Feed** is completed with the source from where the information was taken: **External report**.
 
-After the creation, an email is sent to report the incident to the network operator defined as the contact admin for the network where the incident is in. The email sent looks like:
+After the creation, an email is sent to report the incident to the network operator defined as the contact administrator for the network where the incident is in. The email sent looks like:
 
 ![image](images/incident-email.png)
 
 
-#### Incident inspection & treatmentment
+#### Incident inspection & treatment
 
 You can see all the details of the incidents created in a summary manner. 
 
 ![image](images/incident-detail1.png)
 
 In the same view, you can see:
-* differents detections of the same problem recived by same or differents feeds.
+* different detections of the same problem received by same or different feeds.
 * historical changes in the state of the incident while treatment is carried out.
-* A place where operators can store comments of related information in the incident treatment. Also, is posible to report some of these comments to the contact admin by posting a comment and selecting the **Notify to admin** option:
+* A place where operators can store comments of related information in the incident treatment. Also, it is posible to report some of these comments to the contact admin by posting a comment and selecting the **Notify to admin** option:
 
 ![image](images/incident-detail2.png)
 
