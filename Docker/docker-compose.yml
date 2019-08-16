@@ -82,7 +82,7 @@ services:
         - INTERNAL_DASHBOARD_GRAFANA=d/incidentesinternos/incidentes-internos?orgId=1&from=1533673350317&to=1565209350317
         - USER_GRAFANA=admin
         - PASS_GRAFANA=admin
-        - GRAFANA_HOST=http://ngen-grafana:3000/
+        - GRAFANA_HOST=http://ngen-grafana:3000
       links:
         - ngen-elastic:ngen-elastic
         - ngen-grafana:ngen-grafana

@@ -63,6 +63,8 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
             $form->get('type')->setData($this->doctrine ? $this->doctrine->getReference(IncidentType::class, 'undefined') : null);
             $form->get('feed')->setData($this->doctrine ? $this->doctrine->getReference(IncidentFeed::class, 'undefined') : null);
             $form->get('state')->setData($this->doctrine ? $this->doctrine->getReference(IncidentState::class, 'undefined') : null);
+            $form->get('unattendedState')->setData($this->doctrine ? $this->doctrine->getReference(IncidentState::class, 'undefined') : null);
+            $form->get('unsolvedState')->setData($this->doctrine ? $this->doctrine->getReference(IncidentState::class, 'undefined') : null);
             $form->get('tlp')->setData($this->doctrine ? $this->doctrine->getReference(IncidentTlp::class, 'green') : null);
             $form->get('impact')->setData($this->doctrine ? $this->doctrine->getReference(IncidentImpact::class, 'undefined') : null);
             $form->get('urgency')->setData($this->doctrine ? $this->doctrine->getReference(IncidentUrgency::class, 'undefined') : null);

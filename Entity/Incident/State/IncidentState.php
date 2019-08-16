@@ -78,6 +78,20 @@ class IncidentState implements Translatable
      */
     private $isActive = true;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="description", type="string", length=250, nullable=true)
+     * @JMS\Expose
+     */
+    private $description;
+
+    /**
+     * @var ContactCase
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
+     * @ORM\JoinColumn(name="mail_team", referencedColumnName="slug")
+     */
+
 
     /**
      * @var DateTime
@@ -223,6 +237,24 @@ class IncidentState implements Translatable
         $this->edges[$edge->getNewState()->getId()] = $edge;
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string|null $description
+     */
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
 
     /**
      * Get id

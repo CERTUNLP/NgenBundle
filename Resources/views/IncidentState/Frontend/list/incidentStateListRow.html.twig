@@ -11,6 +11,9 @@
     <td class="align-middle">
         {{ incidentState.name |trans }}
     </td>
+    <td class="align-middle">
+        {{ incidentState.description | default('No description')| trans}}
+    </td>
 {#    <td id="state_label_holder" class="align-middle">#}
 {#        <div>#}
 {#            {{ incidentState.mailReporter |trans }}#}

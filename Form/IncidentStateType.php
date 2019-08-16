@@ -34,6 +34,9 @@ class IncidentStateType extends AbstractType
             ->add('name', null, array(
                 'required' => true,
             ))
+            ->add('description', null, array(
+                'required' => true,
+            ))
             ->add('mailReporter', EntityType::class, array(
                 'class' => ContactCase::class,
                 'attr' => array('align_with_widget' => true),
