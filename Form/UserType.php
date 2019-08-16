@@ -19,6 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
 
 class UserType extends AbstractType
 {
@@ -64,7 +66,11 @@ class UserType extends AbstractType
                     ),
                 ))
             ->add('save', SubmitType::class, array(
-                'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down')));
+                'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down')))
+            ->addEventListener(
+                FormEvents::PRE_SET_DATA,
+                array($this, 'onPreSetData')
+            );
     }
 
     private function roleChoices()
@@ -95,5 +101,27 @@ class UserType extends AbstractType
     {
         return '';
     }
+    public function onPreSetData(FormEvent $event)
+    {
+
+        // get the form
+        $form = $event->getForm();
+
+        // get the data if 'reviewing' the information
+        /**
+         * @var Invoices
+         */
+        $data = $event->getData();
+   
+        // disable field if it has been populated with a client already
+        if ( $data )
+            $form->add('username', null, array(
+                'required' => true,
+                'disabled'=>"disabled",
+                ));
+
+    }
+
+
 
 }

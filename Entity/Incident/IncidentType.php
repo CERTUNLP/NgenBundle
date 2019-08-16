@@ -75,6 +75,14 @@ class IncidentType
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="type")) */
     private $incidents;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="description", type="string", length=250, nullable=true)
+     * @JMS\Expose
+     */
+    private $description;
+
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentReport",mappedBy="type",indexBy="lang"))
      */
     private $reports;
@@ -113,6 +121,23 @@ class IncidentType
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string|null $description
+     */
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
     }
 
     /**

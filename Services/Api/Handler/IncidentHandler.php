@@ -186,11 +186,12 @@ class IncidentHandler extends Handler
             $incidentDB->updateVariables($incident);
             $incidentDB->addIncidentDetected($incident);
             $incident = $incidentDB;
-        } elseif ($incidentDB && $method === 'PATCH') {
-            $incidentDB->patchStateAndReporter($this->getUser());
-            $incidentDB->addIncidentDetected($incident);
-            $incident = $incidentDB;
-        } else {
+        } elseif($incidentDB && $method === 'PATCH') {
+             $incidentDB->patchStateAndReporter($this->getUser());
+//             $incidentDB->addIncidentDetected($incident);
+             $incident = $incidentDB;
+        }
+        else {
             $incident->updateVariables($incident);
             $incident->addIncidentDetected($incident);
 

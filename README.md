@@ -1,49 +1,34 @@
-CERT UNLP Ngen
-==============
 
-[English version](https://github.com/CERTUNLP/NgenBundle/blob/master/README.en.md)
+# NGEN
 
-¿Qué es?
---------
+## ¿Qué es?
 
-* CERT UNLP Ngen es un sistema de gestión de incidentes desarrollado para su uso en el ámbito de trabajo del CSIRT de la Universidad Nacional de La Plata, liberado posteriormente como software libre.
+El CERTUNLP, es el CSIRT de la Universidad Nacional de La Plata y  fue constituido en el año 2008, desde ese momento hemos pasado por diversas opciones como son GLPI, RT, RITR, Redmine, MantisBT e incluso un primer intento de desarrollo propio en PHP plano, hasta llegar al actual desarrollo de NGEN, el cuál utilizamos en el misión diaria de la gestión de incidentes.
 
-* Desarrollado en PHP utilizando el Framework de desarrollo Symfony en la rama 2.8, utiliza base de datos MySQL/MariDB, Kibana y ElasticSearch.
+Si bien CERTUNLP NGEN nace como un sistema de gestión de incidentes desarrollado para su uso en el ámbito de trabajo del CSIRT de la Universidad Nacional de La Plata, fue liberado posteriormente como software libre.
 
-¿Para qué sirve?
-----------------
+
+## ¿Para qué sirve?
 
 * Mediante una interfaz web nos permite gestionar los incidentes de seguridad informática que afectan a nuestra constituency. 
 
-* Facilita la tarea diaria automatizando mucha de las  tareas que antes hacíamos en forma manual.
+* Facilita nuestra tarea diaria automatizando muchas de las acciones asociadas que antes hacíamos de forma manual.
 
-* Se relaciona de manera automática con varias fuentes (o feeds) que alimentan al sistema reportandole incidentes, a partir de allí NGEN se encarga de resgistrar el incidente y comunicarse con el o los afectados.
+* Se relaciona de manera automática con varios **feeds** o fuentes de información que alimentan a NGEN reportándo incidentes. Luego de que in incidente es creado, NGEN notifica a los afectados.
 
-* Al reportar cada incidente brinda a los afectados documentación que les permita comprender el problema y sugiere mecanismos de solución.
-
-Extensiones
------------
-
-* Tiene algunas extensiones que permite integrarlo con feeds reconocidos como son: Spamhaus, Shadowserver, CERT.br Spampot o scripts que extraigan información de buscadores como Shodan/Censys.
+* Los reportes enviados a los afectados brindan, además de la evidencia pertinente, documentación que les permita comprender el problema y sugiere mecanismos de solución.
 
 
-Estado actual
--------------
+## Feeds
 
-[![Build Status](https://travis-ci.org/CERTUNLP/NgenBundle.svg?branch=master)](https://travis-ci.org/CERTUNLP/NgenBundle)
+Algunos feeds con los que NGEN ya fue integrado son:
+* Shadowserver
+* CERT.br Spampot
+* Spamhaus
+* Scripts que extraen información de Shodan, Censys, etc.
 
-Documentación
--------------
 
-La mayor parte de la documentación la encontrarán a partir de [La Documentación](https://github.com/CERTUNLP/NgenBundle/blob/master/Resources/doc/index.es.md)
-
-Installación
-------------
-
-Como instalarlo en [La Instalación](https://github.com/CERTUNLP/NgenBundle/blob/master/Resources/doc/index.es.md).
-
-Licencia
---------
+## Licencia
 
 Este software esta regirstrado bajo la licencia GPL v3.0. Para ver la licencia:
 [Resources/meta/LICENSE](https://github.com/CERTUNLP/NgenBundle/blob/master/Resources/meta/LICENSE.es)

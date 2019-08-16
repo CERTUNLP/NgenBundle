@@ -10,7 +10,7 @@
 
 
 <li class="nav-item active">
-    <form method="post" action="{% block sideBar_search_path %}{% endblock %}"
+    <form method="get" action="{% block sideBar_search_path %}{% endblock %}"
           class="generalSearch" role="search">
         <div class="input-group custom-search-form">
             <input type="text" name="term" class="form-control" value="{{ term | default('') }}"
@@ -61,7 +61,7 @@
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNetworks" aria-expanded="true"
        aria-controls="collapseTwo">
-        <span>{{ icon('share-alt-square') }} {{ 'Networks'| trans }}</span>
+        <span>{{ icon('share-alt-square') }} {{ 'Community'| trans }}</span>
     </a>
     <div id="collapseNetworks" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">

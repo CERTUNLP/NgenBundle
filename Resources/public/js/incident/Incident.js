@@ -7,6 +7,15 @@
  * with this source code in the file LICENSE.
  */
 var Incident = Frontend.extend({
+    init: function () {
+        this.eventTarget = null;
+        $(document).on("click", 'a.state-label', $.proxy(this.changeState, this));
+        $('.form-check-input').on('change', $.proxy(this.search, this));
+    $('.select-filter').on('change', $.proxy(this.search, this));
+    $('.multiple-select-filter').on('blur', $.proxy(this.search, this));
+    $('.data-filter').on('submit', $.proxy(this.search, this));
+    $('.generalSearch').on('submit', $.proxy(this.search, this));
+},
     dropDownChangeLinks: function () {
         if (this.eventTarget.data('state-slug') == "open") {
             this.eventTarget.hide();

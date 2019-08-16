@@ -17,13 +17,12 @@
 {% block sideBar_search_path %}{% endblock %}
 
 {% block content_body %}
-    <div class="embed-container">
-        <iframe id="internal-dashboard" width="100%" frameborder="0" allowfullscreen>
-        </iframe>
+    <div id="internaliframe" class="embed-container">
+        <iframe src="" frameborder="0" scrolling="no" id="internaldashboard"></iframe>
     </div>
 
     <div class="embed-container" >
-        <iframe id="external-dashboard" width="100%" frameborder="0" allowfullscreen>
+        <iframe id="externaldashboard" width="100%" frameborder="0" allowfullscreen>
         </iframe>
     </div>
 {% endblock %}
@@ -34,23 +33,28 @@
 
     <script type="text/javascript">
         $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                xhr.setRequestHeader(
-                    'Authorization', 'Basic ' + window.btoa("auth" + ":" + "{{ app.user.apiKey }}")
-                );
-            },
+                username: 'user',
+                password: '{{ app.user.apiKey }}',
+                xhrFields: { withCredentials: true }
         });
         $.ajax(
             {
+                xhrFields: { withCredentials: true },
                 type: 'GET',
-                url: "/secure/{{ internalDashboard }}",
+                url: "/grafana/{{ internalDashboard }}",
+                username: 'user',
+                password: '{{ app.user.apiKey }}',
                 contentType: 'application/json',
-                success: function(data) {
-                    {#$('#internal-dashboard').attr('src', "/secure/{{ internalDashboard }}");#}
-                    $('#internal-dashboard').attr('src',"data:text/html;charset=utf-8," + escape(data));
-                    $('#internal-dashboard').contents().find('html').html(data);
+                success: function(data){
+                    var iframeDoc = $("#internaldashboard").get(0).contentDocument;
+                    iframeDoc.open();
+                    iframeDoc.write(data);
+                    iframeDoc.close();
+                    $('#internaliframe').html('<iframe src="/grafana/{{ internalDashboard }}" frameborder="0" scrolling="no" id="internaldashboard"></iframe>');        
                 }
             }
         );
+
     </script>
 {% endblock %}
+
