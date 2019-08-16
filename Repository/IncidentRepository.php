@@ -25,7 +25,11 @@ use Doctrine\ORM\QueryBuilder;
 class IncidentRepository extends EntityRepository
 {
 
-    public function findNotificables($parameters = [])
+    /**
+     * @param array $parameters
+     * @return array|Incident[]
+     */
+    public function findNotificables($parameters = []): array
     {
         $query = $this->createQueryBuilder('i')
             ->where('i.id = :id')
@@ -88,12 +92,12 @@ class IncidentRepository extends EntityRepository
         $qb->andWhere('i.type = :type')
             ->setParameter('type', $type);
 
-        return $qbs;
+        return $qb;
 
     }
 
     /**
-     * @return array
+     * @return array |Incident[]
      */
     public function findAllUnsolved(): array
     {

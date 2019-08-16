@@ -123,7 +123,7 @@ abstract class Handler implements ApiHandlerInterface
         if ($form->isValid()) {
 
             $entity_class_instance = $form->getData();
-
+var_dump($entity_class_instance->getPriority()->getSlug());
             $entity_class_instance = $this->checkIfExists($entity_class_instance, $method);
             //try {
 

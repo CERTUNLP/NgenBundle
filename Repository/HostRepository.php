@@ -11,8 +11,6 @@
 
 namespace CertUnlp\NgenBundle\Repository;
 
-use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
-
 /**
  * NetworkRepository
  *
@@ -21,29 +19,5 @@ use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
  */
 class HostRepository extends NetworkElementRepository
 {
-    public function findOneByAddress($params): ?NetworkElement
-    {
-        $address = explode('/', $params['address']);
-        switch (NetworkElement::guessType($address[0])) {
-            case FILTER_FLAG_IPV4:
-                return parent::findOneBy(['address' => $address[0]]);
-                break;
-            case FILTER_FLAG_IPV6:
-                return parent::findOneBy(['address' => $address[0]]);
-                break;
-            case FILTER_VALIDATE_DOMAIN:
-                return parent::findOneBy(['address' => $address[0]]);
-                break;
-            default:
-                return null;
-        }
-
-    }
-    public function findOneBy(array $criteria, array $orderBy = null)
-    {
-       return $this->findOneByAddress($criteria);
-    }
-
-
 
 }
