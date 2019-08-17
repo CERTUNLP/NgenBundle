@@ -41,33 +41,34 @@ class IncidentRepository extends EntityRepository
     /**
      * @param string $type
      * @param string $address
-     * @return array
+     * @return Incident
+     * @throws NonUniqueResultException
      */
-    public function findByTypeAndAddress(string $type, string $address): array
+    public function findOneByTypeAndAddress(string $type, $address = null): ?Incident
     {
-        $qb = $this->createQueryBuilder('i');
-        $qb = $this->queryByAddress($address, $qb);
+        $qb = $this->queryAllLive();
         $qb = $this->queryByType($type, $qb);
+        $qb = $this->queryByAddress($address, $qb);
 
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()->getOneOrNullResult();
 
     }
 
     /**
-     * @param string $address
      * @param QueryBuilder|null $qb
      * @return QueryBuilder
      */
-    public function queryByAddress(string $address, QueryBuilder $qb = null): QueryBuilder
+    public function queryAllLive(QueryBuilder $qb = null): QueryBuilder
+    {
+        return $this->queryAllByBehavior(['on_treatment', 'new'], $qb);
+    }
+
+    public function queryAllByBehavior(array $behavior, QueryBuilder $qb = null): QueryBuilder
     {
         $qb = $this->getOrCreateQueryBuilder($qb);
-        $qb->innerJoin('i.origin', 'h')
-            ->where($qb->expr()->orX(
-                $qb->expr()->eq('h.ip', ':address'),
-                $qb->expr()->eq('h.domain', ':address')
-            ))
-            ->setParameter('address', $address);
-
+        $qb->select('i')
+            ->innerJoin('i.state', 'state')
+            ->andWhere($qb->expr()->in('state.behavior', $behavior));
         return $qb;
 
     }
@@ -89,9 +90,35 @@ class IncidentRepository extends EntityRepository
     public function queryByType(string $type, QueryBuilder $qb = null): QueryBuilder
     {
         $qb = $this->getOrCreateQueryBuilder($qb);
-        $qb->andWhere('i.type = :type')
+        $qb->innerJoin('i.type', 't')
+            ->andWhere('t.slug = :type')
             ->setParameter('type', $type);
 
+        return $qb;
+
+    }
+
+    /**
+     * @param string $address
+     * @param QueryBuilder|null $qb
+     * @return QueryBuilder
+     */
+    public function queryByAddress(string $address = null, QueryBuilder $qb = null): QueryBuilder
+    {
+        $qb = $this->getOrCreateQueryBuilder($qb);
+        if ($address) {
+
+            $qb->innerJoin('i.origin', 'h')
+                ->andWhere($qb->expr()->orX(
+                    $qb->expr()->eq('h.ip', ':address'),
+                    $qb->expr()->eq('h.domain', ':address')
+                ))
+                ->setParameter('address', $address);
+        } else {
+            $qb->andWhere(
+                $qb->expr()->isNull('i.origin')
+            );
+        }
         return $qb;
 
     }
@@ -116,19 +143,9 @@ class IncidentRepository extends EntityRepository
             ->setParameter('undefined_state', 'undefined');
     }
 
-    public function queryAllOnTreatment(): QueryBuilder
+    public function queryAllOnTreatment(QueryBuilder $qb = null): QueryBuilder
     {
-        return $this->queryAllByBehavior(['on_treatment']);
-    }
-
-    public function queryAllByBehavior(array $behavior, QueryBuilder $qb = null): QueryBuilder
-    {
-        $qb = $this->getOrCreateQueryBuilder($qb);
-        $qb->select('i')
-            ->innerJoin('i.state', 'state')
-            ->andWhere($qb->expr()->in('state.behavior', $behavior));
-        return $qb;
-
+        return $this->queryAllByBehavior(['on_treatment'], $qb);
     }
 
     /**
@@ -143,14 +160,6 @@ class IncidentRepository extends EntityRepository
         $this->addWhereCriteria($criteria, $qb);
 
         return $qb->getQuery()->getOneOrNullResult();
-    }
-
-    /**
-     * @return QueryBuilder
-     */
-    public function queryAllLive(): QueryBuilder
-    {
-        return $this->queryAllByBehavior(['on_treatment', 'new']);
     }
 
     public function addWhereCriteria(array $criteria, QueryBuilder $qb)
@@ -178,9 +187,9 @@ class IncidentRepository extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    public function queryAllDead(): QueryBuilder
+    public function queryAllDead(QueryBuilder $qb = null): QueryBuilder
     {
-        return $this->queryAllByBehavior(['closed', 'discarded']);
+        return $this->queryAllByBehavior(['closed', 'discarded'], $qb);
     }
 
 
@@ -201,19 +210,19 @@ class IncidentRepository extends EntityRepository
             ->setParameter('undefined_state', 'undefined');
     }
 
-    public function queryAllClosed(): QueryBuilder
+    public function queryAllClosed(QueryBuilder $qb = null): QueryBuilder
     {
-        return $this->queryAllByBehavior(['closed']);
+        return $this->queryAllByBehavior(['closed'], $qb);
     }
 
-    public function queryAllDiscarded(): QueryBuilder
+    public function queryAllDiscarded(QueryBuilder $qb = null): QueryBuilder
     {
-        return $this->queryAllByBehavior(['discarded']);
+        return $this->queryAllByBehavior(['discarded'], $qb);
     }
 
-    public function queryAllNew(): QueryBuilder
+    public function queryAllNew(QueryBuilder $qb = null): QueryBuilder
     {
-        return $this->queryAllByBehavior(['new']);
+        return $this->queryAllByBehavior(['new'], $qb);
 
     }
 }

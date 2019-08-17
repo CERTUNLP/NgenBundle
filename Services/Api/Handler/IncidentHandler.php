@@ -205,8 +205,6 @@ class IncidentHandler extends Handler
      */
     public function checkIfExists($incident, $method)
     {
-        var_dump($incident->getPriority()->getSlug());
-
         $this->updateIncidentData($incident);
         $incidentDB = null;
         if ($incident->isDefined()) {
@@ -364,7 +362,7 @@ class IncidentHandler extends Handler
 
     protected function createEntityInstance(array $params)
     {
-        $incident = new $this->entityClass($params['address']);
+        $incident = new $this->entityClass($params['address'] ?? null);
         $incident->setState($this->getInitialState());
         return $incident;
 

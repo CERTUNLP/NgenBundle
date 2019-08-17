@@ -337,7 +337,7 @@ class Incident
     /**
      * @param DateTime $responseDeadLine
      */
-    public function setResponseDeadLine(DateTime $responseDeadLine): void
+    public function setResponseDeadLine(DateTime $responseDeadLine = null): void
     {
         $this->responseDeadLine = $responseDeadLine;
     }
@@ -353,7 +353,7 @@ class Incident
     /**
      * @param DateTime $solveDeadLine
      */
-    public function setSolveDeadLine(DateTime $solveDeadLine): void
+    public function setSolveDeadLine(DateTime $solveDeadLine = null): void
     {
         $this->solveDeadLine = $solveDeadLine;
     }
@@ -719,24 +719,6 @@ class Incident
     public function setSlug(?string $slug): Incident
     {
         $this->setter($this->slug, $slug);
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getDate(): ?DateTime
-    {
-        return $this->date;
-    }
-
-    /**
-     * @param DateTime $date
-     * @return Incident
-     */
-    public function setDate(DateTime $date = null): Incident
-    {
-        $this->setter($this->date, $date);
         return $this;
     }
 
@@ -1291,6 +1273,24 @@ class Incident
     {
         //return '/'.$this->getId().$this->getSlug();//sha1(sha1($this->getId()).sha1($this->getSlug()));
         return '/' . $this->getSlug() . '/' . sha1($this->getDate()->format('Y-m-d-h-i'));
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getDate(): ?DateTime
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param DateTime $date
+     * @return Incident
+     */
+    public function setDate(DateTime $date = null): Incident
+    {
+        $this->setter($this->date, $date);
+        return $this;
     }
 
     /**
