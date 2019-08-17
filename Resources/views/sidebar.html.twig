@@ -130,8 +130,10 @@
     <div id="collapseDashboard" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header"></h6>
-            <a href="{{ path('cert_unlp_ngen_dashboard') }}"
-               class="collapse-item">{{ icon('fas fa-chart-line') }}{{ 'Dashboards'| trans }}</a>
+            <a href="{{ path('cert_unlp_ngen_dashboard_internal') }}"
+               class="collapse-item">{{ icon('fas fa-chart-line') }}{{ 'Internal Dashboards'| trans }}</a>
+            <a href="{{ path('cert_unlp_ngen_dashboard_external') }}"
+               class="collapse-item">{{ icon('fas fa-chart-line') }}{{ 'External Dashboards'| trans }}</a>
         </div>
     </div>
 </li>

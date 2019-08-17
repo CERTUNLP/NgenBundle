@@ -17,14 +17,10 @@
 {% block sideBar_search_path %}{% endblock %}
 
 {% block content_body %}
-    <div id="internaliframe" class="embed-container">
-        <iframe src="" frameborder="0" scrolling="no" id="internaldashboard"></iframe>
+    <div id="internaliframe" style="height: 100%; border: none" class="embed-container">
+        <iframe src="" width="100%" style="position: absolute; height: 100%; border: none" height="100%" frameborder="0" allowfullscreen id="dashboard"></iframe>
     </div>
 
-    <div class="embed-container" >
-        <iframe id="externaldashboard" width="100%" frameborder="0" allowfullscreen>
-        </iframe>
-    </div>
 {% endblock %}
 
 
@@ -32,6 +28,7 @@
     {{ parent() }}
 
     <script type="text/javascript">
+        $('#content-wrapper').css('overflow', 'hidden');
         $.ajaxSetup({
                 username: 'user',
                 password: '{{ app.user.apiKey }}',
@@ -41,16 +38,14 @@
             {
                 xhrFields: { withCredentials: true },
                 type: 'GET',
-                url: "/grafana/{{ internalDashboard }}",
-                username: 'user',
-                password: '{{ app.user.apiKey }}',
+                url: "/grafana/{{ dashboard }}",
                 contentType: 'application/json',
                 success: function(data){
-                    var iframeDoc = $("#internaldashboard").get(0).contentDocument;
+                    var iframeDoc = $("#dashboard").get(0).contentDocument;
                     iframeDoc.open();
                     iframeDoc.write(data);
                     iframeDoc.close();
-                    $('#internaliframe').html('<iframe src="/grafana/{{ internalDashboard }}" frameborder="0" scrolling="no" id="internaldashboard"></iframe>');        
+                    $('#internaliframe').html('<iframe src="/grafana/{{ dashboard }}" style="position:absolute;" height="100%" width="100%" frameborder="0" allowfullscreen scrolling="no" id="dashboard"></iframe>');
                 }
             }
         );

@@ -22,12 +22,17 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Description of IncidentClosingType
  *
  * @author dam
  * @ORM\Table()
+ * @UniqueEntity(
+ *     fields={"name"},
+ *     message="This State is already in use."
+ * )
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentStateRepository")
  * @JMS\ExclusionPolicy("all")
  */
