@@ -36,12 +36,6 @@ fos_elastica:
                             fields:
                                 date:
                                     type: date
-                        isClosed:
-                            type: boolean
-                        isNew:
-                            type: boolean
-                        openedAt:
-                            type: date
                         evidence_file_path:
                             type: keyword
                         ltdCount:

@@ -23,11 +23,6 @@ use Doctrine\ORM\Query;
  */
 class NetworkRepository extends NetworkElementRepository
 {
-    public function findOneByStringAddress($params): ?NetworkElement
-    {
-        return $this->findOneByAddress(['address' => $params]);
-    }
-
     /**
      * @param $address string
      * @return NetworkElement|null

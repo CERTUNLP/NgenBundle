@@ -211,14 +211,7 @@ class Incident
      * @JMS\Groups({"api"})
      */
     private $updatedAt;
-    /**
-     * @var DateTime
-     * @ORM\Column(name="opened_at", type="datetime", nullable=true)
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
-     */
-    private $openedAt;
+
     /**
      * @var boolean
      */
@@ -443,7 +436,6 @@ class Incident
      * Set state
      * @param IncidentState $state
      * @return Incident
-     * @throws Exception
      */
     public function setState(IncidentState $state = null): ?Incident
     {
@@ -535,15 +527,12 @@ class Incident
      */
     public function canCommunicateComment(): bool
     {
-        return $this->isOpen();
+        return $this->isLive();
     }
 
-    /**
-     * @return bool
-     */
-    public function isOpen(): bool
+    public function isLive(): bool
     {
-        return $this->getBehavior()->isOpen();
+        return $this->getState()->isLive();
     }
 
     /**
@@ -734,43 +723,6 @@ class Incident
     }
 
     /**
-     * @param bool $alreadyDetected
-     * @return int
-     * @throws Exception
-     */
-    public function getOpenDays(bool $alreadyDetected = false): int
-    {
-        if ($alreadyDetected) {
-            $date = $this->getOpenedAt() ?: $this->getDate();
-        } else {
-            $date = $this->getDate();
-        }
-
-        if ($date) {
-            return $date->diff(new DateTime())->days;
-        }
-        return null;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getOpenedAt(): ?DateTime
-    {
-        return $this->openedAt;
-    }
-
-    /**
-     * @param DateTime $openedAt
-     * @return Incident
-     */
-    public function setOpenedAt(DateTime $openedAt = null): Incident
-    {
-        $this->setter($this->openedAt, $openedAt);
-        return $this;
-    }
-
-    /**
      * @return DateTime
      */
     public function getDate(): ?DateTime
@@ -786,22 +738,6 @@ class Incident
     {
         $this->setter($this->date, $date);
         return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNew(): ?bool
-    {
-        return $this->getBehavior() ? $this->getBehavior()->isNew() : true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isClosed(): ?bool
-    {
-        return $this->getBehavior() ? $this->getBehavior()->isClosed() : false;
     }
 
     /**
@@ -1180,6 +1116,11 @@ class Incident
             });
         }
         return new ArrayCollection();
+    }
+
+    public function isDead(): bool
+    {
+        return $this->getState()->isDead();
     }
 
     public function isAttended(): bool
