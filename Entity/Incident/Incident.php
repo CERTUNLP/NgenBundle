@@ -1423,6 +1423,7 @@ class Incident implements IncidentInterface
      */
     public function discard(): Incident
     {
+        $this->setOpenedAt(new DateTime('now'));
         $this->markAsNew(false);
         return $this->setAsDiscarded(true);
     }
