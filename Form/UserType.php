@@ -114,10 +114,10 @@ class UserType extends AbstractType
         $data = $event->getData();
    
         // disable field if it has been populated with a client already
-        if ( $data )
+        if ( $data)
             $form->add('username', null, array(
                 'required' => true,
-                'disabled'=>"disabled",
+                'read_only'=>"true",
                 ));
 
     }

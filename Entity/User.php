@@ -23,15 +23,26 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * User
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\UserRepository")
+ * @UniqueEntity(
+ *     fields={"username"},
+ *     message="This username is already in use."
+ * )
+ * @UniqueEntity(
+ *     fields={"email"},
+ *     message="This email is already in use."
+ * )
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
  */
+
 class User extends BaseUser implements ReporterInterface
 {
 
@@ -377,7 +388,9 @@ class User extends BaseUser implements ReporterInterface
         if (!$this->contacts->contains($newObj)) {
             $newObj->setUser($this);
         }
+
         $this->contacts->add($newObj);
+
         return $this;
 
     }
