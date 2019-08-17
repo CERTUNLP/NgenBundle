@@ -81,7 +81,6 @@ class OpeningEdge extends StateEdge
     public function changeIncidentStateAction(Incident $incident): Incident
     {
         $incident->setNeedToCommunicate(true);
-        $incident->setOpenedAt(new DateTime('now'));
         return $incident;
     }
 

@@ -7,18 +7,14 @@
  with this source code in the file LICENSE.
 #}
 
-{% set translatedState = incident.state.name|trans %}
-{#{% set translatedStatus = incident.statusToString|trans %}#}
-
-{#{{ label_info(translatedState) }}#}
 
 
-{% if incident.isNew %}
- {{ label_danger(translatedState) }}
-    {% elseif incident.isClosed %}
-    {{ label_success(translatedState) }}
-    {% else %}
-    {{ label_info(translatedState) }}
-    {% endif %}
+{% if not incident.isLive %}
+    {{ label_danger(incident.state) }}
+{% elseif incident.isDead %}
+    {{ label_success(incident.state) }}
+{% else %}
+    {{ label_info(incident.state) }}
+{% endif %}
 
 

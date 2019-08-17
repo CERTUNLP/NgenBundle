@@ -191,7 +191,6 @@ abstract class StateEdge
     /**
      * @param Incident $incident
      * @return Incident
-     * @throws Exception
      */
     public function changeIncidentState(Incident $incident): Incident
     {

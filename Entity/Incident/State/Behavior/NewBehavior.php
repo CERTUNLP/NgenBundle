@@ -16,15 +16,6 @@ use JMS\Serializer\Annotation as JMS;
  */
 class NewBehavior extends StateBehavior
 {
-    /**
-     * @param Incident $incident
-     * @return int
-     * @throws Exception
-     */
-    public function getResolutionMinutes(Incident $incident): int
-    {
-        return 0;
-    }
 
 
     public function updateTlp(Incident $incident, Incident $incidentDetected): Incident
@@ -35,15 +26,6 @@ class NewBehavior extends StateBehavior
         return $incident;
     }
 
-    /**
-     * @param Incident $incident
-     * @return int
-     * @throws Exception
-     */
-    public function getResponseMinutes(Incident $incident): int
-    {
-        return abs(((new DateTime())->getTimestamp() - $incident->getDate()->getTimestamp()) / 60);
-    }
 
     public function updatePriority(Incident $incident, Incident $incidentDetected): Incident
     {
@@ -61,22 +43,6 @@ class NewBehavior extends StateBehavior
     public function getNewMinutes(Incident $incident): int
     {
         return $incident->getDate()->diff(new DateTime())->i; //lo devuelvo en minutos eso es el i
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNew(): ?bool
-    {
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isClosed(): ?bool
-    {
-        return false;
     }
 
     /**
@@ -102,4 +68,15 @@ class NewBehavior extends StateBehavior
     {
         return false;
     }
+
+    public function isLive(): bool
+    {
+        return true;
+    }
+
+    public function isDead(): bool
+    {
+        return false;
+    }
+
 }

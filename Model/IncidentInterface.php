@@ -117,11 +117,6 @@ interface IncidentInterface
     public function setNetwork(Network $network = null): Incident;
 
     /**
-     * @return bool
-     */
-    public function isNew(): ?bool;
-
-    /**
      * Get network
      *
      * @return Network

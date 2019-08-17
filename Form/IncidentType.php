@@ -202,15 +202,8 @@ class IncidentType extends AbstractType
             ->add('id', HiddenType::class, array(
                 'required' => false,
             ))
-//            ->add('isNew', HiddenType::class, array(
-//                'required' => false,
-//            ))
-//            ->add('isClosed', HiddenType::class, array(
-//                'required' => false,
-//            ))
             ->add('save', SubmitType::class, array(
                 'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
-//                    'description' => "Evidence file that will be attached to the report "
             ))
             ->addEventSubscriber(new IncidentDefaultFieldsListener($this->doctrine, $this->userLogged));
 
