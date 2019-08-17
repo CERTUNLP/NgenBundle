@@ -18,7 +18,6 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * IncidentTlp
  *
- * @ORM\Table(name="incident_state_behavior")
  * @ORM\Entity()
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
@@ -455,14 +454,6 @@ abstract class StateBehavior
     {
         $this->updatedAt = $updatedAt;
         return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isClosed(): ?bool
-    {
-        return false;
     }
 
     abstract public function isAttended(): bool;

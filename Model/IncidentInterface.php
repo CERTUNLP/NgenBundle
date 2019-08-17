@@ -87,12 +87,6 @@ interface IncidentInterface
      */
     public function getAddress(): ?string;
 
-    /**
-     * Get isClosed
-     *
-     * @return bool
-     */
-    public function isClosed(): ?bool;
 
     /**
      * Get isClosed
