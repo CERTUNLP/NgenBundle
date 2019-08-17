@@ -50,7 +50,7 @@ abstract class StateBehavior
      */
     private $description;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState",mappedBy="incident_state_behavior"))
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState",mappedBy="behavior"))
      * @ORM\JoinColumn(name="states", referencedColumnName="slug")
      * @JMS\Exclude()
      */

@@ -126,7 +126,7 @@ class IncidentRepository extends EntityRepository
         $qb = $this->getOrCreateQueryBuilder($qb);
         $qb->select('i')
             ->innerJoin('i.state', 'state')
-            ->andWhere($qb->expr()->in('state.incident_state_behavior', $behavior));
+            ->andWhere($qb->expr()->in('state.behavior', $behavior));
         return $qb;
 
     }
