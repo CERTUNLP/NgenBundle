@@ -19,7 +19,6 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 use JMS\Serializer\Annotation as JMS;
@@ -37,11 +36,11 @@ class IncidentState implements Translatable
     /**
      * @var StateBehavior
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior", inversedBy="states")
-     * @ORM\JoinColumn(name="incident_state_behavior", referencedColumnName="slug")
+     * @ORM\JoinColumn(name="behavior", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    private $incident_state_behavior;
+    private $behavior;
 
     /**
      * @Gedmo\Locale
@@ -87,13 +86,6 @@ class IncidentState implements Translatable
     private $description;
 
     /**
-     * @var ContactCase
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
-     * @ORM\JoinColumn(name="mail_team", referencedColumnName="slug")
-     */
-
-
-    /**
      * @var DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
@@ -129,7 +121,6 @@ class IncidentState implements Translatable
      * @param Incident $incident
      * @param IncidentState $newState
      * @return Incident
-     * @throws Exception
      */
     public function changeIncidentState(Incident $incident, IncidentState $newState = null): ?Incident
     {
@@ -177,9 +168,9 @@ class IncidentState implements Translatable
     /**
      * @return bool
      */
-    public function isAttended(): bool
+    public function isLive(): bool
     {
-        return $this->getBehavior()->isAttended();
+        return $this->getBehavior()->isLive();
     }
 
     /**
@@ -187,7 +178,33 @@ class IncidentState implements Translatable
      */
     public function getBehavior(): StateBehavior
     {
-        return $this->incident_state_behavior;
+        return $this->behavior;
+    }
+
+    /**
+     * @param StateBehavior $behavior
+     * @return IncidentState
+     */
+    public function setBehavior(StateBehavior $behavior): IncidentState
+    {
+        $this->behavior = $behavior;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDead(): bool
+    {
+        return $this->getBehavior()->isDead();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAttended(): bool
+    {
+        return $this->getBehavior()->isAttended();
     }
 
     /**
@@ -239,24 +256,6 @@ class IncidentState implements Translatable
     }
 
     /**
-     * @return string|null
-     */
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string|null $description
-     */
-    public function setDescription(?string $description): void
-    {
-        $this->description = $description;
-    }
-
-
-    /**
      * Get id
      *
      * @return string
@@ -289,33 +288,26 @@ class IncidentState implements Translatable
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string|null $description
+     */
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
     public function removeEdge(StateEdge $edge): void
     {
         $this->getEdges()->removeElement($edge);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isOpen(): bool
-    {
-        return $this->getIncidentStatebehavior()->isOpen();
-    }
-
-    /**
-     * @return StateBehavior
-     */
-    public function getIncidentStatebehavior(): StateBehavior
-    {
-        return $this->incident_state_behavior;
-    }
-
-    /**
-     * @param StateBehavior $incident_state_behavior
-     */
-    public function setIncidentStatebehavior(StateBehavior $incident_state_behavior): void
-    {
-        $this->incident_state_behavior = $incident_state_behavior;
     }
 
     public function setTranslatableLocale(string $locale): IncidentState
@@ -323,23 +315,6 @@ class IncidentState implements Translatable
         $this->locale = $locale;
         return $this;
     }
-
-    /**
-     * @return bool
-     */
-    public function isClosed(): bool
-    {
-        return $this->getIncidentStatebehavior()->isClosed();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNew(): bool
-    {
-        return $this->getIncidentStatebehavior()->isNew();
-    }
-
 
     public function __toString(): string
     {
@@ -436,30 +411,5 @@ class IncidentState implements Translatable
         $this->updatedAt = $updatedAt;
 
         return $this;
-    }
-
-    /**
-     * Add incident
-     *
-     * @param Incident $incident
-     *
-     * @return IncidentState
-     */
-    public function addIncident(Incident $incident): IncidentState
-    {
-        $this->incidents[] = $incident;
-
-        return $this;
-    }
-
-    /**
-     * Remove incident
-     *
-     * @param Incident $incident
-     * @return bool
-     */
-    public function removeIncident(Incident $incident): bool
-    {
-        return $this->incidents->removeElement($incident);
     }
 }

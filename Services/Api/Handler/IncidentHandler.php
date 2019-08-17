@@ -252,7 +252,7 @@ class IncidentHandler extends Handler
             $host_new = $this->getHostHandler()->get(['address' => $incident->getAddress()]) ?: $this->getHostHandler()->post(['address' => $incident->getAddress()]);
             if ($host_new) {
                 if ($host) {
-                    if (!$host->equals($host_new) && !$incident->isClosed()) {
+                    if (!$host->equals($host_new) && $incident->isLive()) {
                         $incident->setOrigin($host_new);
                     }
                 } else {
@@ -292,7 +292,7 @@ class IncidentHandler extends Handler
             $network_new = $incident->getOrigin()->getNetwork();
             if ($network_new) {
                 if ($network) {
-                    if (!$network->equals($network_new) && !$incident->isClosed()) {
+                    if (!$network->equals($network_new) && $incident->isLive()) {
                         $incident->setNetwork($network_new);
                     }
                 } else {
