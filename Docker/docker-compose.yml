@@ -1,34 +1,34 @@
 version: "3.1"
 volumes:
-  ngen-grafana-data:
-    driver: local
-    #driver: rancher-nfs
-    #external: true 
-  ngen-elastic-data:
+  ngen-testing-grafana-data:
     driver: local
     #driver: rancher-nfs
     #external: true
-  ngen-elasticsearch:
+  ngen-testing-elastic-data:
     driver: local
     #driver: rancher-nfs
     #external: true
-  ngen-bdd:
+  ngen-testing-elasticsearch:
     driver: local
     #driver: rancher-nfs
     #external: true
-  ngen-incidentes:
+  ngen-testing-bdd:
     driver: local
     #driver: rancher-nfs
     #external: true
-  ngen-feeds:
+  ngen-testing-incidentes:
+    driver: local
+    #driver: rancher-nfs
+    #external: true
+  ngen-testing-feeds:
     driver: local
     #driver: rancher-nfs
     #external: true
 services:
-    ngen-db:
+    ngen-testing-db:
       image: mysql:5.7
       volumes:
-        - ngen-bdd:/var/lib/mysql
+        - ngen-testing-bdd:/var/lib/mysql
       environment:
         - MYSQL_ROOT_PASSWORD=pass
         - MYSQL_DATABASE=ngen
@@ -37,23 +37,22 @@ services:
       ports:
         - "8002:3306"
       networks: ['ngen']
-    ngen-app:
-      image: einar1/ngen:0.6.40-rc26
+    ngen-testing-app:
+      image: einar1/ngen:0.6.40-rc28
       networks: ['ngen']
-      depends_on: ['ngen-db','ngen-elastic']
+      depends_on: ['ngen-testing-db','ngen-testing-elastic']
       ports:
         - "8000:80"
       volumes:
-        #- '../:/application/ngen_basic/vendor/certunlp/ngen-bundle/'
-        - ngen-incidentes:/application/ngen_basic/app/Resources/incident
-        - ngen-feeds:/application/ngen_basic/app/Resources/app/Resources/feed/
+        - ngen-testing-incidentes:/application/ngen_basic/app/Resources/incident
+        - ngen-testing-feeds:/application/ngen_basic/app/Resources/app/Resources/feed/
       environment:
         - PATH_WEB=/application
         - DATE_TZ=America/Argentina/Buenos_Aires
         - MEMORY_LIMIT=1024M
         - POST_MAX=20M
         - UPLOAD_MAX=20M
-        - DB_HOST=ngen-db
+        - DB_HOST=ngen-testing-db
         - DB_PORT=3306
         - DB_NAME=ngen
         - DB_USER=ngenuser
@@ -61,7 +60,7 @@ services:
         - MAILER_TRANSPORT=smtp
         - MAILER_PORT=1025
         - MAILER_ENCRYPTION=null
-        - MAILER_HOST=ngen-mail
+        - MAILER_HOST=ngen-testing-mail
         - MAILER_USER=null
         - MAILER_PASSWORD=null
         - MAILER_SENDER=pepe@localhost
@@ -72,7 +71,7 @@ services:
         - NGEN_SIGN=true
         - NGEN_LANG=en
         - DEFAULT_NETWORK=10.0.0.0
-        - ELASTIC_HOST=ngen-elastic
+        - ELASTIC_HOST=ngen-testing-elastic
         - ELASTIC_PORT=9200
         - SESSION_TIMEOUT=1800
         - IMAP_SERVER=localhost:993/imap/ssl/novalidate-cert
@@ -82,23 +81,25 @@ services:
         - INTERNAL_DASHBOARD_GRAFANA=d/incidentesinternos/incidentes-internos?from=now-24h&to=now&orgId=1&theme=light&kiosk=tv
         - USER_GRAFANA=admin
         - PASS_GRAFANA=admin
-        - GRAFANA_HOST=http://ngen-grafana:3000
+        - GRAFANA_HOST=http://ngen-testing-grafana:3000
+        - POPULATE=true
       links:
-        - ngen-elastic:ngen-elastic
-        - ngen-grafana:ngen-grafana
-        - ngen-db:ngen-db
-        - ngen-mail:ngen-mail
-    ngen-proxy:
+        - ngen-testing-elastic:ngen-testing-elastic
+        - ngen-testing-grafana:ngen-testing-grafana
+        - ngen-testing-db:ngen-testing-db
+        - ngen-testing-mail:ngen-testing-mail
+    ngen-testing-proxy:
       image: nginx:latest
-      container_name: ngen_proxy
+      container_name: ngen-testing-proxy
       volumes:
        - ./nginx/:/etc/nginx/conf.d/
       ports:
        - 443:443
       links:
-      - ngen-app:ngen-app
+      - ngen-testing-app:ngen-app
+      - ngen-testing-grafana:ngen-grafana
       networks: ['ngen']
-    ngen-elastic:
+    ngen-testing-elastic:
       image: docker.elastic.co/elasticsearch/elasticsearch:5.6.10
       environment:
        - cluster.name=docker-cluster
@@ -106,25 +107,25 @@ services:
        - xpack.security.enabled=false
        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       volumes:
-        - ngen-elastic-data:/usr/share/elasticsearch/data
+        - ngen-testing-elastic-data:/usr/share/elasticsearch/data
       ports:
         - "9200:9200"
       networks: ['ngen']
-    ngen-grafana:
+    ngen-testing-grafana:
       image: einar1/ngen-grafana:0.8
       ports:
         - "3000:3000"
       volumes:
-        - ngen-grafana-data:/var/lib/grafana
+        - ngen-testing-grafana-data:/var/lib/grafana
       environment:
-        - ELASTIC_HOST=ngen-elastic
+        - ELASTIC_HOST=ngen-testing-elastic
         - ELASTIC_PORT=9200
-        - NGEN_APP=ngen-app
+        - NGEN_APP=ngen-testing-app
       networks: ['ngen']
-      depends_on: ['ngen-elastic']
+      depends_on: ['ngen-testing-elastic']
       links:
-          - ngen-elastic:ngen-elastic
-    ngen-mail:
+          - ngen-testing-elastic:ngen-testing-elastic
+    ngen-testing-mail:
       image: schickling/mailcatcher
       ports:
         - "8001:1080"
