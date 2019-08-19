@@ -38,7 +38,7 @@ services:
         - "8002:3306"
       networks: ['ngen']
     ngen-testing-app:
-      image: einar1/ngen:0.6.40-rc28
+      image: einar1/ngen:0.6.40-rc30
       networks: ['ngen']
       depends_on: ['ngen-testing-db','ngen-testing-elastic']
       ports:
@@ -81,11 +81,10 @@ services:
         - INTERNAL_DASHBOARD_GRAFANA=d/incidentesinternos/incidentes-internos?from=now-24h&to=now&orgId=1&theme=light&kiosk=tv
         - USER_GRAFANA=admin
         - PASS_GRAFANA=admin
-        - GRAFANA_HOST=http://ngen-testing-grafana:3000
+        - GRAFANA_HOST=http://ngen-testing-grafana:3000/
         - POPULATE=true
       links:
         - ngen-testing-elastic:ngen-testing-elastic
-        - ngen-testing-grafana:ngen-testing-grafana
         - ngen-testing-db:ngen-testing-db
         - ngen-testing-mail:ngen-testing-mail
     ngen-testing-proxy:
@@ -124,6 +123,7 @@ services:
       networks: ['ngen']
       depends_on: ['ngen-testing-elastic']
       links:
+          - ngen-testing-app:ngen-app
           - ngen-testing-elastic:ngen-testing-elastic
     ngen-testing-mail:
       image: schickling/mailcatcher
