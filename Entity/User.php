@@ -17,6 +17,7 @@ use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
 use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Model\ReporterInterface;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -42,7 +43,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
  */
-
 class User extends BaseUser implements ReporterInterface
 {
 
@@ -54,17 +54,20 @@ class User extends BaseUser implements ReporterInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @ORM\Column(name="api_key", type="string", length=255, nullable=true)
      */
     protected $apiKey;
+
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=50)
+     * @ORM\Column(type="string", length=50)
      * @JMS\Expose()
      */
-    private $name;
+    private $firstname;
+
     /**
      * @var string
      *
@@ -72,29 +75,39 @@ class User extends BaseUser implements ReporterInterface
      * @JMS\Expose()
      */
     private $lastname;
+
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
+
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime")
      */
     private $updatedAt;
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="reporter") */
+
+    /**
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="reporter")
+     */
     private $incidents;
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="assigned") */
+
+    /**
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="assigned")
+     */
     private $assignedIncidents;
+
     /**
      * @var string
      *
-     * @Gedmo\Slug(fields={"name","lastname"}, separator="_")
+     * @Gedmo\Slug(fields={"firstname","lastname"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
      * */
     private $slug;
+
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="user",cascade={"persist"},orphanRemoval=true)
@@ -170,7 +183,7 @@ class User extends BaseUser implements ReporterInterface
     /**
      * Get updatedAt
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getUpdatedAt()
     {
@@ -180,7 +193,7 @@ class User extends BaseUser implements ReporterInterface
     /**
      * Set updatedAt
      *
-     * @param \DateTime $updatedAt
+     * @param DateTime $updatedAt
      * @return User
      */
     public function setUpdatedAt($updatedAt)
@@ -197,17 +210,17 @@ class User extends BaseUser implements ReporterInterface
      */
     public function timestampsUpdate()
     {
-        $this->setUpdatedAt(new \DateTime('now'));
+        $this->setUpdatedAt(new DateTime('now'));
 
         if ($this->getCreatedAt() == null) {
-            $this->setCreatedAt(new \DateTime('now'));
+            $this->setCreatedAt(new DateTime('now'));
         }
     }
 
     /**
      * Get createdAt
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreatedAt()
     {
@@ -217,7 +230,7 @@ class User extends BaseUser implements ReporterInterface
     /**
      * Set createdAt
      *
-     * @param \DateTime $createdAt
+     * @param DateTime $createdAt
      * @return User
      */
     public function setCreatedAt($createdAt)
@@ -230,7 +243,7 @@ class User extends BaseUser implements ReporterInterface
     /**
      * Add incidents
      *
-     * @param \CertUnlp\NgenBundle\Entity\Incident\Incident $incidents
+     * @param Incident $incidents
      * @return User
      */
     public function addIncident(Incident $incidents)
@@ -243,7 +256,7 @@ class User extends BaseUser implements ReporterInterface
     /**
      * Remove incidents
      *
-     * @param \CertUnlp\NgenBundle\Entity\Incident\Incident $incidents
+     * @param Incident $incidents
      */
     public function removeIncident(Incident $incidents)
     {
@@ -253,7 +266,7 @@ class User extends BaseUser implements ReporterInterface
     /**
      * Get incidents
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getIncidents()
     {
@@ -262,7 +275,7 @@ class User extends BaseUser implements ReporterInterface
 
     public function __toString()
     {
-        return $this->getName() . ' ' . $this->getLastname();
+        return $this->getFirstname() . ' ' . $this->getLastname();
     }
 
     /**
@@ -270,20 +283,20 @@ class User extends BaseUser implements ReporterInterface
      *
      * @return string
      */
-    public function getName()
+    public function getFirstname()
     {
-        return $this->name;
+        return $this->firstname;
     }
 
     /**
      * Set name
      *
-     * @param string $name
+     * @param string $firstname
      * @return User
      */
-    public function setName($name)
+    public function setFirstname($firstname)
     {
-        $this->name = $name;
+        $this->firstname = $firstname;
 
         return $this;
     }
@@ -321,7 +334,7 @@ class User extends BaseUser implements ReporterInterface
      */
     public function getFullName()
     {
-        return $this->getName() . ' ' . $this->getLastname();
+        return $this->getFirstname() . ' ' . $this->getLastname();
     }
 
     /**
