@@ -33,7 +33,7 @@ class UserType extends AbstractType
     {
         $choices = $this->roleChoices();
 
-        $builder->add('name')
+        $builder->add('firstname')
             ->add('lastname')
             ->add('plainPassword', RepeatedType::class, array(
                 'required' => false,

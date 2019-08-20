@@ -667,7 +667,7 @@ fos_elastica:
                     properties:
                         username:
                             type: keyword
-                        name:
+                        firstname:
                             type: keyword
                         lastname:
                             type: keyword
