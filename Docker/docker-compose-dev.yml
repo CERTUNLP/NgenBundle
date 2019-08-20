@@ -12,7 +12,7 @@ volumes:
     driver: local
     #driver: rancher-nfs
     #external: true
-  ngen-bdd:
+  ngen-bdd2:
     driver: local
     #driver: rancher-nfs
     #external: true
@@ -25,7 +25,7 @@ volumes:
     #driver: rancher-nfs
     #external: true
 services:
-    ngen-db:
+    ngen-db2:
       image: mysql:5.7
       volumes:
         - ngen-bdd:/var/lib/mysql
@@ -38,7 +38,7 @@ services:
         - "8002:3306"
       networks: ['ngen']
     ngen-app:
-      image: einar1/ngen:0.6.40-rc30
+      image: einar1/ngen:0.6.40-rc31
       networks: ['ngen']
       depends_on: ['ngen-db','ngen-elastic']
       ports:
