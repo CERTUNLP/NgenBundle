@@ -37,7 +37,7 @@ services:
       ports:
         - "8002:3306"
       networks: ['ngen']
-    ngen-testing-app:
+    ngen-app:
       image: einar1/ngen:0.6.40-rc30
       networks: ['ngen']
       depends_on: ['ngen-db','ngen-elastic']
@@ -82,7 +82,7 @@ services:
         - INTERNAL_DASHBOARD_GRAFANA=d/incidentesinternos/incidentes-internos?from=now-24h&to=now&orgId=1&theme=light&kiosk=tv
         - USER_GRAFANA=admin
         - PASS_GRAFANA=admin
-        - GRAFANA_HOST=http://ngen-testing-grafana:3000/
+        - GRAFANA_HOST=http://ngen-grafana:3000/
 
       links:
         - ngen-elastic:ngen-elastic
