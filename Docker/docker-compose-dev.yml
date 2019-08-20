@@ -25,10 +25,10 @@ volumes:
     #driver: rancher-nfs
     #external: true
 services:
-    ngen-db2:
+    ngen-db:
       image: mysql:5.7
       volumes:
-        - ngen-bdd:/var/lib/mysql
+        - ngen-bdd2:/var/lib/mysql
       environment:
         - MYSQL_ROOT_PASSWORD=pass
         - MYSQL_DATABASE=ngen
