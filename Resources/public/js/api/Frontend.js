@@ -22,6 +22,10 @@ var Frontend = Class.extend({
         this.eventTarget = $(event.currentTarget);
         actionButton = this.eventTarget.parents('div').siblings('button');
         this.laddaButton = Ladda.create(actionButton.get(0));
+        if (!this.laddaButton){
+            actionButton = this.eventTarget.parents('ul').siblings('button');
+            this.laddaButton = Ladda.create(actionButton.get(0));
+        }
         this.laddaButton.start();
         this.doChangeState();
     },

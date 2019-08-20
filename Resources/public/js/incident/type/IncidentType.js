@@ -7,6 +7,10 @@
  * with this source code in the file LICENSE.
  */
 var IncidentType = Frontend.extend({
+    init: function () {
+        this.eventTarget = null;
+        $(document).on("click", 'a.state-label', $.proxy(this.changeState, this));
+    },
     dropDownChangeLinks: function () {
         if (this.eventTarget.data('action') == "reactivate") {
             this.eventTarget.hide();
