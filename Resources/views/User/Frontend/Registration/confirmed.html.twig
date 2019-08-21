@@ -7,13 +7,15 @@
  with this source code in the file LICENSE.
 #}
 
-{% extends 'CertUnlpNgenBundle::User/Frontend/frontend.html.twig' %}
+{% extends 'CertUnlpNgenBundle::layout.html.twig' %}
 {% trans_default_domain 'FOSUserBundle' %}
 
-{% block content_body %}
+{% block content %}
     <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
     {% if targetUrl %}
         <p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>
-    {% endif %}{% endblock %}
-{% block javascripts %}
+    {% endif %}
 {% endblock %}
+{#{% block navigation_sidebar %}#}
+{##}
+{#{% endblock %}#}
