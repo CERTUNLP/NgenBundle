@@ -53,9 +53,16 @@ class UserResettingFrontendController extends ResettingController
      */
     public function checkEmailAction(Request $request)
     {
-        $response = parent::checkEmailAction($request);
-        $response->setContent($this->renderView('CertUnlpNgenBundle:User:Frontend/Resetting/check_email.html.twig'));
-        return $response;
+        $username = $request->query->get('username');
+
+        if (empty($username)) {
+            // the user does not come from the sendEmail action
+            return new RedirectResponse($this->generateUrl('fos_user_resetting_request'));
+        }
+
+        return $this->render('CertUnlpNgenBundle:User:Frontend/Resetting/check_email.html.twig', array(
+            'tokenLifetime' => ceil($this->container->getParameter('fos_user.resetting.retry_ttl') / 3600),
+        ));
     }
 
     /**
