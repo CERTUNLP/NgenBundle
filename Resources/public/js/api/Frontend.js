@@ -104,9 +104,9 @@ var Frontend = Class.extend({
     },
 
     stateLabelChange: function () {
-        label = this.eventTarget.parents('tr').children('#state_label_holder').children('div.label-holder').children('span');
+        label = this.eventTarget.parents('tr').find('span.label');
         label.text(this.eventTarget.data('state-name'));
-        label.removeClass().addClass("label label-" + this.getColorClass());
+        label.removeClass().addClass("label badge-" + this.getColorClass());
     },
     getColorClass: function () {
         if (this.eventTarget.data('state-slug') == "open") {
@@ -124,7 +124,7 @@ var Frontend = Class.extend({
         if (jqXHR.status > '300') {
             $.publish('/cert_unlp/notify/error', ["The state was not changed. An error occurred."]);
         } else {
-            this.updateListRow(jqXHR);
+            this.stateLabelChange();
             this.dropDownChangeLinks();
         }
         this.laddaButton.stop();
