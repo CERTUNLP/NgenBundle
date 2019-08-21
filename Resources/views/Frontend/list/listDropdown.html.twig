@@ -1,0 +1,30 @@
+<div class="btn-group">
+    <a class="btn btn-sm btn-primary" role="button"
+       href="{{ detail_link }}">
+        {{ 'Details'|trans }}
+    </a>
+    <button class="btn btn-sm btn btn-primary ladda-button dropdown-toggle" type="button"
+            data-style="slide-down" id="dropdownMenuButton" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+        {{ 'Actions'| trans }}
+    </button>
+    <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
+         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+
+        <a class="dropdown-item"
+           href="{{ edit_link }}">{{ icon('edit') }}
+            <span class="action-text">{{ 'Edit'|trans }}</span></a>
+
+        <a {% if object.isActive %}style="display: none;"{% endif %} class="state-label dropdown-item"
+           data-action="reactivate" data-state-slug="active" data-state-name="active" role="menuitem"
+           tabindex="-1" href="#">{{ icon('redo') }} <span
+                    class="action-text">{{ 'Reactivate'|trans }}</span></a>
+
+        <a {% if not object.isActive %}style="display: none;"{% endif %}
+           class="state-label dropdown-item"
+           data-action="desactivate" data-state-slug="innactive" data-state-name="innactive"
+           role="menuitem"
+           tabindex="-1" href="#">{{ icon('lock') }} <span
+                    class="action-text">{{ 'Desactivate'|trans }}</span></a>
+    </div>
+</div>

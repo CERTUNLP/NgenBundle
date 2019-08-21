@@ -51,12 +51,14 @@
 <!-- Heading -->
 <div class="sidebar-heading"></div>
 <li class="nav-item">
-    <a class="nav-link {{ ('network' in app.request.get('_route'))? '' : 'collapsed' }}" href="#" data-toggle="collapse"
+    <a class="nav-link {{ ('network' in app.request.get('_route') or 'host' in app.request.get('_route'))? '' : 'collapsed' }}"
+       href="#" data-toggle="collapse"
        data-target="#collapseNetworks"
        aria-controls="collapseTwo">
         <span>{{ icon('share-alt-square') }} {{ 'Community'| trans }}</span>
     </a>
-    <div id="collapseNetworks" class="collapse {{ ('network' in app.request.get('_route'))? 'show': '' }}"
+    <div id="collapseNetworks"
+         class="collapse {{ ('network' in app.request.get('_route')  or 'host' in app.request.get('_route'))? 'show': '' }}"
          aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Network elements</h6>
@@ -126,11 +128,13 @@
 <!-- Heading -->
 <div class="sidebar-heading"></div>
 <li class="nav-item">
-    <a class="nav-link {{ ('user' in app.request.get('_route'))? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseSettings" aria-expanded="true"
+    <a class="nav-link {{ ('user' in app.request.get('_route'))? '' : 'collapsed' }}" href="#" data-toggle="collapse"
+       data-target="#collapseSettings" aria-expanded="true"
        aria-controls="collapseUtilities">
         <span> {{ icon('cog') }} {{ 'Settings'| trans }}</span>
     </a>
-    <div id="collapseSettings" class="collapse {{ ('user' in app.request.get('_route'))? 'show' : '' }}" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+    <div id="collapseSettings" class="collapse {{ ('user' in app.request.get('_route'))? 'show' : '' }}"
+         aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <a href="{{ path('cert_unlp_ngen_user_frontend_home') }}"
                class="collapse-item">{{ icon('users fa-fw') }} {{ 'Users'| trans }}</a>

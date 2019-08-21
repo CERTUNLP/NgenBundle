@@ -17,38 +17,6 @@
         </div>
     </td>
     <td class="align-middle">
-
-        <div class="btn-group inline pull-left dropdown action-dropdown">
-            <a class="btn btn-sm btn-primary" role="button"
-               href="{{ path('cert_unlp_ngen_incident_type_report_detail',{'lang': incidentReport.lang , 'slug': incidentReport.type.slug}) }}">
-                {{ 'Details'|trans }}
-            </a>
-            <button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" report="button"
-                    id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                {{ 'Actions'|trans }}
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                <li role="presentation">
-                    <a role="menuitem" tabindex="-1"
-                       href="{{ path('cert_unlp_ngen_incident_type_report_edit',{'lang': incidentReport.lang , 'slug': incidentReport.type.slug}) }}">{{ icon('edit alert-info') }}
-                        <span class="action-text">{{ 'Edit'|trans }}</span></a>
-                </li>
-
-                <li role="presentation">
-                    <a {% if incidentReport.isActive %}style="display: none;"{% endif %} class="state-label"
-                       data-action="reactivate" data-state-slug="active" data-state-name="active" role="menuitem"
-                       tabindex="-1" href="#">{{ icon('repeat alert-info') }} <span
-                                class="action-text">{{ 'Reactivate'|trans }}</span></a>
-                </li>
-
-                <li role="presentation">
-                    <a {% if not incidentReport.isActive %}style="display: none;"{% endif %} class="state-label"
-                       data-action="desactivate" data-state-slug="innactive" data-state-name="innactive" role="menuitem"
-                       tabindex="-1" href="#">{{ icon('lock alert-success') }} <span
-                                class="action-text">{{ 'Desactivate'|trans }}</span></a>
-                </li>
-            </ul>
-        </div>
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentReport , 'detail_link': path('cert_unlp_ngen_incident_type_report_detail',{'lang': incidentReport.lang , 'slug': incidentReport.type.slug}),'edit_link': path('cert_unlp_ngen_incident_type_report_edit',{'lang': incidentReport.lang , 'slug': incidentReport.type.slug})} %}
     </td>
 </tr>

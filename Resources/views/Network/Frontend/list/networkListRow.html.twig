@@ -26,39 +26,11 @@
         </div>
     </td>
     <td class="align-middle">
-
-        <div class="btn-group inline pull-left dropdown action-dropdown">
-            <a class="btn btn-sm btn-primary" role="button"
-               href="{% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail'} %}">
-                {{ 'Details'|trans }}
-            </a>
-            <button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" type="button"
-                    id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                {{ 'Actions'|trans }}
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                <li role="presentation">
-                    <a role="menuitem" tabindex="-1"
-                       href="{% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'edit'} %}">{{ icon('edit alert-info') }}
-                        <span class="action-text">{{ 'Edit'|trans }}</span></a>
-                </li>
-
-                <li role="presentation">
-                    <a {% if network.isActive %}style="display: none;"{% endif %} class="state-label"
-                       data-action="reactivate" data-state-name="active" data-state-slug="active" role="menuitem"
-                       tabindex="-1" href="#">{{ icon('repeat alert-info') }} <span
-                                class="action-text">{{ 'Reactivate'|trans }}</span></a>
-                </li>
-
-                <li role="presentation">
-                    <a {% if not network.isActive %}style="display: none;"{% endif %} class="state-label"
-                       data-action="desactivate" data-state-name="innactive" data-state-slug="innactive" role="menuitem"
-                       tabindex="-1" href="#">{{ icon('lock alert-success') }} <span
-                                class="action-text">{{ 'Desactivate'|trans }}</span></a>
-                </li>
-            </ul>
-        </div>
-    </td>
-
+        {% set detail_link %}
+            {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail'} %}
+        {% endset %}
+        {% set edit_link %}
+            {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'edit'} %}
+        {% endset %}
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':network , 'detail_link':detail_link ,'edit_link': edit_link} %}
 </tr>

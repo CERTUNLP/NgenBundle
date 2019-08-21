@@ -163,6 +163,15 @@ class User extends BaseUser implements ReporterInterface
         return $this->contacts;
     }
 
+    /**
+     * Get emails
+     *
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->isEnabled();
+    }
 
     /**
      * @return mixed
