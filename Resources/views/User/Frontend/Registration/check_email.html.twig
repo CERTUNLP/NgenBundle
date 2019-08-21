@@ -7,12 +7,12 @@
  with this source code in the file LICENSE.
 #}
 
-{% extends 'CertUnlpNgenBundle::User/Frontend/frontend.html.twig' %}
+{% extends 'CertUnlpNgenBundle::layout.html.twig' %}
 
 {% trans_default_domain 'FOSUserBundle' %}
 
 
-{% block body %}
+{% block content %}
 
     <div class="container">
 
@@ -45,5 +45,5 @@
         </div>
     </div>
 {% endblock %}
-{% block javascripts %}
+{% block navigation_sidebar %}
 {% endblock %}

@@ -7,8 +7,11 @@
  with this source code in the file LICENSE.
 #}
 
-{% extends 'CertUnlpNgenBundle::User/Frontend/frontend.html.twig' %}
+{% extends 'CertUnlpNgenBundle::User/Frontend/home.html.twig' %}
 
+{% block content_header %}
+    <h1 class="page-header">{{ icon('user fa-fw') }}{{ 'Profile'|trans }}</h1>
+{% endblock %}
 {% block content_body %}
     {% include "CertUnlpNgenBundle:User:Frontend/Profile/show_content.html.twig" %}
     <a class="btn btn-info" href="{{ path('fos_user_profile_edit') }}">

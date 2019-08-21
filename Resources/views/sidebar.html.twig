@@ -5,10 +5,7 @@
     </div>
     <div class="sidebar-brand-text mx-3"> CERTUNLP - NGEN</div>
 </a>
-
 <hr class="sidebar-divider my-0">
-
-
 <li class="nav-item active">
     <form method="get" action="{% block sideBar_search_path %}{% endblock %}"
           class="generalSearch" role="search">
@@ -16,11 +13,10 @@
             <input type="text" name="term" class="form-control" value="{{ term | default('') }}"
                    placeholder="Search...">
             <span class="input-group-btn">
-                                        <button type="submit" class="btn btn-secondary">{{ icon('search') }}</button>
-                                        </span>
+                <button type="submit" class="btn btn-secondary">{{ icon('search') }}</button>
+            </span>
         </div>
     </form>
-
 </li>
 <!-- Divider -->
 
@@ -28,11 +24,9 @@
 
 <!-- Divider -->
 <hr class="sidebar-divider">
-
 <!-- Heading -->
 <div class="sidebar-heading">
 </div>
-
 <li class="nav-item">
     <!-- Nav Item - Pages Collapse Menu -->
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
@@ -54,10 +48,7 @@
 <hr class="sidebar-divider">
 
 <!-- Heading -->
-<div class="sidebar-heading">
-</div>
-
-
+<div class="sidebar-heading"></div>
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNetworks" aria-expanded="true"
        aria-controls="collapseTwo">
@@ -67,7 +58,7 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header"></h6>
             <a class="collapse-item"
-               href="{{ path('cert_unlp_ngen_network_frontend_home') }}"> {{ icon('fa fa-share-alt fa-fw') }} {{ 'Networks'| trans }}</a>
+               href="{{ path('cert_unlp_ngen_network_frontend_home') }}">{{ icon('fa fa-share-alt fa-fw') }} {{ 'Networks'| trans }}</a>
             <a class="collapse-item"
                href="{{ path('cert_unlp_ngen_network_admin_frontend_home') }}">{{ icon('fa fa-users fa-fw') }} {{ 'Admins'| trans }}</a>
             <a class="collapse-item"
@@ -81,10 +72,7 @@
 <hr class="sidebar-divider">
 
 <!-- Heading -->
-<div class="sidebar-heading">
-</div>
-
-
+<div class="sidebar-heading"></div>
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="true"
        aria-controls="collapseUtilities">
@@ -94,34 +82,22 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header"></h6>
             <a href="{{ path('cert_unlp_ngen_administration_feed_frontend_home') }}"
-               class="collapse-item">{{ icon('fas fa-syringe') }}
-                {{ 'Feeds'| trans }}</a>
+               class="collapse-item">{{ icon('fas fa-syringe') }} {{ 'Feeds'| trans }}</a>
             <a href="{{ path('cert_unlp_ngen_administration_state_frontend_home') }}"
-               class="collapse-item">{{ icon('fas fa-thermometer') }}
-                {{ 'States'| trans }}</a>
+               class="collapse-item">{{ icon('fas fa-thermometer') }} {{ 'States'| trans }}</a>
             <a href="{{ path('cert_unlp_ngen_administration_type_frontend_home') }}"
-               class="collapse-item">{{ icon('cubes fa-fw') }}
-                {{ 'Types'| trans }}</a>
+               class="collapse-item">{{ icon('cubes fa-fw') }} {{ 'Types'| trans }}</a>
             <a href="{{ path('cert_unlp_ngen_incident_decision_frontend_home') }}"
-               class="collapse-item"> {{ icon('fas fa-question') }}
-                {{ 'Incident Decisions'| trans }}</a>
+               class="collapse-item"> {{ icon('fas fa-question') }} {{ 'Incident Decisions'| trans }}</a>
             <a href="{{ path('cert_unlp_ngen_incident_priority_frontend_home') }}"
-               class="collapse-item">{{ icon('list-ol fa-fw') }}
-                {{ 'Incident Priorities'| trans }}</a>
-
+               class="collapse-item">{{ icon('list-ol fa-fw') }} {{ 'Incident Priorities'| trans }}</a>
         </div>
     </div>
 </li>
-
-
 <!-- Divider -->
 <hr class="sidebar-divider">
-
 <!-- Heading -->
-<div class="sidebar-heading">
-</div>
-
-
+<div class="sidebar-heading"></div>
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDashboard" aria-expanded="true"
        aria-controls="collapseDashboard">
@@ -131,22 +107,16 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header"></h6>
             <a href="{{ path('cert_unlp_ngen_dashboard_internal') }}"
-               class="collapse-item">{{ icon('fas fa-chart-line') }}{{ 'Internal Dashboards'| trans }}</a>
+               class="collapse-item">{{ icon('fas fa-chart-line') }} {{ 'Internal Dashboards'| trans }}</a>
             <a href="{{ path('cert_unlp_ngen_dashboard_external') }}"
-               class="collapse-item">{{ icon('fas fa-chart-line') }}{{ 'External Dashboards'| trans }}</a>
+               class="collapse-item">{{ icon('fas fa-chart-line') }} {{ 'External Dashboards'| trans }}</a>
         </div>
     </div>
 </li>
-
-
 <!-- Divider -->
 <hr class="sidebar-divider">
-
 <!-- Heading -->
-<div class="sidebar-heading">
-</div>
-
-
+<div class="sidebar-heading"></div>
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSettings" aria-expanded="true"
        aria-controls="collapseUtilities">
@@ -156,14 +126,12 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header"></h6>
             <a href="{{ path('cert_unlp_ngen_user_frontend_home') }}"
-               class="collapse-item">{{ icon('users fa-fw') }}{{ 'Users'| trans }}</a>
+               class="collapse-item">{{ icon('users fa-fw') }} {{ 'Users'| trans }}</a>
         </div>
     </div>
 </li>
-
 <!-- Divider -->
 <hr class="sidebar-divider d-none d-md-block">
-
 <!-- Sidebar Toggler (Sidebar) -->
 <div class="text-center d-none d-md-inline">
     <button class="rounded-circle border-0" id="sidebarToggle"></button>
