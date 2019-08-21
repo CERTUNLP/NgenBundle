@@ -29,16 +29,17 @@
 </div>
 <li class="nav-item">
     <!-- Nav Item - Pages Collapse Menu -->
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+    <a class="nav-link {{ ('incident' in app.request.get('_route'))? '' : 'collapsed' }}" href="#"
+       data-toggle="collapse"
+       data-target="#collapseTwo" aria-expanded="true"
        aria-controls="collapseTwo">
-        {{ icon('exclamation-circle') }} <span class="sidebar-brand-text">{{ 'Incidents' | trans }}</>
+        {{ icon('exclamation-circle') }} <span class="sidebar-brand-text">{{ 'Incidents' | trans }}</span>
     </a>
-    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+    <div id="collapseTwo" class="collapse {{ ('incident' in app.request.get('_route'))? 'show' : '' }}"
+         aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="{{ path('cert_unlp_ngen_internal_incident_frontend_home') }}">
                 {{ icon('exclamation-circle fa-fw') }}  {{ 'Incidents'|trans }}</a>
-            <a class="collapse-item" href="{{ path('cert_unlp_ngen_host_frontend_home') }}">
-                {{ icon('fas fa-laptop') }} {{ 'Hosts'|trans }}</a>
         </div>
     </div>
 </li>
@@ -50,15 +51,20 @@
 <!-- Heading -->
 <div class="sidebar-heading"></div>
 <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNetworks" aria-expanded="true"
+    <a class="nav-link {{ ('network' in app.request.get('_route'))? '' : 'collapsed' }}" href="#" data-toggle="collapse"
+       data-target="#collapseNetworks"
        aria-controls="collapseTwo">
         <span>{{ icon('share-alt-square') }} {{ 'Community'| trans }}</span>
     </a>
-    <div id="collapseNetworks" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+    <div id="collapseNetworks" class="collapse {{ ('network' in app.request.get('_route'))? 'show': '' }}"
+         aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header"></h6>
+            <h6 class="collapse-header">Network elements</h6>
             <a class="collapse-item"
                href="{{ path('cert_unlp_ngen_network_frontend_home') }}">{{ icon('fa fa-share-alt fa-fw') }} {{ 'Networks'| trans }}</a>
+            <a class="collapse-item" href="{{ path('cert_unlp_ngen_host_frontend_home') }}">
+                {{ icon('fas fa-laptop') }} {{ 'Hosts'|trans }}</a>
+            <h6 class="collapse-header">Network management</h6>
             <a class="collapse-item"
                href="{{ path('cert_unlp_ngen_network_admin_frontend_home') }}">{{ icon('fa fa-users fa-fw') }} {{ 'Admins'| trans }}</a>
             <a class="collapse-item"
@@ -74,13 +80,14 @@
 <!-- Heading -->
 <div class="sidebar-heading"></div>
 <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="true"
+    <a class="nav-link {{ ('administration' in app.request.get('_route'))? '' : 'collapsed' }}" href="#"
+       data-toggle="collapse" data-target="#collapseAdmin"
        aria-controls="collapseUtilities">
         <span>   {{ icon('sliders-h') }} {{ 'Administration'| trans }}</span>
     </a>
-    <div id="collapseAdmin" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+    <div id="collapseAdmin" class="collapse {{ ('administration' in app.request.get('_route'))? 'show' : '' }}"
+         aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header"></h6>
             <a href="{{ path('cert_unlp_ngen_administration_feed_frontend_home') }}"
                class="collapse-item">{{ icon('fas fa-syringe') }} {{ 'Feeds'| trans }}</a>
             <a href="{{ path('cert_unlp_ngen_administration_state_frontend_home') }}"
@@ -99,13 +106,14 @@
 <!-- Heading -->
 <div class="sidebar-heading"></div>
 <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDashboard" aria-expanded="true"
+    <a class="nav-link {{ ('dashboard' in app.request.get('_route'))? '' : 'collapsed' }}" href="#"
+       data-toggle="collapse" data-target="#collapseDashboard" aria-expanded="true"
        aria-controls="collapseDashboard">
         <span> {{ icon('fas fa-chart-line') }} {{ 'Dashboard'| trans }}</span>
     </a>
-    <div id="collapseDashboard" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+    <div id="collapseDashboard" class="collapse {{ ('dashboard' in app.request.get('_route'))? 'show' : '' }}"
+         aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header"></h6>
             <a href="{{ path('cert_unlp_ngen_dashboard_internal') }}"
                class="collapse-item">{{ icon('fas fa-chart-line') }} {{ 'Internal Dashboards'| trans }}</a>
             <a href="{{ path('cert_unlp_ngen_dashboard_external') }}"
@@ -118,13 +126,12 @@
 <!-- Heading -->
 <div class="sidebar-heading"></div>
 <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSettings" aria-expanded="true"
+    <a class="nav-link {{ ('user' in app.request.get('_route'))? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseSettings" aria-expanded="true"
        aria-controls="collapseUtilities">
         <span> {{ icon('cog') }} {{ 'Settings'| trans }}</span>
     </a>
-    <div id="collapseSettings" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+    <div id="collapseSettings" class="collapse {{ ('user' in app.request.get('_route'))? 'show' : '' }}" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header"></h6>
             <a href="{{ path('cert_unlp_ngen_user_frontend_home') }}"
                class="collapse-item">{{ icon('users fa-fw') }} {{ 'Users'| trans }}</a>
         </div>
