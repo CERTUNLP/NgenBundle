@@ -13,6 +13,7 @@ namespace CertUnlp\NgenBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use FOS\UserBundle\Form\Type\RegistrationFormType;
 
 class UserRegistrationType extends AbstractType
 {
@@ -29,7 +30,7 @@ class UserRegistrationType extends AbstractType
 
     public function getParent()
     {
-        return 'FOS\UserBundle\Form\Type\RegistrationFormType';
+        return RegistrationFormType::class;
 
         // Or for Symfony < 2.8
         // return 'fos_user_registration';
