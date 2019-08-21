@@ -127,7 +127,7 @@ fos_elastica:
                             properties:
                                 slug:
                                     type: keyword
-                                name:
+                                firstname:
                                     type: keyword
                                 lastname:
                                     type: keyword
