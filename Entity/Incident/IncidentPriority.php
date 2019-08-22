@@ -3,11 +3,9 @@
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Translatable\Translatable;
-use GuzzleHttp\Collection;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -17,31 +15,41 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IndicentPriorityRepository")
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentPriority implements Translatable
+class IncidentPriority
 {
+
     /**
-     * @var IncidentImpact|null
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Expose
+     */
+    protected $id;
+
+    /**
+     * @var IncidentImpact
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="incidentsPriorities")
      * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
      * @JMS\Expose
      */
-    private $impact;
+    protected $impact;
 
     /**
-     * @var IncidentUrgency|null
+     *
+     * @var IncidentUrgency
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency", inversedBy="incidentsPriorities")
      * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
      * @JMS\Expose
      */
-    private $urgency;
+    protected $urgency;
 
     /**
-     * @var Incident[] | Collection | null
-     *
+     * @var Incident[] | Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="priority"))
-     * @JMS\Exclude()
      */
-    private $incidents;
+    protected $incidents;
 
     /**
      * @var boolean
@@ -50,6 +58,7 @@ class IncidentPriority implements Translatable
      * @JMS\Expose
      */
     private $isActive = true;
+
     /**
      * @var int|null
      *
@@ -57,6 +66,7 @@ class IncidentPriority implements Translatable
      * @JMS\Expose
      */
     private $unresponseTime;
+
     /**
      * @var integer|null
      * @ORM\Column(name="unresolution_time", type="integer")
@@ -70,24 +80,18 @@ class IncidentPriority implements Translatable
      * @JMS\Expose
      */
     private $code;
-
     /**
      * @var string|null
-     * @ORM\Id
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
      * @JMS\Expose
      */
-
     private $slug;
-
     /**
      * @var string|null
      * @ORM\Column(name="name", type="string", length=255)
      * @JMS\Expose
-     * @Gedmo\Translatable
      */
     private $name;
-
     /**
      * @var DateTime|null
      * @Gedmo\Timestampable(on="create")
@@ -96,7 +100,6 @@ class IncidentPriority implements Translatable
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
-
     /**
      * @var DateTime|null
      * @Gedmo\Timestampable(on="update")
@@ -105,14 +108,12 @@ class IncidentPriority implements Translatable
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
-
     /**
      * @var integer|null
      * @ORM\Column(name="response_time", type="integer")
      * @JMS\Expose
      */
     private $responseTime;
-
     /**
      * @var integer|null
      * @ORM\Column(name="resolution_time", type="integer")
@@ -120,106 +121,51 @@ class IncidentPriority implements Translatable
      */
     private $resolutionTime;
 
-    public function __construct()
+    public function __toString()
     {
-        $this->incidents = new ArrayCollection();
+        return $this->getName();
     }
 
     /**
-     * @return Incident[] | Collection
+     * @return string|null
      */
-    public function getIncidents(): Collection
+    public function getName(): ?string
     {
-        return $this->incidents;
+        return $this->name;
     }
 
     /**
-     * @param Collection $incidents
+     * @param string|null $name
      * @return IncidentPriority
      */
-    public function setIncidents(Collection $incidents): self
+    public function setName(?string $name): IncidentPriority
     {
-        $this->incidents = $incidents;
+        $this->name = $name;
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getUnresponseTime(): int
+    public function getId(): ?int
     {
-        return $this->unresponseTime;
+        return $this->id;
     }
 
     /**
-     * @param int $unresponseTime
-     */
-    public function setUnresponseTime(int $unresponseTime): void
-    {
-        $this->unresponseTime = $unresponseTime;
-    }
-
-    /**
-     * @return int
-     */
-    public function getUnresolutionTime(): int
-    {
-        return $this->unresolutionTime;
-    }
-
-    /**
-     * @param int $unresolutionTime
-     */
-    public function setUnresolutionTime(int $unresolutionTime): void
-    {
-        $this->unresolutionTime = $unresolutionTime;
-    }
-
-    public function setTranslatableLocale($locale)
-    {
-        $this->locale = $locale;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
+     * @param int $id
      * @return IncidentPriority
      */
-    public function setCreatedAt(DateTime $createdAt): self
+    public function setId(int $id): ?IncidentPriority
     {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param DateTime $updatedAt
-     * @return IncidentPriority
-     */
-    public function setUpdatedAt(DateTime $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
+        $this->id = $id;
         return $this;
     }
 
     /**
      * @return IncidentImpact
      */
-    public function getImpact(): IncidentImpact
+    public function getImpact(): ?IncidentImpact
     {
         return $this->impact;
     }
@@ -228,7 +174,7 @@ class IncidentPriority implements Translatable
      * @param IncidentImpact $impact
      * @return IncidentPriority
      */
-    public function setImpact(IncidentImpact $impact): self
+    public function setImpact(IncidentImpact $impact): IncidentPriority
     {
         $this->impact = $impact;
         return $this;
@@ -237,7 +183,7 @@ class IncidentPriority implements Translatable
     /**
      * @return IncidentUrgency
      */
-    public function getUrgency(): IncidentUrgency
+    public function getUrgency(): ?IncidentUrgency
     {
         return $this->urgency;
     }
@@ -246,35 +192,27 @@ class IncidentPriority implements Translatable
      * @param IncidentUrgency $urgency
      * @return IncidentPriority
      */
-    public function setUrgency(IncidentUrgency $urgency): self
+    public function setUrgency(IncidentUrgency $urgency): IncidentPriority
     {
         $this->urgency = $urgency;
         return $this;
     }
 
     /**
-     * @return string
+     * @return Incident[] | Collection
      */
-    public function getId(): string
+    public function getIncidents(): ?Collection
     {
-        return $this->getSlug();
+        return $this->incidents;
     }
 
     /**
-     * @return string
-     */
-    public function getSlug(): string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $slug
+     * @param Incident[] | Collection $incidents
      * @return IncidentPriority
      */
-    public function setSlug(string $slug): self
+    public function setIncidents(Collection $incidents): IncidentPriority
     {
-        $this->slug = $slug;
+        $this->incidents = $incidents;
         return $this;
     }
 
@@ -299,6 +237,42 @@ class IncidentPriority implements Translatable
     /**
      * @return int|null
      */
+    public function getUnresponseTime(): ?int
+    {
+        return $this->unresponseTime;
+    }
+
+    /**
+     * @param int|null $unresponseTime
+     * @return IncidentPriority
+     */
+    public function setUnresponseTime(?int $unresponseTime): IncidentPriority
+    {
+        $this->unresponseTime = $unresponseTime;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getUnresolutionTime(): ?int
+    {
+        return $this->unresolutionTime;
+    }
+
+    /**
+     * @param int|null $unresolutionTime
+     * @return IncidentPriority
+     */
+    public function setUnresolutionTime(?int $unresolutionTime): IncidentPriority
+    {
+        $this->unresolutionTime = $unresolutionTime;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
     public function getCode(): ?int
     {
         return $this->code;
@@ -314,28 +288,57 @@ class IncidentPriority implements Translatable
         return $this;
     }
 
-    public function __toString()
-    {
-        return $this->getName();
-    }
-
     /**
-     * Get name
-     *
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getSlug(): ?string
     {
-        return $this->name;
+        return $this->slug;
     }
 
     /**
-     * @param string|null $name
+     * @param string|null $slug
      * @return IncidentPriority
      */
-    public function setName(?string $name): IncidentPriority
+    public function setSlug(?string $slug): IncidentPriority
     {
-        $this->name = $name;
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getCreatedAt(): ?DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param DateTime|null $createdAt
+     * @return IncidentPriority
+     */
+    public function setCreatedAt(?DateTime $createdAt): IncidentPriority
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getUpdatedAt(): ?DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param DateTime|null $updatedAt
+     * @return IncidentPriority
+     */
+    public function setUpdatedAt(?DateTime $updatedAt): IncidentPriority
+    {
+        $this->updatedAt = $updatedAt;
         return $this;
     }
 
@@ -374,7 +377,6 @@ class IncidentPriority implements Translatable
         $this->resolutionTime = $resolutionTime;
         return $this;
     }
-
 
 }
 

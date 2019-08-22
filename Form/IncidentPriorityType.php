@@ -64,7 +64,8 @@ class IncidentPriorityType extends AbstractType
             ))
             ->add('save', SubmitType::class, array(
                 'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
-            ));
+            ))
+            ->add('id', HiddenType::class);
 
     }
 

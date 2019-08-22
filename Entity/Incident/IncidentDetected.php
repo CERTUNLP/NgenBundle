@@ -75,7 +75,6 @@ class IncidentDetected
     /**
      * @var IncidentPriority
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority", inversedBy="incidents")
-     * @ORM\JoinColumn(name="priority", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */

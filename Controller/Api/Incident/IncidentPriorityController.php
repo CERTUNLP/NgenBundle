@@ -107,28 +107,6 @@ class IncidentPriorityController extends FOSRestController
     }
 
     /**
-     * Update existing priority from the submitted data or create a new priority at a specific location.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\IncidentPriorityType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
-     * )
-     * @FOS\Patch("/priorities/{impact}/{urgency}")
-     * @param Request $request the request object
-     * @param IncidentPriority $incident_priority
-     * @return FormTypeInterface|View
-     *
-     */
-    public function patchIncidentPriorityAction(Request $request, IncidentPriority $incident_priority)
-    {
-        return $this->getApiController()->patch($request, $incident_priority, true);
-    }
-
-    /**
      * Update existing network from the submitted data or create a new network at a specific location.
      *
      * @ApiDoc(
@@ -147,7 +125,6 @@ class IncidentPriorityController extends FOSRestController
      */
     public function patchIncidentPriorityBySlugAction(Request $request, IncidentPriority $incident_priority)
     {
-        echo "die";
         return $this->getApiController()->patch($request, $incident_priority);
     }
 
@@ -172,7 +149,6 @@ class IncidentPriorityController extends FOSRestController
      */
     public function patchIncidentPriorityActivateAction(Request $request, IncidentPriority $incident_priority)
     {
-
         return $this->getApiController()->activate($request, $incident_priority);
     }
 
@@ -197,7 +173,6 @@ class IncidentPriorityController extends FOSRestController
      */
     public function patchIncidentPriorityDesactivateAction(Request $request, IncidentPriority $incident_priority)
     {
-
         return $this->getApiController()->desactivate($request, $incident_priority);
     }
 
