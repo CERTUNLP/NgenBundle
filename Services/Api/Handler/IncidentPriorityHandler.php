@@ -29,9 +29,14 @@ class IncidentPriorityHandler extends Handler
         $incident_priority->setIsActive(FALSE);
     }
 
+    /**
+     * @param $incidentPriority
+     * @param $method
+     * @return object|null
+     */
     protected function checkIfExists($incidentPriority, $method)
     {
-        $incidentPriorityDB = $this->repository->findOneBy(array('code' => $incidentPriority->getCode()));
+        $incidentPriorityDB = $this->repository->findOneBy(array('id' => $incidentPriority->getId()));
 
         if ($incidentPriorityDB && $method == 'POST') {
             $incidentPriority = $incidentPriorityDB;
