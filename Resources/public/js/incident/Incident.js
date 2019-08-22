@@ -16,25 +16,112 @@ var Incident = Frontend.extend({
         $('.data-filter').on('submit', $.proxy(this.search, this));
         $('.generalSearch').on('submit', $.proxy(this.search, this));
     },
+    getObjectBrief: function () {
+        return 'incident';
+    },
     dropDownChangeLinks: function () {
-        if (this.eventTarget.data('state-slug') == "open") {
-            this.eventTarget.hide();
-        } else {
-            $("[data-state-slug='open']").show();
-        }
+
     },
     doChangeState: function (event) {
         $.publish('/cert_unlp/incident/state/change', [this.eventTarget.parents('tr').data('id'), this.eventTarget.data('state-slug'), $.proxy(this.stateChanged, this)]);
 
     },
-    stateChanged: function (response, jqXHR) {
+    stateLabelChange: function (response, jqXHR) {
+        this.updateListRow(jqXHR);
+    },
+    updateListRow: function (jqXHR) {
 
-        if (jqXHR.status > '300') {
-            $.publish('/cert_unlp/notify/error', ["The state was not changed. An error occurred."]);
-        } else {
-            this.updateListRow(jqXHR);
-            this.dropDownChangeLinks();
-        }
-        this.laddaButton.stop();
+        id = this.eventTarget.parents('tr').data('id');
+        tr = this.eventTarget.parents('tr');
+        $.get(id + "/getListRow", function (data) {
+            tr.html($(data).html());
+            $.publish('/cert_unlp/notify/success', ["The state has been changed successfully"]);
+            tr.focus();
+        });
+    },
+    filterListComplete: function (query) {
+        $.get("getFilterList", {"term": query}, function (data) {
+            $('#tabla_incidentes > tbody:last').html(data.tabla);
+            $('#incidentcount').html(data.indice.lastItemNumber + "/" + data.indice.totalCount);
+            $('#filters').html(data.filters);
+            $('#paginatorbar').html(data.paginador);
+            $("#paginatorbar").on("click", ".pagination", function () {
+                $.get(event.target.href, function (data) {
+                    $('#tabla_incidentes > tbody:last').html(data.tabla);
+                    $('#incidentcount').html(data.indice.lastItemNumber + "/" + data.indice.totalCount);
+                    $('#paginatorbar').html(data.paginador);
+                    $('#filters').html(data.filters);
+                });
+                return false;
+            });
+            $("#filters").on("click", ".header", function () {
+                $.get(event.target.href, function (data) {
+                    $('#tabla_incidentes > tbody:last').html(data.tabla);
+                    $('#incidentcount').html(data.indice.lastItemNumber + "/" + data.indice.totalCount);
+                    $('#paginatorbar').html(data.paginador);
+                    $('#filters').html(data.filters);
+                });
+                return false;
+            });
+
+            $.publish('/cert_unlp/notify/success', ["The list was filtered"]);
+        });
+    },
+    search: function (event) {
+        event.preventDefault();
+        query = '*';
+        $(".multiple-select-filter").each(function () {
+            if ($(this).val() != null && $(this).val().length > 0) {
+                subquery = '(';
+                parametros = JSON.parse($(this).attr('search'));
+                valor = $(this).val();
+                if ($(this).parent().parent().children('.form-check-input')[0] != null && $(this).parent().parent().children('.form-check-input')[0].checked) {
+                    valor = valor + '*';
+                }
+                if ($(this).attr('index') != null && $(this).attr('index').length > 0) {
+                    name = $(this).attr('index');
+                } else {
+                    name = $(this).attr('name');
+                }
+                parametros.forEach(function (element, index) {
+                    if (index == 0) {
+                        subquery = subquery + name + '.' + element + ':' + valor;
+                    } else {
+                        subquery = subquery + ' || ' + name + '.' + element + ':' + valor;
+                    }
+                });
+                query = (query) + ' && ' + subquery + ')';
+            }
+        });
+        $(".select-filter").each(function () {
+            if ($(this).attr('index') != null && $(this).attr('index').length > 0) {
+                name = $(this).attr('index');
+            } else {
+                name = $(this).attr('name');
+            }
+            if ($(this).val() != null && $(this).val() != 0 && $(this).val().length > 0) {
+                valor = $(this).val();
+                if ($(this).parent().parent().children('.form-check-input')[0] != null && $(this).parent().parent().children('.form-check-input')[0].checked) {
+                    valor = valor + '*';
+                }
+                if ($(this).attr('search') != null && $(this).attr('search').length > 0) {
+                    query = (query) + ' && ' + name + '.' + $(this).attr('search') + ':' + valor;
+                } else {
+                    query = (query) + ' && ' + name + ':' + valor;
+                }
+            }
+        });
+
+        $(".generalSearch").each(function () {
+            if ($(this).find('input[name="term"]').val() != null && $(this).find('input[name="term"]').val().length > 0) {
+                valor = $(this).find('input[name="term"]').val();
+                name = 'term';
+                query = (query) + ' && ' + valor;
+
+            }
+        });
+        this.query = query;
+        this.filterListComplete(this.query);
+        return false;
     },
 });
