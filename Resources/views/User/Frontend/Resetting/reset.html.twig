@@ -7,10 +7,13 @@
  with this source code in the file LICENSE.
 #}
 
-{% extends 'CertUnlpNgenBundle::User/Frontend/frontend.html.twig' %}
+{% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
 
+{% block content_header %}
+    <h1 class="page-header">{{ icon('key fa-fw') }} {{ 'Reset Password'|trans }}</h1>
+{% endblock %}
 {% block content_body %}
     {% include "CertUnlpNgenBundle:User:Frontend/Resetting/reset_content.html.twig" %}
 {% endblock %}
-{% block javascripts %}
+{% block navigation_sidebar %}
 {% endblock %}

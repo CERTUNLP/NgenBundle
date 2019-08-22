@@ -7,23 +7,7 @@
  * with this source code in the file LICENSE.
  */
 var IncidentDecision = Frontend.extend({
-    dropDownChangeLinks: function () {
-        if (this.eventTarget.data('action') == "reactivate") {
-            this.eventTarget.hide();
-            $("[data-action='desactivate']").show();
-        } else {
-            this.eventTarget.hide();
-            $("[data-action='reactivate']").show();
-        }
-    },
-    doChangeState: function (event) {
-        if (this.eventTarget.data('action') == 'reactivate') {
-            $.publish('/cert_unlp/incident/decision/activate', [this.eventTarget.parents('tr').data('id'), $.proxy(this.stateChanged, this)]);
-        } else {
-            if (this.eventTarget.data('action') == 'desactivate') {
-                $.publish('/cert_unlp/incident/decision/desactivate', [this.eventTarget.parents('tr').data('id'), $.proxy(this.stateChanged, this)]);
-            }
-        }
-
+    getObjectBrief: function () {
+        return 'incident/decision';
     }
 });

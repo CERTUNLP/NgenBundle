@@ -31,7 +31,7 @@ interface ReporterInterface
      *
      * @return string
      */
-    public function getName();
+    public function getFirstname();
 
     /**
      * Get lastname

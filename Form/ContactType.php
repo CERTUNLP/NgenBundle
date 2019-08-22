@@ -40,11 +40,11 @@ class ContactType extends AbstractType
 
         $builder
             ->add('name', null, array(
-                'required' => false,
+                'required' => true,
                 'attr' => array('placeholder' => 'Description'),
             ))
             ->add('username', null, array(
-                'required' => false,
+                'required' => true,
                 'attr' => array('placeholder' => 'Email/Phone Number/Telegram chat'),
 
             ))
@@ -54,19 +54,20 @@ class ContactType extends AbstractType
 
             ))
             ->add('contact_case', EntityType::class, array(
+                'required' => true,
                 'class' => ContactCase::class
             ))
             ->add('network_admin', HiddenType::class, array(
-                'required' => false,
+                'required' => true,
             ))
             ->add('contact_type', ChoiceType::class, array(
+                'required' => true,
                 'choices' => array(
-                    'Mail' => "mail",
-                    'Telegram' => "telegram",
-                    'Phone' => "phone",
+                    'Mail' => 'mail',
+                    'Telegram' => 'telegram',
+                    'Phone' => 'phone',
 
                 ),
-                // *this line is important*
                 'choices_as_values' => true,
             ));
 
@@ -83,17 +84,6 @@ class ContactType extends AbstractType
             array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
         ));
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-            $admin = $event->getData();
-            $form = $event->getForm();
-            // check if the Product object is "new"
-            // If no data is passed to the form, the data is "null".
-            // This should be considered a new "Product"
-            //if ($admin) {
-            //  $form->get('contacts')->setData('1');
-            //print_r($setData($network->getId());
-            //}
-        });
     }
 
     /**

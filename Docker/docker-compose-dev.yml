@@ -12,7 +12,7 @@ volumes:
     driver: local
     #driver: rancher-nfs
     #external: true
-  ngen-bdd:
+  ngen-bdd2:
     driver: local
     #driver: rancher-nfs
     #external: true
@@ -28,7 +28,7 @@ services:
     ngen-db:
       image: mysql:5.7
       volumes:
-        - ngen-bdd:/var/lib/mysql
+        - ngen-bdd2:/var/lib/mysql
       environment:
         - MYSQL_ROOT_PASSWORD=pass
         - MYSQL_DATABASE=ngen
@@ -38,7 +38,7 @@ services:
         - "8002:3306"
       networks: ['ngen']
     ngen-app:
-      image: einar1/ngen:0.6.40-rc26
+      image: einar1/ngen:0.6.40-rc31
       networks: ['ngen']
       depends_on: ['ngen-db','ngen-elastic']
       ports:
@@ -82,7 +82,8 @@ services:
         - INTERNAL_DASHBOARD_GRAFANA=d/incidentesinternos/incidentes-internos?from=now-24h&to=now&orgId=1&theme=light&kiosk=tv
         - USER_GRAFANA=admin
         - PASS_GRAFANA=admin
-        - GRAFANA_HOST=http://ngen-grafana:3000
+        - GRAFANA_HOST=http://ngen-grafana:3000/
+
       links:
         - ngen-elastic:ngen-elastic
         - ngen-grafana:ngen-grafana

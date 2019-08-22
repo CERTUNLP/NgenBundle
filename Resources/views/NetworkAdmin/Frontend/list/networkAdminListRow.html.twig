@@ -21,37 +21,7 @@
     </td>
     <td class="align-middle">
 
-        <div class="btn-group inline pull-left dropdown action-dropdown">
-            <a class="btn btn-sm btn-primary" role="button"
-               href="{{ path('cert_unlp_ngen_network_detail_network_admin',{'slug': networkAdmin.slug}) }}">
-                {{ 'Details'|trans }}
-            </a>
-            <button class="btn btn-sm btn-primary ladda-button dropdown-toggle" data-style="slide-down" type="button"
-                    id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                 {{ 'Actions'|trans }}
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                <li role="presentation">
-                    <a role="menuitem" tabindex="-1"
-                       href="{{ path('cert_unlp_ngen_network_edit_network_admin',{'slug': networkAdmin.slug}) }}">{{ icon('edit alert-info') }}
-                        <span class="action-text"> {{ 'Edit'|trans }}</span></a>
-                </li>
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':networkAdmin , 'detail_link': path('cert_unlp_ngen_network_detail_network_admin',{ 'slug': networkAdmin.slug}),'edit_link': path('cert_unlp_ngen_network_edit_network_admin',{'slug': networkAdmin.slug})} %}
 
-                <li role="presentation">
-                    <a {% if networkAdmin.isActive %}style="display: none;"{% endif %} class="state-label"
-                       data-action="reactivate" data-state-slug="active" data-state-name="active" role="menuitem"
-                       tabindex="-1" href="#">{{ icon('repeat alert-info') }} <span
-                                class="action-text">{{ 'Reactivate'|trans }}</span></a>
-                </li>
-
-                <li role="presentation">
-                    <a {% if not networkAdmin.isActive %}style="display: none;"{% endif %} class="state-label"
-                       data-action="desactivate" data-state-slug="innactive" data-state-name="innactive" role="menuitem"
-                       tabindex="-1" href="#">{{ icon('lock alert-success') }} <span
-                                class="action-text"><{{ 'Desactivate'|trans }}/span></a>
-                </li>
-            </ul>
-        </div>
     </td>
 </tr>
