@@ -2,6 +2,8 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use DateTime;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -15,7 +17,19 @@ use JMS\Serializer\Annotation as JMS;
  */
 class IncidentPriority
 {
+
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Expose
+     */
+    protected $id;
+
+    /**
+     * @var IncidentImpact
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="incidentsPriorities")
      * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
      * @JMS\Expose
@@ -23,13 +37,19 @@ class IncidentPriority
     protected $impact;
 
     /**
+     *
+     * @var IncidentUrgency
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency", inversedBy="incidentsPriorities")
      * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
      * @JMS\Expose
      */
-
     protected $urgency;
 
+    /**
+     * @var Incident[] | Collection
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="priority"))
+     */
+    protected $incidents;
 
     /**
      * @var boolean
@@ -39,88 +59,41 @@ class IncidentPriority
      */
     private $isActive = true;
 
-
     /**
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="priority"))
-     */
-
-    protected $incidents;
-
-
-    /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="unresponse_time", type="integer")
      * @JMS\Expose
      */
     private $unresponseTime;
+
     /**
-     * @var integer
+     * @var integer|null
      * @ORM\Column(name="unresolution_time", type="integer")
      * @JMS\Expose
      */
     private $unresolutionTime;
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="code", type="integer")
      * @JMS\Expose
      */
     private $code;
-
-
     /**
-     * @return mixed
-     */
-
-    public function getIncidents()
-    {
-        return $this->incidents;
-    }
-
-    /**
-     * @param mixed $incidents
-     */
-    public function setIncidents($incidents)
-    {
-        $this->incidents = $incidents;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $slug
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-    }
-
-    /**
-     * @var string
-     * @ORM\Id
+     * @var string|null
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
      * @JMS\Expose
      */
-
     private $slug;
-
     /**
-     * @var string
+     * @var string|null
      * @ORM\Column(name="name", type="string", length=255)
      * @JMS\Expose
      */
-
     private $name;
     /**
-     * @var \DateTime
+     * @var DateTime|null
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      * @JMS\Expose
@@ -128,7 +101,7 @@ class IncidentPriority
      */
     private $createdAt;
     /**
-     * @var \DateTime
+     * @var DateTime|null
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
      * @JMS\Expose
@@ -136,253 +109,272 @@ class IncidentPriority
      */
     private $updatedAt;
     /**
-     * @var integer
+     * @var integer|null
      * @ORM\Column(name="response_time", type="integer")
      * @JMS\Expose
      */
     private $responseTime;
     /**
-     * @var integer
+     * @var integer|null
      * @ORM\Column(name="resolution_time", type="integer")
      * @JMS\Expose
      */
     private $resolutionTime;
 
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string|null $name
+     * @return IncidentPriority
+     */
+    public function setName(?string $name): IncidentPriority
+    {
+        $this->name = $name;
+        return $this;
+    }
+
     /**
      * @return int
      */
-    public function getUnresponseTime(): int
+    public function getId(): ?int
     {
-        return $this->unresponseTime;
+        return $this->id;
     }
 
     /**
-     * @param int $unresponseTime
+     * @param int $id
+     * @return IncidentPriority
      */
-    public function setUnresponseTime(int $unresponseTime): void
+    public function setId(int $id): ?IncidentPriority
     {
-        $this->unresponseTime = $unresponseTime;
+        $this->id = $id;
+        return $this;
     }
 
     /**
-     * @return int
+     * @return IncidentImpact
      */
-    public function getUnresolutionTime(): int
-    {
-        return $this->unresolutionTime;
-    }
-
-    /**
-     * @param int $unresolutionTime
-     */
-    public function setUnresolutionTime(int $unresolutionTime): void
-    {
-        $this->unresolutionTime = $unresolutionTime;
-    }
-
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param \DateTime $createdAt
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param \DateTime $updatedAt
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getImpact()
+    public function getImpact(): ?IncidentImpact
     {
         return $this->impact;
     }
 
     /**
-     * @param mixed $impact
+     * @param IncidentImpact $impact
+     * @return IncidentPriority
      */
-    public function setImpact($impact)
+    public function setImpact(IncidentImpact $impact): IncidentPriority
     {
         $this->impact = $impact;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return IncidentUrgency
      */
-    public function getUrgency()
+    public function getUrgency(): ?IncidentUrgency
     {
         return $this->urgency;
     }
 
     /**
-     * @param mixed $urgency
+     * @param IncidentUrgency $urgency
+     * @return IncidentPriority
      */
-    public function setUrgency($urgency)
+    public function setUrgency(IncidentUrgency $urgency): IncidentPriority
     {
         $this->urgency = $urgency;
-    }
-
-    /**@CertUnlpNgenBundle/Resources/public/js/incident/decision/IncidentPriority.js
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->getSlug();
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return IncidentPriority
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
         return $this;
     }
 
     /**
-     * Get responseTime
-     *
-     * @return dateinterval
+     * @return Incident[] | Collection
      */
-    public function getResponseTime()
+    public function getIncidents(): ?Collection
     {
-        return $this->responseTime;
+        return $this->incidents;
     }
 
     /**
-     * Set responseTime
-     *
-     * @param dateinterval $responseTime
-     *
+     * @param Incident[] | Collection $incidents
      * @return IncidentPriority
      */
-    public function setResponseTime($responseTime)
+    public function setIncidents(Collection $incidents): IncidentPriority
     {
-        $this->responseTime = $responseTime;
-
+        $this->incidents = $incidents;
         return $this;
     }
 
-    /**
-     * Get resolutionTime
-     *
-     * @return dateinterval
-     */
-    public function getResolutionTime()
-    {
-        return $this->resolutionTime;
-    }
-
-    /**
-     * Set resolutionTime
-     *
-     * @param dateinterval $resolutionTime
-     *
-     * @return IncidentPriority
-     */
-    public function setResolutionTime($resolutionTime)
-    {
-        $this->resolutionTime = $resolutionTime;
-
-        return $this;
-    }
-
-    /**
-     * Get code
-     *
-     * @return int
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
-
-    /**
-     * Set code
-     *
-     * @param integer $code
-     *
-     * @return IncidentPriority
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
-
-        return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->name;
-    }
     /**
      * @return bool
      */
-    public function isActive()
-    {
-        return true;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean
-     */
-    public function getIsActive(): bool
+    public function isActive(): bool
     {
         return $this->isActive;
     }
 
     /**
-     * Set isActive
-     *
-     * @param boolean $isActive
+     * @param bool $isActive
      * @return IncidentPriority
      */
     public function setIsActive(bool $isActive): IncidentPriority
     {
         $this->isActive = $isActive;
+        return $this;
+    }
 
+    /**
+     * @return int|null
+     */
+    public function getUnresponseTime(): ?int
+    {
+        return $this->unresponseTime;
+    }
+
+    /**
+     * @param int|null $unresponseTime
+     * @return IncidentPriority
+     */
+    public function setUnresponseTime(?int $unresponseTime): IncidentPriority
+    {
+        $this->unresponseTime = $unresponseTime;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getUnresolutionTime(): ?int
+    {
+        return $this->unresolutionTime;
+    }
+
+    /**
+     * @param int|null $unresolutionTime
+     * @return IncidentPriority
+     */
+    public function setUnresolutionTime(?int $unresolutionTime): IncidentPriority
+    {
+        $this->unresolutionTime = $unresolutionTime;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getCode(): ?int
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param int|null $code
+     * @return IncidentPriority
+     */
+    public function setCode(?int $code): IncidentPriority
+    {
+        $this->code = $code;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string|null $slug
+     * @return IncidentPriority
+     */
+    public function setSlug(?string $slug): IncidentPriority
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getCreatedAt(): ?DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param DateTime|null $createdAt
+     * @return IncidentPriority
+     */
+    public function setCreatedAt(?DateTime $createdAt): IncidentPriority
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getUpdatedAt(): ?DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param DateTime|null $updatedAt
+     * @return IncidentPriority
+     */
+    public function setUpdatedAt(?DateTime $updatedAt): IncidentPriority
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getResponseTime(): ?int
+    {
+        return $this->responseTime;
+    }
+
+    /**
+     * @param int|null $responseTime
+     * @return IncidentPriority
+     */
+    public function setResponseTime(?int $responseTime): IncidentPriority
+    {
+        $this->responseTime = $responseTime;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getResolutionTime(): ?int
+    {
+        return $this->resolutionTime;
+    }
+
+    /**
+     * @param int|null $resolutionTime
+     * @return IncidentPriority
+     */
+    public function setResolutionTime(?int $resolutionTime): IncidentPriority
+    {
+        $this->resolutionTime = $resolutionTime;
         return $this;
     }
 

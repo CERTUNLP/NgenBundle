@@ -17,7 +17,7 @@ var IncidentPriorityForm = Form.extend({
         return this.getIncidentPriorityId();
     },
     setIncidentPriorityId: function () {
-        this.incident_priority_id = $('#impact').val() + '/' + $('#urgency').val();
+        this.incident_priority_id = $('#id').val();
     },
     getIncidentPriorityId: function () {
         return this.incident_priority_id;
