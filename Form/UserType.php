@@ -19,8 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class UserType extends AbstractType
 {
@@ -33,10 +33,9 @@ class UserType extends AbstractType
     {
         $choices = $this->roleChoices();
 
-        $builder->add('name')
+        $builder->add('firstname')
             ->add('lastname')
             ->add('plainPassword', RepeatedType::class, array(
-                'required' => false,
                 'type' => PasswordType::class,
                 'options' => array('translation_domain' => 'FOSUserBundle'),
                 'first_options' => array('label' => 'form.password'),
@@ -58,7 +57,7 @@ class UserType extends AbstractType
                     'allow_add' => true,
                     'allow_delete' => true,
                     'prototype' => true,
-                    'required' => false,
+                    'required' => true,
                     'by_reference' => false,
                     'delete_empty' => true,
                     'attr' => array(
@@ -101,6 +100,7 @@ class UserType extends AbstractType
     {
         return '';
     }
+
     public function onPreSetData(FormEvent $event)
     {
 
@@ -112,16 +112,25 @@ class UserType extends AbstractType
          * @var Invoices
          */
         $data = $event->getData();
-   
+
         // disable field if it has been populated with a client already
-        if ( $data)
-            $form->add('username', null, array(
-                'required' => true,
-                'read_only'=>"true",
+        if ($data) {
+            $form
+                ->add('username', null, array(
+                    'required' => true,
+                    'read_only' => 'true',
+                ))
+                ->add('plainPassword', RepeatedType::class, array(
+                    'required' => false,
+                    'type' => PasswordType::class,
+                    'options' => array('translation_domain' => 'FOSUserBundle'),
+                    'first_options' => array('label' => 'form.password'),
+                    'second_options' => array('label' => 'form.password_confirmation'),
+                    'invalid_message' => 'fos_user.password.mismatch',
                 ));
+        }
 
     }
-
 
 
 }

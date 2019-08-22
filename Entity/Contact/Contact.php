@@ -69,6 +69,7 @@ class Contact
      * @JMS\Groups({"api"})
      */
     private $contactCase;
+
     /**
      * @var string|null
      *
