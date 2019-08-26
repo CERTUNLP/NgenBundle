@@ -6,7 +6,7 @@
 
 ### Se requiere:
 
-* Docker y Docker compose 
+* Docker y docker-compose, instálelos de acuerdo a su sistema operativo.
 
 ### Pasos:
 * Clonar este repo y posicionarse dentro de él:
