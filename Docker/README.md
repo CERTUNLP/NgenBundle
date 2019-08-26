@@ -1,38 +1,51 @@
-### Se requiere:
-* Docker:
-  * Para [Ubuntu](https://docs.docker.com/engine/installation/linux/ubuntulinux/).
-  * Para [Debian](https://docs.docker.com/engine/installation/linux/debian/).
-* Docker compose:
-  * [Link](https://docs.docker.com/compose/install/) de descarga.
+### ¿Cómo se distribuye?
 
+* Usted puede instalar NGEN desde composer directamente, pero es un mecanismo tedioso y complicado, por lo tanto **NO RECOMENDADO** salvo que por algún motivo en particular necesite hacerlo. La URL del paquete es https://packagist.org/packages/certunlp/ngen-bundle
+
+* Lo más simple y **RECOMENDADO** es utilizar la imagen en Docker de la app y de todas sus dependencias. 
+
+### Se requiere:
+
+* Docker y docker-compose, instálelos de acuerdo a su sistema operativo.
 
 ### Pasos:
 * Clonar este repo y posicionarse dentro de él:
   * `git clone https://github.com/CERTUNLP/NgenBundle.git && cd NgenBundle/Docker/`
 
-* Ejecutar docker-compose para crear nuestros containers (puede tardar un largo rato):
-  * `docker-compose build`
-
 * Para correr los contenedores y sus servicios:
-  * `docker-compose up -d ngen_app`
+  * `docker-compose up` 
+  * `docker-compose up -d` (Background)
 
-* Si hubo problemas con el comando anterior (ERROR: Encountered errors while bringing up the project.), eliminar los contenedores y volver a ejecutar el comando anterior.
-
-* Si no se ven los estilos de la aplicación, detener los contenedores y volver a levantarlo.
-
-* Necesitaremos datos de pruebas, ejecutar los comandos por única vez luego de crear los contenedores:
-  * `docker exec ngen_app php ngen_basic/app/console d:s:c --no-interaction`
-  * `docker exec ngen_app php ngen_basic/app/console d:f:l --no-interaction`
-
-* Ya tenemos nuestra imagen y contenedores corriendo con datos de prueba...
-
-* Acceder desde el navegador de nuestra pc a http://localhost/app_dev.php/incidents/internals o http://localhost/incidents/internals.
+* Acceder desde el navegador de nuestra pc a http://localhost:8000
+ * Usuario/password: demo/demo
 
 * Para detener los contenedor, ejecutar:
-  * `docker-compose stop`
+  * `docker-compose stop` o `Ctrl+c` en la misma terminal donde se levanto
 
-* Para eliminar los contenedor:
-  * `docker-compose rm -f`
+### Desarrolladores:
 
-* Si se quiere acceder a alguno de los contenedores y ejecutar comandos dentro de él:
-  * `docker exec -it <nombre-container> bash`
+* Alternativamente puede utilizar montaje local del código en lugar de la imagen en si, para ello debe utilizar el file docker-compose-dev.yml
+  * `docker-compose -f docker-compose-dev.yml up`
+* Una vez levante el soft ya puede modificar directamente lo que esta en la carpeta que clono. Tenga en cuenta a la hora de problar cambios utilizar la aplicación con del debug habilitado.
+  *  http://localhost:8000/app_dev.php
+
+### Producción:
+
+* Para poner en producción el sistema es recomendable verificar las variables del docker-compose.yml y ajustar aquellas que considere necesarias
+
+### Componentes:
+
+* NGEN: Apache + php + symfony
+  * URL: http://localhost:8000
+ 
+* BDD: MySQL
+  * mysql -p 8002
+
+* ElasticSearch:
+  * port 9002
+
+* Grafana (via proxy nginx): 
+  * https://localhost/grafana
+
+* MailCatcher:
+  * http://localhost:8001
