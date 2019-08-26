@@ -2,7 +2,7 @@
 
 * Usted puede instalar NGEN desde composer directamente, pero es un mecanismo tedioso y complicado, por lo tanto **NO RECOMENDADO** salvo que por algún motivo en particular necesite hacerlo. La URL del paquete es https://packagist.org/packages/certunlp/ngen-bundle
 
-* Lo mas simple es utilizar la imagen en Docker de la app y de todas sus dependencias. 
+* Lo más simple y **RECOMENDADO** es utilizar la imagen en Docker de la app y de todas sus dependencias. 
 
 ### Se requiere:
 
