@@ -36,16 +36,16 @@
 ### Componentes:
 
 * NGEN: Apache + php + symfony
- * URL: http://localhost:8000
+  * URL: http://localhost:8000
  
 * BDD: MySQL
- * mysql -p 8002
+  * mysql -p 8002
 
 * ElasticSearch:
- * port 9002
+  * port 9002
 
 * Grafana (via proxy nginx): 
- * https://localhost/grafana
+  * https://localhost/grafana
 
 * MailCatcher:
- * http://localhost:8001
+  * http://localhost:8001
