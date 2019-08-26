@@ -24,9 +24,11 @@
 
 ### Desarrolladores:
 
-* Alternativamente puede utilizar montaje local del codigo en lugar de la imagen en si, para ello debe utilizar
+* Alternativamente puede utilizar montaje local del código en lugar de la imagen en si, para ello debe utilizar el file docker-compose-dev.yml
   * `docker-compose -f docker-compose-dev.yml up`
-  
+* Una vez levante el soft ya puede modificar directamente lo que esta en la carpeta que clono. Tenga en cuenta a la hora de problar cambios utilizar la aplicación con del debug habilitado.
+  *  http://localhost:8000/app_dev.php
+
 ### Producción:
 
 * Para poner en producción el sistema es recomendable verificar las variables del docker-compose.yml y ajustar aquellas que considere necesarias
