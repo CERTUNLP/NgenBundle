@@ -1,10 +1,12 @@
 subject_mail_incidente: 'Incident of type "%s" in %s'
 subject_mail_renotificacion: Renotification
 firma_ngen: 'This report was generated with <a href="https://github.com/CERTUNLP/NgenBundle">https://github.com/CERTUNLP/NgenBundle</a>'
-thanks: 'We would appreciate if you notify us when you resolve the incident. Do not hesitate to ask us about any question.'
+thanks: 'Please do not hesitate to contact us if you need further assistance. Please remember to reply with the same subject and ID for better tracking of the incident.'
+URL: https://www.cirt.gov.jm
+
 farewell: Sincerely
-greeting: Estimated
-incident_notes_title: 'Incedent notes'
+greeting: Dear
+incident_notes_title: 'Incident notes'
 derivated_problem_title: 'Related issues'
 verification_title: 'How to verify the issue'
 recomendations_title: Recommendations
