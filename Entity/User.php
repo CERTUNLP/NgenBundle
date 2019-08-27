@@ -24,8 +24,8 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Rollerworks\Bundle\PasswordStrengthBundle\Validator\Constraints as RollerworksPassword;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
 
 /**
  * User
@@ -54,6 +54,11 @@ class User extends BaseUser implements ReporterInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @RollerworksPassword\PasswordStrength(minLength=7, minStrength=3)
+     */
+    protected $plainPassword;
 
     /**
      * @ORM\Column(name="api_key", type="string", length=255, nullable=true)
