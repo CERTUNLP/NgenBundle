@@ -18,10 +18,9 @@ class Version20190822165943 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE incident_priority DROP PRIMARY KEY');
         $this->addSql('ALTER TABLE incident_priority ADD id INT NOT NULL');
-        $this->addSql('ALTER TABLE incident_priority ADD PRIMARY KEY (id)');
-        $this->addSql('ALTER TABLE incident_priority CHANGE id id INT AUTO_INCREMENT NOT NULL');
+        $this->addSql('ALTER TABLE incident_priority CHANGE id id INT AUTO_INCREMENT NOT NULL, ADD PRIMARY KEY (id)');
+        $this->addSql('ALTER TABLE incident_priority DROP PRIMARY KEY,ADD PRIMARY KEY (id)');
         $this->addSql('ALTER TABLE incident_decision RENAME INDEX idx_7c69da3b7dc9d7a5 TO IDX_7C69DA3B3AA33DF6');
         $this->addSql('ALTER TABLE incident_state DROP FOREIGN KEY FK_F8A77091B8037C6C');
     }
