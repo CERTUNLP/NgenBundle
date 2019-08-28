@@ -1,5 +1,6 @@
 {
   "name": "certunlp/ngen-bundle",
+  "license": "GPL-3.0",
   "type": "symfony-bundle",
   "description": "This Bundle provides a incident management for certs",
   "keywords": [
@@ -42,7 +43,7 @@
     "knplabs/knp-menu-bundle": "~2.0",
     "knplabs/knp-paginator-bundle": "^2.8",
     "twbs/bootstrap": "~4.3.1",
-    "fortawesome/font-awesome":"~5.9.0",
+    "fortawesome/font-awesome": "~5.9.0",
     "kbsali/redmine-api": "~1.5",
     "nelmio/api-doc-bundle": "2.13.3",
     "fabpot/goutte": "~2.0",
@@ -57,7 +58,9 @@
     "tetranz/select2entity-bundle": "^2.9",
     "ext-json": "*",
     "ext-curl": "*",
-    "secit-pl/imap-bundle":"*"
+    "secit-pl/imap-bundle": "*",
+    "rollerworks/password-strength-bundle": "^1.7"
+
   },
   "require-dev": {
     "symfony/assetic-bundle": "^2.7",
