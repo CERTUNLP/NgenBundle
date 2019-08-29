@@ -19,8 +19,13 @@ class Version20190822195531 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE incident_detected DROP FOREIGN KEY FK_F997633162A6DC27');
+
+        $this->addSql('ALTER TABLE incident_detected ADD priority_id INT DEFAULT NULL');
+        $this->addSql('UPDATE incident_detected SET incident_detected.priority_id = (select incident_priority.id from incident_priority where incident_priority.slug = incident_detected.priority)');
+
         $this->addSql('DROP INDEX IDX_F997633162A6DC27 ON incident_detected');
-        $this->addSql('ALTER TABLE incident_detected ADD priority_id INT DEFAULT NULL, DROP priority');
+        $this->addSql('ALTER TABLE incident_detected DROP priority');
+
         $this->addSql('ALTER TABLE incident_detected ADD CONSTRAINT FK_F9976331497B19F9 FOREIGN KEY (priority_id) REFERENCES incident_priority (id)');
         $this->addSql('CREATE INDEX IDX_F9976331497B19F9 ON incident_detected (priority_id)');
     }

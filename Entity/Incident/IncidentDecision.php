@@ -85,7 +85,6 @@ class IncidentDecision
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose()
      */
-
     protected $state;
 
     /**
