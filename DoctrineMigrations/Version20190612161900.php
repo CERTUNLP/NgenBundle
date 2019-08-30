@@ -23,14 +23,8 @@ class Version20190612161900 extends AbstractMigration
         $this->addSql('ALTER TABLE incident_state_edge ADD CONSTRAINT FK_AF282D11CB9A3939 FOREIGN KEY (newState) REFERENCES incident_state (slug)');
         $this->addSql('ALTER TABLE incident_state_action ADD can_open TINYINT(1) NOT NULL, ADD can_close TINYINT(1) NOT NULL, ADD can_re_open TINYINT(1) NOT NULL, ADD is_active TINYINT(1) NOT NULL, ADD created_at DATETIME NOT NULL DEFAULT NOW(), ADD updated_at DATETIME NOT NULL DEFAULT NOW(), ADD can_edit TINYINT(1) NOT NULL, ADD can_enrich TINYINT(1) NOT NULL, ADD can_add_history TINYINT(1) NOT NULL, ADD can_comunicate TINYINT(1) NOT NULL, DROP open, DROP close, DROP re_open');
         $this->addSql('ALTER TABLE incident_state DROP FOREIGN KEY FK_F8A770917DB76696');
-        $this->addSql('DROP INDEX IDX_F8A770917DB76696 ON incident_state');
-        $this->addSql('ALTER TABLE incident_state ADD old_edges_id INT DEFAULT NULL, ADD new_edges_id INT DEFAULT NULL, CHANGE incident_state_action incident_state_behavior VARCHAR(45) DEFAULT NULL');
+        $this->addSql('ALTER TABLE incident_state  CHANGE incident_state_action incident_state_behavior VARCHAR(45) DEFAULT NULL');
         $this->addSql('ALTER TABLE incident_state ADD CONSTRAINT FK_F8A770911F1854A9 FOREIGN KEY (incident_state_behavior) REFERENCES incident_state_action (slug)');
-        $this->addSql('ALTER TABLE incident_state ADD CONSTRAINT FK_F8A770914D6109E2 FOREIGN KEY (old_edges_id) REFERENCES incident_state_edge (id)');
-        $this->addSql('ALTER TABLE incident_state ADD CONSTRAINT FK_F8A77091611041E3 FOREIGN KEY (new_edges_id) REFERENCES incident_state_edge (id)');
-        $this->addSql('CREATE INDEX IDX_F8A770911F1854A9 ON incident_state (incident_state_behavior)');
-        $this->addSql('CREATE INDEX IDX_F8A770914D6109E2 ON incident_state (old_edges_id)');
-        $this->addSql('CREATE INDEX IDX_F8A77091611041E3 ON incident_state (new_edges_id)');
     }
 
     /**
