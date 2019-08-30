@@ -28,19 +28,15 @@ class Version20190621144030 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_AF282D11BCCDAF19 ON incident_state_edge (mail_admin)');
         $this->addSql('CREATE INDEX IDX_AF282D11AB0121BA ON incident_state_edge (mail_reporter)');
         $this->addSql('ALTER TABLE incident_state_behavior  ADD is_new TINYINT(1) NOT NULL, change can_open is_open TINYINT(1) NOT NULL, CHANGE can_close is_closed TINYINT(1) NOT NULL, CHANGE can_re_open is_re_open TINYINT(1) NOT NULL, CHANGE created_at created_at DATETIME NOT NULL, CHANGE updated_at updated_at DATETIME NOT NULL');
-        $this->addSql('ALTER TABLE incident_state DROP FOREIGN KEY FK_F8A770914D6109E2');
-        $this->addSql('ALTER TABLE incident_state DROP FOREIGN KEY FK_F8A77091611041E3');
         $this->addSql('ALTER TABLE incident_state DROP FOREIGN KEY FK_F8A77091699B3576');
         $this->addSql('ALTER TABLE incident_state DROP FOREIGN KEY FK_F8A77091AB0121BA');
         $this->addSql('ALTER TABLE incident_state DROP FOREIGN KEY FK_F8A77091BCCDAF19');
         $this->addSql('ALTER TABLE incident_state DROP FOREIGN KEY FK_F8A77091D64D0DD2');
-        $this->addSql('DROP INDEX IDX_F8A77091611041E3 ON incident_state');
         $this->addSql('DROP INDEX IDX_F8A77091D64D0DD2 ON incident_state');
         $this->addSql('DROP INDEX IDX_F8A77091BCCDAF19 ON incident_state');
-        $this->addSql('DROP INDEX IDX_F8A770914D6109E2 ON incident_state');
         $this->addSql('DROP INDEX IDX_F8A77091699B3576 ON incident_state');
         $this->addSql('DROP INDEX IDX_F8A77091AB0121BA ON incident_state');
-        $this->addSql('ALTER TABLE incident_state DROP mail_admin, DROP mail_reporter, DROP mail_assigned, DROP mail_team, DROP old_edges_id, DROP new_edges_id');
+        $this->addSql('ALTER TABLE incident_state DROP mail_admin, DROP mail_reporter, DROP mail_assigned, DROP mail_team');
     }
 
     /**
