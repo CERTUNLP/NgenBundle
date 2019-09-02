@@ -26,6 +26,10 @@ class Version20190730172724 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_CCFC5A1D17EA0C41 ON incident_change_state');
         $this->addSql('ALTER TABLE incident_change_state ADD state_edge_id INT DEFAULT NULL, DROP action_applied');
         //TODO: aca buscar los edges para cada change state
+
+        $this->addSql('UPDATE incident_change_state SET incident_change_state.state_edge_id = (select state_edge.id from state_edge where state_edge.newState = incident_change_state.newState and  state_edge.oldState = incident_change_state.oldState )');
+        $this->addSql('UPDATE incident_change_state SET incident_change_state.state_edge_id = (select state_edge.id from state_edge where state_edge.newState = incident_change_state.newState and  state_edge.oldState = "initial" and  incident_change_state.oldState is null ) where incident_change_state.state_edge_id is null');
+
         $this->addSql('ALTER TABLE incident_change_state DROP newState, DROP oldState');
         $this->addSql('ALTER TABLE incident_change_state ADD CONSTRAINT FK_CCFC5A1D2F0D3B98 FOREIGN KEY (state_edge_id) REFERENCES state_edge (id)');
         $this->addSql('CREATE INDEX IDX_CCFC5A1D2F0D3B98 ON incident_change_state (state_edge_id)');
