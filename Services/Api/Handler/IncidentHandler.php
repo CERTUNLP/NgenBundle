@@ -247,7 +247,7 @@ class IncidentHandler extends Handler
     {
         if ($incident->getAddress()) {
             $host = $incident->getOrigin();
-            $host_new = $this->getHostHandler()->get(['address' => $incident->getAddress()]) ?: $this->getHostHandler()->post(['address' => $incident->getAddress()]);
+            $host_new = $this->getHostHandler()->getRepository()->findOneByAddress($incident->getAddress()) ?: $this->getHostHandler()->post(['address' => $incident->getAddress()]);
             if ($host_new) {
                 if ($host) {
                     if (!$host->equals($host_new) && $incident->isLive()) {
