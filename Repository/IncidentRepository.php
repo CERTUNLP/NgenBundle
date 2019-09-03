@@ -162,7 +162,7 @@ class IncidentRepository extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    public function addWhereCriteria(array $criteria, QueryBuilder $qb)
+    public function addWhereCriteria(array $criteria, QueryBuilder $qb): QueryBuilder
     {
 
         foreach ($criteria as $column => $value) {
@@ -193,7 +193,7 @@ class IncidentRepository extends EntityRepository
     }
 
 
-    public function findAllUnattended()
+    public function findAllUnattended(): array
     {
         return $this->queryAllUnattended()->getQuery()->getResult();
     }
