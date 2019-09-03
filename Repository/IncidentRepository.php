@@ -153,7 +153,7 @@ class IncidentRepository extends EntityRepository
      * @return Incident
      * @throws NonUniqueResultException
      */
-    public function findOneLiveBy(array $criteria): Incident
+    public function findOneLiveBy(array $criteria): ?Incident
     {
         $qb = $this->queryAllLive();
 
