@@ -107,24 +107,6 @@ class IncidentTlp implements Translatable
     /**
      * @return string
      */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     * @return IncidentTlp
-     */
-    public function setName(string $name): IncidentTlp
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getRgb(): string
     {
         return $this->rgb;
@@ -232,7 +214,25 @@ class IncidentTlp implements Translatable
 
     public function __toString()
     {
-        return strtoupper($this->slug);
+        return $this->getName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return IncidentTlp
+     */
+    public function setName(string $name): IncidentTlp
+    {
+        $this->name = $name;
+        return $this;
     }
 
     /**
