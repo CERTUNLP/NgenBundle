@@ -18,6 +18,7 @@ use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Repository\IncidentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use Gedmo\Sluggable\Util as Sluggable;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -40,24 +41,6 @@ class IncidentHandler extends Handler
         $this->decision_handler = $decision_handler;
         $this->incidentStateHandler = $incidentStateHandler;
         $this->context = $context;
-    }
-
-    /**
-     * @return IncidentDecisionHandler
-     */
-    public function getDecisionHandler(): IncidentDecisionHandler
-    {
-        return $this->decision_handler;
-    }
-
-    /**
-     * @param IncidentDecisionHandler $decision_handler
-     * @return IncidentHandler
-     */
-    public function setDecisionHandler(IncidentDecisionHandler $decision_handler): IncidentHandler
-    {
-        $this->decision_handler = $decision_handler;
-        return $this;
     }
 
     /**
@@ -206,22 +189,8 @@ class IncidentHandler extends Handler
     public function checkIfExists($incident, $method)
     {
         $this->updateIncidentData($incident);
-        $incidentDB = null;
-        if ($incident->isDefined()) {
-            $incidentDB = $this->getRepository()->findOneLiveBy(['origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
-        }
-        if ($incidentDB && $method === 'POST') {
-            $incidentDB->updateVariables($incident);
-            $incidentDB->addIncidentDetected($incident);
-            $incident = $incidentDB;
-        } elseif ($incidentDB && $method === 'PATCH') {
-            $incidentDB->patchStateAndReporter($this->getUser());
-//             $incidentDB->addIncidentDetected($incident);
-            $incident = $incidentDB;
-        } else {
-            $incident->updateVariables($incident);
-            $incident->addIncidentDetected($incident);
-
+        if ($method === 'POST') {
+            $incident = $this->addIncidentDetected($incident);
         }
         return $incident;
     }
@@ -302,9 +271,31 @@ class IncidentHandler extends Handler
 
     }
 
+    /**
+     * @param Incident $incident
+     * @return Incident|null
+     */
     public function decisionUpdate(Incident $incident): ?Incident
     {
-        return $this->decision_handler->getByIncident($incident);
+        return $this->getDecisionHandler()->getByIncident($incident)->doDecision($incident);
+    }
+
+    /**
+     * @return IncidentDecisionHandler
+     */
+    public function getDecisionHandler(): IncidentDecisionHandler
+    {
+        return $this->decision_handler;
+    }
+
+    /**
+     * @param IncidentDecisionHandler $decision_handler
+     * @return IncidentHandler
+     */
+    public function setDecisionHandler(IncidentDecisionHandler $decision_handler): IncidentHandler
+    {
+        $this->decision_handler = $decision_handler;
+        return $this;
     }
 
     public function timestampsUpdate(Incident $incident): void
@@ -335,6 +326,32 @@ class IncidentHandler extends Handler
         $incident->setPriority($priority);
     }
 
+    /**
+     * @param Incident $incident
+     * @return Incident
+     * @throws NonUniqueResultException
+     */
+    public function addIncidentDetected(Incident $incident): Incident
+    {
+        $incidentDB = null;
+        if ($incident->isDefined()) {
+            $incidentDB = $this->getRepository()->findOneLiveBy(['origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
+        }
+
+        if ($incidentDB) {
+            $incidentDB->updateVariables($incident);
+            $incidentDB->addIncidentDetected($incident);
+            return $incidentDB;
+        }
+        $incident->addIncidentDetected($incident);
+        return $incident;
+    }
+
+    /**
+     * @param Incident $incident
+     * @param array $parameters
+     * @return object|void
+     */
     protected function prepareToDeletion($incident, array $parameters)
     {
         $incident->close();
