@@ -111,6 +111,7 @@ class IncidentState implements Translatable
     /**
      * @var StateEdge[]|Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge",mappedBy="oldState",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OrderBy({"newState" = "ASC"})
      */
     private $edges;
 
@@ -199,6 +200,37 @@ class IncidentState implements Translatable
     /**
      * @return bool
      */
+    public function isInitial(): bool
+    {
+        return $this->getSlug() === 'initial';
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return IncidentState
+     */
+    public function setSlug(string $slug): IncidentState
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
     public function isDead(): bool
     {
         return $this->getBehavior()->isDead();
@@ -268,29 +300,6 @@ class IncidentState implements Translatable
     public function getId(): string
     {
         return $this->getSlug();
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return IncidentState
-     */
-    public function setSlug(string $slug): IncidentState
-    {
-        $this->slug = $slug;
-
-        return $this;
     }
 
     /**

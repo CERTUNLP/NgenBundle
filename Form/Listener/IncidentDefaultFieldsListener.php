@@ -10,8 +10,10 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Repository\IncidentStateRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -52,7 +54,7 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
     public function onPostSetData(FormEvent $event)
     {
         /**
-         * @var Incident
+         * @var Incident $incident
          */
         $incident = $event->getData();
 
@@ -84,10 +86,6 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
                     'empty_value' => 'Choose an incident type',
                     'required' => true,
                     'disabled' => 'disabled',
-                    'description' => '(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|'
-                        . 'dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|'
-                        . 'open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|'
-                        . 'open_ssdp|phishing|poodle|scan|shellshock|spam)',
                     'query_builder' => static function (EntityRepository $er) {
                         return $er->createQueryBuilder('it')
                             ->where('it.isActive = TRUE');
@@ -102,5 +100,17 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
 
             }
         }
+        $formOptions = array(
+            'class' => IncidentState::class,
+            'query_builder' => static function (IncidentStateRepository $repository) use ($incident) {
+                // call a method on your repository that returns the query builder
+                // return $userRepository->createFriendsQueryBuilder($user);
+                return $repository->queryNewStates($incident ? $incident->getState()->getSlug() : 'initial');
+            },
+        );
+
+        // create the field, this is similar the $builder->add()
+        // field name, field type, field options
+        $form->add('state', EntityType::class, $formOptions);
     }
 }
