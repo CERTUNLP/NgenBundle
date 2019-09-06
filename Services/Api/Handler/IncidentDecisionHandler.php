@@ -21,7 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class IncidentDecisionHandler extends Handler
 {
-    public function getByIncident(Incident $incident): ?Incident
+    public function getByIncident(Incident $incident): IncidentDecision
     {
         $decisions = new ArrayCollection($this->all(['type' => $incident->getType() ? $incident->getType()->getSlug() : 'undefined', 'feed' => $incident->getFeed() ? $incident->getFeed()->getSlug() : 'undefined', 'get_undefined' => true]));
 
@@ -29,13 +29,17 @@ class IncidentDecisionHandler extends Handler
 
         foreach ($ordered_decisions as $decision) {
             if ($decision->getNetwork() === '' || ($incident->getNetwork() && $decision->getNetwork() && $incident->getNetwork()->inRange($decision->getNetwork()))) {
-                return $decision->doDecision($incident);
+                return $decision;
             }
         }
 
-        return $decisions->last()->doDecision($incident);
+        return $decisions->last();
     }
 
+    /**
+     * @param ArrayCollection $decisions
+     * @return ArrayIterator
+     */
     public function orderDecisionsByNetworkMask(ArrayCollection $decisions): ArrayIterator
     {
         $iterator = $decisions->getIterator();

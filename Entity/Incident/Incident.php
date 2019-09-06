@@ -40,8 +40,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Incident
 {
-
+    /**
+     * @var string
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
     protected $temporalNotes;
+    /**
+     * @var string
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
     protected $temporalEvidenceFile;
     /**
      * @var DateTime
@@ -294,35 +303,39 @@ class Incident
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTemporalNotes()
+    public function getTemporalNotes(): ?string
     {
         return $this->temporalNotes;
     }
 
     /**
-     * @param mixed $temporalNotes
+     * @param string $temporalNotes
+     * @return Incident
      */
-    public function setTemporalNotes($temporalNotes): void
+    public function setTemporalNotes(string $temporalNotes): self
     {
         $this->temporalNotes = $temporalNotes;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTemporalEvidenceFile()
+    public function getTemporalEvidenceFile(): ?string
     {
         return $this->temporalEvidenceFile;
     }
 
     /**
-     * @param mixed $temporalEvidenceFile
+     * @param string $temporalEvidenceFile
+     * @return Incident
      */
-    public function setTemporalEvidenceFile($temporalEvidenceFile): void
+    public function setTemporalEvidenceFile(string $temporalEvidenceFile): self
     {
         $this->temporalEvidenceFile = $temporalEvidenceFile;
+        return $this;
     }
 
     /**
@@ -387,22 +400,6 @@ class Incident
     public function setUnsolvedState(IncidentState $unsolvedState = null): void
     {
         $this->unsolvedState = $unsolvedState;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isDiscarded(): bool
-    {
-        return $this->isDiscarded;
-    }
-
-    /**
-     * @param bool $isDiscarded
-     */
-    public function setIsDiscarded(bool $isDiscarded): void
-    {
-        $this->isDiscarded = $isDiscarded;
     }
 
     /**
@@ -1116,7 +1113,7 @@ class Incident
 
     public function statusToString(): string
     {
-        $this->getBehavior()->getName();
+        return $this->getBehavior()->getName();
     }
 
     /**
@@ -1374,15 +1371,14 @@ class Incident
     }
 
     /**
-     * @param Incident $incidentDetected
+     * @param Incident $incident
      * @return Incident
-     * @throws Exception
      */
-    public function updateVariables(Incident $incidentDetected): Incident
+    public function updateVariables(Incident $incident): Incident
     {
-        $this->setStateAndReporter($incidentDetected->getState(), $incidentDetected->getReporter());
-        $this->updateTlp($incidentDetected);
-        $this->updatePriority($incidentDetected);
+        $this->setStateAndReporter($incident->getState(), $incident->getReporter());
+        $this->updateTlp($incident);
+        $this->updatePriority($incident);
 
         return $this;
 
@@ -1393,7 +1389,6 @@ class Incident
      * @param IncidentState $state
      * @param User $reporter
      * @return Incident
-     * @throws Exception
      */
     public function setStateAndReporter(IncidentState $state, User $reporter): Incident
     {
