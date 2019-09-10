@@ -6,20 +6,29 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
-{% set atrasado1= incident.priority.responsetime-incident.responseMinutes %}
 
-{% if (atrasado1 > 0) %}
-    {% if  incident.isNew %}
-        {{ label_warning('Waiting for response '|trans ~ atrasado1 ~ ' minutes left'|trans) }}
+
+{% if incident.isAttended %}
+    {% if (incident.responseDelayedMinutes > 0) %}
+        <i class="fa fa-phone" style="color:green"
+           title="{{ 'Answered'|trans }} ({{ incident.responseDelayedDate.d?  incident.responseDelayedDate| date("%ddays %hmin %isec"): incident.responseDelayedDate | date("%hmin %isec") }} {{ ' left'|trans }})"></i>
+        {{ label_success('Answered '|trans ~ (incident.responseDelayedDate.d?  incident.responseDelayedDate| date("%ddays %hmin %isec"): incident.responseDelayedDate | date("%hmin %isec")) ~ ' left'|trans) }}
     {% else %}
-        {{ label_success('Response on time '|trans ~ atrasado1 ~ ' minutes left'|trans) }}
+        <i class="fa fa-phone" style="color:lightblue"
+           title="{{ 'Answered'|trans }}({{ incident.responseDelayedDate.d?  incident.responseDelayedDate| date("%ddays %hmin %isec"): incident.responseDelayedDate | date("%hmin %isec") }}{{ ' late'|trans }})"></i>
+        {{ label_info('Answered '|trans ~ (incident.responseDelayedDate.d?  incident.responseDelayedDate| date("%ddays %hmin %isec"): incident.responseDelayedDate | date("%hmin %isec")) ~ ' late'|trans) }}
+
     {% endif %}
 {% else %}
-    {% if incident.isNew %}
-        {{ label_danger('Waiting for response '|trans ~ (atrasado1 * -1) ~ ' minutes delayed'|trans) }}
+    {% if (incident.responseDelayedMinutes > 0) %}
+        <i class="fa fa-phone-slash" style="color:#f0ad4e"
+           title="{{ 'Unanswered '|trans }}({{ incident.responseDelayedDate.d?  incident.responseDelayedDate| date("%ddays %hmin %isec"): incident.responseDelayedDate | date("%hmin %isec") }} {{ ' left'|trans }})"></i>
+        {{ label_warning('Unanswered '|trans ~( incident.responseDelayedDate.d?  incident.responseDelayedDate| date("%ddays %hmin %isec"): incident.responseDelayedDate | date("%hmin %isec") )~ ' left'|trans) }}
+        {{ incident.responseDelayedMinutes }}
+
     {% else %}
-        {{ label_danger('Response delayed for '|trans ~ (atrasado1 * -1) ~ ' minutes '|trans) }}
+        <i class="fa fa-phone-slash" style="color:red"
+           title="{{ 'Unanswered'|trans }}({{ (incident.responseDelayedDate.d?  incident.responseDelayedDate| date("%ddays %hmin %isec"): incident.responseDelayedDate | date("%hmin %isec") )}}{{ ' late'|trans }})"></i>
+        {{ label_danger('Unanswered '|trans ~ (incident.responseDelayedDate.d?  incident.responseDelayedDate| date("%ddays %hmin %isec"): incident.responseDelayedDate | date("%hmin %isec")) ~ ' late'|trans) }}
     {% endif %}
-
 {% endif %}
-

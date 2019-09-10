@@ -93,7 +93,7 @@
                                     {{ 'Problem'|trans }}
                                 </td>
                                 <td class="">
-                                    {{ object.problem|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                    {{ object.problem|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
                                 </td>
                             </tr>
                             <tr>
@@ -101,7 +101,7 @@
                                     {{ 'Derivated problem'|trans }}
                                 </td>
                                 <td class="">
-                                    {{ object.derivatedProblem|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                    {{ object.derivatedProblem|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
                                 </td>
                             </tr>
 
@@ -110,7 +110,7 @@
                                     {{ 'Verification'|trans }}
                                 </td>
                                 <td class="">
-                                    {{ object.verification|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                    {{ object.verification|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
                                 </td>
                             </tr>
 
@@ -119,7 +119,7 @@
                                     {{ 'Recomendations'|trans }}
                                 </td>
                                 <td class="">
-                                    {{ object.recomendations|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                    {{ object.recomendations|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
                                 </td>
                             </tr>
 
@@ -128,7 +128,7 @@
                                     {{ 'More information'|trans }}
                                 </td>
                                 <td class="">
-                                    {{ object.moreInformation|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                    {{ object.moreInformation|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
                                 </td>
                             </tr>
                         </table>

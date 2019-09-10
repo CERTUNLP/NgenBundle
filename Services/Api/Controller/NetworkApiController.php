@@ -25,6 +25,6 @@ class NetworkApiController extends ApiController
      */
     public function findObjectBy($params)
     {
-        return $this->getCustomHandler()->get(['address' => $params['address']]);
+        return $this->getCustomHandler()->getRepository()->findOneByAddress($params['address']);
     }
 }

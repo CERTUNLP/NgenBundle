@@ -14,27 +14,27 @@
     <td class="align-middle">
         {{ incidentState.description | default('No description')| trans }}
     </td>
-    <td id="state_label_holder" class="align-middle">
-        <div>
-            {{ incidentState.mailReporter |trans }}
-        </div>
-    </td>
-    <td id="state_label_holder" class="align-middle">
-        <div>
-            {{ incidentState.mailAssigned |trans }}
-        </div>
-    </td>
-    <td id="state_label_holder" class="align-middle">
-        <div>
-            {{ incidentState.mailAdmin |trans }}
-        </div>
-    </td>
-    <td id="state_label_holder" class="align-middle">
-        <div>
-            {{ incidentState.mailTeam |trans }}
+{#    <td id="state_label_holder" class="align-middle">#}
+{#        <div>#}
+{#            {{ incidentState.mailReporter |trans }}#}
+{#        </div>#}
+{#    </td>#}
+{#    <td id="state_label_holder" class="align-middle">#}
+{#        <div>#}
+{#            {{ incidentState.mailAssigned |trans }}#}
+{#        </div>#}
+{#    </td>#}
+{#    <td id="state_label_holder" class="align-middle">#}
+{#        <div>#}
+{#            {{ incidentState.mailAdmin |trans }}#}
+{#        </div>#}
+{#    </td>#}
+{#    <td id="state_label_holder" class="align-middle">#}
+{#        <div>#}
+{#            {{ incidentState.mailTeam |trans }}#}
 
-        </div>
-    </td>
+{#        </div>#}
+{#    </td>#}
     <td id="state_label_holder" class="align-middle">
         <div>
             {% include "CertUnlpNgenBundle:IncidentState:Frontend/list/stateLabel.html.twig" with {'incidentState': incidentState} %}

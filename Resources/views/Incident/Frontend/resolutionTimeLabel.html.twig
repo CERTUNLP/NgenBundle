@@ -7,20 +7,28 @@
  with this source code in the file LICENSE.
 #}
 
-{% set atrasado= incident.priority.resolutiontime-incident.resolutionMinutes %}
- {% if not incident.isNew %}
-     {% if not incident.isClosed %}
-         {% if atrasado > 0 %}
-             {{ label_success('Waiting for resolution '|trans ~ atrasado ~ ' minutes left'|trans) }}
-         {% else %}
-             {{ label_danger('Resolution delayed for '|trans ~ (atrasado * -1) ~ ' minutes '|trans) }}
-         {% endif %}
-     {% else %}
-         {% if atrasado > 0 %}
-             {{ label_success('Resolved on time '|trans ~ atrasado ~ ' minutes left'|trans) }}
-         {% else %}
-             {{ label_danger('Resolution delayed for '|trans ~ (atrasado * -1) ~ ' minutes '|trans) }}
-         {% endif %}
+{% if incident.isResolved %}
+    {% if incident.resolutionDelayedMinutes > 0 %}
+        <i class="fas fa-check-double" style="color:green"
+           title="{{ 'Solved'|trans }} ({{ incident.resolutionDelayedDate.d?  incident.resolutionDelayedDate| date("%ddays %hmin %isec"): incident.resolutionDelayedDate | date("%hmin %isec") }} {{ ' left'|trans }})"></i>
+        {{ label_success('Solved '|trans ~ (incident.resolutionDelayedDate.d?  incident.resolutionDelayedDate| date("%ddays %hmin %isec"): incident.resolutionDelayedDate | date("%hmin %isec")) ~ ' left'|trans) }}
 
-     {% endif %}
- {% endif %}
+    {% else %}
+        <i class="fas fa-check-double" style="color:lightblue"
+           title="{{ 'Solved'|trans }}({{ incident.resolutionDelayedDate.d?  incident.resolutionDelayedDate| date("%ddays %hmin %isec"): incident.resolutionDelayedDate | date("%hmin %isec") }}{{ ' late'|trans }})"></i>
+        {{ label_info('Solved '|trans ~ (incident.resolutionDelayedDate.d?  incident.resolutionDelayedDate| date("%ddays %hmin %isec"): incident.resolutionDelayedDate | date("%hmin %isec")  ) ~ ' late '|trans) }}
+
+    {% endif %}
+{% else %}
+    {% if incident.resolutionDelayedMinutes > 0 %}
+        <i class="fas fa-hourglass-start" style="color:#f0ad4e"
+           title="{{ 'Unsolved'|trans }}({{ incident.resolutionDelayedDate.d?  incident.resolutionDelayedDate| date("%ddays %hmin %isec"): incident.resolutionDelayedDate | date("%hmin %isec") }} {{ ' left'|trans }})"></i>
+        {{ label_warning('Unsolved '|trans ~ (incident.resolutionDelayedDate.d?  incident.resolutionDelayedDate| date("%ddays %hmin %isec"): incident.resolutionDelayedDate | date("%hmin %isec") ) ~ ' left'|trans) }}
+
+    {% else %}
+        <i class="fas fa-hourglass-end" style="color:red"
+           title="{{ 'Unsolved'|trans }}({{ incident.resolutionDelayedDate.d?  incident.resolutionDelayedDate| date("%ddays %hmin %isec"): incident.resolutionDelayedDate | date("%hmin %isec") }} {{ ' late'|trans }})"></i>
+        {{ label_danger('Unsolved '|trans ~ (incident.resolutionDelayedDate.d?  incident.resolutionDelayedDate| date("%ddays %hmin %isec"): incident.resolutionDelayedDate | date("%hmin %isec")  ) ~ ' late'|trans) }}
+
+    {% endif %}
+{% endif %}

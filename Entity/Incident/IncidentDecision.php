@@ -2,7 +2,9 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\Network\Network;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -28,111 +30,84 @@ class IncidentDecision
     protected $id;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      * @JMS\Expose()
      */
     protected $createdAt;
     /**
-     * @var \DateTime
+     * @var DateTime
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
      * @JMS\Expose()
      */
     protected $updatedAt;
     /**
+     * @var IncidentType|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      * @JMS\Expose()
      */
     protected $type;
     /**
+     * @var IncidentFeed|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed")
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
      * @JMS\Expose()
      */
     protected $feed;
     /**
+     * @var Network|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network")
      * @ORM\JoinColumn(name="network", referencedColumnName="id")
      * @JMS\Expose()
      */
     protected $network;
     /**
+     * @var IncidentImpact|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact")
      * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
      * @JMS\Expose()
      */
     protected $impact;
     /**
+     * @var IncidentUrgency|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency")
      * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
      * @JMS\Expose()
      */
     protected $urgency;
     /**
+     * @var IncidentTlp|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp")
      * @ORM\JoinColumn(name="tlp", referencedColumnName="slug")
      * @JMS\Expose()
      */
-
     protected $tlp;
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
+     * @var IncidentState|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose()
      */
-
     protected $state;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
+     * @var IncidentState|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unattended_state", referencedColumnName="slug")
      * @JMS\Expose()
      */
-
     protected $unattendedState;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
+     * @var IncidentState|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unsolved_state", referencedColumnName="slug")
      * @JMS\Expose()
      */
     protected $unsolvedState;
-
-    /**
-     * @return IncidentState
-     */
-    public function getUnattendedState(): ?IncidentState
-    {
-        return $this->unattendedState;
-    }
-
-    /**
-     * @param IncidentState $unattendedState
-     */
-    public function setUnattendedState(IncidentState $unattendedState): void
-    {
-        $this->unattendedState = $unattendedState;
-    }
-
-    /**
-     * @return IncidentState
-     */
-    public function getUnsolvedState(): ?IncidentState
-    {
-        return $this->unsolvedState;
-    }
-
-    /**
-     * @param IncidentState $unsolvedState
-     */
-    public function setUnsolvedState(IncidentState $unsolvedState): void
-    {
-        $this->unsolvedState = $unsolvedState;
-    }
-
 
     /**
      * @var string
@@ -147,7 +122,6 @@ class IncidentDecision
      *
      */
     protected $slug;
-
 
     /**
      * @var boolean
@@ -165,151 +139,10 @@ class IncidentDecision
      */
     private $isActive = true;
 
-    public function __toString()
-    {
-        return $this->getType() . '_' . $this->getFeed();
-    }
 
-    /**
-     * @return mixed
-     */
-    public function getType()
+    public function __toString(): string
     {
-        return $this->type;
-    }
-
-    /**
-     * @param mixed $type
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFeed()
-    {
-        return $this->feed;
-    }
-
-    /**
-     * @param mixed $feed
-     */
-    public function setFeed($feed)
-    {
-        $this->feed = $feed;
-    }
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function setId($id)
-    {
-        return $this->id = $id;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt(): \DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param \DateTime $createdAt
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNetwork(): ?Network
-    {
-        return $this->network;
-    }
-
-    /**
-     * @param mixed $network
-     * @return IncidentDecision
-     */
-    public function setNetwork(Network $network = null): IncidentDecision
-    {
-        $this->network = $network;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isAutoSaved(): bool
-    {
-        return $this->autoSaved;
-    }
-
-    /**
-     * @param bool $autoSaved
-     */
-    public function setAutoSaved(bool $autoSaved)
-    {
-        $this->autoSaved = $autoSaved;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt(): \DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param \DateTime $updatedAt
-     */
-    public function setUpdatedAt(\DateTime $updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     */
-    public function setIsActive(bool $isActive)
-    {
-        $this->isActive = $isActive;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
+        return $this->getSlug();
     }
 
     /**
@@ -331,6 +164,24 @@ class IncidentDecision
     }
 
     /**
+     * @return IncidentFeed|null
+     */
+    public function getFeed(): ?IncidentFeed
+    {
+        return $this->feed;
+    }
+
+    /**
+     * @param IncidentFeed|null $feed
+     * @return IncidentDecision
+     */
+    public function setFeed(?IncidentFeed $feed): IncidentDecision
+    {
+        $this->feed = $feed;
+        return $this;
+    }
+
+    /**
      * @param Incident $incident
      * @return Incident
      */
@@ -339,74 +190,253 @@ class IncidentDecision
         $incident->getTlp() ?: $incident->setTlp($this->getTlp());
         $incident->getImpact() ?: $incident->setImpact($this->getImpact());
         $incident->getUrgency() ?: $incident->setUrgency($this->getUrgency());
-        $incident->getState() ?: $incident->setStateAndReporter($this->getState(),$incident->getReporter());
+        $incident->getState() ?: $incident->setStateAndReporter($this->getState(), $incident->getReporter());
         $incident->getType() ?: $incident->setType($this->getType());
+
+        if ($incident->getState()) {
+            if ($incident->getState()->isInitial()) {
+                $incident->setStateAndReporter($this->getState(), $incident->getReporter());
+            }
+        } else {
+            $incident->setStateAndReporter($this->getState(), $incident->getReporter());
+        }
         return $incident;
     }
 
     /**
-     * @return mixed
+     * @return IncidentTlp|null
      */
-    public function getTlp()
+    public function getTlp(): ?IncidentTlp
     {
         return $this->tlp;
     }
 
     /**
-     * @param mixed $tlp
+     * @param IncidentTlp|null $tlp
+     * @return IncidentDecision
      */
-    public function setTlp($tlp)
+    public function setTlp(?IncidentTlp $tlp): IncidentDecision
     {
         $this->tlp = $tlp;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return IncidentImpact|null
      */
-    public function getImpact()
+    public function getImpact(): ?IncidentImpact
     {
         return $this->impact;
     }
 
     /**
-     * @param mixed $impact
+     * @param IncidentImpact|null $impact
+     * @return IncidentDecision
      */
-    public function setImpact($impact)
+    public function setImpact(?IncidentImpact $impact): IncidentDecision
     {
         $this->impact = $impact;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return IncidentUrgency|null
      */
-    public function getUrgency()
+    public function getUrgency(): ?IncidentUrgency
     {
         return $this->urgency;
     }
 
     /**
-     * @param mixed $urgency
+     * @param IncidentUrgency|null $urgency
+     * @return IncidentDecision
      */
-    public function setUrgency($urgency)
+    public function setUrgency(?IncidentUrgency $urgency): IncidentDecision
     {
         $this->urgency = $urgency;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return IncidentState|null
      */
-    public function getState()
+    public function getState(): ?IncidentState
     {
         return $this->state;
     }
 
     /**
-     * @param mixed $state
+     * @param IncidentState|null $state
+     * @return IncidentDecision
      */
-    public function setState($state)
+    public function setState(?IncidentState $state): IncidentDecision
     {
         $this->state = $state;
+        return $this;
     }
+
+    /**
+     * @return IncidentType|null
+     */
+    public function getType(): ?IncidentType
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param IncidentType|null $type
+     * @return IncidentDecision
+     */
+    public function setType(?IncidentType $type): IncidentDecision
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int|null $id
+     * @return IncidentDecision
+     */
+    public function setId(?int $id): IncidentDecision
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param DateTime $createdAt
+     * @return IncidentDecision
+     */
+    public function setCreatedAt(DateTime $createdAt): IncidentDecision
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getUpdatedAt(): DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param DateTime $updatedAt
+     * @return IncidentDecision
+     */
+    public function setUpdatedAt(DateTime $updatedAt): IncidentDecision
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    /**
+     * @return Network|null
+     */
+    public function getNetwork(): ?Network
+    {
+        return $this->network;
+    }
+
+    /**
+     * @param Network|null $network
+     * @return IncidentDecision
+     */
+    public function setNetwork(?Network $network): IncidentDecision
+    {
+        $this->network = $network;
+        return $this;
+    }
+
+    /**
+     * @return IncidentState|null
+     */
+    public function getUnattendedState(): ?IncidentState
+    {
+        return $this->unattendedState;
+    }
+
+    /**
+     * @param IncidentState|null $unattendedState
+     * @return IncidentDecision
+     */
+    public function setUnattendedState(?IncidentState $unattendedState): IncidentDecision
+    {
+        $this->unattendedState = $unattendedState;
+        return $this;
+    }
+
+    /**
+     * @return IncidentState|null
+     */
+    public function getUnsolvedState(): ?IncidentState
+    {
+        return $this->unsolvedState;
+    }
+
+    /**
+     * @param IncidentState|null $unsolvedState
+     * @return IncidentDecision
+     */
+    public function setUnsolvedState(?IncidentState $unsolvedState): IncidentDecision
+    {
+        $this->unsolvedState = $unsolvedState;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAutoSaved(): bool
+    {
+        return $this->autoSaved;
+    }
+
+    /**
+     * @param bool $autoSaved
+     * @return IncidentDecision
+     */
+    public function setAutoSaved(bool $autoSaved): IncidentDecision
+    {
+        $this->autoSaved = $autoSaved;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param bool $isActive
+     * @return IncidentDecision
+     */
+    public function setIsActive(bool $isActive): IncidentDecision
+    {
+        $this->isActive = $isActive;
+        return $this;
+    }
+
 
 }
 

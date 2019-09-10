@@ -2,6 +2,9 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentStateBehavior;
 use CertUnlp\NgenBundle\Entity\User;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,8 +27,60 @@ class IncidentChangeState
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+    /**
+     * @var Incident
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="changeStateHistory")
+     *
+     * */
+    protected $incident;
+    /**
+     * @var StateEdge
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    protected $stateEdge;
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")}
+     * @JMS\Expose
+     */
+    protected $responsable;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="method", type="string", length=25)
+     * @JMS\Expose
+     * @JMS\Groups({"api_input"})
+     */
+    protected $method;
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="date", type="datetime",nullable=true)
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
+     */
+    private $date;
 
-/**
+    public function __construct(Incident $incident, StateEdge $stateEdge, User $responsable = null, string $method = 'frontend')
+    {
+        $this->setIncident($incident);
+        if (!$responsable) {
+            if ($incident->getReporter()) {
+                $responsable = $incident->getReporter();
+            } else {
+                $responsable = $incident->getReportReporter();
+            }
+        }
+        $this->setStateEdge($stateEdge);
+        $this->setDate(new DateTime('now'));
+        $this->setMethod($method);
+        $this->setResponsable($responsable);
+    }
+
+    /**
      * @return int
      */
     public function getId(): ?int
@@ -35,31 +90,13 @@ class IncidentChangeState
 
     /**
      * @param int $id
-     * @return Incident
+     * @return IncidentChangeState
      */
-    public function setId(int $id): Incident
+    public function setId(int $id): IncidentChangeState
     {
         $this->id = $id;
         return $this;
     }
-
-    public function __construct(Incident $incident,IncidentState $newState,$responsable, IncidentState $oldState=null, $method = "frontend" )
-    {
-        $this->setIncident($incident);
-        if ($oldState){$this->setOldState($oldState);}
-        $this->setNewState($newState);
-        $this->setDate(new DateTime('now'));
-        $this->setMethod($method);
-        $this->setResponsable($responsable);
-        $this->setActionApplied($newState->getIncidentAction());
-    }
-
-    /**
-     * @var Incident
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="changeStateHistory")
-     *
-     * */
-    protected $incident;
 
     /**
      * @return Incident
@@ -98,103 +135,49 @@ class IncidentChangeState
      */
     public function getNewState(): IncidentState
     {
-        return $this->newState;
+        return $this->getStateEdge()->getNewState();
     }
 
     /**
-     * @param IncidentState $newState
+     * @return StateEdge
      */
-    public function setNewState(IncidentState $newState): void
+    public function getStateEdge(): StateEdge
     {
-        $this->newState = $newState;
+        return $this->stateEdge;
+    }
+
+    /**
+     * @param StateEdge $stateEdge
+     * @return IncidentChangeState
+     */
+    public function setStateEdge(StateEdge $stateEdge): IncidentChangeState
+    {
+        $this->stateEdge = $stateEdge;
+        return $this;
     }
 
     /**
      * @return IncidentState
      */
-    public function getOldState(): ? IncidentState
+    public function getOldState(): ?IncidentState
     {
-        return $this->oldState;
+        return $this->getStateEdge()->getOldState();
     }
 
+
     /**
-     * @param IncidentState $oldState
+     * @return StateEdge
      */
-    public function setOldState(IncidentState $oldState): void
+    public function getActionApplied(): ?StateEdge
     {
-        $this->oldState = $oldState;
+        return $this->getStateEdge();
     }
 
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="date", type="datetime",nullable=true)
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
-     */
-    private $date;
-    /**
-     * @var IncidentState
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
-     * @ORM\JoinColumn(name="newState", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    protected $newState;
-    /**
-     * @var IncidentState
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
-     * @ORM\JoinColumn(name="oldState", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    protected $oldState;
-
-    /**
-     * @var IncidentStateAction
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateAction")
-     * @ORM\JoinColumn(name="action_applied", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    protected $actionApplied;
-
-    /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
-     */
-    protected $responsable;
-
-    /**
-     * @return IncidentStateAction
-     */
-    public function getActionApplied(): ? IncidentStateAction
-    {
-        return $this->actionApplied;
-    }
-
-    /**
-     * @param IncidentStateAction $actionApplied
-     */
-    public function setActionApplied(IncidentStateAction $actionApplied): void
-    {
-        $this->actionApplied = $actionApplied;
-    }
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="method", type="string", length=25)
-     * @JMS\Expose
-     * @JMS\Groups({"api_input"})
-     */
-    protected $method;
 
     /**
      * @return User
      */
-    public function getResponsable(): User
+    public function getResponsable(): ?User
     {
         return $this->responsable;
     }

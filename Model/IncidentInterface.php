@@ -13,7 +13,7 @@ namespace CertUnlp\NgenBundle\Model;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\User;
@@ -60,8 +60,7 @@ interface IncidentInterface
     /**
      * Set IncidentDecision
      *
-     * @param $state
-     * @param $responsable
+     * @param IncidentState $state
      * @return Incident
      */
     public function setState(IncidentState $state): Incident;
@@ -88,20 +87,6 @@ interface IncidentInterface
      */
     public function getAddress(): ?string;
 
-    /**
-     * Set isClosed
-     *
-     * @param bool $isClosed
-     * @return Incident
-     */
-    public function setIsClosed(bool $isClosed): Incident;
-
-    /**
-     * Get isClosed
-     *
-     * @return bool
-     */
-    public function isClosed(): ?bool;
 
     /**
      * Get isClosed
@@ -158,9 +143,9 @@ interface IncidentInterface
     /**
      * Get date
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getDate(): ?\DateTime;
+    public function getDate(): ?DateTime;
 
     /**
      * @return string

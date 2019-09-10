@@ -84,7 +84,7 @@ services:
 
     cert_unlp.ngen.incident.internal.handler:
         class:        "%cert_unlp.ngen.incident.internal.handler.class%"
-        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.internal.class%","%cert_unlp.ngen.incident.internal.form_type.class%","@form.factory", "@security.context","@cert_unlp.ngen.user.handler","@cert_unlp.ngen.host.handler","@cert_unlp.ngen.incident.decision.handler"]
+        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.internal.class%","%cert_unlp.ngen.incident.internal.form_type.class%","@form.factory", "@security.context","@cert_unlp.ngen.user.handler","@cert_unlp.ngen.host.handler","@cert_unlp.ngen.incident.decision.handler","@cert_unlp.ngen.incident.state.handler"]
 
     cert_unlp.ngen.incident.feed.handler:
         class:        "%cert_unlp.ngen.incident.feed.handler.class%"
@@ -117,10 +117,18 @@ services:
     cert_unlp.ngen.incident.decision.handler:
         class:        "%cert_unlp.ngen.incident.decision.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.decision.class%","%cert_unlp.ngen.incident.decision.form_type.class%","@form.factory"]
+
     cert_unlp.ngen.host.handler:
         class:        CertUnlp\NgenBundle\Services\Api\Handler\HostHandler
         arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Network\Host\Host,CertUnlp\NgenBundle\Form\HostType,"@form.factory"]
 
+    cert_unlp.ngen.incident.state.edge.handler:
+        class:        CertUnlp\NgenBundle\Services\Api\Handler\IncidentStateEdgeHandler
+        arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Incident\State\IncidentStateEdge,CertUnlp\NgenBundle\Form\IncidentStateEdgeType,"@form.factory"]
+
+    cert_unlp.ngen.incident.state.machine:
+        class:        CertUnlp\NgenBundle\Services\StateMachine\StateMachine
+        arguments:    ["@cert_unlp.ngen.incident.state.edge.handler"]
 
     cert_unlp.ngen.incident.decision.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\ApiController
@@ -284,6 +292,23 @@ services:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
             - [ setAnnotationReader, [ "@annotation_reader" ] ]
+
+    extension.listener:
+        class: CertUnlp\NgenBundle\Doctrine\DoctrineExtensionListener
+        calls:
+            - [ setContainer, [ "@service_container" ] ]
+        tags:
+            # translatable sets locale after router processing
+            - { name: kernel.event_listener, event: kernel.request, method: onLateKernelRequest, priority: -10 }
+
+    gedmo.listener.translatable:
+        class: Gedmo\Translatable\TranslatableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ "@annotation_reader" ] ]
+            - [ setTranslatableLocale, [ "%ngen_lang%" ] ]
+            - [ setTranslationFallback, [ true ] ]
 
     app.image_type_extension:
         class: CertUnlp\NgenBundle\Form\Extension\DateTimeTypeExtension

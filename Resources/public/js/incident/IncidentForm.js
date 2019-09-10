@@ -16,9 +16,8 @@ var IncidentForm = Form.extend({
         this.changeTLP();
     },
     changeTLP: function () {
-        var $valor = $("#tlp option:selected").text();
-        $("#tlp_label").first().html("TLP:" + $valor.toUpperCase());
-        $("#tlp_label").attr('class', "tlp-" + $valor.toLowerCase());
+        $("#tlp_label").first().html("TLP:" + $("#tlp option:selected").text());
+        $("#tlp_label").attr('class', "tlp-" + $("#tlp option:selected").val());
     },
     getIncidentDecision: function () {
         let $ip = $("#address").val();
@@ -35,16 +34,16 @@ var IncidentForm = Form.extend({
     },
     changeDefaults: function (response) {
         if (Object.keys(response).length) {
-            $("#tlp").val(response.responseJSON.tlp.slug).trigger('change') ;
+            $("#tlp").val(response.responseJSON.tlp.slug).trigger('change');
             $("#state").val(response.responseJSON.state.slug).trigger('change');
             $("#impact").val(response.responseJSON.impact.slug).trigger('change');
             $("#urgency").val(response.responseJSON.urgency.slug).trigger('change');
             $("#unattendedState").val(response.responseJSON.unattended_state.slug).trigger('change');
             $("#unsolvedState").val(response.responseJSON.unsolved_state.slug).trigger('change');
-            $.publish('/cert_unlp/incident/priority/read', [response.responseJSON.impact.slug+'_'+response.responseJSON.urgency.slug, $.proxy(this.changePriorityTimes, this)]);
+            $.publish('/cert_unlp/incident/priority/read', [response.responseJSON.impact.slug + '_' + response.responseJSON.urgency.slug, $.proxy(this.changePriorityTimes, this)]);
         }
     },
-    changePriorityTimes: function(response){
+    changePriorityTimes: function (response) {
         if (Object.keys(response).length) {
             var $calculo= new Date(new Date($("#solveDeadLine").val()).getTime()+ response.responseJSON.unresponse_time*60000);
             $("#solveDeadLine").val($calculo.toISOString().substring(0, 19));
@@ -62,15 +61,13 @@ var IncidentForm = Form.extend({
     getObjectId: function () {
         return this.incidentId;
     },
-    changeIncidentInfo: function(response){
+    changeIncidentInfo: function (response) {
         if (response.responseJSON.length == 1) {
-            $('#incidentInfo').html('<hr>Incident exist!<a href="'+response.responseJSON[0].id+'/edit">Edit</a>');
+            $('#incidentInfo').html('<hr>Incident exist!<a href="' + response.responseJSON[0].id + '/edit">Edit</a>');
             disableIncidentFields();
-        }
-        else if (response.responseJSON.length > 1){
+        } else if (response.responseJSON.length > 1) {
             $('#incidentInfo').html('<hr><a href="">More than one incident with this information.</a>');
-        }
-        else{
+        } else {
             $('#incidentInfo').html('<hr>This is a new Incident');
         }
 

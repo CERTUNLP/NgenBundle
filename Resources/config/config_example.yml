@@ -65,7 +65,7 @@ cert_ngen:
                 class: CertUnlp\NgenBundle\Form\IncidentFeedType
 
         states:
-            class: CertUnlp\NgenBundle\Entity\Incident\IncidentState
+            class: CertUnlp\NgenBundle\Entity\Incident\State\IncidentState
             handler:
                 class: CertUnlp\NgenBundle\Services\Api\Handler\IncidentStateHandler
             form_type:
