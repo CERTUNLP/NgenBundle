@@ -921,7 +921,8 @@ class Incident
     public function getResponseDelayedDate()
     {
         $fecha = new DateTime();
-        $intervalo = 'PT' . $this->getResponseDelayedMinutes() . 'M';
+        $minutes = $this->getResponseDelayedMinutes();
+        $intervalo = 'PT' . ($minutes >= 0 ? $minutes : $minutes * -1) . 'M';
         $date_interval = new \DateInterval($intervalo);
         $fecha->sub($date_interval);
 
@@ -935,8 +936,8 @@ class Incident
      */
     public function getResponseDelayedMinutes(): int
     {
-        $minutes = $this->getPriority()->getResponseTime() - $this->getCreatedAt()->diff(new DateTime())->i;
-        return $minutes >= 0 ? $minutes : $minutes * -1;
+        $minutes = $this->getPriority()->getResponseTime() - ((new DateTime())->getTimestamp() - $this->getCreatedAt()->getTimestamp()) / 60;
+        return $minutes;
 
     }
 
@@ -966,7 +967,9 @@ class Incident
     public function getResolutionDelayedDate()
     {
         $fecha = new DateTime();
-        $intervalo = 'PT' . $this->getResolutionDelayedMinutes() . 'M';
+        $minutes = $this->getResolutionDelayedMinutes();
+
+        $intervalo = 'PT' . ($minutes >= 0 ? $minutes : $minutes * -1) . 'M';
         $date_interval = new \DateInterval($intervalo);
         $fecha->sub($date_interval);
 
@@ -981,7 +984,7 @@ class Incident
     {
         $minutes = $this->getPriority()->getResolutionTime() - $this->getResolutionMinutes();
 
-        return $minutes >= 0 ? $minutes : $minutes * -1;
+        return $minutes;
     }
 
     /**
