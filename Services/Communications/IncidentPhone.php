@@ -12,7 +12,6 @@
 namespace CertUnlp\NgenBundle\Services\Communications;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
 use CertUnlp\NgenBundle\Services\IncidentReportFactory;
 use FOS\CommentBundle\Event\CommentPersistEvent;
 use FOS\CommentBundle\Model\CommentManagerInterface;
@@ -64,27 +63,27 @@ class IncidentPhone extends IncidentCommunication
      */
     public function send_report(Incident $incident, $body = null, $echo = null, $is_new_incident = false, $renotification = false)
     {
-        $enviar_a= $incident->getEmails($this->cert_email,$incident->isSendReport());
+        $enviar_a = $incident->getEmails();
         if ($enviar_a) {
             #Hay que discutir si es necesario mandar cualquier cambio o que cosa todo || $is_new_incident || $renotification) {
-                $html = $this->getBody($incident);
-                $message = \Swift_Message::newInstance()
-                    ->setSubject(sprintf($this->mailSubject($renotification), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getAddress(), $incident->getId()))
-                    ->setFrom($this->cert_email)
-                    ->setSender($this->cert_email)
-                    ->setTo($enviar_a)
-                    ->addPart($html, 'text/html');
+            $html = $this->getBody($incident);
+            $message = \Swift_Message::newInstance()
+                ->setSubject(sprintf($this->mailSubject($renotification), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getAddress(), $incident->getId()))
+                ->setFrom($this->cert_email)
+                ->setSender($this->cert_email)
+                ->setTo($enviar_a)
+                ->addPart($html, 'text/html');
 
-                if ($incident->getEvidenceFilePath()) {
-                    $message->attach(\Swift_Attachment::fromPath($this->upload_directory . $incident->getEvidenceFilePath(true)));
-                }
-
-                if ($incident->getReportMessageId()) {
-                    $message->setId($incident->getReportMessageId());
-                }
-
-                return $this->mailer->send($message);
+            if ($incident->getEvidenceFilePath()) {
+                $message->attach(\Swift_Attachment::fromPath($this->upload_directory . $incident->getEvidenceFilePath(true)));
             }
+
+            if ($incident->getReportMessageId()) {
+                $message->setId($incident->getReportMessageId());
+            }
+
+            return $this->mailer->send($message);
+        }
         return null;
     }
 

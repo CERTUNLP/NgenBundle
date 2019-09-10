@@ -21,20 +21,25 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class IncidentDecisionHandler extends Handler
 {
-    public function getByIncident(Incident $incident): ?Incident
+    public function getByIncident(Incident $incident): IncidentDecision
     {
         $decisions = new ArrayCollection($this->all(['type' => $incident->getType() ? $incident->getType()->getSlug() : 'undefined', 'feed' => $incident->getFeed() ? $incident->getFeed()->getSlug() : 'undefined', 'get_undefined' => true]));
+
         $ordered_decisions = $this->orderDecisionsByNetworkMask($decisions);
 
         foreach ($ordered_decisions as $decision) {
-            if (($incident->getNetwork() && $decision->getNetwork() && $incident->getNetwork()->inRange($decision->getNetwork())) || ($decision->getNetwork()=='')) {
-                return $decision->doDecision($incident);
+            if ($decision->getNetwork() === '' || ($incident->getNetwork() && $decision->getNetwork() && $incident->getNetwork()->inRange($decision->getNetwork()))) {
+                return $decision;
             }
         }
 
-        return $decisions->last()->doDecision($incident);
+        return $decisions->last();
     }
 
+    /**
+     * @param ArrayCollection $decisions
+     * @return ArrayIterator
+     */
     public function orderDecisionsByNetworkMask(ArrayCollection $decisions): ArrayIterator
     {
         $iterator = $decisions->getIterator();
@@ -51,7 +56,7 @@ class IncidentDecisionHandler extends Handler
         $ordered_decisions = $this->orderDecisionsByNetworkMask($decisions);
 
         foreach ($ordered_decisions as $decision) {
-            if ($network && $decision->getNetwork() && $network->inRange($decision->getNetwork())|| ($decision->getNetwork()=='')) {
+            if (($decision->getNetwork() === '') || ($network && $decision->getNetwork() && $network->inRange($decision->getNetwork()))) {
                 return $decision;
             }
         }
@@ -66,14 +71,17 @@ class IncidentDecisionHandler extends Handler
      *
      * @return void
      */
-    public
-    function prepareToDeletion($incident_decision, array $parameters = null)
+    public function prepareToDeletion($incident_decision, array $parameters = null)
     {
         $incident_decision->setIsActive(FALSE);
     }
 
-    protected
-    function checkIfExists($incidentDecision, $method)
+    /**
+     * @param IncidentDecision s$incidentDecision
+     * @param string $method
+     * @return IncidentDecision| null| object
+     */
+    protected function checkIfExists($incidentDecision, $method)
     {
         $incidentDecisionDB = $this->repository->findOneBy(['type' => $incidentDecision->getType() ? $incidentDecision->getType()->getSlug() : 'undefined', 'feed' => $incidentDecision->getFeed() ? $incidentDecision->getFeed()->getSlug() : 'undefined', 'network' => $incidentDecision->getNetwork() ? $incidentDecision->getNetwork()->getId() : null]);
 

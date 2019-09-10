@@ -13,11 +13,16 @@ namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
+use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Repository\IncidentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Exception;
 use Gedmo\Sluggable\Util as Sluggable;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\SecurityContext;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentState;
 
 class IncidentHandler extends Handler
 {
@@ -25,14 +30,16 @@ class IncidentHandler extends Handler
     private $context;
     private $host_handler;
     private $decision_handler;
+    private $incidentStateHandler;
 
-    public function __construct(ObjectManager $om, string $entityClass, string $entityType, FormFactoryInterface $formFactory, SecurityContext $context, UserHandler $user_handler, HostHandler $host_handler, IncidentDecisionHandler $decision_handler)
+    public function __construct(ObjectManager $om, string $entityClass, string $entityType, FormFactoryInterface $formFactory, SecurityContext $context, UserHandler $user_handler, HostHandler $host_handler, IncidentDecisionHandler $decision_handler, IncidentStateHandler $incidentStateHandler)
     {
 
         parent::__construct($om, $entityClass, $entityType, $formFactory);
         $this->host_handler = $host_handler;
         $this->user_handler = $user_handler;
         $this->decision_handler = $decision_handler;
+        $this->incidentStateHandler = $incidentStateHandler;
         $this->context = $context;
     }
 
@@ -78,6 +85,7 @@ class IncidentHandler extends Handler
      * @param Incident $incident
      * @param $state
      * @return Incident|object
+     * @throws Exception
      */
     public function changeState(Incident $incident, $state)
     {
@@ -85,36 +93,47 @@ class IncidentHandler extends Handler
         return $this->patch($incident, []);
     }
 
+    /**
+     * @return User|object|string
+     */
     public function getReporter()
     {
         return $this->getUser();
     }
 
+    /**
+     * @return User|object|string
+     */
     public function getUser()
     {
         return $this->context->getToken() ? $this->context->getToken()->getUser() : 'anon.';
     }
 
+    /**
+     * @return array
+     */
     public function getToNotificateIncidents(): array
     {
-        return $this->repository->findNotificables();
+        return $this->getRepository()->findNotificables();
     }
 
-    public function closeOldIncidents(): array
+    /**
+     * @return IncidentRepository
+     */
+    public function getRepository(): ObjectRepository
     {
-        $incidents = $this->all(['isClosed' => false]);
+        return $this->repository;
+    }
+
+    /**
+     * @return array
+     */
+    public function closeUnsolvedIncidents(): array
+    {
+        $incidents = $this->findAllUnsolved();
         $closedIncidents = [];
         foreach ($incidents as $incident) {
-            $close = false;
-            if ($this->closeByUnsolved($incident)) {
-                $incident->setState($incident->getUnsolvedState());
-                $close = $incident->getState() == $incident->getUnsolvedState();
-            } elseif ($this->discardByUnattended($incident)) {
-                $incident->setState($incident->getUnattendedState());
-                $close = $incident->getState() == $incident->getUnattendedState();
-
-            }
-            if ($close) {
+            if ($incident->setState($incident->getUnsolvedState())) {
                 $this->om->persist($incident);
                 $closedIncidents[$incident->getId()] = ['id' => $incident->getSlug(),
                     'type' => $incident->getType()->getSlug(),
@@ -127,56 +146,59 @@ class IncidentHandler extends Handler
         return $closedIncidents;
     }
 
-    private function discardByUnattended(Incident $incident)
+    /**
+     * @return array| Incident[]
+     */
+    public function findAllUnsolved(): array
     {
-        return (($incident->getUnattendedState() != null and $incident->getUnattendedState() != 'undefined' and $incident->getUnattendedState() != $incident->getState()) and ($incident->isNew() and ($incident->getPriority()->getUnresponseTime() <= $incident->getResponseMinutes())));
+        return $this->getRepository()->findAllUnsolved();
     }
 
-    private function closeByUnsolved(Incident $incident)
+    public function closeUnattendedIncidents(): array
     {
-
-        return (($incident->getUnattendedState() != null and $incident->getUnsolvedState() != 'undefined' and $incident->getUnsolvedState() != $incident->getState()) and (!$incident->isNew()) and ($incident->getPriority()->getUnresolutionTime() <= $incident->getResolutionMinutes()));
+        $incidents = $this->findAllUnattended();
+        $closedIncidents = [];
+        foreach ($incidents as $incident) {
+            if ($incident->setState($incident->getUnattendedState())) {
+                $this->om->persist($incident);
+                $closedIncidents[$incident->getId()] = ['id' => $incident->getSlug(),
+                    'type' => $incident->getType()->getSlug(),
+                    'date' => $incident->getDate()->format('Y-m-d H:i:s'),
+                    'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
+                    'newState' => $incident->getState()->getSlug()];
+            }
+        }
+        $this->om->flush();
+        return $closedIncidents;
     }
 
     /**
-     * @return mixed
+     * @return array| Incident[]
      */
-    public function renotificateIncidents()
+    public function findAllUnattended(): array
     {
-        return $this->repository->findRenotificables();
+        return $this->getRepository()->findAllUnattended();
     }
 
     /**
      * @param $incident Incident
-     * @param $method
+     * @param string $method
      * @return object|null
-     * @throws \Exception
+     * @throws Exception
      */
     public function checkIfExists($incident, $method)
     {
         $this->updateIncidentData($incident);
-        $incidentDB = false;
-        if ($incident->isDefined()) {
-            $incidentDB = $this->repository->findOneBy(['isClosed' => false, 'origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
-        }
-        if ($incidentDB && $method === 'POST') {
-            $incidentDB->updateVariables($incident);
-            $incidentDB->addIncidentDetected($incident);
-            $incident = $incidentDB;
-        } elseif($incidentDB && $method === 'PATCH') {
-             $incidentDB->patchStateAndReporter($this->getUser());
-//             $incidentDB->addIncidentDetected($incident);
-             $incident = $incidentDB;
-        }
-        else {
-            $incident->updateVariables($incident);
-            $incident->addIncidentDetected($incident);
-
+        if ($method === 'POST') {
+            $incident = $this->addIncidentDetected($incident);
         }
         return $incident;
     }
 
-    public function updateIncidentData(Incident $incident)
+    /**
+     * @param Incident $incident
+     */
+    public function updateIncidentData(Incident $incident): void
     {
         $this->hostUpdate($incident);
         $this->networkUpdate($incident);
@@ -194,14 +216,15 @@ class IncidentHandler extends Handler
     {
         if ($incident->getAddress()) {
             $host = $incident->getOrigin();
-            $host_new = $this->getHostHandler()->findOneByAddress($incident->getAddress()) ?: $this->getHostHandler()->post(['address' => $incident->getAddress()]);
-            if ($host) {
-
-                if (!$host->equals($host_new) && !$incident->isClosed()) {
+            $host_new = $this->getHostHandler()->getRepository()->findOneByAddress($incident->getAddress()) ?: $this->getHostHandler()->post(['address' => $incident->getAddress()]);
+            if ($host_new) {
+                if ($host) {
+                    if (!$host->equals($host_new) && $incident->isLive()) {
+                        $incident->setOrigin($host_new);
+                    }
+                } else {
                     $incident->setOrigin($host_new);
                 }
-            } else {
-                $incident->setOrigin($host_new);
             }
         }
         return $incident;
@@ -227,25 +250,52 @@ class IncidentHandler extends Handler
 
     /**
      * @param Incident $incident
+     * @return Incident
      */
-    public function networkUpdate(Incident $incident): void
+    public function networkUpdate(Incident $incident): Incident
     {
         if ($incident->getAddress()) {
             $network = $incident->getNetwork();
             $network_new = $incident->getOrigin()->getNetwork();
-            if ($network) {
-                if (!$network->equals($network_new) && !$incident->isClosed()) {
+            if ($network_new) {
+                if ($network) {
+                    if (!$network->equals($network_new) && $incident->isLive()) {
+                        $incident->setNetwork($network_new);
+                    }
+                } else {
                     $incident->setNetwork($network_new);
                 }
-            } else {
-                $incident->setNetwork($network_new);
             }
         }
+        return $incident;
+
     }
 
+    /**
+     * @param Incident $incident
+     * @return Incident|null
+     */
     public function decisionUpdate(Incident $incident): ?Incident
     {
-        return $this->decision_handler->getByIncident($incident);
+        return $this->getDecisionHandler()->getByIncident($incident)->doDecision($incident);
+    }
+
+    /**
+     * @return IncidentDecisionHandler
+     */
+    public function getDecisionHandler(): IncidentDecisionHandler
+    {
+        return $this->decision_handler;
+    }
+
+    /**
+     * @param IncidentDecisionHandler $decision_handler
+     * @return IncidentHandler
+     */
+    public function setDecisionHandler(IncidentDecisionHandler $decision_handler): IncidentHandler
+    {
+        $this->decision_handler = $decision_handler;
+        return $this;
     }
 
     public function timestampsUpdate(Incident $incident): void
@@ -254,7 +304,7 @@ class IncidentHandler extends Handler
         if ($incident->getDate() == null) {
             try {
                 $incident->setDate(new \DateTime('now'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
             }
         }
     }
@@ -264,8 +314,8 @@ class IncidentHandler extends Handler
      */
     public function slugUpdate(Incident $incident): void
     {
-        $firstPart = $incident->getOrigin() ? $incident->getOrigin()->getAddress() : sha1(uniqid(mt_rand()));
-        $secondPart = $incident->getState() ? $incident->getState() : sha1(uniqid(mt_rand()));
+        $firstPart = $incident->getOrigin() ? $incident->getOrigin()->getAddress() : sha1(uniqid(mt_rand(), true));
+        $secondPart = $incident->getState() ?: sha1(uniqid(mt_rand(), true));
         $incident->setSlug(Sluggable\Urlizer::urlize($firstPart . ' ' . $secondPart . ' ' . $incident->getDate()->format('Y-m-d-H-i'), '_'));
     }
 
@@ -276,6 +326,32 @@ class IncidentHandler extends Handler
         $incident->setPriority($priority);
     }
 
+    /**
+     * @param Incident $incident
+     * @return Incident
+     * @throws NonUniqueResultException
+     */
+    public function addIncidentDetected(Incident $incident): Incident
+    {
+        $incidentDB = null;
+        if ($incident->isDefined()) {
+            $incidentDB = $this->getRepository()->findOneLiveBy(['origin' => $incident->getOrigin()->getId(), 'type' => $incident->getType()->getSlug()]);
+        }
+
+        if ($incidentDB) {
+            $incidentDB->updateVariables($incident);
+            $incidentDB->addIncidentDetected($incident);
+            return $incidentDB;
+        }
+        $incident->addIncidentDetected($incident);
+        return $incident;
+    }
+
+    /**
+     * @param Incident $incident
+     * @param array $parameters
+     * @return object|void
+     */
     protected function prepareToDeletion($incident, array $parameters)
     {
         $incident->close();
@@ -303,8 +379,37 @@ class IncidentHandler extends Handler
 
     protected function createEntityInstance(array $params)
     {
-        return new $this->entityClass($params['address']);
+        $incident = new $this->entityClass($params['address'] ?? null);
+        $incident->setState($this->getInitialState());
+        return $incident;
 
     }
+
+    /**
+     * @return IncidentState
+     */
+    public function getInitialState(): IncidentState
+    {
+        return $this->getIncidentStateHandler()->getInitialState();
+    }
+
+    /**
+     * @return IncidentStateHandler
+     */
+    public function getIncidentStateHandler(): IncidentStateHandler
+    {
+        return $this->incidentStateHandler;
+    }
+
+    /**
+     * @param IncidentStateHandler $incidentStateHandler
+     * @return IncidentHandler
+     */
+    public function setIncidentStateHandler(IncidentStateHandler $incidentStateHandler): IncidentHandler
+    {
+        $this->incidentStateHandler = $incidentStateHandler;
+        return $this;
+    }
+
 
 }

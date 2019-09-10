@@ -42,7 +42,7 @@ abstract class IncidentCommunication
 
     public function postPersistDelegation($incident)
     {
-        if ($incident->isNeedToCommunicate()) {
+        if ($incident->canCommunicate()) {
             $this->comunicate($incident);
         }
     }
@@ -51,8 +51,7 @@ abstract class IncidentCommunication
 
     public function postUpdateDelegation(Incident $incident)
     {
-        if ($incident->isNeedToCommunicate()) {
-
+        if ($incident->canCommunicate()) {
             $this->comunicate($incident);
         }
     }

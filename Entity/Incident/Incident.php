@@ -12,11 +12,13 @@
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
 use CertUnlp\NgenBundle\Entity\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
+use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\User;
-use CertUnlp\NgenBundle\Model\IncidentInterface;
 use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -36,111 +38,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
  */
-class Incident implements IncidentInterface
+class Incident
 {
-
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Expose
-     */
-    protected $id;
-    /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="incidents")
-     */
-    protected $reporter;
-    /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="assignedIncidents")
-     */
-    protected $assigned;
-    /**
-     * @var IncidentType
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="incidents")
-     * @ORM\JoinColumn(name="type", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     * @CustomAssert\TypeHasReport
-     */
-    protected $type;
-    /**
-     * @var IncidentFeed
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed", inversedBy="incidents")
-     * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     * @Assert\NotNull
-     */
-    protected $feed;
-    /**
-     * @var IncidentState
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState", inversedBy="incidents")
-     * @ORM\JoinColumn(name="state", referencedColumnName="slug")
+     * @var string
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    protected $state;
-    protected $lastState;
     protected $temporalNotes;
+    /**
+     * @var string
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
     protected $temporalEvidenceFile;
-    /**
-     * @var IncidentState
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
-     * @ORM\JoinColumn(name="unattended_state", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    protected $unattendedState;
-    /**
-     * @var IncidentState
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentState")
-     * @ORM\JoinColumn(name="unsolved_state", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    protected $unsolvedState;
-    protected $reportReporter;
-    /**
-     * @var IncidentTlp
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp", inversedBy="incidents")
-     * @ORM\JoinColumn(name="tlp_state", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    protected $tlp;
-    /**
-     * @var IncidentPriority
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority", inversedBy="incidents")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    protected $priority;
-    /**
-     * @var IncidentImpact
-     */
-    protected $impact;
-    /**
-     * @var IncidentUrgency
-     */
-    protected $urgency;
-    /**
-     * @var IncidentCommentThread
-     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread",mappedBy="incident",fetch="EXTRA_LAZY"))
-     */
-    protected $comment_thread;
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="date", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
-     */
-    protected $date;
     /**
      * @var DateTime
      *
@@ -160,19 +71,127 @@ class Incident implements IncidentInterface
      */
     protected $solveDeadLine;
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Expose
+     */
+    private $id;
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="incidents")
+     * @JMS\Expose
+     */
+    private $reporter;
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="assignedIncidents")
+     * @JMS\Expose
+     */
+    private $assigned;
+    /**
+     * @var IncidentType
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="incidents")
+     * @ORM\JoinColumn(name="type", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     * @CustomAssert\TypeHasReport
+     */
+    private $type;
+    /**
+     * @var IncidentFeed
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed", inversedBy="incidents")
+     * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     * @Assert\NotNull
+     */
+    private $feed;
+    /**
+     * @var IncidentState
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
+     * @ORM\JoinColumn(name="state", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    private $state;
+    /**
+     * @var IncidentState
+     */
+    private $lastState;
+    /**
+     * @var IncidentState
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
+     * @ORM\JoinColumn(name="unattended_state", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    private $unattendedState;
+    /**
+     * @var IncidentState
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
+     * @ORM\JoinColumn(name="unsolved_state", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    private $unsolvedState;
+    /**
+     * @var User
+     */
+    private $reportReporter;
+    /**
+     * @var IncidentTlp
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp", inversedBy="incidents")
+     * @ORM\JoinColumn(name="tlp_state", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    private $tlp;
+    /**
+     * @var IncidentPriority
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority", inversedBy="incidents")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    private $priority;
+    /**
+     * @var IncidentImpact
+     */
+    private $impact;
+    /**
+     * @var IncidentUrgency
+     */
+    private $urgency;
+    /**
+     * @var IncidentCommentThread
+     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread",mappedBy="incident",fetch="EXTRA_LAZY"))
+     */
+    private $comment_thread;
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="date", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
+     */
+    private $date;
+    /**
      * @var Collection
      * @JMS\Expose
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDetected",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
      * @JMS\Groups({"api"})
      */
-    protected $incidentsDetected;
+    private $incidentsDetected;
     /**
      * @var Collection
      * @JMS\Expose
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentChangeState",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
      * @JMS\Groups({"api"})
      */
-    protected $changeStateHistory;
+    private $changeStateHistory;
     /**
      * @var DateTime
      *
@@ -181,7 +200,7 @@ class Incident implements IncidentInterface
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      * @JMS\Groups({"api"})
      */
-    protected $renotificationDate;
+    private $renotificationDate;
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="create")
@@ -190,7 +209,7 @@ class Incident implements IncidentInterface
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      * @JMS\Groups({"api"})
      */
-    protected $createdAt;
+    private $createdAt;
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="update")
@@ -199,65 +218,33 @@ class Incident implements IncidentInterface
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      * @JMS\Groups({"api"})
      */
-    protected $updatedAt;
-    /**
-     * @var DateTime
-     * @ORM\Column(name="opened_at", type="datetime", nullable=true)
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
-     */
-    protected $openedAt;
+    private $updatedAt;
+
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="is_closed", type="boolean", options={"default" : 0})
-     * @JMS\Expose
-     * @JMS\Type("boolean")
      */
-    protected $isClosed = 0;
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_discarded", type="boolean", options={"default" : 0})
-     * @JMS\Expose
-     * @JMS\Type("boolean")
-     */
-    protected $isDiscarded = 0;
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_new", type="boolean",options={"default" : 1})
-     * @JMS\Expose
-     * @JMS\Type("boolean")
-     */
-    protected $isNew = true;
-    /**
-     * @var boolean
-     *
-     */
-    protected $needToCommunicate = false;
+    private $needToCommunicate = false;
     /**
      * @Assert\File(maxSize = "500k")
      */
-    protected $evidence_file;
+    private $evidence_file;
     /**
      * @ORM\Column(name="evidence_file_path", type="string",nullable=true)
      */
-    protected $evidence_file_path;
+    private $evidence_file_path;
     /**
      * @var string
      * @ORM\Column(name="report_message_id", type="string",nullable=true)
      */
-    protected $report_message_id;
+    private $report_message_id;
     /**
      * @var $evidence_file_temp
      */
-    protected $evidence_file_temp;
+    private $evidence_file_temp;
     /**
      * @var bool
      */
-    protected $sendReport = false;
+    private $sendReport = false;
     /**
      * @var string
      *
@@ -266,16 +253,16 @@ class Incident implements IncidentInterface
      * @JMS\Expose
      * @JMS\Groups({"api"})
      * */
-    protected $slug;
+    private $slug;
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
      */
-    protected $notes;
+    private $notes;
     /**
      * @ORM\Column(name="ltd_count", type="integer")
      */
-    protected $ltdCount = 0;
+    private $ltdCount = 0;
     /**
      * @var Host|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_origin")
@@ -316,35 +303,71 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTemporalNotes()
+    public function getTemporalNotes(): ?string
     {
         return $this->temporalNotes;
     }
 
     /**
-     * @param mixed $temporalNotes
+     * @param string $temporalNotes
+     * @return Incident
      */
-    public function setTemporalNotes($temporalNotes): void
+    public function setTemporalNotes(string $temporalNotes): self
     {
         $this->temporalNotes = $temporalNotes;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTemporalEvidenceFile()
+    public function getTemporalEvidenceFile(): ?string
     {
         return $this->temporalEvidenceFile;
     }
 
     /**
-     * @param mixed $temporalEvidenceFile
+     * @param string $temporalEvidenceFile
+     * @return Incident
      */
-    public function setTemporalEvidenceFile($temporalEvidenceFile): void
+    public function setTemporalEvidenceFile(string $temporalEvidenceFile): self
     {
         $this->temporalEvidenceFile = $temporalEvidenceFile;
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getResponseDeadLine(): ?DateTime
+    {
+        return $this->responseDeadLine;
+    }
+
+    /**
+     * @param DateTime $responseDeadLine
+     */
+    public function setResponseDeadLine(DateTime $responseDeadLine = null): void
+    {
+        $this->responseDeadLine = $responseDeadLine;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getSolveDeadLine(): ?DateTime
+    {
+        return $this->solveDeadLine;
+    }
+
+    /**
+     * @param DateTime $solveDeadLine
+     */
+    public function setSolveDeadLine(DateTime $solveDeadLine = null): void
+    {
+        $this->solveDeadLine = $solveDeadLine;
     }
 
     /**
@@ -382,49 +405,109 @@ class Incident implements IncidentInterface
     /**
      * @return bool
      */
-    public function isDiscarded(): bool
+    public function canEdit(): bool
     {
-        return $this->isDiscarded;
+        return $this->getBehavior()->canEdit();
     }
 
     /**
-     * @param bool $isDiscarded
+     * @return StateBehavior
      */
-    public function setIsDiscarded(bool $isDiscarded): void
+    public function getBehavior(): ?StateBehavior
     {
-        $this->isDiscarded = $isDiscarded;
+        return $this->getState() ? $this->getState()->getBehavior() : null;
     }
 
     /**
-     * @return DateTime
+     * Get $state
+     *
+     * @return IncidentState
      */
-    public function getResponseDeadLine(): ?DateTime
+    public function getState(): ?IncidentState
     {
-        return $this->responseDeadLine;
+        return $this->state;
     }
 
     /**
-     * @param DateTime $responseDeadLine
+     * Set state
+     * @param IncidentState $state
+     * @return Incident
      */
-    public function setResponseDeadLine($responseDeadLine): void
+    public function setState(IncidentState $state = null): ?Incident
     {
-        $this->responseDeadLine = $responseDeadLine;
+        if ($this->getState()) {
+            return $this->getState()->changeIncidentState($this, $state);
+        }
+        return $this->changeState($state);
     }
 
     /**
-     * @return DateTime
+     * Set state
+     * @param IncidentState $state
+     * @return Incident
      */
-    public function getSolveDeadLine(): ?DateTime
+    public function changeState(IncidentState $state = null): Incident
     {
-        return $this->solveDeadLine;
+        $this->state = $state;
+        return $this;
     }
 
     /**
-     * @param DateTime $solveDeadLine
+     * @return bool
      */
-    public function setSolveDeadLine($solveDeadLine): void
+    public function canEditFundamentals(): bool
     {
-        $this->solveDeadLine = $solveDeadLine;
+        return $this->getBehavior()->canEditFundamentals();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReportReporter(): ?User
+    {
+        return $this->reportReporter;
+    }
+
+    /**
+     * @param mixed $reportReporter
+     * @return Incident
+     */
+    public function setReportReporter(User $reportReporter): Incident
+    {
+        $this->setter($this->reportReporter, $reportReporter);
+        return $this;
+    }
+
+    /**
+     * @param mixed $property
+     * @param mixed $value
+     * @param bool $fundamental
+     * @return bool
+     */
+    public function setter(&$property, $value, bool $fundamental = false): bool
+    {
+        if ($this->getBehavior()) {
+            return $this->getBehavior()->setter($property, $value, $fundamental);
+        }
+        $property = $value;
+        return true;
+    }
+
+    /**
+     * @param IncidentChangeState $changeState
+     * @return Incident
+     */
+    public function addChangeStateHistory(IncidentChangeState $changeState): Incident
+    {
+        return $this->getBehavior()->addChangeStateHistory($this, $changeState);
+    }
+
+    /**
+     * @return Collection| IncidentDetected[]
+     */
+    public function getIncidentsDetected(): ?Collection
+    {
+        return $this->incidentsDetected;
     }
 
     /**
@@ -438,59 +521,14 @@ class Incident implements IncidentInterface
     /**
      * @return bool
      */
-    public function isNeedToCommunicate(): bool
+    public function canCommunicateComment(): bool
     {
-        return $this->needToCommunicate;
+        return $this->isLive();
     }
 
-    /**
-     * @param bool $needToCommunicate
-     */
-    public function setNeedToCommunicate(bool $needToCommunicate): void
+    public function isLive(): bool
     {
-        $this->needToCommunicate = $needToCommunicate;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNeedToCommunicateComment(): bool
-    {
-        return $this->isOpen();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isOpen(): bool
-    {
-        return (!$this->isClosed() and !$this->isNew());
-    }
-
-    /**
-     * @return bool
-     */
-    public function isClosed(): ?bool
-    {
-        return $this->isClosed;
-    }
-
-    public function setIsClosed($isClosed = false): Incident
-    {
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNew(): ?bool
-    {
-        return $this->isNew;
-    }
-
-    public function setIsNew($isNew = true): Incident
-    {
-        return $this;
+        return $this->getState()->isLive();
     }
 
     /**
@@ -507,12 +545,7 @@ class Incident implements IncidentInterface
      */
     public function setId(int $id): Incident
     {
-        $this->id = $id;
-        return $this;
-    }
-
-    public function getIncident(): Incident
-    {
+        $this->setter($this->id, $id);
         return $this;
     }
 
@@ -530,27 +563,7 @@ class Incident implements IncidentInterface
      */
     public function setRenotificationDate(DateTime $renotificationDate): Incident
     {
-        $this->renotificationDate = $renotificationDate;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    //FIX esto es una porqueria pero el problema ocurre con el  Form/IncidentType, al mandarle el header se pone en null el closed y en flase el new
-
-    /**
-     * @param DateTime $createdAt
-     * @return Incident
-     */
-    public function setCreatedAt(DateTime $createdAt): Incident
-    {
-        $this->createdAt = $createdAt;
+        $this->setter($this->renotificationDate, $renotificationDate);
         return $this;
     }
 
@@ -568,7 +581,7 @@ class Incident implements IncidentInterface
      */
     public function setFeed(IncidentFeed $feed): Incident
     {
-        $this->feed = $feed;
+        $this->setter($this->feed, $feed, true);
         return $this;
     }
 
@@ -586,7 +599,7 @@ class Incident implements IncidentInterface
      */
     public function setUrgency(IncidentUrgency $urgency): Incident
     {
-        $this->urgency = $urgency;
+        $this->setter($this->urgency, $urgency);
         return $this;
     }
 
@@ -604,7 +617,7 @@ class Incident implements IncidentInterface
      */
     public function setImpact(IncidentImpact $impact): Incident
     {
-        $this->impact = $impact;
+        $this->setter($this->impact, $impact);
         return $this;
     }
 
@@ -622,7 +635,7 @@ class Incident implements IncidentInterface
      */
     public function setReportMessageId(string $report_message_id): Incident
     {
-        $this->report_message_id = $report_message_id;
+        $this->setter($this->report_message_id, $report_message_id);
         return $this;
     }
 
@@ -640,7 +653,7 @@ class Incident implements IncidentInterface
      */
     public function setEvidenceFileTemp(string $evidence_file_temp = null): Incident
     {
-        $this->evidence_file_temp = $evidence_file_temp;
+        $this->setter($this->evidence_file_temp, $evidence_file_temp);
         return $this;
     }
 
@@ -658,7 +671,7 @@ class Incident implements IncidentInterface
      */
     public function setCommentThread(Thread $comment_thread): Incident
     {
-        $this->comment_thread = $comment_thread;
+        $this->setter($this->comment_thread, $comment_thread);
         return $this;
     }
 
@@ -667,7 +680,6 @@ class Incident implements IncidentInterface
      */
     public function getNotes(): ?string
     {
-
         return $this->notes;
     }
 
@@ -677,7 +689,7 @@ class Incident implements IncidentInterface
      */
     public function setNotes(string $notes): Incident
     {
-        $this->temporalNotes = $notes;
+        $this->setter($this->temporalNotes, $notes);
         return $this;
     }
 
@@ -702,94 +714,8 @@ class Incident implements IncidentInterface
      */
     public function setSlug(?string $slug): Incident
     {
-        $this->slug = $slug;
+        $this->setter($this->slug, $slug);
         return $this;
-    }
-
-    /**
-     * @param bool $alreadyDetected
-     * @return int
-     * @throws Exception
-     */
-    public function getOpenDays(bool $alreadyDetected = false): int
-    {
-        if ($alreadyDetected) {
-            $date = $this->getOpenedAt() ?: $this->getDate();
-        } else {
-            $date = $this->getDate();
-        }
-
-        if ($date) {
-            return $date->diff(new DateTime())->days;
-        }
-        return null;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getOpenedAt(): ?DateTime
-    {
-        return $this->openedAt;
-    }
-
-    /**
-     * @param DateTime $openedAt
-     * @return Incident
-     */
-    public function setOpenedAt(DateTime $openedAt = null): Incident
-    {
-        $this->openedAt = $openedAt;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getDate(): ?DateTime
-    {
-        return $this->date;
-    }
-
-    /**
-     * @param DateTime $date
-     * @return Incident
-     */
-    public function setDate(DateTime $date = null): Incident
-    {
-        $this->date = $date;
-        return $this;
-    }
-
-    /**
-     * @return int
-     * @throws Exception
-     */
-    public function getResponseMinutes(): int
-    {
-        if (!$this->isNew()) {
-
-            return abs(($this->getDate()->getTimestamp() - $this->getOpenedAt()->getTimestamp()) / 60); //lo devuelvo en minutos eso es el i
-        }
-
-        return abs(((new DateTime())->getTimestamp() - $this->getDate()->getTimestamp()) / 60);
-    }
-
-    /**
-     * @return int
-     * @throws Exception
-     */
-    public function getResolutionMinutes(): int
-    {
-        if (!$this->isClosed()) {
-            if (!$this->isNew()) {
-                return abs(((new DateTime())->getTimestamp() - $this->getOpenedAt()->getTimestamp()) / 60); //lo devuelvo en minutos eso es el i
-            }
-
-            return 0;
-        }
-
-        return abs(($this->getUpdatedAt()->getTimestamp() - $this->getOpenedAt()->getTimestamp()) / 60);
     }
 
     /**
@@ -806,30 +732,17 @@ class Incident implements IncidentInterface
      */
     public function setUpdatedAt(DateTime $updatedAt): Incident
     {
-        $this->updatedAt = $updatedAt;
+        $this->setter($this->updatedAt, $updatedAt);
         return $this;
     }
 
     /**
-     * @param bool $alreadyDetected
      * @return int
      * @throws Exception
      */
     public function getNewMinutes(): int
     {
-        if ($this->isNew()) {
-            return $this->getDate()->diff(new DateTime())->i; //lo devuelvo en minutos eso es el i
-        }
-
-        return 0;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getIncidentsDetected(): Collection
-    {
-        return $this->incidentsDetected;
+        return $this->getBehavior()->getNewMinutes($this);
     }
 
     /**
@@ -838,7 +751,7 @@ class Incident implements IncidentInterface
 
     public function setIncidentesDetected(ArrayCollection $incidentDetectedCollection): void
     {
-        $this->incidentsDetected = $incidentDetectedCollection;
+        $this->setter($this->incidentsDetected, $incidentDetectedCollection);
     }
 
     /**
@@ -847,31 +760,20 @@ class Incident implements IncidentInterface
      */
     public function addIncidentDetected(Incident $incidentDetected): Incident
     {
-        $nuevo = new IncidentDetected($incidentDetected, $this);
-        $this->incidentsDetected->add($nuevo);
-        $this->increaseLtdCount();
-        return $this;
+        return $this->getBehavior()->addIncidentDetected($this, $incidentDetected);
+    }
+
+    /**
+     * @return bool
+     */
+    public function canEnrich(): bool
+    {
+        return $this->getBehavior()->canEnrich();
     }
 
     public function increaseLtdCount(): void
     {
         ++$this->ltdCount;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getChangeStateHistory()
-    {
-        return $this->changeStateHistory;
-    }
-
-    /**
-     * @param ArrayCollection $changeStateHistory
-     */
-    public function setChangeStateHistory(ArrayCollection $changeStateHistory): void
-    {
-        $this->changeStateHistory = $changeStateHistory;
     }
 
     /**
@@ -903,7 +805,7 @@ class Incident implements IncidentInterface
      */
     public function getAssignedContacts(): ArrayCollection
     {
-        if ($this->getAssigned() && $this->getState()->getMailAssigned()->getLevel() >= $this->getPriority()->getCode()) {
+        if ($this->getAssigned() && $this->getStateEdge()->getMailAssigned()->getLevel() >= $this->getPriority()->getCode()) {
             return $this->getAssigned()->getContacts($this->getPriority()->getCode());
         }
         return new ArrayCollection();
@@ -923,39 +825,7 @@ class Incident implements IncidentInterface
      */
     public function setAssigned(User $assigned): Incident
     {
-        $this->assigned = $assigned;
-        return $this;
-    }
-
-    /**
-     * Get $state
-     *
-     * @return IncidentState
-     */
-    public function getState(): ?IncidentState
-    {
-        return $this->state;
-    }
-
-    /**
-     * Set state
-     * @param IncidentState $state
-     * @return Incident
-     */
-    public function setState(IncidentState $state = null): Incident
-    {
-        if ($this->getReporter()) {
-            $reporter = $this->getReporter();
-        } else {
-            $reporter = $this->reportReporter;
-        }
-        if ($this->modifyIncidentStatus($state)) {
-            if ($this->state != $state) {
-                $this->addChangeStateHistory(new IncidentChangeState($this, $state, $reporter, $this->getState()));
-                $this->lastState = $this->state;
-                $this->state = $state;
-            }
-        }
+        $this->setter($this->assigned, $assigned);
         return $this;
     }
 
@@ -973,7 +843,7 @@ class Incident implements IncidentInterface
      */
     public function setPriority(IncidentPriority $priority): Incident
     {
-        $this->priority = $priority;
+        $this->setter($this->priority, $priority);
         return $this;
     }
 
@@ -982,7 +852,7 @@ class Incident implements IncidentInterface
      */
     public function getReporterContacts(): ArrayCollection
     {
-        if ($this->getReporter() && $this->getState()->getMailReporter()->getLevel() >= $this->getPriority()->getCode()) {
+        if ($this->getReporter() && $this->getStateEdge()->getMailReporter()->getLevel() >= $this->getPriority()->getCode()) {
             return $this->getReporter()->getContacts($this->getPriority()->getCode());
         }
         return new ArrayCollection();
@@ -1002,7 +872,7 @@ class Incident implements IncidentInterface
      */
     public function setReporter(User $reporter = null): Incident
     {
-        $this->reporter = $reporter;
+        $this->setter($this->reporter, $reporter);
         return $this;
     }
 
@@ -1011,7 +881,7 @@ class Incident implements IncidentInterface
      */
     public function getNetworkAdminContacts(): ArrayCollection
     {
-        if ($this->getNetworkAdmin() && $this->getState()->getMailAdmin()->getLevel() >= $this->getPriority()->getCode()) {
+        if ($this->getNetworkAdmin() && $this->getStateEdge()->getMailAdmin()->getLevel() >= $this->getPriority()->getCode()) {
             return $this->getNetworkAdmin()->getContacts($this->getPriority()->getCode());
         }
         return new ArrayCollection();
@@ -1039,135 +909,214 @@ class Incident implements IncidentInterface
      */
     public function setNetwork(Network $network = null): Incident
     {
-        $this->network = $network;
+        $this->setter($this->network, $network);
         return $this;
     }
 
-    public function modifyIncidentStatus(IncidentState $state): bool
+    /**
+     * @return int
+     * @throws Exception
+     * @example if int positive incident is on time, if int is negative incident is delayed
+     */
+    public function getResponseDelayedDate()
     {
-        //FIX DAMIAN aca hay q avisar que no se puede cambiar el tipo de incidente
-        if ($this->isNew()) {
+        $fecha = new DateTime();
+        $minutes = $this->getResponseDelayedMinutes();
+        $intervalo = 'PT' . ($minutes >= 0 ? $minutes : $minutes * -1) . 'M';
+        $date_interval = new \DateInterval($intervalo);
+        $fecha->sub($date_interval);
 
-            if ($state->isOpening()) {
-                $this->open();
-                return true;
-            }
-
-            if ($state->isReOpening()) {
-                $this->open();
-                return true;
-            }
-            if ($state->isDiscarding()) {
-                $this->discard();
-                return true;
-            }
-
-            if (!$state->isClosing()) {
-                return true;
-            }
-        }
-        if ($this->isClosed()) {
-            if ($state->isReOpening()) {
-                $this->reOpen();
-                return true;
-            }
-
-            if ($state->isClosing()) {
-                return true;
-            }
-        }
-        if (!$this->isClosed() && !$this->isNew()) {
-            if ($state->isOpening() || $state->isReOpening()) {
-                return true;
-            }
-
-            if ($state->isClosing()) {
-                $this->close();
-                return true;
-            }
-        }
-        return false;
+        return $fecha->diff(new DateTime());
     }
 
     /**
+     * @return int
+     * @throws Exception
+     * @example if int positive incident is on time, if int is negative incident is delayed
+     */
+    public function getResponseDelayedMinutes(): int
+    {
+        $minutes = $this->getPriority()->getResponseTime() - ((new DateTime())->getTimestamp() - $this->getCreatedAt()->getTimestamp()) / 60;
+        return $minutes;
+
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param DateTime $createdAt
      * @return Incident
+     */
+    public function setCreatedAt(DateTime $createdAt): Incident
+    {
+        $this->setter($this->createdAt, $createdAt);
+        return $this;
+    }
+
+    /**
+     * @return int
+     * @throws Exception
+     * @example if int positive incident is on time, if int is negative incident is delayed
+     */
+    public function getResolutionDelayedDate()
+    {
+        $fecha = new DateTime();
+        $minutes = $this->getResolutionDelayedMinutes();
+
+        $intervalo = 'PT' . ($minutes >= 0 ? $minutes : $minutes * -1) . 'M';
+        $date_interval = new \DateInterval($intervalo);
+        $fecha->sub($date_interval);
+
+        return $fecha->diff(new DateTime());
+    }
+
+    /**
+     * @return int
      * @throws Exception
      */
-    public function open(): Incident
+    public function getResolutionDelayedMinutes(): int
     {
-        $this->setNeedToCommunicate(true);
-        $this->setOpenedAt(new DateTime('now'));
-        return $this->markAsNew(false);
-    }
+        $minutes = $this->getPriority()->getResolutionTime() - $this->getResolutionMinutes();
 
-    public function markAsNew(bool $isNew = true): Incident
-    {
-        $this->isNew = $isNew;
-        return $this;
+        return $minutes;
     }
 
     /**
-     * @return Incident
+     * @return int
      * @throws Exception
      */
-    public function discard(): Incident
+    public function getResolutionMinutes(): int
     {
-        $this->setOpenedAt(new DateTime('now'));
-        $this->markAsNew(false);
-        return $this->setAsDiscarded(true);
-    }
-
-    public function setAsDiscarded(bool $isDiscarded = false): Incident
-    {
-        $this->isDiscarded = $isDiscarded;
-        return $this;
+        return $this->getResolvedTime() / 60;
     }
 
     /**
-     * @return Incident
+     * @return int
      */
-    public function reOpen(): Incident
+    public function getResolvedTime(): int
     {
-        $this->setNeedToCommunicate(true);
-        return $this->setAsClosed();
-    }
-
-    public function setAsClosed(bool $isClosed = false): Incident
-    {
-        $this->isClosed = $isClosed;
-        return $this;
+        if ($this->getResolvedDate()) {
+            return abs($this->getResolvedDate()->getTimestamp() - $this->getCreatedAt()->getTimestamp());
+        }
+        return 0;
     }
 
     /**
-     * @return Incident
+     * @return DateTime|null
      */
-    public function close(): Incident
+    public function getResolvedDate(): ?DateTime
     {
-        return $this->setAsClosed(true);
+        if (!$this->getResolvedChangeStates()->isEmpty()) {
+            return $this->getResolvedChangeStates()->last()->getDate();
+        }
+        return null;
     }
 
     /**
-     * @param IncidentChangeState $changeState
-     * @return Incident
+     *
+     * i->s
+     * s->o   respos 1-2
+     * o->o
+     * o->c   resolve 1-4
+     * @return IncidentChangeState[] | Collection
      */
-    public function addChangeStateHistory(IncidentChangeState $changeState): Incident
+    public function getResolvedChangeStates(): Collection
     {
-        $this->changeStateHistory->add($changeState);
-        return $this;
+        if ($this->getChangeStateHistory()) {
+            return $this->getChangeStateHistory()->filter(static function (IncidentChangeState $changeState) {
+                return !$changeState->getNewState()->isResolved();
+            });
+        }
+        return new ArrayCollection();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getChangeStateHistory(): Collection
+    {
+        return $this->changeStateHistory;
+    }
+
+    /**
+     * @param ArrayCollection $changeStateHistory
+     */
+    public function setChangeStateHistory(ArrayCollection $changeStateHistory): void
+    {
+        $this->setter($this->changeStateHistory, $changeStateHistory);
+    }
+
+    /**
+     * @return int
+     * @throws Exception
+     */
+    public function getResponseMinutes(): int
+    {
+        return $this->getResponseTime() / 60;
+    }
+
+    /**
+     * @return int
+     * @throws Exception
+     */
+    public function getResponseTime(): int
+    {
+        if ($this->getResponsedDate()) {
+            return abs($this->getCreatedAt()->getTimestamp() - $this->getResponsedDate()->getTimestamp());
+        }
+
+        return 0;
+    }
+
+    /**
+     * @return DateTime
+     * @throws Exception
+     */
+    public function getResponsedDate(): DateTime
+    {
+        if (!$this->getAttendedChangeStates()->isEmpty()) {
+            return $this->getAttendedChangeStates()->last()->getDate();
+        }
+        return new DateTime();
+    }
+
+    /**
+     * @return IncidentChangeState[] | Collection
+     */
+    public function getAttendedChangeStates(): Collection
+    {
+        if ($this->getChangeStateHistory()) {
+            return $this->getChangeStateHistory()->filter(static function (IncidentChangeState $changeState) {
+                return !$changeState->getNewState()->isAttended();
+            });
+        }
+        return new ArrayCollection();
+    }
+
+    public function isDead(): bool
+    {
+        return $this->getState()->isDead();
+    }
+
+    public function isAttended(): bool
+    {
+        return $this->getState()->isAttended();
+    }
+
+    public function isResolved(): bool
+    {
+        return $this->getState()->isResolved();
     }
 
     public function statusToString(): string
     {
-        if ($this->isNew()) {
-            return 'New Incident';
-        }
-        if (!$this->isClosed() && !$this->isNew()) {
-            return 'Under treatment';
-        }
-        if ($this->isClosed()) {
-            return 'Closed';
-        }
-        return 'Undefined';
+        return $this->getBehavior()->getName();
     }
 
     /**
@@ -1177,7 +1126,7 @@ class Incident implements IncidentInterface
     {
         return array_filter($this->getEmailContacts()->map(static function (Contact $contact) {
             return $contact->getEmail();
-        })->toArray(), function ($value) {
+        })->toArray(), static function ($value) {
             return $value !== '';
         });
     }
@@ -1195,44 +1144,45 @@ class Incident implements IncidentInterface
     /**
      * @return bool
      */
-    public function canBeSended(): bool
+    public function canCommunicate(): bool
 
     {
-        return !$this->isStaging() && !$this->isUndefined();
+        return $this->isSendReport() && $this->getBehavior()->canComunicate() && $this->isNeedToCommunicate();
     }
 
     /**
      * @return bool
      */
-    public function isStaging(): bool
+    public function isSendReport(): bool
     {
-        return $this->getState()->getSlug() === 'staging';
+        return $this->sendReport;
     }
 
     /**
-     * @return bool
-     */
-    public function isUndefined(): bool
-    {
-        return $this->getType()->getSlug() === 'undefined';
-
-    }
-
-    /**
-     * @return IncidentType
-     */
-    public function getType(): ?IncidentType
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param IncidentType $type
+     * @param bool $sendReport
      * @return Incident
      */
-    public function setType(IncidentType $type = null): Incident
+    public function setSendReport(bool $sendReport): Incident
     {
-        $this->type = $type;
+        $this->setter($this->sendReport, $sendReport);
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNeedToCommunicate(): bool
+    {
+        return $this->needToCommunicate;
+    }
+
+    /**
+     * @param bool $needToCommunicate
+     * @return Incident
+     */
+    public function setNeedToCommunicate(bool $needToCommunicate): Incident
+    {
+        $this->setter($this->needToCommunicate, $needToCommunicate);
         return $this;
     }
 
@@ -1258,16 +1208,6 @@ class Incident implements IncidentInterface
         });
     }
 
-    public function isInternal(): bool
-    {
-        return false;
-    }
-
-    public function isExternal(): bool
-    {
-        return false;
-    }
-
     /**
      * Get evidence_file
      *
@@ -1286,8 +1226,8 @@ class Incident implements IncidentInterface
      */
     public function setEvidenceFile(File $evidenceFile = null): Incident
     {
-        $this->temporalEvidenceFile = $evidenceFile;
-        // $this->setEvidenceFilePath($evidenceFile->getFilename());
+        $this->setter($this->temporalEvidenceFile, $evidenceFile);
+//        $this->setEvidenceFilePath($evidenceFile->getFilename());
         return $this;
     }
 
@@ -1319,7 +1259,7 @@ class Incident implements IncidentInterface
      */
     public function setEvidenceFilePath(string $evidence_file_path = null): Incident
     {
-        $this->evidence_file_path = $evidence_file_path;
+        $this->setter($this->evidence_file_path, $evidence_file_path);
         return $this;
     }
 
@@ -1335,20 +1275,20 @@ class Incident implements IncidentInterface
     }
 
     /**
-     * @return bool
+     * @return DateTime
      */
-    public function isSendReport(): bool
+    public function getDate(): ?DateTime
     {
-        return $this->sendReport;
+        return $this->date;
     }
 
     /**
-     * @param bool $sendReport
+     * @param DateTime $date
      * @return Incident
      */
-    public function setSendReport(bool $sendReport): Incident
+    public function setDate(DateTime $date = null): Incident
     {
-        $this->sendReport = $sendReport;
+        $this->setter($this->date, $date);
         return $this;
     }
 
@@ -1366,7 +1306,7 @@ class Incident implements IncidentInterface
      */
     public function setDestination(Host $destination): Incident
     {
-        $this->destination = $destination;
+        $this->setter($this->destination, $destination);
         return $this;
     }
 
@@ -1395,11 +1335,14 @@ class Incident implements IncidentInterface
     public function setAddress(string $address): Incident
     {
         if ($this->getOrigin() && $this->getOrigin()->getAddress() !== $address) {
+            $old_origin = $this->getOrigin();
             $this->setOrigin();
-            $this->address = $address;
+            if (!$this->setter($this->address, $address, true)) {
+                $this->setOrigin($old_origin);
+            }
 
         } else {
-            $this->address = $address;
+            $this->setter($this->address, $address, true);
         }
         return $this;
     }
@@ -1418,7 +1361,7 @@ class Incident implements IncidentInterface
      */
     public function setOrigin(Host $origin = null): Incident
     {
-        $this->origin = $origin;
+        $this->setter($this->origin, $origin);
         return $this;
     }
 
@@ -1430,18 +1373,18 @@ class Incident implements IncidentInterface
         return $this->getAddress();
     }
 
-    public function updateVariables(Incident $incidentDetected): Incident
+    /**
+     * @param Incident $incident
+     * @return Incident
+     */
+    public function updateVariables(Incident $incident): Incident
     {
-        $this->setStateAndReporter($incidentDetected->getState(), $incidentDetected->getReporter());
-        if ($this->isNew()) {
-            if ($this->getTlp()->getCode() < $incidentDetected->getTlp()->getCode()) {
-                $this->setTlp($incidentDetected->getTlp());
-            }
-            if ($this->getPriority()->getCode() > $incidentDetected->getPriority()->getCode()) {
-                $this->setPriority($incidentDetected->getPriority());
-            }
-        }
+        $this->setStateAndReporter($incident->getState(), $incident->getReporter());
+        $this->updateTlp($incident);
+        $this->updatePriority($incident);
+
         return $this;
+
     }
 
     /**
@@ -1452,9 +1395,28 @@ class Incident implements IncidentInterface
      */
     public function setStateAndReporter(IncidentState $state, User $reporter): Incident
     {
-        $this->reportReporter = $reporter;
+        $this->setReportReporter($reporter);
         $this->setState($state);
         return $this;
+    }
+
+    /**
+     * @param Incident $incidentDetected
+     * @return Incident
+     */
+    public function updateTlp(Incident $incidentDetected): Incident
+    {
+        return $this->getBehavior()->updateTlp($this, $incidentDetected);
+
+    }
+
+    /**
+     * @param Incident $incidentDetected
+     * @return Incident
+     */
+    public function updatePriority(Incident $incidentDetected): Incident
+    {
+        return $this->getBehavior()->updatePriority($this, $incidentDetected);
     }
 
     /**
@@ -1471,20 +1433,58 @@ class Incident implements IncidentInterface
      */
     public function setTlp(IncidentTlp $tlp): Incident
     {
-        $this->tlp = $tlp;
+        $this->setter($this->tlp, $tlp);
         return $this;
     }
 
     public function patchStateAndReporter(User $reporter): Incident
     {
-        if (($this->lastState) && ($this->getState() !== $this->lastState)) {
+        if ($this->getLastState() && ($this->getState() !== $this->getLastState())) {
             $this->setStateAndReporter($this->getState(), $reporter);
         }
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getLastState(): IncidentState
+    {
+        return $this->getStateEdge() ? $this->getStateEdge()->getOldState() : null;
+    }
+
+    /**
+     * @return StateEdge
+     */
+    public function getStateEdge(): ?StateEdge
+    {
+        if ($this->getChangeStateHistory()) {
+            return $this->getChangeStateHistory()->last() ? $this->getChangeStateHistory()->last()->getStateEdge() : null;
+
+        }
+        return null;
+    }
+
     public function isDefined(): ?bool
     {
         return ($this->getOrigin() && $this->getType());
+    }
+
+    /**
+     * @return IncidentType
+     */
+    public function getType(): ?IncidentType
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param IncidentType $type
+     * @return Incident
+     */
+    public function setType(IncidentType $type = null): Incident
+    {
+        $this->setter($this->type, $type, true);
+        return $this;
     }
 }

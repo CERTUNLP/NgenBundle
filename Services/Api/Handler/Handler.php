@@ -14,6 +14,7 @@ namespace CertUnlp\NgenBundle\Services\Api\Handler;
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
 use CertUnlp\NgenBundle\Model\ApiHandlerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Form\FormFactoryInterface;
 
 abstract class Handler implements ApiHandlerInterface
@@ -32,6 +33,24 @@ abstract class Handler implements ApiHandlerInterface
         $this->repository = $this->om->getRepository($this->entityClass);
         $this->formFactory = $formFactory;
         $this->entityType = $entityType;
+    }
+
+    /**
+     * @return ObjectRepository
+     */
+    public function getRepository(): ObjectRepository
+    {
+        return $this->repository;
+    }
+
+    /**
+     * @param ObjectRepository $repository
+     * @return Handler
+     */
+    public function setRepository(ObjectRepository $repository): Handler
+    {
+        $this->repository = $repository;
+        return $this;
     }
 
     /**
@@ -104,7 +123,6 @@ abstract class Handler implements ApiHandlerInterface
         if ($form->isValid()) {
 
             $entity_class_instance = $form->getData();
-
             $entity_class_instance = $this->checkIfExists($entity_class_instance, $method);
             //try {
 

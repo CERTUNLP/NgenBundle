@@ -18,7 +18,7 @@ class Version20190701194227 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE incident_state_action ADD discard TINYINT(1) NOT NULL');
+//        $this->addSql('ALTER TABLE incident_state_action ADD discard TINYINT(1) NOT NULL');
     }
 
     /**
@@ -29,6 +29,6 @@ class Version20190701194227 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE incident_state_action DROP discard');
+//        $this->addSql('ALTER TABLE incident_state_action DROP discard');
     }
 }

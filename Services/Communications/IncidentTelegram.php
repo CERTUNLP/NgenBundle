@@ -26,7 +26,7 @@ class IncidentTelegram extends IncidentCommunication
     {
         $comment = $event->getComment();
 
-        if (!$this->commentManager->isNewComment($comment)or !$comment->getThread()->getIncident()->isNeedToCommunicateComment()) {
+        if (!$this->commentManager->isNewComment($comment) || !$comment->getThread()->getIncident()->canCommunicateComment()) {
             return;
         }
         if ($comment instanceof SignedCommentInterface) {

@@ -17,8 +17,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use FOS\CommentBundle\Event\CommentPersistEvent;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\SignedCommentInterface;
+use Swift_Attachment;
+use Swift_Mailer;
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
-use Symfony\Component\HttpFoundation\Response;
+use ZipArchive;
 
 class IncidentMailer extends IncidentCommunication
 {
@@ -29,7 +32,7 @@ class IncidentMailer extends IncidentCommunication
     protected $report_factory;
 
 
-    public function __construct(EntityManagerInterface $doctrine, CommentManagerInterface $commentManager, string $environment, string $lang, array $team, Translator $translator, \Swift_Mailer $mailer, string $cert_email, IncidentReportFactory $report_factory, string $upload_directory)
+    public function __construct(EntityManagerInterface $doctrine, CommentManagerInterface $commentManager, string $environment, string $lang, array $team, Translator $translator, Swift_Mailer $mailer, string $cert_email, IncidentReportFactory $report_factory, string $upload_directory)
     {
         parent::__construct($doctrine, $commentManager, $environment, $lang, $team, $translator);
         $this->mailer = $mailer;
@@ -40,7 +43,7 @@ class IncidentMailer extends IncidentCommunication
 
     public function prePersistDelegation(Incident $incident)
     {
-        $message = \Swift_Message::newInstance();
+        $message = Swift_Message::newInstance();
         $incident->setReportMessageId($message->getId());
     }
 
@@ -60,13 +63,12 @@ class IncidentMailer extends IncidentCommunication
         if ($incident->getState()->getMailTeam()->getLevel() >= $incident->getPriority()->getCode()) {
             $emails = array($this->cert_email);
         }
+
         $emails = array_merge($emails, $incident->getEmails());
-
-        if ($emails && $incident->canBeSended()) {
-
+        if ($emails) {
             #Hay que discutir si es necesario mandar cualquier cambio o que cosa todo || $is_new_incident || $renotification) {
             $html = $this->getBody($incident);
-            $message = \Swift_Message::newInstance()
+            $message = Swift_Message::newInstance()
                 ->setSubject(sprintf($this->mailSubject($renotification), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getAddress(), $incident->getId()))
                 ->setFrom($this->cert_email)
                 ->setSender($this->cert_email)
@@ -92,30 +94,6 @@ class IncidentMailer extends IncidentCommunication
         return null;
     }
 
-    public function getEvidenceFileName(Incident $incident)
-    {
-
-        // Create new Zip Archive.
-        $zip = new \ZipArchive();
-
-        // The name of the Zip documents.
-        $evidence_path = $this->upload_directory . $incident->getEvidenceSubDirectory() . "/";
-        $zipName = $evidence_path . 'EvidenceDocuments' . $incident . '.zip';
-        $options = array('remove_all_path' => TRUE);
-        $zip->open($zipName, \ZipArchive::CREATE);
-        foreach($incident->getIncidentsDetected() as $detected) {
-            if ($detected->getEvidenceFilePath()){
-                $zip->addFile($evidence_path.$detected->getEvidenceFilePath(),$detected->getEvidenceFilePath());
-            }
-        }
-        //$zip->addGlob($evidence_path . "*", GLOB_BRACE, $options);
-        $zip->close();
-
-        return $zipName;
-
-
-    }
-
     /**
      * @param Incident $incident
      * @param string $type
@@ -137,10 +115,32 @@ class IncidentMailer extends IncidentCommunication
         return $renotification_text . '[TLP:%s][%s] ' . $this->translator->trans('subject_mail_incidente') . ' [ID:%s]';
     }
 
+    public function getEvidenceFileName(Incident $incident)
+    {
+
+        // Create new Zip Archive.
+        $zip = new ZipArchive();
+
+        // The name of the Zip documents.
+        $evidence_path = $this->upload_directory . $incident->getEvidenceSubDirectory() . "/";
+        $zipName = $evidence_path . 'EvidenceDocuments' . $incident->__toString() . '.zip';
+        $options = array('remove_all_path' => TRUE);
+        $zip->open($zipName, ZipArchive::CREATE);
+        foreach ($incident->getIncidentsDetected() as $detected) {
+            if ($detected->getEvidenceFilePath()) {
+                $zip->addFile($evidence_path . $detected->getEvidenceFilePath(), $detected->getEvidenceFilePath());
+            }
+        }
+        //$zip->addGlob($evidence_path . "*", GLOB_BRACE, $options);
+        $zip->close();
+
+        return $zipName;
+    }
+
     public function onCommentPrePersist(CommentPersistEvent $event)
     {
         $comment = $event->getComment();
-        if (!$this->commentManager->isNewComment($comment) or !$comment->getThread()->getIncident()->isNeedToCommunicateComment()){
+        if (!$this->commentManager->isNewComment($comment) || !$comment->getThread()->getIncident()->canCommunicateComment()) {
             return;
         }
         if ($comment instanceof SignedCommentInterface) {
@@ -156,7 +156,7 @@ class IncidentMailer extends IncidentCommunication
     {
 
         $html = $this->getReplyBody($incident, $body);
-        $message = \Swift_Message::newInstance()
+        $message = Swift_Message::newInstance()
             ->setSubject(sprintf($this->replySubject(), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getAddress(), $incident->getId()))
             ->setFrom($this->cert_email)
             ->addPart($html, 'text/html');

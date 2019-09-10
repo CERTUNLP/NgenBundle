@@ -11,10 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Repository;
 
-use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query;
 
 /**
  * NetworkRepository
@@ -24,225 +22,23 @@ use Doctrine\ORM\Query;
  */
 class NetworkElementRepository extends EntityRepository
 {
-    public function findOneByStringAddress($params): ?NetworkElement
+    /**
+     * @param string $address
+     * @return NetworkElement|null| object
+     */
+    public function findOneByAddress(string $address): ?NetworkElement
     {
-        return $this->findOneByAddress(['address' => $params]);
-    }
-
-    public function findOneByAddress($params): ?NetworkElement
-    {
-        $address = explode('/', $params['address']);
-        switch (NetworkElement::guessType($address[0])) {
-            case FILTER_FLAG_IPV4:
-                return $this->findOneByIpV4($address[0]);
-                break;
+        switch (NetworkElement::guessType($address)) {
             case FILTER_FLAG_IPV6:
-                return $this->findOneByIpV6($address[0]);
+            case FILTER_FLAG_IPV4:
+                return $this->findOneByIp($address);
                 break;
             case FILTER_VALIDATE_DOMAIN:
-                return $this->findOneByDomain2($address[0]);
+                return $this->findOneByDomain($address);
                 break;
             default:
                 return null;
         }
-
     }
-
-    /**
-     * @param string $address
-     * @return NetworkElement|null
-     */
-    public function findOneByIpV4(string $address): ?NetworkElement
-    {
-        $results = $this->queryByIpV4($address)->getResult();
-        return $results ? $results[0] : null;
-    }
-
-    /**
-     * @param string $address
-     * @return Query
-     */
-    public function queryByIpV4(string $address): Query
-    {
-        $em = $this->getEntityManager();
-        $qb = $em->createQueryBuilder();
-        $qb->select('n')
-            ->from($this->getClassName(), 'n')
-            ->where($qb->expr()->between('INET_ATON(:address)', 'INET_ATON(n.ip_start_address)', 'INET_ATON(n.ip_end_address)'))
-            ->andWhere('n.isActive = true')
-            ->orderBy('n.ip_mask', 'DESC');
-
-        $qb->setParameter('address', $address);
-
-        return $qb->getQuery();
-    }
-
-    /**
-     * @param string $address
-     * @return NetworkElement|null
-     */
-    public function findOneByIpV6(string $address): ?NetworkElement
-    {
-        $results = $this->queryByIpV6($address)->getResult();
-        return $results ? $results[0] : null;
-    }
-
-    /**
-     * @param string $address
-     * @return Query
-     */
-    public function queryByIpV6(string $address): Query
-    {
-        $em = $this->getEntityManager();
-        $qb = $em->createQueryBuilder();
-        $qb->select('n')
-            ->from($this->getClassName(), 'n')
-            ->where($qb->expr()->between('INET6_ATON(:address)', 'INET6_ATON(n.ip_start_address)', 'INET6_ATON(n.ip_end_address)'))
-            ->andWhere('n.isActive = true')
-            ->orderBy('n.ip_mask', 'DESC');
-
-        $qb->setParameter('address', $address);
-
-        return $qb->getQuery();
-
-    }
-
-    /**
-     * @param string $address
-     * @return NetworkElement|null
-     */
-    public function findOneByDomain2(string $address): ?NetworkElement
-    {
-        $results = $this->queryByDomain($address)->getResult();
-        return $results ? $results[0] : null;
-    }
-
-    /**
-     * @param string $domain
-     * @return Query
-     */
-    public function queryByDomain(string $domain): Query
-    {
-        $em = $this->getEntityManager();
-        $qb = $em->createQueryBuilder();
-        $qb->select('n')
-            ->from($this->getClassName(), 'n')
-            ->andWhere('n.isActive = true')
-            ->orderBy('n.ip_mask', 'DESC');
-
-        $count = substr_count($domain, '.') + 1;
-
-        $qb->where($qb->expr()->eq('SUBSTRING_INDEX(:domain,\'.\',:count1 )', 'n.domain'));
-        $qb->setParameter('count1', -1);
-
-        for ($i = $count; $i > 1; $i--) {
-            $qb->orWhere($qb->expr()->eq('SUBSTRING_INDEX(:domain,\'.\',:count' . $i . ')', 'n.domain'));
-            $qb->setParameter('count' . $i, $i * -1);
-        }
-
-        $qb->setParameter('domain', $domain);
-
-        return $qb->getQuery();
-
-    }
-
-
-    public function findOneByIpAndMask($ip, $ip_mask)
-    {
-        return $this->findOneBy(['address' => $ip, 'address_mask' => $ip_mask]);
-    }
-
-    public function findOneBy(array $criteria, array $orderBy = null)
-    {
-        if (array_key_exists('address', $criteria)) {
-
-
-        $address = explode('/', $criteria['address']);
-        switch (Network::guessType($address[0])) {
-            case FILTER_FLAG_IPV4:
-                if (isset($address[1]) || isset($criteria['address_mask'])) {
-                    return parent::findOneBy(['ip' => $address[0], 'ip_mask' => $address[1] ?? $criteria['address_mask']]);
-                }
-                return parent::findOneBy(['ip' => $address[0]]);
-                break;
-            case FILTER_FLAG_IPV6:
-                if (isset($address[1]) || isset($criteria['address_mask'])) {
-                    return parent::findOneBy(['ip' => $address[0], 'ip_mask' => $address[1] ?? $criteria['address_mask']]);
-                }
-
-                return parent::findOneBy(['ip' => $address[0]]);
-                break;
-            case FILTER_VALIDATE_DOMAIN:
-                return parent::findOneBy(['domain' => $address[0]]);
-                break;
-            default:
-                return parent::findOneBy($criteria, $orderBy); // TODO: Change the autogenerated stub
-        }
-        }
-        elseif (array_key_exists('origin', $criteria)) {
-            return parent::findOneBy($criteria, $orderBy);
-        }
-            return null;
-    }
-
-    public function findOneByDomain($domain)
-    {
-        return $this->findOneBy(['address' => $domain, 'address_mask' => null]);
-    }
-
-    /**
-     * @param array $params
-     * @return array
-     */
-    public function findByAddress(array $params): array
-    {
-
-        $address = explode('/', $params['address']);
-        switch (NetworkElement::guessType($address[0])) {
-            case FILTER_FLAG_IPV4:
-                return $this->findByIpV4($address[0]);
-                break;
-            case FILTER_FLAG_IPV6:
-                return $this->findByIpV6($address[0]);
-                break;
-            case FILTER_VALIDATE_DOMAIN:
-                return $this->findByDomain($address[0]);
-                break;
-            default:
-                return null;
-        }
-
-    }
-
-    /**
-     * @param string $address
-     * @return array
-     */
-    public function findByIpV4(string $address): array
-    {
-        $results = $this->queryByIpV4($address)->getResult();
-        return $results ?: [];
-    }
-
-    /**
-     * @param string $address
-     * @return array
-     */
-    public function findByIpV6(string $address): array
-    {
-        $results = $this->queryByIpV6($address)->getResult();
-        return $results ?: [];
-    }
-
-    /**
-     * @param string $address
-     * @return array
-     */
-    public function findByDomain(string $address): array
-    {
-        $results = $this->queryByDomain($address)->getResult();
-        return $results ?: [];
-    }
-
 
 }

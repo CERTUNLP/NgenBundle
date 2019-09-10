@@ -11,7 +11,10 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Controller;
 
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class IncidentApiController extends ApiController
 {
@@ -21,7 +24,7 @@ class IncidentApiController extends ApiController
      * @param $slug
      * @return Response
      */
-            public function reportHtmlAction($slug)
+    public function reportHtmlAction($slug)
     {
         $data = array('state' => $slug);
         $this->getView()->setTemplate('CertUnlpNgenBundle:Incident:Report/Twig/incidentReportHtml.html.twig');
@@ -29,4 +32,18 @@ class IncidentApiController extends ApiController
         return $this->handle();
     }
 
+    /**
+     * @param string $type
+     * @param string|null $origin
+     * @return View
+     */
+    public function searchByTypeAndAddress(string $type, string $origin = null): View
+    {
+        $incident = $this->getCustomHandler()->getRepository()->findOneByTypeAndAddress($type, $origin);
+        if ($incident) {
+            return $this->response([$incident], Response::HTTP_OK);
+        }
+
+        throw new NotFoundHttpException(sprintf('%s object not found.', Incident::class));
+    }
 }

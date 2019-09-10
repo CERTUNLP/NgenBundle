@@ -36,12 +36,6 @@ fos_elastica:
                             fields:
                                 date:
                                     type: date
-                        isClosed:
-                            type: boolean
-                        isNew:
-                            type: boolean
-                        openedAt:
-                            type: date
                         evidence_file_path:
                             type: keyword
                         ltdCount:
@@ -431,26 +425,26 @@ fos_elastica:
                             type: date
                         updatedAt:
                             type: date
-                        mailAdmin:
-                            type: "object"
-                            properties:
-                                slug:
-                                    type: keyword
-                        mailTeam:
-                            type: "object"
-                            properties:
-                                slug:
-                                    type: keyword
-                        mailReporter:
-                            type: "object"
-                            properties:
-                                slug:
-                                    type: keyword
-                        mailAssigned:
-                            type: "object"
-                            properties:
-                                slug:
-                                    type: keyword
+#                        mailAdmin:
+#                            type: "object"
+#                            properties:
+#                                slug:
+#                                    type: keyword
+#                        mailTeam:
+#                            type: "object"
+#                            properties:
+#                                slug:
+#                                    type: keyword
+#                        mailReporter:
+#                            type: "object"
+#                            properties:
+#                                slug:
+#                                    type: keyword
+#                        mailAssigned:
+#                            type: "object"
+#                            properties:
+#                                slug:
+#                                    type: keyword
 
 
                     persistence:
@@ -459,7 +453,7 @@ fos_elastica:
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Incident\IncidentState
+                        model: CertUnlp\NgenBundle\Entity\Incident\State\IncidentState
                         provider: ~
                         finder: ~
                         listener:
