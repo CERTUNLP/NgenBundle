@@ -805,7 +805,7 @@ class Incident
      */
     public function getAssignedContacts(): ArrayCollection
     {
-        if ($this->getAssigned() && $this->getState()->getMailAssigned()->getLevel() >= $this->getPriority()->getCode()) {
+        if ($this->getAssigned() && $this->getStateEdge()->getMailAssigned()->getLevel() >= $this->getPriority()->getCode()) {
             return $this->getAssigned()->getContacts($this->getPriority()->getCode());
         }
         return new ArrayCollection();
@@ -852,7 +852,7 @@ class Incident
      */
     public function getReporterContacts(): ArrayCollection
     {
-        if ($this->getReporter() && $this->getState()->getMailReporter()->getLevel() >= $this->getPriority()->getCode()) {
+        if ($this->getReporter() && $this->getStateEdge()->getMailReporter()->getLevel() >= $this->getPriority()->getCode()) {
             return $this->getReporter()->getContacts($this->getPriority()->getCode());
         }
         return new ArrayCollection();
@@ -881,7 +881,7 @@ class Incident
      */
     public function getNetworkAdminContacts(): ArrayCollection
     {
-        if ($this->getNetworkAdmin() && $this->getState()->getMailAdmin()->getLevel() >= $this->getPriority()->getCode()) {
+        if ($this->getNetworkAdmin() && $this->getStateEdge()->getMailAdmin()->getLevel() >= $this->getPriority()->getCode()) {
             return $this->getNetworkAdmin()->getContacts($this->getPriority()->getCode());
         }
         return new ArrayCollection();
