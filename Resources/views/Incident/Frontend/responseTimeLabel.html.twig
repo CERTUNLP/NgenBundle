@@ -24,6 +24,7 @@
         <i class="fa fa-phone-slash" style="color:#f0ad4e"
            title="{{ 'Unanswered '|trans }}({{ incident.responseDelayedDate.d?  incident.responseDelayedDate| date("%ddays %hmin %isec"): incident.responseDelayedDate | date("%hmin %isec") }} {{ ' left'|trans }})"></i>
         {{ label_warning('Unanswered '|trans ~( incident.responseDelayedDate.d?  incident.responseDelayedDate| date("%ddays %hmin %isec"): incident.responseDelayedDate | date("%hmin %isec") )~ ' left'|trans) }}
+        {{ incident.responseDelayedMinutes }}
 
     {% else %}
         <i class="fa fa-phone-slash" style="color:red"
