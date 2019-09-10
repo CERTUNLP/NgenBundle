@@ -342,9 +342,8 @@
                                 <span class="label label-warning"> {{ 'Detected'|trans }}{{ ' ' }}{{ label_info(object.incidentsDetected|length) }}{{ ' ' }}{{ 'times'|trans }}</span>
                                 <span class="label label-warning"> {{ 'LAST:'|trans }}{{ object.incidentsDetected|last }}</span>
                             {% endif %}
-                            </legend>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body overflow-auto" style="max-height: 50vh">
                             {% include "@CertUnlpNgen/Incident/Frontend/redetectedTable.html.twig" with {'incident': object,'incidentsDetected':object.incidentsDetected} %}
                         </div>
                     </div>
@@ -362,7 +361,7 @@
                         <div class="card-header">
                             {{ 'Historical Status Changes'|trans }}{{ 'Detected'|trans }} {{ label_info(object.getChangeStateHistory|length) }} {{ 'changes'|trans }}
                         </div>
-                        <div class="card-body">
+                        <div class="card-body overflow-auto" style="max-height: 50vh" >
                             {% include "CertUnlpNgenBundle:Incident:Frontend/historyChangeSummary.html.twig" with {'incident': object} %}
                         </div>
                     </div>
@@ -377,7 +376,7 @@
                     <div class="card-header">
                         {{ 'Comments'|trans }}
                     </div>
-                    <div class="card-body">
+                    <div class="card-body overflow-auto" style="max-height: 70vh" >
                         {% block comments_body %}
                             {{ render(controller('CertUnlpNgenBundle:Frontend/Incident/IncidentFrontend:incidentComments', {'incident': object, 'request': app.request})) }}
                         {% endblock %}
