@@ -17,8 +17,8 @@
     <link rel="shortcut icon" href="{{ asset('bundles/certunlpngen/images/favicon.ico') }}"/>
     {% block stylesheets %}
         {% stylesheets
-            'css/bootstrap4.css'
-            'css/fontawesome-all.css'
+            '@bootstrap_css'
+            '@fontawesome_css'
             '@CertUnlpNgenBundle/Resources/public/css/plugins/metisMenu/metisMenu.min.css'
             '@CertUnlpNgenBundle/Resources/public/css/sb-admin-2.css'
             '@CertUnlpNgenBundle/Resources/public/css/sbadmin2-sidebar-toggle.css'
@@ -27,17 +27,19 @@
             '@CertUnlpNgenBundle/Resources/public/css/ladda-themeless.min.css'
             '@CertUnlpNgenBundle/Resources/public/css/plugins/select2-bootstrap.min.css'
             '@CertUnlpNgenBundle/Resources/public/css/plugins/select2.min.css'
+            '@CertUnlpNgenBundle/Resources/public/css/nunito.css'
             output='css/*.css' filter='cssrewrite' %}
             <link rel="stylesheet" type="text/css" href="{{ asset_url }}"/>
         {% endstylesheets %}
+
     {% endblock %}
 </head>
 <body id="page-top">
-    {% block body %}
-    {% endblock %}
-    {% block javascripts %}
-        {% javascripts
-        '@CertUnlpNgenBundle/Resources/public/js/lib/jquery.js'
+{% block body %}
+{% endblock %}
+{% block javascripts %}
+    {% javascripts
+        '@jquery_js'
         '@CertUnlpNgenBundle/Resources/public/js/lib/bootstrap.bundle.min.js'
         '@CertUnlpNgenBundle/Resources/public/js/plugins/metisMenu/metisMenu.min.js'
         '@CertUnlpNgenBundle/Resources/public/js/lib/sb-admin-2.min.js'
@@ -47,7 +49,7 @@
         '@CertUnlpNgenBundle/Resources/public/js/plugins/select2.min.js'
         '@TetranzSelect2EntityBundle/Resources/public/js/select2entity.js'
         '@CertUnlpNgenBundle/Resources/public/js/CertUnlp.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
+    <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
         var cert_unlp = new CertUnlp();

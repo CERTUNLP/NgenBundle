@@ -13,10 +13,10 @@ framework:
 
 assetic:
     filters:
-        less:
-            node: /usr/bin/node
-            node_paths: [/usr/lib/node_modules]
-            apply_to: "\.less$"
+        #        less:
+        #            node: /usr/bin/node
+        #            node_paths: [/usr/lib/node_modules]
+        #            apply_to: "\.less$"
         cssrewrite: ~
     bundles:
         - CertUnlpNgenBundle
@@ -24,12 +24,34 @@ assetic:
     assets:
         fontawesome_css:
             inputs:
-                - %kernel.root_dir%/../vendor/fortawesome/font-awesome/css/all.css
+                - "%kernel.root_dir%/../vendor/fortawesome/font-awesome/css/all.min.css"
             output: css/fontawesome-all.css
-        botsprap_css:
+        font-awesome-eot:
+            inputs: '%kernel.root_dir%/../vendor/fortawesome/font-awesome/webfonts/fa-solid-900.eot'
+            output: 'webfonts/fa-solid-900.eot'
+        font-awesome-woff2:
+            inputs: '%kernel.root_dir%/../vendor/fortawesome/font-awesome/webfonts/fa-solid-900.woff2'
+            output: 'webfonts/fa-solid-900.woff2'
+        font-awesome-ttf:
+            inputs: '%kernel.root_dir%/../vendor/fortawesome/font-awesome/webfonts/fa-solid-900.ttf'
+            output: 'fonts/fontawesome-webfont.ttf'
+        font-awesome-woff:
+            inputs: '%kernel.root_dir%/../vendor/fortawesome/font-awesome/webfonts/fa-solid-900.woff'
+            output: 'webfonts/fa-solid-900.woff'
+        font-awesome-svg:
+            inputs: '%kernel.root_dir%/../vendor/fortawesome/font-awesome/webfonts/fa-solid-900.svg'
+            output: 'webfonts/fa-solid-900.svg'
+        bootstrap_css:
             inputs:
-                - %kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.css
+                - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.min.css"
             output: css/bootstrap4.css
+        bootstrap_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"
+        jquery_js:
+            inputs:
+                - "%kernel.root_dir%/../vendor/components/jquery/jquery.min.js"
+
     #
 #        fontawesome_fonts:
 #            inputs:
@@ -121,10 +143,10 @@ nelmio_api_doc:
 
 imap:
     connections:
-       ngen_connection:
-           mailbox: "{%imap_server%}INBOX"
-           username: "%imap_username%"
-           password: "%imap_password%"
+        ngen_connection:
+            mailbox: "{%imap_server%}INBOX"
+            username: "%imap_username%"
+            password: "%imap_password%"
 
 #braincrafted_bootstrap:
 #    assets_dir: "%kernel.root_dir%/../vendor/twbs/bootstrap"
@@ -216,5 +238,5 @@ twig:
     globals:
         sign: '%ngen_sign%'
     form_themes:
-      - 'TetranzSelect2EntityBundle:Form:fields.html.twig'
-      - 'CertUnlpNgenBundle:Form:bootstrap_4_layout.html.twig'
+        - 'TetranzSelect2EntityBundle:Form:fields.html.twig'
+        - 'CertUnlpNgenBundle:Form:bootstrap_4_layout.html.twig'
