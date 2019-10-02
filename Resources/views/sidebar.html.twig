@@ -31,7 +31,7 @@
     <!-- Nav Item - Pages Collapse Menu -->
     <a class="nav-link {{ ('incident' in app.request.get('_route'))? '' : 'collapsed' }}" href="#"
        data-toggle="collapse"
-       data-target="#collapseTwo" aria-expanded="true"
+       data-target="#collapseTwo" aria-expanded="false"
        aria-controls="collapseTwo">
         {{ icon('exclamation-circle') }} <span class="sidebar-brand-text">{{ 'Incidents' | trans }}</span>
     </a>
@@ -109,7 +109,7 @@
 <div class="sidebar-heading"></div>
 <li class="nav-item">
     <a class="nav-link {{ ('dashboard' in app.request.get('_route'))? '' : 'collapsed' }}" href="#"
-       data-toggle="collapse" data-target="#collapseDashboard" aria-expanded="true"
+       data-toggle="collapse" data-target="#collapseDashboard"
        aria-controls="collapseDashboard">
         <span> {{ icon('fas fa-chart-line') }} {{ 'Dashboard'| trans }}</span>
     </a>
@@ -129,7 +129,7 @@
 <div class="sidebar-heading"></div>
 <li class="nav-item">
     <a class="nav-link {{ ('user' in app.request.get('_route'))? '' : 'collapsed' }}" href="#" data-toggle="collapse"
-       data-target="#collapseSettings" aria-expanded="true"
+       data-target="#collapseSettings"
        aria-controls="collapseUtilities">
         <span> {{ icon('cog') }} {{ 'Settings'| trans }}</span>
     </a>
