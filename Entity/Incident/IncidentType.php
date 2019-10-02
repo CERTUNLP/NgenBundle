@@ -60,6 +60,14 @@ class IncidentType
     private $isActive = true;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_Classification", type="boolean")
+     * @JMS\Expose
+     */
+    private $isClassification = false;
+
+    /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
@@ -92,12 +100,23 @@ class IncidentType
      */
     private $reports;
 
+    private $rootType;
+
+
+    /**
+     * @var IncidentType
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType")
+     * @ORM\JoinColumn(name="root_type", referencedColumnName="slug",nullable=true)
+     **/
+
+
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->setRootType(null);
     }
 
     public function __toString()
@@ -292,6 +311,30 @@ class IncidentType
     }
 
     /**
+     * Get report
+     *
+     * @param string $lang
+     * @return IncidentReport
+     */
+    public function getReport(string $lang = null)
+    {
+        $reporte = $this->reports->filter(
+            static function (IncidentReport $report) use ($lang) {
+                return $report->getLang() === $lang;
+            }
+        )->first();
+        if ($reporte) {
+            return $reporte;
+        } else {
+            if (!$this->isClassification()) {
+                return $this->getRootType()->getReport();
+            } else {
+                return false;
+            }
+        }
+    }
+
+    /**
      * Add report
      *
      * @param IncidentReport $report
@@ -326,16 +369,36 @@ class IncidentType
     }
 
     /**
-     * Get report
-     *
-     * @param string $lang
-     * @return IncidentReport
+     * @return mixed
      */
-    public function getReport(string $lang = null)
+    public function getRootType()
     {
-        return $this->reports->filter(static function (IncidentReport $report) use ($lang) {
-            return $report->getLang() === $lang;
-        })->first();
+        return $this->rootType;
     }
+
+    /**
+     * @param mixed $rootType
+     */
+    public function setRootType($rootType = null): void
+    {
+        $this->rootType = $rootType;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isClassification(): bool
+    {
+        return $this->isClassification;
+    }
+
+    /**
+     * @param bool $isClassification
+     */
+    public function setIsClassification(bool $isClassification): void
+    {
+        $this->isClassification = $isClassification;
+    }
+
 
 }
