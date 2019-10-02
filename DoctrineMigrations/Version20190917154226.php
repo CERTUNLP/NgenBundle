@@ -20,7 +20,7 @@ class Version20190917154226 extends AbstractMigration
         $this->addSql('UPDATE state_behavior SET slug="closed" WHERE slug="close"');
         $this->addSql('UPDATE state_behavior SET slug="discarded" WHERE slug="discard"');
         $this->addSql('UPDATE state_behavior SET slug="on_treatment", name="On Treatment" WHERE slug="open"');
-        $this->addSql('DELETE FROM incident_change_state where  is null');
+        $this->addSql('DELETE FROM incident_change_state where state_edge_id is null');
         $this->addSql("UPDATE incident_tlp SET name='amber' WHERE slug='amber'");
         $this->addSql("UPDATE incident_tlp SET name='green' WHERE slug='green';");
         $this->addSql("UPDATE incident_tlp SET name='red' WHERE slug='red';");
