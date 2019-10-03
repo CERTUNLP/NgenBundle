@@ -114,3 +114,7 @@ legend
     text-transform: uppercase;
     letter-spacing: 4px;
 }
+.chart {
+    width: 100%;
+    min-width: 25%;
+}

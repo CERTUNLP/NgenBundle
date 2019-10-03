@@ -239,9 +239,34 @@ class Host extends NetworkElement
     }
 
     /**
+     * Get incidents
+     *
+     * @param string $type
+     * @return Collection
+     */
+    public function getliveIncidentsAsOriginOfType(string $type): Collection
+    {
+        return $this->getliveIncidentsAsOrigin()->filter(static function (Incident $incident) use ($type) {
+            return $incident->getType()->getSlug() === $type;
+        });
+    }
+
+    /**
+     * Get incidents
+     *
+     * @return Collection
+     */
+    public function getliveIncidentsAsOrigin(): Collection
+    {
+        return $this->getIncidentsAsOrigin()->filter(static function (Incident $incident) {
+            return $incident->isLive();
+        });
+    }
+
+    /**
      * @return Incident[]|Collection
      */
-    public function getIncidentsAsOrigin()
+    public function getIncidentsAsOrigin(): Collection
     {
         return $this->incidents_as_origin;
     }
@@ -250,7 +275,7 @@ class Host extends NetworkElement
      * @param Incident[]|Collection $incidents_as_origin
      * @return Host
      */
-    public function setIncidentsAsOrigin($incidents_as_origin)
+    public function setIncidentsAsOrigin(Collection $incidents_as_origin): self
     {
         $this->incidents_as_origin = $incidents_as_origin;
         return $this;
@@ -259,7 +284,7 @@ class Host extends NetworkElement
     /**
      * @return Incident[]|Collection
      */
-    public function getIncidentsAsDestination()
+    public function getIncidentsAsDestination(): Collection
     {
         return $this->incidents_as_destination;
     }
@@ -268,7 +293,7 @@ class Host extends NetworkElement
      * @param Incident[]|Collection $incidents_as_destination
      * @return Host
      */
-    public function setIncidentsAsDestination($incidents_as_destination)
+    public function setIncidentsAsDestination(Collection $incidents_as_destination): self
     {
         $this->incidents_as_destination = $incidents_as_destination;
         return $this;
