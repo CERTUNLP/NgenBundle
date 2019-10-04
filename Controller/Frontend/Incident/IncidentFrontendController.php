@@ -86,30 +86,7 @@ class IncidentFrontendController extends Controller
         if ($incident->getChangeStateHistory()->count() > 1) {
             $response['timeline'] = $this->makeTimeline($incident);
         }
-        $col = new ColumnChart();
-
-        $ratio = [];
-        foreach ($incident->getIncidentsDetected() as $detected) {
-            if (isset($ratio[$detected->getDate()->format('d-m')])) {
-                $ratio[$detected->getDate()->format('d-m')]++;
-            } else {
-                $ratio[$detected->getDate()->format('d-m')] = 1;
-            }
-        }
-        $percentages = [];
-        foreach ($ratio as $key => $value) {
-            $percentages[] = [$key, $value];
-        }
-        array_unshift($percentages, ['Days', 'Detections per Day']);
-
-        $col->getData()->setArrayToDataTable(
-            $percentages
-        );
-        $col->getOptions()->setTitle('Detections: ' . $incident->getLtdCount());
-        $col->getOptions()->getLegend()->setPosition('none');
-        $col->getOptions()->getAnnotations()->setAlwaysOutside(true);
-
-        $response['column_chart'] = $col;
+        $response['column_chart'] = $this->makeColumnChart($incident);
         return $response;
     }
 
@@ -163,7 +140,7 @@ class IncidentFrontendController extends Controller
             if (isset($states[$detected->getNewState()->getName()]) && $detected->getNewState()->getName() !== $detected->getOldState()->getName()) {
                 $suffix++;
                 $states[$detected->getNewState()->getName() . '-' . $suffix] = ['state', $detected->getNewState()->getName() . '-' . $suffix, $detected->getDate(), $detected->getDate()];
-            } elseif ( $detected->getNewState()->getName() === $detected->getOldState()->getName()) {
+            } elseif ($detected->getNewState()->getName() === $detected->getOldState()->getName()) {
                 $states[$detected->getOldState()->getName()][3] = $detected->getDate();
             } else {
                 $states[$detected->getNewState()->getName()] = ['state', $detected->getNewState()->getName(), $detected->getDate(), $detected->getDate()];
@@ -180,6 +157,42 @@ class IncidentFrontendController extends Controller
 
         );
         return $timeline;
+    }
+
+    /**
+     * @param Incident $incident
+     * @return ColumnChart
+     */
+    public function makeColumnChart(Incident $incident): ColumnChart
+    {
+        $col = new ColumnChart();
+
+        $ratio = [];
+        foreach ($incident->getIncidentsDetected() as $detected) {
+            if (isset($ratio[$detected->getDate()->format('d-m')])) {
+                $ratio[$detected->getDate()->format('d-m')]++;
+            } else {
+                $ratio[$detected->getDate()->format('d-m')] = 1;
+            }
+        }
+        if (isset($ratio[$incident->getCreatedAt()->format('d-m')])) {
+            $ratio[$incident->getCreatedAt()->format('d-m')]++;
+        } else {
+            $ratio[$incident->getCreatedAt()->format('d-m')] = 1;
+        }
+        $percentages = [];
+        foreach ($ratio as $key => $value) {
+            $percentages[] = [$key, $value];
+        }
+        array_unshift($percentages, ['Days', 'Detections per Day']);
+
+        $col->getData()->setArrayToDataTable(
+            $percentages
+        );
+        $col->getOptions()->setTitle('Detections: ' . ($incident->getLtdCount() + 1));
+        $col->getOptions()->getLegend()->setPosition('none');
+        $col->getOptions()->getAnnotations()->setAlwaysOutside(true);
+        return $col;
     }
 
     /**

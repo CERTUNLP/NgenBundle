@@ -4,63 +4,64 @@
     <div id="wrapper">
         <div id="notifications" class="notifications">
         </div>
-    {% block navigation_block %}
-        {% block navigation_sidebar %}
-            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-                {% include 'CertUnlpNgenBundle::sidebar.html.twig' %}
-            </ul>
-        {% endblock %}
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+        {% block navigation_block %}
+            {% block navigation_sidebar %}
+                <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+                    {% include 'CertUnlpNgenBundle::sidebar.html.twig' %}
+                </ul>
+            {% endblock %}
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
 
-            <!-- Main Content -->
-            <div id="content">
-                {% block page_wrapper %}
+                <!-- Main Content -->
+                <div id="content">
+                    {% block page_wrapper %}
 
-                    {% if app.user %}
-                        {% include 'CertUnlpNgenBundle:navBar:navRight.html.twig' %}
-                    {% endif %}
+                        {% if app.user %}
+                            {% include 'CertUnlpNgenBundle:navBar:navRight.html.twig' %}
+                        {% endif %}
 
-                {% endblock %}
-                <div class="container-fluid">
-                    {% block content %}
                     {% endblock %}
+                    <div class="container-fluid">
+                        {% block content %}
+                        {% endblock %}
+                    </div>
+                    <!-- Footer -->
+                    <footer class="sticky-footer bg-white">
+                        {% include 'CertUnlpNgenBundle::copyright.html.twig' %}
+                    </footer>
+                    <!-- End of Footer -->
                 </div>
-                <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                    {% include 'CertUnlpNgenBundle::copyright.html.twig' %}
-                </footer>
-                <!-- End of Footer -->
             </div>
-        </div>
-    {% endblock %}
+        {% endblock %}
     </div>
-<!-- End of Page Wrapper -->
+    <!-- End of Page Wrapper -->
 
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">{{ 'Select "Logout" below if you are ready to end your current session'|trans }}.
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">{{ 'Cancel'|trans }}</button>
-                <a class="btn btn-primary" href={{ path('fos_user_security_logout') }}>{{ 'Logout'|trans }}</a>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">{{ 'Select "Logout" below if you are ready to end your current session'|trans }}
+                    .
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">{{ 'Cancel'|trans }}</button>
+                    <a class="btn btn-primary" href={{ path('fos_user_security_logout') }}>{{ 'Logout'|trans }}</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
 
