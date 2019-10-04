@@ -8,19 +8,26 @@
 #}
 
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
+    {% macro colorbox(color,text,icon,href) %}
+        <a class="d-none d-sm-inline-block btn btn-sm btn-{{ color }} shadow-sm" role="button"
+           href="{{ href }}"
+           title=" {{ text }}">
+            {{ icon('fas fa-'~icon~' fa-sm text-white-50') }}
+            {{ text }}
+        </a>
+    {% endmacro %}
+    {% import _self as print %}
 {% block content_header %}
     <h1 class="h3 mb-0 text-gray-800">
         {{ icon('arrow-circle-down fa-fw') }}
-        {{ 'Incident'|trans }} [{{ 'ID'|trans }}
-        :{{ object.id }}
-        ][{{ object.type }}]
+        {{ 'Incident'|trans }}
+    {{ print.colorbox('primary',object.id,'id-card','#') }}
+    {{ print.colorbox('info',object.type,'cubes',path('cert_unlp_ngen_incident_type_detail',{'slug': object.type.slug})) }}
+    {{ print.colorbox('info',object.state,'cubes',path('cert_unlp_ngen_incident_state_detail',{'slug': object.state.slug})) }}
+    {{ print.colorbox('info',object.priority,'cubes',path('cert_unlp_ngen_incident_priority_detail',{'id': object.priority.id})) }}
+    {{ print.colorbox('info',object.tlp,'cubes','#') }}
+    {{ print.colorbox('primary','Edit','edit',path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': object.id})) }}
     </h1>
-    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" role="button"
-       href="{{ path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': object.id}) }}"
-       title=" {{ 'Edit'|trans }}">
-        {{ icon('fas fa-edit fa-sm text-white-50') }}
-        Edit
-    </a>
 {% endblock %}
 
 {% block content_body %}
@@ -48,116 +55,16 @@
                aria-controls="comments" aria-selected="false">{{ "Comments" |trans }}</a>
         </li>
     </ul>
+
+
     <div class="tab-content pt-2" id="myTabContent">
         <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="row col-md-12 ml-0  ">
-                        <div class="col-md-3 mb-4">
-                            <div class="card bg-warning text-center text-white shadow h-100 py-2">
-                                <div class="card-body">
-                                    TLP: {{ object.tlp }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class=" col-md-3 mb-4">
-                            <div class="card bg-info text-center text-white shadow h-100 py-2">
-                                <div class="card-body">{{ object.type }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class=" col-md-3 mb-4">
-                            <div class="card bg-info text-center text-white shadow h-100 py-2">
-                                <div class="card-body">{{ object.priority }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class=" col-md-3 mb-4">
-                            <div class="card bg-danger text-center text-white shadow h-100 py-2">
-                                <div class="card-body">
-                                    {{ object.state }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class=" col-md-3 mb-4">
-                            <div class="card bg-danger text-center text-white shadow h-100 py-2">
-                                <div class="card-body">
-                                    {{ object.state }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class=" col-md-3 mb-4">
-                            <div class="card bg-danger text-center text-white shadow h-100 py-2">
-                                <div class="card-body">
-                                    Detected {{ object.incidentsDetected.count }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row col-md-12 ml-0  ">
-                        <div class="col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                                Response time percentage
-                                            </div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ object.responsePercentage }}
-                                                        %
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="progress progress-sm mr-2">
-                                                        <div class="progress-bar bg-info" role="progressbar"
-                                                             style="width: {{ object.responsePercentage }}%"
-                                                             aria-valuenow="50" aria-valuemin="0"
-                                                             aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                                Resolution time percentage
-                                            </div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ object.getResolutionPercentage }}
-                                                        %
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="progress progress-sm mr-2">
-                                                        <div class="progress-bar bg-info" role="progressbar"
-                                                             style="width: {{ object.getResolutionPercentage }}%"
-                                                             aria-valuenow="50" aria-valuemin="0"
-                                                             aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
+                    <div class="row col-md-12 ml-0 ">
+                        {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'card', 'response': true} %}
+                        {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'card', 'response': false} %}
                         <div class="col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
@@ -250,21 +157,19 @@
                             </div>
                         </div>
                     {% endif %}
-                    {% if timeline %}
-                        <div class="col-md-12 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                            Detections
-                                        </div>
-                                        <div id="column_chart" class="chart">
-                                        </div>
+                    <div class="col-md-12 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Detections
+                                    </div>
+                                    <div id="column_chart" class="chart">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    {% endif %}
+                    </div>
                     <div class="col-md-4 mb-4">
                         <div class="card border-left-info shadow h-100 py-2">
                             <div class="card-body">
@@ -346,10 +251,7 @@
                                         {{ 'TLP'|trans }}
                                     </div>
                                     <div class="col-6 col-sm-6 border">
-                <span class="label tlp-{{ object.tlp|lower }} left">
-                                    TLP-{{ object.tlp | trans }}
-                                </span>
-
+                                        <span class="label tlp-{{ object.tlp|lower }} left">TLP-{{ object.tlp | trans }}</span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -377,14 +279,6 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-6 col-sm-6 border">
-                                        {{ 'Priority Impact/Urgency' |trans }}
-                                    </div>
-                                    <div class="col-6 col-sm-6 border">
-                                        {{ object.priority.impact }}/{{ object.priority.urgency }}
-                                    </div>
-                                </div>
                                 {% if object.incidentsDetected|length > 1 %}
                                     <div class="row">
                                         <div class="col-6 col-sm-6 border">
@@ -422,7 +316,7 @@
                                         {{ 'Response Time' |trans }}
                                     </div>
                                     <div class="col-6 col-sm-6 border">
-                                        {% include "CertUnlpNgenBundle:Incident:Frontend/responseTimeLabel.html.twig" with {'incident': object,'alreadyDetected':object.incidentsDetected} %}
+                                        {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'label', 'response': true} %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -430,7 +324,7 @@
                                         {{ 'Resolution Time' |trans }}
                                     </div>
                                     <div class="col-6 col-sm-6 border">
-                                        {% include "CertUnlpNgenBundle:Incident:Frontend/resolutionTimeLabel.html.twig" with {'incident': object,'alreadyDetected':object.incidentsDetected} %}
+                                        {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'label', 'response': false} %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -626,7 +520,7 @@
                         <div class="d-flex card-header align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">{{ "Historical Detections"|trans }}</h6>
                             <h6 class="m-0 font-weight-normal text-primary">
-                                <b>{{ object.incidentsDetected.count}} </b>{{ 'detections'|trans }}
+                                <b>{{ object.incidentsDetected.count }} </b>{{ 'detections'|trans }}
                             </h6>
                         </div>
                         <div class="card-body overflow-auto" style="max-height: 50vh">
