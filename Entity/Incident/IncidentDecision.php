@@ -2,6 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use DateTime;
@@ -16,9 +17,8 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentDecisionRepository")
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentDecision
+class IncidentDecision extends Entity
 {
-
     /**
      * @var int|null
      *
@@ -28,7 +28,6 @@ class IncidentDecision
      * @JMS\Expose()
      */
     protected $id;
-
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="create")
@@ -92,7 +91,6 @@ class IncidentDecision
      * @JMS\Expose()
      */
     protected $state;
-
     /**
      * @var IncidentState|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
@@ -100,7 +98,6 @@ class IncidentDecision
      * @JMS\Expose()
      */
     protected $unattendedState;
-
     /**
      * @var IncidentState|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
@@ -108,7 +105,6 @@ class IncidentDecision
      * @JMS\Expose()
      */
     protected $unsolvedState;
-
     /**
      * @var string
      * @ORM\Column(name="slug", type="string", length=100)
@@ -122,7 +118,6 @@ class IncidentDecision
      *
      */
     protected $slug;
-
     /**
      * @var boolean
      *
@@ -130,7 +125,6 @@ class IncidentDecision
      * @JMS\Expose()
      */
     private $autoSaved = false;
-
     /**
      * @var boolean
      *
@@ -139,6 +133,21 @@ class IncidentDecision
      */
     private $isActive = true;
 
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'question';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'info';
+    }
 
     public function __toString(): string
     {

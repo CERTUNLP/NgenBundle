@@ -12,6 +12,21 @@ use JMS\Serializer\Annotation as JMS;
  */
 class DiscardedBehavior extends StateBehavior
 {
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'folder-minus';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'danger';
+    }
 
     /**
      * @return bool

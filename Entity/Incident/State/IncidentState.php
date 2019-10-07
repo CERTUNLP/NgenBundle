@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident\State;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentChangeState;
 use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
@@ -36,8 +37,25 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentStateRepository")
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentState implements Translatable
+class IncidentState extends Entity implements Translatable
 {
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return $this->getBehavior()->getIcon();
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return $this->getBehavior()->getColor();
+    }
+
     /**
      * @var StateBehavior
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior", inversedBy="states")

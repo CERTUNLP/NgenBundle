@@ -17,5 +17,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class NetworkRdap extends Network
 {
-    
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'project-diagram';
+    }
+
 }

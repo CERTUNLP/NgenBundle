@@ -11,11 +11,12 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -32,7 +33,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentType
+class IncidentType extends Entity
 {
     /**
      * @var string
@@ -41,7 +42,6 @@ class IncidentType
      * @JMS\Expose
      */
     private $name;
-
     /**
      * @var string
      * @ORM\Id
@@ -50,7 +50,6 @@ class IncidentType
      * @JMS\Expose
      */
     private $slug;
-
     /**
      * @var boolean
      *
@@ -58,7 +57,6 @@ class IncidentType
      * @JMS\Expose
      */
     private $isActive = true;
-
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="create")
@@ -67,7 +65,6 @@ class IncidentType
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
-
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="update")
@@ -76,13 +73,11 @@ class IncidentType
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
-
     /**
      * @var Collection | Incident[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="type"))
      */
     private $incidents;
-
     /**
      * @var string|null
      *
@@ -90,7 +85,6 @@ class IncidentType
      * @JMS\Expose
      */
     private $description;
-
     /**
      * @var Collection | IncidentReport[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentReport",mappedBy="type",indexBy="lang"))
@@ -103,6 +97,22 @@ class IncidentType
     public function __construct()
     {
         $this->incidents = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'cubes';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'info';
     }
 
     public function __toString(): string
@@ -142,6 +152,24 @@ class IncidentType
     }
 
     /**
+     * @return IncidentReport[]|Collection
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    /**
+     * @param IncidentReport[]|Collection $reports
+     * @return IncidentType
+     */
+    public function setReports(Collection $reports): self
+    {
+        $this->reports = $reports;
+        return $this;
+    }
+
+    /**
      * Get incidents
      *
      * @param string $type
@@ -167,20 +195,20 @@ class IncidentType
     }
 
     /**
-     * @return IncidentReport[]|Collection
+     * @return Incident[]|Collection
      */
-    public function getReports(): Collection
+    public function getIncidents(): Collection
     {
-        return $this->reports;
+        return $this->incidents;
     }
 
     /**
-     * @param IncidentReport[]|Collection $reports
+     * @param Incident[]|Collection $incidents
      * @return IncidentType
      */
-    public function setReports(Collection $reports): self
+    public function setIncidents(Collection $incidents): self
     {
-        $this->reports = $reports;
+        $this->incidents = $incidents;
         return $this;
     }
 
@@ -253,24 +281,6 @@ class IncidentType
     public function setUpdatedAt(DateTime $updatedAt): IncidentType
     {
         $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
-    /**
-     * @return Incident[]|Collection
-     */
-    public function getIncidents(): Collection
-    {
-        return $this->incidents;
-    }
-
-    /**
-     * @param Incident[]|Collection $incidents
-     * @return IncidentType
-     */
-    public function setIncidents(Collection $incidents): self
-    {
-        $this->incidents = $incidents;
         return $this;
     }
 

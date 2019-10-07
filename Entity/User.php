@@ -45,7 +45,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class User extends BaseUser implements ReporterInterface
 {
-
     /**
      * @var integer
      *
@@ -54,17 +53,14 @@ class User extends BaseUser implements ReporterInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
     /**
      * @RollerworksPassword\PasswordStrength(minLength=7, minStrength=3)
      */
     protected $plainPassword;
-
     /**
      * @ORM\Column(name="api_key", type="string", length=255, nullable=true)
      */
     protected $apiKey;
-
     /**
      * @var string
      *
@@ -72,7 +68,6 @@ class User extends BaseUser implements ReporterInterface
      * @JMS\Expose()
      */
     private $firstname;
-
     /**
      * @var string
      *
@@ -80,31 +75,26 @@ class User extends BaseUser implements ReporterInterface
      * @JMS\Expose()
      */
     private $lastname;
-
     /**
      * @var DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
-
     /**
      * @var DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime")
      */
     private $updatedAt;
-
     /**
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="reporter")
      */
     private $incidents;
-
     /**
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="assigned")
      */
     private $assignedIncidents;
-
     /**
      * @var string
      *
@@ -112,7 +102,6 @@ class User extends BaseUser implements ReporterInterface
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
      * */
     private $slug;
-
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="user",cascade={"persist"},orphanRemoval=true)
@@ -128,6 +117,22 @@ class User extends BaseUser implements ReporterInterface
         $this->incidents = new ArrayCollection();
         $this->assignedIncidents = new ArrayCollection();
         $this->contacts = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'users';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'info';
     }
 
     /**

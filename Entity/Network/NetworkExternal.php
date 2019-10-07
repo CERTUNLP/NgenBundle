@@ -26,4 +26,12 @@ class NetworkExternal extends Network
     {
         return false;
     }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'share-alt';
+    }
 }

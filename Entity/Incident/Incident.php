@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
 use CertUnlp\NgenBundle\Entity\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
@@ -39,8 +40,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
  */
-class Incident
+class Incident extends Entity
 {
+
     /**
      * @var string
      * @JMS\Expose
@@ -220,7 +222,6 @@ class Incident
      * @JMS\Groups({"api"})
      */
     private $updatedAt;
-
     /**
      * @var boolean
      */
@@ -301,6 +302,56 @@ class Incident
         }
         $this->incidentsDetected = new ArrayCollection();
         $this->changeStateHistory = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'exclamation-circle';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return $this->getState()->getColor();
+    }
+
+    /**
+     * Get $state
+     *
+     * @return IncidentState
+     */
+    public function getState(): ?IncidentState
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set state
+     * @param IncidentState $state
+     * @return Incident
+     */
+    public function setState(IncidentState $state = null): ?Incident
+    {
+        if ($this->getState()) {
+            return $this->getState()->changeIncidentState($this, $state);
+        }
+        return $this->changeState($state);
+    }
+
+    /**
+     * Set state
+     * @param IncidentState $state
+     * @return Incident
+     */
+    public function changeState(IncidentState $state = null): Incident
+    {
+        $this->state = $state;
+        return $this;
     }
 
     /**
@@ -417,40 +468,6 @@ class Incident
     public function getBehavior(): ?StateBehavior
     {
         return $this->getState() ? $this->getState()->getBehavior() : null;
-    }
-
-    /**
-     * Get $state
-     *
-     * @return IncidentState
-     */
-    public function getState(): ?IncidentState
-    {
-        return $this->state;
-    }
-
-    /**
-     * Set state
-     * @param IncidentState $state
-     * @return Incident
-     */
-    public function setState(IncidentState $state = null): ?Incident
-    {
-        if ($this->getState()) {
-            return $this->getState()->changeIncidentState($this, $state);
-        }
-        return $this->changeState($state);
-    }
-
-    /**
-     * Set state
-     * @param IncidentState $state
-     * @return Incident
-     */
-    public function changeState(IncidentState $state = null): Incident
-    {
-        $this->state = $state;
-        return $this;
     }
 
     /**
@@ -1582,4 +1599,5 @@ class Incident
         $this->setter($this->type, $type, true);
         return $this;
     }
+
 }

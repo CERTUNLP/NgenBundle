@@ -29,7 +29,6 @@ use JMS\Serializer\Annotation as JMS;
  */
 class Host extends NetworkElement
 {
-
     /**
      * @var int
      *
@@ -39,7 +38,6 @@ class Host extends NetworkElement
      * @JMS\Expose
      */
     private $id;
-
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="create")
@@ -49,7 +47,6 @@ class Host extends NetworkElement
      * @JMS\Groups({"api"})
      */
     private $createdAt;
-
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="update")
@@ -59,7 +56,6 @@ class Host extends NetworkElement
      * @JMS\Groups({"api"})
      */
     private $updatedAt;
-
     /**
      * @var string
      *
@@ -68,7 +64,6 @@ class Host extends NetworkElement
      * @JMS\Groups({"api"})
      * */
     private $slug;
-
     /**
      * @var Network
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network", inversedBy="hosts", cascade={"persist"})
@@ -76,26 +71,22 @@ class Host extends NetworkElement
      * @JMS\Groups({"api"})
      */
     private $network;
-
     /**
      * @var Incident[]|Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="origin"))
      * @JMS\Exclude()
      */
     private $incidents_as_origin;
-
     /**
      * @var Incident[]|Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="destination"))
      */
     private $incidents_as_destination;
-
     /**
      * @var IncidentCommentThread
      * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread",mappedBy="host",fetch="EXTRA_LAZY"))
      */
     private $comment_thread;
-
     /**
      * @var bool
      *
@@ -109,6 +100,22 @@ class Host extends NetworkElement
         parent::__construct($term);
         $this->incidents_as_origin = new ArrayCollection();
         $this->incidents_as_destination = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'laptop';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'info';
     }
 
     /**
