@@ -14,6 +14,22 @@ use JMS\Serializer\Annotation as JMS;
 class OnTreatmentBehavior extends StateBehavior
 {
     /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'folder-open';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'info';
+    }
+
+    /**
      * @return bool
      */
     public function isAttended(): bool

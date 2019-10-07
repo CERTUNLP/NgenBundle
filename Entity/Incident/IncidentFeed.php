@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -28,16 +29,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentFeed
+class IncidentFeed extends Entity
 {
-//    /**
-//     * @var integer
-//     *
-//     * @ORM\Column(name="id", type="integer")
-//     * @ORM\Id
-//     * @ORM\GeneratedValue(strategy="AUTO")
-//     */
-//    private $id;
 
     /**
      * @var string
@@ -47,7 +40,6 @@ class IncidentFeed
      * @JMS\Groups({"api_input"})
      */
     private $name;
-
     /**
      * @var string
      * @ORM\Id
@@ -57,7 +49,6 @@ class IncidentFeed
      * @JMS\Groups({"api_input"})
      * */
     private $slug;
-
     /**
      * @var boolean
      *
@@ -65,7 +56,6 @@ class IncidentFeed
      * @JMS\Expose
      */
     private $isActive = true;
-
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
@@ -74,7 +64,6 @@ class IncidentFeed
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
-
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="update")
@@ -83,7 +72,6 @@ class IncidentFeed
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
-
     /**
      * @var string|null
      *
@@ -91,7 +79,6 @@ class IncidentFeed
      * @JMS\Expose
      */
     private $description;
-
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="feed")) */
     private $incidents;
 
@@ -101,6 +88,22 @@ class IncidentFeed
     public function __construct()
     {
         $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'rss';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'info';
     }
 
     public function __toString()

@@ -2,6 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -16,7 +17,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentTlp implements Translatable
+class IncidentTlp extends Entity implements Translatable
 {
     /**
      * @var string
@@ -26,7 +27,6 @@ class IncidentTlp implements Translatable
      * @Gedmo\Translatable
      */
     private $name;
-
     /**
      * @var integer
      *
@@ -34,7 +34,6 @@ class IncidentTlp implements Translatable
      * @JMS\Expose
      */
     private $code;
-
     /**
      * @var string
      * @ORM\Id
@@ -43,14 +42,12 @@ class IncidentTlp implements Translatable
      * @JMS\Expose
      * */
     private $slug;
-
     /**
      * @var string
      *
      * @ORM\Column(name="rgb", type="string", length=45, nullable=true)
      */
     private $rgb;
-
     /**
      * @var string
      *
@@ -58,14 +55,12 @@ class IncidentTlp implements Translatable
      * @JMS\Expose
      */
     private $when;
-
     /**
      * @var boolean
      *
      * @ORM\Column(name="encrypt", type="boolean", nullable=true)
      */
     private $encrypt;
-
     /**
      * @var string
      *
@@ -73,7 +68,6 @@ class IncidentTlp implements Translatable
      * @JMS\Expose
      */
     private $why;
-
     /**
      * @var string
      *
@@ -81,7 +75,6 @@ class IncidentTlp implements Translatable
      * @JMS\Expose
      */
     private $information;
-
     /**
      * @var string
      *
@@ -89,8 +82,6 @@ class IncidentTlp implements Translatable
      * @JMS\Expose
      */
     private $description;
-
-
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="tlp"))
      * @JMS\Exclude()
      */
@@ -102,6 +93,53 @@ class IncidentTlp implements Translatable
     public function __construct()
     {
         $this->incidents = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'traffic-light';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        switch ($this->getCode()) {
+            case 0:
+                return 'white';
+                break;
+            case 1:
+                return 'success';
+                break;
+            case 2:
+                return 'warning';
+                break;
+            case 3:
+                return 'danger';
+                break;
+            default:
+                return 'info';
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function getCode(): int
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param int $code
+     */
+    public function setCode(int $code): void
+    {
+        $this->code = $code;
     }
 
     /**
@@ -261,22 +299,6 @@ class IncidentTlp implements Translatable
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCode(): int
-    {
-        return $this->code;
-    }
-
-    /**
-     * @param int $code
-     */
-    public function setCode(int $code): void
-    {
-        $this->code = $code;
     }
 
 }

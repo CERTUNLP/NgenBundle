@@ -26,4 +26,12 @@ class NetworkInternal extends Network
     {
         return true;
     }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'share-alt-square';
+    }
 }

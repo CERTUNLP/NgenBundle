@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Network;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Network\Address\Address;
 use CertUnlp\NgenBundle\Entity\Network\Address\DomainAddress;
 use CertUnlp\NgenBundle\Entity\Network\Address\IpV4Address;
@@ -25,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @JMS\ExclusionPolicy("all")
  */
-abstract class NetworkElement
+abstract class NetworkElement extends Entity
 {
     /**
      * @var string

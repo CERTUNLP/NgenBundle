@@ -16,7 +16,21 @@ use JMS\Serializer\Annotation as JMS;
  */
 class NewBehavior extends StateBehavior
 {
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'file';
+    }
 
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'primary';
+    }
 
     public function updateTlp(Incident $incident, Incident $incidentDetected): Incident
     {

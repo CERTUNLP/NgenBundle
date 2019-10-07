@@ -35,7 +35,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 abstract class Network extends NetworkElement implements NetworkInterface
 {
-
     /**
      * @var int
      *
@@ -45,7 +44,6 @@ abstract class Network extends NetworkElement implements NetworkInterface
      * @JMS\Expose
      */
     protected $id;
-
     /**
      * @var string
      *
@@ -57,33 +55,28 @@ abstract class Network extends NetworkElement implements NetworkInterface
      * @JMS\Expose
      */
     protected $ip_mask;
-
     /**
      * @var NetworkAdmin
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
      */
     protected $network_admin;
-
     /**
      * @var NetworkEntity
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkEntity", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
      */
     protected $network_entity;
-
     /**
      * @var Collection| Incident[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="network"))
      */
     protected $incidents;
-
     /**
      * @var Collection| Host[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host",mappedBy="network", cascade={"persist"}))
      */
     protected $hosts;
-
     /**
      * @var boolean
      *
@@ -91,7 +84,6 @@ abstract class Network extends NetworkElement implements NetworkInterface
      * @JMS\Expose
      */
     protected $isActive = true;
-
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="create")
@@ -100,7 +92,6 @@ abstract class Network extends NetworkElement implements NetworkInterface
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     protected $createdAt;
-
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="update")
@@ -109,28 +100,24 @@ abstract class Network extends NetworkElement implements NetworkInterface
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     protected $updatedAt;
-
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     protected $ip_start_address;
-
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     protected $ip_end_address;
-
     /**
      * @ORM\Column(type="string",length=2,nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     private $country_code;
-
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
@@ -142,6 +129,15 @@ abstract class Network extends NetworkElement implements NetworkInterface
     {
         parent::__construct($term);
         $this->incidents = new ArrayCollection();
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'info';
     }
 
     public function getType(): string

@@ -8,7 +8,7 @@
 #}
 
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
-    {% macro colorbox(color,text,icon,href) %}
+    {% macro colorbox(color,icon,text,href) %}
         <a class="d-none d-sm-inline-block btn btn-sm btn-{{ color }} shadow-sm" role="button"
            href="{{ href }}"
            title=" {{ text }}">
@@ -19,14 +19,14 @@
     {% import _self as print %}
 {% block content_header %}
     <h1 class="h3 mb-0 text-gray-800">
-        {{ icon('arrow-circle-down fa-fw') }}
+        {{ icon('arrow-circle-down fa-fw text-'~object.color) }}
         {{ 'Incident'|trans }}
-    {{ print.colorbox('primary',object.id,'id-card','#') }}
-    {{ print.colorbox('info',object.type,'cubes',path('cert_unlp_ngen_incident_type_detail',{'slug': object.type.slug})) }}
-    {{ print.colorbox('info',object.state,'cubes',path('cert_unlp_ngen_incident_state_detail',{'slug': object.state.slug})) }}
-    {{ print.colorbox('info',object.priority,'cubes',path('cert_unlp_ngen_incident_priority_detail',{'id': object.priority.id})) }}
-    {{ print.colorbox('info',object.tlp,'cubes','#') }}
-    {{ print.colorbox('primary','Edit','edit',path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': object.id})) }}
+    {{ print.colorbox('primary','id-card',object.id,'#') }}
+    {{ print.colorbox(object.type.color,object.type.icon,object.type,path('cert_unlp_ngen_incident_type_detail',{'slug': object.type.slug})) }}
+    {{ print.colorbox(object.state.color,object.state.icon,object.state,path('cert_unlp_ngen_incident_state_detail',{'slug': object.state.slug})) }}
+    {{ print.colorbox(object.priority.color,object.priority.icon,object.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': object.priority.id})) }}
+    {{ print.colorbox(object.tlp.color,object.tlp.icon,object.tlp,'#') }}
+    {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': object.id})) }}
     </h1>
 {% endblock %}
 

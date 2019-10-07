@@ -2,6 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident\State\Behavior;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentChangeState;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
@@ -24,8 +25,9 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\DiscriminatorMap({"closed" = "ClosedBehavior", "on_treatment" = "OnTreatmentBehavior", "new" = "NewBehavior", "discarded" = "DiscardedBehavior", "behavior" = "StateBehavior"})
  * @JMS\ExclusionPolicy("all")
  */
-abstract class StateBehavior
+abstract class StateBehavior extends Entity
 {
+
     /**
      * @var string|null
      *

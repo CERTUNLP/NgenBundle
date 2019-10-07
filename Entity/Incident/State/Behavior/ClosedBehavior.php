@@ -13,6 +13,22 @@ use JMS\Serializer\Annotation as JMS;
  */
 class ClosedBehavior extends StateBehavior
 {
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'folder';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'danger';
+    }
     /**
      * @return bool
      */

@@ -2,6 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,9 +16,8 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IndicentPriorityRepository")
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentPriority
+class IncidentPriority extends Entity
 {
-
     /**
      * @var integer
      *
@@ -27,7 +27,6 @@ class IncidentPriority
      * @JMS\Expose
      */
     protected $id;
-
     /**
      * @var IncidentImpact
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="incidentsPriorities")
@@ -35,7 +34,6 @@ class IncidentPriority
      * @JMS\Expose
      */
     protected $impact;
-
     /**
      *
      * @var IncidentUrgency
@@ -44,13 +42,11 @@ class IncidentPriority
      * @JMS\Expose
      */
     protected $urgency;
-
     /**
      * @var Incident[] | Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="priority"))
      */
     protected $incidents;
-
     /**
      * @var boolean
      *
@@ -58,7 +54,6 @@ class IncidentPriority
      * @JMS\Expose
      */
     private $isActive = true;
-
     /**
      * @var int|null
      *
@@ -66,7 +61,6 @@ class IncidentPriority
      * @JMS\Expose
      */
     private $unresponseTime;
-
     /**
      * @var integer|null
      * @ORM\Column(name="unresolution_time", type="integer")
@@ -120,6 +114,56 @@ class IncidentPriority
      * @JMS\Expose
      */
     private $resolutionTime;
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'list-ol';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        switch ($this->getCode()) {
+            case 1:
+            case 2:
+                return 'danger';
+                break;
+            case 3:
+                return 'warning';
+                break;
+            case 4:
+                return 'info';
+                break;
+            case 5:
+                return 'primary';
+                break;
+            default:
+                return 'info';
+        }
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getCode(): ?int
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param int|null $code
+     * @return IncidentPriority
+     */
+    public function setCode(?int $code): IncidentPriority
+    {
+        $this->code = $code;
+        return $this;
+    }
 
     public function __toString()
     {
@@ -267,24 +311,6 @@ class IncidentPriority
     public function setUnresolutionTime(?int $unresolutionTime): IncidentPriority
     {
         $this->unresolutionTime = $unresolutionTime;
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getCode(): ?int
-    {
-        return $this->code;
-    }
-
-    /**
-     * @param int|null $code
-     * @return IncidentPriority
-     */
-    public function setCode(?int $code): IncidentPriority
-    {
-        $this->code = $code;
         return $this;
     }
 
