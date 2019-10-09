@@ -8,245 +8,379 @@
 #}
 
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
-{% block content_header %}
-    <h2 class="page-header">{{ icon('arrow-circle-down fa-fw') }}{{ 'Incident'|trans }} [{{ 'ID'|trans }}
-        :{{ object.id }}
-        ][{{ object.type }}] <a class="btn btn-sm btn-primary" role="button"
-                                href="{{ path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': object.id}) }}"
-                                title=" {{ 'Edit'|trans }}">
-            {{ icon('edit') }}
+    {% macro colorbox(color,text,icon,href) %}
+        <a class="d-none d-sm-inline-block btn btn-sm btn-{{ color }} shadow-sm" role="button"
+           href="{{ href }}"
+           title=" {{ text }}">
+            {{ icon('fas fa-'~icon~' fa-sm text-white-50') }}
+            {{ text }}
         </a>
-    </h2>
+    {% endmacro %}
+    {% import _self as print %}
+{% block content_header %}
+    <h1 class="h3 mb-0 text-gray-800">
+        {{ icon('arrow-circle-down fa-fw') }}
+        {{ 'Incident'|trans }}
+    {{ print.colorbox('primary',object.id,'id-card','#') }}
+    {{ print.colorbox('info',object.type,'cubes',path('cert_unlp_ngen_incident_type_detail',{'slug': object.type.slug})) }}
+    {{ print.colorbox('info',object.state,'cubes',path('cert_unlp_ngen_incident_state_detail',{'slug': object.state.slug})) }}
+    {{ print.colorbox('info',object.priority,'cubes',path('cert_unlp_ngen_incident_priority_detail',{'id': object.priority.id})) }}
+    {{ print.colorbox('info',object.tlp,'cubes','#') }}
+    {{ print.colorbox('primary','Edit','edit',path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': object.id})) }}
+    </h1>
 {% endblock %}
 
 {% block content_body %}
-    <div class="row">
-        {% block incident_body %}
-            <div class="col-lg-5">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        {{ "Incident Information"|trans }}
+    {#    <div class="row">#}
+    <ul class="nav nav-tabs shadow-" id="myTab" role="tablist">
+        <li class="nav-item ">
+            <a class="nav-link active" id="summary-tab" data-toggle="tab" href="#summary" role="tab"
+               aria-controls="summary"
+               aria-selected="true">{{ "Summary" |trans }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="detail-tab" data-toggle="tab" href="#detail" role="tab"
+               aria-controls="detail" aria-selected="false">{{ "Detail" |trans }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="detections-tab" data-toggle="tab" href="#detections" role="tab"
+               aria-controls="detections" aria-selected="false">{{ "Detections" |trans }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="state_changes-tab" data-toggle="tab" href="#state_changes" role="tab"
+               aria-controls="state_changes" aria-selected="false">{{ "State Changes" |trans }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="comments-tab" data-toggle="tab" href="#comments" role="tab"
+               aria-controls="comments" aria-selected="false">{{ "Comments" |trans }}</a>
+        </li>
+    </ul>
+
+
+    <div class="tab-content pt-2" id="myTabContent">
+        <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+            <div class="row">
+                <div class="col-lg-6">
+
+                    <div class="row col-md-12 ml-0 ">
+                        {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'card', 'response': true} %}
+                        {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'card', 'response': false} %}
+                        <div class="col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                <a class="text-xs font-weight-bold text-info text-uppercase mb-1"
+                                                   href="{{ path('cert_unlp_ngen_host_detail',{'id':object.origin.id}) }}">Host {{ object.origin }}
+                                                </a>
+                                            </div>
+                                            <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                                live incidents: {{ object.origin.liveincidentsasorigin.count }}
+                                            </div>
+                                            <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                                live {{ object.type }}
+                                                incidents: {{ object.origin.liveincidentsasoriginoftype(object.type.slug).count }}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-share-alt fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                <a class="text-xs font-weight-bold text-info text-uppercase mb-1"
+                                                   href="{{ path('cert_unlp_ngen_incident_type_detail',{'slug':object.type.slug}) }}">Type {{ object.type }}
+                                                </a>
+                                            </div>
+                                            <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                                live incidents: {{ object.origin.liveincidentsasorigin.count }}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-share-alt fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% if object.network %}
+                            <div class="col-md-6 mb-4">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                    <a class="text-xs font-weight-bold text-success text-uppercase mb-1"
+                                                       href="{% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':object.network} %}">Network {{ object.network }}
+                                                    </a>
+                                                </div>
+                                                <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                                    {#                                            live incidents: {{ object.network.liveincidents.count }}#}
+                                                </div>
+                                                <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                                    live {{ object.type }}
+                                                    {#                                            incidents: {{ object.network.liveincidentsoftype(object.type.slug).count }}#}
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-share-alt fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
-                    <div class="card-body">
 
-                        <div class="row">
-                            <div class="col-6 col-sm-6 border">
-                                {{ 'Host/Network Involved'|trans }}
-                            </div>
-                            <div class="col-6 col-sm-6 border">
-                                {{ object.address }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 col-sm-6 border">
-                                {{ 'State'|trans }}
-                            </div>
-                            <div class="col-6 col-sm-6 border">
-                                {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object} %}
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6 col-sm-6 border">
-                                {{ 'Type'|trans }}
-                            </div>
-                            <div class="col-6 col-sm-6 border">
-                                {{ object.type | trans }}
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6 col-sm-6 border">
-                                {{ 'TLP'|trans }}
-                            </div>
-                            <div class="col-6 col-sm-6 border">
-                <span class="label tlp-{{ object.tlp|lower }} left">
-                                    TLP-{{ object.tlp | trans }}
-                                </span>
-
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 col-sm-6 border">
-                                {{ 'Created at'|trans }}
-                            </div>
-                            <div class="col-6 col-sm-6 border">
-                                {{ object.createdAt|date('Y-m-d H:i') }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 col-sm-6 border">
-                                {{ 'Original Date'| trans }}
-                            </div>
-                            <div class="col-6 col-sm-6 border">
-                                {{ object.date |date('Y-m-d H:i') }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 col-sm-6 border">
-                                {{ 'Last Update'|trans }}
-                            </div>
-                            <div class="col-6 col-sm-6 border">
-                                {{ object.updatedAt |date('Y-m-d H:i') }}
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6 col-sm-6 border">
-                                {{ 'Priority Impact/Urgency' |trans }}
-                            </div>
-                            <div class="col-6 col-sm-6 border">
-                                {{ object.priority.impact }}/{{ object.priority.urgency }}
-                            </div>
-                        </div>
-                        {% if object.incidentsDetected|length > 1 %}
-                            <div class="row">
-                                <div class="col-6 col-sm-6 border">
-                                    {{ 'Times Detected'|trans }}
-                                </div>
-                                <div class="col-6 col-sm-6 border">
-                                    {{ 'Detected'|trans }}{{ ' ' }}{{ label_info(object.incidentsDetected|length) }}{{ ' ' }}{{ 'times'|trans }}
+                </div>
+                <div class="row col-lg-6">
+                    {% if timeline %}
+                        <div class="col-md-12 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                            Change states
+                                        </div>
+                                        <div id="timeline" class="chart">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-6 col-sm-6 border">
-                                    {{ 'Last Time Detected'|trans }}
-                                </div>
-                                <div class="col-6 col-sm-6 border">
-                                    {{ object.incidentsDetected|last.date|date('Y-m-d H:i') }}
-                                </div>
-                            </div>
-                        {% endif %}
-
-
-                        {% if object.evidenceFilePath %}
-
-                            <div class="row">
-                                <div class="col-6 col-sm-6 border">
-                                    {{ 'Evidence File'|trans }}
-                                </div>
-                                <div class="col-6 col-sm-6 border">
-                                    <a href="{{ path('cert_unlp_ngen_internal_incident_frontend_evidence_incident',{'slug':object.slug}) }}">{{ 'Evidence'| trans }}
-                                        (.zip)</a>
+                        </div>
+                    {% endif %}
+                    <div class="col-md-12 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Detections
+                                    </div>
+                                    <div id="column_chart" class="chart">
+                                    </div>
                                 </div>
                             </div>
-                        {% endif %}
-                        <div class="row">
-                            <div class="col-6 col-sm-6 border">
-                                {{ 'Response Time' |trans }}
-                            </div>
-                            <div class="col-6 col-sm-6 border">
-                                {% include "CertUnlpNgenBundle:Incident:Frontend/responseTimeLabel.html.twig" with {'incident': object,'alreadyDetected':object.incidentsDetected} %}
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Detection Feeds
+                                    </div>
+                                    <div id="piechart_feed" class="chart"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6 col-sm-6 border">
-                                {{ 'Resolution Time' |trans }}
-                            </div>
-                            <div class="col-6 col-sm-6 border">
-                                {% include "CertUnlpNgenBundle:Incident:Frontend/resolutionTimeLabel.html.twig" with {'incident': object,'alreadyDetected':object.incidentsDetected} %}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 col-sm-6 border">
-                                {{ 'Unresponse State' |trans }}
-                            </div>
-                            <div class="col-6 col-sm-6 border">
-                                {{ object.unattendedState }}
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Detection Priorities
+                                    </div>
+                                    <div id="piechart_priority" class="chart"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6 col-sm-6 border">
-                                {{ 'Unresolve State' |trans }}
-                            </div>
-                            <div class="col-6 col-sm-6 border">
-                                {{ object.unsolvedState }}
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Detection TLPs
+                                    </div>
+                                    <div id="piechart_tlp" class="chart"></div>
+                                </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
+
             </div>
-        {% endblock %}
-        <div class="col-lg-5">
-            {% block host_body %}
-                <div class="card mb-4">
-                    <div class="card-header">
-                        {{ "Host Information"|trans }}
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-6 col-sm-6 border">
-                                {{ 'ip'|trans }}
+        </div>
+        <div class="tab-pane fade" id="detail" role="tabpanel" aria-labelledby="detail-tab">
+            <div class="row">
+                {% block incident_body %}
+                    <div class="col-lg-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                <h6 class="m-0 font-weight-bold text-primary">{{ "Incident Information"|trans }}</h6>
                             </div>
-                            <div class="col-6 col-sm-6 border">
-                                {{ object.address }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 col-sm-6 border">
-                                {{ 'Active'|trans }}
-                            </div>
-                            <div class="col-6 col-sm-6 border">
-                                {{ object.origin and object.origin.isActive ? 'Yes'|trans:'No'|trans }}
+                            <div class="card-body">
 
-                            </div>
-                        </div>
-                        {% if object.origin and object.origin.network %}
+                                <div class="row">
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ 'Host/Network Involved'|trans }}
+                                    </div>
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ object.address }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ 'State'|trans }}
+                                    </div>
+                                    <div class="col-6 col-sm-6 border">
+                                        {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object} %}
+                                    </div>
+                                </div>
 
-                            <div class="row">
-                                <div class="col-6 col-sm-6 border">
-                                    {{ 'Network Entity'|trans }}
+                                <div class="row">
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ 'Type'|trans }}
+                                    </div>
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ object.type | trans }}
+                                    </div>
                                 </div>
-                                <div class="col-6 col-sm-6 border">
-                                    {{ object.origin.network.networkEntity }}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 col-sm-6 border">
-                                    {{ 'Network Admin'|trans }}
-                                </div>
-                                <div class="col-6 col-sm-6 border">
-                                    {{ object.origin.network.networkAdmin }}
 
+                                <div class="row">
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ 'TLP'|trans }}
+                                    </div>
+                                    <div class="col-6 col-sm-6 border">
+                                        <span class="label tlp-{{ object.tlp|lower }} left">TLP-{{ object.tlp | trans }}</span>
+                                    </div>
                                 </div>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-            {% endblock %}
-            {% block network_body %}
-                <div class="card mb-4">
-                    <div class="card-header">
-                        {{ "Network Information"|trans }}
-                    </div>
-                    <div class="card-body">
-                        <div>
-                            {% if object.network %}
-                                <table class="table table-bordered">
+                                <div class="row">
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ 'Created at'|trans }}
+                                    </div>
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ object.createdAt|date('Y-m-d H:i') }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ 'Original Date'| trans }}
+                                    </div>
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ object.date |date('Y-m-d H:i') }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ 'Last Update'|trans }}
+                                    </div>
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ object.updatedAt |date('Y-m-d H:i') }}
+                                    </div>
+                                </div>
+
+                                {% if object.incidentsDetected|length > 1 %}
                                     <div class="row">
                                         <div class="col-6 col-sm-6 border">
-                                            {{ 'IP/mask'|trans }}
+                                            {{ 'Times Detected'|trans }}
                                         </div>
                                         <div class="col-6 col-sm-6 border">
-                                            {{ object.network }}
+                                            {{ 'Detected'|trans }}{{ ' ' }}{{ label_info(object.incidentsDetected|length) }}{{ ' ' }}{{ 'times'|trans }}
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-6 col-sm-6 border">
-                                            {{ 'Active'|trans }}
+                                            {{ 'Last Time Detected'|trans }}
                                         </div>
                                         <div class="col-6 col-sm-6 border">
-                                            {{ object.network.isActive ? 'Yes'|trans:'No'|trans }}
+                                            {{ object.incidentsDetected|last.date|date('Y-m-d H:i') }}
                                         </div>
                                     </div>
+                                {% endif %}
+
+
+                                {% if object.evidenceFilePath %}
+
+                                    <div class="row">
+                                        <div class="col-6 col-sm-6 border">
+                                            {{ 'Evidence File'|trans }}
+                                        </div>
+                                        <div class="col-6 col-sm-6 border">
+                                            <a href="{{ path('cert_unlp_ngen_internal_incident_frontend_evidence_incident',{'slug':object.slug}) }}">{{ 'Evidence'| trans }}
+                                                (.zip)</a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <div class="row">
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ 'Response Time' |trans }}
+                                    </div>
+                                    <div class="col-6 col-sm-6 border">
+                                        {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'label', 'response': true} %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ 'Resolution Time' |trans }}
+                                    </div>
+                                    <div class="col-6 col-sm-6 border">
+                                        {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'label', 'response': false} %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ 'Unresponse State' |trans }}
+                                    </div>
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ object.unattendedState }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ 'Unresolve State' |trans }}
+                                    </div>
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ object.unsolvedState }}
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                {% endblock %}
+                <div class="col-lg-6">
+                    {% block host_body %}
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                <h6 class="m-0 font-weight-bold text-primary">{{ "Host Information"|trans }}</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ 'ip'|trans }}
+                                    </div>
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ object.address }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ 'Active'|trans }}
+                                    </div>
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ object.origin and object.origin.isActive ? 'Yes'|trans:'No'|trans }}
+
+                                    </div>
+                                </div>
+                                {% if object.origin and object.origin.network %}
+
                                     <div class="row">
                                         <div class="col-6 col-sm-6 border">
                                             {{ 'Network Entity'|trans }}
                                         </div>
                                         <div class="col-6 col-sm-6 border">
-                                            {{ object.network.networkEntity }}
+                                            {{ object.origin.network.networkEntity }}
                                         </div>
                                     </div>
                                     <div class="row">
@@ -254,94 +388,140 @@
                                             {{ 'Network Admin'|trans }}
                                         </div>
                                         <div class="col-6 col-sm-6 border">
-                                            {{ object.network.networkAdmin }}
+                                            {{ object.origin.network.networkAdmin }}
 
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endblock %}
+                    {% block network_body %}
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                <h6 class="m-0 font-weight-bold text-primary">{{ "Network Information"|trans }}</h6>
+                            </div>
+                            <div class="card-body">
+                                <div>
+                                    {% if object.network %}
+                                        <table class="table table-bordered">
+                                            <div class="row">
+                                                <div class="col-6 col-sm-6 border">
+                                                    {{ 'IP/mask'|trans }}
+                                                </div>
+                                                <div class="col-6 col-sm-6 border">
+                                                    {{ object.network }}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6 col-sm-6 border">
+                                                    {{ 'Active'|trans }}
+                                                </div>
+                                                <div class="col-6 col-sm-6 border">
+                                                    {{ object.network.isActive ? 'Yes'|trans:'No'|trans }}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6 col-sm-6 border">
+                                                    {{ 'Network Entity'|trans }}
+                                                </div>
+                                                <div class="col-6 col-sm-6 border">
+                                                    {{ object.network.networkEntity }}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6 col-sm-6 border">
+                                                    {{ 'Network Admin'|trans }}
+                                                </div>
+                                                <div class="col-6 col-sm-6 border">
+                                                    {{ object.network.networkAdmin }}
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6 col-sm-6 border">
+                                                </div>
+                                                <div class="col-6 col-sm-6 border">
+                                                    {{ object.network.networkAdmin? object.network.networkAdmin.emailsAsString: '' }}
+                                                </div>
+                                            </div>
+                                        </table>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    {% block reporter_body %}
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                <h6 class="m-0 font-weight-bold text-primary">{{ "Reporter Information"|trans }}</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ 'Name'|trans }}
+                                    </div>
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ object.reporter }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ 'Email'|trans }}
+                                    </div>
+                                    <div class="col-6 col-sm-6 border">
+                                        {{ object.reporter.emailsAsString }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endblock %}
+                </div>
+                <div class="col-lg-6">
+                    {% block asigned_body %}
+                        {% if object.assigned %}
+                            <div class="card shadow mb-4">
+                                <div class="card-header">
+                                    <h6 class="m-0 font-weight-bold text-primary">{{ "Assigned Information"|trans }}</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6 col-sm-6 border">
+                                            {{ 'Name'|trans }}
+                                        </div>
+                                        <div class="col-6 col-sm-6 border">
+                                            {{ object.assigned }}
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-6 col-sm-6 border">
+                                            {{ 'Email'|trans }}
                                         </div>
                                         <div class="col-6 col-sm-6 border">
-                                            {{ object.network.networkAdmin? object.network.networkAdmin.emailsAsString: '' }}
+                                            {{ object.assigned.emailsAsString }}
                                         </div>
                                     </div>
-                                </table>
-                            {% endif %}
-                        </div>
-                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endblock %}
                 </div>
-            {% endblock %}
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-5">
-            {% block reporter_body %}
-                <div class="card mb-4">
-                    <div class="card-header">
-                        {{ "Reporter Information"|trans }}
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-6 col-sm-6 border">
-                                {{ 'Name'|trans }}
-                            </div>
-                            <div class="col-6 col-sm-6 border">
-                                {{ object.reporter }}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 col-sm-6 border">
-                                {{ 'Email'|trans }}
-                            </div>
-                            <div class="col-6 col-sm-6 border">
-                                {{ object.reporter.emailsAsString }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endblock %}
-        </div>
-        <div class="col-lg-5">
-            {% block asigned_body %}
-                {% if object.assigned %}
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            {{ "Assigned Information"|trans }}
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-6 col-sm-6 border">
-                                    {{ 'Name'|trans }}
-                                </div>
-                                <div class="col-6 col-sm-6 border">
-                                    {{ object.assigned }}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 col-sm-6 border">
-                                    {{ 'Email'|trans }}
-                                </div>
-                                <div class="col-6 col-sm-6 border">
-                                    {{ object.assigned.emailsAsString }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-            {% endblock %}
-        </div>
-    </div>
-    {% block redetected_body %}
-        {% if object.incidentsDetected %}
+        <div class="tab-pane fade" id="detections" role="tabpanel" aria-labelledby="detections-tab">
+
             <div class="row">
-                <div class="col-lg-10">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            {{ "Historical Detections"|trans }}
-                            {% if not object.incidentsDetected is empty %}
-                                <span class="label label-warning"> {{ 'Detected'|trans }}{{ ' ' }}{{ label_info(object.incidentsDetected|length) }}{{ ' ' }}{{ 'times'|trans }}</span>
-                                <span class="label label-warning"> {{ 'LAST:'|trans }}{{ object.incidentsDetected|last }}</span>
-                            {% endif %}
+                <div class="col-lg-12">
+                    <div class="card shadow mb-4">
+                        <div class="d-flex card-header align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">{{ "Historical Detections"|trans }}</h6>
+                            <h6 class="m-0 font-weight-normal text-primary">
+                                <b>{{ object.incidentsDetected.count }} </b>{{ 'detections'|trans }}
+                            </h6>
                         </div>
                         <div class="card-body overflow-auto" style="max-height: 50vh">
                             {% include "@CertUnlpNgen/Incident/Frontend/redetectedTable.html.twig" with {'incident': object,'incidentsDetected':object.incidentsDetected} %}
@@ -349,50 +529,79 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="tab-pane fade" id="state_changes" role="tabpanel" aria-labelledby="state_changes-tab">
 
-        {% endif %}
-    {% endblock %}
-
-    {% block state_history %}
-        {% if object.getChangeStateHistory|length > 0 %}
             <div class="row">
-                <div class="col-lg-10">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            {{ 'Historical Status Changes'|trans }}{{ 'Detected'|trans }} {{ label_info(object.getChangeStateHistory|length) }} {{ 'changes'|trans }}
+                <div class="col-lg-12">
+                    <div class="card shadow mb-4">
+                        <div class="d-flex card-header align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">{{ 'Historical State Changes'|trans }} </h6>
+                            <h6 class="m-0 font-weight-normal text-primary">
+                                <b>{{ object.getChangeStateHistory.count }}</b> {{ 'state changes'|trans }}</h6>
                         </div>
-                        <div class="card-body overflow-auto" style="max-height: 50vh" >
+                        <div class="card-body overflow-auto" style="max-height: 50vh">
                             {% include "CertUnlpNgenBundle:Incident:Frontend/historyChangeSummary.html.twig" with {'incident': object} %}
                         </div>
                     </div>
                 </div>
             </div>
-        {% endif %}
-    {% endblock %}
-    {% block comments %}
-        <div class="row">
-            <div class="col-lg-10">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        {{ 'Comments'|trans }}
-                    </div>
-                    <div class="card-body overflow-auto" style="max-height: 70vh" >
-                        {% block comments_body %}
-                            {{ render(controller('CertUnlpNgenBundle:Frontend/Incident/IncidentFrontend:incidentComments', {'incident': object, 'request': app.request})) }}
-                        {% endblock %}
+        </div>
+        <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card shadow mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">
+                                {{ 'Comments'|trans }}
+                            </h6>
+
+                        </div>
+                        <div class="card-body overflow-auto" style="max-height: 70vh">
+                            {% block comments_body %}
+                                {{ render(controller('CertUnlpNgenBundle:Frontend/Incident/IncidentFrontend:incidentComments', {'incident': object, 'request': app.request})) }}
+                            {% endblock %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    {% endblock %}
+    </div>
 {% endblock %}
 
     {% block javascripts %}
         {{ parent() }}
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            function resize() {
+                // change dimensions if necessary
+                {{ gc_draw([ piechart_feed, piechart_priority, piechart_tlp,column_chart], ['piechart_feed', 'piechart_priority', 'piechart_tlp','column_chart']) }}
+
+                {% if timeline %}
+                {{ gc_draw([timeline], ['timeline']) }}
+                {% endif %}
+            }
+
+            if (window.addEventListener) {
+                window.addEventListener('resize', resize);
+            } else {
+                window.attachEvent('onresize', resize);
+            }
+        </script>
+
+        <script type="text/javascript">
+            {{ gc_draw([ piechart_feed, piechart_priority, piechart_tlp,column_chart], [ 'piechart_feed', 'piechart_priority', 'piechart_tlp','column_chart']) }}
+
+
+            {% if timeline %}
+            {{ gc_draw([timeline], ['timeline']) }}
+            {% endif %}
+        </script>
         <script>
             $(document).ready(function () {
                 window.api_key = '{{ app.user.apikey }}';
             });
+
         </script>
         {% javascripts '@CertUnlpNgenBundle/Resources/public/js/incident/comments.js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>

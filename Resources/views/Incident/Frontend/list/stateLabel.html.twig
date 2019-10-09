@@ -9,12 +9,12 @@
 
 
 
-{% if not incident.isLive %}
-    {{ label_danger(incident.state) }}
-{% elseif incident.isDead %}
-    {{ label_success(incident.state) }}
-{% else %}
+{% if  incident.state.isAddressed %}
     {{ label_info(incident.state) }}
+{% elseif incident.isLive %}
+    {{ label_primary(incident.state) }}
+{% else %}
+    {{ label_danger(incident.state) }}
 {% endif %}
 
 

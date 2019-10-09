@@ -1,0 +1,114 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% if response %}
+    {% set title = "Response" %}
+    {% set percentaje = incident.responsePercentage %}
+    {% set delayedMinutes = incident.responseDelayedMinutes %}
+    {% set delayedDate = incident.responseDelayedDate %}
+    {% set bool = incident.isAttended %}
+    {% set prefix_true = 'Answered' %}
+    {% set prefix_false = 'Unanswered' %}
+    {% set icon_true = 'fa-phone' %}
+    {% set icon_false = 'fa-phone-slash' %}
+
+{% else %}
+    {% set title = "Resolution" %}
+    {% set percentaje = incident.resolutionPercentage %}
+    {% set delayedMinutes = incident.resolutionDelayedMinutes %}
+    {% set delayedDate = incident.resolutionDelayedDate %}
+    {% set bool = incident.isResolved %}
+    {% set prefix_true = 'Solved' %}
+    {% set prefix_false = 'Unsolved' %}
+    {% set icon_true = 'fa-check-double' %}
+    {% set icon_false = 'fa-hourglass-half' %}
+{% endif %}
+
+{% if bool %}
+    {% if (delayedMinutes > 0) %}
+        {% set color = "success" %}
+        {% set suffix = ' left'|trans %}
+    {% else %}
+        {% set color = "info" %}
+        {% set suffix = ' late'|trans %}
+    {% endif %}
+    {% set icon = icon_true %}
+    {% set text = prefix_true|trans ~' '~ (delayedDate.d?  delayedDate| date("%ddays %hmin %isec"): delayedDate | date("%hmin %isec")) ~ suffix|trans %}
+{% else %}
+    {% if (delayedMinutes > 0) %}
+        {% set color = "warning" %}
+        {% set suffix = ' left'|trans %}
+    {% else %}
+        {% set color = "danger" %}
+        {% set suffix = ' late'|trans %}
+    {% endif %}
+    {% set icon = icon_false %}
+    {% set text = prefix_false|trans ~' '~ ( delayedDate.d?  delayedDate| date("%ddays %hmin %isec"): delayedDate | date("%hmin %isec") )~ suffix|trans %}
+{% endif %}
+
+{% import _self as print %}
+
+
+{% if type == "card" %}
+    {{ print.card(title,percentaje,delayedMinutes,bool,color,text,icon) }}
+{% elseif type == 'label' %}
+    {{ print.label(title,percentaje,delayedMinutes,bool,color,text,icon) }}
+{% else %}
+    {{ print.label_list(title,percentaje,delayedMinutes,bool,color,text,icon) }}
+{% endif %}
+
+{% macro label(title,percentaje,delayedMinutes,bool,color,text,icon) %}
+    <i class="fas {{ icon }} text-{{ color }}"
+       title="{{ text }}"></i>
+    <span class="label badge-{{ color }}">{{ text }}</span>
+{% endmacro %}
+
+{% macro label_list(title,percentaje,delayedMinutes,bool,color,text,icon) %}
+    <i class="fas {{ icon }} text-{{ color }}"
+       title="{{ text }}"></i>
+{% endmacro %}
+
+
+{% macro card(title,percentaje,delayedMinutes,bool,color,text,icon) %}
+    <div class="col-md-6 mb-4">
+        <div class="card border-left-{{ color }} shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-{{ color }} text-uppercase mb-1">
+                            {{ title ~ " time percentage" | trans }}
+                        </div>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ percentaje }}
+                                    %
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="progress progress-sm mr-2">
+                                    <div class="progress-bar bg-{{ color }}" role="progressbar"
+                                         style="width: {{ percentaje }}%"
+                                         aria-valuenow="50" aria-valuemin="0"
+                                         aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="text-sm-left  mb-0 text-gray-600">
+                                {{ text }}
+                            </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas {{ icon }} fa-2x text-{{ color }}"
+                           title="{{ text }}"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}

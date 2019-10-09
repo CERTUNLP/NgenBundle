@@ -20,6 +20,7 @@ use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
+use Closure;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -503,14 +504,6 @@ class Incident
     }
 
     /**
-     * @return Collection| IncidentDetected[]
-     */
-    public function getIncidentsDetected(): ?Collection
-    {
-        return $this->incidentsDetected;
-    }
-
-    /**
      * @return int
      */
     public function getLtdCount(): int
@@ -830,6 +823,34 @@ class Incident
     }
 
     /**
+     * @return StateEdge
+     */
+    public function getStateEdge(): ?StateEdge
+    {
+        if ($this->getChangeStateHistory()) {
+            return $this->getChangeStateHistory()->last() ? $this->getChangeStateHistory()->last()->getStateEdge() : null;
+
+        }
+        return null;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getChangeStateHistory(): Collection
+    {
+        return $this->changeStateHistory;
+    }
+
+    /**
+     * @param ArrayCollection $changeStateHistory
+     */
+    public function setChangeStateHistory(ArrayCollection $changeStateHistory): void
+    {
+        $this->setter($this->changeStateHistory, $changeStateHistory);
+    }
+
+    /**
      * @return IncidentPriority
      */
     public function getPriority(): ?IncidentPriority
@@ -936,9 +957,54 @@ class Incident
      */
     public function getResponseDelayedMinutes(): int
     {
-        $minutes = $this->getPriority()->getResponseTime() - ((new DateTime())->getTimestamp() - $this->getCreatedAt()->getTimestamp()) / 60;
-        return $minutes;
+        return $this->getPriority()->getResponseTime() - $this->getResponseMinutes();
 
+    }
+
+    /**
+     * @return int
+     * @throws Exception
+     */
+    public function getResponseMinutes(): int
+    {
+        return $this->getResponseTime() / 60;
+    }
+
+    /**
+     * @return int
+     * @throws Exception
+     */
+    public function getResponseTime(): int
+    {
+        if ($this->getResponsedDate()) {
+            return abs($this->getCreatedAt()->getTimestamp() - $this->getResponsedDate()->getTimestamp());
+        }
+        return abs($this->getCreatedAt()->getTimestamp() - (new DateTime())->getTimestamp());
+    }
+
+    /**
+     * @return DateTime
+     * @throws Exception
+     */
+    public function getResponsedDate(): ?DateTime
+    {
+        if (!$this->getAttendedChangeStates()->isEmpty()) {
+            return $this->getAttendedChangeStates()->last()->getDate();
+        }
+        return null;
+    }
+
+    /**
+     * @return IncidentChangeState[] | Collection
+     */
+    public function getAttendedChangeStates(): Collection
+    {
+        if ($this->getChangeStateHistory()) {
+            return $this->getChangeStateHistory()->filter(static function (IncidentChangeState $changeState) {
+                return $changeState->getNewState()->isAttended();
+            });
+        }
+        return new ArrayCollection();
     }
 
     /**
@@ -993,24 +1059,25 @@ class Incident
      */
     public function getResolutionMinutes(): int
     {
-        return $this->getResolvedTime() / 60;
+        return $this->getResolutionTime() / 60;
     }
 
     /**
      * @return int
+     * @throws Exception
      */
-    public function getResolvedTime(): int
+    public function getResolutionTime(): int
     {
-        if ($this->getResolvedDate()) {
-            return abs($this->getResolvedDate()->getTimestamp() - $this->getCreatedAt()->getTimestamp());
+        if ($this->getResolutionDate()) {
+            return abs($this->getCreatedAt()->getTimestamp() - $this->getResolutionDate()->getTimestamp());
         }
-        return 0;
+        return abs($this->getCreatedAt()->getTimestamp() - (new DateTime())->getTimestamp());
     }
 
     /**
      * @return DateTime|null
      */
-    public function getResolvedDate(): ?DateTime
+    public function getResolutionDate(): ?DateTime
     {
         if (!$this->getResolvedChangeStates()->isEmpty()) {
             return $this->getResolvedChangeStates()->last()->getDate();
@@ -1020,83 +1087,38 @@ class Incident
 
     /**
      *
-     * i->s
-     * s->o   respos 1-2
-     * o->o
-     * o->c   resolve 1-4
      * @return IncidentChangeState[] | Collection
      */
     public function getResolvedChangeStates(): Collection
     {
         if ($this->getChangeStateHistory()) {
             return $this->getChangeStateHistory()->filter(static function (IncidentChangeState $changeState) {
-                return !$changeState->getNewState()->isResolved();
+                return $changeState->getNewState()->isResolved();
             });
         }
         return new ArrayCollection();
     }
 
     /**
-     * @return Collection
+     * @return int
+     * @throws Exception
      */
-    public function getChangeStateHistory(): Collection
+    public function getResolutionPercentage(): int
     {
-        return $this->changeStateHistory;
-    }
+        $minutes = ($this->getResolutionMinutes() * 100) / $this->getPriority()->getResolutionTime();
 
-    /**
-     * @param ArrayCollection $changeStateHistory
-     */
-    public function setChangeStateHistory(ArrayCollection $changeStateHistory): void
-    {
-        $this->setter($this->changeStateHistory, $changeStateHistory);
+        return $minutes < 100 ? $minutes : 100;
     }
 
     /**
      * @return int
      * @throws Exception
      */
-    public function getResponseMinutes(): int
+    public function getResponsePercentage(): int
     {
-        return $this->getResponseTime() / 60;
-    }
+        $minutes = ($this->getResponseMinutes() * 100) / $this->getPriority()->getResponseTime();
 
-    /**
-     * @return int
-     * @throws Exception
-     */
-    public function getResponseTime(): int
-    {
-        if ($this->getResponsedDate()) {
-            return abs($this->getCreatedAt()->getTimestamp() - $this->getResponsedDate()->getTimestamp());
-        }
-
-        return 0;
-    }
-
-    /**
-     * @return DateTime
-     * @throws Exception
-     */
-    public function getResponsedDate(): DateTime
-    {
-        if (!$this->getAttendedChangeStates()->isEmpty()) {
-            return $this->getAttendedChangeStates()->last()->getDate();
-        }
-        return new DateTime();
-    }
-
-    /**
-     * @return IncidentChangeState[] | Collection
-     */
-    public function getAttendedChangeStates(): Collection
-    {
-        if ($this->getChangeStateHistory()) {
-            return $this->getChangeStateHistory()->filter(static function (IncidentChangeState $changeState) {
-                return !$changeState->getNewState()->isAttended();
-            });
-        }
-        return new ArrayCollection();
+        return $minutes < 100 ? $minutes : 100;
     }
 
     public function isDead(): bool
@@ -1138,6 +1160,91 @@ class Incident
     {
         return $this->getContacts()->filter(static function (Contact $contact) {
             return $contact->getEmail();
+        });
+    }
+
+    /**
+     * @param Closure $callback
+     * @return array
+     */
+    public function getRatioPercentage(): array
+    {
+        $percentages = [];
+        foreach ($this->getStateRatio() as $key => $value) {
+            $percentages[] = [$key, $value];
+        }
+
+        return $percentages;
+    }
+
+    /**
+     * @return array
+     */
+    public function getStateRatio(): array
+    {
+        return $this->getRatio(static function (IncidentDetected $detected) {
+            return $detected->getState()->getName();
+        });
+    }
+
+    /**
+     * @param Closure $callback
+     * @return array
+     */
+    public function getRatio(Closure $callback): array
+    {
+        $ratio = [];
+        foreach ($this->getIncidentsDetected() as $detected) {
+            if (isset($ratio[$callback($detected)])) {
+                $ratio[$callback($detected)]++;
+            } else {
+                $ratio[$callback($detected)] = 1;
+            }
+        }
+
+        $percentages = [];
+        foreach ($ratio as $key => $value) {
+            $percentages[] = [$key, $value];
+        }
+
+        return $percentages;
+    }
+
+    /**
+     * @return Collection| IncidentDetected[]
+     */
+    public function getIncidentsDetected(): ?Collection
+    {
+        return $this->incidentsDetected;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFeedRatio(): array
+    {
+        return $this->getRatio(static function (IncidentDetected $detected) {
+            return $detected->getFeed()->getName();
+        });
+    }
+
+    /**
+     * @return array
+     */
+    public function getTlpRatio(): array
+    {
+        return $this->getRatio(static function (IncidentDetected $detected) {
+            return $detected->getTlp()->getName();
+        });
+    }
+
+    /**
+     * @return array
+     */
+    public function getPriorityRatio(): array
+    {
+        return $this->getRatio(static function (IncidentDetected $detected) {
+            return $detected->getPriority()->getName();
         });
     }
 
@@ -1451,18 +1558,6 @@ class Incident
     public function getLastState(): IncidentState
     {
         return $this->getStateEdge() ? $this->getStateEdge()->getOldState() : null;
-    }
-
-    /**
-     * @return StateEdge
-     */
-    public function getStateEdge(): ?StateEdge
-    {
-        if ($this->getChangeStateHistory()) {
-            return $this->getChangeStateHistory()->last() ? $this->getChangeStateHistory()->last()->getStateEdge() : null;
-
-        }
-        return null;
     }
 
     public function isDefined(): ?bool
