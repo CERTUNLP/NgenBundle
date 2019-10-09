@@ -59,7 +59,8 @@
     "ext-json": "*",
     "ext-curl": "*",
     "secit-pl/imap-bundle": "*",
-    "rollerworks/password-strength-bundle": "^1.7"
+    "rollerworks/password-strength-bundle": "^1.7",
+    "cmen/google-charts-bundle": "^3.1"
 
   },
   "require-dev": {

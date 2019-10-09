@@ -7,20 +7,23 @@
  with this source code in the file LICENSE.
 #}
 
-<tr data-id="{{ incident.id }}" role="row" >
+<tr data-id="{{ incident.id }}" role="row">
 
     <td class="align-middle">
         {% include "CertUnlpNgenBundle:Incident:Frontend/list/actionsLabel.html.twig" with {'incident': incident,'incidentsDetected':incident.incidentsDetected} %}
     </td>
     <td id="state_label_holder" class="align-middle" align="center">
         <div>
-                {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': incident} %}
+            {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': incident} %}
         </div>
     </td>
     <td id="state_label_holder" class="align-middle">
         <div>
             <span>
-                {% include "CertUnlpNgenBundle:Incident:Frontend/list/statusLabel.html.twig" with {'incident': incident} %}
+
+                {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': incident,'type':'label_list', 'response': true} %}
+                {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': incident,'type':'label_list', 'response': false} %}
+
                 </span>
         </div>
     </td>
@@ -43,7 +46,7 @@
         {{ incident.updatedAt|date('Y-m-d H:i') }}
     </td>
     <td class="align-middle" align="center">
-        {{  incident.ltdCount }}
+        {{ incident.ltdCount }}
     </td>
     <td class="align-middle">
         {{ incident.assigned }}

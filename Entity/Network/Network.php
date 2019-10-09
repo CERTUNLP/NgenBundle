@@ -271,7 +271,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
     /**
      * Add incidents
      *
-     * @param \CertUnlp\NgenBundle\Entity\Incident\Incident $incidents
+     * @param Incident $incidents
      * @return Network
      */
     public function addIncident(Incident $incidents): Network
@@ -290,6 +290,31 @@ abstract class Network extends NetworkElement implements NetworkInterface
     public function removeIncident(Incident $incidents): bool
     {
         return $this->incidents->removeElement($incidents);
+    }
+
+    /**
+     * Get incidents
+     *
+     * @param string $type
+     * @return Collection
+     */
+    public function getliveIncidentsOfType(string $type): Collection
+    {
+        return $this->getliveIncidents()->filter(static function (Incident $incident) use ($type) {
+            return $incident->getType()->getSlug() === $type;
+        });
+    }
+
+    /**
+     * Get incidents
+     *
+     * @return Collection
+     */
+    public function getliveIncidents(): Collection
+    {
+        return $this->getIncidents()->filter(static function (Incident $incident) {
+            return $incident->isLive();
+        });
     }
 
     /**
