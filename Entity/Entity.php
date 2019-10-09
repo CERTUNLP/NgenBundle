@@ -11,6 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Entity;
 
+use Closure;
+use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -157,6 +159,29 @@ abstract class Entity
 //        $this->isActive = $isActive;
 //        return $this;
 //    }
+    /**
+     * @param Collection $collection
+     * @param Closure $callback
+     * @return array
+     */
+    public function getRatio(Collection $collection, Closure $callback): array
+    {
+        $ratio = [];
+        foreach ($collection as $colectee) {
+            if (isset($ratio[$callback($colectee)])) {
+                $ratio[$callback($colectee)]++;
+            } else {
+                $ratio[$callback($colectee)] = 1;
+            }
+        }
+
+        $percentages = [];
+        foreach ($ratio as $key => $value) {
+            $percentages[] = [$key, $value];
+        }
+
+        return $percentages;
+    }
 
 
 }

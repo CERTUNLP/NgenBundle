@@ -12,6 +12,9 @@
 namespace CertUnlp\NgenBundle\Services\Frontend\Controller;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\ColumnChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\Timeline;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\ThreadManagerInterface;
@@ -41,6 +44,64 @@ class FrontendController
         $this->formFactory = $formFactory;
         $this->comment_manager = $comment_manager;
         $this->thread_manager = $thread_manager;
+    }
+
+    /**
+     * @param array $states
+     * @param int $height
+     * @return PieChart
+     */
+    public function makePieChart(array $states, int $height = 150): PieChart
+    {
+        $pieChart = new PieChart();
+        array_unshift($states, ['Task', 'Hours per Day']);
+        $pieChart->getData()->setArrayToDataTable(
+            $states
+        );
+        $pieChart->getOptions()->setHeight($height);
+        $pieChart->getOptions()->setPieHole(0.5);
+        $pieChart->getOptions()->getLegend()->setPosition('none');
+        return $pieChart;
+    }
+
+    /**
+     * @param array $states
+     * @return Timeline
+     */
+    public function makeTimeline(array $states): Timeline
+    {
+        $timeline = new Timeline();
+        $timeline->getOptions()->getTimeline()->setShowBarLabels(false);
+        $timeline->getOptions()->getTimeline()->setShowRowLabels(false);
+        $timeline->getOptions()->setHeight(91);
+        $timeline->getData()->setArrayToDataTable(
+            $states, true
+        );
+        return $timeline;
+    }
+
+    /**
+     * @param array $ratios
+     * @return ColumnChart
+     */
+    public function makeColumnChart(array $ratios, string $title = ''): ColumnChart
+    {
+        $col = new ColumnChart();
+
+        $sum = 0;
+        foreach ($ratios as $ratio) {
+            $sum += $ratio[1];
+        }
+
+        $title = $title ?: 'Detections';
+        array_unshift($ratios, ['Days', $title . ' per Day']);
+        $col->getData()->setArrayToDataTable(
+            $ratios
+        );
+        $col->getOptions()->setTitle($title . ': ' . $sum);
+        $col->getOptions()->getLegend()->setPosition('none');
+        $col->getOptions()->getAnnotations()->setAlwaysOutside(true);
+        return $col;
     }
 
     public function getDoctrine()

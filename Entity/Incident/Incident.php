@@ -1181,51 +1181,15 @@ class Incident extends Entity
     }
 
     /**
-     * @param Closure $callback
-     * @return array
-     */
-    public function getRatioPercentage(): array
-    {
-        $percentages = [];
-        foreach ($this->getStateRatio() as $key => $value) {
-            $percentages[] = [$key, $value];
-        }
-
-        return $percentages;
-    }
-
-    /**
      * @return array
      */
     public function getStateRatio(): array
     {
-        return $this->getRatio(static function (IncidentDetected $detected) {
+        return $this->getRatio($this->getIncidentsDetected(), static function (IncidentDetected $detected) {
             return $detected->getState()->getName();
         });
     }
 
-    /**
-     * @param Closure $callback
-     * @return array
-     */
-    public function getRatio(Closure $callback): array
-    {
-        $ratio = [];
-        foreach ($this->getIncidentsDetected() as $detected) {
-            if (isset($ratio[$callback($detected)])) {
-                $ratio[$callback($detected)]++;
-            } else {
-                $ratio[$callback($detected)] = 1;
-            }
-        }
-
-        $percentages = [];
-        foreach ($ratio as $key => $value) {
-            $percentages[] = [$key, $value];
-        }
-
-        return $percentages;
-    }
 
     /**
      * @return Collection| IncidentDetected[]
@@ -1238,9 +1202,58 @@ class Incident extends Entity
     /**
      * @return array
      */
+    public function getDateRatio(): array
+    {
+        return $this->getRatio($this->getIncidentsDetected(), static function (IncidentDetected $detected) {
+            return $detected->getDate()->format('d-m');
+        });
+    }
+
+    /**
+     * @return array
+     */
+    public function getStateTimelineRatio(): array
+    {
+        $states = [];
+        $suffix = '';
+
+        $states_changes = $this->getChangeStateHistory()->filter(static function (IncidentChangeState $changeState) {
+            return $changeState->getOldState()->getSlug() !== $changeState->getNewState()->getSlug();
+        });
+        if (!$states_changes->contains($this->getChangeStateHistory()->first())) {
+            $states_changes->set(0, $this->getChangeStateHistory()->first());
+        }
+        if (!$states_changes->contains($this->getChangeStateHistory()->last())) {
+            $states_changes->add($this->getChangeStateHistory()->last());
+        }
+
+        foreach ($states_changes as $detected) {
+            if (isset($states[$detected->getOldState()->getName() . '-' . $suffix])) {
+                $states[$detected->getOldState()->getName() . '-' . $suffix][3] = $detected->getDate();
+            } elseif (isset($states[$detected->getOldState()->getName()])) {
+                $states[$detected->getOldState()->getName()][3] = $detected->getDate();
+            } else {
+                $states[$detected->getOldState()->getName()] = ['state', $detected->getOldState()->getName(), $detected->getDate(), $detected->getDate()];
+            }
+
+            if (isset($states[$detected->getNewState()->getName()]) && $detected->getNewState()->getName() !== $detected->getOldState()->getName()) {
+                $suffix++;
+                $states[$detected->getNewState()->getName() . '-' . $suffix] = ['state', $detected->getNewState()->getName() . '-' . $suffix, $detected->getDate(), $detected->getDate()];
+            } elseif ($detected->getNewState()->getName() === $detected->getOldState()->getName()) {
+                $states[$detected->getOldState()->getName()][3] = $detected->getDate();
+            } else {
+                $states[$detected->getNewState()->getName()] = ['state', $detected->getNewState()->getName(), $detected->getDate(), $detected->getDate()];
+            }
+        }
+        return $states;
+    }
+
+    /**
+     * @return array
+     */
     public function getFeedRatio(): array
     {
-        return $this->getRatio(static function (IncidentDetected $detected) {
+        return $this->getRatio($this->getIncidentsDetected(), static function (IncidentDetected $detected) {
             return $detected->getFeed()->getName();
         });
     }
@@ -1250,7 +1263,7 @@ class Incident extends Entity
      */
     public function getTlpRatio(): array
     {
-        return $this->getRatio(static function (IncidentDetected $detected) {
+        return $this->getRatio($this->getIncidentsDetected(), static function (IncidentDetected $detected) {
             return $detected->getTlp()->getName();
         });
     }
@@ -1260,7 +1273,7 @@ class Incident extends Entity
      */
     public function getPriorityRatio(): array
     {
-        return $this->getRatio(static function (IncidentDetected $detected) {
+        return $this->getRatio($this->getIncidentsDetected(), static function (IncidentDetected $detected) {
             return $detected->getPriority()->getName();
         });
     }

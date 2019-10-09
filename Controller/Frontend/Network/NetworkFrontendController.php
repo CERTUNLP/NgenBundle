@@ -93,7 +93,13 @@ class NetworkFrontendController extends Controller
      */
     public function datailNetworkAction(Network $network)
     {
-        return $this->getFrontendController()->detailEntity($network);
+        $response['object'] = $network;
+
+        $response['piechart_feed'] = $this->getFrontendController()->makePieChart($network->getIncidentTypeRatio(), 300);
+        $response['piechart_priority'] = $this->getFrontendController()->makePieChart($network->getIncidentStateRatio(), 300);
+        $response['piechart_tlp'] = $this->getFrontendController()->makePieChart($network->getIncidentFeedRatio(), 300);
+        $response['column_chart'] = $this->getFrontendController()->makeColumnChart($network->getIncidentDateRatio(), 'Incidents');
+        return $response;
     }
 
 }

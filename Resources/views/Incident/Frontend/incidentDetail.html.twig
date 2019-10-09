@@ -8,25 +8,18 @@
 #}
 
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
-    {% macro colorbox(color,icon,text,href) %}
-        <a class="d-none d-sm-inline-block btn btn-sm btn-{{ color }} shadow-sm" role="button"
-           href="{{ href }}"
-           title=" {{ text }}">
-            {{ icon('fas fa-'~icon~' fa-sm text-white-50') }}
-            {{ text }}
-        </a>
-    {% endmacro %}
-    {% import _self as print %}
+
+    {% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 {% block content_header %}
     <h1 class="h3 mb-0 text-gray-800">
         {{ icon('arrow-circle-down fa-fw text-'~object.color) }}
         {{ 'Incident'|trans }}
-    {{ print.colorbox('primary','id-card',object.id,'#') }}
-    {{ print.colorbox(object.type.color,object.type.icon,object.type,path('cert_unlp_ngen_incident_type_detail',{'slug': object.type.slug})) }}
-    {{ print.colorbox(object.state.color,object.state.icon,object.state,path('cert_unlp_ngen_incident_state_detail',{'slug': object.state.slug})) }}
-    {{ print.colorbox(object.priority.color,object.priority.icon,object.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': object.priority.id})) }}
-    {{ print.colorbox(object.tlp.color,object.tlp.icon,object.tlp,'#') }}
-    {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': object.id})) }}
+        {{ print.colorbox('primary','id-card',object.id,'#') }}
+        {{ print.colorbox(object.type.color,object.type.icon,object.type,path('cert_unlp_ngen_incident_type_detail',{'slug': object.type.slug})) }}
+        {{ print.colorbox(object.state.color,object.state.icon,object.state,path('cert_unlp_ngen_incident_state_detail',{'slug': object.state.slug})) }}
+        {{ print.colorbox(object.priority.color,object.priority.icon,object.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': object.priority.id})) }}
+        {{ print.colorbox(object.tlp.color,object.tlp.icon,object.tlp,'#') }}
+        {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': object.id})) }}
     </h1>
 {% endblock %}
 
@@ -44,18 +37,23 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" id="detections-tab" data-toggle="tab" href="#detections" role="tab"
-               aria-controls="detections" aria-selected="false">{{ "Detections" |trans }}</a>
+               aria-controls="detections" aria-selected="false">{{ "Detections" |trans }}
+                <small>{{ "("~object.incidentsDetected.count~")" }}</small>
+            </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="state_changes-tab" data-toggle="tab" href="#state_changes" role="tab"
-               aria-controls="state_changes" aria-selected="false">{{ "State Changes" |trans }}</a>
+               aria-controls="state_changes" aria-selected="false">{{ "State Changes" |trans }}
+                <small>{{ "("~object.changeStateHistory.count~")" }}</small>
+            </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="comments-tab" data-toggle="tab" href="#comments" role="tab"
-               aria-controls="comments" aria-selected="false">{{ "Comments" |trans }}</a>
+               aria-controls="comments" aria-selected="false">{{ "Comments" |trans }}
+                <small>{{ "("~object.getCommentThread.numComments~")" }}</small>
+            </a>
         </li>
     </ul>
-
 
     <div class="tab-content pt-2" id="myTabContent">
         <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
@@ -84,7 +82,7 @@
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-share-alt fa-2x text-gray-300"></i>
+                                            <i class="fas fa-{{  object.origin.icon }} fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -105,7 +103,7 @@
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-share-alt fa-2x text-gray-300"></i>
+                                            <i class="fas fa-{{ object.type.icon }} fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -131,7 +129,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-auto">
-                                                <i class="fas fa-share-alt fa-2x text-gray-300"></i>
+                                                <i class="fas fa-{{ object.network.icon }} fa-2x text-gray-300"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -279,13 +277,13 @@
                                     </div>
                                 </div>
 
-                                {% if object.incidentsDetected|length > 1 %}
+                                {% if object.incidentsDetected.count %}
                                     <div class="row">
                                         <div class="col-6 col-sm-6 border">
                                             {{ 'Times Detected'|trans }}
                                         </div>
                                         <div class="col-6 col-sm-6 border">
-                                            {{ 'Detected'|trans }}{{ ' ' }}{{ label_info(object.incidentsDetected|length) }}{{ ' ' }}{{ 'times'|trans }}
+                                            {{ 'Detected'|trans }}{{ ' ' }}{{ label_info(object.incidentsDetected.count) }}{{ ' ' }}{{ 'times'|trans }}
                                         </div>
                                     </div>
                                     <div class="row">

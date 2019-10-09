@@ -1,0 +1,13 @@
+{% macro colorbox(color,icon,text,href) %}
+    <a class="d-none d-sm-inline-block btn btn-sm btn-{{ color }} shadow-sm" role="button"
+       href="{{ href }}"
+       title=" {{ text }}">
+        {{ icon('fas fa-'~icon~' fa-sm text-white-50') }}
+        {{ text }}
+    </a>
+{% endmacro %}
+
+{% macro statuscolor(object) %}
+    {% import _self as print %}
+    {{ print.colorbox(object.active?'success':'danger',object.active?'toggle-on':'toggle-off',object.active?'active':'not active','#') }}
+{% endmacro %}

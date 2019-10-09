@@ -12,7 +12,6 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentChangeState;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\ColumnChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\Timeline;
@@ -80,120 +79,17 @@ class IncidentFrontendController extends Controller
         $response['object'] = $incident;
         $response['timeline'] = null;
 //        $response['piechart_state'] = $this->makePieChart($incident->getStateRatio());
-        $response['piechart_feed'] = $this->makePieChart($incident->getFeedRatio());
-        $response['piechart_priority'] = $this->makePieChart($incident->getPriorityRatio());
-        $response['piechart_tlp'] = $this->makePieChart($incident->getTlpRatio());
+        $response['piechart_feed'] = $this->getFrontendController()->makePieChart($incident->getFeedRatio());
+        $response['piechart_priority'] = $this->getFrontendController()->makePieChart($incident->getPriorityRatio());
+        $response['piechart_tlp'] = $this->getFrontendController()->makePieChart($incident->getTlpRatio());
         if ($incident->getChangeStateHistory()->count() > 1) {
-            $response['timeline'] = $this->makeTimeline($incident);
+            $response['timeline'] = $this->getFrontendController()->makeTimeline($incident->getStateTimelineRatio());
         }
-        $response['column_chart'] = $this->makeColumnChart($incident);
+        $response['column_chart'] = $this->getFrontendController()->makeColumnChart($incident->getDateRatio());
         return $response;
     }
 
-    /**
-     * @param array $states
-     * @return PieChart
-     */
-    public function makePieChart(array $states): PieChart
-    {
-        $pieChart = new PieChart();
-//        var_dump($array);die;
-        array_unshift($states, ['Task', 'Hours per Day']);
-        $pieChart->getData()->setArrayToDataTable(
-            $states
-        );
-        $pieChart->getOptions()->setHeight(150);
-//        $pieChart->getOptions()->setWidth(200);
-        $pieChart->getOptions()->setPieHole(0.5);
-        $pieChart->getOptions()->getLegend()->setPosition('none');
-        return $pieChart;
-    }
 
-    /**
-     * @param Incident $incident
-     * @return Timeline
-     */
-    public function makeTimeline(Incident $incident): Timeline
-    {
-        $states = [];
-        $suffix = '';
-
-        $states_changes = $incident->getChangeStateHistory()->filter(static function (IncidentChangeState $changeState) {
-            return $changeState->getOldState()->getSlug() !== $changeState->getNewState()->getSlug();
-        });
-        if (!$states_changes->contains($incident->getChangeStateHistory()->first())) {
-            $states_changes->set(0, $incident->getChangeStateHistory()->first());
-        }
-        if (!$states_changes->contains($incident->getChangeStateHistory()->last())) {
-            $states_changes->add($incident->getChangeStateHistory()->last());
-        }
-
-        foreach ($states_changes as $detected) {
-            if (isset($states[$detected->getOldState()->getName() . '-' . $suffix])) {
-                $states[$detected->getOldState()->getName() . '-' . $suffix][3] = $detected->getDate();
-            } elseif (isset($states[$detected->getOldState()->getName()])) {
-                $states[$detected->getOldState()->getName()][3] = $detected->getDate();
-            } else {
-                $states[$detected->getOldState()->getName()] = ['state', $detected->getOldState()->getName(), $detected->getDate(), $detected->getDate()];
-            }
-
-            if (isset($states[$detected->getNewState()->getName()]) && $detected->getNewState()->getName() !== $detected->getOldState()->getName()) {
-                $suffix++;
-                $states[$detected->getNewState()->getName() . '-' . $suffix] = ['state', $detected->getNewState()->getName() . '-' . $suffix, $detected->getDate(), $detected->getDate()];
-            } elseif ($detected->getNewState()->getName() === $detected->getOldState()->getName()) {
-                $states[$detected->getOldState()->getName()][3] = $detected->getDate();
-            } else {
-                $states[$detected->getNewState()->getName()] = ['state', $detected->getNewState()->getName(), $detected->getDate(), $detected->getDate()];
-            }
-        }
-
-
-        $timeline = new Timeline();
-        $timeline->getOptions()->getTimeline()->setShowBarLabels(false);
-        $timeline->getOptions()->getTimeline()->setShowRowLabels(false);
-        $timeline->getOptions()->setHeight(91);
-        $timeline->getData()->setArrayToDataTable(
-            $states, true
-
-        );
-        return $timeline;
-    }
-
-    /**
-     * @param Incident $incident
-     * @return ColumnChart
-     */
-    public function makeColumnChart(Incident $incident): ColumnChart
-    {
-        $col = new ColumnChart();
-
-        $ratio = [];
-        foreach ($incident->getIncidentsDetected() as $detected) {
-            if (isset($ratio[$detected->getDate()->format('d-m')])) {
-                $ratio[$detected->getDate()->format('d-m')]++;
-            } else {
-                $ratio[$detected->getDate()->format('d-m')] = 1;
-            }
-        }
-        if (isset($ratio[$incident->getCreatedAt()->format('d-m')])) {
-            $ratio[$incident->getCreatedAt()->format('d-m')]++;
-        } else {
-            $ratio[$incident->getCreatedAt()->format('d-m')] = 1;
-        }
-        $percentages = [];
-        foreach ($ratio as $key => $value) {
-            $percentages[] = [$key, $value];
-        }
-        array_unshift($percentages, ['Days', 'Detections per Day']);
-
-        $col->getData()->setArrayToDataTable(
-            $percentages
-        );
-        $col->getOptions()->setTitle('Detections: ' . ($incident->getLtdCount() + 1));
-        $col->getOptions()->getLegend()->setPosition('none');
-        $col->getOptions()->getAnnotations()->setAlwaysOutside(true);
-        return $col;
-    }
 
     /**
      * @Route("{id}/evidence", name="cert_unlp_ngen_internal_incident_frontend_evidence_incident_id", requirements={"id"="\d+"})
