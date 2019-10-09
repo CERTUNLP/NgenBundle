@@ -240,5 +240,5 @@ twig:
     form_themes:
         - 'TetranzSelect2EntityBundle:Form:fields.html.twig'
         - 'CertUnlpNgenBundle:Form:bootstrap_4_layout.html.twig'
-cmen_google_charts:
-    language: "%ngen_lang%"
+          #cmen_google_charts:
+          #language: "%ngen_lang%"
