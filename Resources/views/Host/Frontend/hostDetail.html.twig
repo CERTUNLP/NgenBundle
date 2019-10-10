@@ -8,77 +8,165 @@
 #}
 
 {% extends 'CertUnlpNgenBundle::Host/Frontend/frontend.html.twig' %}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 {% block content_header %}
-    <h1 class="page-header"> {{ object }} {% include "CertUnlpNgenBundle:Host:Frontend/list/hostLabel.html.twig" with {'host': object} %}
+    <h1 class="h3 mb-0 text-gray-800">
+        {{ icon(object.icon ~' fa-fw text-'~object.color) }}
+        {{ 'Host'|trans }}
+        {{ print.colorbox('primary','id-card',object.id,'#') }}
+        {{ print.statuscolor(object) }}
+        {{ print.colorbox('primary','arrow-circle-down','incidents '~object.incidentsAsOrigin.count,path('cert_unlp_ngen_internal_incident_search_incident',{'term': '"'~object.ip~'"'})) }}
+        {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_host_edit',{'id': object.id})) }}
     </h1>
 {% endblock %}
 {% block content_body %}
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{ 'Host Information'|trans }}</h3>
+    <ul class="nav nav-tabs shadow-" id="myTab" role="tablist">
+        <li class="nav-item ">
+            <a class="nav-link active" id="summary-tab" data-toggle="tab" href="#summary" role="tab"
+               aria-controls="summary"
+               aria-selected="true">{{ "Summary" |trans }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="detail-tab" data-toggle="tab" href="#detail" role="tab"
+               aria-controls="detail" aria-selected="false">{{ "Detail" |trans }}</a>
+        </li>
+    </ul>
+    <div class="tab-content pt-2" id="myTabContent">
+    <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+        <div class="row">
+            <div class="col-lg-12 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Incidents
+                            </div>
+                            <div id="column_chart" class="chart">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <tr>
-                                <td class="">
-                                    {{ "System Id"|trans}}
-                                </td>
-                                <td class="">
-                                    {{ object.id }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    {{ 'Name'|trans }}
-                                </td>
-                                <td class="">
-                                    {{ object }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    {{ 'Created at'|trans }}
-                                </td>
-                                <td class="">
-                                    {{ object.createdAt|date('Y-m-d') }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td class="">
-                                    {{ 'Last Update'|trans }}
-                                </td>
-                                <td class="">
-                                    {{ object.updatedAt|date('Y-m-d') }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    {{ 'Active'|trans }}
-                                </td>
-                                <td class="">
-                                    {% include "CertUnlpNgenBundle:Host:Frontend/list/hostLabel.html.twig" with {'host': object} %}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    {{ 'Incidents'|trans }}
-                                </td>
-                                <td class="">
-                                    <a target="_blank" class="btn btn-sm btn-primary" role="button"
-                                       href="{{ path('cert_unlp_ngen_internal_incident_search_incident',{'term': '"'~object.ip~'"'}) }}">
-                                        <span>{{ label_info(object.incidentsAsOrigin.count) }} </span>
-                                        <span>{{ 'search'|trans }}</span>
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Incident Types
+                            </div>
+                            <div id="piechart_feed" class="chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Incident States
+                            </div>
+                            <div id="piechart_priority" class="chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Incident Feeds
+                            </div>
+                            <div id="piechart_tlp" class="chart"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="tab-pane fade" id="detail" role="tabpanel" aria-labelledby="detail-tab">
+        <div class="row">
+            <div class="col-lg-6">
+
+                <div class="card shadow mb-4">
+                    <div class="card-header">
+                        <h6 class="m-0 font-weight-bold text-primary">{{ 'Host Information'|trans }}</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td class="">
+                                        {{ "System Id"|trans }}
+                                    </td>
+                                    <td class="">
+                                        {{ object.id }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="">
+                                        {{ 'Name'|trans }}
+                                    </td>
+                                    <td class="">
+                                        {{ object }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="">
+                                        {{ 'Created at'|trans }}
+                                    </td>
+                                    <td class="">
+                                        {{ object.createdAt|date('Y-m-d') }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="">
+                                        {{ 'Last Update'|trans }}
+                                    </td>
+                                    <td class="">
+                                        {{ object.updatedAt|date('Y-m-d') }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        function resize() {
+            // change dimensions if necessary
+            {{ gc_draw([ piechart_feed, piechart_priority, piechart_tlp,column_chart], ['piechart_feed', 'piechart_priority', 'piechart_tlp','column_chart']) }}
+
+        }
+
+        if (window.addEventListener) {
+            window.addEventListener('resize', resize);
+        } else {
+            window.attachEvent('onresize', resize);
+        }
+    </script>
+
+    <script type="text/javascript">
+        {{ gc_draw([ piechart_feed, piechart_priority, piechart_tlp,column_chart], [ 'piechart_feed', 'piechart_priority', 'piechart_tlp','column_chart']) }}
+
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            window.api_key = '{{ app.user.apikey }}';
+        });
+
+    </script>
+    {% javascripts '@CertUnlpNgenBundle/Resources/public/js/incident/comments.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
 {% endblock %}

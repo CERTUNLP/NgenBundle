@@ -83,7 +83,13 @@ class HostFrontendController extends Controller
      */
     public function detailHostAction(Host $host)
     {
-        return $this->getFrontendController()->detailEntity($host);
+        $response['object'] = $host;
+
+        $response['piechart_feed'] = $this->getFrontendController()->makePieChart($host->getIncidentTypeRatio(), 300);
+        $response['piechart_priority'] = $this->getFrontendController()->makePieChart($host->getIncidentStateRatio(), 300);
+        $response['piechart_tlp'] = $this->getFrontendController()->makePieChart($host->getIncidentFeedRatio(), 300);
+        $response['column_chart'] = $this->getFrontendController()->makeColumnChart($host->getIncidentDateRatio(), 'Incidents');
+        return $response;
     }
 
     /**

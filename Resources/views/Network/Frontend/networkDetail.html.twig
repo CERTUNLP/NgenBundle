@@ -17,6 +17,11 @@
         {{ print.statuscolor(object) }}
         {{ print.colorbox('primary','arrow-circle-down','incidents '~object.incidents.count,path('cert_unlp_ngen_internal_incident_search_incident',{'term': '"'~object.address~'"'~ "&&" ~'"'~object.addressMask~'"'})) }}
         {{ print.colorbox('primary','laptop','hosts '~object.hosts.count,path('cert_unlp_ngen_host_search',{'term': '"'~object.address~'"'})) }}
+        {% set edit_link %}
+            {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'edit','network':object} %}
+        {% endset %}
+        {{ print.colorbox('primary','edit','Edit',edit_link) }}
+
     </h1>
 {% endblock %}
 {% block content_body %}
@@ -39,7 +44,7 @@
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                    Detections
+                                    Incidents
                                 </div>
                                 <div id="column_chart" class="chart">
                                 </div>
@@ -206,36 +211,36 @@
     </div>
 {% endblock %}
 
-    {% block javascripts %}
-        {{ parent() }}
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script type="text/javascript">
-            function resize() {
-                // change dimensions if necessary
-                {{ gc_draw([ piechart_feed, piechart_priority, piechart_tlp,column_chart], ['piechart_feed', 'piechart_priority', 'piechart_tlp','column_chart']) }}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        function resize() {
+            // change dimensions if necessary
+            {{ gc_draw([ piechart_feed, piechart_priority, piechart_tlp,column_chart], ['piechart_feed', 'piechart_priority', 'piechart_tlp','column_chart']) }}
 
-            }
+        }
 
-            if (window.addEventListener) {
-                window.addEventListener('resize', resize);
-            } else {
-                window.attachEvent('onresize', resize);
-            }
-        </script>
+        if (window.addEventListener) {
+            window.addEventListener('resize', resize);
+        } else {
+            window.attachEvent('onresize', resize);
+        }
+    </script>
 
-        <script type="text/javascript">
-            {{ gc_draw([ piechart_feed, piechart_priority, piechart_tlp,column_chart], [ 'piechart_feed', 'piechart_priority', 'piechart_tlp','column_chart']) }}
+    <script type="text/javascript">
+        {{ gc_draw([ piechart_feed, piechart_priority, piechart_tlp,column_chart], [ 'piechart_feed', 'piechart_priority', 'piechart_tlp','column_chart']) }}
 
 
-        </script>
-        <script>
-            $(document).ready(function () {
-                window.api_key = '{{ app.user.apikey }}';
-            });
+    </script>
+    <script>
+        $(document).ready(function () {
+            window.api_key = '{{ app.user.apikey }}';
+        });
 
-        </script>
-        {% javascripts '@CertUnlpNgenBundle/Resources/public/js/incident/comments.js' %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
+    </script>
+    {% javascripts '@CertUnlpNgenBundle/Resources/public/js/incident/comments.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 
-    {% endblock %}
+{% endblock %}

@@ -291,6 +291,14 @@ class Host extends NetworkElement
     /**
      * @return Incident[]|Collection
      */
+    public function getIncidents(): Collection
+    {
+        return $this->getIncidentsAsOrigin();
+    }
+
+    /**
+     * @return Incident[]|Collection
+     */
     public function getIncidentsAsDestination(): Collection
     {
         return $this->incidents_as_destination;

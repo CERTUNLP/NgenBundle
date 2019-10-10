@@ -15,6 +15,7 @@ use CertUnlp\NgenBundle\Entity\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
 use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
 use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
+use CertUnlp\NgenBundle\Entity\Entity;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -31,7 +32,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\NetworkAdminRepository")
  * @JMS\ExclusionPolicy("all")
  */
-class NetworkAdmin
+class NetworkAdmin extends Entity
 {
 
     /**
@@ -63,13 +64,14 @@ class NetworkAdmin
      * @var Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="network_admin",cascade={"persist"},orphanRemoval=true)
      */
-
     private $contacts;
+
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network",mappedBy="network_admin"))
      */
     private $networks;
+
     /**
      * @var boolean
      *
@@ -77,6 +79,7 @@ class NetworkAdmin
      * @JMS\Expose()
      */
     private $isActive = true;
+
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="create")
@@ -85,6 +88,7 @@ class NetworkAdmin
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
+
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="update")
@@ -132,9 +136,6 @@ class NetworkAdmin
     {
         $this->contacts->removeElement($contact);
         $contact->setNetworkAdmin();
-//        if ($this->contacts->contains($contact)){
-//
-//        }
         return $this;
     }
 
@@ -151,7 +152,7 @@ class NetworkAdmin
     /**
      * Get id
      *
-     * @param null $id
+     * @param int $id
      * @return integer
      */
     public function setId(int $id = null): int
@@ -293,6 +294,16 @@ class NetworkAdmin
     }
 
     /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    /**
      * Set isActive
      *
      * @param boolean $isActive
@@ -351,4 +362,19 @@ class NetworkAdmin
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'users';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'info';
+    }
 }
