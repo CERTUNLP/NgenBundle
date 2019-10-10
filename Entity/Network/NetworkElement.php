@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Entity\Network;
 
 use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Network\Address\Address;
 use CertUnlp\NgenBundle\Entity\Network\Address\DomainAddress;
 use CertUnlp\NgenBundle\Entity\Network\Address\IpV4Address;
@@ -206,4 +207,47 @@ abstract class NetworkElement extends Entity
     }
 
 
+    /**
+     * @return array
+     */
+    public function getIncidentTypeRatio(): array
+    {
+        return $this->getRatio($this->getIncidents(), static function (Incident $incident) {
+            return $incident->getType()->getSlug();
+        });
+
+    }
+
+    /**
+     * @return array
+     */
+    public function getIncidentDateRatio(): array
+    {
+        return $this->getRatio($this->getIncidents(), static function (Incident $incident) {
+            return $incident->getCreatedAt()->format('d-m');
+        });
+
+    }
+
+    /**
+     * @return array
+     */
+    public function getIncidentStateRatio(): array
+    {
+        return $this->getRatio($this->getIncidents(), static function (Incident $incident) {
+            return $incident->getState()->getSlug();
+        });
+
+    }
+
+    /**
+     * @return array
+     */
+    public function getIncidentFeedRatio(): array
+    {
+        return $this->getRatio($this->getIncidents(), static function (Incident $incident) {
+            return $incident->getFeed()->getSlug();
+        });
+
+    }
 }

@@ -151,7 +151,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
      *
      * @return string
      */
-    public function getStartAddress(): string
+    public function getStartAddress(): ?string
     {
         return $this->ip_start_address;
     }
@@ -175,7 +175,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
      *
      * @return string
      */
-    public function getEndAddress(): string
+    public function getEndAddress(): ?string
     {
         return $this->ip_end_address;
     }
@@ -451,48 +451,5 @@ abstract class Network extends NetworkElement implements NetworkInterface
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getIncidentTypeRatio(): array
-    {
-        return $this->getRatio($this->getIncidents(), static function (Incident $incident) {
-            return $incident->getType()->getSlug();
-        });
-
-    }
-
-    /**
-     * @return array
-     */
-    public function getIncidentDateRatio(): array
-    {
-        return $this->getRatio($this->getIncidents(), static function (Incident $incident) {
-            return $incident->getCreatedAt()->format('d-m');
-        });
-
-    }
-
-    /**
-     * @return array
-     */
-    public function getIncidentStateRatio(): array
-    {
-        return $this->getRatio($this->getIncidents(), static function (Incident $incident) {
-            return $incident->getState()->getSlug();
-        });
-
-    }
-
-    /**
-     * @return array
-     */
-    public function getIncidentFeedRatio(): array
-    {
-        return $this->getRatio($this->getIncidents(), function (Incident $incident) {
-            return $incident->getFeed()->getSlug();
-        });
-
-    }
 
 }

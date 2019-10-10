@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Network;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,9 +25,8 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
-class NetworkEntity
+class NetworkEntity extends Entity
 {
-
     /**
      * @var integer
      *
@@ -35,7 +35,6 @@ class NetworkEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
     /**
      * @var string
      *
@@ -43,7 +42,6 @@ class NetworkEntity
      * @JMS\Expose
      */
     private $name;
-
     /**
      * @var string
      *
@@ -52,10 +50,8 @@ class NetworkEntity
      * @JMS\Expose
      * */
     private $slug;
-
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network",mappedBy="network_entity")) */
     private $networks;
-
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
@@ -64,7 +60,6 @@ class NetworkEntity
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
-
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="update")
@@ -73,7 +68,6 @@ class NetworkEntity
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
-
     /**
      * @var boolean
      *
@@ -81,7 +75,6 @@ class NetworkEntity
      * @JMS\Expose
      */
     private $isActive = true;
-
 
     /**
      * Constructor
@@ -91,6 +84,22 @@ class NetworkEntity
     {
         $this->setName($name);
         $this->networks = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'sitemap';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'info';
     }
 
     /**
@@ -245,6 +254,16 @@ class NetworkEntity
      * @return boolean
      */
     public function getIsActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function isActive(): bool
     {
         return $this->isActive;
     }
