@@ -41,11 +41,113 @@ class IncidentState extends Entity implements Translatable
 {
 
     /**
+     * @var StateBehavior
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior", inversedBy="states")
+     * @ORM\JoinColumn(name="behavior", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    private $behavior;
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=100)
+     * @JMS\Expose
+     * @JMS\Groups({"api_input"})
+     * @Gedmo\Translatable
+     */
+    private $name;
+    /**
+     * @var string
+     * @ORM\Id
+     * @Gedmo\Slug(fields={"name"}, separator="_")
+     * @ORM\Column(name="slug", type="string", length=100)
+     * @JMS\Expose
+     * @JMS\Groups({"api_input"})
+     * */
+    private $slug;
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     * @JMS\Expose
+     */
+    private $isActive = true;
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="description", type="string", length=250, nullable=true)
+     * @JMS\Expose
+     */
+    private $description;
+    /**
+     * @var DateTime
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    private $createdAt;
+    /**
+     * @var DateTime
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="updated_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    private $updatedAt;
+    /**
+     * @var StateEdge[]|Collection
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge",mappedBy="oldState",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OrderBy({"newState" = "ASC"})
+     */
+    private $edges;
+    /**
+     * @var Incident[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state"))
+     */
+    private $incidents;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->incidents = new ArrayCollection();
+        $this->edges = new ArrayCollection();
+    }
+
+    /**
+     * @return Incident[]|Collection
+     */
+    public function getIncidents(): Collection
+    {
+        return $this->incidents;
+    }
+
+    /**
+     * @param Incident[]|Collection $incidents
+     * @return IncidentState
+     */
+    public function setIncidents(Collection $incidents): self
+    {
+        $this->incidents = $incidents;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getIcon(): string
     {
-        return $this->getBehavior()->getIcon();
+        return 'thermometer-half';
     }
 
     /**
@@ -57,88 +159,21 @@ class IncidentState extends Entity implements Translatable
     }
 
     /**
-     * @var StateBehavior
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior", inversedBy="states")
-     * @ORM\JoinColumn(name="behavior", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @return StateBehavior
      */
-    private $behavior;
-
-    /**
-     * @Gedmo\Locale
-     * Used locale to override Translation listener`s locale
-     * this is not a mapped field of entity metadata, just a simple property
-     */
-    private $locale;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100)
-     * @JMS\Expose
-     * @JMS\Groups({"api_input"})
-     * @Gedmo\Translatable
-     */
-    private $name;
-
-    /**
-     * @var string
-     * @ORM\Id
-     * @Gedmo\Slug(fields={"name"}, separator="_")
-     * @ORM\Column(name="slug", type="string", length=100)
-     * @JMS\Expose
-     * @JMS\Groups({"api_input"})
-     * */
-    private $slug;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    private $isActive = true;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="description", type="string", length=250, nullable=true)
-     * @JMS\Expose
-     */
-    private $description;
-
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
-
-    /**
-     * @var StateEdge[]|Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge",mappedBy="oldState",cascade={"persist"},orphanRemoval=true)
-     * @ORM\OrderBy({"newState" = "ASC"})
-     */
-    private $edges;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
+    public function getBehavior(): StateBehavior
     {
-        $this->edges = new ArrayCollection();
+        return $this->behavior;
+    }
+
+    /**
+     * @param StateBehavior $behavior
+     * @return IncidentState
+     */
+    public function setBehavior(StateBehavior $behavior): IncidentState
+    {
+        $this->behavior = $behavior;
+        return $this;
     }
 
     /**
@@ -195,24 +230,6 @@ class IncidentState extends Entity implements Translatable
     public function isLive(): bool
     {
         return $this->getBehavior()->isLive();
-    }
-
-    /**
-     * @return StateBehavior
-     */
-    public function getBehavior(): StateBehavior
-    {
-        return $this->behavior;
-    }
-
-    /**
-     * @param StateBehavior $behavior
-     * @return IncidentState
-     */
-    public function setBehavior(StateBehavior $behavior): IncidentState
-    {
-        $this->behavior = $behavior;
-        return $this;
     }
 
     /**

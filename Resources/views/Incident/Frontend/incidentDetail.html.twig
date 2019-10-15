@@ -8,8 +8,7 @@
 #}
 
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
-
-    {% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 {% block content_header %}
     <h1 class="h3 mb-0 text-gray-800">
         {{ icon('arrow-circle-down fa-fw text-'~object.color) }}
@@ -19,10 +18,13 @@
         {{ print.colorbox(object.state.color,object.state.icon,object.state,path('cert_unlp_ngen_incident_state_detail',{'slug': object.state.slug})) }}
         {{ print.colorbox(object.priority.color,object.priority.icon,object.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': object.priority.id})) }}
         {{ print.colorbox(object.tlp.color,object.tlp.icon,object.tlp,'#') }}
+        {% set detail_link %}
+            {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':object.network} %}
+        {% endset %}
+        {{ print.colorbox(object.network.color,object.network.icon,object.network,detail_link) }}
         {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': object.id})) }}
     </h1>
 {% endblock %}
-
 {% block content_body %}
     {#    <div class="row">#}
     <ul class="nav nav-tabs shadow-" id="myTab" role="tablist">
@@ -59,7 +61,6 @@
         <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
             <div class="row">
                 <div class="col-lg-6">
-
                     <div class="row col-md-12 ml-0 ">
                         {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'card', 'response': true} %}
                         {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'card', 'response': false} %}

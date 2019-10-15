@@ -138,7 +138,7 @@ class IncidentDecision extends Entity
      */
     public function getIcon(): string
     {
-        return 'question';
+        return 'question-circle';
     }
 
     /**

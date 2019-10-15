@@ -12,9 +12,13 @@
 {% block content_header %}
     <h1 class="h3 mb-0 text-gray-800">
         {{ icon(object.icon ~' fa-fw text-'~object.color) }}
-        {{ 'Host'|trans }}
+        {{ object }}
         {{ print.colorbox('primary','id-card',object.id,'#') }}
         {{ print.statuscolor(object) }}
+        {% set detail_link %}
+            {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':object.network} %}
+        {% endset %}
+        {{ print.colorbox(object.network.color,object.network.icon,object.network,detail_link) }}
         {{ print.colorbox('primary','arrow-circle-down','incidents '~object.incidentsAsOrigin.count,path('cert_unlp_ngen_internal_incident_search_incident',{'term': '"'~object.ip~'"'})) }}
         {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_host_edit',{'id': object.id})) }}
     </h1>

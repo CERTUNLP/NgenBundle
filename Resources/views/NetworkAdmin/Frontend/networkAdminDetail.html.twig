@@ -9,16 +9,14 @@
 
 {% extends 'CertUnlpNgenBundle::NetworkAdmin/Frontend/frontend.html.twig' %}
 {% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
-
 {% block content_header %}
     <h1 class="h3 mb-0 text-gray-800">
         {{ icon(object.icon ~' fa-fw text-'~object.color) }}
-        {{ 'Network admin'|trans }}
+        {{ object }}
         {{ print.colorbox('primary','id-card',object.id,'#') }}
         {{ print.statuscolor(object) }}
         {{ print.colorbox('primary','share-alt','networks '~object.networks.count,path('cert_unlp_ngen_network_search_network',{'term': '"'~object.name~'"'~ "&&" ~'"'~object.emails| join('"&&"') ~'"'})) }}
         {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_network_edit_network_admin',{'slug': object.slug})) }}
-
     </h1>
 {% endblock %}
 {% block content_body %}
