@@ -8,18 +8,24 @@
 #}
 
 {% extends 'CertUnlpNgenBundle::IncidentPriority/Frontend/frontend.html.twig' %}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 {% block content_header %}
-    <h1 class="page-header"> {{ object }} {% include "CertUnlpNgenBundle:IncidentPriority:Frontend/list/incidentPriorityLabel.html.twig" with {'incidentPriority': object} %}
+    <h1 class="h3 mb-0 text-gray-800">
+        {{ icon(object.icon ~' fa-fw text-'~object.color) }}
+        {{ object }}
+        {{ print.colorbox('primary','id-card',object.id,'#') }}
+        {{ print.statuscolor(object) }}
+        {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_network_edit_network_admin',{'slug': object.slug})) }}
     </h1>
 {% endblock %}
 {% block content_body %}
     <div class="row">
         <div class="col-lg-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{ 'Priority Information'|trans }} </h3>
+            <div class="card shadow mb-4">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Priority Information'|trans }}</h6>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <tr>
@@ -44,14 +50,6 @@
                                 </td>
                                 <td class="">
                                     {{ object.code }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    {{ 'Active'| trans }}
-                                </td>
-                                <td class="">
-                                    {% include "CertUnlpNgenBundle:IncidentPriority:Frontend/list/incidentPriorityLabel.html.twig" with {'incidentPriority': object} %}
                                 </td>
                             </tr>
                         </table>

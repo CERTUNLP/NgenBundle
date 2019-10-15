@@ -8,18 +8,24 @@
 #}
 
 {% extends 'CertUnlpNgenBundle::IncidentReport/Frontend/frontend.html.twig' %}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 {% block content_header %}
-    <h1 class="page-header"> {{ object }} {% include "CertUnlpNgenBundle:IncidentReport:Frontend/list/stateLabel.html.twig" with {'incidentReport': object} %}
+    <h1 class="h3 mb-0 text-gray-800">
+        {{ icon(object.icon ~' fa-fw text-'~object.color) }}
+        {{ object }}
+        {{ print.colorbox('primary','id-card',object.id,'#') }}
+        {{ print.statuscolor(object) }}
+        {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_incident_type_report_edit',{'lang': object.lang,'slug': object.type.slug})) }}
     </h1>
 {% endblock %}
 {% block content_body %}
     <div class="row">
         <div class="col-lg-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{ 'Report Information'|trans }}</h3>
+            <div class="card shadow mb-4">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Report Information'|trans }}</h6>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <tr>
@@ -35,7 +41,7 @@
                                     {{ 'Type'|trans }}
                                 </td>
                                 <td class="">
-                                    {{ object.type  }}
+                                    {{ object.type }}
                                 </td>
                             </tr>
                             <tr>
@@ -55,24 +61,6 @@
                                     {{ object.updatedAt|date('Y-m-d') }}
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="">
-                                    {{ 'Active'|trans }}
-                                </td>
-                                <td class="">
-                                    {% include "CertUnlpNgenBundle:IncidentReport:Frontend/list/stateLabel.html.twig" with {'incidentReport': object} %}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    {{ 'Incidents'|trans }}
-                                </td>
-                                <td class="">
-                                    {#                                    <a target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~object.name~'"'~ "&&" ~'"'~object.email~'"'})}}">#}
-                                    <span>{{ label_info(object.type.incidents.count) }} </span>
-                                    {#                                    </a>#}
-                                </td>
-                            </tr>
                         </table>
                     </div>
                 </div>
@@ -81,11 +69,11 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{ 'Report content'|trans }}</h3>
+            <div class="card shadow mb-4">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Report content'|trans }}</h6>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <tr>

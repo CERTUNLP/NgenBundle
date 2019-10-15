@@ -8,23 +8,38 @@
 #}
 
 {% extends 'CertUnlpNgenBundle::IncidentDecision/Frontend/frontend.html.twig' %}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 {% block content_header %}
-    <h1 class="page-header"> {{ object }} {% include "CertUnlpNgenBundle:IncidentDecision:Frontend/list/incidentDecisionLabel.html.twig" with {'incidentDecision': object} %}
+    <h1 class="h3 mb-0 text-gray-800">
+        {{ icon(object.icon~' fa-fw text-'~object.color) }}
+        {{ object }}
+        {{ print.colorbox('primary','id-card',object.id,'#') }}
+        {{ print.statuscolor(object) }}
+        {{ print.colorbox(object.type.color,object.type.icon,object.type,path('cert_unlp_ngen_incident_type_detail',{'slug': object.type.slug})) }}
+        {{ print.colorbox(object.state.color,object.state.icon,object.state,path('cert_unlp_ngen_incident_state_detail',{'slug': object.state.slug})) }}
+        {#        {{ print.colorbox(object.priority.color,object.priority.icon,object.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': object.priority.id})) }}#}
+        {{ print.colorbox(object.feed.color,object.feed.icon,object.feed,path('cert_unlp_ngen_incident_feed_detail',{'slug': object.feed.slug})) }}
+        {{ print.colorbox(object.tlp.color,object.tlp.icon,object.tlp,'#') }}
+        {% set detail_link %}
+            {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':object.network} %}
+        {% endset %}
+        {{ print.colorbox(object.network.color,object.network.icon,object.network,detail_link) }}
+        {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': object.id})) }}
     </h1>
 {% endblock %}
 {% block content_body %}
     <div class="row">
         <div class="col-lg-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{ 'Decision Information'|trans }}</h3>
+            <div class="card shadow mb-4">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Decision Information'|trans }}</h6>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <tr>
                                 <td class="">
-                                    {{ "System Id"|trans}}
+                                    {{ "System Id"|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.id }}
@@ -40,7 +55,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                   {{ 'Created at'|trans }}
+                                    {{ 'Created at'|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.createdAt|date('Y-m-d') }}
@@ -53,14 +68,6 @@
                                 </td>
                                 <td class="">
                                     {{ object.updatedAt|date('Y-m-d') }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    {{ 'Active'|trans }}
-                                </td>
-                                <td class="">
-                                    {% include "CertUnlpNgenBundle:IncidentDecision:Frontend/list/incidentDecisionLabel.html.twig" with {'incidentDecision': object} %}
                                 </td>
                             </tr>
                         </table>

@@ -9,5 +9,5 @@
 
 {% macro statuscolor(object) %}
     {% import _self as print %}
-    {{ print.colorbox(object.active?'success':'danger',object.active?'toggle-on':'toggle-off',object.active?'active':'not active','#') }}
+    {{ print.colorbox(object.isactive?'success':'danger',object.isactive?'toggle-on':'toggle-off',object.isactive?'active':'not active','#') }}
 {% endmacro %}

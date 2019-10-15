@@ -8,18 +8,25 @@
 #}
 
 {% extends 'CertUnlpNgenBundle::IncidentType/Frontend/frontend.html.twig' %}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 {% block content_header %}
-    <h1 class="page-header"> {{ object }} {% include "CertUnlpNgenBundle:IncidentType:Frontend/list/stateLabel.html.twig" with {'incidentType': object} %}
+    <h1 class="h3 mb-0 text-gray-800">
+        {{ icon(object.icon ~' fa-fw text-'~object.color) }}
+        {{ object }}
+        {{ print.colorbox('primary','id-card',object.id,'#') }}
+        {{ print.statuscolor(object) }}
+        {{ print.colorbox('primary','arrow-circle-down','incidents '~object.incidents.count,path('cert_unlp_ngen_internal_incident_search_incident',{'term': '"'~object.slug~'"'})) }}
+        {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_incident_type_edit',{'slug': object.slug})) }}
     </h1>
 {% endblock %}
 {% block content_body %}
     <div class="row">
         <div class="col-lg-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{ 'Type Information'|trans }}</h3>
+            <div class="card shadow mb-4">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Type Information'|trans }}</h6>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <tr>
@@ -35,12 +42,12 @@
                                     {{ 'Name'|trans }}
                                 </td>
                                 <td class="">
-                                    {{ object.name  }}
+                                    {{ object.name }}
                                 </td>
                             </tr>
                             <tr>
                                 <td class="">
-                                    {{ "Description"|trans}}
+                                    {{ "Description"|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.description }}
@@ -61,24 +68,6 @@
                                 </td>
                                 <td class="">
                                     {{ object.updatedAt|date('Y-m-d') }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    {{ 'Active'|trans }}
-                                </td>
-                                <td class="">
-                                    {% include "CertUnlpNgenBundle:IncidentType:Frontend/list/stateLabel.html.twig" with {'incidentType': object} %}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    {{ 'Incidents'|trans }}
-                                </td>
-                                <td class="">
-                                    {#                                    <a target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~object.name~'"'~ "&&" ~'"'~object.email~'"'})}}">#}
-                                    <span>{{ label_info(object.incidents.count) }} </span>
-                                    {#                                    </a>#}
                                 </td>
                             </tr>
                         </table>

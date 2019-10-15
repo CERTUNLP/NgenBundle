@@ -114,16 +114,13 @@ class Incident extends Entity
     private $feed;
     /**
      * @var IncidentState
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState", inversedBy="incidents")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
     private $state;
-    /**
-     * @var IncidentState
-     */
-    private $lastState;
+
     /**
      * @var IncidentState
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")

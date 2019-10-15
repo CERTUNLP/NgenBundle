@@ -12,7 +12,7 @@
 {% block content_header %}
     <h1 class="h3 mb-0 text-gray-800">
         {{ icon(object.icon ~' fa-fw text-'~object.color) }}
-        {{ 'Network'|trans }}
+        {{ object }}
         {{ print.colorbox('primary','id-card',object.id,'#') }}
         {{ print.statuscolor(object) }}
         {{ print.colorbox('primary','arrow-circle-down','incidents '~object.incidents.count,path('cert_unlp_ngen_internal_incident_search_incident',{'term': '"'~object.address~'"'~ "&&" ~'"'~object.addressMask~'"'})) }}
@@ -174,8 +174,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-6">
                     <div class="card shadow mb-4">
                         <div class="card-header">
                             <h6 class="m-0 font-weight-bold text-primary">{{ 'Network Admin Information'|trans }}</h6>

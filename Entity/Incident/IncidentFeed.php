@@ -12,6 +12,9 @@
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
 use CertUnlp\NgenBundle\Entity\Entity;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -57,7 +60,7 @@ class IncidentFeed extends Entity
      */
     private $isActive = true;
     /**
-     * @var \DateTime
+     * @var DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      * @JMS\Expose
@@ -65,7 +68,7 @@ class IncidentFeed extends Entity
      */
     private $createdAt;
     /**
-     * @var \DateTime
+     * @var DateTime
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
      * @JMS\Expose
@@ -79,7 +82,12 @@ class IncidentFeed extends Entity
      * @JMS\Expose
      */
     private $description;
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="feed")) */
+
+    /**
+     * @var Incident[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="feed"))
+     */
     private $incidents;
 
     /**
@@ -87,7 +95,7 @@ class IncidentFeed extends Entity
      */
     public function __construct()
     {
-        $this->incidents = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->incidents = new ArrayCollection();
     }
 
     /**
@@ -106,7 +114,7 @@ class IncidentFeed extends Entity
         return 'info';
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }
@@ -116,7 +124,7 @@ class IncidentFeed extends Entity
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -127,7 +135,7 @@ class IncidentFeed extends Entity
      * @param string $name
      * @return IncidentFeed
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -153,9 +161,9 @@ class IncidentFeed extends Entity
     /**
      * Get id
      *
-     * @return integer
+     * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->getSlug();
     }
@@ -176,7 +184,7 @@ class IncidentFeed extends Entity
      * @param string $slug
      * @return IncidentFeed
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 
@@ -188,7 +196,7 @@ class IncidentFeed extends Entity
      *
      * @return boolean
      */
-    public function getIsActive()
+    public function getIsActive(): bool
     {
         return $this->isActive;
     }
@@ -207,11 +215,21 @@ class IncidentFeed extends Entity
     }
 
     /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function issActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    /**
      * Get createdAt
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
@@ -219,10 +237,10 @@ class IncidentFeed extends Entity
     /**
      * Set createdAt
      *
-     * @param \DateTime $createdAt
+     * @param DateTime $createdAt
      * @return IncidentFeed
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
 
@@ -232,9 +250,9 @@ class IncidentFeed extends Entity
     /**
      * Get updatedAt
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
@@ -242,10 +260,10 @@ class IncidentFeed extends Entity
     /**
      * Set updatedAt
      *
-     * @param \DateTime $updatedAt
+     * @param DateTime $updatedAt
      * @return IncidentFeed
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
@@ -255,11 +273,11 @@ class IncidentFeed extends Entity
     /**
      * Add incident
      *
-     * @param InternalIncident $incident
+     * @param Incident $incident
      *
      * @return IncidentFeed
      */
-    public function addIncident(Incident $incident)
+    public function addIncident(Incident $incident): self
     {
         $this->incidents[] = $incident;
 
@@ -269,19 +287,20 @@ class IncidentFeed extends Entity
     /**
      * Remove incident
      *
-     * @param InternalIncident $incident
+     * @param Incident $incident
+     * @return bool
      */
-    public function removeIncident(Incident $incident)
+    public function removeIncident(Incident $incident): bool
     {
-        $this->incidents->removeElement($incident);
+        return $this->incidents->removeElement($incident);
     }
 
     /**
      * Get incidents
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
-    public function getIncidents()
+    public function getIncidents(): Collection
     {
         return $this->incidents;
     }

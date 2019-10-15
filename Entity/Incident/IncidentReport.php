@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -32,20 +33,22 @@ class IncidentReport
 {
 
     /**
-     * @var boolean
+     * @var string
      * @ORM\Column(name="lang", type="string", length=2)
      * @JMS\Expose
      */
     private $lang = '';
 
     /**
+     * @var IncidentType|null
+     *
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="reports")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      */
     private $type;
 
     /**
-     * Person domain object class
+     * @var string|null
      * @ORM\id
      * @Gedmo\Slug(handlers={
      *      @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\RelativeSlugHandler", options={
@@ -59,7 +62,7 @@ class IncidentReport
     private $slug;
 
     /**
-     * @var boolean
+     * @var string
      *
      * @ORM\Column(name="problem", type="text")
      * @JMS\Expose
@@ -67,7 +70,7 @@ class IncidentReport
     private $problem = '';
 
     /**
-     * @var boolean
+     * @var string
      *
      * @ORM\Column(name="derivated_problem", type="text",nullable=true)
      * @JMS\Expose
@@ -75,7 +78,7 @@ class IncidentReport
     private $derivated_problem = '';
 
     /**
-     * @var boolean
+     * @var string
      *
      * @ORM\Column(name="verification", type="text",nullable=true)
      * @JMS\Expose
@@ -83,7 +86,7 @@ class IncidentReport
     private $verification = '';
 
     /**
-     * @var boolean
+     * @var string
      *
      * @ORM\Column(name="recomendations", type="text",nullable=true)
      * @JMS\Expose
@@ -91,7 +94,7 @@ class IncidentReport
     private $recomendations = '';
 
     /**
-     * @var boolean
+     * @var string
      *
      * @ORM\Column(name="more_information", type="text",nullable=true)
      * @JMS\Expose
@@ -99,7 +102,7 @@ class IncidentReport
     private $more_information = '';
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="is_active", type="boolean")
      * @JMS\Expose
@@ -107,7 +110,7 @@ class IncidentReport
     private $isActive = true;
 
     /**
-     * @var \DateTime
+     * @var DateTime|null
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      * @JMS\Expose
@@ -116,7 +119,7 @@ class IncidentReport
     private $createdAt;
 
     /**
-     * @var \DateTime
+     * @var DateTime|null
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
      * @JMS\Expose
@@ -124,311 +127,234 @@ class IncidentReport
      */
     private $updatedAt;
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getType() . "/" . $this->getLang();
+        return $this->getType() . '/' . $this->getLang();
     }
 
     /**
-     * Get type
-     *
-     * @return IncidentType
+     * @return IncidentType|null
      */
-    public function getType()
+    public function getType(): ?IncidentType
     {
         return $this->type;
     }
 
     /**
-     * Set type
-     *
-     * @param IncidentType $type
-     *
+     * @param IncidentType|null $type
      * @return IncidentReport
      */
-    public function setType(IncidentType $type = null)
+    public function setType(?IncidentType $type): IncidentReport
     {
         $this->type = $type;
-
         return $this;
     }
 
     /**
-     * Get lang
-     *
      * @return string
      */
-    public function getLang()
+    public function getLang(): string
     {
         return $this->lang;
     }
 
-//    /**
-//     * Set slug
-//     *
-//     * @param string $slug
-//     * @return IncidentReport
-//     */
-//    public function setSlug($slug) {
-//        $this->slug = $slug;
-//
-//        return $this;
-//    }
-//
-//    /**
-//     * Get slug
-//     *
-//     * @return string
-//     */
-//    public function getSlug() {
-//        return $this->slug;
-//    }
-
     /**
-     * Set lang
-     *
      * @param string $lang
-     *
      * @return IncidentReport
      */
-    public function setLang($lang)
+    public function setLang(string $lang): IncidentReport
     {
         $this->lang = $lang;
-
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'newspaper';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'info';
     }
 
     /**
      * Get id
      *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->lang;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean
-     */
-    public function getIsActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return IncidentReport
-     */
-    public function setIsActive($isActive)
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * Get evidence_file
-     *
      * @return string
      */
-    public function getReportName()
+    public function getId(): string
     {
-        return $this->getSlug() . ".md";
+        return $this->getSlug();
     }
 
     /**
-     * Get slug
-     *
-     * @return string
+     * @return string|null
      */
-    public function getSlug()
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
 
     /**
-     * Set slug
-     *
-     * @param string $slug
-     *
+     * @param string|null $slug
      * @return IncidentReport
      */
-    public function setSlug($slug)
+    public function setSlug(?string $slug): IncidentReport
     {
         $this->slug = $slug;
-
         return $this;
     }
 
     /**
-     * Get createdAt
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return IncidentReport
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     * @return IncidentReport
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get problem
-     *
      * @return string
      */
-    public function getProblem()
+    public function getProblem(): string
     {
         return $this->problem;
     }
 
     /**
-     * Set problem
-     *
      * @param string $problem
-     *
      * @return IncidentReport
      */
-    public function setProblem($problem)
+    public function setProblem(string $problem): IncidentReport
     {
         $this->problem = $problem;
-
         return $this;
     }
 
     /**
-     * Get derivatedProblem
-     *
      * @return string
      */
-    public function getDerivatedProblem()
+    public function getDerivatedProblem(): string
     {
         return $this->derivated_problem;
     }
 
     /**
-     * Set derivatedProblem
-     *
-     * @param string $derivatedProblem
-     *
+     * @param string $derivated_problem
      * @return IncidentReport
      */
-    public function setDerivatedProblem($derivatedProblem)
+    public function setDerivatedProblem(string $derivated_problem): IncidentReport
     {
-        $this->derivated_problem = $derivatedProblem;
-
+        $this->derivated_problem = $derivated_problem;
         return $this;
     }
 
     /**
-     * Get verification
-     *
      * @return string
      */
-    public function getVerification()
+    public function getVerification(): string
     {
         return $this->verification;
     }
 
     /**
-     * Set verification
-     *
      * @param string $verification
-     *
      * @return IncidentReport
      */
-    public function setVerification($verification)
+    public function setVerification(string $verification): IncidentReport
     {
         $this->verification = $verification;
-
         return $this;
     }
 
     /**
-     * Get recomendations
-     *
      * @return string
      */
-    public function getRecomendations()
+    public function getRecomendations(): string
     {
         return $this->recomendations;
     }
 
     /**
-     * Set recomendations
-     *
      * @param string $recomendations
-     *
      * @return IncidentReport
      */
-    public function setRecomendations($recomendations)
+    public function setRecomendations(string $recomendations): IncidentReport
     {
         $this->recomendations = $recomendations;
-
         return $this;
     }
 
     /**
-     * Get moreInformation
-     *
      * @return string
      */
-    public function getMoreInformation()
+    public function getMoreInformation(): string
     {
         return $this->more_information;
     }
 
     /**
-     * Set moreInformation
-     *
-     * @param string $moreInformation
-     *
+     * @param string $more_information
      * @return IncidentReport
      */
-    public function setMoreInformation($moreInformation)
+    public function setMoreInformation(string $more_information): IncidentReport
     {
-        $this->more_information = $moreInformation;
-
+        $this->more_information = $more_information;
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param bool $isActive
+     * @return IncidentReport
+     */
+    public function setIsActive(bool $isActive): IncidentReport
+    {
+        $this->isActive = $isActive;
+        return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getCreatedAt(): ?DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param DateTime|null $createdAt
+     * @return IncidentReport
+     */
+    public function setCreatedAt(?DateTime $createdAt): IncidentReport
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getUpdatedAt(): ?DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param DateTime|null $updatedAt
+     * @return IncidentReport
+     */
+    public function setUpdatedAt(?DateTime $updatedAt): IncidentReport
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
 
 }

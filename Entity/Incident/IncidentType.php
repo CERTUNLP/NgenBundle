@@ -108,6 +108,34 @@ class IncidentType extends Entity
     }
 
     /**
+     * Get id
+     *
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->getSlug();
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     * @return IncidentType
+     */
+    public function setSlug(string $slug): IncidentType
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getColor(): string
@@ -213,21 +241,11 @@ class IncidentType extends Entity
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getSlug(): string
+    public function getIsActive(): bool
     {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $slug
-     * @return IncidentType
-     */
-    public function setSlug(string $slug): IncidentType
-    {
-        $this->slug = $slug;
-        return $this;
+        return $this->isActive;
     }
 
     /**
