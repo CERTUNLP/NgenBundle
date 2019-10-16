@@ -24,14 +24,6 @@
                         <table class="table table-bordered">
                             <tr>
                                 <td class="">
-                                    {{ "System Id"|trans }}
-                                </td>
-                                <td class="">
-                                    {{ object.slug }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
                                     {{ 'Name'|trans }}
                                 </td>
                                 <td class="">
@@ -44,6 +36,14 @@
                                 </td>
                                 <td class="">
                                     {{ object.description }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    {{ "Taxonomy Reference"|trans}}
+                                </td>
+                                <td class="">
+                                    {{ object.taxonomyValue }}
                                 </td>
                             </tr>
                             <tr>

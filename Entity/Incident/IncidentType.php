@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\TaxonomyValue;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -36,7 +37,6 @@ class IncidentType
 {
     /**
      * @var string
-     *
      * @ORM\Column(name="name", type="string", length=100)
      * @JMS\Expose
      */
@@ -107,11 +107,11 @@ class IncidentType
 
 
     /**
-     * @var IncidentType
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType")
-     * @ORM\JoinColumn(name="root_type", referencedColumnName="slug",nullable=true)
+     * @var TaxonomyValue
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\TaxonomyValue")
+     * @ORM\JoinColumn(name="taxonomyValue", referencedColumnName="slug",nullable=true)
      **/
-    private $rootType;
+    private $taxonomyValue;
 
 
     /**
@@ -120,7 +120,7 @@ class IncidentType
     public function __construct()
     {
         $this->incidents = new ArrayCollection();
-        $this->setRootType(null);
+        $this->setTaxonomyValue(null);
 
     }
 
@@ -132,7 +132,7 @@ class IncidentType
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName(): ? string
     {
         return $this->name;
     }
@@ -164,7 +164,7 @@ class IncidentType
             return $reporte;
         } else {
             if (!$this->isClassification()) {
-                return $this->getRootType()->getReport();
+                return $this->getTaxonomyValue()->getDescription();
             } else {
                 return false;
             }
@@ -217,7 +217,7 @@ class IncidentType
     /**
      * @return string
      */
-    public function getSlug(): string
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -235,7 +235,7 @@ class IncidentType
     /**
      * @return bool
      */
-    public function isActive(): bool
+    public function getIsActive(): bool
     {
         return $this->isActive;
     }
@@ -325,18 +325,18 @@ class IncidentType
     /**
      * @return mixed
      */
-    public function getRootType():? IncidentType
+    public function getTaxonomyValue():? TaxonomyValue
     {
-        return $this->rootType;
+        return $this->taxonomyValue;
     }
 
 
     /**
-     * @param mixed $rootType
+     * @param mixed $taxonomyValue
      */
-    public function setRootType($rootType = null): void
+    public function setTaxonomyValue($taxonomyValue = null): void
     {
-        $this->rootType = $rootType;
+        $this->taxonomyValue = $taxonomyValue;
     }
 
     /**
