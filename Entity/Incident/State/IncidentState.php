@@ -330,7 +330,7 @@ class IncidentState implements Translatable
         return $this;
     }
 
-    public function __toString(): string
+    public function __toString(): ?string
     {
         return $this->getName();
     }
@@ -340,7 +340,7 @@ class IncidentState implements Translatable
      *
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -353,6 +353,9 @@ class IncidentState implements Translatable
      */
     public function setName(string $name): IncidentState
     {
+        echo("4");
+        echo($name);
+
         $this->name = $name;
 
         return $this;

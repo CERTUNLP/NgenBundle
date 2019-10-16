@@ -90,7 +90,6 @@ abstract class Handler implements ApiHandlerInterface
      */
     public function post(array $parameters, bool $csrf_protection = false, $entity_class_instance = null)
     {
-
         if (!$entity_class_instance) {
             $entity_class_instance = $this->createEntityInstance($parameters);
         }
@@ -116,15 +115,13 @@ abstract class Handler implements ApiHandlerInterface
      */
     protected function processForm($entity_class_instance, $parameters, $method = "PUT", $csrf_protection = true)
     {
-        $form = $this->formFactory->create(new $this->entityType($this->om), $entity_class_instance, array('csrf_protection' => $csrf_protection, 'method' => $method));
 
+        $form = $this->formFactory->create(new $this->entityType($this->om), $entity_class_instance, array('csrf_protection' => $csrf_protection, 'method' => $method));
         $form->submit($parameters, 'PATCH' !== $method);
 
         if ($form->isValid()) {
-
             $entity_class_instance = $form->getData();
             $entity_class_instance = $this->checkIfExists($entity_class_instance, $method);
-            //try {
 
             $this->om->persist($entity_class_instance);
 

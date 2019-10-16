@@ -1,29 +1,55 @@
 <?php
 
+/*
+ * This file is part of the Ngen - CSIRT Incident Report System.
+ *
+ * (c) CERT UNLP <support@cert.unlp.edu.ar>
+ *
+ * This source file is subject to the GPL v3.0 license that is bundled
+ * with this source code in the file LICENSE.
+ */
 namespace CertUnlp\NgenBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 /**
  * TaxonomyValue
- *
+ * @ORM\Entity()
  * @ORM\Table(name="taxonomy_value")
  */
 class TaxonomyValue
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
+     * @var string
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @Gedmo\Slug(fields={"value"}, separator="_")
+     * @ORM\Column(name="slug", type="string", length=100)
+     * @JMS\Expose
+     * @JMS\Groups({"api_input"})
+     * */
+    private $slug;
+
+    /**
+     * @return string
      */
-    private $id;
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
+    }
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=1024)
      */
     private $description;
 
@@ -42,10 +68,10 @@ class TaxonomyValue
     private $value;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="predicate", type="string", length=255)
-     */
+     * @var TaxonomyValue
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\TaxonomyPredicate")
+     * @ORM\JoinColumn(name="taxonomyPredicate", referencedColumnName="slug",nullable=true)
+     **/
     private $predicate;
 
     /**
@@ -56,9 +82,9 @@ class TaxonomyValue
     private $updatedAt;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="version", type="string", length=255)
+     * @ORM\Column(name="version", type="integer")
      */
     private $version;
 
@@ -70,9 +96,13 @@ class TaxonomyValue
      */
     public function getId()
     {
-        return $this->id;
+        return $this->getSlug();
     }
 
+    public function __toString()
+    {
+        return $this->getPredicate()." -> ".$this->getValue();
+    }
     /**
      * Set description
      *
@@ -196,7 +226,7 @@ class TaxonomyValue
     /**
      * Set version
      *
-     * @param string $version
+     * @param integer $version
      *
      * @return TaxonomyValue
      */
@@ -210,11 +240,21 @@ class TaxonomyValue
     /**
      * Get version
      *
-     * @return string
+     * @return integer
      */
     public function getVersion()
     {
         return $this->version;
     }
+    /**
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function timestampsUpdate()
+    {
+        $this->setUpdatedAt(new DateTime('now'));
+    }
+
 }
 

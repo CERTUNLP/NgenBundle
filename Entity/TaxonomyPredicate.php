@@ -1,29 +1,34 @@
 <?php
-
+/*
+ * This file is part of the Ngen - CSIRT Incident Report System.
+ *
+ * (c) CERT UNLP <support@cert.unlp.edu.ar>
+ *
+ * This source file is subject to the GPL v3.0 license that is bundled
+ * with this source code in the file LICENSE.
+ */
 namespace CertUnlp\NgenBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 
 /**
- * tax_predicate
+ * TaxonomyPredicate
  *
+/**
+ * TelegramMessage
+ *
+ * @author einar
+ * @ORM\Entity()
  * @ORM\Table(name="taxonomy_predicate")
  */
 class TaxonomyPredicate
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=1024)
      */
     private $description;
 
@@ -57,14 +62,31 @@ class TaxonomyPredicate
 
 
     /**
-     * Get id
-     *
-     * @return int
+     * @var string
+     * @ORM\Id
+     * @Gedmo\Slug(fields={"value"}, separator="_")
+     * @ORM\Column(name="slug", type="string", length=100)
+     * @JMS\Expose
+     * @JMS\Groups({"api_input"})
+     * */
+    private $slug;
+
+    /**
+     * @return string
      */
-    public function getId()
+    public function getSlug(): string
     {
-        return $this->id;
+        return $this->slug;
     }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
+    }
+
 
     /**
      * Set description
@@ -184,6 +206,15 @@ class TaxonomyPredicate
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+    /**
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function timestampsUpdate()
+    {
+        $this->setUpdatedAt(new DateTime('now'));
     }
 }
 

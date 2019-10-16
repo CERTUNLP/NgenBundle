@@ -11,9 +11,12 @@
 
 namespace CertUnlp\NgenBundle\Form;
 
+use CertUnlp\NgenBundle\Entity\TaxonomyValue;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 
 class IncidentTypeType extends AbstractType
 {
@@ -24,13 +27,18 @@ class IncidentTypeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
             ->add('name', null, array(
                 'required' => true,
             ))
             ->add('description', null, array(
                 'required' => true,
+            ))
+            ->add('taxonomyValue', EntityType::class, array(
+                'class' => TaxonomyValue::class,
+                'empty_value' => 'Choose a Tanonomy Reference value',
+                'required' => false,
+                'attr' => array('help_text' => 'If none is selected null is assigned')
             ));
 
         if ($builder->getData()) {
