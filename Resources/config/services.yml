@@ -319,3 +319,27 @@ services:
         class: CertUnlp\NgenBundle\Entity\Incident\Listener\CustomPropertyListener
         tags:
             - { name: kernel.event_subscriber }
+
+    cert_unlp.ngen.incident.taxonomy.value.frontend.controller:
+        class:     CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
+        arguments: ["@doctrine.orm.entity_manager","@form.factory",CertUnlp\NgenBundle\Form\IncidentTaxonomyValueType,"@knp_paginator","@fos_elastica.finder.taxonomyvalues.value","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+
+    cert_unlp.ngen.incident.taxonomy.value.api.controller:
+        class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentTaxonomyValueApiController
+        arguments: ["@cert_unlp.ngen.incident.taxonomy.value.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
+
+    cert_unlp.ngen.incident.taxonomy.value.handler:
+        class:         CertUnlp\NgenBundle\Services\Api\Handler\IncidentTaxonomyValueHandler
+        arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue,CertUnlp\NgenBundle\Form\IncidentTaxonomyValueType,"@form.factory"]
+
+    cert_unlp.ngen.incident.taxonomy.predicate.frontend.controller:
+        class:     CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
+        arguments: ["@doctrine.orm.entity_manager","@form.factory",CertUnlp\NgenBundle\Form\IncidentTaxonomyPredicateType,"@knp_paginator","@fos_elastica.finder.taxonomypredicates.predicate","@fos_comment.manager.comment","@fos_comment.manager.thread"]
+
+    cert_unlp.ngen.incident.taxonomy.predicate.api.controller:
+        class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentTaxonomyPredicateApiController
+        arguments: ["@cert_unlp.ngen.incident.taxonomy.predicate.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
+
+    cert_unlp.ngen.incident.taxonomy.predicate.handler:
+        class:         CertUnlp\NgenBundle\Services\Api\Handler\IncidentTaxonomyPredicateHandler
+        arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate,CertUnlp\NgenBundle\Form\IncidentTaxonomyPredicateType,"@form.factory"]

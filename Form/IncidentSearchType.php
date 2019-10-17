@@ -129,7 +129,7 @@ class IncidentSearchType extends AbstractType
                 'class' => IncidentPriority::class,
                 'empty_value' => 'All',
                 'description' => 'If none is selected, the assigned impact will be Low',
-                'attr' => array('class' => 'select-filter', 'search' => 'slug')
+                'attr' => array('class' => 'select-filter', 'search' => 'code')
             ));
 
     }
