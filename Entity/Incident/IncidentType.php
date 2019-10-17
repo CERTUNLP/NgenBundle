@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\TaxonomyValue;
+use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -108,7 +108,7 @@ class IncidentType
 
     /**
      * @var TaxonomyValue
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\TaxonomyValue")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue")
      * @ORM\JoinColumn(name="taxonomyValue", referencedColumnName="slug",nullable=true)
      **/
     private $taxonomyValue;
@@ -155,7 +155,7 @@ class IncidentType
      */
     public function getReport(string $lang = null)
     {
-        $reporte = $this->reports->filter(
+        $reporte = $this->getReports()->filter(
             static function (IncidentReport $report) use ($lang) {
                 return $report->getLang() === $lang;
             }
@@ -163,12 +163,8 @@ class IncidentType
         if ($reporte) {
             return $reporte;
         } else {
-            if (!$this->isClassification()) {
-                return $this->getTaxonomyValue()->getDescription();
-            } else {
-                return false;
+               return $this->getTaxonomyValue()->getReport();
             }
-        }
     }
 
     /**
@@ -199,7 +195,7 @@ class IncidentType
     /**
      * @return IncidentReport[]|Collection
      */
-    public function getReports(): Collection
+    public function getReports(): ?Collection
     {
         return $this->reports;
     }

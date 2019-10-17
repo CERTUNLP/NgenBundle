@@ -11,8 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Command;
 
-use CertUnlp\NgenBundle\Entity\TaxonomyPredicate;
-use CertUnlp\NgenBundle\Entity\TaxonomyValue;
+use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate;
+use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -79,11 +79,11 @@ class GetReferenceTaxonomyFromEnisaCommand extends ContainerAwareCommand
                         $existing_value->setExpanded($value->expanded);
                         $existing_value->setVersion($obj->version);
                         $existing_value->setPredicate(
-                            $this->getContainer()->get('doctrine')->getRepository(TaxonomyValue::class)->findOneBy(
+                            $this->getContainer()->get('doctrine')->getRepository(TaxonomyPredicate::class)->findOneBy(
                                 ['value' => ($predicate_value->predicate)]
                             )
                         );
-                        $existing_value->setDescription($obj->Description);
+                        $existing_value->setDescription($obj->description);
                         $existing_value->setUpdatedAt(new DateTime('now'));
                         $this->getContainer()->get('doctrine')->getManager()->persist($existing_value);
 
@@ -97,7 +97,7 @@ class GetReferenceTaxonomyFromEnisaCommand extends ContainerAwareCommand
                     $new_value->setValue($value->value);
                     $new_value->setExpanded($value->expanded);
                     $new_value->setVersion($obj->version);
-                    $new_value->setPredicate( $this->getContainer()->get('doctrine')->getRepository(TaxonomyValue::class)->findOneBy(
+                    $new_value->setPredicate( $this->getContainer()->get('doctrine')->getRepository(TaxonomyPredicate::class)->findOneBy(
                         ['value' => $predicate_value->predicate]));
                     $new_value->setDescription($value->description);
                     $new_value->setUpdatedAt(new DateTime('now'));

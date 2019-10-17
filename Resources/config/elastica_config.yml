@@ -145,6 +145,8 @@ fos_elastica:
                                     type: keyword
                                 name:
                                     type: keyword
+                                code:
+                                     type: integer
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
@@ -681,6 +683,92 @@ fos_elastica:
                         # propel and should be removed
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\User
+                        provider: ~
+                        finder: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
+        taxonomyvalues:
+            index_name: taxonomyvalues_%kernel.environment%
+            settings:
+                index:
+                    max_result_window: 50000
+            types:
+                value:
+                    properties:
+                        value:
+                            type: keyword
+                        slug:
+                            type: keyword
+                        expanded:
+                            type: keyword
+                        description:
+                            type: keyword
+                        version:
+                            type: keyword
+                        createdAt:
+                            type: date
+                        updatedAt:
+                            type: date
+                        reports:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: keyword
+                                lang:
+                                    type: keyword
+                        version:
+                            type: keyword
+                    persistence:
+                        identifier: slug
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue
+                        provider: ~
+                        finder: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
+        taxonomypredicates:
+            index_name: taxonomypredicates_%kernel.environment%
+            settings:
+                index:
+                    max_result_window: 50000
+            types:
+                predicate:
+                    properties:
+                        value:
+                            type: keyword
+                        slug:
+                            type: keyword
+                        expanded:
+                            type: keyword
+                        description:
+                            type: keyword
+                        createdAt:
+                            type: date
+                        updatedAt:
+                            type: date
+                        reports:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: keyword
+                                lang:
+                                    type: keyword
+                        version:
+                            type: keyword
+                    persistence:
+                        identifier: slug
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate
                         provider: ~
                         finder: ~
                         listener:

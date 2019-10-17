@@ -11,11 +11,11 @@
 
 namespace CertUnlp\NgenBundle\Form;
 
-use CertUnlp\NgenBundle\Entity\TaxonomyValue;
+use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\Incident\Taxonomy\TaxonomyValue;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
 
 
 class IncidentTypeType extends AbstractType
@@ -34,12 +34,16 @@ class IncidentTypeType extends AbstractType
             ->add('description', null, array(
                 'required' => true,
             ))
-            ->add('taxonomyValue', EntityType::class, array(
-                'class' => TaxonomyValue::class,
+            ->add('taxonomyValue', null, array(
+                'class' => \CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue::class,
                 'empty_value' => 'Choose a Tanonomy Reference value',
                 'required' => false,
-                'attr' => array('help_text' => 'If none is selected null is assigned')
-            ));
+                'attr' => array('help_text' => 'If none is selected null is assigned'),
+                'query_builder' => static function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.predicate', 'ASC');
+                }
+                ));
 
         if ($builder->getData()) {
             if (!$builder->getData()->getIsActive()) {

@@ -1,0 +1,41 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">
+            <strong>{{ 'Showing'|trans }}</strong>
+            <strong>({{ objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount }})</strong>
+        </h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="tabla_hosts" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+        <tr role="row">
+            <th>{{ knp_pagination_sortable(objects, 'Value'|trans, 'slug') }}</th>
+            <th>{{ 'Expanded'|trans }}</th>
+            <th>{{ 'Description'|trans }}</th>
+            <th>{{ knp_pagination_sortable(objects, 'active'|trans, 'isActive') }}</th>
+            <th>{{ 'Reports'| trans  }}</th>
+            <th>{{ 'Reference'| trans  }}</th>
+            <th>{{ 'Action'| trans  }}</th>
+        </tr>
+                </thead>
+        <tbody>
+        {% for incidentTaxonomyValue in incidentTaxonomyValues %}
+            {% include 'CertUnlpNgenBundle:IncidentTaxonomyValue:Frontend/list/incidentTaxonomyValueListRow.html.twig' with {'incidentTaxonomyValue': incidentTaxonomyValue} %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+<div class="pagination justify-content-center">
+    {{ knp_pagination_render(incidentTaxonomyValues, null, {}, { "prev_label": "Previous"|trans, "next_label": "Next"|trans, "first_label": "First"|trans, "last_label": "Last"|trans}) }}
+</div>
