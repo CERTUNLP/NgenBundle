@@ -18,6 +18,8 @@
         {{ print.colorbox(object.state.color,object.state.icon,object.state,path('cert_unlp_ngen_incident_state_detail',{'slug': object.state.slug})) }}
         {{ print.colorbox(object.priority.color,object.priority.icon,object.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': object.priority.id})) }}
         {{ print.colorbox(object.tlp.color,object.tlp.icon,object.tlp,'#') }}
+        {{ print.colorbox(object.reporter.color,object.reporter.icon,object.reporter,path('cert_unlp_ngen_user_detail_user',{'username': object.reporter.username})) }}
+        {{ print.colorbox(object.origin.color,object.origin.icon,object.address,path('cert_unlp_ngen_host_detail',{'id': object.origin.id})) }}
         {% set detail_link %}
             {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':object.network} %}
         {% endset %}
@@ -83,7 +85,7 @@
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-{{  object.origin.icon }} fa-2x text-gray-300"></i>
+                                            <i class="fas fa-{{ object.origin.icon }} fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>

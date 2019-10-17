@@ -53,7 +53,6 @@
                     {{ form_row(form.urgency) }}
                     {{ form_row(form.assigned) }}
                     {{ form_row(form.reporter) }}
-
                 </div>
             </div>
         </fieldset>
@@ -67,7 +66,7 @@
                             {{ form_row(form.unattendedState) }}
                         </div>
                         <div class="col-sm-3">
-                        {{ form_row(form.responseDeadLine) }}
+                            {{ form_row(form.responseDeadLine) }}
                         </div>
                     </div>
                     <div class="row">
@@ -87,12 +86,8 @@
             </div>
         </div>
         {{ form_end(form) }}
-
-
     {% endif %}
-
 {% endblock %}
-
 
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_internal_incident_search_incident') }}{% endblock %}
 

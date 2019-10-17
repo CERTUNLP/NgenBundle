@@ -1,0 +1,75 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+<tr id="filtrosMostrar" class="filtrosMostrar">
+    <th></th>
+    <th class="text-center">
+        <form method='post' action="javascript:void(0);" role="search">
+            {{ form_row(search_form.state) }}
+        </form>
+    </th>
+    <th></th>
+    <th class="text-center">
+        <form method='post' action="javascript:void(0);" role="search">
+            {{ form_row(search_form.tlp) }}
+        </form>
+    </th>
+    <th class="text-center">
+        <form method='post' action="javascript:void(0);" role="search">
+            {{ form_row(search_form.priority) }}
+        </form>
+    </th>
+    <th class="text-center">
+        <form method='post' class="data-filter" action="javascript:void(0);" role="search">
+            {{ form_row(search_form.address) }}
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                   style="display:none" value="option1" checked>
+            <label class="form-check-label" for="inlineCheckbox1" style="display:none">*</label>
+        </form>
+
+    </th>
+
+
+    <th class="text-center">
+        <form method='post' action="javascript:void(0);" role="search">
+            {{ form_row(search_form.type) }}
+        </form>
+    </th>
+
+    <th class="text-center">
+        <form method='post' action="javascript:void(0);" role="search">
+            {{ form_row(search_form.feed) }}
+        </form>
+    </th>
+    <th class="text-center">
+        <form method='post' class="data-filter" action="javascript:void(0);" role="search">
+            {{ form_row(search_form.dates) }}
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                   style="display:none" value="option1" checked>
+            <label class="form-check-label" for="inlineCheckbox1" style="display:none">*</label>
+        </form>
+    </th>
+    <th class="text-center">
+        <form method='post' class="data-filter" action="javascript:void(0);" role="search">
+            {{ form_row(search_form.updatesAt) }}
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                   style="display:none" value="option1" checked>
+            <label class="form-check-label" for="inlineCheckbox1" style="display:none">*</label>
+        </form>
+    </th>
+    <th class="text-center">
+        <form method='post' action="javascript:void(0);" role="search">
+            {{ form_row(search_form.ltdCount) }}
+        </form>
+    </th>
+    <th class="text-center">
+        <form method='post' action="javascript:void(0);" role="search">
+            {{ form_row(search_form.assigned) }}
+        </form>
+    </th>
+</tr>

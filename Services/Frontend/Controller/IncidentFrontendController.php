@@ -11,17 +11,15 @@
 
 namespace CertUnlp\NgenBundle\Services\Frontend\Controller;
 
-use CertUnlp\NgenBundle\CertUnlpNgenBundle;
-use CertUnlp\NgenBundle\Form\IncidentSearchType;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Form\IncidentSearchType;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\ThreadManagerInterface;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Knp\Component\Pager\Paginator;
 use Symfony\Component\Form\FormFactory;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\Response;
 
 class IncidentFrontendController extends FrontendController
 {
@@ -47,9 +45,9 @@ class IncidentFrontendController extends FrontendController
         $zipName = $evidence_path . 'EvidenceDocuments' . $incident . '.zip';
         $options = array('remove_all_path' => TRUE);
         $zip->open($zipName, \ZipArchive::CREATE);
-        foreach($incident->getIncidentsDetected() as $detected) {
-            if ($detected->getEvidenceFilePath()){
-               $zip->addFile($this->evidence_path.$detected->getEvidenceFilePath(),$detected->getEvidenceFilePath());
+        foreach ($incident->getIncidentsDetected() as $detected) {
+            if ($detected->getEvidenceFilePath()) {
+                $zip->addFile($this->evidence_path . $detected->getEvidenceFilePath(), $detected->getEvidenceFilePath());
             }
         }
         //$zip->addGlob($evidence_path . "*", GLOB_BRACE, $options);
@@ -76,13 +74,13 @@ class IncidentFrontendController extends FrontendController
         return array('form' => $this->formFactory->create(new $this->entityType($this->getDoctrine(), $this->userLogged->getId()), $object)->createView(), 'method' => 'patch');
     }
 
-    public function homeEntity(Request $request, $term = '', $limit = 7, $defaultSortFieldName='createdAt',$defaultSortDirection='desc')
+    public function homeEntity(Request $request, $term = '', $limit = 7, $defaultSortFieldName = 'createdAt', $defaultSortDirection = 'desc')
     {
         if (!$term) {
-            $term = $request->get('term') ? $request->get('term') : '*';
+            $term = $request->get('term') ?: '*';
         }
-        $quickSearchForm=$this->formFactory->createBuilder('CertUnlp\NgenBundle\Form\IncidentSearchType',(new Incident),array('csrf_protection' => true));
-        return array('objects'=>$this->searchEntity($request, $term, $limit,$defaultSortFieldName,$defaultSortDirection,'pageobject','object')['objects'],'search_form'=>$quickSearchForm->getForm()->createView());
+        $quickSearchForm = $this->formFactory->createBuilder(IncidentSearchType::class, (new Incident), array('csrf_protection' => true));
+        return array('objects' => $this->searchEntity($request, $term, $limit, $defaultSortFieldName, $defaultSortDirection, 'pageobject', 'object')['objects'], 'search_form' => $quickSearchForm->getForm()->createView());
 
     }
 

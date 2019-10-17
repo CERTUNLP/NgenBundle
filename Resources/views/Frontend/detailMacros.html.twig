@@ -1,9 +1,13 @@
 {% macro colorbox(color,icon,text,href) %}
-    <a class="d-none d-sm-inline-block btn btn-sm btn-{{ color }} shadow-sm" role="button"
+    <a class="btn btn-primary btn-icon-split btn-sm btn-{{ color }} shadow-sm" role="button"
        href="{{ href }}"
        title=" {{ text }}">
-        {{ icon('fas fa-'~icon~' fa-sm text-white-50') }}
-        {{ text }}
+        <span class="icon text-white-50">
+            {{ icon('fas fa-'~icon~' fa-xs text-white-50') }}
+        </span>
+        <span class="text">
+            {{ text }}
+        </span>
     </a>
 {% endmacro %}
 

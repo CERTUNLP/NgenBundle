@@ -6,58 +6,57 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 
 <tr data-id="{{ incident.id }}" role="row">
 
-    <td class="align-middle">
+    <td class="text-center">
         {% include "CertUnlpNgenBundle:Incident:Frontend/list/actionsLabel.html.twig" with {'incident': incident,'incidentsDetected':incident.incidentsDetected} %}
     </td>
-    <td id="state_label_holder" class="align-middle" align="center">
-        <div>
-            {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': incident} %}
+    <td id="state_label_holder" class="text-center">
+        <small>
+        {{ print.colorbox(incident.state.color,incident.state.icon,incident.state,path('cert_unlp_ngen_incident_state_detail',{'slug': incident.state.slug})) }}
+        </small>
+    </td>
+    <td id="state_label_holder" class="text-center">
+        {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': incident,'type':'label_list', 'response': true} %}
+        {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': incident,'type':'label_list', 'response': false} %}
+    </td>
+    <td id="tlp_label_holder" class="text-center">
+        {{ print.colorbox(incident.tlp.color,incident.tlp.icon,incident.tlp,'#') }}
+    </td>
+    <td class="text-center">
+        {{ print.colorbox(incident.priority.color,incident.priority.icon,incident.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': incident.priority.id})) }}
+    </td>
+    <td class="text-center">
+        <div class="float-left">
+            {{ print.colorbox(incident.origin.color,incident.origin.icon,incident.address,path('cert_unlp_ngen_host_detail',{'id': incident.origin.id})) }}
         </div>
     </td>
-    <td id="state_label_holder" class="align-middle">
-        <div>
-            <span>
-
-                {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': incident,'type':'label_list', 'response': true} %}
-                {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': incident,'type':'label_list', 'response': false} %}
-
-                </span>
+    <td class="text-center">
+        <div class="float-left">
+            {{ print.colorbox(incident.type.color,incident.type.icon,incident.type,path('cert_unlp_ngen_incident_type_detail',{'slug': incident.type.slug})) }}
         </div>
     </td>
-    <td class="align-middle">
-        {{ incident.priority }}
+    <td class="text-center">
+        <div class="float-left">
+            {{ print.colorbox(incident.feed.color,incident.feed.icon,incident.feed,path('cert_unlp_ngen_incident_feed_detail',{'slug': incident.feed.slug})) }}
+        </div>
     </td>
-    <td class="align-middle">
-        {{ incident.address }}
+    <td class="text-center">
+        <small>
+            {{ incident.date|date('Y-m-d H:i') }}
+        </small>
     </td>
-    <td class="align-middle">
-        {{ incident.type }}
+    <td class="text-center">
+        <small>
+            {{ incident.updatedAt|date('Y-m-d H:i') }}
+        </small>
     </td>
-    <td class="align-middle">
-        {{ incident.feed }}
-    </td>
-    <td class="align-middle">
-        {{ incident.date|date('Y-m-d H:i') }}
-    </td>
-    <td class="align-middle">
-        {{ incident.updatedAt|date('Y-m-d H:i') }}
-    </td>
-    <td class="align-middle" align="center">
+    <td class="text-center">
         {{ incident.ltdCount }}
     </td>
-    <td class="align-middle">
-        {{ incident.assigned }}
+    <td class="text-center">
+        {{ print.colorbox(incident.reporter.color,incident.reporter.icon,incident.reporter,path('cert_unlp_ngen_user_detail_user',{'username': incident.reporter.username})) }}
     </td>
-    <td id="tlp_label_holder" class="align-middle" align="center">
-        <div>
-            <span>
-                {% include "CertUnlpNgenBundle:Incident:Frontend/list/tlpLabel.html.twig" with {'incident': incident} %}
-                </span>
-        </div>
-    </td>
-
-
 </tr>

@@ -17,22 +17,19 @@
         <th>{{ 'Evidence'|trans }}</th>
     </tr>
     <tbody>
-    
-        {%  for incidentDetected in incidentsDetected %}
-            <tr role="row" data-id="{{ incidentDetected.id }}">
-                        <td>{{ incidentDetected.feed | trans }}</td>
-                        <td>{{ incidentDetected.state | trans }}</td>
-                        <td>{{ incidentDetected.tlp | trans }}</td>
-                        <td>{{ incidentDetected.date | date('Y-m-d H:i') }}</td>
-                        <td>{{ incidentDetected.notes| trans }}</td>
-                <td class="">
-                    {% if incidentDetected.EvidenceFilePath %}
-                        <a href="{{ path('cert_unlp_ngen_incident_frontend_evidence_incident_detected_id',{'id':incidentDetected.id}) }}">{{ 'Download'|trans }}</a>
-                    {% endif %}
-                </td>
-                </tr>
-        {% endfor %}    
-
+    {% for incidentDetected in incidentsDetected %}
+        <tr role="row" data-id="{{ incidentDetected.id }}">
+            <td>{{ incidentDetected.feed | trans }}</td>
+            <td>{{ incidentDetected.state | trans }}</td>
+            <td>{{ incidentDetected.tlp | trans }}</td>
+            <td>{{ incidentDetected.date | date('Y-m-d H:i') }}</td>
+            <td>{{ incidentDetected.notes| trans }}</td>
+            <td class="">
+                {% if incidentDetected.EvidenceFilePath %}
+                    <a href="{{ path('cert_unlp_ngen_incident_frontend_evidence_incident_detected_id',{'id':incidentDetected.id}) }}">{{ 'Download'|trans }}</a>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
     </tbody>
-
 </table>
