@@ -23,11 +23,11 @@
 }
 
 .rigth {
-    float:right;
+    float: right;
 }
 
 .left {
-    float:left;
+    float: left;
 }
 
 .center {
@@ -35,25 +35,23 @@
     max-width: 100%;
     height: auto;
     margin: auto;
-    float: none!important;
+    float: none !important;
 }
 
-.fieldset-contact
-{
+.fieldset-contact {
     border: 1px solid #ddd !important;
     margin: 0;
     xmin-width: 0;
     padding: 10px;
     position: relative;
-    border-radius:4px;
-    background-color:#f5f5f5;
-    padding-left:10px!important;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+    padding-left: 10px !important;
 }
 
-legend
-{
-    font-size:14px;
-    font-weight:bold;
+legend {
+    font-size: 14px;
+    font-weight: bold;
     margin-bottom: 0px;
     width: 35%;
     border: 1px solid #ddd;
@@ -66,19 +64,18 @@ legend
     vertical-align: middle !important;
 }
 
-.select-filter, .multiple-select-filter
-{
-    max-width:10em;
-    min-width: 10em;
+.select-filter, .multiple-select-filter {
+    max-width: 10em;
+    min-width: 9em;
 }
 
 .rounded-circle {
     border-radius: 50% !important;
 }
 
-#menu-toggle{
-    margin-top:2em;
-    color:#337ab7;
+#menu-toggle {
+    margin-top: 2em;
+    color: #337ab7;
 }
 
 .embed-container {
@@ -87,9 +84,10 @@ legend
     height: 0;
     overflow: hidden;
 }
+
 .embed-container iframe {
     position: absolute;
-    top:0;
+    top: 0;
     left: 0;
     width: 100%;
     height: 100%;
@@ -105,7 +103,7 @@ legend
 }
 
 *[role="form"] h1 {
-    font-family: 'Open Sans' , sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 40px;
     font-weight: 600;
     color: #000000;
@@ -114,6 +112,7 @@ legend
     text-transform: uppercase;
     letter-spacing: 4px;
 }
+
 .chart {
     width: 100%;
     min-width: 25%;

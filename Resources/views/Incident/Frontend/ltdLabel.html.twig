@@ -7,10 +7,10 @@
  with this source code in the file LICENSE.
 #}
 
-{% if not incident.incidentsDetected is empty%}
-        <ul>
-                <li>{{ 'Count'|trans }}: <span class="label label-warning"> {{ incident.incidentsDetected|length }}</span>
-                        <li>  <span class="label label-warning"> {{ (incident.incidentsDetected|last).feed }}</span>
-                <li><span class="label label-warning"> {{ (incident.incidentsDetected|last).date|date('Y-m-d') }} </span>
-        </ul>
+{% if not incident.incidentsDetected is empty %}
+    <ul>
+        <li>{{ 'Count'|trans }}: <span class="label label-warning"> {{ incident.incidentsDetected|length }}</span>
+        <li><span class="label label-warning"> {{ (incident.incidentsDetected|last).feed }}</span>
+        <li><span class="label label-warning"> {{ (incident.incidentsDetected|last).date|date('Y-m-d') }} </span>
+    </ul>
 {% endif %}

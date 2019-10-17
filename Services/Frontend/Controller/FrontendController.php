@@ -120,14 +120,16 @@ class FrontendController
             $term = $request->get('term') ? $request->get('term') : '*';
         }
         $results = $this->getFinder()->createPaginatorAdapter($term);
-
         $pagination = $this->getPaginator()->paginate(
             $results, $request->query->get($page, 1), $limit
             , array('pageParameterName' => 'page' . $field, 'sortFieldParameterName' => 'sort' . $field, 'sortDirectionParameterName' => 'direction' . $field, 'defaultSortFieldName' => $defaultSortFieldName, 'defaultSortDirection' => $defaultSortDirection)
         );
 
         $pagination->setParam('term', $term);
-
+        $pagination->setCustomParameters([
+            'align' => 'center', # center|right (for template: twitter_bootstrap_v4_pagination)
+            'style' => 'bottom',
+        ]);
         return array('objects' => $pagination, 'term' => $term);
     }
 
