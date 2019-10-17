@@ -17,6 +17,7 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
+use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -26,7 +27,7 @@ class IncidentTaxonomyValueFrontendController extends Controller
 {
 
     /**
-     * @Template("CertUnlpNgenBundle:IncidentTaxonomyType/Frontend:home.html.twig")
+     * @Template("CertUnlpNgenBundle:IncidentTaxonomyValues/Frontend:home.html.twig")
      * @Route("/", name="cert_unlp_ngen_administration_taxonomy_value_frontend_home")
      * @param Request $request
      * @return array
@@ -42,28 +43,28 @@ class IncidentTaxonomyValueFrontendController extends Controller
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:IncidentTaxonomyValue/Frontend:home.html.twig")
+     * @Template("CertUnlpNgenBundle:IncidentTaxonomyValues/Frontend:home.html.twig")
      * @Route("search", name="cert_unlp_ngen_incident_taxonomy_value_search")
      * @param Request $request
      * @return array
      */
-    public function searchIncidentTaxonomyTypeAction(Request $request)
+    public function searchIncidentTaxonomyValueAction(Request $request)
     {
         return $this->getFrontendController()->searchEntity($request);
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:IncidentType:Frontend/incidentTypeDetail.html.twig")
-     * @Route("{slug}/detail", name="cert_unlp_ngen_incident_type_detail")
-     * @param IncidentType $incidentType
+     * @Template("CertUnlpNgenBundle:IncidentTaxonomyValues/Frontend:incidentTaxonomyValueDetail.html.twig")
+     * @Route("{slug}/detail", name="cert_unlp_ngen_taxonomy_value_detail")
+     * @param TaxonomyValue $taxonomyValue
      * @return array
      */
-    public function detailIncidentTypeAction($incidentType)
+    public function detailIncidentTypeAction(TaxonomyValue $taxonomyValue)
     {
-        return $this->getFrontendController()->detailEntity($incidentType);
+        return $this->getFrontendController()->detailEntity($taxonomyValue);
     }
 
-    private function readReportFile( $incidentType)
+    private function readReportFile( TaxonomyValue $incidentType)
     {
         return $this->container->get('markdown.parser')->transformMarkdown(file_get_contents($this->getReportName($incidentType)));
     }

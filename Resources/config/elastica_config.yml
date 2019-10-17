@@ -707,6 +707,8 @@ fos_elastica:
                             type: keyword
                         version:
                             type: keyword
+                        predicate:
+                            type: keyword
                         createdAt:
                             type: date
                         updatedAt:
