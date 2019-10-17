@@ -14,19 +14,18 @@
     <td class="align-middle">
         {{ incidentTaxonomyValue.description | default('No description')| trans }}
     </td>
+    <td class="align-middle">
+        {{ incidentTaxonomyValue.predicate }}
+    </td>
+    <td class="align-middle">
+        {{ incidentTaxonomyValue.Reports.count() }}
+    </td>
     <td id="state_label_holder" class="align-middle">
         <div>
             {% include "CertUnlpNgenBundle:IncidentTaxonomyValues:Frontend/list/stateLabel.html.twig" with {'incidentTaxonomyValue': incidentTaxonomyValue} %}
         </div>
     </td>
     <td class="align-middle">
-        {{ incidentTaxonomyValue.Reports.count() }}
-    </td>
-    <td class="align-middle">
-        {{ incidentTaxonomyValue.value }}
-    </td>
-
-    <td class="align-middle">
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentTaxonomyValue , 'detail_link': path('cert_unlp_ngen_incident_value_detail',{ 'slug': incidentTaxonomyValue.slug}),'edit_link': path('cert_unlp_ngen_incident_value_edit',{'slug': incidentTaxonomyValue.slug})} %}
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentTaxonomyValue , 'detail_link': path('cert_unlp_ngen_taxonomy_value_detail',{ 'slug': incidentTaxonomyValue.slug})} %}
     </td>
 </tr>

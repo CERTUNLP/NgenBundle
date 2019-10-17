@@ -83,7 +83,7 @@ class GetReferenceTaxonomyFromEnisaCommand extends ContainerAwareCommand
                                 ['value' => ($predicate_value->predicate)]
                             )
                         );
-                        $existing_value->setDescription($obj->description);
+                        $existing_value->setDescription($value->description);
                         $existing_value->setUpdatedAt(new DateTime('now'));
                         $this->getContainer()->get('doctrine')->getManager()->persist($existing_value);
 

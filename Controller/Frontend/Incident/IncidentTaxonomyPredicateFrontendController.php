@@ -28,7 +28,7 @@ class IncidentTaxonomyValueFrontendController extends Controller
 {
 
     /**
-     * @Template("CertUnlpNgenBundle:IncidentTaxonomyType/Frontend:home.html.twig")
+     * @Template("CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend:home.html.twig")
      * @Route("/", name="cert_unlp_ngen_administration_taxonomy_predicate_frontend_home")
      * @param Request $request
      * @return array
@@ -44,12 +44,12 @@ class IncidentTaxonomyValueFrontendController extends Controller
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:IncidentTaxonomyType/Frontend:home.html.twig")
-     * @Route("search", name="cert_unlp_ngen_incident_taxonomy_type_search")
+     * @Template("CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend:home.html.twig")
+     * @Route("search", name="cert_unlp_ngen_incident_taxonomy_predicate_search")
      * @param Request $request
      * @return array
      */
-    public function searchIncidentTaxonomyTypeAction(Request $request)
+    public function searchIncidentTaxonomyPredicateAction(Request $request)
     {
         return $this->getFrontendController()->searchEntity($request);
     }

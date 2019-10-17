@@ -7,9 +7,9 @@
  * with this source code in the file LICENSE.
  */
 
-var IncidentTaxonomyTypeApi = ApiClient.extend({
+var IncidentTaxonomyPredicateApi = ApiClient.extend({
     config: function () {
-        $.subscribe('/cert_unlp/incident/taxonomy/update', $.proxy(this.update, this));
+        $.subscribe('/cert_unlp/incident/taxonomy/predicate/update', $.proxy(this.update, this));
     },
     addDefaultChannel: function () {
         this.api.add("types", {stripTrailingSlash: true, url: 'incidents/taxonomy'});

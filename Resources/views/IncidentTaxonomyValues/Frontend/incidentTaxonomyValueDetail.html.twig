@@ -7,9 +7,9 @@
  with this source code in the file LICENSE.
 #}
 
-{% extends 'CertUnlpNgenBundle::IncidentTaxonomyValue/Frontend/frontend.html.twig' %}
+{% extends 'CertUnlpNgenBundle:IncidentTaxonomyValues/Frontend:frontend.html.twig' %}
 {% block content_header %}
-    <h1 class="page-header"> {{ object }} {% include "CertUnlpNgenBundle:IncidentTaxonomyValue:Frontend/list/stateLabel.html.twig" with {'incidentTaxonomyValue': object} %}
+    <h1 class="page-header"> {{ object }} {% include "CertUnlpNgenBundle:IncidentTaxonomyValues/Frontend/list:stateLabel.html.twig" with {'incidentTaxonomyValue': object} %}
     </h1>
 {% endblock %}
 {% block content_body %}
@@ -24,10 +24,10 @@
                         <table class="table table-bordered">
                             <tr>
                                 <td class="">
-                                    {{ 'Name'|trans }}
+                                    {{ 'Value'|trans }}
                                 </td>
                                 <td class="">
-                                    {{ object.name  }}
+                                    {{ object.value  }}
                                 </td>
                             </tr>
                             <tr>
@@ -40,10 +40,10 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    {{ "Taxonomy Reference"|trans}}
+                                    {{ "Taxonomy Predicate"|trans}}
                                 </td>
                                 <td class="">
-                                    {{ object.taxonomyValue }}
+                                    {{ object.predicate }}
                                 </td>
                             </tr>
                             <tr>
@@ -59,7 +59,7 @@
                                     {{ 'Active'|trans }}
                                 </td>
                                 <td class="">
-                                    {% include "CertUnlpNgenBundle:IncidentTaxonomyValue:Frontend/list/stateLabel.html.twig" with {'incidentTaxonomyValue': object} %}
+                                    {% include "CertUnlpNgenBundle:IncidentTaxonomyValues/Frontend/list:stateLabel.html.twig" with {'incidentTaxonomyValue': object} %}
                                 </td>
                             </tr>
                             <tr>
@@ -68,7 +68,7 @@
                                 </td>
                                 <td class="">
                                     {#                                    <a target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~object.name~'"'~ "&&" ~'"'~object.email~'"'})}}">#}
-                                    <span>{{ label_info(object.incidents.count) }} </span>
+                                    <span>Aca estaba  label_info(object.incidents.count) </span>
                                     {#                                    </a>#}
                                 </td>
                             </tr>
