@@ -17,7 +17,7 @@ class IncidentPriorityHandler extends Handler
 {
 
     /**
-     * Delete a Network.
+     * Delete a Priority.
      *
      * @param IncidentPriority $incident_priority
      * @param array $parameters

@@ -8,11 +8,15 @@
  * This source file is subject to the GPL v3.0 license that is bundled
  * with this source code in the file LICENSE.
  */
-namespace CertUnlp\NgenBundle\Entity;
+namespace CertUnlp\NgenBundle\Entity\Incident\Taxonomy;
 
+use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Doctrine\Common\Collections\Collection;
+use DateTime;
+
 /**
  * TaxonomyValue
  * @ORM\Entity()
@@ -29,6 +33,17 @@ class TaxonomyValue
      * @JMS\Groups({"api_input"})
      * */
     private $slug;
+
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     * @JMS\Expose
+     */
+    private $isActive = true;
+
+
 
     /**
      * @return string
@@ -69,17 +84,35 @@ class TaxonomyValue
 
     /**
      * @var TaxonomyValue
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\TaxonomyPredicate")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate")
      * @ORM\JoinColumn(name="taxonomyPredicate", referencedColumnName="slug",nullable=true)
      **/
     private $predicate;
 
     /**
-     * @var \DateTime
-     *
+     * @var Collection | IncidentReport[]
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentReport",mappedBy="type",indexBy="lang"))
+     */
+    private $reports;
+
+    /**
+     * @var DateTime
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    private $createdAt;
+
+    /**
+     * @var DateTime
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
+
 
     /**
      * @var int
@@ -101,7 +134,7 @@ class TaxonomyValue
 
     public function __toString()
     {
-        return $this->getPredicate()." -> ".$this->getValue();
+        return $this->getPredicate()." -> ".$this->getExpanded();
     }
     /**
      * Set description
@@ -117,6 +150,41 @@ class TaxonomyValue
         return $this;
     }
 
+    /**
+     * @return Collection|IncidentReport[]
+     */
+    public function getReports(): ?Collection
+    {
+        return $this->reports;
+    }
+
+    /**
+     * @param Collection|IncidentReport[] $reports
+     */
+    public function setReports($reports): void
+    {
+        $this->reports = $reports;
+    }
+
+    /**
+     * Get report
+     *
+     * @param string $lang
+     * @return IncidentReport
+     */
+    public function getReport(string $lang = null)
+    {
+        $reporte = $this->getReports()->filter(
+            static function (IncidentReport $report) use ($lang) {
+                return $report->getLang() === $lang;
+            }
+        )->first();
+        if ($reporte) {
+            return $reporte;
+        } else {
+            return $this->getPredicate()->getReport();
+        }
+    }
     /**
      * Get description
      *
@@ -255,6 +323,39 @@ class TaxonomyValue
     {
         $this->setUpdatedAt(new DateTime('now'));
     }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param bool $isActive
+     */
+    public function setIsActive(bool $isActive): void
+    {
+        $this->isActive = $isActive;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param DateTime $createdAt
+     */
+    public function setCreatedAt(DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
 
 }
 

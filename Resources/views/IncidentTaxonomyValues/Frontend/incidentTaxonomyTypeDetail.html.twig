@@ -1,0 +1,96 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+
+{% extends 'CertUnlpNgenBundle::IncidentTaxonomyValue/Frontend/frontend.html.twig' %}
+{% block content_header %}
+    <h1 class="page-header"> {{ object }} {% include "CertUnlpNgenBundle:IncidentTaxonomyValue:Frontend/list/stateLabel.html.twig" with {'incidentTaxonomyValue': object} %}
+    </h1>
+{% endblock %}
+{% block content_body %}
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'Value Information'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td class="">
+                                    {{ 'Name'|trans }}
+                                </td>
+                                <td class="">
+                                    {{ object.name  }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    {{ "Description"|trans}}
+                                </td>
+                                <td class="">
+                                    {{ object.description }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    {{ "Taxonomy Reference"|trans}}
+                                </td>
+                                <td class="">
+                                    {{ object.taxonomyValue }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    {{ 'Last Update'|trans }}
+                                </td>
+                                <td class="">
+                                    {{ object.updatedAt|date('Y-m-d') }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    {{ 'Active'|trans }}
+                                </td>
+                                <td class="">
+                                    {% include "CertUnlpNgenBundle:IncidentTaxonomyValue:Frontend/list/stateLabel.html.twig" with {'incidentTaxonomyValue': object} %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    {{ 'Incidents'|trans }}
+                                </td>
+                                <td class="">
+                                    {#                                    <a target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~object.name~'"'~ "&&" ~'"'~object.email~'"'})}}">#}
+                                    <span>{{ label_info(object.incidents.count) }} </span>
+                                    {#                                    </a>#}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {{ render(controller('CertUnlpNgenBundle:Frontend/Incident/IncidentReportFrontend:home', {'term': object.slug, 'request': app.request})) }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+        '@CertUnlpNgenBundle/Resources/public/js/incident/report/IncidentReport.js'
+        '@CertUnlpNgenBundle/Resources/public/js/incident/report/IncidentReportApi.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        var incident_report = new IncidentReport();
+        var incident_report_api = new IncidentReportApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
+    </script>
+{% endblock %}

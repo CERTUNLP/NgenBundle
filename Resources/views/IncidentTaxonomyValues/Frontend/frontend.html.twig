@@ -1,0 +1,22 @@
+{# 
+ This file is part of the Ngen - CSIRT Network Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
+
+{% block title %}{{ 'Incident Taxonomy Values'|trans }}{% endblock %}
+
+{% block content_header %}
+    <h1 class="h3 mb-0 text-gray-800">{{ icon('fa fa-fas fa-cubes') }} {{ 'Incident Taxonomy Values'|trans }}</h1>
+
+{% endblock %}
+
+{% block sideBar_search_path %}{{ path('cert_unlp_ngen_incident_value_search') }}{% endblock %}
+
+{% block content_body %}
+    {% include 'CertUnlpNgenBundle:incidentTaxonomyValues:Frontend/list/incidentTaxonomyValueList.html.twig' with {'incidentTaxonomyValue': objects  } %}
+{% endblock %}
