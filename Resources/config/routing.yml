@@ -85,6 +85,16 @@ cert_ngen_administration_priority:
     type:     annotation
     prefix:   /administration/priorities
 
+cert_ngen_administration_taxonomy_values:
+  resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentTaxonomyValueFrontendController.php'
+  type:     annotation
+  prefix:   /administration/taxonomies/values
+
+cert_ngen_administration_taxonomy_values:
+  resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentTaxonomyPredicateFrontendController.php'
+  type:     annotation
+  prefix:   /administration/taxonomies/predicates
+
 cert_ngen_incident_detected:
   resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentDetectedFrontendController.php'
   type:   annotation

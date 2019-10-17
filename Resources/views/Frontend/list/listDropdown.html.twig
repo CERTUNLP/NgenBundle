@@ -11,10 +11,11 @@
     <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton" x-placement="bottom-start"
          style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
 
+        {%  if edit_link is defined %}
         <a class="dropdown-item"
            href="{{ edit_link }}">{{ icon('edit') }}
             <span class="action-text">{{ 'Edit'|trans }}</span></a>
-
+        {% endif %}
         <a {% if object.isActive %}style="display: none;"{% endif %} class="state-label dropdown-item"
            data-action="reactivate" data-state-slug="active" data-state-name="active" role="menuitem"
            tabindex="-1" href="#">{{ icon('redo') }} <span

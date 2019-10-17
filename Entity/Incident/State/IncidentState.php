@@ -365,7 +365,7 @@ class IncidentState extends Entity implements Translatable
         return $this;
     }
 
-    public function __toString(): string
+    public function __toString(): ?string
     {
         return $this->getName();
     }
@@ -375,7 +375,7 @@ class IncidentState extends Entity implements Translatable
      *
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -388,6 +388,9 @@ class IncidentState extends Entity implements Translatable
      */
     public function setName(string $name): IncidentState
     {
+        echo("4");
+        echo($name);
+
         $this->name = $name;
 
         return $this;

@@ -1,0 +1,26 @@
+{# 
+ This file is part of the Ngen - CSIRT IncidentValue Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% extends 'CertUnlpNgenBundle::IncidentTaxonomyValues/Frontend/frontend.html.twig' %}
+
+{% block content_body %}
+    {% include 'CertUnlpNgenBundle:IncidentTaxonomyValues:Frontend/list/incidentTaxonomyValueList.html.twig' with {'incidentTaxonomyValues': objects} %}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+        '@CertUnlpNgenBundle/Resources/public/js/incident/taxonomy/IncidentTaxonomyValue.js'
+        '@CertUnlpNgenBundle/Resources/public/js/incident/taxonomy/IncidentTaxonomyValueApi.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        var incident_taxonomy_value = new incidentTaxonomyValue();
+        var incident_taxonomy_value_api = new incidentTaxonomyValue("{{ path("api_get") }}", "{{ app.user.apiKey }}");
+    </script>
+{% endblock %}

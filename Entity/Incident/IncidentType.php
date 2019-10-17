@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
 use CertUnlp\NgenBundle\Entity\Entity;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -42,6 +43,7 @@ class IncidentType extends Entity
      * @JMS\Expose
      */
     private $name;
+
     /**
      * @var string
      * @ORM\Id
@@ -50,6 +52,7 @@ class IncidentType extends Entity
      * @JMS\Expose
      */
     private $slug;
+
     /**
      * @var boolean
      *
@@ -57,6 +60,14 @@ class IncidentType extends Entity
      * @JMS\Expose
      */
     private $isActive = true;
+
+    /**
+     * @var boolean
+     * @ORM\Column(name="is_Classification", type="boolean")
+     * @JMS\Expose
+     */
+    private $isClassification = false;
+
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="create")
@@ -65,6 +76,7 @@ class IncidentType extends Entity
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
+
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="update")
@@ -73,11 +85,13 @@ class IncidentType extends Entity
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
+
     /**
      * @var Collection | Incident[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="type"))
      */
     private $incidents;
+
     /**
      * @var string|null
      *
@@ -85,11 +99,22 @@ class IncidentType extends Entity
      * @JMS\Expose
      */
     private $description;
+
     /**
      * @var Collection | IncidentReport[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentReport",mappedBy="type",indexBy="lang"))
      */
     private $reports;
+
+
+
+    /**
+     * @var TaxonomyValue
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue")
+     * @ORM\JoinColumn(name="taxonomyValue", referencedColumnName="slug",nullable=true)
+     **/
+    private $taxonomyValue;
+
 
     /**
      * Constructor
@@ -97,6 +122,8 @@ class IncidentType extends Entity
     public function __construct()
     {
         $this->incidents = new ArrayCollection();
+        $this->setTaxonomyValue(null);
+
     }
 
     /**
@@ -172,11 +199,18 @@ class IncidentType extends Entity
      * @param string $lang
      * @return IncidentReport
      */
-    public function getReport(string $lang = null): IncidentReport
+    public function getReport(string $lang = null)
     {
-        return $this->getReports()->filter(static function (IncidentReport $report) use ($lang) {
-            return $report->getLang() === $lang;
-        })->first();
+        $reporte = $this->getReports()->filter(
+            static function (IncidentReport $report) use ($lang) {
+                return $report->getLang() === $lang;
+            }
+        )->first();
+        if ($reporte) {
+            return $reporte;
+        } else {
+               return $this->getTaxonomyValue()->getReport();
+            }
     }
 
     /**
@@ -303,6 +337,24 @@ class IncidentType extends Entity
     }
 
     /**
+     * @return Incident[]|Collection
+     */
+    public function getIncidents(): Collection
+    {
+        return $this->incidents;
+    }
+
+    /**
+     * @param Incident[]|Collection $incidents
+     * @return IncidentType
+     */
+    public function setIncidents(Collection $incidents): self
+    {
+        $this->incidents = $incidents;
+        return $this;
+    }
+
+    /**
      * @return string|null
      */
     public function getDescription(): ?string
@@ -310,14 +362,48 @@ class IncidentType extends Entity
         return $this->description;
     }
 
-    /**
-     * @param string|null $description
-     * @return IncidentType
-     */
+    /*
+    * @param string|null $description
+    * @return IncidentType
+    */
     public function setDescription(?string $description): IncidentType
     {
         $this->description = $description;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTaxonomyValue():? TaxonomyValue
+    {
+        return $this->taxonomyValue;
+    }
+
+
+    /**
+     * @param mixed $taxonomyValue
+     */
+    public function setTaxonomyValue($taxonomyValue = null): void
+    {
+        $this->taxonomyValue = $taxonomyValue;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isClassification(): bool
+    {
+        return $this->isClassification;
+    }
+
+    /**
+     * @param bool $isClassification
+     */
+    public function setIsClassification(bool $isClassification): void
+    {
+        $this->isClassification = $isClassification;
+    }
+
 
 }
