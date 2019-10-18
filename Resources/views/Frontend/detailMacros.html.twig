@@ -1,14 +1,40 @@
 {% macro colorbox(color,icon,text,href) %}
-    <a class="btn btn-primary btn-icon-split btn-sm btn-{{ color }} shadow-sm" role="button"
+    <a class="btn btn-primary btn-icon-split btn-sm btn-{{ color }} shadow-sm" role="button" target="_blank"
        href="{{ href }}"
        title=" {{ text }}">
-        <span class="icon text-white-50">
-            {{ icon('fas fa-'~icon~' fa-xs text-white-50') }}
-        </span>
+            <span class="icon text-white-50">
+                {{ icon('fas fa-'~icon~' fa-xs text-white-50') }}
+            </span>
         <span class="text">
-            {{ text }}
-        </span>
+                {{ text }}
+            </span>
     </a>
+{% endmacro %}
+{% macro colordropbox(color,icon,text,href,id) %}
+    <div class="dropdown">
+        <button id="dropdownMenuButton"
+                class="btn  dropdown-toggle-split btn-icon-split btn-sm btn-{{ color }} shadow-sm" type="button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="icon text-white-50">
+                {{ icon('fas fa-'~icon~' fa-xs text-white-50') }}
+            </span>
+            <span class="text">
+                {{ text }}
+            </span>
+        </button>
+        <div class="dropdown-menu animated--fade-in filter-list-dropdown" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
+            <a class="dropdown-item" data-state-slug="closed" data-state-name="Closed" tabindex="-1" target="_blank"
+               href="{{ href }}">
+                <i class="fas fa-eye text-{{ color }}"></i>
+                <span class="action-text">Detail</span>
+            </a>
+            <a class="dropdown-item filter-list-dropdown-link" data-state-slug="closed" data-state-name="Closed" tabindex="-1"
+               href="#" data-id="{{ id?id:'' }}">
+                <i class="fas fa-filter text-{{ color }}"></i>
+                <span class="text">Filter</span>
+            </a>
+        </div>
+    </div>
 {% endmacro %}
 
 {% macro statuscolor(object) %}

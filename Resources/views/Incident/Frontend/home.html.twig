@@ -18,7 +18,7 @@
                     ({{ objects.getPaginationData.lastItemNumber~'/'~objects.getTotalItemCount }})
                 </strong>
             </h6>
-                <button id="btnFilter" class="btn btn-primary btn-sm active" type="button" data-toggle="button"
+            <button id="btnFilter" class="btn btn-primary btn-sm active" type="button" data-toggle="button"
                     aria-pressed="true">
                 <strong>{{ icon('filter') }}</strong>
             </button>
@@ -28,7 +28,7 @@
                 <table id="tabla_incidentes" class="table table-bordered">
                     <thead>
                     <tr role="row" id="filters">
-                         {% include '@CertUnlpNgen/Incident/Frontend/list/filterHeadersPaginator.html.twig' with {'objects': objects} %}
+                        {% include '@CertUnlpNgen/Incident/Frontend/list/filterHeadersPaginator.html.twig' with {'objects': objects} %}
                     </tr>
                     {% include '@CertUnlpNgen/Incident/Frontend/list/filterPaginator.html.twig' with {'objects': objects} %}
                     </thead>
