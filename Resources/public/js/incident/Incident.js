@@ -15,6 +15,7 @@ var Incident = Frontend.extend({
         $('.multiple-select-filter').on('blur', $.proxy(this.search, this));
         $('.data-filter').on('submit', $.proxy(this.search, this));
         $('.generalSearch').on('submit', $.proxy(this.search, this));
+        $(document).on("click", 'a.filter-list-dropdown-link', $.proxy(this.filterListDropdown, this));
     },
     getObjectBrief: function () {
         return 'incident';
@@ -38,6 +39,22 @@ var Incident = Frontend.extend({
             $.publish('/cert_unlp/notify/success', ["The state has been changed successfully"]);
             tr.focus();
         });
+    },
+    filterListDropdown: function (event) {
+        event.preventDefault();
+        let $th = $('.filtrosMostrar').find('th').eq($(event.currentTarget).parents('td').index());
+        let $input;
+        let $event;
+        if ($th.find('select').length) {
+            $input = $th.find('select');
+            $event = 'change';
+        } else {
+            $input = $th.find('input');
+            $event = 'blur';
+        }
+        $input.val($(event.currentTarget).data('id'));
+        $input.trigger($event);
+
     },
     filterListComplete: function (query) {
         $.get("getFilterList", {"term": query}, function (data) {
