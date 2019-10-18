@@ -11,8 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
 use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -105,7 +105,6 @@ class IncidentType extends Entity
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentReport",mappedBy="type",indexBy="lang"))
      */
     private $reports;
-
 
 
     /**
@@ -209,8 +208,8 @@ class IncidentType extends Entity
         if ($reporte) {
             return $reporte;
         } else {
-               return $this->getTaxonomyValue()->getReport();
-            }
+            return $this->getTaxonomyValue()->getReport();
+        }
     }
 
     /**
@@ -229,6 +228,22 @@ class IncidentType extends Entity
     {
         $this->reports = $reports;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTaxonomyValue(): ?TaxonomyValue
+    {
+        return $this->taxonomyValue;
+    }
+
+    /**
+     * @param mixed $taxonomyValue
+     */
+    public function setTaxonomyValue($taxonomyValue = null): void
+    {
+        $this->taxonomyValue = $taxonomyValue;
     }
 
     /**
@@ -326,6 +341,11 @@ class IncidentType extends Entity
         return $this->updatedAt;
     }
 
+    /*
+    * @param string|null $description
+    * @return IncidentType
+    */
+
     /**
      * @param DateTime $updatedAt
      * @return IncidentType
@@ -337,24 +357,6 @@ class IncidentType extends Entity
     }
 
     /**
-     * @return Incident[]|Collection
-     */
-    public function getIncidents(): Collection
-    {
-        return $this->incidents;
-    }
-
-    /**
-     * @param Incident[]|Collection $incidents
-     * @return IncidentType
-     */
-    public function setIncidents(Collection $incidents): self
-    {
-        $this->incidents = $incidents;
-        return $this;
-    }
-
-    /**
      * @return string|null
      */
     public function getDescription(): ?string
@@ -362,31 +364,10 @@ class IncidentType extends Entity
         return $this->description;
     }
 
-    /*
-    * @param string|null $description
-    * @return IncidentType
-    */
     public function setDescription(?string $description): IncidentType
     {
         $this->description = $description;
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTaxonomyValue():? TaxonomyValue
-    {
-        return $this->taxonomyValue;
-    }
-
-
-    /**
-     * @param mixed $taxonomyValue
-     */
-    public function setTaxonomyValue($taxonomyValue = null): void
-    {
-        $this->taxonomyValue = $taxonomyValue;
     }
 
     /**
