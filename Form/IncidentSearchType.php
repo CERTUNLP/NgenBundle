@@ -127,6 +127,7 @@ class IncidentSearchType extends AbstractType
                 'label' => false,
                 'required' => false,
                 'class' => IncidentPriority::class,
+                'choice_value'=>'code',
                 'empty_value' => 'All',
                 'description' => 'If none is selected, the assigned impact will be Low',
                 'attr' => array('class' => 'select-filter', 'search' => 'code')
