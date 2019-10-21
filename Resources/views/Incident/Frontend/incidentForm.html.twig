@@ -10,55 +10,88 @@
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
 
 {% block content_header %}
-    <h2 class="page-header">{{ icon('plus-circle fa-fw') }}{{ 'add incident'|trans }}
+    <h1 class="h3 mb-0 text-gray-800">
+        {{ icon('plus-circle fa-fw') }}{{ 'add incident'|trans }}
         <span class="tlp-green" id="tlp_label">&nbsp;</span>
-    </h2>
+    </h1>
 {% endblock %}
 
 {% block content_body %}
     {% if (form is not null) %}
+
         {{ form_start(form,{'attr': {'role':'form','id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal'}) }}
         {{ form_errors(form, { 'global_errors': true }) }}
-
-        <fieldset class="form-group row">
-            <div class="container row border border-primary rounded p-2">
-                <legend class="col-form-label col-sm-2 pt-5">{{ "Incident Filter"|trans }}
+        <fieldset class="form-group">
+            <div class="row">
+                <legend class="col-form-label col-md-1 pt-0">
+                    {{ "Incident Filter"|trans }}
                     <div class="label label-info" id="incidentInfo"></div>
                 </legend>
-                <div class="col-sm-10">
+                {#                <div class="container row border border-primary rounded p-2">#}
+                <div class="col-md-5">
                     {{ form_row(form.type) }}
+                </div>
+                <div class="col-md-5">
                     {{ form_row(form.address) }}
                 </div>
+                {#                </div>#}
             </div>
         </fieldset>
-
-        <fieldset class="form-group row">
-            <div class="container row border border-primary rounded p-2">
-                <legend class="col-form-label col-sm-2 pt-5">{{ "Information"|trans }}</legend>
-                <div class="col-sm-10">
+        <fieldset class="form-group">
+            <div class="row">
+                <legend class="col-form-label col-md-1 pt-0">
+                    {{ "Information"|trans }}</legend>
+                <div class="col-md-3">
                     {{ form_row(form.feed) }}
-                    {{ form_row(form.date) }}
-                    {{ form_row(form.notes) }}
-                    {{ form_row(form.evidence_file) }}
+                </div>
+                <div class="col-md-3">
                     {{ form_row(form.tlp) }}
+                </div>
+                <div class="col-md-3">
+                    {{ form_row(form.date) }}
                 </div>
             </div>
         </fieldset>
-        <fieldset class="form-group row">
-            <div class="container row border border-primary rounded p-2">
-                <legend class="col-form-label col-sm-2 pt-5">{{ "Incident Properties"|trans }}</legend>
-                <div class="col-sm-10">
+        <fieldset class="form-group">
+            <div class="row">
+                <legend class="col-form-label col-md-1 pt-0">
+                    {{ "Attachment"|trans }}</legend>
+                <div class="col-md-10">
+
+                    {{ form_row(form.notes) }}
+                    {{ form_row(form.evidence_file) }}
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="form-group">
+            <div class="row">
+                <legend class="col-form-label col-md-1 pt-0">
+                    {{ "Incident Properties"|trans }}</legend>
+                <div class="col-sm-3">
                     {{ form_row(form.state) }}
+                </div>
+                <div class="col-sm-3">
                     {{ form_row(form.impact) }}
+                </div>
+                <div class="col-sm-3">
                     {{ form_row(form.urgency) }}
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="form-group">
+            <div class="row">
+                <legend class="col-form-label col-md-1 pt-0">{{ "User Information"|trans }}</legend>
+                <div class="col-sm-5">
                     {{ form_row(form.assigned) }}
+                </div>
+                <div class="col-sm-5">
                     {{ form_row(form.reporter) }}
                 </div>
             </div>
         </fieldset>
-        <fieldset class="form-group row">
-            <div class="container row border border-primary rounded p-2">
-                <legend class="col-form-label col-sm-2 pt-2">{{ "Actions"|trans }}</legend>
+        <fieldset class="form-group">
+            <div class="row">
+                <legend class="col-form-label col-md-1 pt-0">{{ "Actions"|trans }}</legend>
                 <div class="col-sm-10">
                     {{ form_row(form.sendReport) }}
                     <div class="row">
@@ -80,8 +113,9 @@
                 </div>
             </div>
         </fieldset>
-        <div class="container row ">
-            <div class="col-sm-12">
+        <div class="form-group">
+            <div class="row d-flex justify-content-center">
+            <div class="col-sm-10">
                 {{ form_row(form.save) }}
             </div>
         </div>
