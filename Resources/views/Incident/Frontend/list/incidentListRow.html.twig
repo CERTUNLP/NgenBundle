@@ -45,16 +45,17 @@
     </td>
     <td class="text-center">
         <small>
-            {{ incident.date|date('Y-m-d H:i') }}
+            {{ print.colorbox('primary','calendar-alt',incident.date|date('Y-m-d'),'#',incident.date|date('Y-m-d')) }}
         </small>
     </td>
     <td class="text-center">
         <small>
-            {{ incident.updatedAt|date('Y-m-d H:i') }}
+            {{ print.colorbox('primary','calendar-alt',incident.updatedAt|date('Y-m-d'),'#',incident.updatedAt|date('Y-m-d')) }}
         </small>
     </td>
     <td class="text-center">
-        {{ incident.ltdCount }}
+        {{ print.colorbox('primary','hashtag',incident.ltdCount,'#',incident.ltdCount) }}
+
     </td>
     <td class="text-center">
         {{ print.colordropbox(incident.reporter.color,incident.reporter.icon,incident.reporter,path('cert_unlp_ngen_user_detail_user',{'username': incident.reporter.username}),incident.reporter.id) }}
