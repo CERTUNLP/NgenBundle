@@ -64,7 +64,6 @@ class IncidentSearchType extends AbstractType
             ))
             ->add('address', null, array(
                 'required' => false,
-                'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
                 'label' => false,
                 'empty_data' => 'google',
                 'mapped' => false,
@@ -127,7 +126,7 @@ class IncidentSearchType extends AbstractType
                 'label' => false,
                 'required' => false,
                 'class' => IncidentPriority::class,
-                'choice_value'=>'code',
+                'choice_value' => 'code',
                 'empty_value' => 'All',
                 'description' => 'If none is selected, the assigned impact will be Low',
                 'attr' => array('class' => 'select-filter', 'search' => 'code')
