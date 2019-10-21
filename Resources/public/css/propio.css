@@ -93,25 +93,25 @@ legend {
     height: 100%;
 }
 
-*[role="form"] {
-    padding: 1.5em;
-    margin: 1em auto;
-    border-radius: 0.3em;
-    background-color: #f2f2f2;
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-}
+/**[role="form"] {*/
+/*    padding: 1.5em;*/
+/*    margin: 1em auto;*/
+/*    border-radius: 0.3em;*/
+/*    background-color: #f2f2f2;*/
+/*    padding-top: 1.5rem;*/
+/*    padding-bottom: 1.5rem;*/
+/*}*/
 
-*[role="form"] h1 {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 40px;
-    font-weight: 600;
-    color: #000000;
-    margin-top: 5%;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-}
+/**[role="form"] h1 {*/
+/*    font-family: 'Open Sans', sans-serif;*/
+/*    font-size: 40px;*/
+/*    font-weight: 600;*/
+/*    color: #000000;*/
+/*    margin-top: 5%;*/
+/*    text-align: center;*/
+/*    text-transform: uppercase;*/
+/*    letter-spacing: 4px;*/
+/*}*/
 
 .chart {
     width: 100%;
