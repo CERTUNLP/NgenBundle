@@ -163,7 +163,12 @@ class IncidentType
         if ($reporte) {
             return $reporte;
         } else {
+               if ($this->getTaxonomyValue()){
                return $this->getTaxonomyValue()->getReport();
+               }
+               else{
+
+               }
             }
     }
 

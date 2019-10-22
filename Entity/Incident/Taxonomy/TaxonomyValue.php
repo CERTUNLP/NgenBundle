@@ -14,7 +14,6 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
-use Doctrine\Common\Collections\Collection;
 use DateTime;
 
 /**
@@ -83,17 +82,14 @@ class TaxonomyValue
     private $value;
 
     /**
-     * @var TaxonomyValue
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate")
+     * @var TaxonomyPredicate
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate",inversedBy="values")
      * @ORM\JoinColumn(name="taxonomyPredicate", referencedColumnName="slug",nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
      **/
-    private $predicate;
 
-    /**
-     * @var Collection | IncidentReport[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentReport",mappedBy="type",indexBy="lang"))
-     */
-    private $reports;
+    private $predicate;
 
     /**
      * @var DateTime
@@ -151,22 +147,6 @@ class TaxonomyValue
     }
 
     /**
-     * @return Collection|IncidentReport[]
-     */
-    public function getReports(): ?Collection
-    {
-        return $this->reports;
-    }
-
-    /**
-     * @param Collection|IncidentReport[] $reports
-     */
-    public function setReports($reports): void
-    {
-        $this->reports = $reports;
-    }
-
-    /**
      * Get report
      *
      * @param string $lang
@@ -174,16 +154,10 @@ class TaxonomyValue
      */
     public function getReport(string $lang = null)
     {
-        $reporte = $this->getReports()->filter(
-            static function (IncidentReport $report) use ($lang) {
-                return $report->getLang() === $lang;
-            }
-        )->first();
-        if ($reporte) {
-            return $reporte;
-        } else {
-            return $this->getPredicate()->getReport();
-        }
+        $reporte = new IncidentReport();
+        $reporte->setProblem($this->getPredicate()->getExpanded().': '.$this->getPredicate()->getDescription());
+        $reporte->setDerivatedProblem($this->getExpanded().': '.$this->getDescription());
+        return $reporte;
     }
     /**
      * Get description
