@@ -20,15 +20,14 @@
         <tr role="row">
             <th>{{ knp_pagination_sortable(objects, 'Expanded'|trans, 'slug') }}</th>
             <th>{{ 'Description'|trans }}</th>
-            <th>{{ knp_pagination_sortable(objects, 'Predicate'|trans, 'predicate') }}</th>
-            <th>{{ 'Reports'| trans  }}</th>
+            <th>{{ 'Subtypes'|trans }}</th>
             <th>{{ knp_pagination_sortable(objects, 'active'|trans, 'isActive') }}</th>
             <th>{{ 'Action'| trans  }}</th>
         </tr>
                 </thead>
         <tbody>
-        {% for incidentTaxonomyValue in incidentTaxonomyValues %}
-            {% include 'CertUnlpNgenBundle:IncidentTaxonomyValues:Frontend/list/incidentTaxonomyValueListRow.html.twig' with {'incidentTaxonomyValue': incidentTaxonomyValue} %}
+        {% for incidentTaxonomyPredicate in incidentTaxonomyPredicates %}
+            {% include 'CertUnlpNgenBundle:IncidentTaxonomyPredicate:Frontend/list/incidentTaxonomyPredicateListRow.html.twig' with {'incidentTaxonomyPredicate': incidentTaxonomyPredicate} %}
         {% endfor %}
         </tbody>
     </table>
@@ -36,5 +35,5 @@
 </div>
 </div>
 <div class="pagination justify-content-center">
-    {{ knp_pagination_render(incidentTaxonomyValues, null, {}, { "prev_label": "Previous"|trans, "next_label": "Next"|trans, "first_label": "First"|trans, "last_label": "Last"|trans}) }}
+    {{ knp_pagination_render(incidentTaxonomyPredicates, null, {}, { "prev_label": "Previous"|trans, "next_label": "Next"|trans, "first_label": "First"|trans, "last_label": "Last"|trans}) }}
 </div>
