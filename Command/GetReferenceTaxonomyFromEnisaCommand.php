@@ -62,6 +62,7 @@ class GetReferenceTaxonomyFromEnisaCommand extends ContainerAwareCommand
                 $new_predicate->setVersion($obj->version);
                 $new_predicate->setDescription($predicate->description);
                 $new_predicate->setUpdatedAt(new DateTime('now'));
+                $new_predicate->setIsActive(true);
                 $this->getContainer()->get('doctrine')->getManager()->persist($new_predicate);
             }
         }
@@ -97,6 +98,7 @@ class GetReferenceTaxonomyFromEnisaCommand extends ContainerAwareCommand
                     $new_value->setValue($value->value);
                     $new_value->setExpanded($value->expanded);
                     $new_value->setVersion($obj->version);
+                    $new_value->setIsActive(true);
                     $new_value->setPredicate( $this->getContainer()->get('doctrine')->getRepository(TaxonomyPredicate::class)->findOneBy(
                         ['value' => $predicate_value->predicate]));
                     $new_value->setDescription($value->description);

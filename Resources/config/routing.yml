@@ -90,7 +90,7 @@ cert_ngen_administration_taxonomy_values:
   type:     annotation
   prefix:   /administration/taxonomies/values
 
-cert_ngen_administration_taxonomy_values:
+cert_ngen_administration_taxonomy_predicates:
   resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentTaxonomyPredicateFrontendController.php'
   type:     annotation
   prefix:   /administration/taxonomies/predicates

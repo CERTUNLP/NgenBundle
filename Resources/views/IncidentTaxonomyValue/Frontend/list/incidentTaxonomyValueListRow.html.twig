@@ -17,12 +17,9 @@
     <td class="align-middle">
         {{ incidentTaxonomyValue.predicate }}
     </td>
-    <td class="align-middle">
-        {{ incidentTaxonomyValue.Reports.count() }}
-    </td>
     <td id="state_label_holder" class="align-middle">
         <div>
-            {% include "CertUnlpNgenBundle:IncidentTaxonomyValues:Frontend/list/stateLabel.html.twig" with {'incidentTaxonomyValue': incidentTaxonomyValue} %}
+            {% include "CertUnlpNgenBundle:IncidentTaxonomyValue:Frontend/list/stateLabel.html.twig" with {'incidentTaxonomyValue': incidentTaxonomyValue} %}
         </div>
     </td>
     <td class="align-middle">
