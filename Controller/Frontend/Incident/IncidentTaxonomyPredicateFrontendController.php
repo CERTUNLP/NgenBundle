@@ -10,21 +10,20 @@
  */
 
 /**
- * Description of IncidentTypeFrontendController
+ * Description of IncidentPredicateFrontendController
  *
  * @author dam
  */
 
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
-use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class IncidentTaxonomyValueFrontendController extends Controller
+class IncidentTaxonomyPredicateFrontendController extends Controller
 {
 
     /**
@@ -43,8 +42,20 @@ class IncidentTaxonomyValueFrontendController extends Controller
         return $this->get('cert_unlp.ngen.incident.taxonomy.predicate.frontend.controller');
     }
 
+
     /**
-     * @Template("CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend:home.html.twig")
+     * @Template("CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend:incidentTaxonomyPredicateDetail.html.twig")
+     * @Route("{slug}/detail", name="cert_unlp_ngen_taxonomy_predicate_detail")
+     * @param TaxonomyPredicate $taxonomyPredicate
+     * @return array
+     */
+    public function detailIncidentTaxonomyPredicateAction(TaxonomyPredicate $taxonomyPredicate)
+    {
+        return $this->getFrontendController()->detailEntity($taxonomyPredicate);
+    }
+
+    /**
+     * @Template("CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend:frontend.html.twig")
      * @Route("search", name="cert_unlp_ngen_incident_taxonomy_predicate_search")
      * @param Request $request
      * @return array
@@ -52,27 +63,6 @@ class IncidentTaxonomyValueFrontendController extends Controller
     public function searchIncidentTaxonomyPredicateAction(Request $request)
     {
         return $this->getFrontendController()->searchEntity($request);
-    }
-
-    /**
-     * @Template("CertUnlpNgenBundle:IncidentType:Frontend/incidentTypeDetail.html.twig")
-     * @Route("{slug}/detail", name="cert_unlp_ngen_incident_type_detail")
-     * @param IncidentType $incidentType
-     * @return array
-     */
-    public function detailIncidentTypeAction($incidentType)
-    {
-        return $this->getFrontendController()->detailEntity($incidentType);
-    }
-
-    private function readReportFile( $incidentType)
-    {
-        return $this->container->get('markdown.parser')->transformMarkdown(file_get_contents($this->getReportName($incidentType)));
-    }
-
-    private function getReportName($incidentType)
-    {
-        return $this->getParameter('cert_unlp.ngen.incident.internal.report.markdown.path') . "/" . $incidentType->getReportName();
     }
 
 }

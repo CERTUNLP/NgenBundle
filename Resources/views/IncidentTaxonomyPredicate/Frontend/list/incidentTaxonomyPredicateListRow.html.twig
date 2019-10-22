@@ -1,0 +1,28 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+
+<tr data-id="{{ incidentTaxonomyPredicate.slug }}">
+    <td class="align-middle">
+        {{ incidentTaxonomyPredicate.expanded }}
+    </td>
+    <td class="align-middle">
+        {{ incidentTaxonomyPredicate.description | default('No description')| trans }}
+    </td>
+    <td class="align-middle">
+        {{ label_info(incidentTaxonomyPredicate.values.count) }}
+    </td>
+    <td id="state_label_holder" class="align-middle">
+        <div>
+            {% include "CertUnlpNgenBundle:IncidentTaxonomyPredicate:Frontend/list/stateLabel.html.twig" with {'incidentTaxonomyPredicate': incidentTaxonomyPredicate} %}
+        </div>
+    </td>
+    <td class="align-middle">
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentTaxonomyPredicate , 'detail_link': path('cert_unlp_ngen_taxonomy_predicate_detail',{ 'slug': incidentTaxonomyPredicate.slug})} %}
+    </td>
+</tr>

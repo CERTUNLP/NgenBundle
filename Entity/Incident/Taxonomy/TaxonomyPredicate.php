@@ -15,12 +15,8 @@ use JMS\Serializer\Annotation as JMS;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
 use Doctrine\Common\Collections\Collection;
 use DateTime;
-
 /**
  * TaxonomyPredicate
- *
-/**
- * TelegramMessage
  *
  * @author einar
  * @ORM\Entity()
@@ -75,13 +71,6 @@ class TaxonomyPredicate
     private $updatedAt;
 
     /**
-     * @var Collection | IncidentReport[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentReport",mappedBy="type",indexBy="lang"))
-     */
-    private $reports;
-
-
-    /**
      * @var boolean
      *
      * @ORM\Column(name="is_active", type="boolean")
@@ -89,6 +78,21 @@ class TaxonomyPredicate
      */
     private $isActive = true;
 
+
+     /**
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue",mappedBy="predicate")
+     *  @JMS\Exclude()
+     */
+
+     private $values;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->values = new Collection();
+    }
 
     /**
      * @var string
@@ -252,22 +256,6 @@ class TaxonomyPredicate
     }
 
     /**
-     * @return Collection|IncidentReport[]
-     */
-    public function getReports(): ?Collection
-    {
-        return $this->reports;
-    }
-
-    /**
-     * @param Collection|IncidentReport[] $reports
-     */
-    public function setReports($reports): void
-    {
-        $this->reports = $reports;
-    }
-
-    /**
      * Get report
      *
      * @param string $lang
@@ -275,11 +263,9 @@ class TaxonomyPredicate
      */
     public function getReport(string $lang = null)
     {
-       return $this->getReports()->filter(
-            static function (IncidentReport $report) use ($lang) {
-                return $report->getLang() === $lang;
-            }
-        )->first();
+        $reporte = new IncidentReport();
+        $reporte->setProblem($this->getExpanded().': '.$this->getDescription());
+        return $reporte;
     }
     /**
      * @return bool
@@ -311,6 +297,22 @@ class TaxonomyPredicate
     public function setCreatedAt(DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getValues(): Collection
+    {
+        return $this->values;
+    }
+
+    /**
+     * @param Collection $values
+     */
+    public function setValues(Collection $values): void
+    {
+        $this->values = $values;
     }
 
 

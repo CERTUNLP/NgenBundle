@@ -27,7 +27,7 @@ class IncidentTaxonomyValueFrontendController extends Controller
 {
 
     /**
-     * @Template("CertUnlpNgenBundle:IncidentTaxonomyValues/Frontend:home.html.twig")
+     * @Template("CertUnlpNgenBundle:IncidentTaxonomyValue/Frontend:home.html.twig")
      * @Route("/", name="cert_unlp_ngen_administration_taxonomy_value_frontend_home")
      * @param Request $request
      * @return array
@@ -42,8 +42,19 @@ class IncidentTaxonomyValueFrontendController extends Controller
         return $this->get('cert_unlp.ngen.incident.taxonomy.value.frontend.controller');
     }
 
+
     /**
-     * @Template("CertUnlpNgenBundle:IncidentTaxonomyValues/Frontend:home.html.twig")
+     * @Template("CertUnlpNgenBundle:IncidentTaxonomyValue/Frontend:incidentTaxonomyValueDetail.html.twig")
+     * @Route("{slug}/detail", name="cert_unlp_ngen_taxonomy_value_detail")
+     * @param TaxonomyValue $taxonomyValue
+     * @return array
+     */
+    public function detailIncidentTaxonomyValueAction(TaxonomyValue $taxonomyValue)
+    {
+        return $this->getFrontendController()->detailEntity($taxonomyValue);
+    }
+    /**
+     * @Template("CertUnlpNgenBundle:IncidentTaxonomyValue/Frontend:frontend.html.twig")
      * @Route("search", name="cert_unlp_ngen_incident_taxonomy_value_search")
      * @param Request $request
      * @return array
@@ -52,26 +63,4 @@ class IncidentTaxonomyValueFrontendController extends Controller
     {
         return $this->getFrontendController()->searchEntity($request);
     }
-
-    /**
-     * @Template("CertUnlpNgenBundle:IncidentTaxonomyValues/Frontend:incidentTaxonomyValueDetail.html.twig")
-     * @Route("{slug}/detail", name="cert_unlp_ngen_taxonomy_value_detail")
-     * @param TaxonomyValue $taxonomyValue
-     * @return array
-     */
-    public function detailIncidentTypeAction(TaxonomyValue $taxonomyValue)
-    {
-        return $this->getFrontendController()->detailEntity($taxonomyValue);
-    }
-
-    private function readReportFile( TaxonomyValue $incidentType)
-    {
-        return $this->container->get('markdown.parser')->transformMarkdown(file_get_contents($this->getReportName($incidentType)));
-    }
-
-    private function getReportName($incidentType)
-    {
-        return $this->getParameter('cert_unlp.ngen.incident.internal.report.markdown.path') . "/" . $incidentType->getReportName();
-    }
-
 }
