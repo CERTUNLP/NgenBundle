@@ -69,12 +69,12 @@ abstract class Network extends NetworkElement implements NetworkInterface
     protected $network_entity;
     /**
      * @var Collection| Incident[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="network"))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="network",fetch="EXTRA_LAZY")
      */
     protected $incidents;
     /**
      * @var Collection| Host[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host",mappedBy="network", cascade={"persist"}))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host",mappedBy="network", cascade={"persist"},fetch="EXTRA_LAZY")
      */
     protected $hosts;
     /**

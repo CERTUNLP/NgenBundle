@@ -50,7 +50,7 @@ class HostListener
     public function postLoadHandler(Host $host, LifecycleEventArgs $event): void
     {
         $host->guessAddress($host->getIp() ?? $host->getDomain());
-        $this->networkUpdate($host);
+//        $this->networkUpdate($host);
 
     }
 

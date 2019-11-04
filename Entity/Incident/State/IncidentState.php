@@ -111,7 +111,7 @@ class IncidentState extends Entity implements Translatable
     /**
      * @var Incident[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state"))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state",fetch="EXTRA_LAZY")
      */
     private $incidents;
 
