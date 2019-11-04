@@ -13,7 +13,7 @@ namespace CertUnlp\NgenBundle\Services\Communications;
 
 use CertUnlp\NgenBundle\Entity\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\TelegramMessage;
+use CertUnlp\NgenBundle\Entity\Communication\TelegramMessage;
 use FOS\CommentBundle\Event\CommentPersistEvent;
 use FOS\CommentBundle\Model\SignedCommentInterface;
 

@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Command;
 
-use CertUnlp\NgenBundle\Entity\TelegramMessage;
+use CertUnlp\NgenBundle\Entity\Communication\TelegramMessage;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

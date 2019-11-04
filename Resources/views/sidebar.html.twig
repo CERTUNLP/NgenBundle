@@ -90,6 +90,7 @@
     <div id="collapseAdmin" class="collapse {{ ('administration' in app.request.get('_route'))? 'show' : '' }}"
          aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">NGEN</h6>
             <a href="{{ path('cert_unlp_ngen_administration_feed_frontend_home') }}"
                class="collapse-item">{{ icon('fas fa-rss') }} {{ 'Feeds'| trans }}</a>
             <a href="{{ path('cert_unlp_ngen_administration_state_frontend_home') }}"
@@ -100,6 +101,12 @@
                class="collapse-item"> {{ icon('fas fa-question') }} {{ 'Incident Decisions'| trans }}</a>
             <a href="{{ path('cert_unlp_ngen_incident_priority_frontend_home') }}"
                class="collapse-item">{{ icon('list-ol fa-fw') }} {{ 'Incident Priorities'| trans }}</a>
+            <h6 class="collapse-header">ECSIRT</h6>
+            <a href="{{ path('cert_unlp_ngen_administration_taxonomy_value_frontend_home') }}"
+               class="collapse-item"> {{ icon('fas fa-question') }} {{ 'Values'| trans }}</a>
+            <a href="{{ path('cert_unlp_ngen_administration_taxonomy_predicate_frontend_home') }}"
+               class="collapse-item">{{ icon('list-ol fa-fw') }} {{ 'Predicates'| trans }}</a>
+
         </div>
     </div>
 </li>
