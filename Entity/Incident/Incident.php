@@ -192,6 +192,16 @@ class Incident extends Entity
      * @JMS\Groups({"api"})
      */
     private $changeStateHistory;
+
+    /**
+     * @var Collection
+     * @JMS\Expose
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Message",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
+     * @JMS\Groups({"api"})
+     */
+
+    private $communicationHistory;
+
     /**
      * @var DateTime
      *
@@ -299,6 +309,7 @@ class Incident extends Entity
         }
         $this->incidentsDetected = new ArrayCollection();
         $this->changeStateHistory = new ArrayCollection();
+        $this->communicationHistory = new ArrayCollection();
     }
 
     /**

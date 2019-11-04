@@ -1,6 +1,6 @@
 <?php
 
-namespace CertUnlp\NgenBundle\Entity;
+namespace CertUnlp\NgenBundle\Entity\Communication;
 
 use Doctrine\ORM\Mapping as ORM;
 
