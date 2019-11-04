@@ -73,19 +73,16 @@ class Host extends NetworkElement
     private $network;
     /**
      * @var Incident[]|Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="origin"))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="origin",fetch="EXTRA_LAZY")
      * @JMS\Exclude()
      */
     private $incidents_as_origin;
     /**
      * @var Incident[]|Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="destination"))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="destination",fetch="EXTRA_LAZY")
      */
     private $incidents_as_destination;
-    /**
-     * @var IncidentCommentThread
-     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread",mappedBy="host",fetch="EXTRA_LAZY"))
-     */
+
     private $comment_thread;
     /**
      * @var bool

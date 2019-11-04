@@ -86,7 +86,7 @@ class IncidentFeed extends Entity
     /**
      * @var Incident[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="feed"))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="feed",fetch="EXTRA_LAZY")
      */
     private $incidents;
 

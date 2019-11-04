@@ -88,7 +88,7 @@ class IncidentType extends Entity
 
     /**
      * @var Collection | Incident[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="type"))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="type",fetch="EXTRA_LAZY")
      */
     private $incidents;
 
