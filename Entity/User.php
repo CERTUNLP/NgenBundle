@@ -88,11 +88,11 @@ class User extends BaseUser implements ReporterInterface
      */
     private $updatedAt;
     /**
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="reporter")
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="reporter",fetch="EXTRA_LAZY")
      */
     private $incidents;
     /**
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="assigned")
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="assigned",fetch="EXTRA_LAZY")
      */
     private $assignedIncidents;
     /**

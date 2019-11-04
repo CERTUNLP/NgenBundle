@@ -44,7 +44,7 @@ class IncidentPriority extends Entity
     protected $urgency;
     /**
      * @var Incident[] | Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="priority"))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="priority",fetch="EXTRA_LAZY")
      */
     protected $incidents;
     /**
