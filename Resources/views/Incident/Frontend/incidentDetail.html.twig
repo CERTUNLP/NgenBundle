@@ -124,11 +124,11 @@
                                                     </a>
                                                 </div>
                                                 <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                    {#                                            live incidents: {{ object.network.liveincidents.count }}#}
+                                                    live incidents: {{ object.network.liveincidents.count }}
                                                 </div>
                                                 <div class="h6 mb-0 font-weight-bold text-gray-800">
                                                     live {{ object.type }}
-                                                    {#                                            incidents: {{ object.network.liveincidentsoftype(object.type.slug).count }}#}
+                                                    incidents: {{ object.network.liveincidentsoftype(object.type.slug).count }}
                                                 </div>
                                             </div>
                                             <div class="col-auto">

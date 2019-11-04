@@ -82,7 +82,7 @@ class IncidentTlp extends Entity implements Translatable
      * @JMS\Expose
      */
     private $description;
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="tlp"))
+    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="tlp",fetch="EXTRA_LAZY")
      * @JMS\Exclude()
      */
     private $incidents;
