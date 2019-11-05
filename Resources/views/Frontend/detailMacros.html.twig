@@ -1,7 +1,7 @@
 {% macro colorbox(color,icon,text,href,id) %}
-    <a class="btn btn-primary btn-icon-split btn-sm btn-{{ color }} {{ id?'filter-list-dropdown-link':'' }} shadow-sm"
+    <a class="btn btn-icon-split btn-sm btn-{{ color }} {{ id?'filter-list-dropdown-link':'' }} shadow-sm"
        role="button" target="_blank"
-       href="{{ href }}" data-id="{{ id?id:'' }}"
+       href="{{ href }}"
        title=" {{ text }}">
             <span class="icon text-white-50">
                 {{ icon('fas fa-'~icon~' fa-xs text-white-50') }}
@@ -14,7 +14,7 @@
 {% macro colordropbox(color,icon,text,href,id) %}
     <div class="dropdown">
         <button id="dropdownMenuButton"
-                class="btn  dropdown-toggle-split btn-icon-split btn-sm btn-{{ color }} shadow-sm" type="button"
+                class="btn dropdown-toggle-split btn-icon-split btn-sm btn-{{ color }} shadow-sm" type="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="icon text-white-50">
                 {{ icon('fas fa-'~icon~' fa-xs text-white-50') }}

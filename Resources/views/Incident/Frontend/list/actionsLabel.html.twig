@@ -25,7 +25,6 @@
     </button>
 
     <div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-
         {% for change in findPosibleStates(incident) %}
             {% if change.slug != incident.state.slug %}
                 <a class="state-label dropdown-item" data-state-slug="{{ change.slug }}"

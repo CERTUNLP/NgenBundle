@@ -8,24 +8,24 @@
 #}
 
 <tr data-id="{{ user.username }}">
-    <td class="align-middle">
+    <td class="text-center">
         {{ user.username }}
     </td>
-    <td class="align-middle">
+    <td class="text-center">
         {{ user.fullName }}
     </td>
-    <td class="align-middle">
+    <td class="text-center">
         {{ user.email }}
     </td>
-    <td class="align-middle">
+    <td class="text-center">
         {{ user.lastLogin | date('Y-m-d') }}
     </td>
-    <td id="state_label_holder" class="align-middle">
+    <td id="state_label_holder" class="text-center">
         <div>
             {% include "CertUnlpNgenBundle:User:Frontend/list/stateLabel.html.twig" with {'user': user} %}
         </div>
     </td>
-    <td class="align-middle">
+    <td class="text-center">
         {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':user , 'detail_link': path('cert_unlp_ngen_user_detail_user',{ 'username': user.username}),'edit_link': path('cert_unlp_ngen_user_edit_user',{'username': user.username})} %}
     </td>
 </tr>

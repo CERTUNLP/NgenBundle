@@ -8,21 +8,21 @@
 #}
 
 <tr data-id="{{ incidentTaxonomyValue.slug }}">
-    <td class="align-middle">
+    <td class="text-center">
         {{ incidentTaxonomyValue.expanded }}
     </td>
-    <td class="align-middle">
+    <td class="text-center">
         {{ incidentTaxonomyValue.description | default('No description')| trans }}
     </td>
-    <td class="align-middle">
+    <td class="text-center">
         {{ incidentTaxonomyValue.predicate }}
     </td>
-    <td id="state_label_holder" class="align-middle">
+    <td id="state_label_holder" class="text-center">
         <div>
             {% include "CertUnlpNgenBundle:IncidentTaxonomyValue:Frontend/list/stateLabel.html.twig" with {'incidentTaxonomyValue': incidentTaxonomyValue} %}
         </div>
     </td>
-    <td class="align-middle">
+    <td class="text-center">
         {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentTaxonomyValue , 'detail_link': path('cert_unlp_ngen_taxonomy_value_detail',{ 'slug': incidentTaxonomyValue.slug})} %}
     </td>
 </tr>

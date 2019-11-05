@@ -36,7 +36,7 @@ var Frontend = Class.extend({
     changeState: function (event) {
         event.preventDefault();
         this.eventTarget = $(event.currentTarget);
-        actionButton = this.eventTarget.parents('div').siblings('button');
+        let actionButton = this.eventTarget.parents('div').siblings('button');
         this.laddaButton = Ladda.create(actionButton.get(0));
         if (!this.laddaButton) {
             actionButton = this.eventTarget.parents('ul').siblings('button');
@@ -47,9 +47,9 @@ var Frontend = Class.extend({
     },
 
     stateLabelChange: function () {
-        label = this.eventTarget.parents('tr').find('span.label');
-        label.text(this.eventTarget.data('state-name'));
-        label.removeClass().addClass("label badge-" + this.getColorClass());
+        let label = this.eventTarget.parents('tr').find('td#state_label_holder').find('a');
+        label.find('span.text').text(this.eventTarget.data('state-name'));
+        label.removeClass().addClass("btn btn-icon-split btn-sm btn-" + this.getColorClass());
         $.publish('/cert_unlp/notify/success', ["The state has been changed successfully"]);
     },
     getColorClass: function () {

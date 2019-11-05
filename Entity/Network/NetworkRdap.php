@@ -25,4 +25,12 @@ class NetworkRdap extends Network
         return 'project-diagram';
     }
 
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'primary';
+    }
+
 }

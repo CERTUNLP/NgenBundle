@@ -8,15 +8,15 @@
 #}
 
 <tr data-id="{{ incidentReport.lang }}" data-parent_id="{{ incidentReport.type.slug }}">
-    <td class="align-middle">
+    <td class="text-center">
         {{ incidentReport.lang }}
     </td>
-    <td id="state_label_holder" class="align-middle">
+    <td id="state_label_holder" class="text-center">
         <div>
             {% include "CertUnlpNgenBundle:IncidentReport:Frontend/list/stateLabel.html.twig" with {'incidentReport': incidentReport} %}
         </div>
     </td>
-    <td class="align-middle">
+    <td class="text-center">
         {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentReport , 'detail_link': path('cert_unlp_ngen_incident_type_report_detail',{'lang': incidentReport.lang , 'slug': incidentReport.type.slug}),'edit_link': path('cert_unlp_ngen_incident_type_report_edit',{'lang': incidentReport.lang , 'slug': incidentReport.type.slug})} %}
     </td>
 </tr>
