@@ -8,18 +8,18 @@
 #}
 
 <tr data-id="{{ incidentFeed.slug }}">
-    <td class="align-middle">
+    <td class="text-center">
         {{ incidentFeed.name }}
     </td>
-    <td class="align-middle">
+    <td class="text-center">
         {{ incidentFeed.description | default('No description')| trans }}
     </td>
-    <td id="state_label_holder" class="align-middle">
+    <td id="state_label_holder" class="text-center">
         <div>
             {% include "CertUnlpNgenBundle:IncidentFeed:Frontend/list/stateLabel.html.twig" with {'incidentFeed': incidentFeed} %}
         </div>
     </td>
-    <td class="align-middle">
+    <td class="text-center">
         {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentFeed , 'detail_link': path('cert_unlp_ngen_incident_feed_detail',{'slug': incidentFeed.id}),'edit_link': path('cert_unlp_ngen_incident_feed_edit',{'slug': incidentFeed.id})} %}
     </td>
 </tr>

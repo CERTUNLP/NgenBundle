@@ -8,15 +8,15 @@
 #}
 
 <tr data-id="{{ networkEntity.slug }}">
-    <td class="align-middle">
+    <td class="text-center">
         {{ networkEntity.name }}
     </td>
-    <td id="state_label_holder" class="align-middle">
+    <td id="state_label_holder" class="text-center">
         <div>
             {% include "CertUnlpNgenBundle:NetworkEntity:Frontend/list/stateLabel.html.twig" with {'networkEntity': networkEntity} %}
         </div>
     </td>
-    <td class="align-middle">
+    <td class="text-center">
         {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':networkEntity , 'detail_link': path('cert_unlp_ngen_network_entity_detail',{ 'slug': networkEntity.slug}),'edit_link': path('cert_unlp_ngen_network_entity_edit',{'slug': networkEntity.slug})} %}
     </td>
 </tr>

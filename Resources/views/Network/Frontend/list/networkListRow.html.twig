@@ -1,31 +1,15 @@
 {# 
- This file is part of the Ngen - CSIRT Incident Report System.
+ This file is part of the Ngen - CSIRT network Report System.
  
  (c) CERT UNLP <support@cert.unlp.edu.ar>
  
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 
 <tr data-id="{{ network.addressAndMask }}">
-    <td class="align-middle">
-        {{ network.addressAndMask }}
-    </td>
-    <td class="align-middle">
-        {{ network.type |trans }}
-    </td>
-    <td class="align-middle">
-        {{ network.networkEntity }}
-    </td>
-    <td class="align-middle">
-        {{ network.networkAdmin }}
-    </td>
-    <td id="state_label_holder" class="align-middle">
-        <div>
-            {% include "CertUnlpNgenBundle:Network:Frontend/list/stateLabel.html.twig" with {'network': network} %}
-        </div>
-    </td>
-    <td class="align-middle">
+    <td class="text-center">
         {% set detail_link %}
             {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail'} %}
         {% endset %}
@@ -33,4 +17,30 @@
             {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'edit'} %}
         {% endset %}
         {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':network , 'detail_link':detail_link ,'edit_link': edit_link} %}
+    </td>
+    <td id="state_label_holder" class="text-center">
+        {{ print.statuscolor(network) }}
+    </td>
+    <td class="text-center">
+        {{ print.colorbox(network.color,network.icon,network.addressAndMask,'#',network.addressAndMask) }}
+    </td>
+    <td class="text-center">
+        {{ print.colorbox(network.color,network.icon, network.type |trans,'#', network.type |trans) }}
+    </td>
+    <td class="text-center">
+        {{ print.colordropbox(network.networkEntity.color,network.networkEntity.icon,network.networkEntity.name,path('cert_unlp_ngen_network_entity_detail',{'slug': network.networkEntity.slug}),network.networkEntity.id) }}
+    </td>
+    <td class="text-center">
+        {{ print.colordropbox(network.networkAdmin.color,network.networkAdmin.icon,network.networkAdmin.name,path('cert_unlp_ngen_network_detail_network_admin',{'slug': network.networkAdmin.slug}),network.networkAdmin.id) }}
+    </td>
+    <td class="text-center">
+        <small>
+            {{ print.colorbox('primary','calendar-alt',network.createdAt|date('Y-m-d'),'#',network.createdAt|date('Y-m-d')) }}
+        </small>
+    </td>
+    <td class="text-center">
+        <small>
+            {{ print.colorbox('primary','calendar-alt',network.updatedAt|date('Y-m-d'),'#',network.updatedAt|date('Y-m-d')) }}
+        </small>
+    </td>
 </tr>

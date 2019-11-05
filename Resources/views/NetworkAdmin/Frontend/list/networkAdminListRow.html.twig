@@ -8,18 +8,18 @@
 #}
 
 <tr data-id="{{ networkAdmin.id }}">
-    <td class="align-middle">
+    <td class="text-center">
         {{ networkAdmin.name }}
     </td>
-    <td class="align-middle">
+    <td class="text-center">
         {{ networkAdmin.emailsAsString }}
     </td>
-    <td id="state_label_holder" class="align-middle">
+    <td id="state_label_holder" class="text-center">
         <div>
             {% include "CertUnlpNgenBundle:NetworkAdmin:Frontend/list/stateLabel.html.twig" with {'networkAdmin': networkAdmin} %}
         </div>
     </td>
-    <td class="align-middle">
+    <td class="text-center">
 
         {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':networkAdmin , 'detail_link': path('cert_unlp_ngen_network_detail_network_admin',{ 'slug': networkAdmin.slug}),'edit_link': path('cert_unlp_ngen_network_edit_network_admin',{'slug': networkAdmin.slug})} %}
 

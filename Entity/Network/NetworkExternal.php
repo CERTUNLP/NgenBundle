@@ -34,4 +34,12 @@ class NetworkExternal extends Network
     {
         return 'share-alt';
     }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'primary';
+    }
 }
