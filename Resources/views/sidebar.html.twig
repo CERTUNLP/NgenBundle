@@ -1,32 +1,32 @@
 <a class="sidebar-brand d-flex align-items-center justify-content-center"
    href="{{ path('cert_unlp_ngen_internal_incident_frontend_home') }}">
-    <div class="sidebar-brand-icon rotate-n-15">
+    <div class="sidebar-brand-icon">
         <img style="max-height: 2em;" src="{{ asset('bundles/certunlpngen/images/ngen01.svg') }}">
     </div>
-    <div class="sidebar-brand-text mx-3"> CERTUNLP - NGEN</div>
+    <div class="sidebar-brand-text mx-1">CERTUNLP-NGEN</div>
 </a>
 <hr class="sidebar-divider my-0">
-<li class="nav-item active">
-    <form method="get" action="{% block sideBar_search_path %}{% endblock %}"
-          class="generalSearch" role="search">
-        <div class="input-group custom-search-form">
-            <input type="text" name="term" class="form-control" value="{{ term | default('') }}"
-                   placeholder="Search...">
-            <span class="input-group-btn">
-                <button type="submit" class="btn btn-secondary">{{ icon('search') }}</button>
-            </span>
-        </div>
-    </form>
-</li>
+{#<li class="nav-item active">#}
+{#    <form method="get" action="{% block sideBar_search_path %}{% endblock %}"#}
+{#          class="generalSearch" role="search">#}
+{#        <div class="input-group custom-search-form">#}
+{#            <input type="text" name="term" class="form-control" value="{{ term | default('') }}"#}
+{#                   placeholder="Search...">#}
+{#            <span class="input-group-btn">#}
+{#                <button type="submit" class="btn btn-secondary">{{ icon('search') }}</button>#}
+{#            </span>#}
+{#        </div>#}
+{#    </form>#}
+{#</li>#}
 <!-- Divider -->
 
 <!-- Nav Item - Dashboard -->
 
 <!-- Divider -->
-<hr class="sidebar-divider">
+{#<hr class="sidebar-divider">#}
 <!-- Heading -->
-<div class="sidebar-heading">
-</div>
+{#<div class="sidebar-heading">#}
+{#</div>#}
 <li class="nav-item">
     <!-- Nav Item - Pages Collapse Menu -->
     <a class="nav-link {{ ('incident' in app.request.get('_route'))? '' : 'collapsed' }}" href="#"
@@ -46,10 +46,10 @@
 
 
 <!-- Divider -->
-<hr class="sidebar-divider">
+{#<hr class="sidebar-divider">#}
 
 <!-- Heading -->
-<div class="sidebar-heading"></div>
+{#<div class="sidebar-heading"></div>#}
 <li class="nav-item">
     <a class="nav-link {{ ('network' in app.request.get('_route') or 'host' in app.request.get('_route'))? '' : 'collapsed' }}"
        href="#" data-toggle="collapse"
@@ -77,10 +77,10 @@
 
 
 <!-- Divider -->
-<hr class="sidebar-divider">
+{#<hr class="sidebar-divider">#}
 
 <!-- Heading -->
-<div class="sidebar-heading"></div>
+{#<div class="sidebar-heading"></div>#}
 <li class="nav-item">
     <a class="nav-link {{ ('administration' in app.request.get('_route'))? '' : 'collapsed' }}" href="#"
        data-toggle="collapse" data-target="#collapseAdmin"
@@ -111,9 +111,9 @@
     </div>
 </li>
 <!-- Divider -->
-<hr class="sidebar-divider">
+{#<hr class="sidebar-divider">#}
 <!-- Heading -->
-<div class="sidebar-heading"></div>
+{#<div class="sidebar-heading"></div>#}
 <li class="nav-item">
     <a class="nav-link {{ ('dashboard' in app.request.get('_route'))? '' : 'collapsed' }}" href="#"
        data-toggle="collapse" data-target="#collapseDashboard"
@@ -131,9 +131,9 @@
     </div>
 </li>
 <!-- Divider -->
-<hr class="sidebar-divider">
+{#<hr class="sidebar-divider">#}
 <!-- Heading -->
-<div class="sidebar-heading"></div>
+{#<div class="sidebar-heading"></div>#}
 <li class="nav-item">
     <a class="nav-link {{ ('user' in app.request.get('_route'))? '' : 'collapsed' }}" href="#" data-toggle="collapse"
        data-target="#collapseSettings"
