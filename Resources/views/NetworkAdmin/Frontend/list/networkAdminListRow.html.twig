@@ -6,22 +6,35 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 
 <tr data-id="{{ networkAdmin.id }}">
     <td class="text-center">
-        {{ networkAdmin.name }}
-    </td>
-    <td class="text-center">
-        {{ networkAdmin.emailsAsString }}
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':networkAdmin , 'detail_link': path('cert_unlp_ngen_network_detail_network_admin',{ 'slug': networkAdmin.slug}),'edit_link': path('cert_unlp_ngen_network_edit_network_admin',{'slug': networkAdmin.slug})} %}
     </td>
     <td id="state_label_holder" class="text-center">
-        <div>
-            {% include "CertUnlpNgenBundle:NetworkAdmin:Frontend/list/stateLabel.html.twig" with {'networkAdmin': networkAdmin} %}
+        {{ print.statuscolor(networkAdmin) }}
+    </td>
+    <td class="text-center">
+        <div class="float-left">
+            {{ print.colorbox(networkAdmin.color,networkAdmin.icon,networkAdmin.name,'#',networkAdmin.name) }}
         </div>
     </td>
     <td class="text-center">
-
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':networkAdmin , 'detail_link': path('cert_unlp_ngen_network_detail_network_admin',{ 'slug': networkAdmin.slug}),'edit_link': path('cert_unlp_ngen_network_edit_network_admin',{'slug': networkAdmin.slug})} %}
-
+        <div class="float-left">
+            {% for email in networkAdmin.emails %}
+                {{ print.colorbox(networkAdmin.color,'envelope',email,'#',email) }}
+            {% endfor %}
+        </div>
+    </td>
+    <td class="text-center">
+        <small>
+            {{ print.colorbox('primary','calendar-alt',networkAdmin.createdAt|date('Y-m-d'),'#',networkAdmin.createdAt|date('Y-m-d')) }}
+        </small>
+    </td>
+    <td class="text-center">
+        <small>
+            {{ print.colorbox('primary','calendar-alt',networkAdmin.updatedAt|date('Y-m-d'),'#',networkAdmin.updatedAt|date('Y-m-d')) }}
+        </small>
     </td>
 </tr>
