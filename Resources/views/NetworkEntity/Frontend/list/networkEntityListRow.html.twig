@@ -6,17 +6,27 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
-
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 <tr data-id="{{ networkEntity.slug }}">
     <td class="text-center">
-        {{ networkEntity.name }}
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':networkEntity , 'detail_link': path('cert_unlp_ngen_network_entity_detail',{ 'slug': networkEntity.slug}),'edit_link': path('cert_unlp_ngen_network_entity_edit',{'slug': networkEntity.slug})} %}
     </td>
     <td id="state_label_holder" class="text-center">
-        <div>
-            {% include "CertUnlpNgenBundle:NetworkEntity:Frontend/list/stateLabel.html.twig" with {'networkEntity': networkEntity} %}
+        {{ print.statuscolor(networkEntity) }}
+    </td>
+    <td class="text-center">
+        <div class="float-left">
+            {{ print.colorbox(networkEntity.color,networkEntity.icon,networkEntity.name,'#',networkEntity.name) }}
         </div>
     </td>
     <td class="text-center">
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':networkEntity , 'detail_link': path('cert_unlp_ngen_network_entity_detail',{ 'slug': networkEntity.slug}),'edit_link': path('cert_unlp_ngen_network_entity_edit',{'slug': networkEntity.slug})} %}
+        <small>
+            {{ print.colorbox('primary','calendar-alt',networkEntity.createdAt|date('Y-m-d'),'#',networkEntity.createdAt|date('Y-m-d')) }}
+        </small>
+    </td>
+    <td class="text-center">
+        <small>
+            {{ print.colorbox('primary','calendar-alt',networkEntity.updatedAt|date('Y-m-d'),'#',networkEntity.updatedAt|date('Y-m-d')) }}
+        </small>
     </td>
 </tr>

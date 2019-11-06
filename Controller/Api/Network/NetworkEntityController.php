@@ -56,7 +56,7 @@ class NetworkEntityController extends FOSRestController
      *   }
      * )
      *
-     * @FOS\Get("/network_entity")
+     * @FOS\Get("/networks/entities")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing academic unit network_entity.")
      * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many academic unit network_entity to return.")
      *
@@ -99,7 +99,7 @@ class NetworkEntityController extends FOSRestController
      *  templateVar="network_entity"
      * )
      * @ParamConverter("network_entity", class="CertUnlpNgenBundle:NetworkEntity")
-     * @FOS\Get("/network_entity/{slug}")
+     * @FOS\Get("/networks/entities/{slug}")
      */
     public function getNetworkEntityAction(NetworkEntity $network_entity)
     {
@@ -119,7 +119,7 @@ class NetworkEntityController extends FOSRestController
      *   }
      * )
      *
-     * @FOS\Post("/network_entity")
+     * @FOS\Post("/networks/entities")
      * @param Request $request the request object
      *
      * @return FormTypeInterface|View
@@ -140,7 +140,7 @@ class NetworkEntityController extends FOSRestController
      *     400 = "Returned when the form has errors"
      *   }
      * )
-     * @FOS\Patch("/network_entity/{slug}")
+     * @FOS\Patch("/networks/entities/{slug}")
      * @param Request $request the request object
      * @param NetworkEntity $network_entity
      * @return FormTypeInterface|View
@@ -162,7 +162,7 @@ class NetworkEntityController extends FOSRestController
      *     400 = "Returned when the form has errors"
      *   }
      * )
-     * @FOS\Patch("/network_entity/{slug}")
+     * @FOS\Patch("/networks/entities/{slug}")
      * @param Request $request the request object
      * @param NetworkEntity $network_entity
      * @return FormTypeInterface|View
@@ -190,7 +190,7 @@ class NetworkEntityController extends FOSRestController
      * @param NetworkEntity $network_entity
      * @return FormTypeInterface|View
      *
-     * @FOS\Patch("/network_entity/{slug}/activate")
+     * @FOS\Patch("/networks/entities/{slug}/activate")
      */
     public function patchNetworkEntityActivateAction(Request $request, NetworkEntity $network_entity)
     {
@@ -215,7 +215,7 @@ class NetworkEntityController extends FOSRestController
      * @param NetworkEntity $network_entity
      * @return FormTypeInterface|View
      *
-     * @FOS\Patch("/network_entity/{slug}/desactivate")
+     * @FOS\Patch("/networks/entities/{slug}/desactivate")
      */
     public function patchNetworkEntityDesactivateAction(Request $request, NetworkEntity $network_entity)
     {

@@ -8,6 +8,6 @@
  */
 var NetworkEntity = Frontend.extend({
     getObjectBrief: function () {
-        return 'network/admin';
+        return 'network/entity';
     }
 });
