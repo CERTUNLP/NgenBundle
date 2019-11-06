@@ -11,14 +11,14 @@ var NetworkEntityApi = ApiClient.extend({
     config: function () {
 //        this.api.add("networks", {stripTrailingSlash: true});
 //        this.api.networks.add("report", {stripTrailingSlash: true});
-        $.subscribe('/cert_unlp/network_entity/activate', $.proxy(this.activate, this));
-        $.subscribe('/cert_unlp/network_entity/desactivate', $.proxy(this.desactivate, this));
-        $.subscribe('/cert_unlp/network_entity/new', $.proxy(this.create, this));
-        $.subscribe('/cert_unlp/network_entity/update', $.proxy(this.update, this));
+        $.subscribe('/cert_unlp/network/entity/activate', $.proxy(this.activate, this));
+        $.subscribe('/cert_unlp/network/entity/desactivate', $.proxy(this.desactivate, this));
+        $.subscribe('/cert_unlp/network/entity/new', $.proxy(this.create, this));
+        $.subscribe('/cert_unlp/network/entity/update', $.proxy(this.update, this));
     },
     addDefaultChannel: function () {
-        this.api.add("network_entitys", {stripTrailingSlash: true, url: 'network_entity'});
-        this.defaultChannel = this.api.network_entitys;
+        this.api.add("entities", {stripTrailingSlash: true, url: 'networks/entities'});
+        this.defaultChannel = this.api.entities;
     },
     changeState: function (networkId, isActive, callback) {
 
