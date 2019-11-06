@@ -22,16 +22,23 @@
         {{ print.statuscolor(network) }}
     </td>
     <td class="text-center">
-        {{ print.colorbox(network.color,network.icon,network.addressAndMask,'#',network.addressAndMask) }}
+        <div class="float-left">
+
+            {{ print.colorbox(network.color,network.icon,network.addressAndMask,'#',network.addressAndMask) }}
+        </div>
     </td>
     <td class="text-center">
         {{ print.colorbox(network.color,network.icon, network.type |trans,'#', network.type |trans) }}
     </td>
     <td class="text-center">
-        {{ print.colordropbox(network.networkEntity.color,network.networkEntity.icon,network.networkEntity.name,path('cert_unlp_ngen_network_entity_detail',{'slug': network.networkEntity.slug}),network.networkEntity.id) }}
+        <div class="float-left">
+            {{ print.colordropbox(network.networkEntity.color,network.networkEntity.icon,network.networkEntity.name,path('cert_unlp_ngen_network_entity_detail',{'slug': network.networkEntity.slug}),network.networkEntity.id) }}
+        </div>
     </td>
     <td class="text-center">
-        {{ print.colordropbox(network.networkAdmin.color,network.networkAdmin.icon,network.networkAdmin.name,path('cert_unlp_ngen_network_detail_network_admin',{'slug': network.networkAdmin.slug}),network.networkAdmin.id) }}
+        <div class="float-left">
+            {{ print.colordropbox(network.networkAdmin.color,network.networkAdmin.icon,network.networkAdmin.name,path('cert_unlp_ngen_network_detail_network_admin',{'slug': network.networkAdmin.slug}),network.networkAdmin.id) }}
+        </div>
     </td>
     <td class="text-center">
         <small>

@@ -320,6 +320,10 @@ fos_elastica:
                             type: keyword
                         slug:
                             type: keyword
+                        emails:
+                            type: string
+                            fielddata: true
+                            analyzer: email_analyser
                         isActive:
                             type: boolean
                         createdAt:
