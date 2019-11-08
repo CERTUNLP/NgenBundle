@@ -17,21 +17,20 @@
         <div class="table-responsive">
             <table id="tabla_hosts" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
-        <tr role="row">
-            <th>{{ knp_pagination_sortable(incidentStates, 'Name'|trans, 'slug') }}</th>
-            <th>{{ 'Description'|trans }}</th>
-{#            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Reporter'|trans, 'mailReporter.slug') }}</th>#}
-{#            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Assigned'|trans, 'mailAssigned.slug') }}</th>#}
-{#            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Admin'|trans, 'mailAdmin.slug') }}</th>#}
-{#            <th>{{ knp_pagination_sortable(incidentStates, 'Mail to Team'|trans, 'mailTeam.slug') }}</th>#}
-            <th>{{ knp_pagination_sortable(incidentStates, 'active'|trans, 'isActive') }}</th>
-            <th>Action</th>
-        </tr>
+                <tr role="row">
+                    <th>Action</th>
+                    <th>{{ knp_pagination_sortable(incidentStates, 'Active'|trans, 'isActive') }}</th>
+                    <th>{{ knp_pagination_sortable(incidentStates, 'Name'|trans, 'slug') }}</th>
+                    <th>{{ knp_pagination_sortable(incidentStates, 'Behavior'|trans, 'behavior') }}</th>
+                    <th>{{ 'Description'|trans }}</th>
+                    <th>{{ knp_pagination_sortable(incidentStates, 'Created at'|trans, 'createdAt') }}</th>
+                    <th>{{ knp_pagination_sortable(incidentStates, 'Updated at'|trans, 'updatedAt') }}</th>
+                </tr>
                 </thead>
                 <tbody>
-        {% for incidentState in incidentStates %}
-            {% include 'CertUnlpNgenBundle:IncidentState:Frontend/list/incidentStateListRow.html.twig' with {'incidentState': incidentState} %}
-        {% endfor %}
+                {% for incidentState in incidentStates %}
+                    {% include 'CertUnlpNgenBundle:IncidentState:Frontend/list/incidentStateListRow.html.twig' with {'incidentState': incidentState} %}
+                {% endfor %}
                 </tbody>
             </table>
         </div>

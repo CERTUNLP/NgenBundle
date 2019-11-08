@@ -6,20 +6,31 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 
 <tr data-id="{{ incidentFeed.slug }}">
     <td class="text-center">
-        {{ incidentFeed.name }}
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentFeed , 'detail_link': path('cert_unlp_ngen_incident_feed_detail',{'slug': incidentFeed.id}),'edit_link': path('cert_unlp_ngen_incident_feed_edit',{'slug': incidentFeed.id})} %}
+    </td>
+    <td id="state_label_holder" class="text-center">
+        {{ print.statuscolor(incidentFeed) }}
+    </td>
+    <td class="text-center">
+        <div class="float-left">
+            {{ print.colorbox(incidentFeed.color,incidentFeed.icon,incidentFeed.name,'#',incidentFeed.name) }}
+        </div>
     </td>
     <td class="text-center">
         {{ incidentFeed.description | default('No description')| trans }}
     </td>
-    <td id="state_label_holder" class="text-center">
-        <div>
-            {% include "CertUnlpNgenBundle:IncidentFeed:Frontend/list/stateLabel.html.twig" with {'incidentFeed': incidentFeed} %}
-        </div>
+    <td class="text-center">
+        <small>
+            {{ print.colorbox('primary','calendar-alt',incidentFeed.createdAt|date('Y-m-d'),'#',incidentFeed.createdAt|date('Y-m-d')) }}
+        </small>
     </td>
     <td class="text-center">
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentFeed , 'detail_link': path('cert_unlp_ngen_incident_feed_detail',{'slug': incidentFeed.id}),'edit_link': path('cert_unlp_ngen_incident_feed_edit',{'slug': incidentFeed.id})} %}
+        <small>
+            {{ print.colorbox('primary','calendar-alt',incidentFeed.updatedAt|date('Y-m-d'),'#',incidentFeed.updatedAt|date('Y-m-d')) }}
+        </small>
     </td>
 </tr>

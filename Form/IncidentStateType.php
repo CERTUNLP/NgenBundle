@@ -37,34 +37,35 @@ class IncidentStateType extends AbstractType
             ->add('description', null, array(
                 'required' => true,
             ))
-            ->add('mailReporter', EntityType::class, array(
-                'class' => ContactCase::class,
-                'attr' => array('align_with_widget' => true),
-                'required' => true,
-                'label' => 'Send mail to reporter(if available)',
-                'description' => 'Send a mail report to the reporter.',
-            ))
-            ->add('mailAssigned', EntityType::class, array(
-                'class' => ContactCase::class,
-                'attr' => array('align_with_widget' => true),
-                'required' => true,
-                'label' => 'Send mail to the one who has it assigned (if available)',
-                'description' => 'Send a mail report to the one who has it assigned.',
-            ))
-            ->add('mailAdmin', EntityType::class, array(
-                'class' => ContactCase::class,
-                'attr' => array('align_with_widget' => true),
-                'required' => true,
-                'label' => 'Send mail to Admin Responsable(if available)',
-                'description' => 'Send a mail report to the host administrator.',
-            ))
-            ->add('mailTeam', EntityType::class, array(
-                'class' => ContactCase::class,
-                'attr' => array('align_with_widget' => true),
-                'required' => true,
-                'label' => 'Send mail to the team',
-                'description' => 'Send a mail report to the team.',
-            ));
+//            ->add('mailReporter', EntityType::class, array(
+//                'class' => ContactCase::class,
+//                'attr' => array('align_with_widget' => true),
+//                'required' => true,
+//                'label' => 'Send mail to reporter(if available)',
+//                'description' => 'Send a mail report to the reporter.',
+//            ))
+//            ->add('mailAssigned', EntityType::class, array(
+//                'class' => ContactCase::class,
+//                'attr' => array('align_with_widget' => true),
+//                'required' => true,
+//                'label' => 'Send mail to the one who has it assigned (if available)',
+//                'description' => 'Send a mail report to the one who has it assigned.',
+//            ))
+//            ->add('mailAdmin', EntityType::class, array(
+//                'class' => ContactCase::class,
+//                'attr' => array('align_with_widget' => true),
+//                'required' => true,
+//                'label' => 'Send mail to Admin Responsable(if available)',
+//                'description' => 'Send a mail report to the host administrator.',
+//            ))
+//            ->add('mailTeam', EntityType::class, array(
+//                'class' => ContactCase::class,
+//                'attr' => array('align_with_widget' => true),
+//                'required' => true,
+//                'label' => 'Send mail to the team',
+//                'description' => 'Send a mail report to the team.',
+//            ))
+        ;
 
         if ($builder->getData()) {
             if (!$builder->getData()->getIsActive()) {
