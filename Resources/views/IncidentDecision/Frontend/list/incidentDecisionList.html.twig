@@ -16,28 +16,30 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table id="tabla_hosts" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table id="tabla_hosts" class="table table-bordered">
                 <thead>
-        <tr role="row">
-            <th>{{ knp_pagination_sortable(IncidentDecisions, 'Type'|trans , 'type.slug') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentDecisions, 'Feed'|trans, 'feed.slug') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentDecisions, 'Network'|trans, 'network.ip') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentDecisions, 'State'|trans, 'state.slug') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentDecisions, 'TLP'|trans, 'tlp.slug') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentDecisions, 'Impact'|trans, 'impact') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentDecisions, 'Urgency'|trans, 'urgency') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentDecisions, 'active'|trans, 'isActive') }}</th>
-            <th>{{ 'Action'|trans }}</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for IncidentDecision in IncidentDecisions %}
-            {% include 'CertUnlpNgenBundle:IncidentDecision:Frontend/list/incidentDecisionListRow.html.twig' with {'IncidentDecision': IncidentDecision} %}
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
-</div>
+                <tr role="row">
+                    <th>{{ 'Action'|trans }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentDecisions, 'Active'|trans, 'isActive') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentDecisions, 'Type'|trans , 'type.slug') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentDecisions, 'Feed'|trans, 'feed.slug') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentDecisions, 'Network'|trans, 'network.ip') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentDecisions, 'State'|trans, 'state.slug') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentDecisions, 'TLP'|trans, 'tlp.slug') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentDecisions, 'Impact'|trans, 'impact') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentDecisions, 'Urgency'|trans, 'urgency') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentDecisions, 'Created at'|trans, 'createdAt') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentDecisions, 'Updated at'|trans, 'updatedAt') }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for IncidentDecision in IncidentDecisions %}
+                    {% include 'CertUnlpNgenBundle:IncidentDecision:Frontend/list/incidentDecisionListRow.html.twig' with {'IncidentDecision': IncidentDecision} %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 <div class="pagination justify-content-center">
     {{ knp_pagination_render(IncidentDecisions, null, {}, { "prev_label": "Previous"|trans, "next_label": "Next"|trans, "first_label": "First"|trans, "last_label": "Last"|trans}) }}
