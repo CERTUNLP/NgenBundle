@@ -6,24 +6,34 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 
 <tr data-id="{{ incidentType.slug }}">
     <td class="text-center">
-        {{ incidentType.name }}
-    </td>
-    <td class="text-center">
-        {{ incidentType .description | default('No description')| trans }}
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentType , 'detail_link': path('cert_unlp_ngen_incident_type_detail',{ 'slug': incidentType.slug}),'edit_link': path('cert_unlp_ngen_incident_type_edit',{'slug': incidentType.slug})} %}
     </td>
     <td id="state_label_holder" class="text-center">
-        <div>
-            {% include "CertUnlpNgenBundle:IncidentType:Frontend/list/stateLabel.html.twig" with {'incidentType': incidentType} %}
+        {{ print.statuscolor(incidentType) }}
+    </td>
+    <td class="text-center">
+        <div class="float-left">
+            {{ print.colorbox(incidentType.color,incidentType.icon,incidentType.name| trans,'#',incidentType.name| trans) }}
         </div>
+    </td>
+    <td class="text-center">
+        {{ incidentType.description | default('No description')| trans }}
     </td>
     <td class="text-center">
         {{ incidentType.taxonomyValue }}
     </td>
-
     <td class="text-center">
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentType , 'detail_link': path('cert_unlp_ngen_incident_type_detail',{ 'slug': incidentType.slug}),'edit_link': path('cert_unlp_ngen_incident_type_edit',{'slug': incidentType.slug})} %}
+        <small>
+            {{ print.colorbox('primary','calendar-alt',incidentType.createdAt|date('Y-m-d'),'#',incidentType.createdAt|date('Y-m-d')) }}
+        </small>
+    </td>
+    <td class="text-center">
+        <small>
+            {{ print.colorbox('primary','calendar-alt',incidentType.updatedAt|date('Y-m-d'),'#',incidentType.updatedAt|date('Y-m-d')) }}
+        </small>
     </td>
 </tr>

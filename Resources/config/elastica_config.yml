@@ -431,28 +431,8 @@ fos_elastica:
                             type: date
                         updatedAt:
                             type: date
-#                        mailAdmin:
-#                            type: "object"
-#                            properties:
-#                                slug:
-#                                    type: keyword
-#                        mailTeam:
-#                            type: "object"
-#                            properties:
-#                                slug:
-#                                    type: keyword
-#                        mailReporter:
-#                            type: "object"
-#                            properties:
-#                                slug:
-#                                    type: keyword
-#                        mailAssigned:
-#                            type: "object"
-#                            properties:
-#                                slug:
-#                                    type: keyword
-
-
+                        behavior:
+                            type: keyword
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel

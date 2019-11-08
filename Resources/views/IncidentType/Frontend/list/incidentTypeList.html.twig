@@ -18,11 +18,13 @@
             <table id="tabla_hosts" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
         <tr role="row">
+            <th>{{ 'Action'| trans  }}</th>
+            <th>{{ knp_pagination_sortable(objects, 'Active'|trans, 'isActive') }}</th>
             <th>{{ knp_pagination_sortable(objects, 'Name'|trans, 'slug') }}</th>
             <th>{{ 'Description'|trans }}</th>
-            <th>{{ knp_pagination_sortable(objects, 'active'|trans, 'isActive') }}</th>
             <th>{{ 'Reference'| trans  }}</th>
-            <th>{{ 'Action'| trans  }}</th>
+            <th>{{ knp_pagination_sortable(objects, 'Created at'|trans, 'createdAt') }}</th>
+            <th>{{ knp_pagination_sortable(objects, 'Updated at'|trans, 'updatedAt') }}</th>
         </tr>
                 </thead>
         <tbody>

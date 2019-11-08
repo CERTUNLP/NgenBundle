@@ -6,43 +6,36 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 
 <tr data-id="{{ incidentState.slug }}">
     <td class="text-center">
-        {{ incidentState.name |trans }}
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentState , 'detail_link': path('cert_unlp_ngen_incident_state_detail',{ 'slug': incidentState.slug}),'edit_link': path('cert_unlp_ngen_incident_state_edit',{'slug': incidentState.slug})} %}
+    </td>
+    <td id="state_label_holder" class="text-center">
+        {{ print.statuscolor(incidentState) }}
+    </td>
+    <td class="text-center">
+        <div class="float-left">
+            {{ print.colorbox(incidentState.color,incidentState.icon,incidentState.name| trans,'#',incidentState.name| trans) }}
+        </div>
+    </td>
+    <td class="text-center">
+        <div class="float-left">
+            {{ print.colorbox(incidentState.behavior.color,incidentState.behavior.icon,incidentState.behavior.name| trans,'#',incidentState.behavior.name| trans) }}
+        </div>
     </td>
     <td class="text-center">
         {{ incidentState.description | default('No description')| trans }}
     </td>
-{#    <td id="state_label_holder" class="text-center">#}
-{#        <div>#}
-{#            {{ incidentState.mailReporter |trans }}#}
-{#        </div>#}
-{#    </td>#}
-{#    <td id="state_label_holder" class="text-center">#}
-{#        <div>#}
-{#            {{ incidentState.mailAssigned |trans }}#}
-{#        </div>#}
-{#    </td>#}
-{#    <td id="state_label_holder" class="text-center">#}
-{#        <div>#}
-{#            {{ incidentState.mailAdmin |trans }}#}
-{#        </div>#}
-{#    </td>#}
-{#    <td id="state_label_holder" class="text-center">#}
-{#        <div>#}
-{#            {{ incidentState.mailTeam |trans }}#}
-
-{#        </div>#}
-{#    </td>#}
-    <td id="state_label_holder" class="text-center">
-        <div>
-            {% include "CertUnlpNgenBundle:IncidentState:Frontend/list/stateLabel.html.twig" with {'incidentState': incidentState} %}
-        </div>
-    </td>
-
     <td class="text-center">
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentState , 'detail_link': path('cert_unlp_ngen_incident_state_detail',{ 'slug': incidentState.slug}),'edit_link': path('cert_unlp_ngen_incident_state_edit',{'slug': incidentState.slug})} %}
-
+        <small>
+            {{ print.colorbox('primary','calendar-alt',incidentState.createdAt|date('Y-m-d'),'#',incidentState.createdAt|date('Y-m-d')) }}
+        </small>
+    </td>
+    <td class="text-center">
+        <small>
+            {{ print.colorbox('primary','calendar-alt',incidentState.updatedAt|date('Y-m-d'),'#',incidentState.updatedAt|date('Y-m-d')) }}
+        </small>
     </td>
 </tr>
