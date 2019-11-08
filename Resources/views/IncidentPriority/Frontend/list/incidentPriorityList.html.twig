@@ -17,27 +17,28 @@
         <div class="table-responsive">
             <table id="tabla_hosts" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
-        <tr role="row">
-            <th>{{ knp_pagination_sortable(IncidentPriorities, 'Code'|trans, 'code') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentPriorities, 'Description'|trans , 'name') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentPriorities, 'Impact'|trans, 'impact') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentPriorities, 'Urgency'|trans, 'urgency') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentPriorities, 'Response Time'|trans, 'response_time') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentPriorities, 'Closing unresponse time'|trans, 'isActive') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentPriorities, 'Resolution Time'|trans, 'resolution_time') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentPriorities, 'Closing unsolved time'|trans, 'isActive') }}</th>
-            <th>{{ knp_pagination_sortable(IncidentPriorities, 'active'|trans, 'isActive') }}</th>
-            <th>{{ 'Action'|trans }}</th>
-        </tr>
+                <tr role="row">
+                    <th>{{ 'Action'|trans }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentPriorities, 'Active'|trans, 'isActive') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentPriorities, 'Impact'|trans, 'impact') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentPriorities, 'Urgency'|trans, 'urgency') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentPriorities, 'Description'|trans , 'name') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentPriorities, 'Response Time'|trans, 'response_time') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentPriorities, 'Closing unresponse time'|trans, 'isActive') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentPriorities, 'Resolution Time'|trans, 'resolution_time') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentPriorities, 'Closing unsolved time'|trans, 'isActive') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentPriorities, 'Created at'|trans, 'createdAt') }}</th>
+                    <th>{{ knp_pagination_sortable(IncidentPriorities, 'Updated at'|trans, 'updatedAt') }}</th>
+                </tr>
                 </thead>
-        <tbody>
-        {% for IncidentPriority in IncidentPriorities %}
-            {% include 'CertUnlpNgenBundle:IncidentPriority:Frontend/list/incidentPriorityListRow.html.twig' with {'IncidentPriority': IncidentPriority} %}
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
-</div>
+                <tbody>
+                {% for IncidentPriority in IncidentPriorities %}
+                    {% include 'CertUnlpNgenBundle:IncidentPriority:Frontend/list/incidentPriorityListRow.html.twig' with {'IncidentPriority': IncidentPriority} %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 <div class="pagination justify-content-center">
     {{ knp_pagination_render(IncidentPriorities, null, {}, { "prev_label": "Previous"|trans, "next_label": "Next"|trans, "first_label": "First"|trans, "last_label": "Last"|trans}) }}

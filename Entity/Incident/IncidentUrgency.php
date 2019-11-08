@@ -2,6 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -15,7 +16,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentUrgency implements Translatable
+class IncidentUrgency extends Entity implements Translatable
 {
     /**
      * @var string|null
@@ -61,24 +62,6 @@ class IncidentUrgency implements Translatable
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
-    }
-
-    /**
-     * @return Collection|null
-     */
-    public function getIncidents(): ?Collection
-    {
-        return $this->incidents;
-    }
-
-    /**
-     * @param Collection|null $incidents
-     * @return IncidentUrgency
-     */
-    public function setIncidents(?Collection $incidents): IncidentUrgency
-    {
-        $this->incidents = $incidents;
-        return $this;
     }
 
     /**
@@ -145,4 +128,31 @@ class IncidentUrgency implements Translatable
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'list-ol';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        switch ($this->getSlug()) {
+            case 'high':
+                return 'danger';
+                break;
+            case 'medium':
+                return 'warning';
+                break;
+            case 'low':
+                return 'primary';
+                break;
+            default:
+                return 'info';
+        }
+    }
 }
