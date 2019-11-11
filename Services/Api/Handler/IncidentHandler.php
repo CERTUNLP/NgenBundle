@@ -135,7 +135,7 @@ class IncidentHandler extends Handler
         $unClosedIncidents = [];
         foreach ($incidents as $incident) {
             if ($incident->setState($incident->getUnsolvedState())) {
-                #$this->om->persist($incident);
+                //$this->om->persist($incident);
                 $closedIncidents[$incident->getId()] = [
                     'id' => $incident->getSlug(),
                     'type' => $incident->getType()->getSlug(),
@@ -173,8 +173,12 @@ class IncidentHandler extends Handler
         $closedIncidents = [];
         $unClosedIncidents = [];
         foreach ($incidents as $incident) {
+            echo($incident->getType()->getSlug());
+            echo($incident->getState()->getSlug());
+            echo($incident->getUnattendedState());
+            echo("llegue");
             if ($incident->setState($incident->getUnattendedState())) {
-                #$this->om->persist($incident);
+                //$this->om->persist($incident);
                 $closedIncidents[$incident->getId()] = ['id' => $incident->getSlug(),
                     'type' => $incident->getType()->getSlug(),
                     'date' => $incident->getDate()->format('Y-m-d H:i:s'),
@@ -188,9 +192,10 @@ class IncidentHandler extends Handler
                 'date' => $incident->getDate()->format('Y-m-d H:i:s'),
                 'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
                 'actualState' => $incident->getState()->getSlug(),
-                'requiredState' => $incident->getUnsolvedState()->getSlug()
+                'requiredState' => $incident->getUnattendedState()
             ];
             }
+
         }
         $this->om->flush();
         return array($closedIncidents,$unClosedIncidents);
