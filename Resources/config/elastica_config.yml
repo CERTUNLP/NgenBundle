@@ -656,9 +656,12 @@ fos_elastica:
                         email:
                             type: string
                             analyzer: email_analyser
+                            fielddata: true
                         isEnabled:
                             type: boolean
                         createdAt:
+                            type: date
+                        lastLogin:
                             type: date
                     persistence:
                         identifier: slug

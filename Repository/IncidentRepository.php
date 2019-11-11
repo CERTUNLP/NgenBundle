@@ -204,7 +204,10 @@ class IncidentRepository extends EntityRepository
     public function queryAllUnattended(): QueryBuilder
     {
         return $this->queryAllNew()
-            ->andWhere('i.responseDeadLine <=  CURRENT_TIMESTAMP()');
+            ->andWhere('i.unattendedState != :undefined_state')
+            ->andWhere('i.unattendedState != i.state')
+            ->andWhere('i.responseDeadLine <=  CURRENT_TIMESTAMP()')
+            ->setParameter('undefined_state', 'undefined');
     }
 
     public function queryAllClosed(QueryBuilder $qb = null): QueryBuilder

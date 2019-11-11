@@ -6,8 +6,15 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 
 <tr data-id="{{ user.username }}">
+    <td class="text-center">
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':user , 'detail_link': path('cert_unlp_ngen_user_detail_user',{ 'username': user.username}),'edit_link': path('cert_unlp_ngen_user_edit_user',{'username': user.username})} %}
+    </td>
+    <td id="state_label_holder" class="text-center">
+        {{ print.statuscolor(user) }}
+    </td>
     <td class="text-center">
         {{ user.username }}
     </td>
@@ -15,17 +22,25 @@
         {{ user.fullName }}
     </td>
     <td class="text-center">
-        {{ user.email }}
-    </td>
-    <td class="text-center">
-        {{ user.lastLogin | date('Y-m-d') }}
-    </td>
-    <td id="state_label_holder" class="text-center">
-        <div>
-            {% include "CertUnlpNgenBundle:User:Frontend/list/stateLabel.html.twig" with {'user': user} %}
+        <div class="float-left">
+{#            {% for email in user.emails %}#}
+{#                {{ print.colorbox(user.color,'envelope',email,'#',email) }}#}
+{#            {% endfor %}#}
+            {{ print.colorbox(user.color,'envelope',user.email,'#',user.email) }}
         </div>
     </td>
     <td class="text-center">
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':user , 'detail_link': path('cert_unlp_ngen_user_detail_user',{ 'username': user.username}),'edit_link': path('cert_unlp_ngen_user_edit_user',{'username': user.username})} %}
+        {{ print.colorbox('primary','calendar-alt',user.lastLogin|date('Y-m-d'),'#',user.lastLogin|date('Y-m-d')) }}
+
+    </td>
+    <td class="text-center">
+        <small>
+            {{ print.colorbox('primary','calendar-alt',user.createdAt|date('Y-m-d'),'#',user.createdAt|date('Y-m-d')) }}
+        </small>
+    </td>
+    <td class="text-center">
+        <small>
+            {{ print.colorbox('primary','calendar-alt',user.updatedAt|date('Y-m-d'),'#',user.updatedAt|date('Y-m-d')) }}
+        </small>
     </td>
 </tr>
