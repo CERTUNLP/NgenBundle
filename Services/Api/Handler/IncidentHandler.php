@@ -132,18 +132,31 @@ class IncidentHandler extends Handler
     {
         $incidents = $this->findAllUnsolved();
         $closedIncidents = [];
+        $unClosedIncidents = [];
         foreach ($incidents as $incident) {
             if ($incident->setState($incident->getUnsolvedState())) {
-                $this->om->persist($incident);
-                $closedIncidents[$incident->getId()] = ['id' => $incident->getSlug(),
+                #$this->om->persist($incident);
+                $closedIncidents[$incident->getId()] = [
+                    'id' => $incident->getSlug(),
                     'type' => $incident->getType()->getSlug(),
                     'date' => $incident->getDate()->format('Y-m-d H:i:s'),
                     'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
-                    'newState' => $incident->getState()->getSlug()];
+                    'newState' => $incident->getState()->getSlug()
+                ];
             }
+         else
+             {   $unClosedIncidents[$incident->getId()] = [
+                'id' => $incident->getSlug(),
+                'type' => $incident->getType()->getSlug(),
+                'date' => $incident->getDate()->format('Y-m-d H:i:s'),
+                'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
+                'actualState' => $incident->getState()->getSlug(),
+                'requiredState' => $incident->getUnsolvedState()->getSlug()
+            ];
+        }
         }
         $this->om->flush();
-        return $closedIncidents;
+        return array($closedIncidents,$unClosedIncidents);;
     }
 
     /**
@@ -158,18 +171,29 @@ class IncidentHandler extends Handler
     {
         $incidents = $this->findAllUnattended();
         $closedIncidents = [];
+        $unClosedIncidents = [];
         foreach ($incidents as $incident) {
             if ($incident->setState($incident->getUnattendedState())) {
-                $this->om->persist($incident);
+                #$this->om->persist($incident);
                 $closedIncidents[$incident->getId()] = ['id' => $incident->getSlug(),
                     'type' => $incident->getType()->getSlug(),
                     'date' => $incident->getDate()->format('Y-m-d H:i:s'),
                     'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
                     'newState' => $incident->getState()->getSlug()];
             }
+            else
+            {   $unClosedIncidents[$incident->getId()] = [
+                'id' => $incident->getSlug(),
+                'type' => $incident->getType()->getSlug(),
+                'date' => $incident->getDate()->format('Y-m-d H:i:s'),
+                'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
+                'actualState' => $incident->getState()->getSlug(),
+                'requiredState' => $incident->getUnsolvedState()->getSlug()
+            ];
+            }
         }
         $this->om->flush();
-        return $closedIncidents;
+        return array($closedIncidents,$unClosedIncidents);
     }
 
     /**
