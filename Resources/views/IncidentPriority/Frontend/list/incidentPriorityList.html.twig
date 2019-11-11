@@ -15,7 +15,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table id="tabla_hosts" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table id="tabla_hosts" class="table table-borderedz">
                 <thead>
                 <tr role="row">
                     <th>{{ 'Action'|trans }}</th>
@@ -24,9 +24,9 @@
                     <th>{{ knp_pagination_sortable(IncidentPriorities, 'Urgency'|trans, 'urgency') }}</th>
                     <th>{{ knp_pagination_sortable(IncidentPriorities, 'Description'|trans , 'name') }}</th>
                     <th>{{ knp_pagination_sortable(IncidentPriorities, 'Response Time'|trans, 'response_time') }}</th>
-                    <th>{{ knp_pagination_sortable(IncidentPriorities, 'Closing unresponse time'|trans, 'isActive') }}</th>
+                    <th><small><b>{{ knp_pagination_sortable(IncidentPriorities, 'Closing unresponse time'|trans, 'unresponseTime') }}</b></small></th>
                     <th>{{ knp_pagination_sortable(IncidentPriorities, 'Resolution Time'|trans, 'resolution_time') }}</th>
-                    <th>{{ knp_pagination_sortable(IncidentPriorities, 'Closing unsolved time'|trans, 'isActive') }}</th>
+                    <th><small><b>{{ knp_pagination_sortable(IncidentPriorities, 'Closing unresolution time'|trans, 'unresolutionTime') }}</b></small></th>
                     <th>{{ knp_pagination_sortable(IncidentPriorities, 'Created at'|trans, 'createdAt') }}</th>
                     <th>{{ knp_pagination_sortable(IncidentPriorities, 'Updated at'|trans, 'updatedAt') }}</th>
                 </tr>

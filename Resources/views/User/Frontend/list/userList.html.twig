@@ -18,12 +18,14 @@
             <table id="tabla_hosts" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
         <tr role="row">
+            <th>Action</th>
+            <th>{{ knp_pagination_sortable(users, 'Active'|trans, 'isEnabled') }}</th>
             <th>{{ knp_pagination_sortable(users, 'Username'|trans, 'username') }}</th>
             <th>{{ knp_pagination_sortable(users, 'Name'|trans, 'slug') }}</th>
             <th>{{ knp_pagination_sortable(users, 'Email'|trans, 'email') }}</th>
             <th>{{ knp_pagination_sortable(users, 'Last login'|trans, 'lastLogin') }}</th>
-            <th>{{ knp_pagination_sortable(users, 'Active'|trans, 'isEnabled') }}</th>
-            <th>Action</th>
+            <th>{{ knp_pagination_sortable(users, 'Created at'|trans, 'createdAt') }}</th>
+            <th>{{ knp_pagination_sortable(users, 'Updated at'|trans, 'updatedAt') }}</th>
         </tr>
                 </thead>
         <tbody>

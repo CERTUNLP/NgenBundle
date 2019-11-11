@@ -65,7 +65,7 @@ class IncidentController extends FOSRestController
     public function postIncidentAction(Request $request)
     {
 
-        return $this->getApiController($request->get('ip'))->post($request);
+        return $this->getApiController()->post($request);
     }
 
     public function getApiController()
@@ -119,7 +119,7 @@ class IncidentController extends FOSRestController
      */
     public function putIncidentsAction(Request $request, Incident $incident)
     {
-        return $this->getApiController($incident)->put($request, $incident);
+        return $this->getApiController()->put($request, $incident);
     }
 
     /**
@@ -143,7 +143,7 @@ class IncidentController extends FOSRestController
      */
     public function patchIncidentStateAction(Request $request, Incident $incident, IncidentState $state)
     {
-        return $this->getApiController($incident)->patchState($request, $incident, $state);
+        return $this->getApiController()->patchState($request, $incident, $state);
     }
 
 
@@ -168,7 +168,7 @@ class IncidentController extends FOSRestController
      */
     public function patchIncidentAction(Request $request, Incident $incident)
     {
-        return $this->getApiController($incident)->patch($request, $incident);
+        return $this->getApiController()->patch($request, $incident);
     }
 
     /**
@@ -197,7 +197,7 @@ class IncidentController extends FOSRestController
      */
     public function deleteIncidentAction(Request $request, Incident $incident)
     {
-        return $this->getApiController($incident)->delete($request, $incident);
+        return $this->getApiController()->delete($request, $incident);
     }
 
     /**

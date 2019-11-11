@@ -1,4 +1,4 @@
-{# 
+{# createdAt
  This file is part of the Ngen - CSIRT Incident Report System.
  
  (c) CERT UNLP <support@cert.unlp.edu.ar>
@@ -16,6 +16,7 @@
         {{ print.colorbox('primary','id-card',object.id,'#') }}
         {{ print.statuscolor(object) }}
         {{ print.colorbox('primary','arrow-circle-down','incidents '~object.incidents.count,path('cert_unlp_ngen_internal_incident_search_incident',{'term':'"'~object.email~'"'})) }}
+        {{ print.colorbox('primary','arrow-circle-down','assigned incidents '~object.assignedIncidents.count,path('cert_unlp_ngen_internal_incident_search_incident',{'term':'"'~object.email~'"'})) }}
         {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_user_edit_user',{'username': object.username})) }}
     </h1>
 {% endblock %}
