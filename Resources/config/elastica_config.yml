@@ -700,13 +700,6 @@ fos_elastica:
                             type: date
                         updatedAt:
                             type: date
-                        reports:
-                            type: "object"
-                            properties:
-                                slug:
-                                    type: keyword
-                                lang:
-                                    type: keyword
                         version:
                             type: keyword
                     persistence:
@@ -742,13 +735,6 @@ fos_elastica:
                             type: date
                         updatedAt:
                             type: date
-                        reports:
-                            type: "object"
-                            properties:
-                                slug:
-                                    type: keyword
-                                lang:
-                                    type: keyword
                         version:
                             type: keyword
                     persistence:
