@@ -173,10 +173,6 @@ class IncidentHandler extends Handler
         $closedIncidents = [];
         $unClosedIncidents = [];
         foreach ($incidents as $incident) {
-            echo($incident->getType()->getSlug());
-            echo($incident->getState()->getSlug());
-            echo($incident->getUnattendedState());
-            echo("llegue");
             if ($incident->setState($incident->getUnattendedState())) {
                 //$this->om->persist($incident);
                 $closedIncidents[$incident->getId()] = ['id' => $incident->getSlug(),

@@ -21,7 +21,7 @@ class Version20190731213117 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_7C69DA3B7DC9D7A5 ON incident_decision (unattended_state)');
         $this->addSql('CREATE INDEX IDX_7C69DA3BEC6344B7 ON incident_decision (unsolved_state)');
         $this->addSql('ALTER TABLE incident ADD unattended_state VARCHAR(100) DEFAULT NULL, ADD unsolved_state VARCHAR(100) DEFAULT NULL');
-        $this->addSql('UPDATE incident set unattended_state="discarded_by_unattended", unsolved_state="discarded_by_unsolved"');
+        $this->addSql('UPDATE incident set unattended_state="discarded_by_unattended", unsolved_state="closed_by_inactivity"');
         $this->addSql('UPDATE incident_decision set unattended_state="discarded_by_unattended", unsolved_state="closed_by_unsolved"');
         $this->addSql('ALTER TABLE incident ADD CONSTRAINT FK_3D03A11A3AA33DF6 FOREIGN KEY (unattended_state) REFERENCES incident_state (slug)');
         $this->addSql('ALTER TABLE incident ADD CONSTRAINT FK_3D03A11AEC6344B7 FOREIGN KEY (unsolved_state) REFERENCES incident_state (slug)');
