@@ -19,12 +19,11 @@
         {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':network , 'detail_link':detail_link ,'edit_link': edit_link} %}
     </td>
     <td id="state_label_holder" class="text-center">
-        {{ print.statuscolor(network) }}
+        {{ print.statusbox(network) }}
     </td>
     <td class="text-center">
         <div class="float-left">
-
-            {{ print.colorbox(network.color,network.icon,network.addressAndMask,'#',network.addressAndMask) }}
+            {{ print.colorbox(network.color,network.icon,network.addressAndMask,'#',network.address) }}
         </div>
     </td>
     <td class="text-center">
@@ -32,12 +31,12 @@
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colordropbox(network.networkEntity.color,network.networkEntity.icon,network.networkEntity.name,path('cert_unlp_ngen_network_entity_detail',{'slug': network.networkEntity.slug}),network.networkEntity.id) }}
+            {{ print.colordropbox(network.networkEntity.color,network.networkEntity.icon,network.networkEntity.name,path('cert_unlp_ngen_network_entity_detail',{'slug': network.networkEntity.slug}),network.networkEntity) }}
         </div>
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colordropbox(network.networkAdmin.color,network.networkAdmin.icon,network.networkAdmin.name,path('cert_unlp_ngen_network_detail_network_admin',{'slug': network.networkAdmin.slug}),network.networkAdmin.id) }}
+            {{ print.colordropbox(network.networkAdmin.color,network.networkAdmin.icon,network.networkAdmin.name,path('cert_unlp_ngen_network_detail_network_admin',{'slug': network.networkAdmin.slug}),network.networkAdmin.name  ) }}
         </div>
     </td>
     <td class="text-center">

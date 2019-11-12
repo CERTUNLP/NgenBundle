@@ -14,7 +14,7 @@
         {{ icon(object.icon ~' fa-fw text-'~object.color) }}
         {{ object }}
         {{ print.colorbox('primary','id-card',object.id,'#') }}
-        {{ print.statuscolor(object) }}
+        {{ print.statusbox(object) }}
         {% set detail_link %}
             {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':object.network} %}
         {% endset %}

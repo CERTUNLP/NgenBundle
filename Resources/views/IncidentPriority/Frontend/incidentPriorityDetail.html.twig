@@ -14,7 +14,7 @@
         {{ icon(object.icon ~' fa-fw text-'~object.color) }}
         {{ object }}
         {{ print.colorbox('primary','id-card',object.id,'#') }}
-        {{ print.statuscolor(object) }}
+        {{ print.statusbox(object) }}
         {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_network_edit_network_admin',{'slug': object.slug})) }}
     </h1>
 {% endblock %}

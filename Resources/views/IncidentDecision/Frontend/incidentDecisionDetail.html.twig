@@ -14,7 +14,7 @@
         {{ icon(object.icon~' fa-fw text-'~object.color) }}
         {{ object }}
         {{ print.colorbox('primary','id-card',object.id,'#') }}
-        {{ print.statuscolor(object) }}
+        {{ print.statusbox(object) }}
         {{ print.colorbox(object.type.color,object.type.icon,object.type,path('cert_unlp_ngen_incident_type_detail',{'slug': object.type.slug})) }}
         {{ print.colorbox(object.state.color,object.state.icon,object.state,path('cert_unlp_ngen_incident_state_detail',{'slug': object.state.slug})) }}
         {#        {{ print.colorbox(object.priority.color,object.priority.icon,object.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': object.priority.id})) }}#}
