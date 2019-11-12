@@ -12,7 +12,7 @@
         {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':networkEntity , 'detail_link': path('cert_unlp_ngen_network_entity_detail',{ 'slug': networkEntity.slug}),'edit_link': path('cert_unlp_ngen_network_entity_edit',{'slug': networkEntity.slug})} %}
     </td>
     <td id="state_label_holder" class="text-center">
-        {{ print.statuscolor(networkEntity) }}
+        {{ print.statusbox(networkEntity) }}
     </td>
     <td class="text-center">
         <div class="float-left">

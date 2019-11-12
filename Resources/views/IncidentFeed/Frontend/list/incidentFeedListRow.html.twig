@@ -13,7 +13,7 @@
         {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentFeed , 'detail_link': path('cert_unlp_ngen_incident_feed_detail',{'slug': incidentFeed.id}),'edit_link': path('cert_unlp_ngen_incident_feed_edit',{'slug': incidentFeed.id})} %}
     </td>
     <td id="state_label_holder" class="text-center">
-        {{ print.statuscolor(incidentFeed) }}
+        {{ print.statusbox(incidentFeed) }}
     </td>
     <td class="text-center">
         <div class="float-left">
