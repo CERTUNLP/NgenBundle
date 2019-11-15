@@ -106,6 +106,16 @@ class IncidentDetected
      */
     private $date;
 
+    /**
+     * @var Collection
+     * @JMS\Expose
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommunication",mappedBy="ltd")
+     * @JMS\Groups({"api"})
+     */
+
+    private $communicationHistory;
+
+
     public function __construct(Incident $incident, Incident $incidentFather)
     {
         $this->setIncident($incidentFather);

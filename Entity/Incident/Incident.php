@@ -193,13 +193,13 @@ class Incident extends Entity
      */
     private $changeStateHistory;
 
+
     /**
      * @var Collection
      * @JMS\Expose
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Message",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommunication",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
      * @JMS\Groups({"api"})
      */
-
     private $communicationHistory;
 
     /**
@@ -1279,7 +1279,7 @@ class Incident extends Entity
     /**
      * @return array
      */
-    public function getPriorityRatio(): array
+    public function getPriorityRaltio(): array
     {
         return $this->getRatio($this->getIncidentsDetected(), static function (IncidentDetected $detected) {
             return $detected->getPriority()->getName();
