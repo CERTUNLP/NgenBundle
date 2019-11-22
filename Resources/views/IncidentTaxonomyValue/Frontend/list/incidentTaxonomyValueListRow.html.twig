@@ -6,23 +6,36 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 
 <tr data-id="{{ incidentTaxonomyValue.slug }}">
     <td class="text-center">
-        {{ incidentTaxonomyValue.expanded }}
-    </td>
-    <td class="text-center">
-        {{ incidentTaxonomyValue.description | default('No description')| trans }}
-    </td>
-    <td class="text-center">
-        {{ incidentTaxonomyValue.predicate }}
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentTaxonomyValue , 'detail_link': path('cert_unlp_ngen_taxonomy_value_detail',{ 'slug': incidentTaxonomyValue.slug})} %}
     </td>
     <td id="state_label_holder" class="text-center">
-        <div>
-            {% include "CertUnlpNgenBundle:IncidentTaxonomyValue:Frontend/list/stateLabel.html.twig" with {'incidentTaxonomyValue': incidentTaxonomyValue} %}
+        {{ print.statusbox(incidentTaxonomyValue) }}
+    </td>
+    <td class="text-center">
+        <div class="float-left">
+            {{ print.colorbox(incidentTaxonomyValue.color,incidentTaxonomyValue.icon,incidentTaxonomyValue.name,'#',incidentTaxonomyValue.name) }}
         </div>
     </td>
     <td class="text-center">
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentTaxonomyValue , 'detail_link': path('cert_unlp_ngen_taxonomy_value_detail',{ 'slug': incidentTaxonomyValue.slug})} %}
+        <div class="float-left">
+            {{ print.colordropbox(incidentTaxonomyValue.predicate.color,incidentTaxonomyValue.predicate.icon,incidentTaxonomyValue.predicate| trans,path('cert_unlp_ngen_taxonomy_predicate_detail',{'slug': incidentTaxonomyValue.predicate.slug}),incidentTaxonomyValue.predicate| trans) }}
+        </div>
+    </td>
+    <td class="text-center">
+        {{ print.colorbox('primary','code-branch',incidentTaxonomyValue.version,'#',incidentTaxonomyValue.version) }}
+    </td>
+    <td class="text-center">
+        <small>
+            {{ print.colorbox('primary','calendar-alt',incidentTaxonomyValue.createdAt|date('Y-m-d'),'#',incidentTaxonomyValue.createdAt|date('Y-m-d')) }}
+        </small>
+    </td>
+    <td class="text-center">
+        <small>
+            {{ print.colorbox('primary','calendar-alt',incidentTaxonomyValue.updatedAt|date('Y-m-d'),'#',incidentTaxonomyValue.updatedAt|date('Y-m-d')) }}
+        </small>
     </td>
 </tr>

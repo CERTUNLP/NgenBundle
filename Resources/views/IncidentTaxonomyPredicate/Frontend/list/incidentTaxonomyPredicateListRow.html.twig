@@ -6,23 +6,34 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 
 <tr data-id="{{ incidentTaxonomyPredicate.slug }}">
     <td class="text-center">
-        {{ incidentTaxonomyPredicate.expanded }}
-    </td>
-    <td class="text-center">
-        {{ incidentTaxonomyPredicate.description | default('No description')| trans }}
-    </td>
-    <td class="text-center">
-        {{ label_info(incidentTaxonomyPredicate.values.count) }}
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentTaxonomyPredicate , 'detail_link': path('cert_unlp_ngen_taxonomy_predicate_detail',{ 'slug': incidentTaxonomyPredicate.slug})} %}
     </td>
     <td id="state_label_holder" class="text-center">
-        <div>
-            {% include "CertUnlpNgenBundle:IncidentTaxonomyPredicate:Frontend/list/stateLabel.html.twig" with {'incidentTaxonomyPredicate': incidentTaxonomyPredicate} %}
+        {{ print.statusbox(incidentTaxonomyPredicate) }}
+    </td>
+    <td class="text-center">
+        <div class="float-left">
+            {{ print.colorbox(incidentTaxonomyPredicate.color,incidentTaxonomyPredicate.icon,incidentTaxonomyPredicate.name,'#',incidentTaxonomyPredicate.name) }}
         </div>
     </td>
     <td class="text-center">
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentTaxonomyPredicate , 'detail_link': path('cert_unlp_ngen_taxonomy_predicate_detail',{ 'slug': incidentTaxonomyPredicate.slug})} %}
+        {{ print.colorbox('primary','hashtag',incidentTaxonomyPredicate.values.count,'#',incidentTaxonomyPredicate.values.count) }}
+    </td>
+    <td class="text-center">
+        {{ print.colorbox('primary','code-branch',incidentTaxonomyPredicate.version,'#',incidentTaxonomyPredicate.version) }}
+    </td>
+    <td class="text-center">
+        <small>
+            {{ print.colorbox('primary','calendar-alt',incidentTaxonomyPredicate.createdAt|date('Y-m-d'),'#',incidentTaxonomyPredicate.createdAt|date('Y-m-d')) }}
+        </small>
+    </td>
+    <td class="text-center">
+        <small>
+            {{ print.colorbox('primary','calendar-alt',incidentTaxonomyPredicate.updatedAt|date('Y-m-d'),'#',incidentTaxonomyPredicate.updatedAt|date('Y-m-d')) }}
+        </small>
     </td>
 </tr>

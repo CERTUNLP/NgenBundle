@@ -7,7 +7,7 @@
 
 fos_elastica:
     clients:
-        default: { host: %elastic_host%, port: %elastic_port%, retryOnConflict: 10 }
+        default: { host: "%elastic_host%", port: "%elastic_port%", retryOnConflict: 10 }
     indexes:
         incidents:
             index_name: incidents_%kernel.environment%
@@ -30,14 +30,15 @@ fos_elastica:
                                 date:
                                     type: date
                         createdAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                createdAt:
+                                    type: date
                         updatedAt:
                             type: keyword
                             fields:
-                                date:
+                                updatedAt:
                                     type: date
-                        evidence_file_path:
-                            type: keyword
                         ltdCount:
                             type: integer
                         origin:
@@ -45,40 +46,18 @@ fos_elastica:
                             properties:
                                 address:
                                     type: keyword
-                                ip:
-                                    type: keyword
-                                    fields:
-                                        ip:
-                                          type:  ip
-                                domain:
-                                    type: keyword
+                                isActive:
+                                    type: boolean
                         network:
                             type: "object"
                             properties:
-                                ip:
-                                    type: ip
-                                ip_mask:
-                                    type: integer
-                                domain:
+                                address:
                                     type: keyword
+                                addressAndMask:
+                                    type: keyword
+                                    index: not_analyzed
                                 isActive:
                                     type: boolean
-                                networkAdmin:
-                                    type: "object"
-                                    properties:
-                                        slug:
-                                            type: keyword
-                                        name:
-                                            type: keyword
-                                        isActive:
-                                            type: boolean
-                                networkEntity:
-                                    type: "object"
-                                    properties:
-                                        slug:
-                                            type: keyword
-                                        name:
-                                            type: keyword
                         tlp:
                             type: "object"
                             properties:
@@ -93,6 +72,8 @@ fos_elastica:
                                     type: keyword
                                 name:
                                     type: keyword
+                                isActive:
+                                    type: boolean
                         feed:
                             type: "object"
                             properties:
@@ -100,6 +81,8 @@ fos_elastica:
                                     type: keyword
                                 name:
                                     type: keyword
+                                isActive:
+                                    type: boolean
                         type:
                             type: "object"
                             properties:
@@ -107,23 +90,14 @@ fos_elastica:
                                     type: keyword
                                 name:
                                     type: keyword
+                                isActive:
+                                    type: boolean
                         assigned:
-                            type: "object"
-                            properties:
-                                id:
-                                    type: keyword
-                                    null_value: "NULL"
-                                username:
-                                    type: keyword
-
-                        reporter:
                             type: "object"
                             properties:
                                 slug:
                                     type: keyword
-                                firstname:
-                                    type: keyword
-                                lastname:
+                                name:
                                     type: keyword
                                 email:
                                     type: string
@@ -132,21 +106,27 @@ fos_elastica:
                                     type: keyword
                                 enabled:
                                     type: boolean
-                                createdAt:
-                                    type: date
-                                updatedAt:
-                                    type: date
-                        priority:
+                        reporter:
                             type: "object"
                             properties:
-                                urgency:
-                                    type: keyword
-                                impact:
+                                slug:
                                     type: keyword
                                 name:
                                     type: keyword
-                                code:
-                                     type: integer
+                                email:
+                                    type: string
+                                    analyzer: email_analyser
+                                username:
+                                    type: keyword
+                                enabled:
+                                    type: boolean
+                        priority:
+                            type: "object"
+                            properties:
+                                name:
+                                    type: keyword
+                                slug:
+                                    type: keyword
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
@@ -164,17 +144,48 @@ fos_elastica:
             settings:
                 index:
                     max_result_window: 50000
+                    analysis:
+                        analyzer:
+                            email_analyser:
+                                type: custom
+                                tokenizer: uax_url_email
             types:
                 incidentStateAction:
                     properties:
                         responsable:
-                            type: keyword
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: keyword
+                                name:
+                                    type: keyword
+                                email:
+                                    type: string
+                                    analyzer: email_analyser
+                                username:
+                                    type: keyword
+                                enabled:
+                                    type: boolean
                         date:
                             type: keyword
                         oldstate:
-                            type: keyword
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: keyword
+                                name:
+                                    type: keyword
+                                isActive:
+                                    type: boolean
                         newstate:
-                            type: keyword
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: keyword
+                                name:
+                                    type: keyword
+                                isActive:
+                                    type: boolean
                         actionApplied:
                             type: keyword
                     persistence:
@@ -191,6 +202,7 @@ fos_elastica:
                             delete: true
         networks:
             index_name: networks_%kernel.environment%
+            use_alias: true
             settings:
                 index:
                     max_result_window: 50000
@@ -219,10 +231,22 @@ fos_elastica:
                             type: keyword
                         createdAt:
                             type: date
+                            fields:
+                                createdAt:
+                                    type: date
                         updatedAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                updatedAt:
+                                    type: date
                         isActive:
                             type: boolean
+                        active:
+                            property_path: isActive
+                        admin:
+                            property_path: networkAdmin
+                        entity:
+                            property_path: networkEntity
                         networkAdmin:
                             type: "object"
                             properties:
@@ -269,26 +293,34 @@ fos_elastica:
                     properties:
                         id:
                             type: integer
-                        createdAt:
-                            type: date
-                        network:
-                            type: "object"
-                            properties:
-                                ip:
-                                    type: keyword
-                                    fields:
-                                        ip:
-                                            type:  ip
-                                domain:
-                                    type: keyword
-                        updatedAt:
-                            type: date
                         ip:
                             type: ip
                         address:
                             type: keyword
                         isActive:
                             type: boolean
+                        active:
+                            property_path: isActive
+                        createdAt:
+                            type: keyword
+                            fields:
+                                createdAt:
+                                    type: date
+                        network:
+                            type: "object"
+                            properties:
+                                address:
+                                    type: keyword
+                                addressAndMask:
+                                    type: keyword
+                                    index: not_analyzed
+                                isActive:
+                                    type: boolean
+                        updatedAt:
+                            type: keyword
+                            fields:
+                                updatedAt:
+                                    type: date
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
@@ -326,10 +358,18 @@ fos_elastica:
                             analyzer: email_analyser
                         isActive:
                             type: boolean
+                        active:
+                            property_path: isActive
                         createdAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                createdAt:
+                                    type: date
                         updatedAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                updatedAt:
+                                    type: date
                         contacts:
                             type: "nested"
                             properties:
@@ -366,10 +406,18 @@ fos_elastica:
                             type: keyword
                         isActive:
                             type: boolean
+                        active:
+                            property_path: isActive
                         createdAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                createdAt:
+                                    type: date
                         updatedAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                updatedAt:
+                                    type: date
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder: ~
@@ -396,10 +444,20 @@ fos_elastica:
                             type: keyword
                         isActive:
                             type: boolean
+                        active:
+                            property_path: isActive
+                        description:
+                            type: keyword
                         createdAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                createdAt:
+                                    type: date
                         updatedAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                updatedAt:
+                                    type: date
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel
@@ -427,12 +485,20 @@ fos_elastica:
                             type: keyword
                         isActive:
                             type: boolean
-                        createdAt:
-                            type: date
-                        updatedAt:
-                            type: date
+                        active:
+                            property_path: isActive
                         behavior:
                             type: keyword
+                        createdAt:
+                            type: keyword
+                            fields:
+                                createdAt:
+                                    type: date
+                        updatedAt:
+                            type: keyword
+                            fields:
+                                updatedAt:
+                                    type: date
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel
@@ -458,22 +524,46 @@ fos_elastica:
                             type: keyword
                         slug:
                             type: keyword
-                        response_time:
+                        responseTime:
                             type: keyword
-                        resolution_time:
+                        resolutionTime:
+                            type: keyword
+                        unresponseTime:
+                            type: keyword
+                        unresolutionTime:
                             type: keyword
                         code:
                             type: integer
                         impact:
-                            type: keyword
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: keyword
+                                name:
+                                    type: keyword
                         urgency:
-                            type: keyword
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: keyword
+                                name:
+                                    type: keyword
                         createdAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                createdAt:
+                                    type: date
                         updatedAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                updatedAt:
+                                    type: date
                         isActive:
                             type: boolean
+                        active:
+                            property_path: isActive
+                        description:
+                            property_path: name
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel
@@ -498,15 +588,33 @@ fos_elastica:
                         id:
                             type: integer
                         createdAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                createdAt:
+                                    type: date
                         updatedAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                updatedAt:
+                                    type: date
                         isActive:
                             type: boolean
+                        active:
+                            property_path: isActive
                         impact:
-                            type: keyword
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: keyword
+                                name:
+                                    type: keyword
                         urgency:
-                            type: keyword
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: keyword
+                                name:
+                                    type: keyword
                         state:
                             type: "object"
                             properties:
@@ -514,6 +622,26 @@ fos_elastica:
                                     type: keyword
                                 name:
                                     type: keyword
+                                isActive:
+                                    type: boolean
+                        unattendedState:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: keyword
+                                name:
+                                    type: keyword
+                                isActive:
+                                    type: boolean
+                        unsolvedState:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: keyword
+                                name:
+                                    type: keyword
+                                isActive:
+                                    type: boolean
                         feed:
                             type: "object"
                             properties:
@@ -521,6 +649,8 @@ fos_elastica:
                                     type: keyword
                                 name:
                                     type: keyword
+                                isActive:
+                                    type: boolean
                         type:
                             type: "object"
                             properties:
@@ -528,6 +658,8 @@ fos_elastica:
                                     type: keyword
                                 name:
                                     type: keyword
+                                isActive:
+                                    type: boolean
                         tlp:
                             type: "object"
                             properties:
@@ -538,8 +670,13 @@ fos_elastica:
                         network:
                             type: "object"
                             properties:
-                                ip:
-                                    type: ip
+                                address:
+                                    type: keyword
+                                addressAndMask:
+                                    type: keyword
+                                    index: not_analyzed
+                                isActive:
+                                    type: boolean
                     persistence:
                         identifier: id
                         # the driver can be orm, mongodb or propel
@@ -567,10 +704,20 @@ fos_elastica:
                             type: keyword
                         isActive:
                             type: boolean
+                        active:
+                            property_path: isActive
+                        description:
+                            type: keyword
                         createdAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                createdAt:
+                                    type: date
                         updatedAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                updatedAt:
+                                    type: date
                         reports:
                             type: "object"
                             properties:
@@ -578,6 +725,29 @@ fos_elastica:
                                     type: keyword
                                 lang:
                                     type: keyword
+                                isActive:
+                                    type: boolean
+                        taxonomy:
+                            type: keyword
+                            property_path: taxonomyValue
+                        taxonomyValue:
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: keyword
+                                expanded:
+                                    type: keyword
+                                isActive:
+                                    type: boolean
+                                predicate:
+                                    type: "object"
+                                    properties:
+                                        slug:
+                                            type: keyword
+                                        expanded:
+                                            type: keyword
+                                        isActive:
+                                            type: boolean
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel
@@ -604,7 +774,14 @@ fos_elastica:
                         slug:
                             type: keyword
                         type:
-                            type: keyword
+                            type: "object"
+                            properties:
+                                slug:
+                                    type: keyword
+                                name:
+                                    type: keyword
+                                isActive:
+                                    type: boolean
                         problem:
                             type: text
                         derivated_problem:
@@ -616,9 +793,15 @@ fos_elastica:
                         isActive:
                             type: boolean
                         createdAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                createdAt:
+                                    type: date
                         updatedAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                updatedAt:
+                                    type: date
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel
@@ -660,9 +843,23 @@ fos_elastica:
                         isEnabled:
                             type: boolean
                         createdAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                createdAt:
+                                    type: date
                         lastLogin:
-                            type: date
+                            type: keyword
+                            fields:
+                                date:
+                                    type: date
+                        contacts:
+                            type: "nested"
+                            properties:
+                                email:
+                                    type: string
+                                    analyzer: email_analyser
+                                telegram:
+                                    type: string
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel
@@ -690,16 +887,27 @@ fos_elastica:
                             type: keyword
                         expanded:
                             type: keyword
-                        description:
+                        name:
                             type: keyword
-                        version:
+                            property_path: expanded
+                        isActive:
+                            type: keyword
+                        active:
+                            property_path: isActive
+                        description:
                             type: keyword
                         predicate:
                             type: keyword
                         createdAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                createdAt:
+                                    type: date
                         updatedAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                updatedAt:
+                                    type: date
                         version:
                             type: keyword
                     persistence:
@@ -732,9 +940,15 @@ fos_elastica:
                         description:
                             type: keyword
                         createdAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                createdAt:
+                                    type: date
                         updatedAt:
-                            type: date
+                            type: keyword
+                            fields:
+                                updatedAt:
+                                    type: date
                         version:
                             type: keyword
                     persistence:
