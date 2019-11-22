@@ -16,13 +16,13 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table id="tabla_incidentes_feeds" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table id="tabla_incidentes_feeds" class="table table-bordered">
                 <thead>
                 <tr role="row">
                     <th>Action</th>
                     <th>{{ knp_pagination_sortable(networks, 'Active'|trans, 'isActive') }}</th>
-                    <th>{{ knp_pagination_sortable(networks, 'Ip/Mask'|trans, 'address') }}</th>
-                    <th>{{ knp_pagination_sortable(networks, 'type'|trans, 'type') }}</th>
+                    <th>{{ knp_pagination_sortable(networks, 'Address'|trans, 'address') }}</th>
+                    <th>{{ knp_pagination_sortable(networks, 'Type'|trans, 'type') }}</th>
                     <th>{{ knp_pagination_sortable(networks, 'Entity'|trans, 'networkEntity.name') }}</th>
                     <th>{{ knp_pagination_sortable(networks, 'Admin'|trans, 'networkAdmin.name') }}</th>
                     <th>{{ knp_pagination_sortable(networks, 'Created at'|trans, 'createdAt') }}</th>

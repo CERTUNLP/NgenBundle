@@ -8,12 +8,19 @@
 #}
 
 {% extends 'CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend:frontend.html.twig' %}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
+
 {% block content_header %}
-    <h1 class="page-header"> {{ object }} {% include "CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend/list:stateLabel.html.twig" with {'incidentTaxonomyPredicate': object} %}
+    <h1 class="h3 mb-0 text-gray-800">
+        {{ icon(object.icon~' fa-fw text-'~object.color) }}
+        {{ object }}
+        {{ print.colorbox('primary','id-card',object.slug,'#') }}
+        {{ print.statusbox(object) }}
+        {{ print.colorbox('primary','th','values '~ object.values.count,path('cert_unlp_ngen_incident_taxonomy_value_search',{'term': '"'~object.slug~'"'})) }}
     </h1>
 {% endblock %}
 {% block content_body %}
-   {% include "CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend:incidentTaxonomyPredicateDetailContentBlock.html.twig" with {'incidentTaxonomyPredicate': object} %}
+    {% include "CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend:incidentTaxonomyPredicateDetailContentBlock.html.twig" with {'incidentTaxonomyPredicate': object} %}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

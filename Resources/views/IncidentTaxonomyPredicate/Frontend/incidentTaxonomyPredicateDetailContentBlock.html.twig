@@ -6,14 +6,15 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 
 <div class="row">
-    <div class="col-lg-6">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">{{ 'Predicate Information'|trans }}</h3>
+    <div class="col-lg-8">
+        <div class="card shadow mb-4">
+            <div class="card-header">
+                <h6 class="m-0 font-weight-bold text-primary">{{ 'Predicate Information'|trans }}</h6>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <tr>
@@ -34,7 +35,7 @@
                         </tr>
                         <tr>
                             <td class="">
-                                {{ "Description"|trans}}
+                                {{ "Description"|trans }}
                             </td>
                             <td class="">
                                 {{ incidentTaxonomyPredicate.description }}
@@ -52,10 +53,10 @@
                             <td class="">
                                 {{ 'Values'|trans }}
                             </td>
-                            <td class="">
-                            {%  for value in incidentTaxonomyPredicate.values %}
-                                <a href="{{ path('cert_unlp_ngen_taxonomy_value_detail',{ 'slug': value.slug})}}"> {{ label_info(value.expanded) }} </a>
-                            {% endfor %}
+                            <td class="d-sm-flex align-items-center justify-content-between mb-4">
+                                {% for incidentTaxonomyValue in incidentTaxonomyPredicate.values %}
+                                    {{ print.colorbox(incidentTaxonomyValue.color,incidentTaxonomyValue.icon,incidentTaxonomyValue.name,path('cert_unlp_ngen_taxonomy_value_detail',{'slug': incidentTaxonomyValue.slug})) }}
+                                {% endfor %}
                             </td>
                         </tr>
 
@@ -65,24 +66,6 @@
                             </td>
                             <td class="">
                                 {{ incidentTaxonomyPredicate.updatedAt|date('Y-m-d') }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="">
-                                {{ 'Active'|trans }}
-                            </td>
-                            <td class="">
-                                {% include "CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend/list:stateLabel.html.twig" with {'incidentTaxonomyPredicate': incidentTaxonomyPredicate} %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="">
-                                {{ 'Incidents'|trans }}
-                            </td>
-                            <td class="">
-                                {#                                    <a target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~object.name~'"'~ "&&" ~'"'~object.email~'"'})}}">#}
-                                <span>Aca estaria bueno poner el contador de incidentes </span>
-                                {#                                    </a>#}
                             </td>
                         </tr>
                     </table>
