@@ -16,31 +16,35 @@
         {{ print.statusbox(user) }}
     </td>
     <td class="text-center">
-        {{ user.username }}
-    </td>
-    <td class="text-center">
-        {{ user.fullName }}
-    </td>
-    <td class="text-center">
         <div class="float-left">
-{#            {% for email in user.emails %}#}
-{#                {{ print.colorbox(user.color,'envelope',email,'#',email) }}#}
-{#            {% endfor %}#}
-            {{ print.colorbox(user.color,'envelope',user.email,'#',user.email) }}
+            {{ print.colordropbox(user.color,user.icon,user.username,'#',user.username) }}
         </div>
     </td>
     <td class="text-center">
-        {{ print.colorbox('primary','calendar-alt',user.lastLogin|date('Y-m-d'),'#',user.lastLogin|date('Y-m-d')) }}
+        <div class="float-left">
+            {{ print.colordropbox(user.color,user.icon,user.fullName,'#',user.fullName) }}
+        </div>
+    </td>
+    <td class="text-center">
+        <div class="float-left">
+            {#            {% for email in user.emails %}#}
+            {#                {{ print.colordropbox(user.color,'envelope',email,'#',email) }}#}
+            {#            {% endfor %}#}
+            {{ print.colordropbox(user.color,'envelope',user.email,'#',user.email) }}
+        </div>
+    </td>
+    <td class="text-center">
+        {{ print.colordropbox('primary','calendar-alt',user.lastLogin|date('Y-m-d'),'#',user.lastLogin|date('Y-m-d')) }}
 
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',user.createdAt|date('Y-m-d'),'#',user.createdAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',user.createdAt|date('Y-m-d'),'#',user.createdAt|date('Y-m-d')) }}
         </small>
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',user.updatedAt|date('Y-m-d'),'#',user.updatedAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',user.updatedAt|date('Y-m-d'),'#',user.updatedAt|date('Y-m-d')) }}
         </small>
     </td>
 </tr>

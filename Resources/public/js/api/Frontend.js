@@ -55,11 +55,12 @@ var Frontend = Class.extend({
         this.laddaButton.stop();
     },
     stateLabelChange: function () {
-        let label = this.eventTarget.parents('tr').find('td#state_label_holder').find('a');
+        let label = this.eventTarget.parents('tr').find('td#state_label_holder').find('button');
         label.find('span.icon').find('span').toggleClass('fa fa-toggle-on').toggleClass('fa fa-toggle-off');
         label.find('span.text').text().trim() === 'active' ? label.find('span.text').text('not active') : label.find('span.text').text('active');
-        label.data('action').trim() === 'reactivate' ? label.data('action', 'desactivate') : label.data('action', 'reactivate');
+        this.eventTarget.data('action').trim() === 'reactivate' ? label.data('action', 'desactivate') : label.data('action', 'reactivate');
         label.toggleClass("btn btn-icon-split btn-sm btn-success").toggleClass("btn btn-icon-split btn-sm btn-danger");
+        this.eventTarget.parent().find('i').parent().toggleClass("text-success").toggleClass("text-danger");
         $.publish('/cert_unlp/notify/success', ["The state has been changed successfully"]);
     },
     dropDownChangeLinks: function () {

@@ -23,11 +23,11 @@
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colorbox(network.color,network.icon,network.addressAndMask,'#',network.address) }}
+            {{ print.colordropbox(network.color,network.icon,network.addressAndMask,'#',network.address) }}
         </div>
     </td>
     <td class="text-center">
-        {{ print.colorbox(network.color,network.icon, network.type |trans,'#', network.type |trans) }}
+        {{ print.colordropbox(network.color,network.icon, network.type |trans,'#', network.type |trans) }}
     </td>
     <td class="text-center">
         <div class="float-left">
@@ -41,12 +41,12 @@
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',network.createdAt|date('Y-m-d'),'#',network.createdAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',network.createdAt|date('Y-m-d'),'#',network.createdAt|date('Y-m-d')) }}
         </small>
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',network.updatedAt|date('Y-m-d'),'#',network.updatedAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',network.updatedAt|date('Y-m-d'),'#',network.updatedAt|date('Y-m-d')) }}
         </small>
     </td>
 </tr>

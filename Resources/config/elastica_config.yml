@@ -792,6 +792,8 @@ fos_elastica:
                             type: text
                         isActive:
                             type: boolean
+                        active:
+                            property_path: isActive
                         createdAt:
                             type: keyword
                             fields:
@@ -834,6 +836,8 @@ fos_elastica:
                             type: keyword
                         lastname:
                             type: keyword
+                        fullName:
+                            type: keyword
                         slug:
                             type: keyword
                         email:
@@ -842,10 +846,17 @@ fos_elastica:
                             fielddata: true
                         isEnabled:
                             type: boolean
+                        active:
+                            property_path: isEnabled
                         createdAt:
                             type: keyword
                             fields:
                                 createdAt:
+                                    type: date
+                        updatedAt:
+                            type: keyword
+                            fields:
+                                updatedAt:
                                     type: date
                         lastLogin:
                             type: keyword
@@ -937,6 +948,13 @@ fos_elastica:
                             type: keyword
                         expanded:
                             type: keyword
+                        name:
+                            type: keyword
+                            property_path: expanded
+                        isActive:
+                            type: keyword
+                        active:
+                            property_path: isActive
                         description:
                             type: keyword
                         createdAt:

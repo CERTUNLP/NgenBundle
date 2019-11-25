@@ -17,23 +17,32 @@
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colorbox(incidentType.color,incidentType.icon,incidentType.name| trans,'#',incidentType.name| trans) }}
+            {{ print.colordropbox(incidentType.color,incidentType.icon,incidentType.name| trans,'#',incidentType.name| trans) }}
         </div>
     </td>
     <td class="text-center">
         {{ incidentType.description | default('No description')| trans }}
     </td>
     <td class="text-center">
-        {{ incidentType.taxonomyValue }}
+        {% if incidentType.taxonomyValue %}
+            {{ print.colordropbox(incidentType.taxonomyValue.color,incidentType.taxonomyValue.icon,incidentType.taxonomyValue.name,path('cert_unlp_ngen_taxonomy_value_detail',{'slug': incidentType.taxonomyValue.slug})) }}
+        {% endif %}
+    </td>
+    <td class="text-center">
+        <div class="d-flex  align-items-center justify-content-around">
+            {% for report in  incidentType.reports %}
+                {{ print.colordropbox(report.color,report.icon,report.lang,path('cert_unlp_ngen_incident_type_report_detail',{'slug': incidentType.slug, 'lang':report.lang}),report.slug) }}
+            {% endfor %}
+        </div>
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',incidentType.createdAt|date('Y-m-d'),'#',incidentType.createdAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',incidentType.createdAt|date('Y-m-d'),'#',incidentType.createdAt|date('Y-m-d')) }}
         </small>
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',incidentType.updatedAt|date('Y-m-d'),'#',incidentType.updatedAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',incidentType.updatedAt|date('Y-m-d'),'#',incidentType.updatedAt|date('Y-m-d')) }}
         </small>
     </td>
 </tr>
