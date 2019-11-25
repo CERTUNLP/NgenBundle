@@ -17,7 +17,7 @@
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colorbox(incidentTaxonomyValue.color,incidentTaxonomyValue.icon,incidentTaxonomyValue.name,'#',incidentTaxonomyValue.name) }}
+            {{ print.colordropbox(incidentTaxonomyValue.color,incidentTaxonomyValue.icon,incidentTaxonomyValue.name,'#',incidentTaxonomyValue.name) }}
         </div>
     </td>
     <td class="text-center">
@@ -26,11 +26,11 @@
         </div>
     </td>
     <td class="text-center">
-        {{ print.colorbox('primary','code-branch',incidentTaxonomyValue.version,'#',incidentTaxonomyValue.version) }}
+        {{ print.colordropbox('primary','code-branch',incidentTaxonomyValue.version,'#',incidentTaxonomyValue.version) }}
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',incidentTaxonomyValue.createdAt|date('Y-m-d'),'#',incidentTaxonomyValue.createdAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',incidentTaxonomyValue.createdAt|date('Y-m-d'),'#',incidentTaxonomyValue.createdAt|date('Y-m-d')) }}
         </small>
     </td>
     <td class="text-center">

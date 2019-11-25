@@ -215,7 +215,7 @@ class IncidentReport
     /**
      * @return string
      */
-    public function getProblem(): string
+    public function getProblem(): ?string
     {
         return $this->problem;
     }
@@ -269,7 +269,7 @@ class IncidentReport
     /**
      * @return string
      */
-    public function getRecomendations(): string
+    public function getRecomendations(): ?string
     {
         return $this->recomendations;
     }

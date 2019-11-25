@@ -48,7 +48,7 @@
     <td class="text-center">
         {% if IncidentDecision.impact %}
             <div class="float-left">
-                {{ print.colorbox(IncidentDecision.impact.color,IncidentDecision.impact.icon,IncidentDecision.impact,'#',IncidentDecision.impact) }}
+                {{ print.colordropbox(IncidentDecision.impact.color,IncidentDecision.impact.icon,IncidentDecision.impact,'#',IncidentDecision.impact) }}
             </div>
         {% else %}
             {{ "Do nothing" | trans }}
@@ -57,7 +57,7 @@
     <td class="text-center">
         {% if IncidentDecision.urgency %}
             <div class="float-left">
-                {{ print.colorbox(IncidentDecision.urgency.color,IncidentDecision.urgency.icon,IncidentDecision.urgency,'#',IncidentDecision.urgency) }}
+                {{ print.colordropbox(IncidentDecision.urgency.color,IncidentDecision.urgency.icon,IncidentDecision.urgency,'#',IncidentDecision.urgency) }}
             </div>
         {% else %}
             {{ "Do nothing" | trans }}
@@ -65,12 +65,12 @@
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',IncidentDecision.createdAt|date('Y-m-d'),'#',IncidentDecision.createdAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',IncidentDecision.createdAt|date('Y-m-d'),'#',IncidentDecision.createdAt|date('Y-m-d')) }}
         </small>
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',IncidentDecision.updatedAt|date('Y-m-d'),'#',IncidentDecision.updatedAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',IncidentDecision.updatedAt|date('Y-m-d'),'#',IncidentDecision.updatedAt|date('Y-m-d')) }}
         </small>
     </td>
 </tr>

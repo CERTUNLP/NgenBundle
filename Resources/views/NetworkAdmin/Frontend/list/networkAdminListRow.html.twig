@@ -17,24 +17,24 @@
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colorbox(networkAdmin.color,networkAdmin.icon,networkAdmin.name,'#',networkAdmin.name) }}
+            {{ print.colordropbox(networkAdmin.color,networkAdmin.icon,networkAdmin.name,'#',networkAdmin.name) }}
         </div>
     </td>
     <td class="text-center">
         <div class="float-left">
             {% for email in networkAdmin.emails %}
-                {{ print.colorbox(networkAdmin.color,'envelope',email,'#',email) }}
+                {{ print.colordropbox(networkAdmin.color,'envelope',email,'#',email) }}
             {% endfor %}
         </div>
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',networkAdmin.createdAt|date('Y-m-d'),'#',networkAdmin.createdAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',networkAdmin.createdAt|date('Y-m-d'),'#',networkAdmin.createdAt|date('Y-m-d')) }}
         </small>
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',networkAdmin.updatedAt|date('Y-m-d'),'#',networkAdmin.updatedAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',networkAdmin.updatedAt|date('Y-m-d'),'#',networkAdmin.updatedAt|date('Y-m-d')) }}
         </small>
     </td>
 </tr>

@@ -17,48 +17,48 @@
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colorbox(IncidentPriority.impact.color,IncidentPriority.impact.icon,IncidentPriority.impact,'#',IncidentPriority.impact) }}
+            {{ print.colordropbox(IncidentPriority.impact.color,IncidentPriority.impact.icon,IncidentPriority.impact,'#',IncidentPriority.impact) }}
         </div>
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colorbox(IncidentPriority.urgency.color,IncidentPriority.urgency.icon,IncidentPriority.urgency,'#',IncidentPriority.urgency) }}
+            {{ print.colordropbox(IncidentPriority.urgency.color,IncidentPriority.urgency.icon,IncidentPriority.urgency,'#',IncidentPriority.urgency) }}
         </div>
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colorbox(IncidentPriority.color,IncidentPriority.icon,IncidentPriority.name,'#',IncidentPriority.name) }}
+            {{ print.colordropbox(IncidentPriority.color,IncidentPriority.icon,IncidentPriority.name,'#',IncidentPriority.name) }}
         </div>
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colorbox('primary','hashtag',IncidentPriority.responseTime,'#',IncidentPriority.responseTime) }}
+            {{ print.colordropbox('primary','hashtag',IncidentPriority.responseTime,'#',IncidentPriority.responseTime) }}
         </div>
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colorbox('primary','hashtag',IncidentPriority.unresponseTime,'#',IncidentPriority.unresponseTime) }}
+            {{ print.colordropbox('primary','hashtag',IncidentPriority.unresponseTime,'#',IncidentPriority.unresponseTime) }}
         </div>
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colorbox('primary','hashtag',IncidentPriority.resolutionTime,'#',IncidentPriority.resolutionTime) }}
+            {{ print.colordropbox('primary','hashtag',IncidentPriority.resolutionTime,'#',IncidentPriority.resolutionTime) }}
         </div>
 
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colorbox('primary','hashtag',IncidentPriority.unresolutionTime,'#',IncidentPriority.unresolutionTime) }}
+            {{ print.colordropbox('primary','hashtag',IncidentPriority.unresolutionTime,'#',IncidentPriority.unresolutionTime) }}
         </div>
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',IncidentPriority.createdAt|date('Y-m-d'),'#',IncidentPriority.createdAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',IncidentPriority.createdAt|date('Y-m-d'),'#',IncidentPriority.createdAt|date('Y-m-d')) }}
         </small>
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',IncidentPriority.updatedAt|date('Y-m-d'),'#',IncidentPriority.updatedAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',IncidentPriority.updatedAt|date('Y-m-d'),'#',IncidentPriority.updatedAt|date('Y-m-d')) }}
         </small>
     </td>
 </tr>

@@ -14,7 +14,7 @@
     </td>
     <td id="host_label_holder" class="text-center">
         <div class="float-left">
-        {{ print.colorbox(host.color,host.icon,host.address,'#',host.address) }}
+        {{ print.colordropbox(host.color,host.icon,host.address,'#',host.address) }}
         </div>
     </td>
     <td id="state_label_holder" class="text-center">
@@ -34,12 +34,12 @@
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',host.createdAt|date('Y-m-d'),'#',host.createdAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',host.createdAt|date('Y-m-d'),'#',host.createdAt|date('Y-m-d')) }}
         </small>
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',host.updatedAt|date('Y-m-d'),'#',host.updatedAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',host.updatedAt|date('Y-m-d'),'#',host.updatedAt|date('Y-m-d')) }}
         </small>
     </td>
 </tr>
