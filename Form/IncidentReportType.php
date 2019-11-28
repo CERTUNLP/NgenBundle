@@ -83,7 +83,7 @@ class IncidentReportType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'CertUnlp\NgenBundle\Entity\Incident\IncidentReport',
+            'data_class' => 'CertUnlp\NgenBundle\Entity\Incident\Report\IncidentReport',
             'csrf_protection' => false,
         ));
     }

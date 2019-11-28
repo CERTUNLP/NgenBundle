@@ -12,7 +12,7 @@ namespace CertUnlp\NgenBundle\Entity\Incident\Taxonomy;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
+use CertUnlp\NgenBundle\Entity\Incident\Report\IncidentReport;
 use Doctrine\Common\Collections\Collection;
 use DateTime;
 /**

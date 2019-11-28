@@ -13,116 +13,151 @@
     <h1 class="h3 mb-0 text-gray-800">
         {{ icon(object.icon ~' fa-fw text-'~object.color) }}
         {{ object }}
+        {{ print.colorbox('info','lang',object.lang,'#') }}
         {{ print.colorbox('primary','id-card',object.id,'#') }}
         {{ print.statuscolor(object) }}
+
         {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_incident_type_report_edit',{'lang': object.lang,'slug': object.type.slug})) }}
     </h1>
 {% endblock %}
 {% block content_body %}
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card shadow mb-4">
-                <div class="card-header">
-                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Report Information'|trans }}</h6>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <tr>
-                                <td class="">
-                                    {{ "System Id"|trans }}
-                                </td>
-                                <td class="">
-                                    {{ object.lang }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    {{ 'Type'|trans }}
-                                </td>
-                                <td class="">
-                                    {{ object.type }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    {{ 'Created at'|trans }}
-                                </td>
-                                <td class="">
-                                    {{ object.createdAt|date('Y-m-d') }}
-                                </td>
-                            </tr>
 
-                            <tr>
-                                <td class="">
-                                    {{ 'Last Update'|trans }}
-                                </td>
-                                <td class="">
-                                    {{ object.updatedAt|date('Y-m-d') }}
-                                </td>
-                            </tr>
-                        </table>
+
+    <ul class="nav nav-tabs shadow-" id="myTab" role="tablist">
+        <li class="nav-item ">
+            <a class="nav-link active" id="open-tab" data-toggle="tab" href="#open" role="tab"
+               aria-controls="open"
+               aria-selected="true">{{ "Summary" |trans }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="detail-tab" data-toggle="tab" href="#detail" role="tab"
+               aria-controls="detail" aria-selected="false">{{ "Detail" |trans }}</a>
+        </li>
+    </ul>
+    <div class="tab-content pt-2" id="myTabContent">
+        <div class="tab-pane fade show active" id="open" role="tabpanel" aria-labelledby="open-tab">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card shadow mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">{{ 'Report Information'|trans }}</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td class="">
+                                            {{ "System Id"|trans }}
+                                        </td>
+                                        <td class="">
+                                            {{ object.lang }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="">
+                                            {{ 'Type'|trans }}
+                                        </td>
+                                        <td class="">
+                                            {{ object.type }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="">
+                                            {{ 'Created at'|trans }}
+                                        </td>
+                                        <td class="">
+                                            {{ object.createdAt|date('Y-m-d') }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="">
+                                            {{ 'Last Update'|trans }}
+                                        </td>
+                                        <td class="">
+                                            {{ object.updatedAt|date('Y-m-d') }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card shadow mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">{{ 'Report content'|trans }}</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td class="">
+                                            {{ 'Problem'|trans }}
+                                        </td>
+                                        <td class="">
+                                            {{ object.problem|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="">
+                                            {{ 'Derivated problem'|trans }}
+                                        </td>
+                                        <td class="">
+                                            {{ object.derivatedProblem|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="">
+                                            {{ 'Verification'|trans }}
+                                        </td>
+                                        <td class="">
+                                            {{ object.verification|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="">
+                                            {{ 'Recomendations'|trans }}
+                                        </td>
+                                        <td class="">
+                                            {{ object.recomendations|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="">
+                                            {{ 'More information'|trans }}
+                                        </td>
+                                        <td class="">
+                                            {{ object.moreInformation|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card shadow mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">{{ 'Report Preview'|trans }}</h6>
+                        </div>
+                        <div class="card-body">
+                            {% include '@CertUnlpNgen/IncidentReport/Report/lang/openMail.html.twig' with {'report': object }  %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card shadow mb-4">
-                <div class="card-header">
-                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Report content'|trans }}</h6>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <tr>
-                                <td class="">
-                                    {{ 'Problem'|trans }}
-                                </td>
-                                <td class="">
-                                    {{ object.problem|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">
-                                    {{ 'Derivated problem'|trans }}
-                                </td>
-                                <td class="">
-                                    {{ object.derivatedProblem|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
-                                </td>
-                            </tr>
+        <div class="tab-pane fade" id="detail" role="tabpanel" aria-labelledby="detail-tab">
 
-                            <tr>
-                                <td class="">
-                                    {{ 'Verification'|trans }}
-                                </td>
-                                <td class="">
-                                    {{ object.verification|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td class="">
-                                    {{ 'Recomendations'|trans }}
-                                </td>
-                                <td class="">
-                                    {{ object.recomendations|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td class="">
-                                    {{ 'More information'|trans }}
-                                </td>
-                                <td class="">
-                                    {{ object.moreInformation|striptags('<div>,<a>,<pre>,<code>,<ul>,<li>,<p>')|raw }}
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+
 {% endblock %}

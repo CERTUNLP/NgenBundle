@@ -1279,7 +1279,7 @@ class Incident extends Entity
     /**
      * @return array
      */
-    public function getPriorityRaltio(): array
+    public function getPriorityRatio(): array
     {
         return $this->getRatio($this->getIncidentsDetected(), static function (IncidentDetected $detected) {
             return $detected->getPriority()->getName();

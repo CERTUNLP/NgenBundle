@@ -19,8 +19,8 @@ services:
 
 
     cert_unlp.ngen.incident.factory:
-        class:        "%cert_unlp.ngen.incident.factory.class%"
-        arguments:    ["@cert_unlp.ngen.network.handler","%cert_unlp.ngen.incident.internal.class%","@form.factory", "@security.context","%cert_unlp.ngen.incident.reporter.class%"]
+        class:        CertUnlp\NgenBundle\Services\IncidentFactory
+        arguments:    [ "@doctrine.orm.entity_manager","@security.context","%cert_unlp.ngen.team%"]
 
     cert_unlp.ngen.incident.report.factory:
         class:     CertUnlp\NgenBundle\Services\IncidentReportFactory
