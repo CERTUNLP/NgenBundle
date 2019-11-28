@@ -17,8 +17,11 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
-use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
+use CertUnlp\NgenBundle\Entity\Incident\Report\IncidentReport;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
+use CertUnlp\NgenBundle\Services\IncidentFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -67,7 +70,7 @@ class IncidentReportFrontendController extends Controller
     /**
      * @Template("CertUnlpNgenBundle:IncidentReport:Frontend/incidentReportForm.html.twig")
      * @Route("{slug}/reports/{lang}/edit", name="cert_unlp_ngen_incident_type_report_edit")
-     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
+     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\Report\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      * @param IncidentType $slug
      * @param IncidentReport $lang
      * @return array
@@ -81,14 +84,17 @@ class IncidentReportFrontendController extends Controller
     /**
      * @Template("CertUnlpNgenBundle:IncidentReport:Frontend/incidentReportDetail.html.twig")
      * @Route("{slug}/reports/{lang}/detail", name="cert_unlp_ngen_incident_type_report_detail")
-     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
+     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\Report\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      * @param IncidentType $slug
      * @param IncidentReport $lang
      * @return array
      */
     public function detailIncidentReportAction(IncidentType $slug, IncidentReport $lang)
     {
-        return $this->getFrontendController()->detailEntity($lang);
+        $incidentFactory = $this->get('cert_unlp.ngen.incident.factory');
+        $incident = $incidentFactory->getIncident();
+        $team=$incidentFactory->getTeam();
+        return array('team'=> $team,'object' => $lang,'incident'=> $incident );
     }
 
 }

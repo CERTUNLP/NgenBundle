@@ -9,8 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Entity\Incident;
+namespace CertUnlp\NgenBundle\Entity\Incident\Report;
 
+use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -23,12 +24,15 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentReportRepository")
  * @JMS\ExclusionPolicy("all")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"new" = "NewIncidentReport", "open" = "OpenIncidentReport", "update"="UpdateIncidentReport", "close"="CloseIncidentReport", "summary"="SummaryIncidentReport"})
  * @UniqueEntity(
- *     fields={"lang", "type"},
+ * fields={"discr","lang", "type"},
  *     errorPath="lang",
- *     message="This lang is already in use on that type."
+ *     message="This lang is already in use on that type and discr."
  * )
  */
+
 class IncidentReport
 {
 

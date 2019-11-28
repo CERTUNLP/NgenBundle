@@ -36,6 +36,7 @@ class IncidentReportFactory
 
     public function getReport(Incident $incident, string $lang)
     {
+        //FIX esto tiene que ser de otra manera para los multiples
         $data = array('report' => $incident->getType()->getReport($lang), 'incident' => $incident, 'team' => $this->team);
         $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/mail.html.twig');
         $this->getView()->setTemplateData($data);

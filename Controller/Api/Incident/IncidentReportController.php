@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
-use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
+use CertUnlp\NgenBundle\Entity\Incident\Report\IncidentReport;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -30,7 +30,7 @@ class IncidentReportController extends FOSRestController
      * @ApiDoc(
      *   resource = true,
      *   description = "Gets a network admin for a given id",
-     *   output = "CertUnlp\NgenBundle\Entity\Incident\IncidentReport",
+     *   output = "CertUnlp\NgenBundle\Entity\Incident\Report\IncidentReport",
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     404 = "Returned when the network is not found"
@@ -43,7 +43,7 @@ class IncidentReportController extends FOSRestController
      * @FOS\View(
      *  templateVar="incident_report"
      * )
-     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
+     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\Report\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
     public function getReportAction(IncidentType $slug, IncidentReport $lang)
     {
@@ -95,7 +95,7 @@ class IncidentReportController extends FOSRestController
      * @param IncidentReport $lang
      * @return FormTypeInterface|View
      *
-     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
+     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\Report\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
     public function patchReportAction(Request $request, IncidentType $slug, IncidentReport $lang)
     {
@@ -121,7 +121,7 @@ class IncidentReportController extends FOSRestController
      * @param IncidentReport $lang
      * @return FormTypeInterface|View
      *
-     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
+     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\Report\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
     public function patchReportActivateAction(Request $request, IncidentType $slug, IncidentReport $lang)
     {
@@ -147,7 +147,7 @@ class IncidentReportController extends FOSRestController
      * @param IncidentReport $lang
      * @return FormTypeInterface|View
      *
-     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
+     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\Report\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
     public function patchReportDesactivateAction(Request $request, IncidentType $slug, IncidentReport $lang)
     {

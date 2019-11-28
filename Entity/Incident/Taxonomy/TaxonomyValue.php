@@ -10,7 +10,7 @@
  */
 namespace CertUnlp\NgenBundle\Entity\Incident\Taxonomy;
 
-use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
+use CertUnlp\NgenBundle\Entity\Incident\Report\IncidentReport;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;

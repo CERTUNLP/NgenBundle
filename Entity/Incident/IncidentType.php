@@ -102,7 +102,7 @@ class IncidentType extends Entity
 
     /**
      * @var Collection | IncidentReport[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentReport",mappedBy="type",indexBy="lang"))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Report\IncidentReport",mappedBy="type",indexBy="lang"))
      */
     private $reports;
 
