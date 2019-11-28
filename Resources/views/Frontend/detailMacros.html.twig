@@ -28,15 +28,19 @@
             {% if href != '#' or not href %}
                 <a class="dropdown-item" data-state-slug="closed" data-state-name="Closed" tabindex="-1" target="_blank"
                    href="{{ href }}">
-                    <i class="fas fa-eye text-{{ color }}"></i>
-                    <span class="action-text">Detail</span>
+                    <span class="text-{{ color }}">
+                        <i class="fas fa-eye"></i>
+                        <span class="action-text">Detail</span>
+                    </span>
                 </a>
             {% endif %}
             <a class="dropdown-item colorbox-filter" data-state-slug="closed" data-state-name="Closed"
                tabindex="-1"
                href="#" data-id="{{ id?id:'' }}">
-                <i class="fas fa-filter text-{{ color }}"></i>
-                <span class="text">Filter</span>
+                    <span class="text-{{ color }}">
+                        <i class="fas fa-filter"></i>
+                        <span class="text">Filter</span>
+                    </span>
             </a>
         </div>
     </div>
@@ -67,7 +71,7 @@
             </a>
             <a class="dropdown-item colorbox-filter" data-state-slug="closed" data-state-name="Closed"
                tabindex="-1"
-               href="#" data-id="active:{{ object.isactive? 'true':'false' }}">
+               href="#" data-id="{{ object.isactive? 'true':'false' }}">
                 <span class="text-{{ object.isactive?'success':'danger' }}">
                     <i class="fas fa-filter"></i>
                 </span>

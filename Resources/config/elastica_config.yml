@@ -30,15 +30,11 @@ fos_elastica:
                                 date:
                                     type: date
                         createdAt:
-                            type: keyword
-                            fields:
-                                createdAt:
-                                    type: date
+                            type: date
+
                         updatedAt:
-                            type: keyword
-                            fields:
-                                updatedAt:
-                                    type: date
+                            type: date
+
                         ltdCount:
                             type: integer
                         origin:
@@ -202,7 +198,6 @@ fos_elastica:
                             delete: true
         networks:
             index_name: networks_%kernel.environment%
-            use_alias: true
             settings:
                 index:
                     max_result_window: 50000
@@ -231,21 +226,21 @@ fos_elastica:
                             type: keyword
                         createdAt:
                             type: date
-                            fields:
-                                createdAt:
-                                    type: date
+                        created:
+                            property_path: createdAt
                         updatedAt:
-                            type: keyword
-                            fields:
-                                updatedAt:
-                                    type: date
+                            type: date
+                        updated:
+                            property_path: updatedAt
                         isActive:
                             type: boolean
                         active:
                             property_path: isActive
                         admin:
+                            fielddata: true
                             property_path: networkAdmin
                         entity:
+                            fielddata: true
                             property_path: networkEntity
                         networkAdmin:
                             type: "object"
@@ -302,10 +297,9 @@ fos_elastica:
                         active:
                             property_path: isActive
                         createdAt:
-                            type: keyword
-                            fields:
-                                createdAt:
-                                    type: date
+                            type: date
+                        updatedAt:
+                            type: date
                         network:
                             type: "object"
                             properties:
@@ -316,11 +310,6 @@ fos_elastica:
                                     index: not_analyzed
                                 isActive:
                                     type: boolean
-                        updatedAt:
-                            type: keyword
-                            fields:
-                                updatedAt:
-                                    type: date
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
@@ -361,15 +350,11 @@ fos_elastica:
                         active:
                             property_path: isActive
                         createdAt:
-                            type: keyword
-                            fields:
-                                createdAt:
-                                    type: date
+                            type: date
+
                         updatedAt:
-                            type: keyword
-                            fields:
-                                updatedAt:
-                                    type: date
+                            type: date
+
                         contacts:
                             type: "nested"
                             properties:
@@ -409,15 +394,11 @@ fos_elastica:
                         active:
                             property_path: isActive
                         createdAt:
-                            type: keyword
-                            fields:
-                                createdAt:
-                                    type: date
+                            type: date
+
                         updatedAt:
-                            type: keyword
-                            fields:
-                                updatedAt:
-                                    type: date
+                            type: date
+
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder: ~
@@ -449,15 +430,9 @@ fos_elastica:
                         description:
                             type: keyword
                         createdAt:
-                            type: keyword
-                            fields:
-                                createdAt:
-                                    type: date
+                            type: date
                         updatedAt:
-                            type: keyword
-                            fields:
-                                updatedAt:
-                                    type: date
+                            type: date
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel
@@ -490,15 +465,10 @@ fos_elastica:
                         behavior:
                             type: keyword
                         createdAt:
-                            type: keyword
-                            fields:
-                                createdAt:
-                                    type: date
+                            type: date
                         updatedAt:
-                            type: keyword
-                            fields:
-                                updatedAt:
-                                    type: date
+                            type: date
+
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel
@@ -549,15 +519,11 @@ fos_elastica:
                                 name:
                                     type: keyword
                         createdAt:
-                            type: keyword
-                            fields:
-                                createdAt:
-                                    type: date
+                            type: date
+
                         updatedAt:
-                            type: keyword
-                            fields:
-                                updatedAt:
-                                    type: date
+                            type: date
+
                         isActive:
                             type: boolean
                         active:
@@ -588,15 +554,11 @@ fos_elastica:
                         id:
                             type: integer
                         createdAt:
-                            type: keyword
-                            fields:
-                                createdAt:
-                                    type: date
+                            type: date
+
                         updatedAt:
-                            type: keyword
-                            fields:
-                                updatedAt:
-                                    type: date
+                            type: date
+
                         isActive:
                             type: boolean
                         active:
@@ -709,15 +671,11 @@ fos_elastica:
                         description:
                             type: keyword
                         createdAt:
-                            type: keyword
-                            fields:
-                                createdAt:
-                                    type: date
+                            type: date
+
                         updatedAt:
-                            type: keyword
-                            fields:
-                                updatedAt:
-                                    type: date
+                            type: date
+
                         reports:
                             type: "object"
                             properties:
@@ -795,15 +753,11 @@ fos_elastica:
                         active:
                             property_path: isActive
                         createdAt:
-                            type: keyword
-                            fields:
-                                createdAt:
-                                    type: date
+                            type: date
+
                         updatedAt:
-                            type: keyword
-                            fields:
-                                updatedAt:
-                                    type: date
+                            type: date
+
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel
@@ -849,15 +803,11 @@ fos_elastica:
                         active:
                             property_path: isEnabled
                         createdAt:
-                            type: keyword
-                            fields:
-                                createdAt:
-                                    type: date
+                            type: date
+
                         updatedAt:
-                            type: keyword
-                            fields:
-                                updatedAt:
-                                    type: date
+                            type: date
+
                         lastLogin:
                             type: keyword
                             fields:
@@ -910,15 +860,11 @@ fos_elastica:
                         predicate:
                             type: keyword
                         createdAt:
-                            type: keyword
-                            fields:
-                                createdAt:
-                                    type: date
+                            type: date
+
                         updatedAt:
-                            type: keyword
-                            fields:
-                                updatedAt:
-                                    type: date
+                            type: date
+
                         version:
                             type: keyword
                     persistence:
@@ -958,15 +904,11 @@ fos_elastica:
                         description:
                             type: keyword
                         createdAt:
-                            type: keyword
-                            fields:
-                                createdAt:
-                                    type: date
+                            type: date
+
                         updatedAt:
-                            type: keyword
-                            fields:
-                                updatedAt:
-                                    type: date
+                            type: date
+
                         version:
                             type: keyword
                     persistence:
