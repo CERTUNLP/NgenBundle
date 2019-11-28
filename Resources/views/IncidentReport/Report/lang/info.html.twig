@@ -1,0 +1,47 @@
+    <div class="col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header">
+                <h6 class="m-0 font-weight-bold text-primary">{{ 'Report Information'|trans }}</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td class="">
+                                {{ "System Id"|trans }}
+                            </td>
+                            <td class="">
+                                {{ object.lang }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                {{ 'Type'|trans }}
+                            </td>
+                            <td class="">
+                                {{ object.type }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">
+                                {{ 'Created at'|trans }}
+                            </td>
+                            <td class="">
+                                {{ object.createdAt|date('Y-m-d') }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="">
+                                {{ 'Last Update'|trans }}
+                            </td>
+                            <td class="">
+                                {{ object.updatedAt|date('Y-m-d') }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
