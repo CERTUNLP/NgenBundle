@@ -12,12 +12,39 @@ var Frontend = Class.extend({
         $(document).on("click", 'a.state-label', $.proxy(this.changeState, this));
         $(document).on("click", 'a.status-box', $.proxy(this.changeState, this));
         $(document).on("click", 'a.colorbox-filter', $.proxy(this.filterList, this));
+        this.search_terms = $('#generalSearch').find('input').val().split(' && ');
+        this.search_terms.forEach(function (a) {
+            $('[data-id="' + a.split(': ')[1] + '"]').find('i').each(function (b, a) {
+                $(a).toggleClass('fas fa-filter').toggleClass('fas fa-backspace');
+            })
+        })
+        ;
+
     },
     filterList: function (event) {
         event.preventDefault();
         let $generalSearch = $('#generalSearch');
         let $input = $generalSearch.find('input');
-        $input.val('"' + $(event.currentTarget).data('id') + '"');
+        let $th = $('table').find('th').eq($(event.currentTarget).parents('td').index());
+        let $key = $th.text().toLowerCase().trim();
+        let $value = $(event.currentTarget).data('id').toString();
+        let $array_filtered;
+        if ($input.val().indexOf($key + ': ') < 0) {
+            if ($value.indexOf(' ') > 0) {
+                $value = '"' + $value + '"'
+            }
+            if ($input.val() !== '*') {
+                $input.val($input.val() + ' && ' + $key + ': ' + $value);
+            } else {
+                $input.val($key + ': ' + $value);
+            }
+        } else {
+
+            $array_filtered =  this.search_terms.filter(function (elem) {
+                return !elem.startsWith($key)
+            });
+            $input.val($array_filtered.join(' && '))
+        }
         $generalSearch.trigger('submit');
 
     },

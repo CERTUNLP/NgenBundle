@@ -128,7 +128,7 @@ class TaxonomyPredicate extends Entity
      *
      * @return int
      */
-    public function getVersion()
+    public function getVersion(): int
     {
         return $this->version;
     }
@@ -140,7 +140,7 @@ class TaxonomyPredicate extends Entity
      *
      * @return taxonomyPredicate
      */
-    public function setVersion($version)
+    public function setVersion(int $version): self
     {
         $this->version = $version;
 
@@ -152,7 +152,7 @@ class TaxonomyPredicate extends Entity
      *
      * @return string
      */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
@@ -164,7 +164,7 @@ class TaxonomyPredicate extends Entity
      *
      * @return taxonomyPredicate
      */
-    public function setValue($value)
+    public function setValue(string $value): self
     {
         $this->value = $value;
 
@@ -174,9 +174,9 @@ class TaxonomyPredicate extends Entity
     /**
      * Get updatedAt
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
@@ -184,11 +184,11 @@ class TaxonomyPredicate extends Entity
     /**
      * Set updatedAt
      *
-     * @param \DateTime $updatedAt
+     * @param DateTime $updatedAt
      *
      * @return taxonomyPredicate
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
@@ -200,12 +200,12 @@ class TaxonomyPredicate extends Entity
      * @ORM\PrePersist
      * @ORM\PreUpdate
      */
-    public function timestampsUpdate()
+    public function timestampsUpdate(): self
     {
-        $this->setUpdatedAt(new DateTime('now'));
+        return $this->setUpdatedAt(new DateTime('now'));
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getExpanded();
     }
@@ -215,7 +215,7 @@ class TaxonomyPredicate extends Entity
      *
      * @return string
      */
-    public function getExpanded()
+    public function getExpanded(): string
     {
         return $this->expanded;
     }
@@ -227,7 +227,7 @@ class TaxonomyPredicate extends Entity
      *
      * @return taxonomyPredicate
      */
-    public function setExpanded($expanded)
+    public function setExpanded(string $expanded): self
     {
         $this->expanded = $expanded;
 
@@ -237,10 +237,9 @@ class TaxonomyPredicate extends Entity
     /**
      * Get report
      *
-     * @param string $lang
      * @return IncidentReport
      */
-    public function getReport(string $lang = null)
+    public function getReport(): IncidentReport
     {
         $reporte = new IncidentReport();
         $reporte->setProblem($this->getExpanded() . ': ' . $this->getDescription());
@@ -252,7 +251,7 @@ class TaxonomyPredicate extends Entity
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -264,7 +263,7 @@ class TaxonomyPredicate extends Entity
      *
      * @return taxonomyPredicate
      */
-    public function setDescription($description)
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -341,7 +340,7 @@ class TaxonomyPredicate extends Entity
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->getExpanded();
     }

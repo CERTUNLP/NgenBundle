@@ -15,27 +15,27 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table id="tabla_hosts" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table id="tabla_hosts" class="table table-bordered">
                 <thead>
-        <tr role="row">
-            <th>{{ 'Action'| trans  }}</th>
-            <th>{{ knp_pagination_sortable(objects, 'Active'|trans, 'isActive') }}</th>
-            <th>{{ knp_pagination_sortable(objects, 'Name'|trans, 'slug') }}</th>
-            <th>{{ 'Description'|trans }}</th>
-            <th>{{ knp_pagination_sortable(objects, 'Taxonomy'|trans, 'taxonomy') }}</th>
-            <th>{{ 'Reports'|trans }}</th>
-            <th>{{ knp_pagination_sortable(objects, 'Created at'|trans, 'createdAt') }}</th>
-            <th>{{ knp_pagination_sortable(objects, 'Updated at'|trans, 'updatedAt') }}</th>
-        </tr>
+                <tr role="row">
+                    <th>{{ 'Action'| trans }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'Active'|trans, 'isActive') }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'Name'|trans, 'slug') }}</th>
+                    <th>{{ 'Description'|trans }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'Taxonomy'|trans, 'taxonomy') }}</th>
+                    <th>{{ 'Reports'|trans }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'Created'|trans, 'createdAt') }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'Updated'|trans, 'updatedAt') }}</th>
+                </tr>
                 </thead>
-        <tbody>
-        {% for incidentType in incidentTypes %}
-            {% include 'CertUnlpNgenBundle:IncidentType:Frontend/list/incidentTypeListRow.html.twig' with {'incidentType': incidentType} %}
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
-</div>
+                <tbody>
+                {% for incidentType in incidentTypes %}
+                    {% include 'CertUnlpNgenBundle:IncidentType:Frontend/list/incidentTypeListRow.html.twig' with {'incidentType': incidentType} %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 <div class="pagination justify-content-center">
     {{ knp_pagination_render(incidentTypes, null, {}, { "prev_label": "Previous"|trans, "next_label": "Next"|trans, "first_label": "First"|trans, "last_label": "Last"|trans}) }}
