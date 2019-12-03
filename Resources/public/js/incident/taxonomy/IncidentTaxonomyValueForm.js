@@ -11,7 +11,7 @@ var IncidentTaxonomyValueForm = Form.extend({
         this.setIncidentTypeId();
     },
     getObjectBrief: function () {
-        return 'incident/taxonomy';
+        return 'incident/taxonomy/value';
     },
     getObjectId: function () {
         return this.getIncidentTypeId();

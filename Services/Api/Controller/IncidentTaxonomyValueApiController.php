@@ -26,7 +26,6 @@ class IncidentTaxonomyValueApiController extends ApiController
      */
     public function findObjectBy($params)
     {
-        print_r($params);die();
         return $this->getCustomHandler()->get(['value' => $params['value']]);
     }
 

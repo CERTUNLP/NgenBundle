@@ -11,16 +11,3 @@
 {% block content_body %}
     {% include 'CertUnlpNgenBundle:IncidentTaxonomyValue:Frontend/list/incidentTaxonomyValueList.html.twig' with {'incidentTaxonomyValues': objects} %}
 {% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-
-    {% javascripts
-        '@CertUnlpNgenBundle/Resources/public/js/incident/taxonomy/IncidentTaxonomyValue.js'
-        '@CertUnlpNgenBundle/Resources/public/js/incident/taxonomy/IncidentTaxonomyValueApi.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-    <script>
-        var incident_taxonomy_value = new incidentTaxonomyValue();
-        var incident_taxonomy_value_api = new incidentTaxonomyValue("{{ path("api_get") }}", "{{ app.user.apiKey }}");
-    </script>
-{% endblock %}

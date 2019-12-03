@@ -10,10 +10,12 @@
 var IncidentTaxonomyPredicateApi = ApiClient.extend({
     config: function () {
         $.subscribe('/cert_unlp/incident/taxonomy/predicate/update', $.proxy(this.update, this));
+        $.subscribe('/cert_unlp/incident/taxonomy/predicate/activate', $.proxy(this.activate, this));
+        $.subscribe('/cert_unlp/incident/taxonomy/predicate/desactivate', $.proxy(this.desactivate, this));
     },
     addDefaultChannel: function () {
-        this.api.add("types", {stripTrailingSlash: true, url: 'incidents/taxonomy'});
-        this.defaultChannel = this.api.types;
+        this.api.add("predicates", {stripTrailingSlash: true, url: 'incidents/taxonomies/predicates'});
+        this.defaultChannel = this.api.predicates;
     },
     changeState: function (networkId, isActive, callback) {
 
