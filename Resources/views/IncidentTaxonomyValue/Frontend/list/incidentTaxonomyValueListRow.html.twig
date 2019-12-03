@@ -22,7 +22,7 @@
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colordropbox(incidentTaxonomyValue.predicate.color,incidentTaxonomyValue.predicate.icon,incidentTaxonomyValue.predicate| trans,path('cert_unlp_ngen_taxonomy_predicate_detail',{'slug': incidentTaxonomyValue.predicate.slug}),incidentTaxonomyValue.predicate| trans) }}
+            {{ print.colordropbox(incidentTaxonomyValue.predicate.color,incidentTaxonomyValue.predicate.icon,incidentTaxonomyValue.predicate| trans,path('cert_unlp_ngen_taxonomy_predicate_detail',{'slug': incidentTaxonomyValue.predicate.slug}),incidentTaxonomyValue.predicate) }}
         </div>
     </td>
     <td class="text-center">
@@ -35,7 +35,7 @@
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',incidentTaxonomyValue.updatedAt|date('Y-m-d'),'#',incidentTaxonomyValue.updatedAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',incidentTaxonomyValue.updatedAt|date('Y-m-d'),'#',incidentTaxonomyValue.updatedAt|date('Y-m-d')) }}
         </small>
     </td>
 </tr>

@@ -10,10 +10,12 @@
 var IncidentTaxonomyValueApi = ApiClient.extend({
     config: function () {
         $.subscribe('/cert_unlp/incident/taxonomy/value/update', $.proxy(this.update, this));
+        $.subscribe('/cert_unlp/incident/taxonomy/value/activate', $.proxy(this.activate, this));
+        $.subscribe('/cert_unlp/incident/taxonomy/value/desactivate', $.proxy(this.desactivate, this));
     },
     addDefaultChannel: function () {
-        this.api.add("types", {stripTrailingSlash: true, url: 'incidents/taxonomy'});
-        this.defaultChannel = this.api.types;
+        this.api.add("values", {stripTrailingSlash: true, url: 'incidents/taxonomies/values'});
+        this.defaultChannel = this.api.values;
     },
     changeState: function (networkId, isActive, callback) {
 
