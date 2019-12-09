@@ -106,6 +106,10 @@ cert_ngen_administration_taxonomy_predicate_api:
     prefix: /incidents
     resource: '@CertUnlpNgenBundle/Controller/Api/Incident/IncidentTaxonomyPredicateController.php'
     name_prefix:  api_
+cert_ngen_network_host_api:
+    type: rest
+    resource: '@CertUnlpNgenBundle/Controller/Api/Network/HostController.php'
+    name_prefix:  api_
 #
 #NelmioApiDocBundle:
 #    resource: '@NelmioApiDocBundle/Resources/config/routing.yml'

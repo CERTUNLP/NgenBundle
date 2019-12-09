@@ -18,14 +18,14 @@
     {% endif %}
 {% endblock %}
 
-{#{% block javascripts %}#}
-    {#{{ parent() }}#}
+{% block javascripts %}
+    {{ parent() }}
 
-    {#{% javascripts#}
-        {#'@CertUnlpNgenBundle/Resources/public/js/incident/host/HostForm.js' %}#}
-        {#<script src="{{ asset_url }}"></script>#}
-    {#{% endjavascripts %}#}
-    {#<script>#}
-        {#var host_form = new HostForm();#}
-    {#</script>#}
-{#{% endblock %}#}
+    {% javascripts
+        '@CertUnlpNgenBundle/Resources/public/js/network/host/HostForm.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        var host_form = new HostForm();
+    </script>
+{% endblock %}

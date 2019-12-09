@@ -315,15 +315,7 @@ fos_elastica:
                             type: date
                             property_path: updatedAt
                         network:
-                            type: "object"
-                            properties:
-                                address:
-                                    type: keyword
-                                addressAndMask:
-                                    type: keyword
-                                    index: not_analyzed
-                                isActive:
-                                    type: boolean
+                            type: keyword
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by

@@ -7,18 +7,19 @@
  with this source code in the file LICENSE.
 #}
 {% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
+{% import '@CertUnlpNgen/Host/Frontend/list/hostLink.html.twig' as hostlink %}
 
-<tr data-id="{{ host.id }}">
+<tr data-id="{{ host.address }}">
     <td>
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':host , 'detail_link': path('cert_unlp_ngen_host_detail',{'id': host.id}),'edit_link':path('cert_unlp_ngen_host_edit',{'id': host.id})} %}
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':host , 'detail_link':hostlink.link(host,'detail'),'edit_link':hostlink.link(host,'edit')} %}
+    </td>
+    <td id="state_label_holder" class="text-center">
+        {{ print.statusdropbox(host) }}
     </td>
     <td id="host_label_holder" class="text-center">
         <div class="float-left">
-        {{ print.colordropbox(host.color,host.icon,host.address,'#',host.address) }}
+            {{ print.colordropbox(host.color,host.icon,host.address,'#',host.address) }}
         </div>
-    </td>
-    <td id="state_label_holder" class="text-center">
-            {{ print.statusbox(host) }}
     </td>
     <td id="host_label_holder" class="text-center">
         <div class="float-left">
@@ -26,7 +27,7 @@
                 {% set detail_link %}
                     {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':host.network} %}
                 {% endset %}
-                {{ print.colordropbox(host.network.color,host.network.icon,host.network,detail_link,host.network.id) }}
+                {{ print.colordropbox(host.network.color,host.network.icon,host.network,detail_link,host.network.addressAndMask) }}
             {% else %}
                 {{ "Empty" | trans }}
             {% endif %}

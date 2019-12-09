@@ -26,7 +26,7 @@
         <div class="dropdown-menu animated--fade-in filter-list-dropdown" aria-labelledby="dropdownMenuButton"
              x-placement="bottom-start">
             {% if href != '#' or not href %}
-                <a class="dropdown-item"target="_blank"
+                <a class="dropdown-item" target="_blank"
                    href="{{ href }}">
                     <span class="text-{{ color }}">
                         <i class="fas fa-eye"></i>
@@ -46,8 +46,18 @@
         </div>
     </div>
 {% endmacro %}
-
 {% macro statusbox(object) %}
+    <a class="btn btn-icon-split btn-sm btn-{{ object.isactive?'success':'danger' }} shadow-sm"
+       role="button" href="#" title=" {{ object.isactive?'active':'not active' }}">
+            <span class="icon text-white-50">
+                {{ icon('fas fa-'~object.isactive?'toggle-on':'toggle-off'~' fa-xs text-white-50') }}
+            </span>
+        <span class="text">
+                {{ object.isactive?'active':'not active' }}
+            </span>
+    </a>
+{% endmacro %}
+{% macro statusdropbox(object) %}
     <div class="dropdown">
         <button id="dropdownMenuButton"
                 class="btn dropdown-toggle-split btn-icon-split btn-sm btn-{{ object.isactive?'success':'danger' }} ladda-button shadow-sm"

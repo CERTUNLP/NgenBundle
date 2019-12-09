@@ -13,7 +13,7 @@
         {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':IncidentDecision , 'detail_link': path('cert_unlp_ngen_incident_decision_detail',{'id': IncidentDecision.id}),'edit_link': path('cert_unlp_ngen_incident_decision_edit',{'id': IncidentDecision.id})} %}
     </td>
     <td id="state_label_holder" class="text-center">
-        {{ print.statusbox(IncidentDecision) }}
+        {{ print.statusdropbox(IncidentDecision) }}
     </td>
     <td class="text-center">
         <div class="float-left">
