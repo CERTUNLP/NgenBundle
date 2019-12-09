@@ -7,6 +7,7 @@
  with this source code in the file LICENSE.
 #}
 {% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
+{% import '@CertUnlpNgen/Host/Frontend/list/hostLink.html.twig' as hostlink %}
 
 <tr data-id="{{ incident.id }}" role="row">
 
@@ -30,7 +31,7 @@
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colordropbox(incident.origin.color,incident.origin.icon,incident.address,path('cert_unlp_ngen_host_detail',{'id': incident.origin.id}),incident.origin.address) }}
+            {{ print.colordropbox(incident.origin.color,incident.origin.icon,incident.address,hostlink.link(incident.origin,'detail'),incident.origin.address) }}
         </div>
     </td>
     <td class="text-center">
