@@ -14,7 +14,7 @@
         {{ icon(object.icon ~' fa-fw text-'~object.color) }}
         {{ object }}
         {{ print.colorbox('primary','id-card',object.id,'#') }}
-        {{ print.statusbox(object) }}
+        {{ print.statusdropbox(object) }}
         {{ print.colorbox('primary','share-alt','networks '~object.networks.count,path('cert_unlp_ngen_network_search_network',{'term': '"'~object.name~'"'~ "&&" ~'"'~object.emails| join('"&&"') ~'"'})) }}
         {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_network_edit_network_admin',{'slug': object.slug})) }}
     </h1>

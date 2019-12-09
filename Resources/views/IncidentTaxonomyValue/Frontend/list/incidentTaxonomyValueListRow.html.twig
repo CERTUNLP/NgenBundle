@@ -13,7 +13,7 @@
         {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentTaxonomyValue , 'detail_link': path('cert_unlp_ngen_taxonomy_value_detail',{ 'slug': incidentTaxonomyValue.slug})} %}
     </td>
     <td id="state_label_holder" class="text-center">
-        {{ print.statusbox(incidentTaxonomyValue) }}
+        {{ print.statusdropbox(incidentTaxonomyValue) }}
     </td>
     <td class="text-center">
         <div class="float-left">

@@ -32,7 +32,9 @@ var SearchTerm = Class.extend({
     },
     termKey: function ($term) {
         let $key = $term.split(': ')[0];
-        $key =  this.decamelize($key, ' ').split(' ').map(function(b){return b.charAt(0).toUpperCase() + b.slice(1)}).join(' ')
+        $key = this.decamelize($key, ' ').split(' ').map(function (b) {
+            return b.charAt(0).toUpperCase() + b.slice(1)
+        }).join(' ')
         return $key;
 
     },
@@ -40,7 +42,7 @@ var SearchTerm = Class.extend({
         return $term.split(': ')[1].replace(/"/g, '').replace(/\\/g, '');
     },
     initTerms: function () {
-        if (this.search_input.val() === '*') {
+        if (this.search_input.val() === '*' || !this.search_input.val()) {
             this.search_terms = [];
         } else {
             this.search_terms = this.search_input.val().split(' && ');
