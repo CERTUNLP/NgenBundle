@@ -9,6 +9,8 @@
 
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
 {% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
+{% import '@CertUnlpNgen/Host/Frontend/list/hostLink.html.twig' as hostlink %}
+
 {% block content_header %}
     <h1 class="h3 mb-0 text-gray-800">
         {{ icon('arrow-circle-down fa-fw text-'~object.color) }}
@@ -19,7 +21,7 @@
         {{ print.colorbox(object.priority.color,object.priority.icon,object.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': object.priority.id})) }}
         {{ print.colorbox(object.tlp.color,object.tlp.icon,object.tlp,'#') }}
         {{ print.colorbox(object.reporter.color,object.reporter.icon,object.reporter,path('cert_unlp_ngen_user_detail_user',{'username': object.reporter.username})) }}
-        {{ print.colorbox(object.origin.color,object.origin.icon,object.address,path('cert_unlp_ngen_host_detail',{'id': object.origin.id})) }}
+        {{ print.colorbox(object.origin.color,object.origin.icon,object.address,hostlink.link(object.origin,'detail')) }}
         {% set detail_link %}
             {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':object.network} %}
         {% endset %}
@@ -73,7 +75,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                                 <a class="text-xs font-weight-bold text-info text-uppercase mb-1"
-                                                   href="{{ path('cert_unlp_ngen_host_detail',{'id':object.origin.id}) }}">Host {{ object.origin }}
+                                                   href="{{ hostlink.link(object.origin,'detail') }}">Host {{ object.origin }}
                                                 </a>
                                             </div>
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
