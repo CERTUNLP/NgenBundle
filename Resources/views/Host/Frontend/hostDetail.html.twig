@@ -22,7 +22,7 @@
             {% endset %}
             {{ print.colorbox(object.network.color,object.network.icon,object.network,detail_link) }}
         {% endif %}
-        {{ print.colorbox('primary','arrow-circle-down','incidents '~object.incidentsAsOrigin.count,path('cert_unlp_ngen_internal_incident_search_incident',{'term': '"'~object.ip~'"'})) }}
+        {{ print.colorbox('primary','arrow-circle-down','incidents '~object.incidentsAsOrigin.count,path('cert_unlp_ngen_internal_incident_search_incident',{'term': '"'~object.address~'"'})) }}
         {{ print.colorbox('primary','edit','Edit',hostlink.link(object,'edit')) }}
     </h1>
 {% endblock %}

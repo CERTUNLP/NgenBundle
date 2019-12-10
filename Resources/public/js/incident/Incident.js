@@ -91,13 +91,14 @@ var Incident = Frontend.extend({
     search: function (event) {
         event.preventDefault();
         query = '*';
+        self = this;
         $(".multiple-select-filter").each(function () {
             if ($(this).val() != null && $(this).val().length > 0) {
                 subquery = '(';
                 parametros = JSON.parse($(this).attr('search'));
-                valor = $(this).val();
+                valor = self.sanitize($(this).val());
                 if ($(this).parent().parent().children('.form-check-input')[0] != null && $(this).parent().parent().children('.form-check-input')[0].checked) {
-                    valor = valor + '*';
+                    // valor = valor + '*';
                 }
                 if ($(this).attr('index') != null && $(this).attr('index').length > 0) {
                     name = $(this).attr('index');
@@ -121,21 +122,21 @@ var Incident = Frontend.extend({
                 name = $(this).attr('name');
             }
             if ($(this).val() != null && $(this).val() != 0 && $(this).val().length > 0) {
-                valor = $(this).val();
+                valor = self.sanitize($(this).val());
                 if ($(this).parent().parent().children('.form-check-input')[0] != null && $(this).parent().parent().children('.form-check-input')[0].checked) {
-                    valor = valor + '*';
+                    // valor = valor + '*';
                 }
-                if ($(this).attr('search') != null && $(this).attr('search').length > 0) {
-                    query = (query) + ' && ' + name + '.' + $(this).attr('search') + ':' + valor;
-                } else {
-                    query = (query) + ' && ' + name + ':' + valor;
-                }
+                // if ($(this).attr('search') != null && $(this).attr('search').length > 0) {
+                //     query = (query) + ' && ' + name + '.' + $(this).attr('search') + ':' + valor;
+                // } else {
+                query = (query) + ' && ' + name + ':' + valor;
+                // }
             }
         });
 
         $("#generalSearch").each(function () {
             if ($(this).find('input[name="term"]').val() != null && $(this).find('input[name="term"]').val().length > 0) {
-                valor = $(this).find('input[name="term"]').val();
+                valor = self.sanitize($(this).find('input[name="term"]').val());
                 name = 'term';
                 query = (query) + ' && ' + valor;
 
@@ -144,5 +145,14 @@ var Incident = Frontend.extend({
         this.query = query;
         this.filterListComplete(this.query);
         return false;
+    },
+    sanitize: function ($value) {
+        if ($value.indexOf(' ') > 0) {
+            $value = '"' + $value + '"'
+        }
+        if ($value.indexOf('/') > 0) {
+            $value = $value.replace(/\//g, '\\\/');
+        }
+        return $value;
     },
 });

@@ -16,7 +16,7 @@
     </td>
     <td id="state_label_holder" class="text-center">
         <small>
-            {{ print.colordropbox(incident.state.color,incident.state.icon,incident.state,path('cert_unlp_ngen_incident_state_detail',{'slug': incident.state.slug}),incident.state.slug) }}
+            {{ print.colordropbox(incident.state.color,incident.state.icon,incident.state,path('cert_unlp_ngen_incident_state_detail',{'slug': incident.state.slug}),incident.state) }}
         </small>
     </td>
     <td id="state_label_holder" class="text-center">
@@ -24,10 +24,10 @@
         {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': incident,'type':'label_list', 'response': false} %}
     </td>
     <td id="tlp_label_holder" class="text-center">
-        {{ print.colordropbox(incident.tlp.color,incident.tlp.icon,incident.tlp.name,'#',incident.tlp.slug) }}
+        {{ print.colordropbox(incident.tlp.color,incident.tlp.icon,incident.tlp.name,'#',incident.tlp) }}
     </td>
     <td class="text-center">
-        {{ print.colordropbox(incident.priority.color,incident.priority.icon,incident.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': incident.priority.id}),incident.priority.code) }}
+        {{ print.colordropbox(incident.priority.color,incident.priority.icon,incident.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': incident.priority.id}),incident.priority) }}
     </td>
     <td class="text-center">
         <div class="float-left">
@@ -36,12 +36,12 @@
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colordropbox(incident.type.color,incident.type.icon,incident.type,path('cert_unlp_ngen_incident_type_detail',{'slug': incident.type.slug}),incident.type.slug) }}
+            {{ print.colordropbox(incident.type.color,incident.type.icon,incident.type,path('cert_unlp_ngen_incident_type_detail',{'slug': incident.type.slug}),incident.type) }}
         </div>
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colordropbox(incident.feed.color,incident.feed.icon,incident.feed,path('cert_unlp_ngen_incident_feed_detail',{'slug': incident.feed.slug}),incident.feed.slug) }}
+            {{ print.colordropbox(incident.feed.color,incident.feed.icon,incident.feed,path('cert_unlp_ngen_incident_feed_detail',{'slug': incident.feed.slug}),incident.feed) }}
         </div>
     </td>
     <td class="text-center">
@@ -59,6 +59,6 @@
 
     </td>
     <td class="text-center">
-        {{ print.colordropbox(incident.reporter.color,incident.reporter.icon,incident.reporter,path('cert_unlp_ngen_user_detail_user',{'username': incident.reporter.username}),incident.reporter.id) }}
+        {{ print.colordropbox(incident.reporter.color,incident.reporter.icon,incident.reporter,path('cert_unlp_ngen_user_detail_user',{'username': incident.reporter.username}),incident.reporter) }}
     </td>
 </tr>
