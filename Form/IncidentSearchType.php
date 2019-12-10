@@ -48,10 +48,7 @@ class IncidentSearchType extends AbstractType
                 'label' => false,
                 'required' => false,
                 'empty_value' => 'All',
-                'description' => '(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|'
-                    . 'dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|'
-                    . 'open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|'
-                    . 'open_ssdp|phishing|poodle|scan|shellshock|spam)',
+                'choice_value' => 'name',
                 'attr' => array('class' => 'select-filter', 'search' => 'slug')
             ))
             ->add('feed', EntityType::class, array(
@@ -59,7 +56,7 @@ class IncidentSearchType extends AbstractType
                 'empty_value' => 'All',
                 'required' => false,
                 'label' => false,
-                'description' => '(bro|external_report|netflow|shadowserver)',
+                'choice_value' => 'name',
                 'attr' => array('class' => 'select-filter', 'search' => 'slug')
             ))
             ->add('address', null, array(
@@ -67,29 +64,26 @@ class IncidentSearchType extends AbstractType
                 'label' => false,
                 'empty_data' => 'google',
                 'mapped' => false,
-                'description' => 'The network ip and mask',
-                'attr' => array('class' => 'multiple-select-filter', 'search' => json_encode(['ip', 'domain']), 'index' => 'origin')
+                'attr' => array('class' => 'select-filter', 'search' => json_encode([]), 'index' => 'origin')
             ))
             ->add('dates', null, array(
                 'required' => false,
                 'label' => false,
                 'mapped' => false,
                 'attr' => array('class' => 'select-filter', 'index' => 'date', 'size' => 11),
-                'description' => 'If no date is selected, the date will be today.',
             ))
             ->add('updatesAt', null, array(
                 'required' => false,
                 'label' => false,
                 'mapped' => false,
                 'attr' => array('class' => 'select-filter', 'index' => 'updatedAt', 'size' => 11),
-                'description' => 'If no date is selected, the date will be today.',
             ))
             ->add('state', EntityType::class, array(
                 'label' => false,
                 'required' => false,
                 'class' => IncidentState::class,
                 'empty_value' => 'All',
-                'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
+                'choice_value' => 'name',
                 'attr' => array('class' => 'select-filter', 'search' => 'slug')
             ))
             ->add('tlp', EntityType::class, array(
@@ -97,7 +91,7 @@ class IncidentSearchType extends AbstractType
                 'required' => false,
                 'class' => IncidentTlp::class,
                 'empty_value' => 'All',
-                'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
+                'choice_value' => 'name',
                 'attr' => array('class' => 'select-filter', 'search' => 'slug')
             ))
             ->add('reporter', EntityType::class, array(
@@ -105,7 +99,7 @@ class IncidentSearchType extends AbstractType
                 'required' => false,
                 'class' => User::class,
                 'empty_value' => 'All',
-                'description' => 'The reporter ID. If none was selected, the reporter will be the logged user or the apikey user.',
+                'choice_value' => 'name',
                 'attr' => array('class' => 'select-filter', 'search' => 'id')
             ))
             ->add('assigned', EntityType::class, array(
@@ -113,7 +107,7 @@ class IncidentSearchType extends AbstractType
                 'required' => false,
                 'class' => User::class,
                 'empty_value' => 'All',
-                'description' => 'If none was selected, the incident will remain unassigned.',
+                'choice_value' => 'name',
                 'attr' => array('class' => 'select-filter', 'search' => 'id')
             ))
             ->add('ltdCount', null, array(
@@ -126,10 +120,9 @@ class IncidentSearchType extends AbstractType
                 'label' => false,
                 'required' => false,
                 'class' => IncidentPriority::class,
-                'choice_value' => 'code',
+                'choice_value' => 'name',
                 'empty_value' => 'All',
-                'description' => 'If none is selected, the assigned impact will be Low',
-                'attr' => array('class' => 'select-filter', 'search' => 'code')
+                'attr' => array('class' => 'select-filter', 'search' => 'name')
             ));
 
     }
