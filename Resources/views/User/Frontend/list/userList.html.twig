@@ -19,13 +19,13 @@
                 <thead>
         <tr role="row">
             <th>Action</th>
-            <th>{{ knp_pagination_sortable(users, 'Active'|trans, 'isEnabled') }}</th>
+            <th>{{ knp_pagination_sortable(users, 'Active'|trans, 'active') }}</th>
             <th>{{ knp_pagination_sortable(users, 'Username'|trans, 'username') }}</th>
-            <th>{{ knp_pagination_sortable(users, 'Name'|trans, 'slug') }}</th>
+            <th>{{ knp_pagination_sortable(users, 'Name'|trans, 'name') }}</th>
             <th>{{ knp_pagination_sortable(users, 'Email'|trans, 'email') }}</th>
             <th>{{ knp_pagination_sortable(users, 'Last login'|trans, 'lastLogin') }}</th>
-            <th>{{ knp_pagination_sortable(users, 'Created'|trans, 'createdAt') }}</th>
-            <th>{{ knp_pagination_sortable(users, 'Updated'|trans, 'updatedAt') }}</th>
+            <th>{{ knp_pagination_sortable(users, 'Created'|trans, 'created') }}</th>
+            <th>{{ knp_pagination_sortable(users, 'Updated'|trans, 'updated') }}</th>
         </tr>
                 </thead>
         <tbody>
