@@ -373,7 +373,7 @@ class IncidentPriority extends Entity
      */
     public function getResponseTime(): ?int
     {
-        return $this->responseTime;
+        return $this->responseTime?:1;
     }
 
     /**
@@ -391,7 +391,7 @@ class IncidentPriority extends Entity
      */
     public function getResolutionTime(): ?int
     {
-        return $this->resolutionTime;
+        return $this->resolutionTime?:1;
     }
 
     /**
