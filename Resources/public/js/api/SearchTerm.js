@@ -34,7 +34,7 @@ var SearchTerm = Class.extend({
         let $key = $term.split(': ')[0];
         $key = this.decamelize($key, ' ').split(' ').map(function (b) {
             return b.charAt(0).toUpperCase() + b.slice(1)
-        }).join(' ')
+        }).join(' ');
         return $key;
 
     },
@@ -72,7 +72,10 @@ var SearchTerm = Class.extend({
         }
     },
     eventKey: function () {
-        return $.camelCase(this.header().text().toLowerCase().trim().replace(/ /g, '-'));
+        // return $.camelCase(this.header().text().toLowerCase().trim().replace(/ /g, '-'));
+        return $(this.header().find('a.sortable').attr('href').split('?')[1].split('&')).filter(function (a, b) {
+            return b.includes('sort');
+        }).get(0).split('=')[1]
     },
     decamelize: function (str, separator) {
         separator = typeof separator === 'undefined' ? '_' : separator;
