@@ -19,12 +19,12 @@
                 <thead>
                 <tr role="row">
                     <th>{{ 'Action'| trans }}</th>
-                    <th>{{ knp_pagination_sortable(objects, 'active'|trans, 'isActive') }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'active'|trans, 'active') }}</th>
                     <th>{{ knp_pagination_sortable(objects, 'Name'|trans, 'name') }}</th>
                     <th>{{ 'Subtypes'|trans }}</th>
                     <th>{{ knp_pagination_sortable(objects, 'Version'|trans, 'version') }}</th>
-                    <th>{{ knp_pagination_sortable(objects, 'Created'|trans, 'createdAt') }}</th>
-                    <th>{{ knp_pagination_sortable(objects, 'Updated'|trans, 'updatedAt') }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'Created'|trans, 'created') }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'Updated'|trans, 'updated') }}</th>
                 </thead>
                 <tbody>
                 {% for incidentTaxonomyPredicate in incidentTaxonomyPredicates %}
