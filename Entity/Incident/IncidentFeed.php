@@ -124,7 +124,7 @@ class IncidentFeed extends Entity
      *
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
