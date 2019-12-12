@@ -21,7 +21,6 @@ use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
-use Closure;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -50,7 +49,7 @@ class Incident extends Entity
      */
     protected $temporalNotes;
     /**
-     * @var string
+     * @var File
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
@@ -193,14 +192,14 @@ class Incident extends Entity
      */
     private $changeStateHistory;
 
-    /**
-     * @var Collection
-     * @JMS\Expose
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Message",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
-     * @JMS\Groups({"api"})
-     */
-
-    private $communicationHistory;
+//    /**
+//     * @var Collection
+//     * @JMS\Expose
+//     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Message",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
+//     * @JMS\Groups({"api"})
+//     */
+//
+//    private $communicationHistory;
 
     /**
      * @var DateTime
@@ -309,7 +308,7 @@ class Incident extends Entity
         }
         $this->incidentsDetected = new ArrayCollection();
         $this->changeStateHistory = new ArrayCollection();
-        $this->communicationHistory = new ArrayCollection();
+//        $this->communicationHistory = new ArrayCollection();
     }
 
     /**
@@ -376,14 +375,37 @@ class Incident extends Entity
      */
     public function setTemporalNotes(string $temporalNotes): self
     {
-        $this->temporalNotes = $temporalNotes;
+        $this->setter($this->temporalNotes, $temporalNotes);
         return $this;
     }
 
     /**
-     * @return string
+     * @param mixed $property
+     * @param mixed $value
+     * @param bool $fundamental
+     * @return bool
      */
-    public function getTemporalEvidenceFile(): ?string
+    public function setter(&$property, $value, bool $fundamental = false): bool
+    {
+        if ($this->getBehavior()) {
+            return $this->getBehavior()->setter($property, $value, $fundamental);
+        }
+        $property = $value;
+        return true;
+    }
+
+    /**
+     * @return StateBehavior
+     */
+    public function getBehavior(): ?StateBehavior
+    {
+        return $this->getState() ? $this->getState()->getBehavior() : null;
+    }
+
+    /**
+     * @return File
+     */
+    public function getTemporalEvidenceFile(): File
     {
         return $this->temporalEvidenceFile;
     }
@@ -394,7 +416,7 @@ class Incident extends Entity
      */
     public function setTemporalEvidenceFile(string $temporalEvidenceFile): self
     {
-        $this->temporalEvidenceFile = $temporalEvidenceFile;
+        $this->setter($this->temporalEvidenceFile, $temporalEvidenceFile);
         return $this;
     }
 
@@ -408,10 +430,12 @@ class Incident extends Entity
 
     /**
      * @param DateTime $responseDeadLine
+     * @return Incident
      */
-    public function setResponseDeadLine(DateTime $responseDeadLine = null): void
+    public function setResponseDeadLine(DateTime $responseDeadLine = null): self
     {
-        $this->responseDeadLine = $responseDeadLine;
+        $this->setter($this->responseDeadLine, $responseDeadLine);
+        return $this;
     }
 
     /**
@@ -424,10 +448,13 @@ class Incident extends Entity
 
     /**
      * @param DateTime $solveDeadLine
+     * @return Incident
      */
-    public function setSolveDeadLine(DateTime $solveDeadLine = null): void
+    public function setSolveDeadLine(DateTime $solveDeadLine = null): self
     {
-        $this->solveDeadLine = $solveDeadLine;
+        $this->setter($this->solveDeadLine, $solveDeadLine);
+
+        return $this;
     }
 
     /**
@@ -440,10 +467,12 @@ class Incident extends Entity
 
     /**
      * @param IncidentState $unattendedState
+     * @return Incident
      */
-    public function setUnattendedState(IncidentState $unattendedState = null): void
+    public function setUnattendedState(IncidentState $unattendedState = null): self
     {
-        $this->unattendedState = $unattendedState;
+        $this->setter($this->unattendedState, $unattendedState);
+        return $this;
     }
 
     /**
@@ -456,10 +485,12 @@ class Incident extends Entity
 
     /**
      * @param IncidentState $unsolvedState
+     * @return Incident
      */
-    public function setUnsolvedState(IncidentState $unsolvedState = null): void
+    public function setUnsolvedState(IncidentState $unsolvedState = null): self
     {
-        $this->unsolvedState = $unsolvedState;
+        $this->setter($this->unsolvedState, $unsolvedState);
+        return $this;
     }
 
     /**
@@ -468,14 +499,6 @@ class Incident extends Entity
     public function canEdit(): bool
     {
         return $this->getBehavior()->canEdit();
-    }
-
-    /**
-     * @return StateBehavior
-     */
-    public function getBehavior(): ?StateBehavior
-    {
-        return $this->getState() ? $this->getState()->getBehavior() : null;
     }
 
     /**
@@ -502,21 +525,6 @@ class Incident extends Entity
     {
         $this->setter($this->reportReporter, $reportReporter);
         return $this;
-    }
-
-    /**
-     * @param mixed $property
-     * @param mixed $value
-     * @param bool $fundamental
-     * @return bool
-     */
-    public function setter(&$property, $value, bool $fundamental = false): bool
-    {
-        if ($this->getBehavior()) {
-            return $this->getBehavior()->setter($property, $value, $fundamental);
-        }
-        $property = $value;
-        return true;
     }
 
     /**

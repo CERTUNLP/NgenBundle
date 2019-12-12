@@ -22,44 +22,43 @@ class IncidentDetectedListener
 
     private $upload_directory;
 
-    public function __construct($upload_directory)
+    public function __construct(string $upload_directory)
     {
         $this->upload_directory = $upload_directory;
     }
 
     /** @ORM\PrePersist
-     * @param IncidentDetected $incident
+     * @param IncidentDetected $incidentDetected
      * @param LifecycleEventArgs $event
      */
-    public function prePersistHandler(IncidentDetected $incident,LifecycleEventArgs $event)
+    public function prePersistHandler(IncidentDetected $incidentDetected, LifecycleEventArgs $event)
     {
-        $this->setFilename($incident);
-        $this->uploadEvidenceFile($incident);
+        $this->setFilename($incidentDetected);
+        $this->uploadEvidenceFile($incidentDetected);
     }
 
-    public function setFilename(IncidentDetected $incident)
+    public function setFilename(IncidentDetected $incidentDetected)
     {
-        if ($incident->getEvidenceFile()) {
-            $ext = $incident->getIncident()->getEvidenceSubDirectory()."/_" . sha1(uniqid(mt_rand(), true));
-            if (is_callable(array($incident->getEvidenceFile(), 'getClientOriginalExtension'))) {
+        if ($incidentDetected->getEvidenceFile()) {
+            $ext = $incidentDetected->getIncident()->getEvidenceSubDirectory() . '/_' . sha1(uniqid(mt_rand(), true));
+            if (is_callable(array($incidentDetected->getEvidenceFile(), 'getClientOriginalExtension'))) {
 
-                $incident->setEvidenceFilePath($ext . "." . $incident->getEvidenceFile()->getClientOriginalExtension());
+                $incidentDetected->setEvidenceFilePath($ext . '.' . $incidentDetected->getEvidenceFile()->getClientOriginalExtension());
             } else {
-
-                $incident->setEvidenceFilePath($ext . "." . $incident->getEvidenceFile()->getExtension());
+                $incidentDetected->setEvidenceFilePath($ext . '.' . $incidentDetected->getEvidenceFile()->getExtension());
             }
         }
     }
 
-    public function uploadEvidenceFile(IncidentDetected $incident)
+    public function uploadEvidenceFile(IncidentDetected $incidentDetected)
     {
-        $uploadDir = $this->getUploadDirectory() . $incident->getIncident()->getEvidenceSubDirectory();
+        $uploadDir = $this->getUploadDirectory() . $incidentDetected->getIncident()->getEvidenceSubDirectory();
         if (!file_exists($uploadDir) && !mkdir($uploadDir, 0777, true) && !is_dir($uploadDir)) {
             die('Failed to create folders...');
         }
 
-        if ($incident->getEvidenceFile()) {
-            $incident->getEvidenceFile()->move($uploadDir, $incident->getEvidenceFilePath());
+        if ($incidentDetected->getEvidenceFile()) {
+            $incidentDetected->getEvidenceFile()->move($uploadDir, $incidentDetected->getEvidenceFilePath());
         }
     }
 
@@ -69,15 +68,16 @@ class IncidentDetectedListener
         // documents should be saved
         return $this->upload_directory;
     }
+
     /** @ORM\PreUpdate
-     * @param IncidentDetected $incident
+     * @param IncidentDetected $incidentDetected
      * @param PreUpdateEventArgs $event
      */
 
-    public function preUpdateHandler(IncidentDetected $incident, PreUpdateEventArgs $event): void
+    public function preUpdateHandler(IncidentDetected $incidentDetected, PreUpdateEventArgs $event): void
     {
-        $this->setFilename($incident);
-        $this->uploadEvidenceFile($incident);
+        $this->setFilename($incidentDetected);
+        $this->uploadEvidenceFile($incidentDetected);
     }
 
 }
