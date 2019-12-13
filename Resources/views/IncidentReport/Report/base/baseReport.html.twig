@@ -11,7 +11,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"
+    "/>
 </head>
 <body style="margin: 0; padding: 0;">
 
@@ -20,157 +21,172 @@
     <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
             <td style="padding: 10px 0 30px 0;">
-                <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border: 1px solid #cccccc; border-collapse: collapse">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="600"
+                       style="border: 1px solid #cccccc; border-collapse: collapse">
                     <tr>
-                        <td align="center" bgcolor="#ffffff" style="padding: 40px 0 30px 0; color: #153643; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
+                        <td align="center" bgcolor="#ffffff"
+                            style="padding: 40px 0 30px 0; color: #153643; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
                             {% include 'CertUnlpNgenBundle:IncidentReport:Report/base/header.html.twig' %}
                         </td>
                     </tr>
                     <tr>
                         <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
                             <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                                          <tr>
-                                              <td>
-                                                  <table>
-                                                      <tr>
-                                                          <td >
-                                                              <table >
-                                                                  <tr>
-                                                                      <td>
-                                                                          <p>
-                                                                              {% block greeting %}
-                                                                              {% endblock %}
-                                                                          </p>
-                                                                      </td>
-                                                                  </tr>
-                                                                  {% block report_content %}
-                                                                      {% if(report.problem) %}
-                                                                          <tr>
-                                                                              <td>
-                                                                                  {{ report.problem|striptags('<div>,<a>,<pre>,<code>')|raw }}
-                                                                              </td>
-                                                                          </tr>
-                                                                      {% endif %}
-                                                                      {% set titulos=0 %}
-                                                                      {% for detected in incident.incidentsDetected %}
-                                                                          {% if(detected.notes) %}
-                                                                              {% if titulos == 0 %}
-                                                                                  {% set titulos=1 %}
-                                                                                  <tr>
-                                                                                  <td>
-                                                                                  <p>
-                                                                                      {% block incident_notes_title %}
-                                                                                      {% endblock %}
-                                                                                  </p>
-                                                                                  <ul>
-                                                                              {% endif %}
+                                <tr>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <p>
+                                                                    {% block greeting %}
+                                                                    {% endblock %}
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                        {% block report_content %}
+                                                            {% if(report.problem) %}
+                                                                <tr>
+                                                                    <td>
+                                                                        {% block report_message %}
+                                                                            {{ include(template_from_string(report.problem))|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                                        {% endblock %}
+                                                                    </td>
+                                                                </tr>
+                                                            {% endif %}
+                                                            {% set titulos=0 %}
+                                                            {% block incidents_detected %}
+                                                                {% for detected in incident.incidentsDetected %}
+                                                                    {% if(detected.notes) %}
+                                                                        {% if titulos == 0 %}
+                                                                            {% set titulos=1 %}
+                                                                            <tr>
+                                                                            <td>
+                                                                            <p>
+                                                                                {% block incident_notes_title %}
+                                                                                {% endblock %}
+                                                                            </p>
+                                                                            <ul>
+                                                                        {% endif %}
 
-                                                                              {{ detected.notes| striptags('<div>,<a>,<pre>,<code>,<li>,<ul>,<br>')|raw|nl2br }}
+                                                                        {{ detected.notes| striptags('<div>,<a>,<pre>,<code>,<li>,<ul>,<br>')|raw|nl2br }}
 
-                                                                          {% endif %}
-                                                                      {% endfor %}
-                                                                      {% if titulos == 1 %}
-                                                                          </ul>
-                                                                          </td>
-                                                                          </tr>
-                                                                      {% endif %}
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                                {% if titulos == 1 %}
+                                                                    </ul>
+                                                                    </td>
+                                                                    </tr>
+                                                                {% endif %}
+                                                            {% endblock %}
 
-                                                                      {% if(report.derivatedProblem) %}
-                                                                          <tr>
-                                                                              <td>
-                                                                                  <p>
-                                                                                      {% block derivated_problem_title %}
-                                                                                      {% endblock %}
-                                                                                  </p>
-                                                                                  {{ report.derivatedProblem|striptags('<div>,<a>,<pre>,<code>')|raw }}
-                                                                              </td>
-                                                                          </tr>
-                                                                      {% endif %}
-                                                                      {% if(report.verification) %}
-                                                                          <tr>
-                                                                              <td>
-                                                                                  <p>
-                                                                                      {% block verification_title %}
-                                                                                      {% endblock %}
-                                                                                  </p>
-                                                                                  {{ report.verification|striptags('<div>,<a>,<pre>,<code>')|raw }}
-                                                                              </td>
-                                                                          </tr>
-                                                                      {% endif %}
-                                                                      {% if(report.recomendations) %}
-                                                                          <tr>
-                                                                              <td>
-                                                                                  <p>
-                                                                                      {% block recomendations_title %}
-                                                                                      {% endblock %}
-                                                                                  </p>
-                                                                                  {{ report.recomendations|striptags('<div>,<a>,<pre>,<code>')|raw }}
-                                                                              </td>
-                                                                          </tr>
-                                                                      {% endif %}
-                                                                      {% if(report.moreInformation) %}
-                                                                          <tr>
-                                                                              <td>
-                                                                                  <p>
-                                                                                      {% block more_information_title %}
-                                                                                      {% endblock %}
-                                                                                  </p>
-                                                                                  {{ report.moreInformation|striptags('<div>,<a>,<pre>,<code>')|raw }}
-                                                                              </td>
-                                                                          </tr>
-                                                                      {% endif %}
-                                                                  {% endblock report_content %}
-                                                              </table>
-                                                          </td>
-                                                      </tr>
-                                                  </table>
-                                              </td>
-                                          </tr>
-                                      </table>
+                                                            {% block derivated_problem %}
+                                                                {% if(report.derivatedProblem) %}
+                                                                    <tr>
+                                                                        <td>
+                                                                            <p>
+                                                                                {% block derivated_problem_title %}
+                                                                                {% endblock %}
+                                                                            </p>
+                                                                            {{ report.derivatedProblem|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                                        </td>
+                                                                    </tr>
+                                                                {% endif %}
+                                                            {% endblock %}
+                                                            {% block verification %}
+                                                                {% if(report.verification) %}
+                                                                    <tr>
+                                                                        <td>
+                                                                            <p>
+                                                                                {% block verification_title %}
+                                                                                {% endblock %}
+                                                                            </p>
+                                                                            {{ report.verification|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                                        </td>
+                                                                    </tr>
+                                                                {% endif %}
+                                                            {% endblock %}
+                                                            {% block recomendations %}
+
+                                                                {% if(report.recomendations) %}
+                                                                    <tr>
+                                                                        <td>
+                                                                            <p>
+                                                                                {% block recomendations_title %}
+                                                                                {% endblock %}
+                                                                            </p>
+                                                                            {{ report.recomendations|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                                        </td>
+                                                                    </tr>
+                                                                {% endif %}
+                                                            {% endblock %}
+                                                            {% block more_information %}
+                                                                {% if(report.moreInformation) %}
+                                                                    <tr>
+                                                                        <td>
+                                                                            <p>
+                                                                                {% block more_information_title %}
+                                                                                {% endblock %}
+                                                                            </p>
+                                                                            {{ report.moreInformation|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                                                                        </td>
+                                                                    </tr>
+                                                                {% endif %}
+                                                            {% endblock %}
+                                                        {% endblock report_content %}
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
 
                     <tr>
                         <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
                             <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                            <tr>
-                                <td>
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <p>
-                                                    {% block footer_content %}
-                                                    {% endblock %}
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
+                                <tr>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <p>
+                                                        {% block footer_content %}
+                                                        {% endblock %}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     <tr>
                         <td bgcolor="#ee4c50" style="padding: 30px 30px 30px 30px;">
 
-                                    <table>
-                                        <tr>
-                                            <td >
-                                                <table>
-                                                    <tr>
-                                                        <td>
-                                                            <p style="text-align:center;">
-                                                                {% block footer_generated_by %}
-                                                                {% endblock %}
-                                                            </p>
-                                                        </td>
-                                                        <td >
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <p style="text-align:center;">
+                                                        {% block footer_generated_by %}
+                                                        {% endblock %}
+                                                    </p>
+                                                </td>
+                                                <td>
+                                            </tr>
+                                        </table>
                                     </td>
+                                </tr>
+                            </table>
+                        </td>
                     </tr>
                 </table>
             </td>

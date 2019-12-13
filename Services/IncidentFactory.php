@@ -13,7 +13,9 @@ namespace CertUnlp\NgenBundle\Services;
 
 use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
@@ -42,16 +44,25 @@ class IncidentFactory
         $net= new NetworkInternal();
         $host->setAddress("example.com");
         $host->setNetwork($net);
-        $admin= (new User())->setFirstName("Juan");
-        $netAdmin=(new NetworkAdmin())->setName("Roberto");
+        $admin = (new User())->setFirstName("Juan");
+        $netAdmin = (new NetworkAdmin())->setName("Roberto");
         $netAdmin->addContact((new ContactEmail())->setUserName("pepe@pepe.com"));
         $net->setNetworkAdmin($netAdmin);
         $incident->setTlp($newTLP);
         $incident->setNetwork($net);
         $incident->setAssigned($admin);
         $incident->setAddress("10.0.0.1");
+        $incident->setCreatedAt(new \DateTime('today'));
+        $incident->setUpdatedAt(new \DateTime('today'));
+        $repository = $this->entityManager->getRepository(IncidentState::class);
+        $state = $repository->findOneBySlug('initial');
+        $incident->setState($state);
+        $repository = $this->entityManager->getRepository(IncidentPriority::class);
+        $priority = $repository->findOneBySlug('critical');
+        $incident->setPriority($priority);
 
         return $incident;
+
     }
 
     /**

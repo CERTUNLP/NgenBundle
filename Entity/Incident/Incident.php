@@ -1130,7 +1130,10 @@ class Incident extends Entity
      */
     public function getResolutionPercentage(): int
     {
-        $minutes = ($this->getResolutionMinutes() * 100) / $this->getPriority()->getResolutionTime();
+        $minutes = 100;
+        if ($this->getPriority()->getResponseTime()) {
+            $minutes = ($this->getResolutionMinutes() * 100) / $this->getPriority()->getResolutionTime();
+        }
 
         return $minutes < 100 ? $minutes : 100;
     }
@@ -1141,7 +1144,10 @@ class Incident extends Entity
      */
     public function getResponsePercentage(): int
     {
-        $minutes = ($this->getResponseMinutes() * 100) / $this->getPriority()->getResponseTime();
+        $minutes = 100;
+        if ($this->getPriority()->getResponseTime()) {
+            $minutes = ($this->getResponseMinutes() * 100) / $this->getPriority()->getResponseTime();
+        }
 
         return $minutes < 100 ? $minutes : 100;
     }

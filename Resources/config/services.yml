@@ -263,25 +263,29 @@ services:
     acme.twig.form_extension:
         class: CertUnlp\NgenBundle\Twig\BootstrapFormExtension
         tags:
-            - { name: twig.extension }
+          - { name: twig.extension }
 
     acme.twig.incident_extension:
-        class: CertUnlp\NgenBundle\Twig\IncidentExtension
-        arguments:
-            doctrine: "@doctrine"
-        tags:
-            - { name: twig.extension }
+      class: CertUnlp\NgenBundle\Twig\IncidentExtension
+      arguments:
+        doctrine: "@doctrine"
+      tags:
+        - { name: twig.extension }
 
+    twig.extension.stringloader:
+      class: Twig_Extension_StringLoader
+      tags:
+        - { name: twig.extension }
 
     twig.stringloader:
-        class: Twig_Loader_Array
-        arguments: [[]]
-        tags:
-            - { name: twig.loader }
+      class: Twig_Loader_Array
+      arguments: [[]]
+      tags:
+        - { name: twig.loader }
 
     gedmo.listener.sluggable:
-        class: Gedmo\Sluggable\SluggableListener
-        tags:
+      class: Gedmo\Sluggable\SluggableListener
+      tags:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
             - [ setAnnotationReader, [ "@annotation_reader" ] ]
