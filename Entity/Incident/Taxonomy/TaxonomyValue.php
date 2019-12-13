@@ -35,7 +35,6 @@ class TaxonomyValue extends Entity
      * */
     private $slug;
 
-
     /**
      * @var boolean
      *
@@ -137,11 +136,11 @@ class TaxonomyValue extends Entity
     /**
      * Set predicate
      *
-     * @param string $predicate
+     * @param TaxonomyPredicate $predicate
      *
      * @return TaxonomyValue
      */
-    public function setPredicate(string $predicate): self
+    public function setPredicate(TaxonomyPredicate $predicate): self
     {
         $this->predicate = $predicate;
 
@@ -212,7 +211,7 @@ class TaxonomyValue extends Entity
      *
      * @return TaxonomyValue
      */
-    public function setDescription(string $description): string
+    public function setDescription(string $description): TaxonomyValue
     {
         $this->description = $description;
 

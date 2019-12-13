@@ -66,6 +66,7 @@ class GetReferenceTaxonomyFromEnisaCommand extends ContainerAwareCommand
                 $this->getContainer()->get('doctrine')->getManager()->persist($new_predicate);
             }
         }
+        $this->getContainer()->get('doctrine')->getManager()->flush();
         foreach ($obj->values as $predicate_value) {
             foreach ($predicate_value->entry as $value) {
                 $existing_value = $this->getContainer()->get('doctrine')->getRepository(TaxonomyValue::class)->findOneBy(
@@ -74,15 +75,15 @@ class GetReferenceTaxonomyFromEnisaCommand extends ContainerAwareCommand
                 if ($existing_value) {
                     if (($existing_value->getValue() != $value->value) or ($existing_value->getExpanded(
                             ) != $value->expanded) or ($existing_value->getDescription(
-                            ) != $value->description) or ($existing_value->getPredicate() != $predicate_value->predicate)) {
-                        $output->writeln("Actualizando el velue ".$value->value);
+                            ) != $value->description) or ($existing_value->getPredicate()->getValue() != $predicate_value->predicate)) {
+                        $output->writeln("Actualizando el value ".$value->value);
                         $existing_value->setValue($value->value);
                         $existing_value->setExpanded($value->expanded);
                         $existing_value->setVersion($obj->version);
                         $existing_value->setPredicate(
-                            $this->getContainer()->get('doctrine')->getRepository(TaxonomyPredicate::class)->findOneBy(
+                            $this->getContainer()->get('doctrine')->getRepository(TaxonomyPredicate::class)->findBy(
                                 ['value' => ($predicate_value->predicate)]
-                            )
+                            )[0]
                         );
                         $existing_value->setDescription($value->description);
                         $existing_value->setUpdatedAt(new DateTime('now'));
@@ -99,8 +100,8 @@ class GetReferenceTaxonomyFromEnisaCommand extends ContainerAwareCommand
                     $new_value->setExpanded($value->expanded);
                     $new_value->setVersion($obj->version);
                     $new_value->setIsActive(true);
-                    $new_value->setPredicate( $this->getContainer()->get('doctrine')->getRepository(TaxonomyPredicate::class)->findOneBy(
-                        ['value' => $predicate_value->predicate]));
+                    $new_value->setPredicate( $this->getContainer()->get('doctrine')->getRepository(TaxonomyPredicate::class)->findBy(
+                        ['value' => $predicate_value->predicate])[0]);
                     $new_value->setDescription($value->description);
                     $new_value->setUpdatedAt(new DateTime('now'));
                     $this->getContainer()->get('doctrine')->getManager()->persist($new_value);
