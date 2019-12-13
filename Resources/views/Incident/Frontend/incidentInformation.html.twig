@@ -1,0 +1,141 @@
+{#
+ This file is part of the Ngen - CSIRT Incident Report System.
+
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+<div class="card shadow mb-4">
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold text-primary">{{ "Incident Information"|trans }}</h6>
+    </div>
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Host/Network Involved'|trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {{ object.address }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'State'|trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object} %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Type'|trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {{ object.type | trans }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'TLP'|trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                <span class="label tlp-{{ object.tlp|lower }} left">TLP-{{ object.tlp | trans }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Created at'|trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {{ object.createdAt|date('Y-m-d H:i') }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Original Date'| trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {{ object.date |date('Y-m-d H:i') }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Last Update'|trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {{ object.updatedAt |date('Y-m-d H:i') }}
+            </div>
+        </div>
+
+        {% if object.incidentsDetected.count %}
+            <div class="row">
+                <div class="col-6 col-sm-6 border">
+                    {{ 'Times Detected'|trans }}
+                </div>
+                <div class="col-6 col-sm-6 border">
+                    {{ 'Detected'|trans }}{{ ' ' }}{{ label_info(object.incidentsDetected.count) }}{{ ' ' }}{{ 'times'|trans }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-sm-6 border">
+                    {{ 'Last Time Detected'|trans }}
+                </div>
+                <div class="col-6 col-sm-6 border">
+                    {{ object.incidentsDetected|last.date|date('Y-m-d H:i') }}
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if object.evidenceFilePath %}
+
+            <div class="row">
+                <div class="col-6 col-sm-6 border">
+                    {{ 'Evidence File'|trans }}
+                </div>
+                <div class="col-6 col-sm-6 border">
+                    <a href="{{ path('cert_unlp_ngen_internal_incident_frontend_evidence_incident',{'slug':object.slug}) }}">{{ 'Evidence'| trans }}
+                        (.zip)</a>
+                </div>
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Response Time' |trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'label', 'response': true} %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Resolution Time' |trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'label', 'response': false} %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Unresponse State' |trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {{ object.unattendedState }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Unresolve State' |trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {{ object.unsolvedState }}
+            </div>
+        </div>
+
+
+    </div>
+</div>

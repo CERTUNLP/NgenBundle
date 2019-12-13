@@ -1,27 +1,39 @@
+{#
+ This file is part of the Ngen - CSIRT Incident Report System.
+
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+
 {% extends  'CertUnlpNgenBundle:IncidentReport:Report/lang/mail.html.twig' %}
 {% block greeting %}
-    {{ 'greeting'|trans}} {{ incident.network.networkAdmin }},
+    {{ 'greeting'|trans }} {{ incident.assigned }},
 {% endblock %}
-{% block incident_notes_title %}
-    {{ 'incident_notes_title'|trans}}
+
+{% block report_message %}
+    <div class="col-lg-12">
+        {% include "CertUnlpNgenBundle:Incident/Frontend:incidentInformation.html.twig" with { 'object':incident } %}
+    </div>
 {% endblock %}
-{% block derivated_problem_title %}
-    {{ 'derivated_problem_title'|trans}}
+
+{% block incidents_detected %}
 {% endblock %}
-{% block verification_title %}
-    {{ 'verification_title'|trans}}
+{% block derivated_problem %}
 {% endblock %}
-{% block recomendations_title %}
-    {{ 'recomendations_title'|trans}}
+{% block verification %}
 {% endblock %}
-{% block more_information_title %}
-    {{ 'more_information_title'|trans}}
+{% block recomendations %}
 {% endblock %}
+{% block more_information %}
+{% endblock %}
+
 {% block footer_content %}
-    {{ 'thanks'|trans}}{{ 'farewell'|trans }}, {{  team.name }} - {{  team.url }}
+    {{ 'thanks'|trans }}{{ 'farewell'|trans }}, {{ team.name }} - {{ team.url }}
 {% endblock %}
 {% block footer_generated_by %}
 
-    {{ 'firma_ngen'|trans |raw}}
+    {{ 'firma_ngen'|trans |raw }}
 
 {% endblock %}
