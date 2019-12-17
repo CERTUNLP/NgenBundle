@@ -684,13 +684,6 @@ fos_elastica:
                         created:
                             type: date
                             property_path: createdAt
-                        updatedAt:
-                            type: date
-                        updated:
-                            type: date
-                            property_path: updatedAt
-                        lastLogin:
-                            type: date
                         contacts:
                             type: "nested"
                             properties:

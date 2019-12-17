@@ -75,7 +75,7 @@ class GetReferenceTaxonomyFromEnisaCommand extends ContainerAwareCommand
                 if ($existing_value) {
                     if (($existing_value->getValue() != $value->value) or ($existing_value->getExpanded(
                             ) != $value->expanded) or ($existing_value->getDescription(
-                            ) != $value->description) or ($existing_value->getPredicate()->getValue() != $predicate_value->predicate)) {
+                            ) != $value->description) or ($existing_value->getPredicate()->g        etValue() != $predicate_value->predicate)) {
                         $output->writeln("Actualizando el value ".$value->value);
                         $existing_value->setValue($value->value);
                         $existing_value->setExpanded($value->expanded);
