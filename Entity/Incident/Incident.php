@@ -405,7 +405,7 @@ class Incident extends Entity
     /**
      * @return File
      */
-    public function getTemporalEvidenceFile(): File
+    public function getTemporalEvidenceFile(): ?File
     {
         return $this->temporalEvidenceFile;
     }
