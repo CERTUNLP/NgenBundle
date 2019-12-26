@@ -8,23 +8,25 @@
  * This source file is subject to the GPL v3.0 license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace CertUnlp\NgenBundle\Entity\Incident\Taxonomy;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\Report\IncidentReport;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
-use DateTime;
 
 /**
  * TaxonomyValue
  * @ORM\Entity()
  * @ORM\Table(name="taxonomy_value")
  */
-class TaxonomyValue
+class TaxonomyValue extends Entity
 {
     /**
-     * @var string
+     * @var string|null
      * @ORM\Id
      * @Gedmo\Slug(fields={"value"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
@@ -33,7 +35,6 @@ class TaxonomyValue
      * */
     private $slug;
 
-
     /**
      * @var boolean
      *
@@ -41,8 +42,65 @@ class TaxonomyValue
      * @JMS\Expose
      */
     private $isActive = true;
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="description", type="string", length=1024)
+     */
+    private $description;
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="expanded", type="string", length=255)
+     */
+    private $expanded;
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="value", type="string", length=255, unique=true)
+     */
+    private $value;
+    /**
+     * @var TaxonomyPredicate|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate",inversedBy="values")
+     * @ORM\JoinColumn(name="taxonomyPredicate", referencedColumnName="slug",nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     **/
 
+    private $predicate;
+    /**
+     * @var DateTime|null
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    private $createdAt;
+    /**
+     * @var DateTime|null
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="updated_at", type="datetime")
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    private $updatedAt;
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="version", type="integer")
+     */
+    private $version;
 
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->getSlug();
+    }
 
     /**
      * @return string
@@ -60,113 +118,43 @@ class TaxonomyValue
         $this->slug = $slug;
     }
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=1024)
-     */
-    private $description;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="expanded", type="string", length=255)
-     */
-    private $expanded;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="value", type="string", length=255, unique=true)
-     */
-    private $value;
-
-    /**
-     * @var TaxonomyPredicate
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate",inversedBy="values")
-     * @ORM\JoinColumn(name="taxonomyPredicate", referencedColumnName="slug",nullable=true)
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     **/
-
-    private $predicate;
-
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
-
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="version", type="integer")
-     */
-    private $version;
-
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
+    public function __toString(): string
     {
-        return $this->getSlug();
+        return $this->getPredicate()->getExpanded().' -> '.$this->getExpanded();
     }
 
-    public function __toString()
-    {
-        return $this->getPredicate()." -> ".$this->getExpanded();
-    }
     /**
-     * Set description
+     * Get predicate
      *
-     * @param string $description
+     * @return TaxonomyPredicate
+     */
+    public function getPredicate(): TaxonomyPredicate
+    {
+        return $this->predicate;
+    }
+
+    /**
+     * Set predicate
+     *
+     * @param TaxonomyPredicate $predicate
      *
      * @return TaxonomyValue
      */
-    public function setDescription($description)
+    public function setPredicate(TaxonomyPredicate $predicate): self
     {
-        $this->description = $description;
+        $this->predicate = $predicate;
 
         return $this;
     }
 
     /**
-     * Get report
-     *
-     * @param string $lang
-     * @return IncidentReport
-     */
-    public function getReport(string $lang = null)
-    {
-        $reporte = new IncidentReport();
-        $reporte->setProblem($this->getPredicate()->getExpanded().': '.$this->getPredicate()->getDescription());
-        $reporte->setDerivatedProblem($this->getExpanded().': '.$this->getDescription());
-        return $reporte;
-    }
-    /**
-     * Get description
+     * Get expanded
      *
      * @return string
      */
-    public function getDescription()
+    public function getExpanded(): string
     {
-        return $this->description;
+        return $this->expanded;
     }
 
     /**
@@ -176,7 +164,7 @@ class TaxonomyValue
      *
      * @return TaxonomyValue
      */
-    public function setExpanded($expanded)
+    public function setExpanded(string $expanded): TaxonomyValue
     {
         $this->expanded = $expanded;
 
@@ -188,21 +176,45 @@ class TaxonomyValue
      *
      * @return string
      */
-    public function getExpanded()
+    public function getName(): string
     {
-        return $this->expanded;
+        return $this->getExpanded();
     }
 
     /**
-     * Set value
+     * Get report
      *
-     * @param string $value
+     * @return IncidentReport
+     */
+    public function getReport(): IncidentReport
+    {
+        $reporte = new IncidentReport();
+        $reporte->setProblem($this->getPredicate()->getExpanded().': '.$this->getPredicate()->getDescription());
+        $reporte->setDerivatedProblem($this->getExpanded().': '.$this->getDescription());
+
+        return $reporte;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
      *
      * @return TaxonomyValue
      */
-    public function setValue($value)
+    public function setDescription(string $description): TaxonomyValue
     {
-        $this->value = $value;
+        $this->description = $description;
 
         return $this;
     }
@@ -212,45 +224,21 @@ class TaxonomyValue
      *
      * @return string
      */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
 
     /**
-     * Set predicate
+     * Set value
      *
-     * @param string $predicate
-     *
-     * @return TaxonomyValue
-     */
-    public function setPredicate($predicate)
-    {
-        $this->predicate = $predicate;
-
-        return $this;
-    }
-
-    /**
-     * Get predicate
-     *
-     * @return string
-     */
-    public function getPredicate()
-    {
-        return $this->predicate;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
+     * @param string $value
      *
      * @return TaxonomyValue
      */
-    public function setUpdatedAt($updatedAt)
+    public function setValue(string $value): TaxonomyValue
     {
-        $this->updatedAt = $updatedAt;
+        $this->value = $value;
 
         return $this;
     }
@@ -258,23 +246,23 @@ class TaxonomyValue
     /**
      * Get updatedAt
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
 
     /**
-     * Set version
+     * Set updatedAt
      *
-     * @param integer $version
+     * @param DateTime $updatedAt
      *
      * @return TaxonomyValue
      */
-    public function setVersion($version)
+    public function setUpdatedAt(DateTime $updatedAt): TaxonomyValue
     {
-        $this->version = $version;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -284,18 +272,33 @@ class TaxonomyValue
      *
      * @return integer
      */
-    public function getVersion()
+    public function getVersion(): int
     {
         return $this->version;
     }
+
+    /**
+     * Set version
+     *
+     * @param integer $version
+     *
+     * @return TaxonomyValue
+     */
+    public function setVersion(int $version): self
+    {
+        $this->version = $version;
+
+        return $this;
+    }
+
     /**
      *
      * @ORM\PrePersist
      * @ORM\PreUpdate
      */
-    public function timestampsUpdate()
+    public function timestampsUpdate(): self
     {
-        $this->setUpdatedAt(new DateTime('now'));
+        return $this->setUpdatedAt(new DateTime('now'));
     }
 
     /**
@@ -331,5 +334,20 @@ class TaxonomyValue
     }
 
 
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'th';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'primary';
+    }
 }
 
