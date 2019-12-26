@@ -9,12 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-
 namespace CertUnlp\NgenBundle\Services\Api\Controller;
 
-use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
+use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 
-class IncidentTaxonomyValueApiController extends ApiController
+class HostApiController extends ApiController
 {
 
     /**
@@ -22,11 +21,10 @@ class IncidentTaxonomyValueApiController extends ApiController
      *
      * @param $params array
      *
-     * @return TaxonomyValue entity
+     * @return Host entity
      */
     public function findObjectBy($params)
     {
-        return $this->getCustomHandler()->get(['value' => $params['value']]);
+        return $this->getCustomHandler()->getRepository()->findOneByAddress($params['address']);
     }
-
 }

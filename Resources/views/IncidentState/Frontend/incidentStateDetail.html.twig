@@ -15,7 +15,7 @@
         {{ object }}
         {{ print.colorbox('primary','id-card',object.id,'#') }}
         {{ print.colorbox(object.behavior.color,object.behavior.icon,object.behavior.slug,'#') }}
-        {{ print.statuscolor(object) }}
+        {{ print.statusbox(object) }}
         {{ print.colorbox('primary','arrow-circle-down','incidents '~object.incidents.count,path('cert_unlp_ngen_internal_incident_search_incident',{'term': '"'~object.slug~'"'})) }}
         {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_incident_state_edit',{'slug': object.slug})) }}
     </h1>

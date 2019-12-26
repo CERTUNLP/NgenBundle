@@ -8,18 +8,25 @@
 #}
 
 {% extends 'CertUnlpNgenBundle:IncidentTaxonomyValue/Frontend:frontend.html.twig' %}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
+
 {% block content_header %}
-    <h1 class="page-header"> {{ object }} {% include "CertUnlpNgenBundle:IncidentTaxonomyValue/Frontend/list:stateLabel.html.twig" with {'incidentTaxonomyValue': object} %}
+    <h1 class="h3 mb-0 text-gray-800">
+        {{ icon(object.icon~' fa-fw text-'~object.color) }}
+        {{ object.name }}
+        {{ print.colorbox('primary','id-card',object.id,'#') }}
+        {{ print.statusbox(object) }}
+        {{ print.colorbox(object.predicate.color,object.predicate.icon,object.predicate,path('cert_unlp_ngen_taxonomy_predicate_detail',{'slug': object.predicate.slug})) }}
     </h1>
 {% endblock %}
 {% block content_body %}
     <div class="row">
         <div class="col-lg-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{ 'Value Information'|trans }}</h3>
+            <div class="card shadow mb-4">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Value Information'|trans }}</h6>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <tr>
@@ -27,7 +34,7 @@
                                     {{ 'Value'|trans }}
                                 </td>
                                 <td class="">
-                                    {{ object.value  }}
+                                    {{ object.value }}
                                 </td>
                             </tr>
                             <tr>
@@ -40,7 +47,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    {{ "Description"|trans}}
+                                    {{ "Description"|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.description }}
@@ -48,7 +55,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    {{ "Taxonomy Predicate"|trans}}
+                                    {{ "Taxonomy Predicate"|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.predicate }}

@@ -17,22 +17,23 @@
         <div class="table-responsive">
             <table id="tabla_hosts" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
-        <tr role="row">
-            <th>{{ knp_pagination_sortable(objects, 'Expanded'|trans, 'slug') }}</th>
-            <th>{{ 'Description'|trans }}</th>
-            <th>{{ 'Subtypes'|trans }}</th>
-            <th>{{ knp_pagination_sortable(objects, 'active'|trans, 'isActive') }}</th>
-            <th>{{ 'Action'| trans  }}</th>
-        </tr>
+                <tr role="row">
+                    <th>{{ 'Action'| trans }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'active'|trans, 'active') }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'Name'|trans, 'name') }}</th>
+                    <th>{{ 'Subtypes'|trans }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'Version'|trans, 'version') }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'Created'|trans, 'created') }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'Updated'|trans, 'updated') }}</th>
                 </thead>
-        <tbody>
-        {% for incidentTaxonomyPredicate in incidentTaxonomyPredicates %}
-            {% include 'CertUnlpNgenBundle:IncidentTaxonomyPredicate:Frontend/list/incidentTaxonomyPredicateListRow.html.twig' with {'incidentTaxonomyPredicate': incidentTaxonomyPredicate} %}
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
-</div>
+                <tbody>
+                {% for incidentTaxonomyPredicate in incidentTaxonomyPredicates %}
+                    {% include 'CertUnlpNgenBundle:IncidentTaxonomyPredicate:Frontend/list/incidentTaxonomyPredicateListRow.html.twig' with {'incidentTaxonomyPredicate': incidentTaxonomyPredicate} %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 <div class="pagination justify-content-center">
     {{ knp_pagination_render(incidentTaxonomyPredicates, null, {}, { "prev_label": "Previous"|trans, "next_label": "Next"|trans, "first_label": "First"|trans, "last_label": "Last"|trans}) }}

@@ -1,0 +1,17 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% macro link(object,action) %}
+    {% if object.addressObject.type == 'ip_v4' %}
+        {{ path('cert_unlp_ngen_host_'~action~'_host_ip_v4',{"ip": object.address,"ip_mask":object.addressMask}) }}
+    {% elseif object.addressObject.type == 'ip_v6' %}
+        {{ path('cert_unlp_ngen_host_'~action~'_host_ip_v6',{"ip": object.address,"ip_mask":object.addressMask}) }}
+    {% else %}
+        {{ path('cert_unlp_ngen_host_'~action~'_host_domain',{"domain": object.address}) }}
+    {% endif %}
+{% endmacro %}

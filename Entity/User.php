@@ -347,6 +347,16 @@ class User extends BaseUser implements ReporterInterface
      * Get name
      *
      * @return string
+     */
+    public function getName(): string
+    {
+        return $this->getFirstname() . ' ' . $this->getLastname();
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
      * @JMS\VirtualProperty()
      * @JMS\Expose()
      *

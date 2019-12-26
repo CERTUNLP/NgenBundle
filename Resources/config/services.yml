@@ -65,7 +65,7 @@ services:
 
     cert_unlp.ngen.incident.host.listener:
         class: CertUnlp\NgenBundle\Entity\Network\Host\Listener\HostListener
-        arguments: [ "@cert_unlp.ngen.host.handler","@cert_unlp.ngen.network.handler","@doctrine.orm.entity_manager","@fos_comment.manager.thread","@router" ]
+        arguments: [ "@cert_unlp.ngen.network.host.handler","@cert_unlp.ngen.network.handler","@doctrine.orm.entity_manager","@fos_comment.manager.thread","@router" ]
         tags:
             - { name: doctrine.entity_listener }
 
@@ -84,7 +84,7 @@ services:
 
     cert_unlp.ngen.incident.internal.handler:
         class:        "%cert_unlp.ngen.incident.internal.handler.class%"
-        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.internal.class%","%cert_unlp.ngen.incident.internal.form_type.class%","@form.factory", "@security.context","@cert_unlp.ngen.user.handler","@cert_unlp.ngen.host.handler","@cert_unlp.ngen.incident.decision.handler","@cert_unlp.ngen.incident.state.handler"]
+        arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.internal.class%","%cert_unlp.ngen.incident.internal.form_type.class%","@form.factory", "@security.context","@cert_unlp.ngen.user.handler","@cert_unlp.ngen.network.host.handler","@cert_unlp.ngen.incident.decision.handler","@cert_unlp.ngen.incident.state.handler"]
 
     cert_unlp.ngen.incident.feed.handler:
         class:        "%cert_unlp.ngen.incident.feed.handler.class%"
@@ -118,7 +118,7 @@ services:
         class:        "%cert_unlp.ngen.incident.decision.handler.class%"
         arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.decision.class%","%cert_unlp.ngen.incident.decision.form_type.class%","@form.factory"]
 
-    cert_unlp.ngen.host.handler:
+    cert_unlp.ngen.network.host.handler:
         class:        CertUnlp\NgenBundle\Services\Api\Handler\HostHandler
         arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Network\Host\Host,CertUnlp\NgenBundle\Form\HostType,"@form.factory"]
 
@@ -129,6 +129,10 @@ services:
     cert_unlp.ngen.incident.state.machine:
         class:        CertUnlp\NgenBundle\Services\StateMachine\StateMachine
         arguments:    ["@cert_unlp.ngen.incident.state.edge.handler"]
+
+    cert_unlp.ngen.network.host.api.controller:
+        class: CertUnlp\NgenBundle\Services\Api\Controller\HostApiController
+        arguments: ["@cert_unlp.ngen.network.host.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
 
     cert_unlp.ngen.incident.decision.api.controller:
         class: CertUnlp\NgenBundle\Services\Api\Controller\ApiController
@@ -170,8 +174,7 @@ services:
         class: CertUnlp\NgenBundle\Services\Api\Controller\NetworkEntityApiController
         arguments: ["@cert_unlp.ngen.network_entity.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
 
-
-    cert_unlp.ngen.host.frontend.controller:
+    cert_unlp.ngen.network.host.frontend.controller:
         class: CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory",CertUnlp\NgenBundle\Form\HostType,"@knp_paginator","@fos_elastica.finder.hosts.host","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 

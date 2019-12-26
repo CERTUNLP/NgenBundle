@@ -19,14 +19,14 @@
                 <thead>
                 <tr role="row">
                     <th>Action</th>
-                    <th>{{ knp_pagination_sortable(incidentStates, 'Active'|trans, 'isActive') }}</th>
-                    <th>{{ knp_pagination_sortable(incidentStates, 'Name'|trans, 'slug') }}</th>
+                    <th>{{ knp_pagination_sortable(incidentStates, 'Active'|trans, 'active') }}</th>
+                    <th>{{ knp_pagination_sortable(incidentStates, 'Name'|trans, 'name') }}</th>
                     <th>{{ knp_pagination_sortable(incidentStates, 'Behavior'|trans, 'behavior') }}</th>
                     <th>{{ 'Description'|trans }}</th>
-                    <th>{{ knp_pagination_sortable(incidentStates, 'Created at'|trans, 'createdAt') }}</th>
-                    <th>{{ knp_pagination_sortable(incidentStates, 'Updated at'|trans, 'updatedAt') }}</th>
+                    <th>{{ knp_pagination_sortable(incidentStates, 'Created'|trans, 'created') }}</th>
+                    <th>{{ knp_pagination_sortable(incidentStates, 'Updated'|trans, 'updated') }}</th>
                 </tr>
-                </thead>
+                </thead>tr
                 <tbody>
                 {% for incidentState in incidentStates %}
                     {% include 'CertUnlpNgenBundle:IncidentState:Frontend/list/incidentStateListRow.html.twig' with {'incidentState': incidentState} %}

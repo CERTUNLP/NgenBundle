@@ -20,11 +20,11 @@
                 <thead>
                 <tr role="row">
                     <th>{{ 'Action'|trans }}</th>
+                    <th>{{ knp_pagination_sortable(hosts, 'Active'|trans, 'active') }}</th>
                     <th>{{ knp_pagination_sortable(hosts, 'Address'|trans , 'address') }}</th>
-                    <th>{{ knp_pagination_sortable(hosts, 'Active'|trans, 'isActive') }}</th>
-                    <th>{{ knp_pagination_sortable(hosts, 'Network'|trans, 'network.ip') }}</th>
-                    <th>{{ knp_pagination_sortable(hosts, 'Created at'|trans, 'createdAt') }}</th>
-                    <th>{{ knp_pagination_sortable(hosts, 'Updated at'|trans, 'updatedAt') }}</th>
+                    <th>{{ knp_pagination_sortable(hosts, 'Network'|trans, 'network') }}</th>
+                    <th>{{ knp_pagination_sortable(hosts, 'Created'|trans, 'created') }}</th>
+                    <th>{{ knp_pagination_sortable(hosts, 'Updated'|trans, 'updated') }}</th>
                 </tr>
                 </thead>
                 <tbody>

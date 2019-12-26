@@ -27,8 +27,17 @@ Algunos feeds con los que NGEN ya fue integrado son:
 * Spamhaus
 * Scripts que extraen información de Shodan, Censys, etc.
 
+## Instalación
+
+Puede verificar la documentación de como instalarlo en https://github.com/CERTUNLP/NgenBundle/blob/master/Resources/doc/HowToUse.md
+
+## Documentación de uso 
+
+La documentación de uso en general la encontramos en
+https://github.com/CERTUNLP/NgenBundle/blob/master/Resources/doc/Readme.md
 
 ## Licencia
 
 Este software esta regirstrado bajo la licencia GPL v3.0. Para ver la licencia:
 [Resources/meta/LICENSE](https://github.com/CERTUNLP/NgenBundle/blob/master/Resources/meta/LICENSE.es)
+
