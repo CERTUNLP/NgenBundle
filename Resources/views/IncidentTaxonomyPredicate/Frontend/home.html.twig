@@ -11,16 +11,3 @@
 {% block content_body %}
     {% include 'CertUnlpNgenBundle:IncidentTaxonomyPredicate:Frontend/list/incidentTaxonomyPredicateList.html.twig' with {'incidentTaxonomyPredicates': objects} %}
 {% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-
-    {% javascripts
-        '@CertUnlpNgenBundle/Resources/public/js/incident/taxonomy/IncidentTaxonomyPredicate.js'
-        '@CertUnlpNgenBundle/Resources/public/js/incident/taxonomy/IncidentTaxonomyPredicateApi.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-    <script>
-        var incident_taxonomy_predicate = new incidentTaxonomyPredicate();
-        var incident_taxonomy_predicate_api = new incidentTaxonomyPredicate("{{ path("api_get") }}", "{{ app.user.apiKey }}");
-    </script>
-{% endblock %}

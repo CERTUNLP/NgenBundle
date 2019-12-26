@@ -19,35 +19,34 @@
         {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':network , 'detail_link':detail_link ,'edit_link': edit_link} %}
     </td>
     <td id="state_label_holder" class="text-center">
-        {{ print.statuscolor(network) }}
+        {{ print.statusdropbox(network) }}
     </td>
     <td class="text-center">
         <div class="float-left">
-
-            {{ print.colorbox(network.color,network.icon,network.addressAndMask,'#',network.addressAndMask) }}
+            {{ print.colordropbox(network.color,network.icon,network.addressAndMask,'#',network.addressAndMask) }}
         </div>
     </td>
     <td class="text-center">
-        {{ print.colorbox(network.color,network.icon, network.type |trans,'#', network.type |trans) }}
+        {{ print.colordropbox(network.color,network.icon, network.type |trans,'#', network.type |trans) }}
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colordropbox(network.networkEntity.color,network.networkEntity.icon,network.networkEntity.name,path('cert_unlp_ngen_network_entity_detail',{'slug': network.networkEntity.slug}),network.networkEntity.id) }}
+            {{ print.colordropbox(network.networkEntity.color,network.networkEntity.icon,network.networkEntity.name,path('cert_unlp_ngen_network_entity_detail',{'slug': network.networkEntity.slug}),network.networkEntity) }}
         </div>
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colordropbox(network.networkAdmin.color,network.networkAdmin.icon,network.networkAdmin.name,path('cert_unlp_ngen_network_detail_network_admin',{'slug': network.networkAdmin.slug}),network.networkAdmin.id) }}
+            {{ print.colordropbox(network.networkAdmin.color,network.networkAdmin.icon,network.networkAdmin.name,path('cert_unlp_ngen_network_detail_network_admin',{'slug': network.networkAdmin.slug}),network.networkAdmin.name  ) }}
         </div>
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',network.createdAt|date('Y-m-d'),'#',network.createdAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',network.createdAt|date('Y-m-d'),'#',network.createdAt|date('Y-m-d')) }}
         </small>
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',network.updatedAt|date('Y-m-d'),'#',network.updatedAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',network.updatedAt|date('Y-m-d'),'#',network.updatedAt|date('Y-m-d')) }}
         </small>
     </td>
 </tr>

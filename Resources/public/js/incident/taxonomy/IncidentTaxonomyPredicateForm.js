@@ -11,7 +11,7 @@ var IncidentTaxonomyPredicateForm = Form.extend({
         this.setIncidentTypeId();
     },
     getObjectBrief: function () {
-        return 'incident/taxonomy';
+        return 'incident/taxonomies/predicates';
     },
     getObjectId: function () {
         return this.getIncidentTypeId();

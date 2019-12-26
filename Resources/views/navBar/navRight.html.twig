@@ -19,7 +19,8 @@
     {#        </div>#}
     {#    </form>#}
     <form method="get" action="{% block sideBar_search_path %}{% endblock %}"
-          class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search generalSearch"
+          class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+          id="generalSearch"
           role="search">
         <div class="input-group custom-search-form">
             <input type="text" name="term" class="form-control bg-light border-0 small" value="{{ term | default('') }}"

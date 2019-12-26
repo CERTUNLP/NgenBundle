@@ -13,16 +13,16 @@
         {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':IncidentDecision , 'detail_link': path('cert_unlp_ngen_incident_decision_detail',{'id': IncidentDecision.id}),'edit_link': path('cert_unlp_ngen_incident_decision_edit',{'id': IncidentDecision.id})} %}
     </td>
     <td id="state_label_holder" class="text-center">
-        {{ print.statuscolor(IncidentDecision) }}
+        {{ print.statusdropbox(IncidentDecision) }}
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colordropbox(IncidentDecision.type.color,IncidentDecision.type.icon,IncidentDecision.type,path('cert_unlp_ngen_incident_type_detail',{'slug': IncidentDecision.type.slug}),IncidentDecision.type.slug) }}
+            {{ print.colordropbox(IncidentDecision.type.color,IncidentDecision.type.icon,IncidentDecision.type,path('cert_unlp_ngen_incident_type_detail',{'slug': IncidentDecision.type.slug}),IncidentDecision.type) }}
         </div>
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colordropbox(IncidentDecision.feed.color,IncidentDecision.feed.icon,IncidentDecision.feed,path('cert_unlp_ngen_incident_feed_detail',{'slug': IncidentDecision.feed.slug}),IncidentDecision.feed.slug) }}
+            {{ print.colordropbox(IncidentDecision.feed.color,IncidentDecision.feed.icon,IncidentDecision.feed,path('cert_unlp_ngen_incident_feed_detail',{'slug': IncidentDecision.feed.slug}),IncidentDecision.feed) }}
         </div>
     </td>
     <td class="text-center">
@@ -31,7 +31,7 @@
                 {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':IncidentDecision.network} %}
             {% endset %}
             <div class="float-left">
-                {{ print.colordropbox(IncidentDecision.network.color,IncidentDecision.network.icon,IncidentDecision.network,detail_link,IncidentDecision.network.id) }}
+                {{ print.colordropbox(IncidentDecision.network.color,IncidentDecision.network.icon,IncidentDecision.network,detail_link,IncidentDecision.network) }}
             </div>
         {% else %}
             {{ "Do nothing" | trans }}
@@ -39,16 +39,16 @@
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colordropbox(IncidentDecision.state.color,IncidentDecision.state.icon,IncidentDecision.state,path('cert_unlp_ngen_incident_state_detail',{'slug': IncidentDecision.state.slug}),IncidentDecision.state.slug) }}
+            {{ print.colordropbox(IncidentDecision.state.color,IncidentDecision.state.icon,IncidentDecision.state,path('cert_unlp_ngen_incident_state_detail',{'slug': IncidentDecision.state.slug}),IncidentDecision.state) }}
         </div>
     </td>
     <td class="text-center">
-        {{ print.colordropbox(IncidentDecision.tlp.color,IncidentDecision.tlp.icon,IncidentDecision.tlp.name,'#',IncidentDecision.tlp.slug) }}
+        {{ print.colordropbox(IncidentDecision.tlp.color,IncidentDecision.tlp.icon,IncidentDecision.tlp.name,'#',IncidentDecision.tlp) }}
     </td>
     <td class="text-center">
         {% if IncidentDecision.impact %}
             <div class="float-left">
-                {{ print.colorbox(IncidentDecision.impact.color,IncidentDecision.impact.icon,IncidentDecision.impact,'#',IncidentDecision.impact) }}
+                {{ print.colordropbox(IncidentDecision.impact.color,IncidentDecision.impact.icon,IncidentDecision.impact,'#',IncidentDecision.impact) }}
             </div>
         {% else %}
             {{ "Do nothing" | trans }}
@@ -57,7 +57,7 @@
     <td class="text-center">
         {% if IncidentDecision.urgency %}
             <div class="float-left">
-                {{ print.colorbox(IncidentDecision.urgency.color,IncidentDecision.urgency.icon,IncidentDecision.urgency,'#',IncidentDecision.urgency) }}
+                {{ print.colordropbox(IncidentDecision.urgency.color,IncidentDecision.urgency.icon,IncidentDecision.urgency,'#',IncidentDecision.urgency) }}
             </div>
         {% else %}
             {{ "Do nothing" | trans }}
@@ -65,12 +65,12 @@
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',IncidentDecision.createdAt|date('Y-m-d'),'#',IncidentDecision.createdAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',IncidentDecision.createdAt|date('Y-m-d'),'#',IncidentDecision.createdAt|date('Y-m-d')) }}
         </small>
     </td>
     <td class="text-center">
         <small>
-            {{ print.colorbox('primary','calendar-alt',IncidentDecision.updatedAt|date('Y-m-d'),'#',IncidentDecision.updatedAt|date('Y-m-d')) }}
+            {{ print.colordropbox('primary','calendar-alt',IncidentDecision.updatedAt|date('Y-m-d'),'#',IncidentDecision.updatedAt|date('Y-m-d')) }}
         </small>
     </td>
 </tr>

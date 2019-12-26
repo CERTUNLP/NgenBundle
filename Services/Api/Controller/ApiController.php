@@ -181,7 +181,6 @@ class ApiController
         try {
             $object = $this->getCustomHandler()->changeState(
                 $object, $state);
-
             return $this->response([$object], Response::HTTP_NO_CONTENT);
         } catch (InvalidFormException $exception) {
             return $this->responseError($exception);

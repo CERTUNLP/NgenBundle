@@ -10,58 +10,32 @@ var Frontend = Class.extend({
     init: function () {
         this.eventTarget = null;
         $(document).on("click", 'a.state-label', $.proxy(this.changeState, this));
-    },
-    dropDownChangeLinks: function () {
-        if (this.eventTarget.data('action') == "reactivate") {
-            this.eventTarget.hide();
-            this.eventTarget.siblings("a[data-action='desactivate']").show();
-        } else {
-            this.eventTarget.hide();
-            this.eventTarget.siblings("a[data-action ='reactivate']").show();
-        }
+        $(document).on("click", 'a.status-box', $.proxy(this.changeState, this));
+        this.search_terms = new SearchTerm();
+        $(document).on("click", 'a.colorbox-filter', $.proxy(this.search_terms.filterList, this.search_terms));
     },
     getObjectBrief: function () {
         return 'frontend';
     },
-    doChangeState: function (event) {
-        if (this.eventTarget.data('action') == 'reactivate') {
-            $.publish('/cert_unlp/' + this.getObjectBrief() + '/activate', [this.eventTarget.parents('tr').data('id'), $.proxy(this.stateChanged, this)]);
-        } else {
-            if (this.eventTarget.data('action') == 'desactivate') {
-                $.publish('/cert_unlp/' + this.getObjectBrief() + '/desactivate', [this.eventTarget.parents('tr').data('id'), $.proxy(this.stateChanged, this)]);
-            }
-        }
-
+    startLaddaButton: function () {
+        this.laddaButton = Ladda.create(this.eventTarget.parents('td').find('.ladda-button').get(0));
+        this.laddaButton.start();
     },
     changeState: function (event) {
         event.preventDefault();
         this.eventTarget = $(event.currentTarget);
-        let actionButton = this.eventTarget.parents('div').siblings('button');
-        this.laddaButton = Ladda.create(actionButton.get(0));
-        if (!this.laddaButton) {
-            actionButton = this.eventTarget.parents('ul').siblings('button');
-            this.laddaButton = Ladda.create(actionButton.get(0));
-        }
-        this.laddaButton.start();
+        this.startLaddaButton();
         this.doChangeState();
     },
-
-    stateLabelChange: function () {
-        let label = this.eventTarget.parents('tr').find('td#state_label_holder').find('a');
-        label.find('span.text').text(this.eventTarget.data('state-name'));
-        label.removeClass().addClass("btn btn-icon-split btn-sm btn-" + this.getColorClass());
-        $.publish('/cert_unlp/notify/success', ["The state has been changed successfully"]);
-    },
-    getColorClass: function () {
-        if (this.eventTarget.data('state-slug') == "open") {
-            return 'info';
+    doChangeState: function (event) {
+        if (this.eventTarget.data('action') === 'reactivate') {
+            $.publish('/cert_unlp/' + this.getObjectBrief() + '/activate', [this.eventTarget.parents('tr').data('id'), $.proxy(this.stateChanged, this)]);
         } else {
-            if (this.eventTarget.data('state-slug') == "closed" || this.eventTarget.data('state-slug') == "active") {
-                return 'success';
-            } else {
-                return 'danger';
+            if (this.eventTarget.data('action') === 'desactivate') {
+                $.publish('/cert_unlp/' + this.getObjectBrief() + '/desactivate', [this.eventTarget.parents('tr').data('id'), $.proxy(this.stateChanged, this)]);
             }
         }
+
     },
     stateChanged: function (response, jqXHR) {
 
@@ -72,5 +46,30 @@ var Frontend = Class.extend({
             this.dropDownChangeLinks();
         }
         this.laddaButton.stop();
+    },
+    stateLabelChange: function () {
+        let label = this.eventTarget.parents('tr').find('td#state_label_holder').find('button');
+        label.find('span.icon').find('span').toggleClass('fa fa-toggle-on').toggleClass('fa fa-toggle-off');
+        label.find('span.text').text().trim() === 'active' ? label.find('span.text').text('not active') : label.find('span.text').text('active');
+        this.eventTarget.data('action').trim() === 'reactivate' ? label.data('action', 'desactivate') : label.data('action', 'reactivate');
+        label.toggleClass("btn btn-icon-split btn-sm btn-success").toggleClass("btn btn-icon-split btn-sm btn-danger");
+        this.eventTarget.parent().find('i').parent().toggleClass("text-success").toggleClass("text-danger");
+        $.publish('/cert_unlp/notify/success', ["The state has been changed successfully"]);
+    },
+    dropDownChangeLinks: function () {
+        let dropdown = this.eventTarget.parents('tr').find('a.state-label');
+        dropdown.first().toggle();
+        dropdown.last().toggle();
+    },
+    getColorClass: function () {
+        if (this.eventTarget.data('state-slug') === "open") {
+            return 'info';
+        } else {
+            if (this.eventTarget.data('state-slug') === "closed" || this.eventTarget.data('state-slug') === "active") {
+                return 'success';
+            } else {
+                return 'danger';
+            }
+        }
     },
 });

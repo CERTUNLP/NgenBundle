@@ -219,7 +219,7 @@ class IncidentReport
     /**
      * @return string
      */
-    public function getProblem(): string
+    public function getProblem(): ?string
     {
         return $this->problem;
     }
@@ -237,7 +237,7 @@ class IncidentReport
     /**
      * @return string
      */
-    public function getDerivatedProblem(): string
+    public function getDerivatedProblem(): ?string
     {
         return $this->derivated_problem;
     }
@@ -255,7 +255,7 @@ class IncidentReport
     /**
      * @return string
      */
-    public function getVerification(): string
+    public function getVerification(): ?string
     {
         return $this->verification;
     }
@@ -273,7 +273,7 @@ class IncidentReport
     /**
      * @return string
      */
-    public function getRecomendations(): string
+    public function getRecomendations(): ?string
     {
         return $this->recomendations;
     }
@@ -291,7 +291,7 @@ class IncidentReport
     /**
      * @return string
      */
-    public function getMoreInformation(): string
+    public function getMoreInformation(): ?string
     {
         return $this->more_information;
     }
