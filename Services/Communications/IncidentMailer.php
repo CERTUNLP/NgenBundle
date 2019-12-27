@@ -60,7 +60,7 @@ class IncidentMailer extends IncidentCommunication
     {
         $emails = [];
 
-        if ($incident->getState()->getMailTeam()->getLevel() >= $incident->getPriority()->getCode()) {
+        if ($incident->getStateEdge()->getMailTeam()->getLevel() >= $incident->getPriority()->getCode()) {
             $emails = array($this->cert_email);
         }
 

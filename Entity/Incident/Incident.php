@@ -252,7 +252,7 @@ class Incident extends Entity
     /**
      * @var bool
      */
-    private $sendReport = false;
+    private $sendReport = true;
     /**
      * @var string
      *
