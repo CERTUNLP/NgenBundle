@@ -1,0 +1,236 @@
+{#
+ This file is part of the Ngen - CSIRT Incident Report System.
+
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+
+
+<table bgcolor="#8DCBEF" width="100%" border="0" cellpadding="30" cellspacing="0">
+    <tr>
+        <td>
+            <table width="630"  bgcolor="#ffffff" cellpadding="30"  align="center" >
+                <tr>
+                    <td>
+                        <table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%" style="line-height:22px;">
+                            <tr>
+                                <td>
+                                    <img src="https://i.ibb.co/QNxb6MQ/unnamed.png" alt="">
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td height="45"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <font color="#1E285B" face="arial" size="3"> Hai </font> <font face="arial" size="3" color="#00B0F0"> Rachel Amos, </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="23"></td>
+                            </tr>
+                            <tr>
+                                <td> <font color="#1E285B" face="arial" size="3"> New Senate2sense web enquiry, see details below; </font> </td>
+                            </tr>
+                            <tr>
+                                <td height="23"></td>
+                            </tr>
+
+                            <tr>
+                                <td> <font color="#1E285B" face="arial" size="3"> Name: ( first name , last name )  </td>
+                            </tr>
+
+                            <tr>
+                                <td> <font color="#1E285B" face="arial" size="3"> Email: <a href="#" style="text-decoration: none;"> <font color="#23ACE3" face="arial" size="3"> vishnutest123@outlook.com </a> </font>  </td>
+                            </tr>
+                            <tr>
+                                <td> <font color="#1E285B" face="arial" size="3"> Mobile: ( mobile Number )  </td>
+                            </tr>
+
+                            <tr>
+                                <td> <font color="#1E285B" face="arial" size="3"> Message: ( message )  </td>
+                            </tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <tr>
+                                <td height="30"></td>
+                            </tr>
+                            <tr>
+                                <td height="2" bgcolor="#1E285B"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <td height="10"></td>
+                                        </tr>
+                                        <tr valign="center">
+                                            <td> <font color="#1E285B" face="arial" size="3"> <b> Senate </b> powered by </font> </td>
+                                            <td width="5"></td>
+                                            <td> <img src="https://i.ibb.co/QNxb6MQ/unnamed.png" width="120" alt=""></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+
+
+<div class="card shadow mb-4">
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold text-primary">{{ "Incident Information"|trans }}</h6>
+    </div>
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Host/Network Involved'|trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {{ object.address }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'State'|trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object} %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Type'|trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {{ object.type | trans }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'TLP'|trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                <span class="label tlp-{{ object.tlp|lower }} left">TLP-{{ object.tlp | trans }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Created at'|trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {{ object.createdAt|date('Y-m-d H:i') }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Original Date'| trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {{ object.date |date('Y-m-d H:i') }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Last Update'|trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {{ object.updatedAt |date('Y-m-d H:i') }}
+            </div>
+        </div>
+
+        {% if object.incidentsDetected.count %}
+            <div class="row">
+                <div class="col-6 col-sm-6 border">
+                    {{ 'Times Detected'|trans }}
+                </div>
+                <div class="col-6 col-sm-6 border">
+                    {{ 'Detected'|trans }}{{ ' ' }}{{ label_info(object.incidentsDetected.count) }}{{ ' ' }}{{ 'times'|trans }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-sm-6 border">
+                    {{ 'Last Time Detected'|trans }}
+                </div>
+                <div class="col-6 col-sm-6 border">
+                    {{ object.incidentsDetected|last.date|date('Y-m-d H:i') }}
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if object.evidenceFilePath %}
+
+            <div class="row">
+                <div class="col-6 col-sm-6 border">
+                    {{ 'Evidence File'|trans }}
+                </div>
+                <div class="col-6 col-sm-6 border">
+                    <a href="{{ path('cert_unlp_ngen_internal_incident_frontend_evidence_incident',{'slug':object.slug}) }}">{{ 'Evidence'| trans }}
+                        (.zip)</a>
+                </div>
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Response Time' |trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'label', 'response': true} %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Resolution Time' |trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'label', 'response': false} %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Unresponse State' |trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {{ object.unattendedState }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-6 border">
+                {{ 'Unresolve State' |trans }}
+            </div>
+            <div class="col-6 col-sm-6 border">
+                {{ object.unsolvedState }}
+            </div>
+        </div>
+
+
+    </div>
+</div>
