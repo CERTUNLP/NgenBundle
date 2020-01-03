@@ -10,5 +10,5 @@ incident_notes_title: 'Incident notes'
 derivated_problem_title: 'Related issues'
 verification_title: 'How to verify the issue'
 recomendations_title: Recommendations
-more_information_tit originalle: 'For more information'
+more_information_title: 'For more information'
 telegram_message: '%s Incident on host "*%s*" of type "*%s*" with priority "*%s*" TLP: %s(%s)'

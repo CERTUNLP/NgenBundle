@@ -17,7 +17,9 @@ parameters:
     team_mail: TEAM_MAIL
     team_abuse: TEAM_ABUSE
     team_url: TEAM_URL
+    team_logo: TEAM_LOGO
     team_name: TEAM_NAME
+    team_site: TEAM_SITE
     ngen_sign: NGEN_SIGN
     ngen_lang: NGEN_LANG
     session_max_idle_time: SESSION_TIMEOUT

@@ -1,27 +1,24 @@
+{#
+ This file is part of the Ngen - CSIRT Incident Report System.
+
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
 {% extends  'CertUnlpNgenBundle:IncidentReport:Report/lang/mail.html.twig' %}
 {% block greeting %}
     {{ 'greeting'|trans}} {{ incident.network.networkAdmin }},
 {% endblock %}
-{% block incident_notes_title %}
-    {{ 'incident_notes_title'|trans}}
-{% endblock %}
-{% block derivated_problem_title %}
-    {{ 'derivated_problem_title'|trans}}
-{% endblock %}
-{% block verification_title %}
-    {{ 'verification_title'|trans}}
-{% endblock %}
-{% block recomendations_title %}
-    {{ 'recomendations_title'|trans}}
-{% endblock %}
-{% block more_information_title %}
-    {{ 'more_information_title'|trans}}
-{% endblock %}
-{% block footer_content %}
-    {{ 'thanks'|trans}}{{ 'farewell'|trans }}, {{  team.name }} - {{  team.url }}
-{% endblock %}
-{% block footer_generated_by %}
+{% block report_content %}
+    <tr>
+        <td>
+            {% block report_message %}
+                <p>{{ 'The incident id '|trans }} {{ incident.id }} {{  ' has been closed, setting it as '|trans }} {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': incident} %}.</p>
+                <p>{{ 'If you think we need to review this decision, please let us know.'|trans }}</p>
+                <hr>
 
-    {{ 'firma_ngen'|trans |raw}}
-
+            {% endblock %}
+        </td>
+    </tr>
 {% endblock %}

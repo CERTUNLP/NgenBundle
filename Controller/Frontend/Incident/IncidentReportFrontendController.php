@@ -92,7 +92,7 @@ class IncidentReportFrontendController extends Controller
     public function detailIncidentReportAction(IncidentType $slug, IncidentReport $lang)
     {
         $incidentFactory = $this->get('cert_unlp.ngen.incident.factory');
-        $incident = $incidentFactory->getIncident();
+        $incident = $incidentFactory->getIncident($slug);
         $team=$incidentFactory->getTeam();
         return array('team'=> $team,'object' => $lang,'incident'=> $incident );
     }

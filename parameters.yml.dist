@@ -17,6 +17,8 @@ parameters:
     team_mail: TEAM_MAIL
     team_abuse: TEAM_ABUSE
     team_url: TEAM_URL
+    team_site: TEAM_SITE
+    team_logo: TEAM_LOGO
     team_name: TEAM_NAME
     ngen_sign: NGEN_SIGN
     ngen_lang: NGEN_LANG
