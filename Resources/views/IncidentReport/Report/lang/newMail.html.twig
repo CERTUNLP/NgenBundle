@@ -11,29 +11,21 @@
 {% block greeting %}
     {{ 'greeting'|trans }} {{ incident.assigned }},
 {% endblock %}
-
-{% block report_message %}
-    <div class="col-lg-12">
-        {% include "CertUnlpNgenBundle:IncidentReport/Report/lang:incidentInformationMail.html.twig" with { 'object':incident } %}
-    </div>
-{% endblock %}
-
-{% block incidents_detected %}
-{% endblock %}
-{% block derivated_problem %}
-{% endblock %}
-{% block verification %}
-{% endblock %}
-{% block recomendations %}
-{% endblock %}
-{% block more_information %}
-{% endblock %}
-
-{% block footer_content %}
-    {{ 'thanks'|trans }}{{ 'farewell'|trans }}, {{ team.name }} - {{ team.url }}
-{% endblock %}
-{% block footer_generated_by %}
-
-    {{ 'firma_ngen'|trans |raw }}
-
+{% block report_content %}
+    <tr>
+    <td>
+        {% block report_message %}
+            {{ 'A new incident has been reported'|trans }}
+             <a href="{{ team.site }}{{ path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': incident.id}) }}">{{ 'Take a look'| trans }}</a>
+            <hr>
+            {% include "CertUnlpNgenBundle:IncidentReport/Report/lang:incidentInformationMail.html.twig" with { 'object':incident } %}
+            <hr>
+            {% if(report.derivatedProblem) %}
+                <h5>{{ 'Derivated problem'|trans }}:</h5>
+                {{ include(template_from_string(report.derivatedProblem))|striptags('<div>,<a>,<pre>,<code>')|raw }}
+            {% endif %}
+            <hr>
+        {% endblock %}
+    </td>
+    </tr>
 {% endblock %}

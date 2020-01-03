@@ -74,6 +74,8 @@ cert_unlp_ngen:
         abuse:  '%team_abuse%'
         url: '%team_url%'
         name: '%team_name%'
+        logo: '%team_logo%'
+        site: '%team_site%'
     incidents:
         mailer:
             transport: '%mailer_transport%'

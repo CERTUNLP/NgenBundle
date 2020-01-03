@@ -15,6 +15,7 @@ use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Entity\Network\Network;
@@ -36,7 +37,7 @@ class IncidentFactory
         $this->team = $team;
     }
 
-    public function getIncident()
+    public function getIncident($type_slug)
     {  $repository = $this->entityManager->getRepository(IncidentTlp::class);
         $newTLP = $repository->findOneBySlug('white');
         $incident = new Incident();
@@ -60,7 +61,10 @@ class IncidentFactory
         $repository = $this->entityManager->getRepository(IncidentPriority::class);
         $priority = $repository->findOneBySlug('critical');
         $incident->setPriority($priority);
-
+        $repository = $this->entityManager->getRepository(IncidentType::class);
+        $type= $repository->findOneBySlug($type_slug);
+        $incident->setType($type);
+        $incident->setId(666666666666666);
         return $incident;
 
     }
