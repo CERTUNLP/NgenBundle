@@ -8,6 +8,8 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
+use CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * IncidentDetected
@@ -112,9 +114,16 @@ class IncidentDetected
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommunication",mappedBy="ltd")
      * @JMS\Groups({"api"})
      */
+     private $communicationHistory;
 
-    private $communicationHistory;
-
+    /**
+     * @var CommunicationBehavior
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     */
+    private $communicationBehavior;
 
     public function __construct(Incident $incident, Incident $incidentFather)
     {
@@ -369,11 +378,44 @@ class IncidentDetected
     }
 
     /**
+     * @return Collection
+     */
+    public function getCommunicationHistory(): Collection
+    {
+        return $this->communicationHistory;
+    }
+
+    /**
+     * @param Collection $communicationHistory
+     */
+    public function setCommunicationHistory(Collection $communicationHistory): void
+    {
+        $this->communicationHistory = $communicationHistory;
+    }
+
+    /**
+     * @return CommunicationBehavior
+     */
+    public function getCommunicationBehavior(): CommunicationBehavior
+    {
+        return $this->communicationBehavior;
+    }
+
+    /**
+     * @param CommunicationBehavior $communicationBehavior
+     */
+    public function setCommunicationBehavior(CommunicationBehavior $communicationBehavior): void
+    {
+        $this->communicationBehavior = $communicationBehavior;
+    }
+
+    /**
      * @param mixed $notes
      */
     public function setNotes($notes): void
     {
         $this->notes = $notes;
     }
+
 
 }

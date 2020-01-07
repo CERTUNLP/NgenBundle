@@ -2,10 +2,14 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use DateTime;
+use Doctrine\Common\Collections\Collection;
+
+
 /**
  * IncidentCommunication
  *
@@ -16,7 +20,7 @@ use DateTime;
  * @ORM\DiscriminatorMap({"telegram" = "TelegramMessage", "threema" = "ThreemaMessage", "message"="Message"})
  */
 
-class IncidentCommunication
+class IncidentCommunication extends Entity
 {
     /**
      * @var integer
@@ -196,7 +200,21 @@ class IncidentCommunication
         $this->ltd = $ltd;
     }
 
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'th';
+    }
 
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'primary';
+    }
 
     }
 
