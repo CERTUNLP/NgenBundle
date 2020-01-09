@@ -2,6 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior;
 use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\Network\Network;
@@ -134,9 +135,23 @@ class IncidentDecision extends Entity
     private $isActive = true;
 
     /**
-     * @return string
+     * Many Users have Many Groups.
+     * @ORM\ManyToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinTable(name="decisions_communication_behavior",
+     *      joinColumns={@ORM\JoinColumn(name="decision_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="behavior_slug", referencedColumnName="slug")}
+     *      )
      */
-    public function getIcon(): string
+
+
+     private $communicationBehavior;
+
+public function __construct()
+{
+  $this->communicationBehavior=$this->get('cert_unlp.ngen.incident.communication.behavior.factory')->getTemplate();
+}
+
+public function getIcon(): string
     {
         return 'question-circle';
     }
@@ -446,6 +461,20 @@ class IncidentDecision extends Entity
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCommunicationBehavior()
+    {
+        return $this->communicationBehavior;
+    }
 
+    /**
+     * @param mixed $communicationBehavior
+     */
+    public function setCommunicationBehavior($communicationBehavior): void
+    {
+        $this->communicationBehavior = $communicationBehavior;
+    }
 }
 

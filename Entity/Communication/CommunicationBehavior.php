@@ -64,39 +64,17 @@ class CommunicationBehavior extends Entity
 
     /**
      * @var string
-     * @ORM\Column(name="inNew", type="string", columnDefinition="ENUM('manual','file','data', 'all')"))
+     * @ORM\Column(name="type", type="string", columnDefinition="ENUM('new','open','update', 'summary')"))
      * @JMS\Expose
      */
-    private $in_new='manual';
+    private $type='manual';
 
     /**
      * @var string
-     * @ORM\Column(name="inOpen", type="string", columnDefinition="ENUM('manual','file','data', 'all')"))
+     * @ORM\Column(name="mode", type="string", columnDefinition="ENUM('manual','file','data', 'all')"))
      * @JMS\Expose
      */
-    private $in_open='all';
-
-    /**
-     * @var string
-     * @ORM\Column(name="inUpdate", type="string", columnDefinition="ENUM('manual','file','data', 'all')"))
-     * @JMS\Expose
-     */
-    private $in_update='all';
-
-
-    /**
-     * @var string
-     * @ORM\Column(name="inSummary", type="string", columnDefinition="ENUM('manual','file','data', 'all')"))
-     * @JMS\Expose
-     */
-    private $in_summary='manual';
-
-    /**
-     * @var string
-     * @ORM\Column(name="whenToUpdate", type="string", columnDefinition="ENUM('daily','live', 'manual')")
-     * @JMS\Expose
-     */
-    private $when_to_update= "manual";
+    private $mode='all';
 
     /**
      * @return string
@@ -181,82 +159,35 @@ class CommunicationBehavior extends Entity
     /**
      * @return string
      */
-    public function getInNew(): string
+    public function getType(): string
     {
-        return $this->in_new;
+        return $this->type;
     }
 
     /**
-     * @param string $in_new
+     * @param string $type
      */
-    public function setInNew(string $in_new): void
+    public function setType(string $type): void
     {
-        $this->in_new = $in_new;
-    }
-
-    /**
-     * @return string
-     */
-    public function getInOpen(): string
-    {
-        return $this->in_open;
-    }
-
-    /**
-     * @param string $in_open
-     */
-    public function setInOpen(string $in_open): void
-    {
-        $this->in_open = $in_open;
+        $this->type = $type;
     }
 
     /**
      * @return string
      */
-    public function getInUpdate(): string
+    public function getMode(): string
     {
-        return $this->in_update;
+        return $this->mode;
     }
 
     /**
-     * @param string $in_update
+     * @param string $mode
      */
-    public function setInUpdate(string $in_update): void
+    public function setMode(string $mode): void
     {
-        $this->in_update = $in_update;
+        $this->mode = $mode;
     }
 
-    /**
-     * @return string
-     */
-    public function getInSummary(): string
-    {
-        return $this->in_summary;
-    }
-
-    /**
-     * @param string $in_summary
-     */
-    public function setInSummary(string $in_summary): void
-    {
-        $this->in_summary = $in_summary;
-    }
-
-    /**
-     * @return string
-     */
-    public function getWhenToUpdate(): string
-    {
-        return $this->when_to_update;
-    }
-
-    /**
-     * @param string $when_to_update
-     */
-    public function setWhenToUpdate(string $when_to_update): void
-    {
-        $this->when_to_update = $when_to_update;
-    }
 
     /**
      * @return string
