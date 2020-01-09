@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Form;
 
+use CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentImpact;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
@@ -27,6 +28,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class IncidentDecisionType extends AbstractType
 {
@@ -110,6 +112,20 @@ class IncidentDecisionType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
+            ->add('communicationBehavior', CollectionType::class,
+                array(
+                    'entry_options' => array('label' => false),
+                    'entry_type' => CommunicationBehaviorType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'prototype' => true,
+                    'required' => false,
+                    'by_reference' => false,
+                    'delete_empty' => true,
+                    'attr' => array(
+                        'class' => 'communication-behavior',
+                    ),
+                ))
             ->add('id', HiddenType::class)
             ->add('save', SubmitType::class, array(
                 'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),

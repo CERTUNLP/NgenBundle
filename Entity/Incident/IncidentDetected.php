@@ -5,6 +5,7 @@ namespace CertUnlp\NgenBundle\Entity\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -117,13 +118,19 @@ class IncidentDetected
      private $communicationHistory;
 
     /**
-     * @var CommunicationBehavior
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
-     * @ORM\JoinColumn(name="communication_behavior", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @var ArrayCollection
      */
     private $communicationBehavior;
+
+    /**  /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="when_to_update", type="datetime",nullable=true)
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
+     */
+    private $whenToUpdate;
 
     public function __construct(Incident $incident, Incident $incidentFather)
     {
@@ -142,7 +149,7 @@ class IncidentDetected
         $this->setState($incident->getState());
         $this->setTlp($incident->getTlp());
         $this->setPriority($incident->getPriority());
-
+       // $this->setCommunicationBehavior();
     }
 
     /**
@@ -417,5 +424,21 @@ class IncidentDetected
         $this->notes = $notes;
     }
 
+    /**
+     * @return Date
+     */
+
+    public function getWhenToUpdate(): Date
+    {
+        return $this->whenToUpdate;
+    }
+
+    /**
+     * @param Date $when_to_update
+     */
+    public function setWhenToUpdate(string $when_to_update): void
+    {
+        $this->whenToUpdate= $when_to_update;
+    }
 
 }

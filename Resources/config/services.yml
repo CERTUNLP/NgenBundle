@@ -17,10 +17,13 @@ services:
         class: CertUnlp\NgenBundle\Doctrine\EntityListenerResolver
         arguments: [ "@service_container" ]
 
-
     cert_unlp.ngen.incident.factory:
         class:        CertUnlp\NgenBundle\Services\IncidentFactory
         arguments:    [ "@doctrine.orm.entity_manager","@security.context","%cert_unlp.ngen.team%"]
+
+    cert_unlp.ngen.communication.behavior.factory:
+        class:        CertUnlp\NgenBundle\Services\CommunicationBehaviorFactory
+        arguments:    [ "@doctrine.orm.entity_manager","@security.context"]
 
     cert_unlp.ngen.incident.report.factory:
         class:     CertUnlp\NgenBundle\Services\IncidentReportFactory
