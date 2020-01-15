@@ -5,7 +5,7 @@ namespace CertUnlp\NgenBundle\Entity\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -117,20 +117,59 @@ class IncidentDetected
      */
      private $communicationHistory;
 
-    /**
-     * @var ArrayCollection
-     */
-    private $communicationBehavior;
+    private $communicationBehaviorNew;
 
-    /**  /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="when_to_update", type="datetime",nullable=true)
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
+    /**
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_update", referencedColumnName="slug")
+     * @JMS\Expose()
      */
-    private $whenToUpdate;
+
+    private $communicationBehaviorUpdate;
+
+    /**
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_open", referencedColumnName="slug")
+     * @JMS\Expose()
+     */
+
+    private $communicationBehaviorOpen;
+
+    /**
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_summary", referencedColumnName="slug")
+     * @JMS\Expose()
+     */
+
+    private $communicationBehaviorSummary;
+    /**
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_close", referencedColumnName="slug")
+     * @JMS\Expose()
+     */
+
+    private $communicationBehaviorClose;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="when_to_update", type="string", length=100)
+     * @JMS\Expose
+     * @JMS\Groups({"api_input"})
+     * @Gedmo\Translatable
+     */
+    private $whenToUpdate="now";
+
+    /**
+     * @var array|null
+     *
+     * @ORM\Column(name="intelmq_data", type="json_array")
+     */
+    private $intelmqData;
 
     public function __construct(Incident $incident, Incident $incidentFather)
     {
@@ -144,12 +183,21 @@ class IncidentDetected
         if ($incident->getEvidenceFilePath() && $incident->getEvidenceFile()) {
             $this->setEvidenceFilePath($incidentFather->getEvidenceSubDirectory() . $incident->getEvidenceFilePath());
         }
+        if($incident->getIntelmqData()){
+            $this->setIntelmqData($incident->getIntelmqData());
+        }
         $this->setNotes($incident->getTemporalNotes());
         $this->setReporter($incident->getReporter());
         $this->setState($incident->getState());
         $this->setTlp($incident->getTlp());
         $this->setPriority($incident->getPriority());
-       // $this->setCommunicationBehavior();
+        $this->setCommunicationBehaviorNew($incident->getComm);
+        $this->setCommunicationBehaviorOpen();
+        $this->setCommunicationBehaviorUpdate();
+        $this->setCommunicationBehaviorSummary();
+        $this->setCommunicationBehaviorClose();
+        $this->setWhenToUpdate();
+
     }
 
     /**
@@ -401,22 +449,6 @@ class IncidentDetected
     }
 
     /**
-     * @return CommunicationBehavior
-     */
-    public function getCommunicationBehavior(): CommunicationBehavior
-    {
-        return $this->communicationBehavior;
-    }
-
-    /**
-     * @param CommunicationBehavior $communicationBehavior
-     */
-    public function setCommunicationBehavior(CommunicationBehavior $communicationBehavior): void
-    {
-        $this->communicationBehavior = $communicationBehavior;
-    }
-
-    /**
      * @param mixed $notes
      */
     public function setNotes($notes): void
@@ -425,20 +457,115 @@ class IncidentDetected
     }
 
     /**
-     * @return Date
+     * @return mixed
      */
+    public function getCommunicationBehaviorNew()
+    {
+        return $this->communicationBehaviorNew;
+    }
 
-    public function getWhenToUpdate(): Date
+    /**
+     * @param mixed $communicationBehaviorNew
+     */
+    public function setCommunicationBehaviorNew($communicationBehaviorNew): void
+    {
+        $this->communicationBehaviorNew = $communicationBehaviorNew;
+    }
+
+    /**
+     * @return CommunicationBehavior|null
+     */
+    public function getCommunicationBehaviorUpdate(): ?CommunicationBehavior
+    {
+        return $this->communicationBehaviorUpdate;
+    }
+
+    /**
+     * @param CommunicationBehavior|null $communicationBehaviorUpdate
+     */
+    public function setCommunicationBehaviorUpdate(?CommunicationBehavior $communicationBehaviorUpdate): void
+    {
+        $this->communicationBehaviorUpdate = $communicationBehaviorUpdate;
+    }
+
+    /**
+     * @return CommunicationBehavior|null
+     */
+    public function getCommunicationBehaviorOpen(): ?CommunicationBehavior
+    {
+        return $this->communicationBehaviorOpen;
+    }
+
+    /**
+     * @param CommunicationBehavior|null $communicationBehaviorOpen
+     */
+    public function setCommunicationBehaviorOpen(?CommunicationBehavior $communicationBehaviorOpen): void
+    {
+        $this->communicationBehaviorOpen = $communicationBehaviorOpen;
+    }
+
+    /**
+     * @return CommunicationBehavior|null
+     */
+    public function getCommunicationBehaviorSummary(): ?CommunicationBehavior
+    {
+        return $this->communicationBehaviorSummary;
+    }
+
+    /**
+     * @param CommunicationBehavior|null $communicationBehaviorSummary
+     */
+    public function setCommunicationBehaviorSummary(?CommunicationBehavior $communicationBehaviorSummary): void
+    {
+        $this->communicationBehaviorSummary = $communicationBehaviorSummary;
+    }
+
+    /**
+     * @return CommunicationBehavior|null
+     */
+    public function getCommunicationBehaviorClose(): ?CommunicationBehavior
+    {
+        return $this->communicationBehaviorClose;
+    }
+
+    /**
+     * @param CommunicationBehavior|null $communicationBehaviorClose
+     */
+    public function setCommunicationBehaviorClose(?CommunicationBehavior $communicationBehaviorClose): void
+    {
+        $this->communicationBehaviorClose = $communicationBehaviorClose;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWhenToUpdate(): string
     {
         return $this->whenToUpdate;
     }
 
     /**
-     * @param Date $when_to_update
+     * @param string $whenToUpdate
      */
-    public function setWhenToUpdate(string $when_to_update): void
+    public function setWhenToUpdate(string $whenToUpdate): void
     {
-        $this->whenToUpdate= $when_to_update;
+        $this->whenToUpdate = $whenToUpdate;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getIntelmqData(): ?array
+    {
+        return $this->intelmqData;
+    }
+
+    /**
+     * @param array|null $intelmqData
+     */
+    public function setIntelmqData(?array $intelmqData): void
+    {
+        $this->intelmqData = $intelmqData;
     }
 
 }

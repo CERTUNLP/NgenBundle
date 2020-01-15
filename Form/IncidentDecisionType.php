@@ -18,9 +18,12 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\Network\Network;
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -112,20 +115,70 @@ class IncidentDecisionType extends AbstractType
                     return $er->createQueryBuilder('it')
                         ->where('it.isActive = TRUE');
                 }))
-            ->add('communicationBehavior', CollectionType::class,
-                array(
-                    'entry_options' => array('label' => false),
-                    'entry_type' => CommunicationBehaviorType::class,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'prototype' => true,
-                    'required' => false,
-                    'by_reference' => false,
-                    'delete_empty' => true,
-                    'attr' => array(
-                        'class' => 'communication-behavior',
-                    ),
-                ))
+            ->add('communicationBehaviorNew', EntityType::class, array(
+                'class' => CommunicationBehavior::class,
+                'empty_value' => 'Choose an behavior',
+                'description' => "(manual| Only text| Only files|All).",
+                'query_builder' => static function (EntityRepository $er) {
+                    return $er->createQueryBuilder('it')
+                        ->where('it.isActive = TRUE');
+                }
+            ))
+            ->add('communicationBehaviorOpen', EntityType::class, array(
+                'class' => CommunicationBehavior::class,
+                'empty_value' => 'Choose an behavior',
+                'description' => "(manual| Only text| Only files|All).",
+                'query_builder' => static function (EntityRepository $er) {
+                    return $er->createQueryBuilder('it')
+                        ->where('it.isActive = TRUE');
+                }
+            ))
+            ->add('communicationBehaviorUpdate', EntityType::class, array(
+                'class' => CommunicationBehavior::class,
+                'empty_value' => 'Choose an behavior',
+                'description' => "(manual| Only text| Only files|All).",
+                'query_builder' => static function (EntityRepository $er) {
+                    return $er->createQueryBuilder('it')
+                        ->where('it.isActive = TRUE');
+                }
+            ))
+            ->add('communicationBehaviorSummary', EntityType::class, array(
+                'class' => CommunicationBehavior::class,
+                'empty_value' => 'Choose an behavior',
+                'description' => "(manual| Only text| Only files|All).",
+                'query_builder' => static function (EntityRepository $er) {
+                    return $er->createQueryBuilder('it')
+                        ->where('it.isActive = TRUE');
+                }
+            ))
+            ->add('communicationBehaviorClose', EntityType::class, array(
+                'class' => CommunicationBehavior::class,
+                'empty_value' => 'Choose an behavior',
+                'description' => "(manual| Only text| Only files|All).",
+                'query_builder' => static function (EntityRepository $er) {
+                    return $er->createQueryBuilder('it')
+                        ->where('it.isActive = TRUE');
+                }
+            ))
+            ->add('whenToUpdate', DateTimeType::class, array(
+                'required' => false,
+                'html5' => true,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'data' => new DateTime(),
+                'attr' => array('class' => 'incidentDataFilter', 'type' => 'datetime-local', 'help_text' => 'If no date is selected, the date will be today.'),
+            ))
+            ->add('whenToUpdate', ChoiceType::class, array(
+                'choices' => array(
+                    'Live' => 'live',
+                    'Daily' => 'Daily',
+                    'Weekly' => 'Weekly',
+
+                ),
+                'required' => true,
+                'choices_as_values' => true
+            ))
+
             ->add('id', HiddenType::class)
             ->add('save', SubmitType::class, array(
                 'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),

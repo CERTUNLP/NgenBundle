@@ -297,10 +297,42 @@ class Incident extends Entity
      */
     private $address;
 
+    // Todas estas variables son para solucionar las decisiones aplicadas a los incidentDetected
+    /**
+     * @var string|null
+     */
+    private $communicationBehaviorNew;
+    /**
+     * @var string|null
+     */
+    private $communicationBehaviorUpdate;
+    /**
+     * @var string|null
+     */
+    private $communicationBehaviorOpen;
+    /**
+     * @var string|null
+     */
+    private $communicationBehaviorSummary;
+    /**
+     * @var string|null
+     */
+    private $communicationBehaviorClose;
+    /**
+     * @var string|null
+     */
+    private $whenToUpdate="now";
+    /**
+     * @var array|null
+     */
+    private $intelmqData;
+
     /**
      * Incident constructor.
      * @param string|null $term
      */
+
+
     public function __construct(string $term = null)
     {
         if ($term) {
@@ -1633,5 +1665,118 @@ class Incident extends Entity
         $this->setter($this->type, $type, true);
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getCommunicationBehaviorNew(): ?string
+    {
+        return $this->communicationBehaviorNew;
+    }
+
+    /**
+     * @param string|null $communicationBehaviorNew
+     */
+    public function setCommunicationBehaviorNew(?string $communicationBehaviorNew): void
+    {
+        $this->communicationBehaviorNew = $communicationBehaviorNew;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCommunicationBehaviorUpdate(): ?string
+    {
+        return $this->communicationBehaviorUpdate;
+    }
+
+    /**
+     * @param string|null $communicationBehaviorUpdate
+     */
+    public function setCommunicationBehaviorUpdate(?string $communicationBehaviorUpdate): void
+    {
+        $this->communicationBehaviorUpdate = $communicationBehaviorUpdate;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCommunicationBehaviorOpen(): ?string
+    {
+        return $this->communicationBehaviorOpen;
+    }
+
+    /**
+     * @param string|null $communicationBehaviorOpen
+     */
+    public function setCommunicationBehaviorOpen(?string $communicationBehaviorOpen): void
+    {
+        $this->communicationBehaviorOpen = $communicationBehaviorOpen;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCommunicationBehaviorSummary(): ?string
+    {
+        return $this->communicationBehaviorSummary;
+    }
+
+    /**
+     * @param string|null $communicationBehaviorSummary
+     */
+    public function setCommunicationBehaviorSummary(?string $communicationBehaviorSummary): void
+    {
+        $this->communicationBehaviorSummary = $communicationBehaviorSummary;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCommunicationBehaviorClose(): ?string
+    {
+        return $this->communicationBehaviorClose;
+    }
+
+    /**
+     * @param string|null $communicationBehaviorClose
+     */
+    public function setCommunicationBehaviorClose(?string $communicationBehaviorClose): void
+    {
+        $this->communicationBehaviorClose = $communicationBehaviorClose;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getWhenToUpdate(): ?string
+    {
+        return $this->whenToUpdate;
+    }
+
+    /**
+     * @param string|null $whenToUpdate
+     */
+    public function setWhenToUpdate(?string $whenToUpdate): void
+    {
+        $this->whenToUpdate = $whenToUpdate;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getIntelmqData(): ?array
+    {
+        return $this->intelmqData;
+    }
+
+    /**
+     * @param array|null $intelmqData
+     */
+    public function setIntelmqData(?array $intelmqData): void
+    {
+        $this->intelmqData = $intelmqData;
+    }
+
 
 }
