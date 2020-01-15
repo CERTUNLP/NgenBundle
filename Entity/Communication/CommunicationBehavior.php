@@ -5,6 +5,7 @@ namespace CertUnlp\NgenBundle\Entity\Communication;
 use CertUnlp\NgenBundle\Entity\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Translatable\Translatable;
 use JMS\Serializer\Annotation as JMS;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -18,22 +19,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="communication_behavior")
  */
 
-class CommunicationBehavior extends Entity
+class CommunicationBehavior extends Entity implements Translatable
 {
- /**
- * @var string
- *
- * @ORM\Column(name="name", type="string", length=100)
- * @JMS\Expose
- * @JMS\Groups({"api_input"})
- * @Gedmo\Translatable
- */
-    private $name;
 
-    /**
+     /**
      * @var string
      * @ORM\Id
-     * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
      * @JMS\Expose
      * @JMS\Groups({"api_input"})
@@ -64,33 +55,10 @@ class CommunicationBehavior extends Entity
 
     /**
      * @var string
-     * @ORM\Column(name="type", type="string", columnDefinition="ENUM('new','open','update', 'summary')"))
-     * @JMS\Expose
-     */
-    private $type='manual';
-
-    /**
-     * @var string
      * @ORM\Column(name="mode", type="string", columnDefinition="ENUM('manual','file','data', 'all')"))
      * @JMS\Expose
      */
     private $mode='all';
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
 
     /**
      * @return string
@@ -159,22 +127,6 @@ class CommunicationBehavior extends Entity
     /**
      * @return string
      */
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     */
-    public function setType(string $type): void
-    {
-        $this->type = $type;
-    }
-
-    /**
-     * @return string
-     */
     public function getMode(): string
     {
         return $this->mode;
@@ -203,5 +155,9 @@ class CommunicationBehavior extends Entity
     public function getColor(): string
     {
         return 'primary';
+    }
+    public function __toString()
+    {
+        return $this->getMode();
     }
 }

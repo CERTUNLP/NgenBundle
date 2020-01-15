@@ -135,21 +135,58 @@ class IncidentDecision extends Entity
     private $isActive = true;
 
     /**
-     * Many Users have Many Groups.
-     * @ORM\ManyToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
-     * @ORM\JoinTable(name="decisions_communication_behavior",
-     *      joinColumns={@ORM\JoinColumn(name="decision_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="behavior_slug", referencedColumnName="slug")}
-     *      )
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_new", referencedColumnName="slug")
+     * @JMS\Expose()
      */
 
+     private $communicationBehaviorNew;
 
-     private $communicationBehavior;
+    /**
+    * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_update", referencedColumnName="slug")
+     * @JMS\Expose()
+     */
 
-public function __construct()
-{
-  $this->communicationBehavior=$this->get('cert_unlp.ngen.incident.communication.behavior.factory')->getTemplate();
-}
+     private $communicationBehaviorUpdate;
+
+/**
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_open", referencedColumnName="slug")
+     * @JMS\Expose()
+     */
+
+     private $communicationBehaviorOpen;
+
+/**
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_summary", referencedColumnName="slug")
+     * @JMS\Expose()
+     */
+
+     private $communicationBehaviorSummary;
+    /**
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_close", referencedColumnName="slug")
+     * @JMS\Expose()
+     */
+
+     private $communicationBehaviorClose;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="when_to_update", type="string", length=100)
+     * @JMS\Expose
+     * @JMS\Groups({"api_input"})
+     * @Gedmo\Translatable
+     */
+    private $whenToUpdate="now";
 
 public function getIcon(): string
     {
@@ -462,19 +499,101 @@ public function getIcon(): string
     }
 
     /**
-     * @return mixed
+     * @return CommunicationBehavior|null
      */
-    public function getCommunicationBehavior()
+    public function getCommunicationBehaviorNew(): ?CommunicationBehavior
     {
-        return $this->communicationBehavior;
+        return $this->communicationBehaviorNew;
     }
 
     /**
-     * @param mixed $communicationBehavior
+     * @param CommunicationBehavior|null $communicationBehaviorNew
      */
-    public function setCommunicationBehavior($communicationBehavior): void
+    public function setCommunicationBehaviorNew(?CommunicationBehavior $communicationBehaviorNew): void
     {
-        $this->communicationBehavior = $communicationBehavior;
+        $this->communicationBehaviorNew = $communicationBehaviorNew;
     }
+
+    /**
+     * @return CommunicationBehavior|null
+     */
+    public function getCommunicationBehaviorUpdate(): ?CommunicationBehavior
+    {
+        return $this->communicationBehaviorUpdate;
+    }
+
+    /**
+     * @param CommunicationBehavior|null $communicationBehaviorUpdate
+     */
+    public function setCommunicationBehaviorUpdate(?CommunicationBehavior $communicationBehaviorUpdate): void
+    {
+        $this->communicationBehaviorUpdate = $communicationBehaviorUpdate;
+    }
+
+    /**
+     * @return CommunicationBehavior|null
+     */
+    public function getCommunicationBehaviorOpen(): ?CommunicationBehavior
+    {
+        return $this->communicationBehaviorOpen;
+    }
+
+    /**
+     * @param CommunicationBehavior|null $communicationBehaviorOpen
+     */
+    public function setCommunicationBehaviorOpen(?CommunicationBehavior $communicationBehaviorOpen): void
+    {
+        $this->communicationBehaviorOpen = $communicationBehaviorOpen;
+    }
+
+    /**
+     * @return CommunicationBehavior|null
+     */
+    public function getCommunicationBehaviorSummary(): ?CommunicationBehavior
+    {
+        return $this->communicationBehaviorSummary;
+    }
+
+    /**
+     * @param CommunicationBehavior|null $communicationBehaviorSummary
+     */
+    public function setCommunicationBehaviorSummary(?CommunicationBehavior $communicationBehaviorSummary): void
+    {
+        $this->communicationBehaviorSummary = $communicationBehaviorSummary;
+    }
+
+    /**
+     * @return CommunicationBehavior|null
+     */
+    public function getCommunicationBehaviorClose(): ?CommunicationBehavior
+    {
+        return $this->communicationBehaviorClose;
+    }
+
+    /**
+     * @param CommunicationBehavior|null $communicationBehaviorClose
+     */
+    public function setCommunicationBehaviorClose(?CommunicationBehavior $communicationBehaviorClose): void
+    {
+        $this->communicationBehaviorClose = $communicationBehaviorClose;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWhenToUpdate(): ? string
+    {
+        return $this->whenToUpdate;
+    }
+
+    /**
+     * @param string $whenToUpdate
+     */
+    public function setWhenToUpdate(string $whenToUpdate): void
+    {
+        $this->whenToUpdate = $whenToUpdate;
+    }
+
+
 }
 
