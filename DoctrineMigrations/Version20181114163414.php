@@ -18,7 +18,9 @@ class Version20181114163414 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE incident_decision ADD auto_saved TINYINT(1) NOT NULL, ADD is_active TINYINT(1) NOT NULL, DROP autoSaved, CHANGE created_at created_at DATETIME NOT NULL, CHANGE updated_at updated_at DATETIME NOT NULL');
+        $this->addSql('ALTER TABLE incident_decision ADD auto_saved TINYINT(1) NOT NULL DEFAULT  0, ADD is_active TINYINT(1) NOT NULL DEFAULT 1, DROP autoSaved, CHANGE created_at created_at DATETIME NOT NULL DEFAULT NOW(), CHANGE updated_at updated_at DATETIME NOT NULL DEFAULT NOW()');
+        $this->addSql("INSERT INTO incident_decision (`type`, `feed`, `impact`, `urgency`, `tlp`, `state`,`is_active`) VALUES ('undefined', 'undefined', 'low', 'low', 'green', 'undefined',1)");
+
     }
 
     /**
