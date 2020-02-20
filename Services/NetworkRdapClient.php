@@ -41,14 +41,18 @@ class NetworkRdapClient extends RdapClient
 
     public function findByIp(string $ip): ?NetworkRdap
     {
+        $response = $this->requestIp($ip);
+        if ($response) {
 
-        $this->setResponse($this->requestIp($ip));
-        $network = new NetworkRdap($this->getStartAddress() . '/' . $this->getCidrMask());
-        $this->seachForAbuseEntities();
-        $network->setNetworkAdmin($this->getNetworkAdmin());
-        $network->setNetworkEntity($this->getNetworkEntity());
-        $network->setCountryCode($this->getCountry());
-        return $network;
+            $this->setResponse($this->requestIp($ip));
+            $network = new NetworkRdap($this->getStartAddress() . '/' . $this->getCidrMask());
+            $this->seachForAbuseEntities();
+            $network->setNetworkAdmin($this->getNetworkAdmin());
+            $network->setNetworkEntity($this->getNetworkEntity());
+            $network->setCountryCode($this->getCountry());
+            return $network;
+        }
+        return null;
     }
 
     /**
