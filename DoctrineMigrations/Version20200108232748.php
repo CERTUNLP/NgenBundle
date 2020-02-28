@@ -21,8 +21,7 @@ class Version20200108232748 extends AbstractMigration
 
         $this->addSql('CREATE TABLE communication_behavior (slug VARCHAR(100) NOT NULL, name VARCHAR(100) NOT NULL, is_active TINYINT(1) NOT NULL, description VARCHAR(250) DEFAULT NULL, created_at DATETIME NOT NULL, inNew ENUM(\'manual\',\'file\',\'data\', \'all\'), inOpen ENUM(\'manual\',\'file\',\'data\', \'all\'), inUpdate ENUM(\'manual\',\'file\',\'data\', \'all\'), inSummary ENUM(\'manual\',\'file\',\'data\', \'all\'), PRIMARY KEY(slug)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE incident_detected ADD when_to_update DATETIME DEFAULT NULL');
-
-       $this->addSql('ALTER TABLE incident_detected ADD CONSTRAINT FK_F9976331B060C973 FOREIGN KEY (communication_behavior) REFERENCES communication_behavior (slug)');
+        $this->addSql('ALTER TABLE incident_type DROP FOREIGN KEY FK_66D22096E371859C');
         $this->addSql('ALTER TABLE incident_type CHANGE taxonomyValue taxonomyValue VARCHAR(100) DEFAULT NULL');
     }
 

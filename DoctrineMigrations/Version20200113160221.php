@@ -17,6 +17,7 @@ class Version20200113160221 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->connection->getDatabasePlatform()->registerDoctrineTypeMapping('ENUM', 'string');
 
         $this->addSql('DROP TABLE decisions_communication_behavior');
         $this->addSql('ALTER TABLE communication_behavior CHANGE type type ENUM(\'new\',\'open\',\'update\', \'summary\'), CHANGE mode mode ENUM(\'manual\',\'file\',\'data\', \'all\')');

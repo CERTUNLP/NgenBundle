@@ -17,9 +17,10 @@ class Version20200114152627 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->connection->getDatabasePlatform()->registerDoctrineTypeMapping('ENUM', 'string');
 
         $this->addSql('ALTER TABLE communication_behavior DROP type, CHANGE mode mode ENUM(\'manual\',\'file\',\'data\', \'all\')');
-        $this->addSql('ALTER TABLE incident_decision CHANGE when_to_update when_to_update VARCHAR(100) NOT NULL');
+        $this->addSql('ALTER TABLE incident_decision CHANGE when_to_update when_to_update VARCHAR(100)');
         $this->addSql('ALTER TABLE communication_behavior DROP COLUMN name');
         $this->addSql("INSERT INTO `communication_behavior` VALUES ('all',1,NULL,'2020-01-09 17:56:34','all'),('data',1,NULL,'2020-01-09 17:56:34','data'),('file',1,NULL,'2020-01-09 17:56:34','file'),('manual',1,NULL,'2020-01-09 17:56:34','manual')");
         $this->addSql('update incident_decision set communication_behavior_close="all", communication_behavior_new="all", communication_behavior_open="all",communication_behavior_summary="all",communication_behavior_update="all",when_to_update="live"');

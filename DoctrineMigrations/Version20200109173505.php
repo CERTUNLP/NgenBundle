@@ -19,9 +19,6 @@ class Version20200109173505 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE communication_behavior ADD type ENUM(\'new\',\'open\',\'update\', \'summary\'), ADD mode ENUM(\'manual\',\'file\',\'data\', \'all\'), DROP inNew, DROP inOpen, DROP inUpdate, DROP inSummary');
-        $this->addSql('ALTER TABLE incident_detected DROP FOREIGN KEY FK_F9976331B060C973');
-        $this->addSql('DROP INDEX IDX_F9976331B060C973 ON incident_detected');
-        $this->addSql('ALTER TABLE incident_detected DROP communication_behavior');
         $this->addSql('ALTER TABLE incident_type ADD CONSTRAINT FK_66D22096E371859C FOREIGN KEY (taxonomyValue) REFERENCES taxonomy_value (slug)');
         $this->addSql('CREATE INDEX IDX_66D22096E371859C ON incident_type (taxonomyValue)');
         $this->addSql("INSERT INTO `communication_behavior` (`slug`, `name`, `is_active`, `created_at`, `type`, `mode`) VALUES ('new_manual', 'new-manual', true, NOW(), 'new', 'manual')");
