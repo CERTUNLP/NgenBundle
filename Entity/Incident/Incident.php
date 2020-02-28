@@ -297,31 +297,53 @@ class Incident extends Entity
      */
     private $address;
 
-    // Todas estas variables son para solucionar las decisiones aplicadas a los incidentDetected
-    /**
-     * @var string|null
-     */
     private $communicationBehaviorNew;
+
     /**
-     * @var string|null
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_update", referencedColumnName="slug")
+     * @JMS\Expose()
      */
+
     private $communicationBehaviorUpdate;
+
     /**
-     * @var string|null
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_open", referencedColumnName="slug")
+     * @JMS\Expose()
      */
+
     private $communicationBehaviorOpen;
+
     /**
-     * @var string|null
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_summary", referencedColumnName="slug")
+     * @JMS\Expose()
      */
+
     private $communicationBehaviorSummary;
     /**
-     * @var string|null
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_close", referencedColumnName="slug")
+     * @JMS\Expose()
      */
+
     private $communicationBehaviorClose;
+
     /**
-     * @var string|null
+     * @var string
+     *
+     * @ORM\Column(name="when_to_update", type="string", length=100)
+     * @JMS\Expose
+     * @JMS\Groups({"api_input"})
+     * @Gedmo\Translatable
      */
     private $whenToUpdate="now";
+
     /**
      * @var array|null
      */
@@ -1665,99 +1687,98 @@ class Incident extends Entity
         $this->setter($this->type, $type, true);
         return $this;
     }
-
     /**
-     * @return string|null
+     * @return mixed
      */
-    public function getCommunicationBehaviorNew(): ?string
+    public function getCommunicationBehaviorNew()
     {
         return $this->communicationBehaviorNew;
     }
 
     /**
-     * @param string|null $communicationBehaviorNew
+     * @param mixed $communicationBehaviorNew
      */
-    public function setCommunicationBehaviorNew(?string $communicationBehaviorNew): void
+    public function setCommunicationBehaviorNew($communicationBehaviorNew): void
     {
         $this->communicationBehaviorNew = $communicationBehaviorNew;
     }
 
     /**
-     * @return string|null
+     * @return CommunicationBehavior|null
      */
-    public function getCommunicationBehaviorUpdate(): ?string
+    public function getCommunicationBehaviorUpdate(): ?CommunicationBehavior
     {
         return $this->communicationBehaviorUpdate;
     }
 
     /**
-     * @param string|null $communicationBehaviorUpdate
+     * @param CommunicationBehavior|null $communicationBehaviorUpdate
      */
-    public function setCommunicationBehaviorUpdate(?string $communicationBehaviorUpdate): void
+    public function setCommunicationBehaviorUpdate(?CommunicationBehavior $communicationBehaviorUpdate): void
     {
         $this->communicationBehaviorUpdate = $communicationBehaviorUpdate;
     }
 
     /**
-     * @return string|null
+     * @return CommunicationBehavior|null
      */
-    public function getCommunicationBehaviorOpen(): ?string
+    public function getCommunicationBehaviorOpen(): ?CommunicationBehavior
     {
         return $this->communicationBehaviorOpen;
     }
 
     /**
-     * @param string|null $communicationBehaviorOpen
+     * @param CommunicationBehavior|null $communicationBehaviorOpen
      */
-    public function setCommunicationBehaviorOpen(?string $communicationBehaviorOpen): void
+    public function setCommunicationBehaviorOpen(?CommunicationBehavior $communicationBehaviorOpen): void
     {
         $this->communicationBehaviorOpen = $communicationBehaviorOpen;
     }
 
     /**
-     * @return string|null
+     * @return CommunicationBehavior|null
      */
-    public function getCommunicationBehaviorSummary(): ?string
+    public function getCommunicationBehaviorSummary(): ?CommunicationBehavior
     {
         return $this->communicationBehaviorSummary;
     }
 
     /**
-     * @param string|null $communicationBehaviorSummary
+     * @param CommunicationBehavior|null $communicationBehaviorSummary
      */
-    public function setCommunicationBehaviorSummary(?string $communicationBehaviorSummary): void
+    public function setCommunicationBehaviorSummary(?CommunicationBehavior $communicationBehaviorSummary): void
     {
         $this->communicationBehaviorSummary = $communicationBehaviorSummary;
     }
 
     /**
-     * @return string|null
+     * @return CommunicationBehavior|null
      */
-    public function getCommunicationBehaviorClose(): ?string
+    public function getCommunicationBehaviorClose(): ?CommunicationBehavior
     {
         return $this->communicationBehaviorClose;
     }
 
     /**
-     * @param string|null $communicationBehaviorClose
+     * @param CommunicationBehavior|null $communicationBehaviorClose
      */
-    public function setCommunicationBehaviorClose(?string $communicationBehaviorClose): void
+    public function setCommunicationBehaviorClose(?CommunicationBehavior $communicationBehaviorClose): void
     {
         $this->communicationBehaviorClose = $communicationBehaviorClose;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getWhenToUpdate(): ?string
+    public function getWhenToUpdate(): string
     {
         return $this->whenToUpdate;
     }
 
     /**
-     * @param string|null $whenToUpdate
+     * @param string $whenToUpdate
      */
-    public function setWhenToUpdate(?string $whenToUpdate): void
+    public function setWhenToUpdate(string $whenToUpdate): void
     {
         $this->whenToUpdate = $whenToUpdate;
     }

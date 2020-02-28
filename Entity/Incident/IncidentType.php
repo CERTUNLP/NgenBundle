@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
 use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\Incident\Report\IncidentReport;
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;

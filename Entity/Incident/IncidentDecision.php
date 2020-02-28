@@ -253,6 +253,12 @@ public function getIcon(): string
         $incident->getUrgency() ?: $incident->setUrgency($this->getUrgency());
         $incident->getState() ?: $incident->setStateAndReporter($this->getState(), $incident->getReporter());
         $incident->getType() ?: $incident->setType($this->getType());
+        $incident->getCommunicationBehaviorNew() ?: $incident->setCommunicationBehaviorNew($this->getCommunicationBehaviorNew());
+        $incident->getCommunicationBehaviorUpdate() ?: $incident->setCommunicationBehaviorUpdate($this->getCommunicationBehaviorUpdate());
+        $incident->getCommunicationBehaviorClose() ?: $incident->setCommunicationBehaviorClose($this->getCommunicationBehaviorClose());
+        $incident->getCommunicationBehaviorSummary() ?: $incident->setCommunicationBehaviorSummary($this->getCommunicationBehaviorSummary());
+        $incident->getCommunicationBehaviorOpen() ?: $incident->setCommunicationBehaviorOpen($this->getCommunicationBehaviorOpen());
+        $incident->getWhenToUpdate() ?: $incident->setWhenToUpdate($this->getWhenToUpdate());
 
         if ($incident->getState()) {
             if ($incident->getState()->isInitial()) {
