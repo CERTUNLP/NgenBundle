@@ -17,7 +17,7 @@ class Version20200109183801 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
+        $this->connection->getDatabasePlatform()->registerDoctrineTypeMapping('ENUM', 'string');
         $this->addSql('CREATE TABLE decisions_communication_behavior (decision_id INT NOT NULL, behavior_slug VARCHAR(100) NOT NULL, INDEX IDX_4CC15E97BDEE7539 (decision_id), INDEX IDX_4CC15E97718BA7D1 (behavior_slug), PRIMARY KEY(decision_id, behavior_slug)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE decisions_communication_behavior ADD CONSTRAINT FK_4CC15E97BDEE7539 FOREIGN KEY (decision_id) REFERENCES incident_decision (id)');
         $this->addSql('ALTER TABLE decisions_communication_behavior ADD CONSTRAINT FK_4CC15E97718BA7D1 FOREIGN KEY (behavior_slug) REFERENCES communication_behavior (slug)');

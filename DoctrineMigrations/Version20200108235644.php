@@ -17,9 +17,8 @@ class Version20200108235644 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
+        $this->connection->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
         $this->addSql('ALTER TABLE communication_behavior CHANGE inNew inNew ENUM(\'manual\',\'file\',\'data\', \'all\'), CHANGE inOpen inOpen ENUM(\'manual\',\'file\',\'data\', \'all\'), CHANGE inUpdate inUpdate ENUM(\'manual\',\'file\',\'data\', \'all\'), CHANGE inSummary inSummary ENUM(\'manual\',\'file\',\'data\', \'all\')');
-        $this->addSql('ALTER TABLE incident_type DROP FOREIGN KEY FK_66D22096E371859C');
         $this->addSql('ALTER TABLE incident_type DROP INDEX FK_66D22096E371859C');
         $this->addSql('ALTER TABLE incident_type CHANGE taxonomyValue taxonomyValue VARCHAR(100) DEFAULT NULL');
     }
