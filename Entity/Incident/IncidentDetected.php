@@ -191,12 +191,12 @@ class IncidentDetected
         $this->setState($incident->getState());
         $this->setTlp($incident->getTlp());
         $this->setPriority($incident->getPriority());
-        $this->setCommunicationBehaviorNew($incident->getComm);
-        $this->setCommunicationBehaviorOpen();
-        $this->setCommunicationBehaviorUpdate();
-        $this->setCommunicationBehaviorSummary();
-        $this->setCommunicationBehaviorClose();
-        $this->setWhenToUpdate();
+        $this->setCommunicationBehaviorNew($incident->getCommunicationBehaviorNew());
+        $this->setCommunicationBehaviorOpen($incident->getCommunicationBehaviorOpen());
+        $this->setCommunicationBehaviorUpdate($incident->getCommunicationBehaviorUpdate());
+        $this->setCommunicationBehaviorSummary($incident->getCommunicationBehaviorSummary());
+        $this->setCommunicationBehaviorClose($incident->getCommunicationBehaviorClose());
+        $this->setWhenToUpdate($incident->getWhenToUpdate());
 
     }
 
