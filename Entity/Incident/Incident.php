@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior;
 use CertUnlp\NgenBundle\Entity\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;

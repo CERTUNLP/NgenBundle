@@ -157,17 +157,17 @@ class IncidentDetected
     /**
      * @var string
      *
-     * @ORM\Column(name="when_to_update", type="string", length=100)
+     * @ORM\Column(name="when_to_update", type="string", length=100,options={"default" :"live"})
      * @JMS\Expose
      * @JMS\Groups({"api_input"})
      * @Gedmo\Translatable
      */
-    private $whenToUpdate="now";
+    private $whenToUpdate="live";
 
     /**
      * @var array|null
      *
-     * @ORM\Column(name="intelmq_data", type="json_array")
+     * @ORM\Column(name="intelmq_data", type="json_array",nullable=true)
      */
     private $intelmqData;
 
