@@ -33,4 +33,8 @@ class NetworkRdap extends Network
         return 'primary';
     }
 
+    public function isInternal(): bool
+    {
+        return false;
+    }
 }

@@ -30,7 +30,8 @@ class RdapClient
     {
         $this->team = $team;
         $this->doctrine = $doctrine;
-        $this->request_url = 'https://rdap.arin.net/registry/ip/';
+//        $this->request_url = 'https://rdap.arin.net/registry/ip/';
+        $this->request_url = 'https://rdap.lacnic.net/rdap/ip/';
     }
 
     /**
@@ -79,7 +80,7 @@ class RdapClient
             $result_file = $this->request_url . $ip;
             return $this->request($result_file);
         } catch (Exception $exc) {
-            throw new RuntimeException('Request Limit', 400);
+            return null;
         }
     }
 
@@ -94,7 +95,7 @@ class RdapClient
             $this->setResponse(new RdapResultWrapper(file_get_contents($url)));
             return $this->response;
         } catch (Exception $exc) {
-            throw new RuntimeException('Request Limit', 400);
+            return null;
         }
     }
 

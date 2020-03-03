@@ -56,6 +56,12 @@ fos_elastica:
                             type: keyword
                         priority:
                             type: keyword
+                        status:
+                            property_path: network
+                            type: "object"
+                            properties:
+                                internal:
+                                    type: keyword
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by

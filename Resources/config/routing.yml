@@ -38,22 +38,22 @@ cert_ngen_user_change_password:
 cert_ngen_network_entity:
     resource: '@CertUnlpNgenBundle/Controller/Frontend/Network/NetworkEntityFrontendController.php'
     type:     annotation
-    prefix:   /networks/entities
+    prefix:   /community/entities
 
 cert_ngen_network_admin:
     resource: '@CertUnlpNgenBundle/Controller/Frontend/Network/NetworkAdminFrontendController.php'
     type:     annotation
-    prefix:   /networks/admins
+    prefix:   /community/admins
 
 cert_ngen_network:
     resource: '@CertUnlpNgenBundle/Controller/Frontend/Network/NetworkFrontendController.php'
     type:     annotation
-    prefix:   /networks
+    prefix:   /community/networks
 
 cert_ngen_host:
     resource: '@CertUnlpNgenBundle/Controller/Frontend/HostFrontendController.php'
     type:   annotation
-    prefix:   /hosts
+    prefix:    /community/hosts
 
 cert_ngen_internal_incident:
     resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentFrontendController.php'

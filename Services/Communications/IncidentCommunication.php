@@ -40,7 +40,7 @@ abstract class IncidentCommunication
         $this->translator = $translator;
     }
 
-    public function postPersistDelegation($incident)
+    public function postPersistDelegation(Incident $incident)
     {
         if ($incident->canCommunicate()) {
             $this->comunicate($incident);

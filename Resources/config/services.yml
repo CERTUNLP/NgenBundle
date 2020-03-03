@@ -321,11 +321,6 @@ services:
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\DateTimeType }
 
-    acme.listener.custom_property:
-        class: CertUnlp\NgenBundle\Entity\Incident\Listener\CustomPropertyListener
-        tags:
-            - { name: kernel.event_subscriber }
-
     cert_unlp.ngen.incident.taxonomy.value.frontend.controller:
         class:     CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
         arguments: ["@doctrine.orm.entity_manager","@form.factory",CertUnlp\NgenBundle\Form\IncidentTaxonomyValueType,"@knp_paginator","@fos_elastica.finder.taxonomyvalues.value","@fos_comment.manager.comment","@fos_comment.manager.thread"]

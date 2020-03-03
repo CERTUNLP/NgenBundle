@@ -253,7 +253,7 @@ class Incident extends Entity
     /**
      * @var bool
      */
-    private $sendReport = true;
+    private $notSendReport = false;
     /**
      * @var string
      *
@@ -363,7 +363,6 @@ class Incident extends Entity
         }
         $this->incidentsDetected = new ArrayCollection();
         $this->changeStateHistory = new ArrayCollection();
-//        $this->communicationHistory = new ArrayCollection();
     }
 
     /**
@@ -1360,24 +1359,24 @@ class Incident extends Entity
     public function canCommunicate(): bool
 
     {
-        return $this->isSendReport() && $this->getBehavior()->canComunicate() && $this->isNeedToCommunicate();
+        return !$this->isNotSendReport() && $this->getBehavior()->canComunicate() && $this->isNeedToCommunicate();
     }
 
     /**
      * @return bool
      */
-    public function isSendReport(): bool
+    public function isNotSendReport(): bool
     {
-        return $this->sendReport;
+        return $this->notSendReport;
     }
 
     /**
-     * @param bool $sendReport
+     * @param bool $notSendReport
      * @return Incident
      */
-    public function setSendReport(bool $sendReport): Incident
+    public function setNotSendReport(bool $notSendReport): Incident
     {
-        $this->setter($this->sendReport, $sendReport);
+        $this->notSendReport = $notSendReport;
         return $this;
     }
 

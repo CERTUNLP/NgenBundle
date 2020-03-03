@@ -138,12 +138,12 @@ class IncidentType extends AbstractType
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, it may be selected by incident decisions.'),
                 'choice_label' => 'name',
             ))
-            ->add('sendReport', CheckboxType::class, array(
-                'data' => true,
+            ->add('notSendReport', CheckboxType::class, array(
+                'data' => false,
                 'mapped' => true,
                 'attr' => array('class' => 'incidentDataFilter', 'align_with_widget' => true),
                 'required' => false,
-                'label' => 'Send report',
+                'label' => 'Do not send report',
             ))
             ->add('unattendedState', EntityType::class, array(
                 'class' => IncidentState::class,
