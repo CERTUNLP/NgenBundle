@@ -20,7 +20,7 @@ class Version20190701195101 extends AbstractMigration
 
 //        $this->addSql('ALTER TABLE incident ADD is_discarded TINYINT(1) DEFAULT \'0\' NOT NULL');
 //        $this->addSql("INSERT INTO `incident_state_action` (`slug`, `name`, `description`, `open`, `close`, `re_open`,`discard`) VALUES ('discard', 'Discard', 'Discard Incident', '0', '0', '0','1')");
-        $this->addSql("INSERT INTO incident_state (`slug`, `name`, `is_active`, `created_at`, `updated_at`, `mail_admin`, `mail_reporter`, `mail_assigned`, `mail_team`, `incident_state_action`) VALUES ('discarded_by_unattended', 'Discarded by unattended', '1', NOW(), NOW(), 'none', 'none', 'none', 'none', 'discard')");
+//        $this->addSql("INSERT INTO incident_state (`slug`, `name`, `is_active`, `created_at`, `updated_at`, `incident_state_behavior`) VALUES ('discarded_by_unattended', 'Discarded by unattended', '1', NOW(), NOW(), 'discard')");
         $this->addSql("update incident_priority set  unresponse_time=10080, unresolution_time=10080 where slug <>'high_high';");
     }
 

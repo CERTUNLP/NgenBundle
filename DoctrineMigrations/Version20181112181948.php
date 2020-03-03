@@ -26,7 +26,6 @@ class Version20181112181948 extends AbstractMigration
         $this->addSql("UPDATE incident_urgency SET `slug`='medium' WHERE `slug`='Medium'");
         $this->addSql("INSERT INTO incident_type (`slug`, `name`, `is_active`, `created_at`,`updated_at`) VALUES ('undefined', 'Undefined', '1', NOW(),NOW())");
         $this->addSql("INSERT INTO incident_feed (`slug`, `name`, `is_active`, `created_at`, `updated_at`) VALUES ('undefined', 'Undefined', '1', NOW(),NOW())");
-        $this->addSql("INSERT INTO incident_decision (`type`, `feed`, `impact`, `urgency`, `tlp`, `state`) VALUES ('undefined', 'undefined', 'low', 'low', 'green', 'undefined')");
 
 
     }

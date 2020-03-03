@@ -229,7 +229,7 @@ interface IncidentInterface
     public function setSendReport(bool $sendReport): Incident;
 
     /**
-     * Get sendReport
+     * Get notSendReport
      *
      * @return bool
      */
