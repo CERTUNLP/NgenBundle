@@ -26,60 +26,9 @@ use JMS\Serializer\Annotation as JMS;
 class ClosingEdge extends StateEdge
 {
 
-    /**
-     * @return bool
-     */
-    public function isOpening(): bool
-    {
-        return false;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isClosing(): bool
-    {
-
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isReopening(): bool
-    {
-        return false;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isUpdating(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isDiscarding(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isInitializing(): bool
-    {
-        return false;
-    }
-
     public function changeIncidentStateAction(Incident $incident): Incident
     {
-        $incident->setNeedToCommunicate(false);
+        $incident->setNeedToCommunicate(true);
         return $incident;
     }
 

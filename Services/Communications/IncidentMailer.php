@@ -17,7 +17,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use FOS\CommentBundle\Event\CommentPersistEvent;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\SignedCommentInterface;
-use Swift_Attachment;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
@@ -66,15 +65,14 @@ class IncidentMailer extends IncidentCommunication
 
         $emails = array_merge($emails, $incident->getEmails());
         if ($emails) {
-            #Hay que discutir si es necesario mandar cualquier cambio o que cosa todo || $is_new_incident || $renotification) {
             $html = $this->getBody($incident);
             $message = Swift_Message::newInstance()
-                ->setSubject(sprintf($this->mailSubject($renotification), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getAddress(), $incident->getId()))
+                ->setSubject(sprintf($this->mailSubject($incident, $renotification), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getAddress(), $incident->getId()))
                 ->setFrom($this->cert_email)
                 ->setSender($this->cert_email)
                 ->setTo($emails)
                 ->addPart($html, 'text/html');
-            $evidence_path = $this->upload_directory . "/";
+            $evidence_path = $this->upload_directory . '/';
 
             foreach ($incident->getIncidentsDetected() as $detected) {
                 if ($detected->getEvidenceFilePath()) {
@@ -104,18 +102,19 @@ class IncidentMailer extends IncidentCommunication
         return $this->report_factory->getReport($incident, $this->lang);
     }
 
-    public function mailSubject(bool $renotification = false)
+    public function mailSubject(Incident $incident, bool $renotification = false)
     {
-        return $this->environment . $this->getMailSubject($renotification);
+        return $this->environment . $this->getMailSubject($incident, $renotification);
     }
 
-    public function getMailSubject(bool $renotification = false): string
+    public function getMailSubject(Incident $incident, bool $renotification = false): string
     {
         $renotification_text = $renotification ? '[' . $this->translator->trans('subject_mail_renotificacion') . ']' : '';
-        return $renotification_text . '[TLP:%s][%s] ' . $this->translator->trans('subject_mail_incidente') . ' [ID:%s]';
+        return $renotification_text . '[TLP:%s][%s] ' . $this->translator->trans('subject_mail_incident_' . strtolower($incident->getStateEdge())) . ' [ID:%s]';
     }
 
-    public function getEvidenceFileName(Incident $incident)
+    public
+    function getEvidenceFileName(Incident $incident)
     {
 
         // Create new Zip Archive.
@@ -137,7 +136,8 @@ class IncidentMailer extends IncidentCommunication
         return $zipName;
     }
 
-    public function onCommentPrePersist(CommentPersistEvent $event)
+    public
+    function onCommentPrePersist(CommentPersistEvent $event)
     {
         $comment = $event->getComment();
         if (!$this->commentManager->isNewComment($comment) || !$comment->getThread()->getIncident()->canCommunicateComment()) {
@@ -152,7 +152,8 @@ class IncidentMailer extends IncidentCommunication
         $this->comunicate_reply($comment->getThread()->getIncident(), $comment->getBody(), $comment->getNotifyToAdmin());
     }
 
-    public function comunicate_reply(Incident $incident, string $body = '', bool $notify_to_admins = true)
+    public
+    function comunicate_reply(Incident $incident, string $body = '', bool $notify_to_admins = true)
     {
 
         $html = $this->getReplyBody($incident, $body);
@@ -176,18 +177,21 @@ class IncidentMailer extends IncidentCommunication
         $this->mailer->send($message);
     }
 
-    public function getReplyBody(Incident $incident, string $body = '')
+    public
+    function getReplyBody(Incident $incident, string $body = '')
     {
         return $this->report_factory->getReportReply($incident, $body, $this->lang);
 
     }
 
-    public function replySubject()
+    public
+    function replySubject()
     {
         return 'Comment:' . $this->mailSubject();
     }
 
-    public function getReplySubject()
+    public
+    function getReplySubject()
     {
         return '';
     }

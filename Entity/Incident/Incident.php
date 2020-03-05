@@ -298,6 +298,12 @@ class Incident extends Entity
      */
     private $address;
 
+    /**
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_update", referencedColumnName="slug")
+     * @JMS\Expose()
+     */
     private $communicationBehaviorNew;
 
     /**
@@ -306,7 +312,6 @@ class Incident extends Entity
      * @ORM\JoinColumn(name="communication_behavior_update", referencedColumnName="slug")
      * @JMS\Expose()
      */
-
     private $communicationBehaviorUpdate;
 
     /**
@@ -315,7 +320,6 @@ class Incident extends Entity
      * @ORM\JoinColumn(name="communication_behavior_open", referencedColumnName="slug")
      * @JMS\Expose()
      */
-
     private $communicationBehaviorOpen;
 
     /**
@@ -324,15 +328,14 @@ class Incident extends Entity
      * @ORM\JoinColumn(name="communication_behavior_summary", referencedColumnName="slug")
      * @JMS\Expose()
      */
-
     private $communicationBehaviorSummary;
+
     /**
      * @var CommunicationBehavior | null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
      * @ORM\JoinColumn(name="communication_behavior_close", referencedColumnName="slug")
      * @JMS\Expose()
      */
-
     private $communicationBehaviorClose;
 
     /**
@@ -343,7 +346,7 @@ class Incident extends Entity
      * @JMS\Groups({"api_input"})
      * @Gedmo\Translatable
      */
-    private $whenToUpdate="now";
+    private $whenToUpdate = "now";
 
     /**
      * @var array|null
@@ -1359,7 +1362,7 @@ class Incident extends Entity
     public function canCommunicate(): bool
 
     {
-        return !$this->isNotSendReport() && $this->getBehavior()->canComunicate() && $this->isNeedToCommunicate();
+        return !$this->isNotSendReport() && $this->getBehavior()->canComunicate();
     }
 
     /**
@@ -1687,6 +1690,7 @@ class Incident extends Entity
         $this->setter($this->type, $type, true);
         return $this;
     }
+
     /**
      * @return mixed
      */

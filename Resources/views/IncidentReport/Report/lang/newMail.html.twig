@@ -13,19 +13,19 @@
 {% endblock %}
 {% block report_content %}
     <tr>
-    <td>
-        {% block report_message %}
-            {{ 'A new incident has been reported'|trans }}
-             <a href="{{ team.site }}{{ path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': incident.id}) }}">{{ 'Take a look'| trans }}</a>
-            <hr>
-            {% include "CertUnlpNgenBundle:IncidentReport/Report/lang:incidentInformationMail.html.twig" with { 'object':incident } %}
-            <hr>
-            {% if(report.derivatedProblem) %}
-                <h5>{{ 'Derivated problem'|trans }}:</h5>
-                {{ include(template_from_string(report.derivatedProblem))|striptags('<div>,<a>,<pre>,<code>')|raw }}
-            {% endif %}
-            <hr>
-        {% endblock %}
-    </td>
+        <td>
+            {% block report_message %}
+                {{ 'A new incident has been reported'|trans }}
+                <a href="{{ team.site }}{{ path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': incident.id}) }}">{{ 'Take a look'| trans }}</a>
+                <hr>
+                {% include "CertUnlpNgenBundle:IncidentReport/Report/lang:incidentInformationMail.html.twig" with { 'object':incident } %}
+                <hr>
+                {% if(report.derivatedProblem) %}
+                    <h5>{{ 'Derivated problem'|trans }}:</h5>
+                    {{ include(template_from_string(report.derivatedProblem))|striptags('<div>,<a>,<pre>,<code>')|raw }}
+                {% endif %}
+                <hr>
+            {% endblock %}
+        </td>
     </tr>
 {% endblock %}

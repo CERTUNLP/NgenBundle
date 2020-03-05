@@ -8,13 +8,15 @@
 #}
 {% extends  'CertUnlpNgenBundle:IncidentReport:Report/lang/mail.html.twig' %}
 {% block greeting %}
-    {{ 'greeting'|trans}} {{ incident.network.networkAdmin }},
+    {{ 'greeting'|trans }} {{ incident.network.networkAdmin }},
 {% endblock %}
 {% block report_content %}
     <tr>
         <td>
             {% block report_message %}
-                <p>{{ 'The incident id '|trans }} {{ incident.id }} {{  ' has been closed, setting it as '|trans }} {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': incident} %}.</p>
+                <p>{{ 'The incident id '|trans }} {{ incident.id }} {{ ' has been closed, setting it as '|trans }}
+                    {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': incident} %}
+                    .</p>
                 <p>{{ 'If you think we need to review this decision, please let us know.'|trans }}</p>
                 <hr>
 

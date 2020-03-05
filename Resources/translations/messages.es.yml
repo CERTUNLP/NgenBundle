@@ -1,4 +1,9 @@
-subject_mail_incidente: 'Incidente de tipo "%s" en %s'
+subject_mail_incident_new: 'Un nuevo incidente de tipo "%s" en %s ha sido creado'
+subject_mail_incident_closing: 'Incidente de tipo "%s" en %s fue cerrado'
+subject_mail_incident_updating: 'Incidente de tipo "%s" en %s fue actualizado'
+subject_mail_incident_discarding: 'Incidente de tipo "%s" en %s fue descartado'
+subject_mail_incident_opening: 'Incidente de tipo "%s" en %s fue abierto'
+subject_mail_incident_reopening: 'Incidente de tipo "%s" en %s fue abierto nuevamente'
 subject_mail_renotificacion: Renotificación
 firma_ngen: 'Este reporte ha sido generado con <a href="https://github.com/CERTUNLP/NgenBundle">https://github.com/CERTUNLP/NgenBundle</a>'
 thanks: 'Le agradeceríamos que nos notifique al solucionar el incidente. No dude en consultarnos ante cualquier inquietud.'

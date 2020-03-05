@@ -14,10 +14,10 @@
     <tr>
         <td>
             {% block report_message %}
-                {{ 'The incident id '|trans }} {{ incident.id }} {{ ' has been closed.' |trans }}
+                {{ 'The incident id '|trans }} {{ incident.id }} {{ ' has been reopened.' |trans }}
                 <hr>
-                <h5>{{ 'Summary'|trans }}:</h5>
-                {% include "CertUnlpNgenBundle:IncidentReport/Report/lang:summary.html.twig" with { 'object':incident } %}
+                <h5>{{ 'Updates'|trans }}:</h5>
+                {% include "CertUnlpNgenBundle:IncidentReport/Report/lang:changes.html.twig" with { 'object':incident } %}
                 <hr>
             {% endblock %}
         </td>

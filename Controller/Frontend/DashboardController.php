@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend;
 
+use CertUnlp\NgenBundle\Entity\Incident\State\Edge\OpeningEdge;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -29,6 +30,7 @@ class DashboardController extends Controller
      */
     public function homeAction(Request $request)
     {
+
         return array("dashboard"=>$this->container->getParameter('cert_unlp.ngen.grafana.internal.url'));
     }
 
