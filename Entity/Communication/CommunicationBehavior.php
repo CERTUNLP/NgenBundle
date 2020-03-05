@@ -5,10 +5,9 @@ namespace CertUnlp\NgenBundle\Entity\Communication;
 use CertUnlp\NgenBundle\Entity\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 use JMS\Serializer\Annotation as JMS;
-use Gedmo\Mapping\Annotation as Gedmo;
-
 
 
 /**
@@ -18,11 +17,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity()
  * @ORM\Table(name="communication_behavior")
  */
-
 class CommunicationBehavior extends Entity implements Translatable
 {
 
-     /**
+    /**
      * @var string
      * @ORM\Id
      * @ORM\Column(name="slug", type="string", length=100)
@@ -45,7 +43,7 @@ class CommunicationBehavior extends Entity implements Translatable
      */
     private $description;
     /**
-     * @var DateTime
+     * @var DateTime|null
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      * @JMS\Expose
@@ -58,7 +56,7 @@ class CommunicationBehavior extends Entity implements Translatable
      * @ORM\Column(name="mode", type="string", columnDefinition="ENUM('manual','file','data', 'all')"))
      * @JMS\Expose
      */
-    private $mode='all';
+    private $mode = 'all';
 
     /**
      * @return string
@@ -127,23 +125,6 @@ class CommunicationBehavior extends Entity implements Translatable
     /**
      * @return string
      */
-    public function getMode(): string
-    {
-        return $this->mode;
-    }
-
-    /**
-     * @param string $mode
-     */
-    public function setMode(string $mode): void
-    {
-        $this->mode = $mode;
-    }
-
-
-    /**
-     * @return string
-     */
     public function getIcon(): string
     {
         return 'th';
@@ -156,8 +137,25 @@ class CommunicationBehavior extends Entity implements Translatable
     {
         return 'primary';
     }
+
     public function __toString()
     {
         return $this->getMode();
+    }
+
+    /**
+     * @return string
+     */
+    public function getMode(): string
+    {
+        return $this->mode;
+    }
+
+    /**
+     * @param string $mode
+     */
+    public function setMode(string $mode): void
+    {
+        $this->mode = $mode;
     }
 }

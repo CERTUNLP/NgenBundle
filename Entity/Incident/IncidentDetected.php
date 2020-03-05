@@ -2,15 +2,15 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
 use DateTime;
-use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
-use CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior;
-use Doctrine\Common\Collections\Collection;
 
 /**
  * IncidentDetected
@@ -115,8 +115,14 @@ class IncidentDetected
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommunication",mappedBy="ltd")
      * @JMS\Groups({"api"})
      */
-     private $communicationHistory;
+    private $communicationHistory;
 
+    /**
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_summary", referencedColumnName="slug")
+     * @JMS\Expose()
+     */
     private $communicationBehaviorNew;
 
     /**
@@ -125,7 +131,6 @@ class IncidentDetected
      * @ORM\JoinColumn(name="communication_behavior_update", referencedColumnName="slug")
      * @JMS\Expose()
      */
-
     private $communicationBehaviorUpdate;
 
     /**
@@ -134,7 +139,6 @@ class IncidentDetected
      * @ORM\JoinColumn(name="communication_behavior_open", referencedColumnName="slug")
      * @JMS\Expose()
      */
-
     private $communicationBehaviorOpen;
 
     /**
@@ -143,7 +147,6 @@ class IncidentDetected
      * @ORM\JoinColumn(name="communication_behavior_summary", referencedColumnName="slug")
      * @JMS\Expose()
      */
-
     private $communicationBehaviorSummary;
     /**
      * @var CommunicationBehavior | null
@@ -151,7 +154,6 @@ class IncidentDetected
      * @ORM\JoinColumn(name="communication_behavior_close", referencedColumnName="slug")
      * @JMS\Expose()
      */
-
     private $communicationBehaviorClose;
 
     /**
@@ -162,7 +164,7 @@ class IncidentDetected
      * @JMS\Groups({"api_input"})
      * @Gedmo\Translatable
      */
-    private $whenToUpdate="live";
+    private $whenToUpdate = 'live';
 
     /**
      * @var array|null
@@ -183,7 +185,7 @@ class IncidentDetected
         if ($incident->getEvidenceFilePath() && $incident->getEvidenceFile()) {
             $this->setEvidenceFilePath($incidentFather->getEvidenceSubDirectory() . $incident->getEvidenceFilePath());
         }
-        if($incident->getIntelmqData()){
+        if ($incident->getIntelmqData()) {
             $this->setIntelmqData($incident->getIntelmqData());
         }
         $this->setNotes($incident->getTemporalNotes());
@@ -433,6 +435,14 @@ class IncidentDetected
     }
 
     /**
+     * @param mixed $notes
+     */
+    public function setNotes($notes): void
+    {
+        $this->notes = $notes;
+    }
+
+    /**
      * @return Collection
      */
     public function getCommunicationHistory(): Collection
@@ -446,14 +456,6 @@ class IncidentDetected
     public function setCommunicationHistory(Collection $communicationHistory): void
     {
         $this->communicationHistory = $communicationHistory;
-    }
-
-    /**
-     * @param mixed $notes
-     */
-    public function setNotes($notes): void
-    {
-        $this->notes = $notes;
     }
 
     /**

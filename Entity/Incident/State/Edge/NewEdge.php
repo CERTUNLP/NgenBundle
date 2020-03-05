@@ -23,12 +23,12 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity()
  * @JMS\ExclusionPolicy("all")
  */
-class DiscardingEdge extends StateEdge
+class NewEdge extends StateEdge
 {
+
     public function changeIncidentStateAction(Incident $incident): Incident
     {
         $incident->setNeedToCommunicate(true);
-
         return $incident;
     }
 

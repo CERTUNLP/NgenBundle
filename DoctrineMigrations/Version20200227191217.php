@@ -20,9 +20,9 @@ class Version20200227191217 extends AbstractMigration
 
         $this->addSql('ALTER TABLE communication_behavior CHANGE mode mode ENUM(\'manual\',\'file\',\'data\', \'all\')');
         $this->addSql('ALTER TABLE incident_decision CHANGE when_to_update when_to_update VARCHAR(100) NOT NULL');
-        $this->addSql('ALTER TABLE incident_comment_thread DROP FOREIGN KEY FK_E073862F1FB8D185');
-        $this->addSql('DROP INDEX UNIQ_E073862F1FB8D185 ON incident_comment_thread');
-        $this->addSql('ALTER TABLE incident_comment_thread DROP host_id');
+//        $this->addSql('ALTER TABLE incident_comment_thread DROP FOREIGN KEY FK_E073862F1FB8D185');
+//        $this->addSql('DROP INDEX UNIQ_E073862F1FB8D185 ON incident_comment_thread');
+//        $this->addSql('ALTER TABLE incident_comment_thread DROP host_id');
         $this->addSql('ALTER TABLE incident_communication ADD CONSTRAINT FK_B89870BE59E53FB9 FOREIGN KEY (incident_id) REFERENCES incident (id)');
         $this->addSql('ALTER TABLE incident_communication ADD CONSTRAINT FK_B89870BEEFE254FB FOREIGN KEY (ltd_id) REFERENCES incident_detected (id)');
 

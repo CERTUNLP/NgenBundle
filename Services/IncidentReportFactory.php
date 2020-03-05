@@ -35,10 +35,10 @@ class IncidentReportFactory
     }
 
     public function getReport(Incident $incident, string $lang)
-        //FIX esto tiene que ser de otra manera para los multiples
     {
+//        var_dump(strtolower((string)$incident->getStateEdge()) );die;
         $data = array('report' => $incident->getType()->getReport($lang), 'incident' => $incident, 'team' => $this->team);
-        $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/mail.html.twig');
+        $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/' . ($incident->getStateEdge() ? strtolower($incident->getStateEdge()) : 'mail') . 'Mail.html.twig');
         $this->getView()->setTemplateData($data);
         $html = $this->viewHandler->renderTemplate($this->getView(), 'html');
         $parameters = array('incident' => $incident);
@@ -92,7 +92,7 @@ class IncidentReportFactory
     }
 
     /**
-     * @param  array $data
+     * @param array $data
      * @return View
      */
     public function setData(array $data)

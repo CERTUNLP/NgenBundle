@@ -8,18 +8,18 @@
 #}
 {% extends  'CertUnlpNgenBundle:IncidentReport:Report/lang/mail.html.twig' %}
 {% block greeting %}
-    {{ 'greeting'|trans}} {{ incident.network.networkAdmin }},
+    {{ 'greeting'|trans }} {{ incident.network.networkAdmin }},
 {% endblock %}
 {% block report_content %}
-<tr>
-    <td>
-        {% block report_message %}
-            {{ 'The incident id '|trans }} {{ incident.id }} {{  ' has been updated.' |trans}}
-            <hr>
-            <h5>{{ 'Updates'|trans }}:</h5>
+    <tr>
+        <td>
+            {% block report_message %}
+                {{ 'The incident id '|trans }} {{ incident.id }} {{ ' has been discarded.' |trans }}
+                <hr>
+                <h5>{{ 'Updates'|trans }}:</h5>
                 {% include "CertUnlpNgenBundle:IncidentReport/Report/lang:changes.html.twig" with { 'object':incident } %}
-            <hr>
-        {% endblock %}
-    </td>
-</tr>
+                <hr>
+            {% endblock %}
+        </td>
+    </tr>
 {% endblock %}

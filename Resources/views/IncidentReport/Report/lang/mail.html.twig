@@ -8,12 +8,17 @@
 #}
 {% extends  'CertUnlpNgenBundle:IncidentReport:Report/base/baseReport.html.twig' %}
 {% block greeting %}
-    {{ 'greeting'|trans}} {{ incident.network.networkAdmin }},
+    {{ 'greeting'|trans }} {{ incident.network.networkAdmin }},
 {% endblock %}
+
 {% block footer_content %}
-    <p>{{ 'thanks'|trans }}
-    <p> {{ 'farewell'|trans }}, {{ team.name }} - {{ team.url }}
-{% endblock %}
-{% block footer_generated_by %}
+<p>{{ 'thanks'|trans }}<p>
+
+    {{ 'farewell'|trans }}, {{ team.name }} - {{ team.url }}
+
+    {% endblock %}
+
+
+    {% block footer_generated_by %}
     {{ 'firma_ngen'|trans |raw }}
 {% endblock %}
