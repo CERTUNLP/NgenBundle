@@ -1,27 +1,28 @@
 <?php
 
-namespace CertUnlp\NgenBundle\Entity\Communication;
+namespace CertUnlp\NgenBundle\Entity\Communication\Behavior;
 
 use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 use JMS\Serializer\Annotation as JMS;
 
-
 /**
- * CommunicationBehavior
- *
- * @author einar
+ * @ORM\Table()
  * @ORM\Entity()
- * @ORM\Table(name="communication_behavior")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")manual','file','data', 'all'
+ * @ORM\DiscriminatorMap({"all"= "CommunicationBehaviorAll","manual" = "CommunicationBehaviorManual", "file" = "CommunicationBehaviorFile", "data" = "CommunicationBehaviorData", "communication" = "CommunicationBehavior"})
+ * @JMS\ExclusionPolicy("all")
  */
-class CommunicationBehavior extends Entity implements Translatable
+abstract class CommunicationBehavior extends Entity implements Translatable
 {
 
     /**
-     * @var string
+     * @var string|null
      * @ORM\Id
      * @ORM\Column(name="slug", type="string", length=100)
      * @JMS\Expose
@@ -50,13 +51,6 @@ class CommunicationBehavior extends Entity implements Translatable
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
-
-    /**
-     * @var string
-     * @ORM\Column(name="mode", type="string", columnDefinition="ENUM('manual','file','data', 'all')"))
-     * @JMS\Expose
-     */
-    private $mode = 'all';
 
     /**
      * @return string
@@ -138,24 +132,8 @@ class CommunicationBehavior extends Entity implements Translatable
         return 'primary';
     }
 
-    public function __toString()
-    {
-        return $this->getMode();
-    }
+    abstract public function print(IncidentDetected $incidentDetected): ?string;
 
-    /**
-     * @return string
-     */
-    public function getMode(): string
-    {
-        return $this->mode;
-    }
+    abstract public function getFile(IncidentDetected $incidentDetected): ?string;
 
-    /**
-     * @param string $mode
-     */
-    public function setMode(string $mode): void
-    {
-        $this->mode = $mode;
-    }
 }

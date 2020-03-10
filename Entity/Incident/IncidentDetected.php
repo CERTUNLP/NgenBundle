@@ -2,7 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior;
+use CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
 use DateTime;
@@ -10,6 +10,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -155,7 +157,21 @@ class IncidentDetected
      * @JMS\Expose()
      */
     private $communicationBehaviorClose;
+    /**
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_close", referencedColumnName="slug")
+     * @JMS\Expose()
+     */
+    private $communicationBehaviorReopen;
 
+    /**
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_close", referencedColumnName="slug")
+     * @JMS\Expose()
+     */
+    private $communicationBehaviorDiscard;
     /**
      * @var string
      *
@@ -165,7 +181,6 @@ class IncidentDetected
      * @Gedmo\Translatable
      */
     private $whenToUpdate = 'live';
-
     /**
      * @var array|null
      *
@@ -197,9 +212,43 @@ class IncidentDetected
         $this->setCommunicationBehaviorOpen($incident->getCommunicationBehaviorOpen());
         $this->setCommunicationBehaviorUpdate($incident->getCommunicationBehaviorUpdate());
         $this->setCommunicationBehaviorSummary($incident->getCommunicationBehaviorSummary());
+        $this->setCommunicationBehaviorDiscard($incident->getCommunicationBehaviorDiscard());
+        $this->setCommunicationBehaviorReopen($incident->getCommunicationBehaviorReopen());
         $this->setCommunicationBehaviorClose($incident->getCommunicationBehaviorClose());
         $this->setWhenToUpdate($incident->getWhenToUpdate());
 
+    }
+
+    /**
+     * @return CommunicationBehavior|null
+     */
+    public function getCommunicationBehaviorReopen(): ?CommunicationBehavior
+    {
+        return $this->communicationBehaviorReopen;
+    }
+
+    /**
+     * @param CommunicationBehavior|null $communicationBehaviorReopen
+     */
+    public function setCommunicationBehaviorReopen(?CommunicationBehavior $communicationBehaviorReopen): void
+    {
+        $this->communicationBehaviorReopen = $communicationBehaviorReopen;
+    }
+
+    /**
+     * @return CommunicationBehavior|null
+     */
+    public function getCommunicationBehaviorDiscard(): ?CommunicationBehavior
+    {
+        return $this->communicationBehaviorDiscard;
+    }
+
+    /**
+     * @param CommunicationBehavior|null $communicationBehaviorDiscard
+     */
+    public function setCommunicationBehaviorDiscard(?CommunicationBehavior $communicationBehaviorDiscard): void
+    {
+        $this->communicationBehaviorDiscard = $communicationBehaviorDiscard;
     }
 
     /**
@@ -378,17 +427,17 @@ class IncidentDetected
     }
 
     /**
-     * @return mixed
+     * @return UploadedFile
      */
-    public function getEvidenceFile()
+    public function getEvidenceFile(): ?UploadedFile
     {
         return $this->evidence_file;
     }
 
     /**
-     * @param mixed $evidence_file
+     * @param File $evidence_file
      */
-    public function setEvidenceFile($evidence_file): void
+    public function setEvidenceFile(File $evidence_file): void
     {
         $this->evidence_file = $evidence_file;
     }
