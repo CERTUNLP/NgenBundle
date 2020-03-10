@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior;
+use CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior;
 use CertUnlp\NgenBundle\Entity\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
@@ -339,6 +339,20 @@ class Incident extends Entity
     private $communicationBehaviorClose;
 
     /**
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_close", referencedColumnName="slug")
+     * @JMS\Expose()
+     */
+    private $communicationBehaviorDiscard;
+    /**
+     * @var CommunicationBehavior | null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\JoinColumn(name="communication_behavior_close", referencedColumnName="slug")
+     * @JMS\Expose()
+     */
+    private $communicationBehaviorReopen;
+    /**
      * @var string
      *
      * @ORM\Column(name="when_to_update", type="string", length=100)
@@ -347,7 +361,6 @@ class Incident extends Entity
      * @Gedmo\Translatable
      */
     private $whenToUpdate = "now";
-
     /**
      * @var array|null
      */
@@ -366,6 +379,42 @@ class Incident extends Entity
         }
         $this->incidentsDetected = new ArrayCollection();
         $this->changeStateHistory = new ArrayCollection();
+    }
+
+    /**
+     * @return CommunicationBehavior|null
+     */
+    public function getCommunicationBehaviorDiscard(): ?CommunicationBehavior
+    {
+        return $this->communicationBehaviorDiscard;
+    }
+
+    /**
+     * @param CommunicationBehavior|null $communicationBehaviorDiscard
+     * @return Incident
+     */
+    public function setCommunicationBehaviorDiscard(?CommunicationBehavior $communicationBehaviorDiscard): Incident
+    {
+        $this->communicationBehaviorDiscard = $communicationBehaviorDiscard;
+        return $this;
+    }
+
+    /**
+     * @return CommunicationBehavior|null
+     */
+    public function getCommunicationBehaviorReopen(): ?CommunicationBehavior
+    {
+        return $this->communicationBehaviorReopen;
+    }
+
+    /**
+     * @param CommunicationBehavior|null $communicationBehaviorReopen
+     * @return Incident
+     */
+    public function setCommunicationBehaviorReopen(?CommunicationBehavior $communicationBehaviorReopen): Incident
+    {
+        $this->communicationBehaviorReopen = $communicationBehaviorReopen;
+        return $this;
     }
 
     /**
