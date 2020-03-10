@@ -11,6 +11,14 @@ use JMS\Serializer\Annotation as JMS;
  */
 class CommunicationBehaviorManual extends CommunicationBehavior
 {
+    public function print(): ?string
+    {
+        return '';
+    }
 
+    public function getFile(): ?string
+    {
+        return '';
+    }
 
 }

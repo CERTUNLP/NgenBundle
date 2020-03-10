@@ -12,5 +12,13 @@ use JMS\Serializer\Annotation as JMS;
 class CommunicationBehaviorData extends CommunicationBehavior
 {
 
+    public function print(): ?string
+    {
+        return $this->getIncidentDetected()->getAssigned();
+    }
 
+    public function getFile(): ?string
+    {
+        return '';
+    }
 }

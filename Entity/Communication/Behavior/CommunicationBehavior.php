@@ -22,6 +22,14 @@ abstract class CommunicationBehavior extends Entity implements Translatable
 {
 
     /**
+     * @var DateTime|null
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    protected $updatedAt;
+    /**
      * @var string|null
      * @ORM\Id
      * @ORM\Column(name="slug", type="string", length=100)
@@ -51,6 +59,47 @@ abstract class CommunicationBehavior extends Entity implements Translatable
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
+
+    /**
+     * @var IncidentDetected
+     */
+    private $incidentDetected = null;
+
+    /**
+     * @return DateTime|null
+     */
+    public function getUpdatedAt(): ?DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param DateTime|null $updatedAt
+     * @return CommunicationBehavior
+     */
+    public function setUpdatedAt(?DateTime $updatedAt): CommunicationBehavior
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    /**
+     * @return IncidentDetected
+     */
+    public function getIncidentDetected(): IncidentDetected
+    {
+        return $this->incidentDetected;
+    }
+
+    /**
+     * @param IncidentDetected $incidentDetected
+     * @return CommunicationBehavior
+     */
+    public function setIncidentDetected(IncidentDetected $incidentDetected): self
+    {
+        $this->incidentDetected = $incidentDetected;
+        return $this;
+    }
 
     /**
      * @return string
@@ -132,8 +181,8 @@ abstract class CommunicationBehavior extends Entity implements Translatable
         return 'primary';
     }
 
-    abstract public function print(IncidentDetected $incidentDetected): ?string;
+    abstract public function print(): ?string;
 
-    abstract public function getFile(IncidentDetected $incidentDetected): ?string;
+    abstract public function getFile(): ?string;
 
 }

@@ -11,8 +11,10 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident\State\Edge;
 
+use CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior;
 use CertUnlp\NgenBundle\Entity\Contact\ContactCase;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,7 +27,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity()
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"initializing"= "InitializingEdge","new" = "NewEdge", "opening" = "OpeningEdge", "closing" = "ClosingEdge", "reopening" = "ReopeningEdge", "updating" = "UpdatingEdge", "discarding" = "DiscardingEdge", "edge" = "StateEdge"})
+ * @ORM\DiscriminatorMap({"new" = "NewEdge", "opening" = "OpeningEdge", "closing" = "ClosingEdge", "reopening" = "ReopeningEdge", "updating" = "UpdatingEdge", "discarding" = "DiscardingEdge", "edge" = "StateEdge"})
  * @JMS\ExclusionPolicy("all")
  */
 abstract class StateEdge
@@ -309,4 +311,5 @@ abstract class StateEdge
         return $this;
     }
 
+    abstract public function getIncidentsDetectedCommunicationBehavior(IncidentDetected $incidentDetected): CommunicationBehavior;
 }

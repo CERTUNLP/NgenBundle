@@ -11,7 +11,9 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident\State\Edge;
 
+use CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
@@ -32,5 +34,10 @@ class UpdatingEdge extends StateEdge
     public function changeIncidentStateAction(Incident $incident): Incident
     {
         return $incident;
+    }
+
+    public function getIncidentsDetectedCommunicationBehavior(IncidentDetected $incidentDetected): CommunicationBehavior
+    {
+        return $incidentDetected->getCommunicationBehaviorUpdate()->setIncidentDetected($incidentDetected);
     }
 }
