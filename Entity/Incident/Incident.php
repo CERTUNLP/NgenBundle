@@ -1327,6 +1327,18 @@ class Incident extends Entity
     }
 
     /**
+     * @return Collection | CommunicationBehavior[]
+     */
+    public function getIncidentsDetectedCommunicationBehavior(): Collection
+    {
+        $edge = $this->getStateEdge();
+        return $this->getIncidentsDetected()->map(static function (IncidentDetected $detected) use ($edge) {
+            return $edge->getIncidentsDetectedBehavior($detected);
+        });
+
+    }
+
+    /**
      * @return array
      */
     public function getDateRatio(): array
