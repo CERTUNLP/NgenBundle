@@ -113,8 +113,7 @@ class IncidentMailer extends IncidentCommunication
         return $renotification_text . '[TLP:%s][%s] ' . $this->translator->trans('subject_mail_incident_' . strtolower($incident->getStateEdge())) . ' [ID:%s]';
     }
 
-    public
-    function getEvidenceFileName(Incident $incident)
+    public function getEvidenceFileName(Incident $incident)
     {
 
         // Create new Zip Archive.
@@ -136,8 +135,7 @@ class IncidentMailer extends IncidentCommunication
         return $zipName;
     }
 
-    public
-    function onCommentPrePersist(CommentPersistEvent $event)
+    public function onCommentPrePersist(CommentPersistEvent $event)
     {
         $comment = $event->getComment();
         if (!$this->commentManager->isNewComment($comment) || !$comment->getThread()->getIncident()->canCommunicateComment()) {
@@ -152,8 +150,7 @@ class IncidentMailer extends IncidentCommunication
         $this->comunicate_reply($comment->getThread()->getIncident(), $comment->getBody(), $comment->getNotifyToAdmin());
     }
 
-    public
-    function comunicate_reply(Incident $incident, string $body = '', bool $notify_to_admins = true)
+    public function comunicate_reply(Incident $incident, string $body = '', bool $notify_to_admins = true)
     {
 
         $html = $this->getReplyBody($incident, $body);
@@ -177,21 +174,18 @@ class IncidentMailer extends IncidentCommunication
         $this->mailer->send($message);
     }
 
-    public
-    function getReplyBody(Incident $incident, string $body = '')
+    public function getReplyBody(Incident $incident, string $body = '')
     {
         return $this->report_factory->getReportReply($incident, $body, $this->lang);
 
     }
 
-    public
-    function replySubject()
+    public function replySubject()
     {
         return 'Comment:' . $this->mailSubject();
     }
 
-    public
-    function getReplySubject()
+    public function getReplySubject()
     {
         return '';
     }
