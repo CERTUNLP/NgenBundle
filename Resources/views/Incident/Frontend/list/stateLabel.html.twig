@@ -11,7 +11,7 @@
 
 {% if  incident.state.isAddressed %}
     {{ label_info(incident.state) }}
-{% elseif incident.isLive %}
+{% elseif incident.state.isLive %}
     {{ label_primary(incident.state) }}
 {% else %}
     {{ label_danger(incident.state) }}
