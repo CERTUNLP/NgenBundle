@@ -20,42 +20,22 @@
             </td>
         </tr>
     {% endif %}
-    {% set titulos=0 %}
     {% block incidents_detected %}
-        {% for detected in incident.incidentsDetected %}
-            {% if(detected.notes) %}
-                {% if titulos == 0 %}
-                    {% set titulos=1 %}
-                    <tr>
-                    <td>
-                    <p>
-                    {% block incident_notes_title %}
-                        <h5>{{ 'incident_notes_title'|trans }}</h5>
-                    {% endblock %}
-                    </p>
-                    <ul>
-                {% endif %}
-
-                {{ detected.notes| striptags('<div>,<a>,<pre>,<code>,<li>,<ul>,<br>')|raw|nl2br }}
-
-            {% endif %}
-        {% endfor %}
-        {% if titulos == 1 %}
-            </ul>
+        <tr>
+            <td>
+                <h5>{{ 'Detections detail'|trans }}</h5>
+                {% include "@CertUnlpNgen/IncidentReport/Report/lang/indicentDetectedInformationListMail.html.twig" with { 'object':incident } %}
             </td>
-            </tr>
-        {% endif %}
+        </tr>
     {% endblock %}
 
     {% block derivated_problem %}
         {% if(report.derivatedProblem) %}
             <tr>
                 <td>
-                    <p>
-                        {% block derivated_problem_title %}
-                    <h5>{{ 'derivated_problem_title'|trans }}</h5>
+                    {% block derivated_problem_title %}
+                        <h5>{{ 'derivated_problem_title'|trans }}</h5>
                     {% endblock %}
-                    </p>
                     {{ report.derivatedProblem|striptags('<div>,<a>,<pre>,<code>')|raw }}
                 </td>
             </tr>

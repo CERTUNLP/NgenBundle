@@ -11,15 +11,19 @@
     {{ 'greeting'|trans }} {{ incident.network.networkAdmin }},
 {% endblock %}
 {% block report_content %}
-    <tr>
-        <td>
-            {% block report_message %}
-                {{ 'The incident id '|trans }} {{ incident.id }} {{ ' has been updated.' |trans }}
-                <hr>
-                <h5>{{ 'Updates'|trans }}:</h5>
-                {% include "CertUnlpNgenBundle:IncidentReport/Report/lang:changes.html.twig" with { 'object':incident } %}
-                <hr>
-            {% endblock %}
-        </td>
-    </tr>
+    {% block report_message %}
+        {{ 'The incident id '|trans }} {{ incident.id }} {{ ' has been updated.' |trans }}
+        <hr>
+        <h5>{{ 'Updates'|trans }}:</h5>
+        {% block incidents_detected %}
+            <tr>
+                <td>
+                    <h5>{{ 'Detections detail'|trans }}</h5>
+                    {% include "@CertUnlpNgen/IncidentReport/Report/lang/indicentDetectedInformationListMail.html.twig" with { 'object':incident } %}
+                </td>
+            </tr>
+        {% endblock %}
+        <hr>
+    {% endblock %}
 {% endblock %}
+
