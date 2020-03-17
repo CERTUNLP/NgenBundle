@@ -2,8 +2,8 @@
 
 namespace CertUnlp\NgenBundle\Entity\Communication\Behavior;
 
-use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
+use CertUnlp\NgenBundle\Services\Decorator\DecoratorAllow;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -18,7 +18,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\DiscriminatorMap({"all"= "CommunicationBehaviorAll","manual" = "CommunicationBehaviorManual", "file" = "CommunicationBehaviorFile", "data" = "CommunicationBehaviorData", "communication" = "CommunicationBehavior"})
  * @JMS\ExclusionPolicy("all")
  */
-abstract class CommunicationBehavior extends Entity implements Translatable
+abstract class CommunicationBehavior extends DecoratorAllow implements Translatable
 {
 
     /**
@@ -80,24 +80,6 @@ abstract class CommunicationBehavior extends Entity implements Translatable
     public function setUpdatedAt(?DateTime $updatedAt): CommunicationBehavior
     {
         $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
-    /**
-     * @return IncidentDetected
-     */
-    public function getIncidentDetected(): IncidentDetected
-    {
-        return $this->incidentDetected;
-    }
-
-    /**
-     * @param IncidentDetected $incidentDetected
-     * @return CommunicationBehavior
-     */
-    public function setIncidentDetected(IncidentDetected $incidentDetected): self
-    {
-        $this->incidentDetected = $incidentDetected;
         return $this;
     }
 
@@ -185,4 +167,21 @@ abstract class CommunicationBehavior extends Entity implements Translatable
 
     abstract public function getFile(): ?string;
 
+    /**
+     * @return IncidentDetected
+     */
+    public function getIncidentDetected(): IncidentDetected
+    {
+        return $this->getObject();
+    }
+
+    /**
+     * @param IncidentDetected $incidentDetected
+     * @return CommunicationBehavior
+     */
+    public function setIncidentDetected(IncidentDetected $incidentDetected): self
+    {
+        $this->incidentDetected = $incidentDetected;
+        return $this;
+    }
 }

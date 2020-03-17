@@ -121,7 +121,7 @@ class IncidentDetected
 
     /**
      * @var CommunicationBehavior | null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior")
      * @ORM\JoinColumn(name="communication_behavior_summary", referencedColumnName="slug")
      * @JMS\Expose()
      */
@@ -129,7 +129,7 @@ class IncidentDetected
 
     /**
      * @var CommunicationBehavior | null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior")
      * @ORM\JoinColumn(name="communication_behavior_update", referencedColumnName="slug")
      * @JMS\Expose()
      */
@@ -137,7 +137,7 @@ class IncidentDetected
 
     /**
      * @var CommunicationBehavior | null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior")
      * @ORM\JoinColumn(name="communication_behavior_open", referencedColumnName="slug")
      * @JMS\Expose()
      */
@@ -145,21 +145,21 @@ class IncidentDetected
 
     /**
      * @var CommunicationBehavior | null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior")
      * @ORM\JoinColumn(name="communication_behavior_summary", referencedColumnName="slug")
      * @JMS\Expose()
      */
     private $communicationBehaviorSummary;
     /**
      * @var CommunicationBehavior | null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior")
      * @ORM\JoinColumn(name="communication_behavior_close", referencedColumnName="slug")
      * @JMS\Expose()
      */
     private $communicationBehaviorClose;
     /**
      * @var CommunicationBehavior | null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior")
      * @ORM\JoinColumn(name="communication_behavior_close", referencedColumnName="slug")
      * @JMS\Expose()
      */
@@ -167,7 +167,7 @@ class IncidentDetected
 
     /**
      * @var CommunicationBehavior | null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior")
      * @ORM\JoinColumn(name="communication_behavior_close", referencedColumnName="slug")
      * @JMS\Expose()
      */
@@ -178,7 +178,6 @@ class IncidentDetected
      * @ORM\Column(name="when_to_update", type="string", length=100,options={"default" :"live"})
      * @JMS\Expose
      * @JMS\Groups({"api_input"})
-     * @Gedmo\Translatable
      */
     private $whenToUpdate = 'live';
     /**
@@ -437,7 +436,7 @@ class IncidentDetected
     /**
      * @param File $evidence_file
      */
-    public function setEvidenceFile(File $evidence_file): void
+    public function setEvidenceFile(File $evidence_file = null): void
     {
         $this->evidence_file = $evidence_file;
     }

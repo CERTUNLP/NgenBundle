@@ -300,7 +300,7 @@ class Incident extends Entity
 
     /**
      * @var CommunicationBehavior | null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior")
      * @ORM\JoinColumn(name="communication_behavior_update", referencedColumnName="slug")
      * @JMS\Expose()
      */
@@ -308,7 +308,7 @@ class Incident extends Entity
 
     /**
      * @var CommunicationBehavior | null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior")
      * @ORM\JoinColumn(name="communication_behavior_update", referencedColumnName="slug")
      * @JMS\Expose()
      */
@@ -316,7 +316,7 @@ class Incident extends Entity
 
     /**
      * @var CommunicationBehavior | null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior")
      * @ORM\JoinColumn(name="communication_behavior_open", referencedColumnName="slug")
      * @JMS\Expose()
      */
@@ -324,7 +324,7 @@ class Incident extends Entity
 
     /**
      * @var CommunicationBehavior | null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior")
      * @ORM\JoinColumn(name="communication_behavior_summary", referencedColumnName="slug")
      * @JMS\Expose()
      */
@@ -332,7 +332,7 @@ class Incident extends Entity
 
     /**
      * @var CommunicationBehavior | null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior")
      * @ORM\JoinColumn(name="communication_behavior_close", referencedColumnName="slug")
      * @JMS\Expose()
      */
@@ -340,14 +340,14 @@ class Incident extends Entity
 
     /**
      * @var CommunicationBehavior | null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior")
      * @ORM\JoinColumn(name="communication_behavior_close", referencedColumnName="slug")
      * @JMS\Expose()
      */
     private $communicationBehaviorDiscard;
     /**
      * @var CommunicationBehavior | null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior")
      * @ORM\JoinColumn(name="communication_behavior_close", referencedColumnName="slug")
      * @JMS\Expose()
      */
@@ -360,7 +360,7 @@ class Incident extends Entity
      * @JMS\Groups({"api_input"})
      * @Gedmo\Translatable
      */
-    private $whenToUpdate = "now";
+    private $whenToUpdate = 'now';
     /**
      * @var array|null
      */
@@ -1329,11 +1329,11 @@ class Incident extends Entity
     /**
      * @return Collection | CommunicationBehavior[]
      */
-    public function getIncidentsDetectedCommunicationBehavior(): Collection
+    public function getIncidentsDetectedForCommunication(): Collection
     {
         $edge = $this->getStateEdge();
         return $this->getIncidentsDetected()->map(static function (IncidentDetected $detected) use ($edge) {
-            return $edge->getIncidentsDetectedBehavior($detected);
+            return $edge->getIncidentsDetectedCommunicationBehavior($detected);
         });
 
     }
