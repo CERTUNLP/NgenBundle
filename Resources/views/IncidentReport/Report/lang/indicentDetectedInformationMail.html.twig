@@ -1,0 +1,86 @@
+{#
+ This file is part of the Ngen - CSIRT Incident Report System.
+
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+<table width="600" style="border:1px solid #333">
+    {% if object.id %}
+
+        <tr>
+            <td>
+                {{ 'Id'|trans }}
+            </td>
+            <td>
+                {{ object.id }}
+            </td>
+        </tr>
+    {% endif %}
+    {% if object.assigned %}
+        <tr>
+            <td>
+                {{ 'Assigned'|trans }}
+            </td>
+            <td>
+                {{ object.assigned }}
+            </td>
+        </tr>
+    {% endif %}
+
+    {% if object.state %}
+        <tr>
+            <td>
+                {{ 'State'|trans }}
+            </td>
+            <td>
+                {% include "CertUnlpNgenBundle:Incident:Frontend/list/stateLabel.html.twig" with {'incident': object} %}
+            </td>
+        </tr>
+    {% endif %}
+
+    {% if object.type %}
+        <tr>
+            <td>
+                {{ 'Type'|trans }}
+            </td>
+            <td>
+                {{ object.type | trans }}
+            </td>
+        </tr>
+    {% endif %}
+
+    {% if object.tlp %}
+        <tr>
+            <td>
+                {{ 'TLP'|trans }}
+            </td>
+            <td>
+                <span>TLP-{{ object.tlp | trans }}</span>
+            </td>
+        </tr>
+    {% endif %}
+
+    {% if object.date %}
+        <tr>
+            <td>
+                {{ 'Original Date'| trans }}
+            </td>
+            <td>
+                {{ object.date |date('Y-m-d H:i') }}
+            </td>
+        </tr>
+    {% endif %}
+
+    {% if object.evidenceFilePath %}
+        <tr>
+            <td>
+                {{ 'Evidence File'|trans }}
+            </td>
+            <td>
+                {{ object.evidenceFilePath }}
+            </td>
+        </tr>
+    {% endif %}
+</table>
