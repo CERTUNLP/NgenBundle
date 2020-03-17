@@ -12,6 +12,12 @@ use JMS\Serializer\Annotation as JMS;
 class CommunicationBehaviorFile extends CommunicationBehavior
 {
 
+    public function __construct(array $allowedMethods = [], bool $inversedBehavior = false)
+    {
+        parent::__construct(['getEvidenceFilePath'], $inversedBehavior);
+
+    }
+
     public function print(): ?string
     {
         return '';
