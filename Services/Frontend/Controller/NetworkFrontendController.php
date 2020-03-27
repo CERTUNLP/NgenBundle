@@ -30,7 +30,7 @@ class NetworkFrontendController extends FrontendController
 
         $prefix = new Prefix();
         $prefix
-            ->setPrefix('addressAndMask', $term);
+            ->setPrefix('address', $term);
         $prefix2 = new Term();
         $prefix2
             ->setTerm('isActive', true);
