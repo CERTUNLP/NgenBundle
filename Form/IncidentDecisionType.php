@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Form;
 
-use CertUnlp\NgenBundle\Entity\Communication\CommunicationBehavior;
+use CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentImpact;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
@@ -31,7 +31,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class IncidentDecisionType extends AbstractType
 {
@@ -178,7 +177,6 @@ class IncidentDecisionType extends AbstractType
                 'required' => true,
                 'choices_as_values' => true
             ))
-
             ->add('id', HiddenType::class)
             ->add('save', SubmitType::class, array(
                 'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),

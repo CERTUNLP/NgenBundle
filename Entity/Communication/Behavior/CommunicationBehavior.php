@@ -14,7 +14,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Table()
  * @ORM\Entity()
  * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")manual','file','data', 'all'
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"all"= "CommunicationBehaviorAll","manual" = "CommunicationBehaviorManual", "file" = "CommunicationBehaviorFile", "data" = "CommunicationBehaviorData", "communication" = "CommunicationBehavior"})
  * @JMS\ExclusionPolicy("all")
  */
@@ -36,21 +36,21 @@ abstract class CommunicationBehavior extends DecoratorAllow implements Translata
      * @JMS\Expose
      * @JMS\Groups({"api_input"})
      * */
-    private $slug;
+    protected $slug;
     /**
      * @var boolean
      *
      * @ORM\Column(name="is_active", type="boolean")
      * @JMS\Expose
      */
-    private $isActive = true;
+    protected $isActive = true;
     /**
      * @var string|null
      *
      * @ORM\Column(name="description", type="string", length=250, nullable=true)
      * @JMS\Expose
      */
-    private $description;
+    protected $description;
     /**
      * @var DateTime|null
      * @Gedmo\Timestampable(on="create")
@@ -58,13 +58,8 @@ abstract class CommunicationBehavior extends DecoratorAllow implements Translata
      * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
-    private $createdAt;
-
-    /**
-     * @var IncidentDetected
-     */
-    private $incidentDetected = null;
-
+    protected $createdAt;
+    
     /**
      * @return DateTime|null
      */
@@ -81,22 +76,6 @@ abstract class CommunicationBehavior extends DecoratorAllow implements Translata
     {
         $this->updatedAt = $updatedAt;
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSlug(): string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $slug
-     */
-    public function setSlug(string $slug): void
-    {
-        $this->slug = $slug;
     }
 
     /**
@@ -163,6 +142,27 @@ abstract class CommunicationBehavior extends DecoratorAllow implements Translata
         return 'primary';
     }
 
+    public function __toString(): string
+    {
+        return $this->getSlug();
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
+    }
+
     abstract public function print(): ?string;
 
     abstract public function getFile(): ?string;
@@ -181,7 +181,7 @@ abstract class CommunicationBehavior extends DecoratorAllow implements Translata
      */
     public function setIncidentDetected(IncidentDetected $incidentDetected): self
     {
-        $this->incidentDetected = $incidentDetected;
+        $this->setObject($incidentDetected);
         return $this;
     }
 }

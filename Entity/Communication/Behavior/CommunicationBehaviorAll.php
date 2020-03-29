@@ -12,6 +12,18 @@ use JMS\Serializer\Annotation as JMS;
 class CommunicationBehaviorAll extends CommunicationBehavior
 {
 
+    public function getAllowedMethods(): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function inversedBehavior(): bool
+    {
+        return true;
+    }
 
     public function print(): ?string
     {

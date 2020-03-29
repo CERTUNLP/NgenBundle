@@ -9,22 +9,25 @@ use JMS\Serializer\Annotation as JMS;
  */
 abstract class DecoratorAbstract
 {
-
-
     /**
      * @var mixed
      */
     private $object = null;
 
+
     public function __call($method, $args)
     {
-        if ($this->canDecorate($method, $args) && is_callable($this->getObject(), $method)) {
+        if (!strpos($method, 'get')) {
+            $method = 'get' . ucfirst($method);
+        }
+
+        if ($this->canDecorate($method, $args) && is_callable([$this->getObject(), $method])) {
             return $this->decorate($this->getObject(), $method, $args);
         }
         return null;
     }
 
-    private function canDecorate($method, $args): bool
+    public function canDecorate(string $method, array $args): bool
     {
         return true;
     }
@@ -35,6 +38,16 @@ abstract class DecoratorAbstract
     public function getObject()
     {
         return $this->object;
+    }
+
+    /**
+     * @param mixed $object
+     * @return DecoratorAbstract
+     */
+    public function setObject($object)
+    {
+        $this->object = $object;
+        return $this;
     }
 
     /**
@@ -52,16 +65,6 @@ abstract class DecoratorAbstract
             $object = $object->getOriginalObject();
         }
         return $object;
-    }
-
-    /**
-     * @param mixed $component
-     * @return DecoratorAbstract
-     */
-    public function setComponent($component)
-    {
-        $this->object = $component;
-        return $this;
     }
 
 }
