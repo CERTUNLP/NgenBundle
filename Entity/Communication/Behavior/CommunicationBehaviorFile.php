@@ -12,10 +12,18 @@ use JMS\Serializer\Annotation as JMS;
 class CommunicationBehaviorFile extends CommunicationBehavior
 {
 
-    public function __construct(array $allowedMethods = [], bool $inversedBehavior = false)
-    {
-        parent::__construct(['getEvidenceFilePath'], $inversedBehavior);
 
+    public function getAllowedMethods(): array
+    {
+        return ['getEvidenceFilePath'];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function inversedBehavior(): bool
+    {
+        return false;
     }
 
     public function print(): ?string
@@ -27,4 +35,5 @@ class CommunicationBehaviorFile extends CommunicationBehavior
     {
         return $this->getIncidentDetected()->getEvidenceFilePath();
     }
+
 }

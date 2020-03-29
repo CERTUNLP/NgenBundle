@@ -12,6 +12,19 @@ use JMS\Serializer\Annotation as JMS;
 class CommunicationBehaviorData extends CommunicationBehavior
 {
 
+    public function getAllowedMethods(): array
+    {
+        return ['getEvidenceFilePath'];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function inversedBehavior(): bool
+    {
+        return true;
+    }
+
     public function print(): ?string
     {
         return $this->getIncidentDetected()->getAssigned();
