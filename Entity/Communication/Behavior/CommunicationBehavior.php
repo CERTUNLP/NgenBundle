@@ -59,7 +59,7 @@ abstract class CommunicationBehavior extends DecoratorAllow implements Translata
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     protected $createdAt;
-    
+
     /**
      * @return DateTime|null
      */
@@ -163,7 +163,14 @@ abstract class CommunicationBehavior extends DecoratorAllow implements Translata
         $this->slug = $slug;
     }
 
-    abstract public function print(): ?string;
+    public function printable(): bool
+    {
+        $allowed = !empty($this->getAllowedMethods());
+        if ($this->inversedBehavior()) {
+            return !$allowed;
+        }
+        return $allowed;
+    }
 
     abstract public function getFile(): ?string;
 

@@ -17,7 +17,8 @@ abstract class DecoratorAbstract
 
     public function __call($method, $args)
     {
-        if (!strpos($method, 'get')) {
+
+        if (strpos($method, 'get') !== 0) {
             $method = 'get' . ucfirst($method);
         }
 

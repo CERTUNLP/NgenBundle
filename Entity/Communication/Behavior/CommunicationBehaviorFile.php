@@ -26,10 +26,6 @@ class CommunicationBehaviorFile extends CommunicationBehavior
         return false;
     }
 
-    public function print(): ?string
-    {
-        return '';
-    }
 
     public function getFile(): ?string
     {
