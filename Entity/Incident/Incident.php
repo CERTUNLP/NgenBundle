@@ -1327,13 +1327,14 @@ class Incident extends Entity
     }
 
     /**
+     * need to clone because Doctrine reference to the same object for all detections.
      * @return Collection | CommunicationBehavior[]
      */
     public function getIncidentsDetectedForCommunication(): Collection
     {
         $edge = $this->getStateEdge();
         return $this->getIncidentsDetected()->map(static function (IncidentDetected $detected) use ($edge) {
-            return $edge->getIncidentsDetectedCommunicationBehavior($detected);
+            return clone $edge->getIncidentsDetectedCommunicationBehavior($detected);
         });
 
     }
