@@ -15,7 +15,7 @@ abstract class DecoratorAllow extends DecoratorAbstract
      * @param $args
      * @return bool
      */
-    public function canDecorate(string $method, array $args): bool
+    public function canDecorate(string $method, array $args = []): bool
     {
         $allowed = in_array($method, $this->getAllowedMethods(), true);
         if ($this->inversedBehavior()) {

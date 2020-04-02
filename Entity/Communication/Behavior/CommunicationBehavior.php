@@ -165,10 +165,13 @@ abstract class CommunicationBehavior extends DecoratorAllow implements Translata
 
     public function printable(): bool
     {
-        $allowed = !empty($this->getAllowedMethods());
-        if ($this->inversedBehavior()) {
-            return !$allowed;
+        $allowed = $this->getAllowedMethods() || $this->inversedBehavior();
+        foreach ($this->getAllowedMethods() as $method) {
+            if (!$this->decorate($this->getObject(), $method)) {
+                $allowed = false;
+            }
         }
+
         return $allowed;
     }
 
