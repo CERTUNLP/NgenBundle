@@ -15,7 +15,7 @@ abstract class DecoratorAbstract
     private $object = null;
 
 
-    public function __call($method, $args)
+    public function __call(string $method, array $args = [])
     {
 
         if (strpos($method, 'get') !== 0) {
@@ -28,7 +28,7 @@ abstract class DecoratorAbstract
         return null;
     }
 
-    public function canDecorate(string $method, array $args): bool
+    public function canDecorate(string $method, array $args = []): bool
     {
         return true;
     }
@@ -52,9 +52,12 @@ abstract class DecoratorAbstract
     }
 
     /**
+     * @param $object
+     * @param string $method
+     * @param array $args
      * @return mixed
      */
-    public function decorate($object, $method, $args)
+    public function decorate($object, string $method, array $args = [])
     {
         return call_user_func_array(array($object, $method), $args);
     }
