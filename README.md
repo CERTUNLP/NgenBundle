@@ -3,6 +3,8 @@
 
 ## ¿Qué es?
 
+NGEN es un sistema para la gestión de incidentes de seguridad, creado para su uso en distintos tipos
+de CSIRTs. 
 El CERTUNLP, es el CSIRT de la Universidad Nacional de La Plata y  fue constituido en el año 2008, desde ese momento hemos pasado por diversas opciones como son GLPI, RT, RITR, Redmine, MantisBT e incluso un primer intento de desarrollo propio en PHP plano, hasta llegar al actual desarrollo de NGEN, el cuál utilizamos en el misión diaria de la gestión de incidentes.
 
 Si bien CERTUNLP NGEN nace como un sistema de gestión de incidentes desarrollado para su uso en el ámbito de trabajo del CSIRT de la Universidad Nacional de La Plata, fue liberado posteriormente como software libre.
