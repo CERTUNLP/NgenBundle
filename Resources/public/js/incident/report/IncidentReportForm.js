@@ -25,10 +25,10 @@ var IncidentReportForm = Form.extend({
         return this.incident_type_id;
     },
     setParentObjectId: function () {
-        this.incident_type_id = (($('#type').val().replace(' ', '_'))).toLowerCase();
+        this.incident_type_id = (($('#type').val().replace(/ /g, '_'))).toLowerCase();
     },
     setIncidentReportId: function () {
-        this.incident_report_id = (($('#lang').val().replace(' ', '_'))).toLowerCase();
+        this.incident_report_id = (($('#lang').val().replace(/ /g, '_'))).toLowerCase();
     },
     getIncidentReportId: function () {
         return this.incident_report_id;

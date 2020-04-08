@@ -17,7 +17,7 @@ var IncidentStateForm = Form.extend({
         return this.getIncidentStateId();
     },
     setIncidentStateId: function () {
-        this.incident_state_id = (($('#name').val().replace(' ', '_'))).toLowerCase();
+        this.incident_state_id = (($('#name').val().replace(/ /g, '_'))).toLowerCase();
     },
     getIncidentStateId: function () {
         return this.incident_state_id;
