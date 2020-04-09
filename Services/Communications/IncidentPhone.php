@@ -12,11 +12,8 @@
 namespace CertUnlp\NgenBundle\Services\Communications;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Services\IncidentReportFactory;
 use FOS\CommentBundle\Event\CommentPersistEvent;
-use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\SignedCommentInterface;
-use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 
 class IncidentPhone extends IncidentCommunication
 {
@@ -32,21 +29,6 @@ class IncidentPhone extends IncidentCommunication
     protected $lang;
     protected $team;
     protected $translator;
-
-
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $templating, string $cert_email, string $upload_directory, CommentManagerInterface $commentManager, string $environment, IncidentReportFactory $report_factory, string $lang, array $team, Translator $translator)
-    {
-        $this->mailer = $mailer;
-        $this->cert_email = $cert_email;
-        $this->templating = $templating;
-        $this->upload_directory = $upload_directory;
-        $this->commentManager = $commentManager;
-        $this->environment = in_array($environment, ['dev', 'test']) ? '[dev]' : '';
-        $this->report_factory = $report_factory;
-        $this->lang = $lang;
-        $this->team = $team;
-        $this->translator = $translator;
-    }
 
     public function postPersistDelegation($incident)
     {
@@ -176,6 +158,6 @@ class IncidentPhone extends IncidentCommunication
      */
     public function comunicate(Incident $incident): void
     {
-        return null;
+        return;
     }
 }
