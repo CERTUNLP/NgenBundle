@@ -31,7 +31,7 @@ class IncidentPhone extends IncidentCommunication
     protected $report_factory;
     protected $lang;
     protected $team;
-    private $translator;
+    protected $translator;
 
 
     public function __construct(\Swift_Mailer $mailer, \Twig_Environment $templating, string $cert_email, string $upload_directory, CommentManagerInterface $commentManager, string $environment, IncidentReportFactory $report_factory, string $lang, array $team, Translator $translator)
