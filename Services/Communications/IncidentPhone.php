@@ -170,4 +170,12 @@ class IncidentPhone extends IncidentCommunication
         return '';
     }
 
+    /**
+     * @param Incident $incident
+     * @return void
+     */
+    public function comunicate(Incident $incident): void
+    {
+        return null;
+    }
 }
