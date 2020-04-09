@@ -11,13 +11,10 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
 use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
 use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
-use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
 use CertUnlp\NgenBundle\Entity\Contact\ContactThreema;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Form\FormFactoryInterface;
 
 class ContactHandler extends Handler
 {
@@ -44,4 +41,16 @@ class ContactHandler extends Handler
     }
 
 
+    protected function checkIfExists($entity_class_instance, $method)
+    {
+        return $entity_class_instance;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function prepareToDeletion($entity_class_instance, array $parameters)
+    {
+        return null;
+    }
 }
