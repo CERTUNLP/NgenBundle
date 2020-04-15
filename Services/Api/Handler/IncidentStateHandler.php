@@ -44,7 +44,7 @@ class IncidentStateHandler extends Handler
     {
         $incident_stateDB = $this->repository->findOneBy(['slug' => $incident_state->getSlug()]);
 
-        if ($incident_stateDB && $method == 'POST') {
+        if ($incident_stateDB && $method === 'POST') {
             if (!$incident_stateDB->getIsActive()) {
                 $incident_stateDB->setIsActive(TRUE);
             }

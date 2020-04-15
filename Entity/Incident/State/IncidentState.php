@@ -62,7 +62,7 @@ class IncidentState extends Entity implements Translatable
      * @JMS\Groups({"api_input"})
      * @Gedmo\Translatable
      */
-    private $name;
+    private $name = '';
     /**
      * @var string
      * @ORM\Id
@@ -71,7 +71,7 @@ class IncidentState extends Entity implements Translatable
      * @JMS\Expose
      * @JMS\Groups({"api_input"})
      * */
-    private $slug;
+    private $slug = '';
     /**
      * @var boolean
      *
@@ -80,12 +80,12 @@ class IncidentState extends Entity implements Translatable
      */
     private $isActive = true;
     /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column(name="description", type="string", length=250, nullable=true)
      * @JMS\Expose
      */
-    private $description;
+    private $description = '';
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="create")
@@ -116,12 +116,30 @@ class IncidentState extends Entity implements Translatable
     private $incidents;
 
     /**
-     * Constructor
+     * IncidentState constructor.
      */
     public function __construct()
     {
         $this->incidents = new ArrayCollection();
         $this->edges = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @param mixed $locale
+     * @return IncidentState
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+        return $this;
     }
 
     /**
@@ -307,7 +325,7 @@ class IncidentState extends Entity implements Translatable
     /**
      * @return IncidentState[]|ArrayCollection
      */
-    public function getNewStates(): ArrayCollection
+    public function getNewStates(): Collection
     {
         return $this->getEdges()->map(static function (StateEdge $edge) {
             return $edge->getNewState();
@@ -318,7 +336,7 @@ class IncidentState extends Entity implements Translatable
      * @param StateEdge $edge
      * @return IncidentState
      */
-    public function addEdge(StateEdge $edge): IncidentState
+    public function addEdge(StateEdge $edge): ?IncidentState
     {
         if ($this->getEdges()->contains($edge)) {
             return null;
@@ -375,7 +393,7 @@ class IncidentState extends Entity implements Translatable
      *
      * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -388,11 +406,7 @@ class IncidentState extends Entity implements Translatable
      */
     public function setName(string $name): IncidentState
     {
-        echo("4");
-        echo($name);
-
         $this->name = $name;
-
         return $this;
     }
 

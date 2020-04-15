@@ -21,10 +21,10 @@ interface ApiHandlerInterface
     /**
      * Get a Entity given the identifier
      *
-     * @api
-     *
      * @param array $parameters
      * @return object
+     * @api
+     *
      */
     public function get(array $parameters);
 
@@ -43,36 +43,37 @@ interface ApiHandlerInterface
     /**
      * Post Entity, creates a new Entity.
      *
-     * @api
-     *
      * @param array $parameters
      *
      * @param bool $csrf_protection
+     * @param $entity_class_instance
      * @return object
+     * @api
+     *
      */
     public function post(array $parameters, bool $csrf_protection = false, $entity_class_instance);
 
     /**
      * Edit a Entity.
      *
-     * @api
-     *
      * @param object $entity
      * @param array $parameters
      *
      * @return object
+     * @api
+     *
      */
     public function put($entity, array $parameters);
 
     /**
      * Partially update a Entity.
      *
-     * @api
-     *
      * @param object $entity
      * @param array $parameters
      *
      * @return object
+     * @api
+     *
      */
     public function patch($entity, array $parameters);
 

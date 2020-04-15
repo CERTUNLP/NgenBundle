@@ -27,6 +27,7 @@ use JMS\Serializer\Annotation as JMS;
  */
 class OpeningEdge extends StateEdge
 {
+
     public function changeIncidentStateAction(Incident $incident): Incident
     {
         $incident->setNeedToCommunicate(true);

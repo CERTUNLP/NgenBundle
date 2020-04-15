@@ -21,7 +21,7 @@ class DateTimeTypeExtension extends AbstractTypeExtension
         //  * the widget is set to "single_text"
         //  * the format matches the one expected by HTML5
         //  * the html5 is set to true
-        if ($options['html5'] && 'single_text' === $options['widget'] ) {
+        if ($options['html5'] && 'single_text' === $options['widget']) {
             $view->vars['type'] = 'datetime-local';
         }
     }

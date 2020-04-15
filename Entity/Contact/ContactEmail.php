@@ -31,9 +31,4 @@ class ContactEmail extends Contact
     {
         return $this->getUsername();
     }
-
-    public function getTelegram(): string
-    {
-        return '';
-    }
 }

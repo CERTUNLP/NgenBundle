@@ -2,6 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Communication;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,19 +29,19 @@ class Message
     /**
      * @var array|null
      *
-     * @ORM\Column(name="data", type="json_array")
+     * @ORM\Column(name="data", type="json")
      */
     private $data;
 
     /**
-     * @var \DateTime|null
+     * @var DateTime|null
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
 
     /**
-     * @var \DateTime|null
+     * @var DateTime|null
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
@@ -49,7 +50,7 @@ class Message
     /**
      * @var array|null
      *
-     * @ORM\Column(name="response", type="json_array",nullable=true)
+     * @ORM\Column(name="response", type="json",nullable=true)
      */
 
     private $response;
@@ -104,9 +105,9 @@ class Message
     /**
      * Get updatedAt
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getUpdatedAt(): ?\DateTime
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }
@@ -114,10 +115,10 @@ class Message
     /**
      * Set updatedAt
      *
-     * @param \DateTime $updatedAt
+     * @param DateTime $updatedAt
      * @return Message
      */
-    public function setUpdatedAt(\DateTime $updatedAt): Message
+    public function setUpdatedAt(DateTime $updatedAt): Message
     {
         $this->updatedAt = $updatedAt;
 
@@ -200,10 +201,10 @@ class Message
      */
     public function timestampsUpdate(): void
     {
-        $this->setUpdatedAt(new \DateTime('now'));
+        $this->setUpdatedAt(new DateTime('now'));
 
         if ($this->getCreatedAt() == null) {
-            $this->setCreatedAt(new \DateTime('now'));
+            $this->setCreatedAt(new DateTime('now'));
             $this->setPending(true);
         }
     }
@@ -211,9 +212,9 @@ class Message
     /**
      * Get createdAt
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
@@ -221,10 +222,10 @@ class Message
     /**
      * Set createdAt
      *
-     * @param \DateTime $createdAt
+     * @param DateTime $createdAt
      * @return Message
      */
-    public function setCreatedAt(\DateTime $createdAt): Message
+    public function setCreatedAt(DateTime $createdAt): Message
     {
         $this->createdAt = $createdAt;
 

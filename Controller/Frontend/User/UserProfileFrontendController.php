@@ -22,6 +22,7 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -53,7 +54,7 @@ class UserProfileFrontendController extends ProfileController
     /**
      * @Route("/edit", name="fos_user_profile_edit", methods="GET|POST")
      * @param Request $request
-     * @return null|RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return null|RedirectResponse|Response
      */
 
     public function editAction(Request $request=null)

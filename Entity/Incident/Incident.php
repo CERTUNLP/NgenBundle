@@ -22,6 +22,7 @@ use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
+use DateInterval;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -1079,7 +1080,7 @@ class Incident extends Entity
     }
 
     /**
-     * @return int
+     * @return DateInterval|false
      * @throws Exception
      * @example if int positive incident is on time, if int is negative incident is delayed
      */
@@ -1088,7 +1089,7 @@ class Incident extends Entity
         $fecha = new DateTime();
         $minutes = $this->getResponseDelayedMinutes();
         $intervalo = 'PT' . ($minutes >= 0 ? $minutes : $minutes * -1) . 'M';
-        $date_interval = new \DateInterval($intervalo);
+        $date_interval = new DateInterval($intervalo);
         $fecha->sub($date_interval);
 
         return $fecha->diff(new DateTime());
@@ -1170,7 +1171,7 @@ class Incident extends Entity
     }
 
     /**
-     * @return int
+     * @return DateInterval|false
      * @throws Exception
      * @example if int positive incident is on time, if int is negative incident is delayed
      */
@@ -1180,7 +1181,7 @@ class Incident extends Entity
         $minutes = $this->getResolutionDelayedMinutes();
 
         $intervalo = 'PT' . ($minutes >= 0 ? $minutes : $minutes * -1) . 'M';
-        $date_interval = new \DateInterval($intervalo);
+        $date_interval = new DateInterval($intervalo);
         $fecha->sub($date_interval);
 
         return $fecha->diff(new DateTime());
@@ -1192,9 +1193,7 @@ class Incident extends Entity
      */
     public function getResolutionDelayedMinutes(): int
     {
-        $minutes = $this->getPriority()->getResolutionTime() - $this->getResolutionMinutes();
-
-        return $minutes;
+        return $this->getPriority()->getResolutionTime() - $this->getResolutionMinutes();
     }
 
     /**
@@ -1725,7 +1724,7 @@ class Incident extends Entity
     /**
      * @return mixed
      */
-    public function getLastState(): IncidentState
+    public function getLastState(): ?IncidentState
     {
         return $this->getStateEdge() ? $this->getStateEdge()->getOldState() : null;
     }

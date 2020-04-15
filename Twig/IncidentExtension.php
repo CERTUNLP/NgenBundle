@@ -13,11 +13,11 @@ namespace CertUnlp\NgenBundle\Twig;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Twig_Extension;
-use Twig_SimpleFunction;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 
-class IncidentExtension extends Twig_Extension
+class IncidentExtension extends AbstractExtension
 {
     protected $doctrine;
 
@@ -33,8 +33,8 @@ class IncidentExtension extends Twig_Extension
         // Register the function in twig :
         // In your template you can use it as : {{findPosibleStates('open')}}
         return array(
-            new Twig_SimpleFunction('findPosibleStates', array($this, 'findPosibleStates')),
-            new Twig_SimpleFunction('getIconForStateAction', array($this, 'getIconForStateAction')),
+            new TwigFunction('findPosibleStates', array($this, 'findPosibleStates')),
+            new TwigFunction('getIconForStateAction', array($this, 'getIconForStateAction')),
 
         );
     }

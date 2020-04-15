@@ -77,7 +77,7 @@ class IncidentMailer extends IncidentCommunication
             foreach ($incident->getIncidentsDetectedForCommunication() as $detected) {
                 if ($detected->getEvidenceFilePath()) {
                     if (file_exists($evidence_path . $detected->getEvidenceFilePath())) {
-                        $message->attach(\Swift_Attachment::fromPath($evidence_path . $detected->getEvidenceFilePath()));
+                        $message->attach(Swift_Attachment::fromPath($evidence_path . $detected->getEvidenceFilePath()));
                     } else {
                         $detected->setEvidenceFilePath(null);
                     }
@@ -122,7 +122,7 @@ class IncidentMailer extends IncidentCommunication
         // The name of the Zip documents.
         $evidence_path = $this->upload_directory . $incident->getEvidenceSubDirectory() . "/";
         $zipName = $evidence_path . 'EvidenceDocuments' . $incident->__toString() . '.zip';
-        $options = array('remove_all_path' => TRUE);
+//        $options = array('remove_all_path' => TRUE);
         $zip->open($zipName, ZipArchive::CREATE);
         foreach ($incident->getIncidentsDetected() as $detected) {
             if ($detected->getEvidenceFilePath()) {

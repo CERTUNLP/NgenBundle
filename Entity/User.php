@@ -54,7 +54,6 @@ class User extends BaseUser implements ReporterInterface
      */
     protected $id;
     /**
-     * @RollerworksPassword\PasswordStrength(minLength=7, minStrength=3)
      */
     protected $plainPassword;
     /**

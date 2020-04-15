@@ -55,12 +55,12 @@ class IncidentPriority extends Entity
      */
     private $isActive = true;
     /**
-     * @var int|null
+     * @var int
      *
      * @ORM\Column(name="unresponse_time", type="integer")
      * @JMS\Expose
      */
-    private $unresponseTime;
+    private $unresponseTime = 0;
     /**
      * @var integer|null
      * @ORM\Column(name="unresolution_time", type="integer")
@@ -68,24 +68,24 @@ class IncidentPriority extends Entity
      */
     private $unresolutionTime;
     /**
-     * @var int|null
+     * @var int
      *
      * @ORM\Column(name="code", type="integer")
      * @JMS\Expose
      */
-    private $code;
+    private $code = 0;
     /**
-     * @var string|null
+     * @var string
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
      * @JMS\Expose
      */
-    private $slug;
+    private $slug = '';
     /**
-     * @var string|null
+     * @var string
      * @ORM\Column(name="name", type="string", length=255)
      * @JMS\Expose
      */
-    private $name;
+    private $name = '';
     /**
      * @var DateTime|null
      * @Gedmo\Timestampable(on="create")
@@ -165,15 +165,15 @@ class IncidentPriority extends Entity
         return $this;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -373,7 +373,7 @@ class IncidentPriority extends Entity
      */
     public function getResponseTime(): ?int
     {
-        return $this->responseTime?:1;
+        return $this->responseTime ?: 1;
     }
 
     /**
@@ -391,7 +391,7 @@ class IncidentPriority extends Entity
      */
     public function getResolutionTime(): ?int
     {
-        return $this->resolutionTime?:1;
+        return $this->resolutionTime ?: 1;
     }
 
     /**

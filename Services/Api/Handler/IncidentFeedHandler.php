@@ -33,7 +33,7 @@ class IncidentFeedHandler extends Handler
     {
         $incident_feedDB = $this->repository->findOneBy(['slug' => $incident_feed->getSlug()]);
 
-        if ($incident_feedDB && $method == 'POST') {
+        if ($incident_feedDB && $method === 'POST') {
             if (!$incident_feedDB->getIsActive()) {
                 $incident_feedDB->setIsActive(TRUE);
             }

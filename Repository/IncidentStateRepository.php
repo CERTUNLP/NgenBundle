@@ -37,7 +37,7 @@ class IncidentStateRepository extends EntityRepository
         foreach ($qb2->getQuery()->getResult() as $item) {
             $slugs[] = $item['slug'];
         }
-        $qb = $this->createQueryBuilder('i');
+        $qb = $this->getOrCreateQueryBuilder($qb);
 
         $qb
             ->where($qb->expr()->in('i.slug', $slugs));
@@ -53,7 +53,7 @@ class IncidentStateRepository extends EntityRepository
      */
     public function queryNewStateSlugs(string $state, QueryBuilder $qb = null): QueryBuilder
     {
-        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb = $this->getOrCreateQueryBuilder($qb);
 
         $qb
             ->select(' nw.slug')

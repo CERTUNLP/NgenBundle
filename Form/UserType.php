@@ -74,12 +74,11 @@ class UserType extends AbstractType
 
     private function roleChoices()
     {
-        $choices = array(
+        return array(
             'ROLE_API' => 'ROLE_API',
             'ROLE_ADMIN' => 'ROLE_ADMIN',
             'ROLE_DIRECCION' => 'ROLE_DIRECCION',
             'ROLE_SUPER_ADMIN' => 'ROLE_SUPER_ADMIN');
-        return $choices;
     }
 
     public function getParent()
@@ -107,10 +106,7 @@ class UserType extends AbstractType
         // get the form
         $form = $event->getForm();
 
-        // get the data if 'reviewing' the information
-        /**
-         * @var Invoices
-         */
+
         $data = $event->getData();
 
         // disable field if it has been populated with a client already

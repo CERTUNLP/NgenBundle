@@ -34,15 +34,13 @@ class IncidentReports extends AbstractFixture implements OrderedFixtureInterface
         foreach ($incident_reports as $incident_report) {
             $newIncidentReport = new IncidentReport();
             foreach ($incident_report as $key => $value) {
-                if ($key == 'type') {
+                if ($key === 'type') {
                     $newIncidentReport->setType($incidentTypeRepository->findOneBySlug($value));
-                } else {
-                    if ($key != 'updated_at' && $key != 'created_at') {
-                        $method = 'set' . preg_replace_callback('/[-_](.)/', function ($matches) {
-                                return strtoupper($matches[1]);
-                            }, $key);;
-                        $newIncidentReport->$method($incident_report[$key]);
-                    }
+                } else if ($key !== 'updated_at' && $key !== 'created_at') {
+                    $method = 'set' . preg_replace_callback('/[-_](.)/', static function ($matches) {
+                            return strtoupper($matches[1]);
+                        }, $key);
+                    $newIncidentReport->$method($incident_report[$key]);
                 }
 
             }
