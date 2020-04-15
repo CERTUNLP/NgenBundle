@@ -18,7 +18,7 @@
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_incident_predicate_search') }}{% endblock %}
 
 {% block content_body %}
-    {% include 'CertUnlpNgenBundle:incidentTaxonomyPredicates:Frontend/list/incidentTaxonomyPredicateList.html.twig' with {'incidentTaxonomyPredicate': objects  } %}
+    {% include '@CertUnlpNgen/IncidentTaxonomyPredicate/Frontend/list/incidentTaxonomyPredicateList.html.twig' with {'incidentTaxonomyPredicate': objects  } %}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

@@ -11,8 +11,6 @@
 
 namespace CertUnlp\NgenBundle\Services\Api\Controller;
 
-use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
-
 class IncidentTaxonomyPredicateApiController extends ApiController
 {
 

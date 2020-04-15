@@ -82,6 +82,7 @@ class FrontendController
 
     /**
      * @param array $ratios
+     * @param string $title
      * @return ColumnChart
      */
     public function makeColumnChart(array $ratios, string $title = ''): ColumnChart

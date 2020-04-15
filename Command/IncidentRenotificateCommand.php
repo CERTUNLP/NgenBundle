@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Command;
 
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,20 +19,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 class IncidentRenotificateCommand extends ContainerAwareCommand
 {
 
-    protected function configure()
+    public function configure()
     {
         $this
             ->setName('cert_unlp:incidents:renotificate')
             ->setDescription('Walk through incidents that have a date of 6 day ago or more and closes them.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('[incidents]: Starting.');
         $output->writeln('[incidents]: Renotificating incidents...');
         $incidents = $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->renotificateIncidents();
         foreach ($incidents as $incident) {
-            $incident->setRenotificationDate(New \DateTime());
+            $incident->setRenotificationDate(new DateTime());
             $this->getContainer()->get('cert_unlp.ngen.internal.incident.mailer')->send_report($incident, false, false, false, true);
             $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->patch($incident);
         }

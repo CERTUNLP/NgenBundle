@@ -12,11 +12,10 @@
 namespace CertUnlp\NgenBundle\Services\Communications;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Services\IncidentReportFactory;
 use FOS\CommentBundle\Event\CommentPersistEvent;
-use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\SignedCommentInterface;
-use Symfony\Bundle\FrameworkBundle\Translation\Translator;
+use Swift_Attachment;
+use Swift_Message;
 
 class IncidentPhone extends IncidentCommunication
 {
@@ -31,22 +30,7 @@ class IncidentPhone extends IncidentCommunication
     protected $report_factory;
     protected $lang;
     protected $team;
-    private $translator;
-
-
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $templating, string $cert_email, string $upload_directory, CommentManagerInterface $commentManager, string $environment, IncidentReportFactory $report_factory, string $lang, array $team, Translator $translator)
-    {
-        $this->mailer = $mailer;
-        $this->cert_email = $cert_email;
-        $this->templating = $templating;
-        $this->upload_directory = $upload_directory;
-        $this->commentManager = $commentManager;
-        $this->environment = in_array($environment, ['dev', 'test']) ? '[dev]' : '';
-        $this->report_factory = $report_factory;
-        $this->lang = $lang;
-        $this->team = $team;
-        $this->translator = $translator;
-    }
+    protected $translator;
 
     public function postPersistDelegation($incident)
     {
@@ -67,7 +51,7 @@ class IncidentPhone extends IncidentCommunication
         if ($enviar_a) {
             #Hay que discutir si es necesario mandar cualquier cambio o que cosa todo || $is_new_incident || $renotification) {
             $html = $this->getBody($incident);
-            $message = \Swift_Message::newInstance()
+            $message = Swift_Message::newInstance()
                 ->setSubject(sprintf($this->mailSubject($renotification), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getAddress(), $incident->getId()))
                 ->setFrom($this->cert_email)
                 ->setSender($this->cert_email)
@@ -75,7 +59,7 @@ class IncidentPhone extends IncidentCommunication
                 ->addPart($html, 'text/html');
 
             if ($incident->getEvidenceFilePath()) {
-                $message->attach(\Swift_Attachment::fromPath($this->upload_directory . $incident->getEvidenceFilePath(true)));
+                $message->attach(Swift_Attachment::fromPath($this->upload_directory . $incident->getEvidenceFilePath(true)));
             }
 
             if ($incident->getReportMessageId()) {
@@ -105,7 +89,7 @@ class IncidentPhone extends IncidentCommunication
 
     public function prePersistDelegation(Incident $incident)
     {
-        $message = \Swift_Message::newInstance();
+        $message = Swift_Message::newInstance();
         $incident->setReportMessageId($message->getId());
     }
 
@@ -134,7 +118,7 @@ class IncidentPhone extends IncidentCommunication
     {
 
         $html = $this->getReplyBody($incident, $body);
-        $message = \Swift_Message::newInstance()
+        $message = Swift_Message::newInstance()
             ->setSubject(sprintf($this->replySubject(), $incident->getTlp(), $this->team['name'], $incident->getType()->getName(), $incident->getAddress(), $incident->getId()))
             ->setFrom($this->cert_email)
             ->addPart($html, 'text/html');
@@ -170,4 +154,12 @@ class IncidentPhone extends IncidentCommunication
         return '';
     }
 
+    /**
+     * @param Incident $incident
+     * @return void
+     */
+    public function comunicate(Incident $incident): void
+    {
+        return;
+    }
 }

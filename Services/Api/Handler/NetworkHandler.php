@@ -15,10 +15,8 @@ use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
 use CertUnlp\NgenBundle\Entity\Network\NetworkExternal;
 use CertUnlp\NgenBundle\Entity\Network\NetworkInternal;
-use CertUnlp\NgenBundle\Repository\NetworkRepository;
 use CertUnlp\NgenBundle\Services\NetworkRdapClient;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class NetworkHandler extends Handler
@@ -81,14 +79,6 @@ class NetworkHandler extends Handler
             }
         }
         return $network;
-    }
-
-    /**
-     * @return NetworkRepository
-     */
-    public function getRepository(): ObjectRepository
-    {
-        return parent::getRepository();
     }
 
     /**

@@ -18,6 +18,7 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use Doctrine\Common\Collections\ArrayCollection;
+use Exception;
 
 class IncidentDecisionHandler extends Handler
 {
@@ -39,6 +40,7 @@ class IncidentDecisionHandler extends Handler
     /**
      * @param ArrayCollection $decisions
      * @return ArrayIterator
+     * @throws Exception
      */
     public function orderDecisionsByNetworkMask(ArrayCollection $decisions): ArrayIterator
     {

@@ -42,7 +42,7 @@ class IncidentFeed extends Entity
      * @JMS\Expose
      * @JMS\Groups({"api_input"})
      */
-    private $name;
+    private $name = '';
     /**
      * @var string
      * @ORM\Id
@@ -51,7 +51,7 @@ class IncidentFeed extends Entity
      * @JMS\Expose
      * @JMS\Groups({"api_input"})
      * */
-    private $slug;
+    private $slug = '';
     /**
      * @var boolean
      *
@@ -76,12 +76,12 @@ class IncidentFeed extends Entity
      */
     private $updatedAt;
     /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column(name="description", type="string", length=250, nullable=true)
      * @JMS\Expose
      */
-    private $description;
+    private $description = '';
 
     /**
      * @var Incident[]|Collection
@@ -124,7 +124,7 @@ class IncidentFeed extends Entity
      *
      * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

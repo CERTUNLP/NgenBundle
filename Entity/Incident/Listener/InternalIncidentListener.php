@@ -92,7 +92,7 @@ class InternalIncidentListener
         $repository = $entityManager->getRepository(IncidentTlp::class);
         $tlp = $incident->getTlp();
         $newTLP = $repository->findOneBySlug('white');
-        if ($tlp == null) {
+        if ($tlp === null) {
             $incident->setTlp($newTLP);
         }
     }
@@ -104,7 +104,7 @@ class InternalIncidentListener
     public function postPersistHandler(Incident $incident, LifecycleEventArgs $event): void
     {
         $this->delegator_chain->postPersistDelegation($incident);
-        $this->commentThreadUpdate($incident, $event);
+        $this->commentThreadUpdate($incident);
     }
 
     /**

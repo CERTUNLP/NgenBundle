@@ -18,14 +18,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 class IncidentNotificateCommand extends ContainerAwareCommand
 {
 
-    protected function configure()
+    public function configure()
     {
         $this
             ->setName('cert_unlp:incidents:notificate')
             ->setDescription('Walk through incidents that have a date of 6 day ago or more and closes them.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('[incidents]: Starting.');
         $output->writeln('[incidents]: Renotificating incidents...');

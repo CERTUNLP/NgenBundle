@@ -17,27 +17,28 @@ use JMS\Serializer\Annotation as JMS;
 class ContactCase
 {
     /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column(name="name", type="string", length=45, nullable=true)
      * @JMS\Expose
      */
-    private $name;
+    private $name = '';
     /**
-     * @var string|null
+     * @var string
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
      * @JMS\Expose
      * */
-    private $slug;
+    private $slug = '';
     /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
      * @JMS\Expose
      */
-    private $description;
+    private $description = '';
+
     /**
      * @var Collection|null
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="contactCase"))
@@ -46,11 +47,9 @@ class ContactCase
     private $contacts;
     /**
      * @var int|null
-     *
      * @ORM\Column(name="level", type="integer")
-     *
      */
-    private $level;
+    private $level = 0;
 
     /**
      * @return string|null
@@ -92,9 +91,32 @@ class ContactCase
     /**
      * @return string
      */
-    public function __toString(): ?string
+    public function __toString(): string
     {
         return $this->getSlug();
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return ContactCase
+     */
+    public function setSlug(string $slug): ?ContactCase
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 
     /**
@@ -112,29 +134,6 @@ class ContactCase
     public function setDescription(string $description): ?ContactCase
     {
         $this->description = $description;
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return ContactCase
-     */
-    public function setSlug(string $slug): ?ContactCase
-    {
-        $this->slug = $slug;
-
         return $this;
     }
 

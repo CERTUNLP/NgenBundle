@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Form;
 
 use CertUnlp\NgenBundle\Entity\Communication\Behavior\CommunicationBehavior;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentImpact;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
@@ -29,7 +30,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class IncidentDecisionType extends AbstractType
@@ -203,12 +204,13 @@ class IncidentDecisionType extends AbstractType
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
+     * @return void
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'CertUnlp\NgenBundle\Entity\Incident\IncidentDecision',
+            'data_class' => IncidentDecision::class,
             'csrf_protection' => false,
         ));
     }

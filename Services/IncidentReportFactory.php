@@ -15,7 +15,7 @@ use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandler;
 use Symfony\Component\HttpFoundation\Response;
-use Twig_Environment;
+use Twig\Environment;
 
 class IncidentReportFactory
 {
@@ -26,7 +26,7 @@ class IncidentReportFactory
     private $team;
     private $custom_handler;
 
-    public function __construct(Twig_Environment $templating, ViewHandler $viewHandler, View $view, $team)
+    public function __construct(Environment $templating, ViewHandler $viewHandler, View $view, $team)
     {
         $this->templating = $templating;
         $this->viewHandler = $viewHandler;

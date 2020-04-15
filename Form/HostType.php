@@ -12,28 +12,20 @@
 namespace CertUnlp\NgenBundle\Form;
 
 use CertUnlp\NgenBundle\Entity\Network\Host\Host;
-use Doctrine\ORM\EntityManager;
+use Exception;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class HostType extends AbstractType
 {
-    private $userLogged;
-    private $doctrine;
-
-    public function __construct(EntityManager $doctrine = null, int $userLogged = null)
-    {
-        $this->doctrine = $doctrine;
-        $this->userLogged = $userLogged;
-    }
 
 
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
-     * @throws \Exception
+     * @throws Exception
      */
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -53,10 +45,10 @@ class HostType extends AbstractType
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      * @return void
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => Host::class,
