@@ -12,7 +12,6 @@
 namespace CertUnlp\NgenBundle\Entity\Incident\State\Edge;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
@@ -26,57 +25,6 @@ use JMS\Serializer\Annotation as JMS;
  */
 class OpeningEdge extends StateEdge
 {
-
-    /**
-     * @return bool
-     */
-    public function isOpening(): bool
-    {
-        return true;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isClosing(): bool
-    {
-
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isReopening(): bool
-    {
-        return false;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isUpdating(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isDiscarding(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isInitializing(): bool
-    {
-        return false;
-    }
 
     public function changeIncidentStateAction(Incident $incident): Incident
     {

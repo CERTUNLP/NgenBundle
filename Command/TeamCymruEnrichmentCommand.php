@@ -19,14 +19,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 class TeamCymruEnrichmentCommand extends ContainerAwareCommand
 {
 
-    protected function configure()
+    public function configure()
     {
         $this
             ->setName('cert_unlp:incident:enrichment:teamcymru')
             ->setDescription('Adds ASN and CC enrichments to the incidents');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('[teamCymru]: Starting.');
         $output->writeln('[teamCymru]: Getting networks for enrichment');

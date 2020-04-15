@@ -24,9 +24,9 @@ class IncidentTaxonomyPredicateHandler extends Handler
      * @return void
      */
     public function prepareToDeletion($taxonomy_predicate, array $parameters = null)
-{
-    $taxonomy_predicate->setIsActive(FALSE);
-}
+    {
+        $taxonomy_predicate->setIsActive(FALSE);
+    }
 
     /**
      * @param $taxonomy_predicate
@@ -34,14 +34,14 @@ class IncidentTaxonomyPredicateHandler extends Handler
      * @return object|null
      */
     protected function checkIfExists($taxonomy_predicate, $method)
-{
-    $taxonomy_predicateDB = $this->repository->findOneBy(array('slug' => $taxonomy_predicate->getSlug()));
+    {
+        $taxonomy_predicateDB = $this->repository->findOneBy(array('slug' => $taxonomy_predicate->getSlug()));
 
-    if ($taxonomy_predicateDB && $method == 'POST') {
-        $taxonomy_predicate = $taxonomy_predicateDBs;
+        if ($taxonomy_predicateDB && $method === 'POST') {
+            $taxonomy_predicate = $taxonomy_predicateDB;
+        }
+        return $taxonomy_predicate;
     }
-    return $taxonomy_predicate;
-}
 
 
 }

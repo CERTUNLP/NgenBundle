@@ -12,17 +12,16 @@
 namespace CertUnlp\NgenBundle\Command;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use SecIT\ImapBundle\Service\Imap;
-use CertUnlp\NgenBundle\Entity\User;
 
 class CheckMailCommand extends ContainerAwareCommand
 {
 
-    protected function configure()
+    public function configure()
     {
         $this
             ->setName('cert_unlp:email:check')
@@ -32,7 +31,7 @@ class CheckMailCommand extends ContainerAwareCommand
             ->addOption('mark', '-m', InputOption::VALUE_OPTIONAL, 'Mark mail as readed', false);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $connection = $input->getOption('connection');
         $mark = $input->getOption('mark');
@@ -86,7 +85,7 @@ class CheckMailCommand extends ContainerAwareCommand
                         $note = $raw->textHtml;
                     }
                     $body = $raw->fromName . " <" . $raw->fromAddress . ">  answered: " . $note;
-
+//TODO: wataffak
                     echo "EINAR:" . $body;
                     $incident = $this->newIncident();
                     if ($incident) {
@@ -107,8 +106,17 @@ class CheckMailCommand extends ContainerAwareCommand
         $output->writeln('<info>[Messages]: Done.</info>');
     }
 
+    /**
+     * @param $username
+     * @return User
+     */
+    private function findMailbotUser($username): ?User
+    {
+        return $this->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['username' => $username]);
+    }
 
     /**
+     * @param $id
      * @return Incident
      */
     private function findIncidentToUpdate($id): ?Incident
@@ -121,16 +129,8 @@ class CheckMailCommand extends ContainerAwareCommand
      */
     private function newIncident(): ?Incident
     {
-        return  new Incident();
+        return new Incident();
         //($this->getContainer()->get('doctrine')->getRepository(Incident::class));
-    }
-
-    /**
-     * @return User
-     */
-    private function findMailbotUser($username): ?User
-    {
-        return $this->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['username' => $username]);
     }
 
 }

@@ -23,15 +23,12 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity()
  * @JMS\ExclusionPolicy("all")
  */
-class UpdatingEdge extends StateEdge
+class NewEdge extends StateEdge
 {
 
-    /**
-     * @param Incident $incident
-     * @return Incident
-     */
     public function changeIncidentStateAction(Incident $incident): Incident
     {
         return $incident;
     }
+
 }

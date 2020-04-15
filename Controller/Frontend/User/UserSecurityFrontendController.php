@@ -14,6 +14,7 @@ namespace CertUnlp\NgenBundle\Controller\Frontend\User;
 use FOS\UserBundle\Controller\SecurityController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserSecurityFrontendController extends SecurityController
 {
@@ -24,7 +25,7 @@ class UserSecurityFrontendController extends SecurityController
     /**
      * @Route("/login", name="fos_user_security_login")
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function loginAction(Request $request)
     {
@@ -36,7 +37,7 @@ class UserSecurityFrontendController extends SecurityController
      */
     public function checkAction()
     {
-        return $this->redirect("/");
+        return $this->redirect('/');
     }
 
     /**

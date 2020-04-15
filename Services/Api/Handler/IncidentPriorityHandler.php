@@ -38,7 +38,7 @@ class IncidentPriorityHandler extends Handler
     {
         $incidentPriorityDB = $this->repository->findOneBy(array('id' => $incidentPriority->getId()));
 
-        if ($incidentPriorityDB && $method == 'POST') {
+        if ($incidentPriorityDB && $method === 'POST') {
             $incidentPriority = $incidentPriorityDB;
         }
         return $incidentPriority;

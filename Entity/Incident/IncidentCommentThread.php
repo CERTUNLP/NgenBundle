@@ -44,16 +44,6 @@ class IncidentCommentThread extends BaseThread
 //    protected $host;
 
     /**
-     * Get id
-     *
-     * @return string
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
      * Set id
      *
      * @param string $id

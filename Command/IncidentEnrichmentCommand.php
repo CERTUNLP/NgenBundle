@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class IncidentEnrichmentCommand extends ContainerAwareCommand
 {
 
-    protected function configure()
+    public function configure()
     {
         $this
             ->setName('cert_unlp:incident:enrichments')
@@ -29,7 +29,7 @@ class IncidentEnrichmentCommand extends ContainerAwareCommand
             ->addOption('enrichment', '-en', InputOption::VALUE_OPTIONAL, 'execute the enrichment given');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $command = $this->getApplication()->find('cert_unlp:incident:enrichment:teamcymru');
 

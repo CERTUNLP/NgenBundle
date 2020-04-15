@@ -20,6 +20,15 @@ use Symfony\Component\Form\FormEvents;
 
 class IncidentDefaultFieldsListener implements EventSubscriberInterface
 {
+    /**
+     * @var EntityManager|null
+     */
+    private $doctrine;
+    /**
+     * @var int|null
+     */
+    private $userLogged;
+
     public function __construct(EntityManager $doctrine = null, int $userLogged = null)
     {
         $this->doctrine = $doctrine;
@@ -34,23 +43,6 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
         );
     }
 
-    public function onPreSetData(FormEvent $event)
-    {
-
-        // get the form
-        $form = $event->getForm();
-
-        // get the data if 'reviewing' the information
-        /**
-         * @var Incident
-         */
-        $data = $event->getData();
-
-        // disable field if it has been populated with a client already
-
-
-    }
-
     public function onPostSetData(FormEvent $event)
     {
         /**
@@ -62,24 +54,24 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
         // checks whether the user from the initial data has chosen to
         // display their email or not.
         if (!$form->getData()) {
-            $form->get('type')->setData($this->doctrine ? $this->doctrine->getReference(IncidentType::class, 'undefined') : null);
-            $form->get('feed')->setData($this->doctrine ? $this->doctrine->getReference(IncidentFeed::class, 'undefined') : null);
-            $form->get('state')->setData($this->doctrine ? $this->doctrine->getReference(IncidentState::class, 'undefined') : null);
-            $form->get('unattendedState')->setData($this->doctrine ? $this->doctrine->getReference(IncidentState::class, 'undefined') : null);
-            $form->get('unsolvedState')->setData($this->doctrine ? $this->doctrine->getReference(IncidentState::class, 'undefined') : null);
-            $form->get('tlp')->setData($this->doctrine ? $this->doctrine->getReference(IncidentTlp::class, 'green') : null);
-            $form->get('impact')->setData($this->doctrine ? $this->doctrine->getReference(IncidentImpact::class, 'undefined') : null);
-            $form->get('urgency')->setData($this->doctrine ? $this->doctrine->getReference(IncidentUrgency::class, 'undefined') : null);
-            $form->get('assigned')->setData($this->userLogged !== null && $this->doctrine ? $this->doctrine->getReference(User::class, $this->userLogged) : 'null ');
-            $form->get('reporter')->setData($this->userLogged !== null && $this->doctrine ? $this->doctrine->getReference(User::class, $this->userLogged) : 'null ');
+            $form->get('type')->setData($this->getDoctrine() ? $this->getDoctrine()->getReference(IncidentType::class, 'undefined') : null);
+            $form->get('feed')->setData($this->getDoctrine() ? $this->getDoctrine()->getReference(IncidentFeed::class, 'undefined') : null);
+            $form->get('state')->setData($this->getDoctrine() ? $this->getDoctrine()->getReference(IncidentState::class, 'undefined') : null);
+            $form->get('unattendedState')->setData($this->getDoctrine() ? $this->getDoctrine()->getReference(IncidentState::class, 'undefined') : null);
+            $form->get('unsolvedState')->setData($this->getDoctrine() ? $this->getDoctrine()->getReference(IncidentState::class, 'undefined') : null);
+            $form->get('tlp')->setData($this->getDoctrine() ? $this->getDoctrine()->getReference(IncidentTlp::class, 'green') : null);
+            $form->get('impact')->setData($this->getDoctrine() ? $this->getDoctrine()->getReference(IncidentImpact::class, 'undefined') : null);
+            $form->get('urgency')->setData($this->getDoctrine() ? $this->getDoctrine()->getReference(IncidentUrgency::class, 'undefined') : null);
+            $form->get('assigned')->setData($this->getUserLogged() !== null && $this->getDoctrine() ? $this->getDoctrine()->getReference(User::class, $this->getUserLogged()) : 'null ');
+            $form->get('reporter')->setData($this->getUserLogged() !== null && $this->getDoctrine() ? $this->getDoctrine()->getReference(User::class, $this->getUserLogged()) : 'null ');
 
         } else {
             if ($incident->getOrigin()) {
                 $form->get('address')->setData($incident->getOrigin()->getAddress());
             }
             if ($incident->getPriority()) {
-                $form->get('impact')->setData($this->doctrine->getReference(IncidentImpact::class, $incident->getPriority()->getImpact()->getSlug()));
-                $form->get('urgency')->setData($this->doctrine->getReference(IncidentUrgency::class, $incident->getPriority()->getUrgency()->getSlug()));
+                $form->get('impact')->setData($this->getDoctrine()->getReference(IncidentImpact::class, $incident->getPriority()->getImpact()->getSlug()));
+                $form->get('urgency')->setData($this->getDoctrine()->getReference(IncidentUrgency::class, $incident->getPriority()->getUrgency()->getSlug()));
             }
             if ($incident->getState() && !$incident->canEditFundamentals()) {
                 $form->add('type', null, array(
@@ -112,5 +104,21 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
         // create the field, this is similar the $builder->add()
         // field name, field type, field options
         $form->add('state', EntityType::class, $formOptions);
+    }
+
+    /**
+     * @return EntityManager|null
+     */
+    public function getDoctrine(): ?EntityManager
+    {
+        return $this->doctrine;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getUserLogged(): ?int
+    {
+        return $this->userLogged;
     }
 }

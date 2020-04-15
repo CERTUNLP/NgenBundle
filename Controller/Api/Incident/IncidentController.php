@@ -215,16 +215,12 @@ class IncidentController extends FOSRestController
      *  templateVar="incidents"
      * )
      * @param Request $request the request object
-     * @param Date $from
-     * @param Date $to
-     *
+     * @param ParamFetcherInterface $paramFetcher
      * @return array
      */
-    public function getIncidentsBeetwenDatesAction(Request $request, Date $from, Date $to): array
+    public function getIncidentsBeetwenDatesAction(Request $request, ParamFetcherInterface $paramFetcher): array
     {
-
-        ##return null
-        return $this->getApiController()->getAll($request, $from, $to);
+        return $this->getApiController()->getAll($request, $paramFetcher);
     }
 
     /**

@@ -13,21 +13,21 @@ namespace CertUnlp\NgenBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrateNgenV2ToV3Command extends ContainerAwareCommand
 {
 
-    protected function configure()
+    public function configure()
     {
         $this
             ->setName('cert_unlp:database:migrate')
             ->setDescription('Migrate Ngen V2 To V3.')
-            ->addOption('offset', '-o', InputOption::VALUE_OPTIONAL, 'Es un offest por si queremos correr varios a la vez, tener en cuenta que corre de a 50 elementos',0);
+            ->addOption('offset', '-o', InputOption::VALUE_OPTIONAL, 'Es un offest por si queremos correr varios a la vez, tener en cuenta que corre de a 50 elementos', 0);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('[incidents]: Starting.');
         $output->writeln('[incidents]: Closing old incidents...');
@@ -35,15 +35,15 @@ class MigrateNgenV2ToV3Command extends ContainerAwareCommand
         $incidents = $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->all(['origin' => null], [], 50, $input->getOption('offset'));
         while ($incidents) {
             foreach ($incidents as $incident) {
-                echo($incident->getId()."\n");
-                echo($incident->getHostAddress())." era la ip esto\n";
+                echo($incident->getId() . "\n");
+                echo ($incident->getHostAddress()) . " era la ip esto\n";
 
                 $incident->setOrigin($this->getContainer()->get('cert_unlp.ngen.network.host.handler')->post(['address' => $incident->getHostAddress()]));
 
                 $this->getContainer()->get('doctrine')->getManager()->persist($incident);
             }
             $this->getContainer()->get('doctrine')->getManager()->flush();
-            $incidents = $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->all(['origin' => null], [], 50,$input->getOption('offset'));
+            $incidents = $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->all(['origin' => null], [], 50, $input->getOption('offset'));
 
         }
 //        foreach ($admins as $admin) {

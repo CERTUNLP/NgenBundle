@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class TelegramCommand extends ContainerAwareCommand
 {
 
-    protected function configure()
+    public function configure()
     {
         $this
             ->setName('cert_unlp:telegram:send')
@@ -30,7 +30,7 @@ class TelegramCommand extends ContainerAwareCommand
             ->addOption('message', '-m', InputOption::VALUE_OPTIONAL, 'The message you want to send.', 'test');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>[Messages]: Starting.</info>');
         $output->writeln('<info>[Messages]: Sending Telegram messages...</info>');
@@ -83,7 +83,7 @@ class TelegramCommand extends ContainerAwareCommand
         );
         curl_setopt_array($ch, $optArray);
         $result = curl_exec($ch);
-        $err = curl_error($ch);
+//        $err = curl_error($ch);
         curl_close($ch);
         return $result;
     }

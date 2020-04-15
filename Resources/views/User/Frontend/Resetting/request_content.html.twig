@@ -9,14 +9,14 @@
 
 {% trans_default_domain 'FOSUserBundle' %}
 <style>
-    .login-image-ngen{
-        background:url({{ asset('bundles/certunlpngen/images/ngen01.svg') }});
+    .login-image-ngen {
+        background: url({{ asset('bundles/certunlpngen/images/ngen01.svg') }});
         background-position: center;
         background-size: cover;
     }
 </style>
 
-    <div class="container">
+<div class="container">
 
     <!-- Outer Row -->
     <div class="row justify-content-center">
@@ -33,11 +33,14 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">{{ 'Resseting your credentials!'|trans }}</h1>
                                 </div>
-                                <form role="form" action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="user fos_user_resetting_request">
-                                     <input type="hidden" name="_csrf_token"
+                                <form role="form" action="{{ path('fos_user_resetting_send_email') }}" method="POST"
+                                      class="user fos_user_resetting_request">
+                                    <input type="hidden" name="_csrf_token"
                                            value="{{ csrf_token('authenticate') }}"/>
                                     <div class="form-group">
-                                        <input type="text" id="username" name="username" required="required" class="form-control form-control-user" placeholder="{{ 'resetting.request.username'|trans }}" />
+                                        <input type="text" id="username" name="username" required="required"
+                                               class="form-control form-control-user"
+                                               placeholder="{{ 'resetting.request.username'|trans }}"/>
                                     </div>
                                     <div class="form-group">
 
@@ -61,3 +64,4 @@
             </div>
         </div>
     </div>
+</div>

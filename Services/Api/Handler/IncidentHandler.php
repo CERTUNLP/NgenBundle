@@ -15,14 +15,14 @@ use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
-use CertUnlp\NgenBundle\Repository\IncidentRepository;
+use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use Gedmo\Sluggable\Util as Sluggable;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
 
 class IncidentHandler extends Handler
 {
@@ -32,7 +32,7 @@ class IncidentHandler extends Handler
     private $decision_handler;
     private $incidentStateHandler;
 
-    public function __construct(ObjectManager $om, string $entityClass, string $entityType, FormFactoryInterface $formFactory, SecurityContext $context, UserHandler $user_handler, HostHandler $host_handler, IncidentDecisionHandler $decision_handler, IncidentStateHandler $incidentStateHandler)
+    public function __construct(ObjectManager $om, string $entityClass, string $entityType, FormFactoryInterface $formFactory, TokenStorageInterface $context, UserHandler $user_handler, HostHandler $host_handler, IncidentDecisionHandler $decision_handler, IncidentStateHandler $incidentStateHandler)
     {
 
         parent::__construct($om, $entityClass, $entityType, $formFactory);
@@ -62,18 +62,18 @@ class IncidentHandler extends Handler
     }
 
     /**
-     * @return SecurityContext
+     * @return TokenStorageInterface
      */
-    public function getContext(): SecurityContext
+    public function getContext(): TokenStorageInterface
     {
         return $this->context;
     }
 
     /**
-     * @param SecurityContext $context
+     * @param TokenStorageInterface $context
      * @return IncidentHandler
      */
-    public function setContext(SecurityContext $context): IncidentHandler
+    public function setContext(TokenStorageInterface $context): IncidentHandler
     {
         $this->context = $context;
         return $this;
@@ -117,13 +117,6 @@ class IncidentHandler extends Handler
         return $this->getRepository()->findNotificables();
     }
 
-    /**
-     * @return IncidentRepository
-     */
-    public function getRepository(): ObjectRepository
-    {
-        return $this->repository;
-    }
 
     /**
      * @return array
@@ -143,20 +136,19 @@ class IncidentHandler extends Handler
                     'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
                     'newState' => $incident->getState()->getSlug()
                 ];
+            } else {
+                $unClosedIncidents[$incident->getId()] = [
+                    'id' => $incident->getSlug(),
+                    'type' => $incident->getType()->getSlug(),
+                    'date' => $incident->getDate()->format('Y-m-d H:i:s'),
+                    'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
+                    'actualState' => $incident->getState()->getSlug(),
+                    'requiredState' => $incident->getUnsolvedState()->getSlug()
+                ];
             }
-         else
-             {   $unClosedIncidents[$incident->getId()] = [
-                'id' => $incident->getSlug(),
-                'type' => $incident->getType()->getSlug(),
-                'date' => $incident->getDate()->format('Y-m-d H:i:s'),
-                'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
-                'actualState' => $incident->getState()->getSlug(),
-                'requiredState' => $incident->getUnsolvedState()->getSlug()
-            ];
-        }
         }
         $this->om->flush();
-        return array($closedIncidents,$unClosedIncidents);;
+        return array($closedIncidents, $unClosedIncidents);
     }
 
     /**
@@ -180,21 +172,20 @@ class IncidentHandler extends Handler
                     'date' => $incident->getDate()->format('Y-m-d H:i:s'),
                     'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
                     'newState' => $incident->getState()->getSlug()];
-            }
-            else
-            {   $unClosedIncidents[$incident->getId()] = [
-                'id' => $incident->getSlug(),
-                'type' => $incident->getType()->getSlug(),
-                'date' => $incident->getDate()->format('Y-m-d H:i:s'),
-                'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
-                'actualState' => $incident->getState()->getSlug(),
-                'requiredState' => $incident->getUnattendedState()
-            ];
+            } else {
+                $unClosedIncidents[$incident->getId()] = [
+                    'id' => $incident->getSlug(),
+                    'type' => $incident->getType()->getSlug(),
+                    'date' => $incident->getDate()->format('Y-m-d H:i:s'),
+                    'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
+                    'actualState' => $incident->getState()->getSlug(),
+                    'requiredState' => $incident->getUnattendedState()
+                ];
             }
 
         }
         $this->om->flush();
-        return array($closedIncidents,$unClosedIncidents);
+        return array($closedIncidents, $unClosedIncidents);
     }
 
     /**
@@ -328,7 +319,7 @@ class IncidentHandler extends Handler
         //FIX comprobar que actualice el updated
         if ($incident->getDate() == null) {
             try {
-                $incident->setDate(new \DateTime('now'));
+                $incident->setDate(new DateTime('now'));
             } catch (Exception $e) {
             }
         }

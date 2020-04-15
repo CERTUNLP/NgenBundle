@@ -143,36 +143,8 @@ class ApiController
      *
      * @param Request $request the request object
      * @param $object
-     * @return FormTypeInterface|View
-     */
-    public function put(Request $request, $object)
-    {
-//        try {
-//            if (!($object = $this->getCustomHandler()->get($id))) {
-//                $statusCode = Response::HTTP_CREATED;
-//                $object = $this->getCustomHandler()->post(
-//                    $request->request->all()
-//                );
-//            } else {
-//                $statusCode = Response::HTTP_NO_CONTENT;
-//                $object = $this->getCustomHandler()->put(
-//                    $object, $request->request->all()
-//                );
-//            }
-//            return $this->response([$object], $statusCode);
-//        } catch (InvalidFormException $exception) {
-//
-//            return $exception->getForm();
-//        }
-    }
-
-    /**
-     * Update existing object from the submitted data or create a new object at a specific location.
-     *
-     * @param Request $request the request object
-     * @param $object
      * @param $state
-     * @return FormTypeInterface|View
+     * @return View
      *
      */
     public function patchState(Request $request, $object, $state)
@@ -219,7 +191,7 @@ class ApiController
     public function doPatchAndReactivate(Request $request, $object)
     {
         try {
-            $parameters = array_merge($request->request->all(), $request->files->all());;
+            $parameters = array_merge($request->request->all(), $request->files->all());
             unset($parameters['_method'], $parameters['force_edit'], $parameters['reactivate']);
 
             $db_object = $this->findObjectBy($parameters);

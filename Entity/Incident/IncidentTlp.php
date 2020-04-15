@@ -26,14 +26,14 @@ class IncidentTlp extends Entity implements Translatable
      * @JMS\Expose
      * @Gedmo\Translatable
      */
-    private $name;
+    private $name = '';
     /**
      * @var integer
      *
      * @ORM\Column(name="code", type="integer", nullable=true)
      * @JMS\Expose
      */
-    private $code;
+    private $code = 0;
     /**
      * @var string
      * @ORM\Id
@@ -41,47 +41,48 @@ class IncidentTlp extends Entity implements Translatable
      * @ORM\Column(name="slug", type="string", length=45)
      * @JMS\Expose
      * */
-    private $slug;
+    private $slug = '';
     /**
      * @var string
      *
      * @ORM\Column(name="rgb", type="string", length=45, nullable=true)
      */
-    private $rgb;
+    private $rgb = '';
     /**
      * @var string
      *
      * @ORM\Column(name="when", type="string", length=500, nullable=true)
      * @JMS\Expose
      */
-    private $when;
+    private $when = '';
     /**
      * @var boolean
      *
      * @ORM\Column(name="encrypt", type="boolean", nullable=true)
      */
-    private $encrypt;
+    private $encrypt = false;
     /**
      * @var string
      *
      * @ORM\Column(name="why", type="string", length=500, nullable=true)
      * @JMS\Expose
      */
-    private $why;
+    private $why = '';
     /**
      * @var string
      *
      * @ORM\Column(name="information", type="string", length=10, nullable=true)
      * @JMS\Expose
      */
-    private $information;
+    private $information = '';
     /**
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=150, nullable=true)
      * @JMS\Expose
      */
-    private $description;
+    private $description = '';
+
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="tlp",fetch="EXTRA_LAZY")
      * @JMS\Exclude()
      */
@@ -250,7 +251,7 @@ class IncidentTlp extends Entity implements Translatable
         return $this;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }
@@ -258,7 +259,7 @@ class IncidentTlp extends Entity implements Translatable
     /**
      * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -278,7 +279,7 @@ class IncidentTlp extends Entity implements Translatable
      *
      * @return string
      */
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -289,7 +290,7 @@ class IncidentTlp extends Entity implements Translatable
      * @param string $slug
      * @return IncidentTlp
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 
@@ -299,6 +300,24 @@ class IncidentTlp extends Entity implements Translatable
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getIncidents(): ArrayCollection
+    {
+        return $this->incidents;
+    }
+
+    /**
+     * @param ArrayCollection $incidents
+     * @return IncidentTlp
+     */
+    public function setIncidents(ArrayCollection $incidents): IncidentTlp
+    {
+        $this->incidents = $incidents;
+        return $this;
     }
 
 }

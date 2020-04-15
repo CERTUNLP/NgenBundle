@@ -11,29 +11,37 @@
 
 namespace CertUnlp\NgenBundle\Twig;
 
-use Twig_Extension;
-use Twig_SimpleFunction;
-use Twig_SimpleFilter;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class IncidentReportExtension extends Twig_Extension
+class IncidentReportExtension extends AbstractExtension
 {
+
+    /**
+     * @var string
+     */
+    private $iconPrefix = 'fa';
+    /**
+     * @var string
+     */
+    private $iconTag = 'span';
 
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('subtitle', array($this, 'subtitleFilter'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('paragraph', array($this, 'paragraphFilter'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('code', array($this, 'codeFilter'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('destacated', array($this, 'destacatedFilter'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('emphasized', array($this, 'emphasizedFilter'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('urlLink', array($this, 'urlLinkFilter'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('list', array($this, 'listFilter'), array('is_safe' => array('html'))),
-            new Twig_SimpleFilter(
+            new TwigFunction('subtitle', array($this, 'subtitleFilter'), array('is_safe' => array('html'))),
+            new TwigFunction('paragraph', array($this, 'paragraphFilter'), array('is_safe' => array('html'))),
+            new TwigFunction('code', array($this, 'codeFilter'), array('is_safe' => array('html'))),
+            new TwigFunction('destacated', array($this, 'destacatedFilter'), array('is_safe' => array('html'))),
+            new TwigFunction('emphasized', array($this, 'emphasizedFilter'), array('is_safe' => array('html'))),
+            new TwigFunction('urlLink', array($this, 'urlLinkFilter'), array('is_safe' => array('html'))),
+            new TwigFunction('list', array($this, 'listFilter'), array('is_safe' => array('html'))),
+            new TwigFunction(
                 'parse_icons',
                 array($this, 'parseIconsFilter'),
                 array('pre_escape' => 'html', 'is_safe' => array('html'))
             )
-            );
+        );
     }
 
     public function paragraphFilter($text)
@@ -100,104 +108,94 @@ class IncidentReportExtension extends Twig_Extension
     }
 
     public function getFunctions()
-{
-    $options = array('pre_escape' => 'html', 'is_safe' => array('html'));
+    {
+        $options = array('pre_escape' => 'html', 'is_safe' => array('html'));
 
-    return array(
-        new Twig_SimpleFunction('label', array($this, 'labelFunction'), $options),
-        new Twig_SimpleFunction('label_primary', array($this, 'labelPrimaryFunction'), $options),
-        new Twig_SimpleFunction('label_success', array($this, 'labelSuccessFunction'), $options),
-        new Twig_SimpleFunction('label_info', array($this, 'labelInfoFunction'), $options),
-        new Twig_SimpleFunction('label_warning', array($this, 'labelWarningFunction'), $options),
-        new Twig_SimpleFunction('label_danger', array($this, 'labelDangerFunction'), $options),
-        new Twig_SimpleFunction(
-                    'icon',
-                    array($this, 'iconFunction'),
-                    array('pre_escape' => 'html', 'is_safe' => array('html'))
-                )
-    );
-}
-
-/**
- * Returns the HTML code for a label.
- *
- * @param string $text The text of the label
- * @param string $type The type of label
- *
- * @return string The HTML code of the label
- */
-public function labelFunction($text, $type = 'default')
-{
-    return sprintf('<span class="label%s">%s</span>', ($type ? ' badge-' . $type : ''), $text);
-}
-
-/**
- * @param string $text
- *
- * @return string
- */
-public function labelPrimaryFunction($text)
-{
-    return $this->labelFunction($text, 'primary');
-}
-
-/**
- * Returns the HTML code for a success label.
- *
- * @param string $text The text of the label
- *
- * @return string The HTML code of the label
- */
-public function labelSuccessFunction($text)
-{
-    return $this->labelFunction($text, 'success');
-}
-
-/**
- * Returns the HTML code for a warning label.
- *
- * @param string $text The text of the label
- *
- * @return string The HTML code of the label
- */
-public function labelWarningFunction($text)
-{
-    return $this->labelFunction($text, 'warning');
-}
-
-/**
- * Returns the HTML code for a important label.
- *
- * @param string $text The text of the label
- *
- * @return string The HTML code of the label
- */
-public function labelDangerFunction($text)
-{
-    return $this->labelFunction($text, 'danger');
-}
-
-/**
- * Returns the HTML code for a info label.
- *
- * @param string $text The text of the label
- *
- * @return string The HTML code of the label
- */
-public function labelInfoFunction($text)
-{
-    return $this->labelFunction($text, 'info');
-}
+        return array(
+            new TwigFunction('label', array($this, 'labelFunction'), $options),
+            new TwigFunction('label_primary', array($this, 'labelPrimaryFunction'), $options),
+            new TwigFunction('label_success', array($this, 'labelSuccessFunction'), $options),
+            new TwigFunction('label_info', array($this, 'labelInfoFunction'), $options),
+            new TwigFunction('label_warning', array($this, 'labelWarningFunction'), $options),
+            new TwigFunction('label_danger', array($this, 'labelDangerFunction'), $options),
+            new TwigFunction(
+                'icon',
+                array($this, 'iconFunction'),
+                array('pre_escape' => 'html', 'is_safe' => array('html'))
+            )
+        );
+    }
 
     /**
-     * @var string
+     * @param string $text
+     *
+     * @return string
      */
-    private $iconPrefix='fa';
+    public function labelPrimaryFunction($text)
+    {
+        return $this->labelFunction($text, 'primary');
+    }
 
     /**
-     * @var string
+     * Returns the HTML code for a label.
+     *
+     * @param string $text The text of the label
+     * @param string $type The type of label
+     *
+     * @return string The HTML code of the label
      */
-    private $iconTag='span';
+    public function labelFunction($text, $type = 'default')
+    {
+        return sprintf('<span class="label%s">%s</span>', ($type ? ' badge-' . $type : ''), $text);
+    }
+
+    /**
+     * Returns the HTML code for a success label.
+     *
+     * @param string $text The text of the label
+     *
+     * @return string The HTML code of the label
+     */
+    public function labelSuccessFunction($text)
+    {
+        return $this->labelFunction($text, 'success');
+    }
+
+    /**
+     * Returns the HTML code for a warning label.
+     *
+     * @param string $text The text of the label
+     *
+     * @return string The HTML code of the label
+     */
+    public function labelWarningFunction($text)
+    {
+        return $this->labelFunction($text, 'warning');
+    }
+
+    /**
+     * Returns the HTML code for a important label.
+     *
+     * @param string $text The text of the label
+     *
+     * @return string The HTML code of the label
+     */
+    public function labelDangerFunction($text)
+    {
+        return $this->labelFunction($text, 'danger');
+    }
+
+    /**
+     * Returns the HTML code for a info label.
+     *
+     * @param string $text The text of the label
+     *
+     * @return string The HTML code of the label
+     */
+    public function labelInfoFunction($text)
+    {
+        return $this->labelFunction($text, 'info');
+    }
 
     /**
      * Parses the given string and replaces all occurrences of .icon-[name] with the corresponding icon.
@@ -229,8 +227,8 @@ public function labelInfoFunction($text)
      */
     public function iconFunction($icon, $iconSet = 'icon')
     {
-        if ($iconSet == 'icon') $iconSet = $this->iconPrefix;
-        $icon = str_replace('+', ' '.$iconSet.'-', $icon);
+        if ($iconSet === 'icon') $iconSet = $this->iconPrefix;
+        $icon = str_replace('+', ' ' . $iconSet . '-', $icon);
 
         return sprintf('<%1$s class="%2$s %2$s-%3$s"></%1$s>', $this->iconTag, $iconSet, $icon);
     }
