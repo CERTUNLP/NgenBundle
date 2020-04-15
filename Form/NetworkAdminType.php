@@ -18,9 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NetworkAdminType extends AbstractType
 {
@@ -68,22 +66,13 @@ class NetworkAdminType extends AbstractType
             array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
         ));
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-            $network = $event->getData();
-            $form = $event->getForm();
-            // check if the Product object is "new"
-            // If no data is passed to the form, the data is "null".
-            // This should be considered a new "Product"
-            // if ($network) {
-            //    $form->get('emails')->setData(implode(',', $network->getEmails()));
-            // }
-        });
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
+     * @return void
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => NetworkAdmin::class,

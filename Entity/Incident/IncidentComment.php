@@ -73,26 +73,6 @@ class IncidentComment extends BaseComment implements SignedCommentInterface
     }
 
     /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Get thread
-     *
-     * @return Thread
-     */
-    public function getThread()
-    {
-        return $this->thread;
-    }
-
-    /**
      * Set thread
      *
      * @param ThreadInterface $thread

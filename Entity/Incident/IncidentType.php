@@ -207,14 +207,13 @@ class IncidentType extends Entity
         )->first();
         if ($reporte) {
             return $reporte;
-        } else {
-               if ($this->getTaxonomyValue()){
-               return $this->getTaxonomyValue()->getReport();
-               }
-               else{
+        }
 
-               }
-            }
+        if ($this->getTaxonomyValue()) {
+            return $this->getTaxonomyValue()->getReport();
+        }
+
+        return $this->getTaxonomyValue()->getPredicate()->getReport();
     }
 
     /**

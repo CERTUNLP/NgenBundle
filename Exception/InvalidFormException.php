@@ -11,9 +11,10 @@
 
 namespace CertUnlp\NgenBundle\Exception;
 
+use RuntimeException;
 use Symfony\Component\Form\Form;
 
-class InvalidFormException extends \RuntimeException
+class InvalidFormException extends RuntimeException
 {
 
     protected $form;

@@ -22,22 +22,4 @@ use Doctrine\ORM\EntityRepository;
 class UserRepository extends EntityRepository
 {
 
-    public function findOneRandom()
-    {
-
-        $em = $this->getEntityManager();
-        $qb = $em->createQueryBuilder();
-        $qb->select('u')
-            ->from('CertUnlpNgenBundle:User', 'u')
-            ->where('u.enabled = 1');
-        $users = $qb->getQuery()->getResult();
-        shuffle($users);
-
-        foreach ($users as $user) {
-            if (!in_array($user->getUsername(), array('nmacia', 'elanfranco', 'pvenosa', 'mailbot', 'bro', 'scanner'))) {
-                return $user;
-            }
-        }
-    }
-
 }

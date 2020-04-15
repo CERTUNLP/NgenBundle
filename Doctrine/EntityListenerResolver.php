@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class EntityListenerResolver extends DefaultEntityListenerResolver implements ContainerAwareInterface
 {
 
-    /** @var \Symfony\Component\DependencyInjection\ContainerInterface */
+    /** @var ContainerInterface */
     private $container;
 
     /** @var array */
@@ -27,7 +27,7 @@ class EntityListenerResolver extends DefaultEntityListenerResolver implements Co
     /**
      * Creates a container aware entity resolver.
      *
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container The container.
+     * @param ContainerInterface $container The container.
      */
     public function __construct(ContainerInterface $container)
     {

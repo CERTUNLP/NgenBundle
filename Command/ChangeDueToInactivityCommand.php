@@ -18,36 +18,36 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ChangeDueToInactivityCommand extends ContainerAwareCommand
 {
 
-    protected function configure()
+    public function configure()
     {
         $this
             ->setName('cert_unlp:incidents:change-due-to-inactivity')
             ->setDescription('Walk through incidents to make an automatic close.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('[incidents]: Starting.');
         $output->writeln('[incidents]: Change state of old incidents...');
 
-        $unattended=$this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->closeUnattendedIncidents();
+        $unattended = $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->closeUnattendedIncidents();
         $output->writeln('[incidents]: Changed unattended incidents: ' . count($unattended[0]));
         foreach ($unattended[0] as $incident) {
-            $output->writeln('[incidents]: Changed incident id: '. $incident['id']. ' to state' . $incident['newState']);
+            $output->writeln('[incidents]: Changed incident id: ' . $incident['id'] . ' to state' . $incident['newState']);
         }
         $output->writeln('[incidents]: Could NOT change unattended incidents: ' . count($unattended[1]));
         foreach ($unattended[1] as $incident) {
-            $output->writeln('[incidents]: Not Changed incident id: '. $incident['id']. ' form state '.$incident['actualState'].' to state' . $incident['requiredState']);
+            $output->writeln('[incidents]: Not Changed incident id: ' . $incident['id'] . ' form state ' . $incident['actualState'] . ' to state' . $incident['requiredState']);
         }
-        $unsolved=$this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->closeUnsolvedIncidents();
+        $unsolved = $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->closeUnsolvedIncidents();
 
-        $output->writeln('[incidents]: Changed unsolved incidents: ' .count($unsolved[0]));
+        $output->writeln('[incidents]: Changed unsolved incidents: ' . count($unsolved[0]));
         foreach ($unsolved[0] as $incident) {
-            $output->writeln('[incidents]: Changed incident id: '. $incident['id']. ' to state' . $incident['newState']);
+            $output->writeln('[incidents]: Changed incident id: ' . $incident['id'] . ' to state' . $incident['newState']);
         }
-        $output->writeln('[incidents]: Could NOT change unsolved incidents: ' . count($unsolved[1]  ));
+        $output->writeln('[incidents]: Could NOT change unsolved incidents: ' . count($unsolved[1]));
         foreach ($unsolved[1] as $incident) {
-            $output->writeln('[incidents]: Not Changed incident id: '. $incident['id']. ' form state '.$incident['actualState'].' to state' . $incident['requiredState']);
+            $output->writeln('[incidents]: Not Changed incident id: ' . $incident['id'] . ' form state ' . $incident['actualState'] . ' to state' . $incident['requiredState']);
         }
         $output->writeln('[incidents]: Done.');
     }

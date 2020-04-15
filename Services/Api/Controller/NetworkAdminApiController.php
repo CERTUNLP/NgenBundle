@@ -32,7 +32,7 @@ class NetworkAdminApiController extends ApiController
     public function doPatchAndReactivate(Request $request, $object)
     {
         try {
-            $parameters = array_merge($request->request->all(), $request->files->all());;
+            $parameters = array_merge($request->request->all(), $request->files->all());
             unset($parameters['_method'], $parameters['force_edit'], $parameters['reactivate']);
 
             $db_object = $this->findObjectBy($parameters);

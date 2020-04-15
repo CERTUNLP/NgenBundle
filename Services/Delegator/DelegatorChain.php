@@ -33,11 +33,11 @@ class DelegatorChain
     {
         $delegateWrapper = new DelegateWrapper($delegate, $alias, $priority);
         if (isset($this->delegates[$delegateWrapper->getDelegateKey()])) {
-            throw new Exception("Key " . $delegateWrapper->getDelegateKey() . " already in use.");
-        } else {
-            $this->delegates[$delegateWrapper->getDelegateKey()] = $delegateWrapper;
-            $this->sortDelegatesByPriority();
+            throw new Exception('Key ' . $delegateWrapper->getDelegateKey() . ' already in use.');
         }
+
+        $this->delegates[$delegateWrapper->getDelegateKey()] = $delegateWrapper;
+        $this->sortDelegatesByPriority();
     }
 
     public function sortDelegatesByPriority()
@@ -60,19 +60,19 @@ class DelegatorChain
         if ($delegation_method) {
             $this->doDelegation($delegation_method, $arguments);
         } else {
-            throw new Exception("DelegatorChain Exeption: The method " . $name . " is not a delegation method.");
+            throw new Exception('DelegatorChain Exeption: The method ' . $name . ' is not a delegation method.');
         }
     }
 
     private function explodeDelegationMethod($delegation_method)
     {
-        $explode = explode(",", preg_replace('/([a-z0-9])([A-Z])/', "$1,$2", $delegation_method));
+        $explode = explode(',', preg_replace('/([a-z0-9])([A-Z])/', '$1,$2', $delegation_method));
 
-        if (isset($explode[count($explode) - 1]) && $explode[count($explode) - 1] == "Delegation") {
+        if (isset($explode[count($explode) - 1]) && $explode[count($explode) - 1] === "Delegation") {
             return $delegation_method;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     public function doDelegation($function, $arguments)

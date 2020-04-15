@@ -10,6 +10,7 @@ namespace CertUnlp\NgenBundle\Services\Rdap;
 
 use Closure;
 use Exception;
+use RuntimeException;
 
 /**
  * Description of RdapResultWrapper
@@ -34,7 +35,7 @@ class RdapResultWrapper
 
         $this->rdap_json_object = json_decode($rdap_json_response);
         if ($this->getRateLimitNotice()) {
-            throw new \RuntimeException($this->getRateLimitNotice()[0]);
+            throw new RuntimeException($this->getRateLimitNotice()[0]);
         }
         $entities = [];
         if (isset($this->rdap_json_object->entities)) {
@@ -135,7 +136,7 @@ class RdapResultWrapper
                 return $event->eventDate;
             }
         }
-        return null;
+        return '';
     }
 
     /**

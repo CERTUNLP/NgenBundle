@@ -20,6 +20,7 @@ use Knp\Component\Pager\Paginator;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use ZipArchive;
 
 class IncidentFrontendController extends FrontendController
 {
@@ -38,13 +39,13 @@ class IncidentFrontendController extends FrontendController
     {
 
         // Create new Zip Archive.
-        $zip = new \ZipArchive();
+        $zip = new ZipArchive();
 
         // The name of the Zip documents.
         $evidence_path = $this->evidence_path . $incident->getEvidenceSubDirectory() . "/";
-        $zipName = $evidence_path . 'EvidenceDocuments' . $incident . '.zip';
-        $options = array('remove_all_path' => TRUE);
-        $zip->open($zipName, \ZipArchive::CREATE);
+        $zipName = $evidence_path . 'EvidenceDocuments' . $incident->getSlug() . '.zip';
+//        $options = array('remove_all_path' => TRUE);
+        $zip->open($zipName, ZipArchive::CREATE);
         foreach ($incident->getIncidentsDetected() as $detected) {
             if ($detected->getEvidenceFilePath()) {
                 $zip->addFile($this->evidence_path . $detected->getEvidenceFilePath(), $detected->getEvidenceFilePath());

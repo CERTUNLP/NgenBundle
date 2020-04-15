@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Entity\Network;
 
 use CertUnlp\NgenBundle\Entity\Entity;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -41,7 +42,7 @@ class NetworkEntity extends Entity
      * @ORM\Column(name="name", type="string")
      * @JMS\Expose
      */
-    private $name;
+    private $name = '';
     /**
      * @var string
      *
@@ -49,11 +50,11 @@ class NetworkEntity extends Entity
      * @ORM\Column(name="slug", type="string",nullable=true)
      * @JMS\Expose
      * */
-    private $slug;
+    private $slug = '';
     /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network",mappedBy="network_entity")) */
     private $networks;
     /**
-     * @var \DateTime
+     * @var DateTime
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      * @JMS\Expose
@@ -61,7 +62,7 @@ class NetworkEntity extends Entity
      */
     private $createdAt;
     /**
-     * @var \DateTime
+     * @var DateTime
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
      * @JMS\Expose
@@ -125,7 +126,7 @@ class NetworkEntity extends Entity
      *
      * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -203,9 +204,9 @@ class NetworkEntity extends Entity
     /**
      * Get createdAt
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
@@ -213,11 +214,11 @@ class NetworkEntity extends Entity
     /**
      * Set createdAt
      *
-     * @param \DateTime $createdAt
+     * @param DateTime $createdAt
      *
      * @return NetworkEntity
      */
-    public function setCreatedAt(\DateTime $createdAt): NetworkEntity
+    public function setCreatedAt(DateTime $createdAt): NetworkEntity
     {
         $this->createdAt = $createdAt;
 
@@ -227,9 +228,9 @@ class NetworkEntity extends Entity
     /**
      * Get updatedAt
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
@@ -237,11 +238,11 @@ class NetworkEntity extends Entity
     /**
      * Set updatedAt
      *
-     * @param \DateTime $updatedAt
+     * @param DateTime $updatedAt
      *
      * @return NetworkEntity
      */
-    public function setUpdatedAt(\DateTime $updatedAt): NetworkEntity
+    public function setUpdatedAt(DateTime $updatedAt): NetworkEntity
     {
         $this->updatedAt = $updatedAt;
 

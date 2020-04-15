@@ -34,7 +34,7 @@ abstract class IpAddress extends Address
      */
     public function getCustomEndAddress(): string
     {
-        $this->getNetwork()->getEndAddress();
+        return $this->getNetwork()->getEndAddress();
     }
 
     /**
@@ -42,7 +42,7 @@ abstract class IpAddress extends Address
      */
     public function getCustomStartAddress(): string
     {
-        $this->getNetwork()->getStartAddress();
+        return $this->getNetwork()->getStartAddress();
     }
 
     /**

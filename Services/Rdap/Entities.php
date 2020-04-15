@@ -40,7 +40,7 @@ class Entities
      * @param $roles array
      * @return Entity|mixed|null
      */
-    public function getOneByRole(array $roles): Entity
+    public function getOneByRole(array $roles): ?Entity
     {
         $entities = $this->getByRole($roles);
 

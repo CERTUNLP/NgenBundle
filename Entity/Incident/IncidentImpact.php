@@ -19,13 +19,13 @@ use JMS\Serializer\Annotation as JMS;
 class IncidentImpact extends Entity implements Translatable
 {
     /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column(name="name", type="string")
      * @JMS\Expose()
      * @Gedmo\Translatable
      */
-    private $name;
+    private $name = '';
 
     /**
      * @Gedmo\Locale
@@ -33,26 +33,63 @@ class IncidentImpact extends Entity implements Translatable
      * this is not a mapped field of entity metadata, just a simple property
      */
     private $locale;
+
     /**
-     * @var string|null
+     * @return mixed
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @param mixed $locale
+     * @return IncidentImpact
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+        return $this;
+    }
+
+    /**
+     * @var string
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
      * @JMS\Expose()
      * */
-    private $slug;
+    private $slug = '';
     /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column(name="description", type="string", length=512, nullable=true)
      * @JMS\Expose()
      */
-    private $description;
+    private $description = '';
     /**
-     * @var Collection
+     * @var Collection|null
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority",mappedBy="impact"))
      */
     private $incidentsPriorities;
+
+    /**
+     * @return Collection
+     */
+    public function getIncidentsPriorities(): Collection
+    {
+        return $this->incidentsPriorities;
+    }
+
+    /**
+     * @param Collection $incidentsPriorities
+     * @return IncidentImpact
+     */
+    public function setIncidentsPriorities(Collection $incidentsPriorities): IncidentImpact
+    {
+        $this->incidentsPriorities = $incidentsPriorities;
+        return $this;
+    }
 
     public function setTranslatableLocale($locale)
     {
@@ -105,7 +142,7 @@ class IncidentImpact extends Entity implements Translatable
      *
      * @return string
      */
-    public function getSlug(): ?string
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -116,7 +153,7 @@ class IncidentImpact extends Entity implements Translatable
      * @param string $slug
      * @return IncidentImpact
      */
-    public function setSlug(string $slug)
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 

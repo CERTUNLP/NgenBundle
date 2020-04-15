@@ -12,7 +12,6 @@
 namespace CertUnlp\NgenBundle\Services\Rdap;
 
 use Exception;
-use RuntimeException;
 
 /**
  * Description of RdapClient

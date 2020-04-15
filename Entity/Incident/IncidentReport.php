@@ -129,7 +129,7 @@ class IncidentReport
 
     public function __toString(): string
     {
-        return $this->getType() . '/' . $this->getLang();
+        return $this->getType()->getName() . '/' . $this->getLang();
     }
 
     /**

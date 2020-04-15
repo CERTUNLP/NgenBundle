@@ -7,8 +7,8 @@
 namespace CertUnlp\NgenBundle\Twig;
 
 
-use Twig_Extension;
-use Twig_SimpleFunction;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 
 /**
@@ -21,7 +21,7 @@ use Twig_SimpleFunction;
  * @license    http://opensource.org/licenses/MIT The MIT License
  * @link       http://bootstrap.braincrafted.com Bootstrap for Symfony2
  */
-class BootstrapFormExtension extends Twig_Extension
+class BootstrapFormExtension extends AbstractExtension
 {
     /** @var string */
     private $style;
@@ -47,34 +47,34 @@ class BootstrapFormExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            new Twig_SimpleFunction('bootstrap_set_style', array($this, 'setStyle')),
-            new Twig_SimpleFunction('bootstrap_get_style', array($this, 'getStyle')),
-            new Twig_SimpleFunction('bootstrap_set_col_size', array($this, 'setColSize')),
-            new Twig_SimpleFunction('bootstrap_get_col_size', array($this, 'getColSize')),
-            new Twig_SimpleFunction('bootstrap_set_widget_col', array($this, 'setWidgetCol')),
-            new Twig_SimpleFunction('bootstrap_get_widget_col', array($this, 'getWidgetCol')),
-            new Twig_SimpleFunction('bootstrap_set_label_col', array($this, 'setLabelCol')),
-            new Twig_SimpleFunction('bootstrap_get_label_col', array($this, 'getLabelCol')),
-            new Twig_SimpleFunction('bootstrap_set_simple_col', array($this, 'setSimpleCol')),
-            new Twig_SimpleFunction('bootstrap_get_simple_col', array($this, 'getSimpleCol')),
-            new Twig_SimpleFunction('bootstrap_backup_form_settings', array($this, 'backupFormSettings')),
-            new Twig_SimpleFunction('bootstrap_restore_form_settings', array($this, 'restoreFormSettings')),
-            new Twig_SimpleFunction(
+            new TwigFunction('bootstrap_set_style', array($this, 'setStyle')),
+            new TwigFunction('bootstrap_get_style', array($this, 'getStyle')),
+            new TwigFunction('bootstrap_set_col_size', array($this, 'setColSize')),
+            new TwigFunction('bootstrap_get_col_size', array($this, 'getColSize')),
+            new TwigFunction('bootstrap_set_widget_col', array($this, 'setWidgetCol')),
+            new TwigFunction('bootstrap_get_widget_col', array($this, 'getWidgetCol')),
+            new TwigFunction('bootstrap_set_label_col', array($this, 'setLabelCol')),
+            new TwigFunction('bootstrap_get_label_col', array($this, 'getLabelCol')),
+            new TwigFunction('bootstrap_set_simple_col', array($this, 'setSimpleCol')),
+            new TwigFunction('bootstrap_get_simple_col', array($this, 'getSimpleCol')),
+            new TwigFunction('bootstrap_backup_form_settings', array($this, 'backupFormSettings')),
+            new TwigFunction('bootstrap_restore_form_settings', array($this, 'restoreFormSettings')),
+            new TwigFunction(
                 'checkbox_row',
                 null,
                 array('is_safe' => array('html'), 'node_class' => 'Symfony\Bridge\Twig\Node\SearchAndRenderBlockNode')
             ),
-            new Twig_SimpleFunction(
+            new TwigFunction(
                 'radio_row',
                 null,
                 array('is_safe' => array('html'), 'node_class' => 'Symfony\Bridge\Twig\Node\SearchAndRenderBlockNode')
             ),
-            new Twig_SimpleFunction(
+            new TwigFunction(
                 'global_form_errors',
                 null,
                 array('is_safe' => array('html'), 'node_class' => 'Symfony\Bridge\Twig\Node\SearchAndRenderBlockNode')
             ),
-            new Twig_SimpleFunction(
+            new TwigFunction(
                 'form_control_static',
                 array($this, 'formControlStaticFunction'),
                 array('is_safe' => array('html'))
@@ -82,22 +82,10 @@ class BootstrapFormExtension extends Twig_Extension
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function getName()
     {
         return 'braincrafted_bootstrap_form';
-    }
-
-    /**
-     * Sets the style.
-     *
-     * @param string $style Name of the style
-     */
-    public function setStyle($style)
-    {
-        $this->style = $style;
     }
 
     /**
@@ -111,13 +99,13 @@ class BootstrapFormExtension extends Twig_Extension
     }
 
     /**
-     * Sets the column size.
+     * Sets the style.
      *
-     * @param string $colSize Column size (xs, sm, md or lg)
+     * @param string $style Name of the style
      */
-    public function setColSize($colSize)
+    public function setStyle($style)
     {
-        $this->colSize = $colSize;
+        $this->style = $style;
     }
 
     /**
@@ -131,53 +119,13 @@ class BootstrapFormExtension extends Twig_Extension
     }
 
     /**
-     * Sets the number of columns of widgets.
+     * Sets the column size.
      *
-     * @param integer $widgetCol Number of columns.
+     * @param string $colSize Column size (xs, sm, md or lg)
      */
-    public function setWidgetCol($widgetCol)
+    public function setColSize($colSize)
     {
-        $this->widgetCol = $widgetCol;
-    }
-
-    /**
-     * Returns the number of columns of widgets.
-     *
-     * @return integer Number of columns.Class
-     */
-    public function getWidgetCol()
-    {
-        return $this->widgetCol;
-    }
-
-    /**
-     * Sets the number of columns of labels.
-     *
-     * @param integer $labelCol Number of columns.
-     */
-    public function setLabelCol($labelCol)
-    {
-        $this->labelCol = $labelCol;
-    }
-
-    /**
-     * Returns the number of columns of labels.
-     *
-     * @return integer Number of columns.
-     */
-    public function getLabelCol()
-    {
-        return $this->labelCol;
-    }
-
-    /**
-     * Sets the number of columns of simple widgets.
-     *
-     * @param integer $simpleCol Number of columns.
-     */
-    public function setSimpleCol($simpleCol)
-    {
-        $this->simpleCol = $simpleCol;
+        $this->colSize = $colSize;
     }
 
     /**
@@ -191,6 +139,16 @@ class BootstrapFormExtension extends Twig_Extension
     }
 
     /**
+     * Sets the number of columns of simple widgets.
+     *
+     * @param integer $simpleCol Number of columns.
+     */
+    public function setSimpleCol($simpleCol)
+    {
+        $this->simpleCol = $simpleCol;
+    }
+
+    /**
      * Backup the form settings to the stack.
      *
      * @internal Should only be used at the beginning of form_start. This allows
@@ -200,10 +158,10 @@ class BootstrapFormExtension extends Twig_Extension
     public function backupFormSettings()
     {
         $settings = array(
-            'style'     => $this->style,
-            'colSize'   => $this->colSize,
+            'style' => $this->style,
+            'colSize' => $this->colSize,
             'widgetCol' => $this->widgetCol,
-            'labelCol'  => $this->labelCol,
+            'labelCol' => $this->labelCol,
             'simpleCol' => $this->simpleCol,
         );
 
@@ -224,10 +182,10 @@ class BootstrapFormExtension extends Twig_Extension
 
         $settings = array_pop($this->settingsStack);
 
-        $this->style     = $settings['style'];
-        $this->colSize   = $settings['colSize'];
+        $this->style = $settings['style'];
+        $this->colSize = $settings['colSize'];
         $this->widgetCol = $settings['widgetCol'];
-        $this->labelCol  = $settings['labelCol'];
+        $this->labelCol = $settings['labelCol'];
         $this->simpleCol = $settings['simpleCol'];
     }
 
@@ -239,9 +197,49 @@ class BootstrapFormExtension extends Twig_Extension
      */
     public function formControlStaticFunction($label, $value)
     {
-        return  sprintf(
+        return sprintf(
             '<div class="form-group"><label class="col-sm-%s control-label">%s</label><div class="col-sm-%s"><p class="form-control-static">%s</p></div></div>',
             $this->getLabelCol(), $label, $this->getWidgetCol(), $value
         );
+    }
+
+    /**
+     * Returns the number of columns of labels.
+     *
+     * @return integer Number of columns.
+     */
+    public function getLabelCol()
+    {
+        return $this->labelCol;
+    }
+
+    /**
+     * Sets the number of columns of labels.
+     *
+     * @param integer $labelCol Number of columns.
+     */
+    public function setLabelCol($labelCol)
+    {
+        $this->labelCol = $labelCol;
+    }
+
+    /**
+     * Returns the number of columns of widgets.
+     *
+     * @return integer Number of columns.Class
+     */
+    public function getWidgetCol()
+    {
+        return $this->widgetCol;
+    }
+
+    /**
+     * Sets the number of columns of widgets.
+     *
+     * @param integer $widgetCol Number of columns.
+     */
+    public function setWidgetCol($widgetCol)
+    {
+        $this->widgetCol = $widgetCol;
     }
 }

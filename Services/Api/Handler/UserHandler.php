@@ -19,16 +19,6 @@ class UserHandler extends Handler
     /**
      * Delete a Network.
      *
-     * @return User
-     */
-    public function findOneRandom()
-    {
-        return $this->repository->findOneRandom();
-    }
-
-    /**
-     * Delete a Network.
-     *
      * @param $user
      * @param array $parameters
      *
@@ -70,7 +60,7 @@ class UserHandler extends Handler
     {
         $userDB = $this->repository->findOneBy(['username' => $user->getUsername()]);
 
-        if ($userDB && $method == 'POST') {
+        if ($userDB && $method === 'POST') {
             if (!$userDB->isEnabled()) {
                 $userDB->setEnabled(TRUE);
             }

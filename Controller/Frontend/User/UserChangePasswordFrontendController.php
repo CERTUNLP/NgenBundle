@@ -22,6 +22,7 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -39,7 +40,7 @@ class UserChangePasswordFrontendController extends ChangePasswordController
     /**
      * @Route("/change-password", name="fos_user_change_password", methods="GET|POST")
      * @param Request $request
-     * @return null|RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return null|RedirectResponse|Response
      */
     public function changePasswordAction(Request $request)
     {

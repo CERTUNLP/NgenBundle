@@ -33,7 +33,7 @@ class IncidentStateEdgeHandler extends Handler
     {
         $incident_stateDB = $this->repository->findOneBy(['id' => $incident_state_edge->getId()]);
 
-        if ($incident_stateDB && $method == 'POST') {
+        if ($incident_stateDB && $method === 'POST') {
             if (!$incident_stateDB->getIsActive()) {
                 $incident_stateDB->setIsActive(TRUE);
             }

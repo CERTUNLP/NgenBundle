@@ -37,8 +37,8 @@ class IncidentTaxonomyValueHandler extends Handler
     {
         $taxonomy_valueDB = $this->repository->findOneBy(array('slug' => $taxonomy_value->getSlug()));
 
-        if ($taxonomy_valueDB && $method == 'POST') {
-            $taxonomy_value = $taxonomy_valueDBs;
+        if ($taxonomy_valueDB && $method === 'POST') {
+            $taxonomy_value = $taxonomy_valueDB;
         }
         return $taxonomy_value;
     }

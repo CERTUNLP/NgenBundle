@@ -4,7 +4,6 @@ namespace CertUnlp\NgenBundle\Entity\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
-use CertUnlp\NgenBundle\Entity\Incident\State\IncidentStateBehavior;
 use CertUnlp\NgenBundle\Entity\User;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -141,7 +140,7 @@ class IncidentChangeState
     /**
      * @return StateEdge
      */
-    public function getStateEdge(): StateEdge
+    public function getStateEdge(): ?StateEdge
     {
         return $this->stateEdge;
     }

@@ -15,6 +15,7 @@ use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
+use Doctrine\Common\Collections\Collection;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -97,7 +98,7 @@ interface NetworkInterface
     /**
      * Get incidents
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getIncidents();
 }

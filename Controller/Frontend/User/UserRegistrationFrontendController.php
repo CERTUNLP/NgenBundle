@@ -22,6 +22,7 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -41,7 +42,7 @@ class UserRegistrationFrontendController extends RegistrationController
     /**
      * @Route("/", name="fos_user_registration_register", methods="GET|POST")
      * @param Request $request
-     * @return null|RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return null|RedirectResponse|Response
      */
     public function registerAction(Request $request)
     {
@@ -124,12 +125,12 @@ class UserRegistrationFrontendController extends RegistrationController
      * @Route("/confirm/{token}", name="fos_user_registration_confirm", methods="GET")
      * @param Request $request
      * @param $token
-     * @return null|RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return null|RedirectResponse|Response
      */
     public function confirmAction(Request $request, $token)
     {
 
-        /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
+        /** @var $userManager UserManagerInterface */
         $userManager = $this->get('fos_user.user_manager');
 
         $user = $userManager->findUserByConfirmationToken($token);
@@ -185,6 +186,7 @@ class UserRegistrationFrontendController extends RegistrationController
         if ($this->get('session')->has($key)) {
             return $this->get('session')->get($key);
         }
+        return '';
     }
 
 }

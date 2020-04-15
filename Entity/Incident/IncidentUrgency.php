@@ -53,11 +53,46 @@ class IncidentUrgency extends Entity implements Translatable
 
 
     /**
-     * @var Collection
+     * @var Collection|null
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority",mappedBy="urgency"))
      */
-
     private $incidentsPriorities;
+
+    /**
+     * @return mixed
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @param mixed $locale
+     * @return IncidentUrgency
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+        return $this;
+    }
+
+    /**
+     * @return Collection|null
+     */
+    public function getIncidentsPriorities(): ?Collection
+    {
+        return $this->incidentsPriorities;
+    }
+
+    /**
+     * @param Collection|null $incidentsPriorities
+     * @return IncidentUrgency
+     */
+    public function setIncidentsPriorities(?Collection $incidentsPriorities): IncidentUrgency
+    {
+        $this->incidentsPriorities = $incidentsPriorities;
+        return $this;
+    }
 
     public function setTranslatableLocale($locale)
     {
