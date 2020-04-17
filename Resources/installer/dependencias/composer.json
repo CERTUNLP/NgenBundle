@@ -25,7 +25,8 @@
   },
     "autoload": {
         "psr-4": {
-        	"CertUnlp\\NgenBundle\\": "src/NgenBundle/"   
+        	"CertUnlp\\NgenBundle\\": "src/NgenBundle/",
+	        "AppBundle\\": "src/AppBundle"	
         },
         "classmap": [
             "app/AppKernel.php",
