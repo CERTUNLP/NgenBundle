@@ -25,16 +25,12 @@ class AppKernel extends Kernel
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new CertUnlp\NgenBundle\CertUnlpNgenBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(), //swiftmailer should be here for the conriguration load
-            new Ddeboer\DataImportBundle\DdeboerDataImportBundle(),
-            new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
-            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
             new SecIT\ImapBundle\ImapBundle(),
-//            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle,
             new Rollerworks\Bundle\PasswordStrengthBundle\RollerworksPasswordStrengthBundle(),
             new CMEN\GoogleChartsBundle\CMENGoogleChartsBundle()
         );
