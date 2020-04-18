@@ -18,10 +18,10 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Network;
 
 use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class NetworkEntityFrontendController extends Controller
 {

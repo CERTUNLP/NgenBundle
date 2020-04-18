@@ -12,18 +12,15 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CMEN\GoogleChartsBundle\GoogleCharts\Charts\ColumnChart;
-use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
-use CMEN\GoogleChartsBundle\GoogleCharts\Charts\Timeline;
 use fados\ChartjsBundle\Model\ChartBuiderData;
 use fados\ChartjsBundle\Utils\TypeCharjs;
 use fados\ChartjsBundle\Utils\TypeColors;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class IncidentFrontendController extends Controller
 {
@@ -88,7 +85,6 @@ class IncidentFrontendController extends Controller
         $response['column_chart'] = $this->getFrontendController()->makeColumnChart($incident->getDateRatio());
         return $response;
     }
-
 
 
     /**
