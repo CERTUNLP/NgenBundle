@@ -11,12 +11,12 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Ngen;
 
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 
-class NgenController extends FOSRestController
+class NgenController extends AbstractFOSRestController
 {
 
     /**
