@@ -16,7 +16,9 @@ use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,11 +29,17 @@ class NetworkEntityController extends AbstractFOSRestController
     /**
      * List all networks.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Get status.",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when the apikey is not found"
+     *     )
      * )
      *
      *
@@ -49,12 +57,29 @@ class NetworkEntityController extends AbstractFOSRestController
     /**
      * List all academic unit network_entity.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="List all academic unit networkentity.",
+     *     @SWG\Parameter(
+     *         name="offset",
+     *         in="query",
+     *         description="Offset from which to start listing academic unit network_entity.",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         description="How many academic unit network_entity to return.",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     )
      * )
+     *
      *
      * @FOS\Get("/networks/entities")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing academic unit network_entity.")
@@ -83,15 +108,19 @@ class NetworkEntityController extends AbstractFOSRestController
     /**
      * Gets a Network for a given id.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Gets a network admin for a given id",
-     *   output = "CertUnlp\NgenBundle\Entity\Network\NetworkEntity",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     404 = "Returned when the network is not found"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Gets a network admin for a given id",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when the network is not found"
+     *     )
      * )
+     *
      *
      * @param NetworkEntity $network_entity
      * @return NetworkEntity
@@ -109,15 +138,26 @@ class NetworkEntityController extends AbstractFOSRestController
     /**
      * Create a Network from the submitted data.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Creates a new network from the submitted data.",
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Creates a new network from the submitted data.",
+     *     @SWG\Parameter(
+     *         name="network",
+     *         in="formData",
+     *         description="",
+     *         required=false,
+     *         type="object (NetworkType)"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
      *
      * @FOS\Post("/networks/entities")
      * @param Request $request the request object
@@ -132,14 +172,26 @@ class NetworkEntityController extends AbstractFOSRestController
     /**
      * Update existing network from the submitted data or create a new network at a specific location.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     @SWG\Parameter(
+     *         name="network",
+     *         in="body",
+     *         description="",
+     *         required=false,
+     *         @SWG\Schema(type="object (NetworkType)")
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
      * @FOS\Patch("/networks/entities/{slug}")
      * @param Request $request the request object
      * @param NetworkEntity $network_entity
@@ -154,14 +206,26 @@ class NetworkEntityController extends AbstractFOSRestController
     /**
      * Update existing network from the submitted data or create a new network at a specific location.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     @SWG\Parameter(
+     *         name="network",
+     *         in="body",
+     *         description="",
+     *         required=false,
+     *         @SWG\Schema(type="object (NetworkType)")
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
      * @FOS\Patch("/networks/entities/{slug}")
      * @param Request $request the request object
      * @param NetworkEntity $network_entity
@@ -176,14 +240,26 @@ class NetworkEntityController extends AbstractFOSRestController
     /**
      * Update existing network from the submitted data or create a new network at a specific location.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     @SWG\Parameter(
+     *         name="network",
+     *         in="body",
+     *         description="",
+     *         required=false,
+     *         @SWG\Schema(type="object (NetworkType)")
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
      *
      *
      * @param Request $request the request object
@@ -201,14 +277,26 @@ class NetworkEntityController extends AbstractFOSRestController
     /**
      * Update existing network from the submitted data or create a new network at a specific location.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     @SWG\Parameter(
+     *         name="network",
+     *         in="body",
+     *         description="",
+     *         required=false,
+     *         @SWG\Schema(type="object (NetworkType)")
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
      *
      *
      * @param Request $request the request object
