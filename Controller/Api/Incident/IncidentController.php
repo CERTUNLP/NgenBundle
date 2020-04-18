@@ -17,7 +17,9 @@ use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,14 +29,19 @@ class IncidentController extends AbstractFOSRestController
     /**
      * Get single Incident.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   output = "CertUnlp\NgenBundle\Entity\Incident\Incident",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     404 = "Returned when the incident is not found"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Get single Incident.",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when the incident is not found"
+     *     )
      * )
+     *
      *
      * @param Incident $incident
      * @return Incident
@@ -48,15 +55,26 @@ class IncidentController extends AbstractFOSRestController
     /**
      * Create a Incident from the submitted data.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Creates a new incident from the submitted data.",
-     *   input = "CertUnlp\NgenBundle\Form\IncidentType",
-     *   statusCodes = {
-     *     201 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Creates a new incident from the submitted data.",
+     *     @SWG\Parameter(
+     *         name="incident",
+     *         in="formData",
+     *         description="",
+     *         required=false,
+     *         type="object (IncidentType)"
+     *     ),
+     *     @SWG\Response(
+     *         response="201",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
      *
      * @param Request $request the request object
      *
@@ -76,12 +94,29 @@ class IncidentController extends AbstractFOSRestController
     /**
      * List all incidents.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="List all incidents.",
+     *     @SWG\Parameter(
+     *         name="offset",
+     *         in="query",
+     *         description="Offset from which to start listing incidents.",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         description="How many incidents to return.",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     )
      * )
+     *
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incidents.")
      * @FOS\QueryParam(name="limit", requirements="\d+", default="100", description="How many incidents to return.")
      * @FOS\View(
@@ -101,15 +136,32 @@ class IncidentController extends AbstractFOSRestController
     /**
      * Update existing incident from the submitted data or create a new incident at a specific location.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\IncidentType",
-     *   statusCodes = {
-     *     201 = "Returned when the Incident is created",
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Update existing incident from the submitted data or create a new incident at a specific location.",
+     *     @SWG\Parameter(
+     *         name="incident",
+     *         in="body",
+     *         description="",
+     *         required=false,
+     *         @SWG\Schema(type="object (IncidentType)")
+     *     ),
+     *     @SWG\Response(
+     *         response="201",
+     *         description="Returned when the Incident is created"
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
+     *
+     *
      *
      * @param Request $request the request object
      * @param Incident $incident
@@ -125,13 +177,20 @@ class IncidentController extends AbstractFOSRestController
     /**
      * Update existing incident from the submitted data or create a new incident at a specific location.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Update existing incident from the submitted data or create a new incident at a specific location.",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
+     *
      *
      * @param Request $request the request object
      * @param Incident $incident
@@ -150,14 +209,28 @@ class IncidentController extends AbstractFOSRestController
     /**
      * Update existing incident from the submitted data.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\IncidentType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Update existing incident from the submitted data.",
+     *     @SWG\Parameter(
+     *         name="incident",
+     *         in="body",
+     *         description="",
+     *         required=false,
+     *         @SWG\Schema(type="object (IncidentType)")
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
+     *
+     *
      *
      *
      * @param Request $request the request object
@@ -174,14 +247,27 @@ class IncidentController extends AbstractFOSRestController
     /**
      * Update existing incident from the submitted data or create a new incident at a specific location.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\IncidentType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Update existing incident from the submitted data or create a new incident at a specific location.",
+     *     @SWG\Parameter(
+     *         name="incident",
+     *         in="body",
+     *         description="",
+     *         required=false,
+     *         @SWG\Schema(type="object (IncidentType)")
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
+     *
      *
      * @FOS\View(
      *  template = "CertUnlpNgenBundle:Incident:editIncident.html.twig",
@@ -203,12 +289,29 @@ class IncidentController extends AbstractFOSRestController
     /**
      * List all incidents.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="List all incidents.",
+     *     @SWG\Parameter(
+     *         name="from",
+     *         in="query",
+     *         description="Minor Date",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="to",
+     *         in="query",
+     *         description="Mayor Date",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     )
      * )
+     *
      * @FOS\QueryParam(name="from", requirements="\d+", description="Minor Date")
      * @FOS\QueryParam(name="to", requirements="\d+", description="Mayor Date")
      * @FOS\View(
@@ -226,15 +329,23 @@ class IncidentController extends AbstractFOSRestController
     /**
      * Get single Incident using type and address.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   output = "CertUnlp\NgenBundle\Entity\Incident\Incident",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     404 = "Returned when the incident is not found",
-     *     409 = "More than one incident"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Get single Incident using type and address.",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when the incident is not found"
+     *     ),
+     *     @SWG\Response(
+     *         response="409",
+     *         description="More than one incident"
+     *     )
      * )
+     *
      * @FOS\View(
      *  templateVar="incident_existing"
      * )

@@ -17,7 +17,9 @@ namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 
 class ExternalIncidentController extends AbstractFOSRestController
@@ -26,12 +28,29 @@ class ExternalIncidentController extends AbstractFOSRestController
     /**
      * List all incidents.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="List all incidents.",
+     *     @SWG\Parameter(
+     *         name="offset",
+     *         in="query",
+     *         description="Offset from which to start listing incidents.",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         description="How many incidents to return.",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     )
      * )
+     *
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incidents.")
      * @FOS\QueryParam(name="limit", requirements="\d+", default="100", description="How many incidents to return.")
      *
