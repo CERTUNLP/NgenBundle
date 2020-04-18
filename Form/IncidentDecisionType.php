@@ -74,7 +74,7 @@ class IncidentDecisionType extends AbstractType
             ])
             ->add('state', null, array(
                 'class' => IncidentState::class,
-                'empty_value' => 'Choose an incident state',
+                'placeholder' => 'Choose an incident state',
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
@@ -82,22 +82,22 @@ class IncidentDecisionType extends AbstractType
                 }))
             ->add('tlp', null, array(
                 'class' => IncidentTlp::class,
-                'empty_value' => 'Choose an incident TLP',
+                'placeholder' => 'Choose an incident TLP',
                 'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
             ))
             ->add('impact', null, array(
                 'class' => IncidentImpact::class,
-                'empty_value' => 'Choose an impact level',
+                'placeholder' => 'Choose an impact level',
                 'description' => 'If none is selected, the assigned impact will be Low',
             ))
             ->add('urgency', null, array(
                 'class' => IncidentUrgency::class,
-                'empty_value' => 'Choose an urgency level.',
+                'placeholder' => 'Choose an urgency level.',
                 'description' => 'If none is selected, the assigned urgency will be Low',
             ))
             ->add('unattendedState', null, array(
                 'class' => IncidentState::class,
-                'empty_value' => 'Choose an incident state',
+                'placeholder' => 'Choose an incident state',
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
@@ -105,7 +105,7 @@ class IncidentDecisionType extends AbstractType
                 }))
             ->add('unsolvedState', null, array(
                 'class' => IncidentState::class,
-                'empty_value' => 'Choose an incident state',
+                'placeholder' => 'Choose an incident state',
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
