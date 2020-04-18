@@ -18,7 +18,7 @@ use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Form\Factory\FactoryInterface;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Model\UserManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Method;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,8 +65,7 @@ class UserResettingFrontendController extends ResettingController
     }
 
     /**
-     * @Route("/reset/{token}", name="fos_user_resetting_reset")
-     * @Method({"GET", "POST"})
+     * @Route("/reset/{token}", name="fos_user_resetting_reset",methods={"GET","POST"}))
      * @param Request $request
      * @param $token
      * @return null|RedirectResponse|Response
