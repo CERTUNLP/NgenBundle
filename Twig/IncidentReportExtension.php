@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Twig;
 
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class IncidentReportExtension extends AbstractExtension
@@ -29,14 +30,14 @@ class IncidentReportExtension extends AbstractExtension
     public function getFilters()
     {
         return array(
-            new TwigFunction('subtitle', array($this, 'subtitleFilter'), array('is_safe' => array('html'))),
-            new TwigFunction('paragraph', array($this, 'paragraphFilter'), array('is_safe' => array('html'))),
-            new TwigFunction('code', array($this, 'codeFilter'), array('is_safe' => array('html'))),
-            new TwigFunction('destacated', array($this, 'destacatedFilter'), array('is_safe' => array('html'))),
-            new TwigFunction('emphasized', array($this, 'emphasizedFilter'), array('is_safe' => array('html'))),
-            new TwigFunction('urlLink', array($this, 'urlLinkFilter'), array('is_safe' => array('html'))),
-            new TwigFunction('list', array($this, 'listFilter'), array('is_safe' => array('html'))),
-            new TwigFunction(
+            new TwigFilter('subtitle', array($this, 'subtitleFilter'), array('is_safe' => array('html'))),
+            new TwigFilter('paragraph', array($this, 'paragraphFilter'), array('is_safe' => array('html'))),
+            new TwigFilter('code', array($this, 'codeFilter'), array('is_safe' => array('html'))),
+            new TwigFilter('destacated', array($this, 'destacatedFilter'), array('is_safe' => array('html'))),
+            new TwigFilter('emphasized', array($this, 'emphasizedFilter'), array('is_safe' => array('html'))),
+            new TwigFilter('urlLink', array($this, 'urlLinkFilter'), array('is_safe' => array('html'))),
+            new TwigFilter('list', array($this, 'listFilter'), array('is_safe' => array('html'))),
+            new TwigFilter(
                 'parse_icons',
                 array($this, 'parseIconsFilter'),
                 array('pre_escape' => 'html', 'is_safe' => array('html'))

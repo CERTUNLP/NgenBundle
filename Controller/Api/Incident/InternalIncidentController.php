@@ -12,13 +12,13 @@
 namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 
-class InternalIncidentController extends FOSRestController
+class InternalIncidentController extends AbstractFOSRestController
 {
 
     public function getApiController()

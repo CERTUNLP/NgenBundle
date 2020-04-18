@@ -15,12 +15,12 @@ namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 //use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 //use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 
-class ExternalIncidentController extends FOSRestController
+class ExternalIncidentController extends AbstractFOSRestController
 {
 
     /**

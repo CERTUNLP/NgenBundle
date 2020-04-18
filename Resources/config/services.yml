@@ -20,7 +20,7 @@ services:
 
   cert_unlp.ngen.incident.factory:
     class:        "%cert_unlp.ngen.incident.factory.class%"
-    arguments:    ["@cert_unlp.ngen.network.handler","%cert_unlp.ngen.incident.internal.class%","@form.factory", "@security.context","%cert_unlp.ngen.incident.reporter.class%"]
+    arguments:    ["@cert_unlp.ngen.network.handler","%cert_unlp.ngen.incident.internal.class%","@form.factory", "@security.token_storage","%cert_unlp.ngen.incident.reporter.class%"]
 
   cert_unlp.ngen.incident.report.factory:
     class:     CertUnlp\NgenBundle\Services\IncidentReportFactory
@@ -80,7 +80,7 @@ services:
 
   cert_unlp.ngen.incident.internal.handler:
     class:        "%cert_unlp.ngen.incident.internal.handler.class%"
-    arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.internal.class%","%cert_unlp.ngen.incident.internal.form_type.class%","@form.factory", "@security.context","@cert_unlp.ngen.user.handler","@cert_unlp.ngen.network.host.handler","@cert_unlp.ngen.incident.decision.handler","@cert_unlp.ngen.incident.state.handler"]
+    arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.internal.class%","%cert_unlp.ngen.incident.internal.form_type.class%","@form.factory", "@security.token_storage","@cert_unlp.ngen.user.handler","@cert_unlp.ngen.network.host.handler","@cert_unlp.ngen.incident.decision.handler","@cert_unlp.ngen.incident.state.handler"]
 
   cert_unlp.ngen.incident.feed.handler:
     class:        "%cert_unlp.ngen.incident.feed.handler.class%"
@@ -262,8 +262,6 @@ services:
 
   acme.twig.incident_extension:
     class: CertUnlp\NgenBundle\Twig\IncidentExtension
-    arguments:
-      doctrine: "@doctrine"
     tags:
       - { name: twig.extension }
 

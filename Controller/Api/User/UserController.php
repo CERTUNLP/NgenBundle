@@ -13,7 +13,7 @@ namespace CertUnlp\NgenBundle\Controller\Api\User;
 
 use CertUnlp\NgenBundle\Entity\User;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -21,7 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class UserController extends FOSRestController
+class UserController extends AbstractFOSRestController
 {
     public function __construct()
     {

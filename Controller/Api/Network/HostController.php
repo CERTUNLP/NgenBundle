@@ -13,14 +13,14 @@ namespace CertUnlp\NgenBundle\Controller\Api\Network;
 
 use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class HostController extends FOSRestController
+class HostController extends AbstractFOSRestController
 {
 
     /**
