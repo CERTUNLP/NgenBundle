@@ -39,7 +39,6 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
     {
         return array(
             FormEvents::POST_SET_DATA => 'onPostSetData',
-            FormEvents::PRE_SET_DATA => 'onPreSetData',
         );
     }
 
@@ -75,7 +74,7 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
             }
             if ($incident->getState() && !$incident->canEditFundamentals()) {
                 $form->add('type', null, array(
-                    'empty_value' => 'Choose an incident type',
+                    'placeholder' => 'Choose an incident type',
                     'required' => true,
                     'disabled' => 'disabled',
                     'query_builder' => static function (EntityRepository $er) {

@@ -72,6 +72,6 @@ class IncidentStateRepository extends EntityRepository
      */
     private function getOrCreateQueryBuilder(QueryBuilder $qb = null): QueryBuilder
     {
-        return $qb ?: $this->createQueryBuilder('is');
+        return $qb ?: $this->createQueryBuilder('i');
     }
 }

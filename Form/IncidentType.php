@@ -56,7 +56,7 @@ class IncidentType extends AbstractType
     {
         $builder
             ->add('type', null, array(
-                'empty_value' => 'Choose an incident type',
+                'placeholder' => 'Choose an incident type',
                 'required' => true,
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
@@ -99,12 +99,12 @@ class IncidentType extends AbstractType
             ))
             ->add('tlp', EntityType::class, array(
                 'class' => IncidentTlp::class,
-                'empty_value' => 'Choose an incident TLP',
+                'placeholder' => 'Choose an incident TLP',
                 'attr' => array('class' => 'ltdFilter', 'help_text' => 'If none is selected, it may be selected by incident decisions.'),
             ))
             ->add('reporter', EntityType::class, array(
                 'class' => User::class,
-                'empty_value' => 'Choose a reporter',
+                'placeholder' => 'Choose a reporter',
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, the reporter will be the logged user.'),
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
@@ -112,7 +112,7 @@ class IncidentType extends AbstractType
                 }))
             ->add('assigned', EntityType::class, array(
                 'class' => User::class,
-                'empty_value' => 'Choose a responsable',
+                'placeholder' => 'Choose a responsable',
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, the assigned will be empty.'),
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
@@ -120,7 +120,7 @@ class IncidentType extends AbstractType
                 }))
             ->add('state', EntityType::class, array(
                 'class' => IncidentState::class,
-                'empty_value' => 'Choose an incident state',
+                'placeholder' => 'Choose an incident state',
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, it may be selected by incident decisions.'),
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
@@ -128,13 +128,13 @@ class IncidentType extends AbstractType
                 }))
             ->add('impact', EntityType::class, array(
                 'class' => IncidentImpact::class,
-                'empty_value' => 'Choose an impact level',
+                'placeholder' => 'Choose an impact level',
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, it may be selected by incident decisions.'),
                 'choice_label' => 'name',
             ))
             ->add('urgency', EntityType::class, array(
                 'class' => IncidentUrgency::class,
-                'empty_value' => 'Choose an urgency level.',
+                'placeholder' => 'Choose an urgency level.',
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, it may be selected by incident decisions.'),
                 'choice_label' => 'name',
             ))
@@ -147,7 +147,7 @@ class IncidentType extends AbstractType
             ))
             ->add('unattendedState', EntityType::class, array(
                 'class' => IncidentState::class,
-                'empty_value' => 'Choose an incident state',
+                'placeholder' => 'Choose an incident state',
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, it may be selected by incident decisions.'),
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
@@ -163,7 +163,7 @@ class IncidentType extends AbstractType
             ))
             ->add('unsolvedState', EntityType::class, array(
                 'class' => IncidentState::class,
-                'empty_value' => 'Choose an incident state',
+                'placeholder' => 'Choose an incident state',
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, it may be selected by incident decisions.'),
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
