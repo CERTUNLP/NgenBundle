@@ -39,7 +39,7 @@ class IncidentTypeType extends AbstractType
             ))
             ->add('taxonomyValue', null, array(
                 'class' => \CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue::class,
-                'empty_value' => 'Choose a Tanonomy Reference value',
+                'placeholder' => 'Choose a Tanonomy Reference value',
                 'required' => false,
                 'attr' => array('help_text' => 'If none is selected null is assigned'),
                 'query_builder' => static function (EntityRepository $er) {

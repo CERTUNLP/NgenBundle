@@ -11,24 +11,31 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Ngen;
 
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\FOSRestController;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 
-class NgenController extends FOSRestController
+class NgenController extends AbstractFOSRestController
 {
 
     /**
      * Get status.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     401 = "Returned when the apikey is not found"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Get status.",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when the apikey is not found"
+     *     )
      * )
+     *
      *
      * @param Request $request
      * @return array
@@ -42,13 +49,19 @@ class NgenController extends FOSRestController
     /**
      * Get version.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     401 = "Returned when the apikey is not found"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Get version.",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when the apikey is not found"
+     *     )
      * )
+     *
      *
      * @param Request $request
      * @return string

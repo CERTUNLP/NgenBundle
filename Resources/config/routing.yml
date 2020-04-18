@@ -125,7 +125,3 @@ cert_ngen_api:
     type: rest
     prefix: /api
     resource: '@CertUnlpNgenBundle/Resources/config/routing_api.yml'
-
-NelmioApiDocBundle:
-    resource: '@NelmioApiDocBundle/Resources/config/routing.yml'
-    prefix:   /incidents/api/doc

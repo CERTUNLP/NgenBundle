@@ -13,25 +13,44 @@ namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class IncidentTaxonomyValueController extends FOSRestController
+class IncidentTaxonomyValueController extends AbstractFOSRestController
 {
 
     /**
      * List all incident states.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="List all incident states.",
+     *     @SWG\Parameter(
+     *         name="offset",
+     *         in="query",
+     *         description="Offset from which to start listing incident states.",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         description="How many incident states to return.",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     )
      * )
+     *
      *
      * @FOS\Get("/taxonomies/values")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident states.")
@@ -60,15 +79,19 @@ class IncidentTaxonomyValueController extends FOSRestController
     /**
      * Gets a Network for a given id.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Gets a network admin for a given id",
-     *   output = "CertUnlp\NgenBundle\Entity\Incident\IncidentDecision",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     404 = "Returned when the network is not found"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Gets a network admin for a given id",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when the network is not found"
+     *     )
      * )
+     *
      *
      * @param TaxonomyValue $taxonomyValue
      * @return TaxonomyValue
@@ -82,15 +105,26 @@ class IncidentTaxonomyValueController extends FOSRestController
     /**
      * Create a Network from the submitted data.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Creates a new network from the submitted data.",
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Creates a new network from the submitted data.",
+     *     @SWG\Parameter(
+     *         name="network",
+     *         in="formData",
+     *         description="",
+     *         required=false,
+     *         type="object (NetworkType)"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
      *
      * @FOS\Post("/taxonomies/values")
      * @param Request $request the request object
@@ -105,14 +139,19 @@ class IncidentTaxonomyValueController extends FOSRestController
     /**
      * Update existing network from the submitted data or create a new network at a specific location.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\TaxonomyValueType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
      * @FOS\Patch("/taxonomies/values/{slug}")
      * @param Request $request the request object
      * @param TaxonomyValue $taxonomyValue
@@ -127,14 +166,26 @@ class IncidentTaxonomyValueController extends FOSRestController
     /**
      * Update existing network from the submitted data or create a new network at a specific location.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     @SWG\Parameter(
+     *         name="network",
+     *         in="body",
+     *         description="",
+     *         required=false,
+     *         @SWG\Schema(type="object (NetworkType)")
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
      * @FOS\Patch("/taxonomies/values/{slug}")
      * @param Request $request the request object
      * @param TaxonomyValue $taxonomyValue
@@ -149,14 +200,26 @@ class IncidentTaxonomyValueController extends FOSRestController
     /**
      * Update existing network from the submitted data or create a new network at a specific location.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     @SWG\Parameter(
+     *         name="network",
+     *         in="body",
+     *         description="",
+     *         required=false,
+     *         @SWG\Schema(type="object (NetworkType)")
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
      *
      *
      * @param Request $request the request object
@@ -174,14 +237,26 @@ class IncidentTaxonomyValueController extends FOSRestController
     /**
      * Update existing network from the submitted data or create a new network at a specific location.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     @SWG\Parameter(
+     *         name="network",
+     *         in="body",
+     *         description="",
+     *         required=false,
+     *         @SWG\Schema(type="object (NetworkType)")
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
      *
      *
      * @param Request $request the request object

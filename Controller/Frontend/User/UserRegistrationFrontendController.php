@@ -23,7 +23,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -101,24 +101,25 @@ class UserRegistrationFrontendController extends RegistrationController
     /**
      * @Route("/check-email", name="fos_user_registration_check_email", methods="GET|POST")
      */
-    public function checkEmailAction()
+    public function checkEmailAction(Request $request)
     {
-        $email = $this->get('session')->get('fos_user_send_confirmation_email/email');
+        $email = $request->getSession()->get('fos_user_send_confirmation_email/email');
 
         if (empty($email)) {
-            return new RedirectResponse($this->get('router')->generate('fos_user_registration_register'));
+            return new RedirectResponse($this->generateUrl('fos_user_registration_register'));
         }
 
-        $this->get('session')->remove('fos_user_send_confirmation_email/email');
+        $request->getSession()->remove('fos_user_send_confirmation_email/email');
         $user = $this->get('fos_user.user_manager')->findUserByEmail($email);
 
         if (null === $user) {
-            throw new NotFoundHttpException(sprintf('The user with email "%s" does not exist', $email));
+            return new RedirectResponse($this->container->get('router')->generate('fos_user_security_login'));
         }
 
         return $this->render('CertUnlpNgenBundle:User:Frontend/Registration/check_email.html.twig', array(
             'user' => $user,
         ));
+
     }
 
     /**
@@ -129,41 +130,15 @@ class UserRegistrationFrontendController extends RegistrationController
      */
     public function confirmAction(Request $request, $token)
     {
-
-        /** @var $userManager UserManagerInterface */
-        $userManager = $this->get('fos_user.user_manager');
-
-        $user = $userManager->findUserByConfirmationToken($token);
-
-        if (null === $user) {
-            throw new NotFoundHttpException(sprintf('The user with confirmation token "%s" does not exist', $token));
-        }
-
-        /** @var $dispatcher EventDispatcherInterface */
-        $dispatcher = $this->get('event_dispatcher');
-
-        $user->setConfirmationToken(null);
-        $user->setEnabled(true);
-
-        $event = new GetResponseUserEvent($user, $request);
-        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRM, $event);
-
-        $userManager->updateUser($user);
-
-        if (null === $response = $event->getResponse()) {
-            $url = $this->generateUrl('fos_user_registration_confirmed');
-            $response = new RedirectResponse($url);
-        }
-
-        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
-
-        return $response;
+        return parent::confirmAction($request, $token);
     }
 
     /**
      * @Route("/confirmed", name="fos_user_registration_confirmed", methods="GET")
+     * @param Request $request
+     * @return Response
      */
-    public function confirmedAction()
+    public function confirmedAction(Request $request): Response
     {
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
@@ -172,21 +147,23 @@ class UserRegistrationFrontendController extends RegistrationController
 
         return $this->render('CertUnlpNgenBundle:User:Frontend/Registration/confirmed.html.twig', array(
             'user' => $user,
-            'targetUrl' => $this->getTargetUrlFromSession(),
+            'targetUrl' => $this->getTargetUrlFromSession($request->getSession()),
         ));
     }
 
     /**
-     * @return mixed
+     * @param SessionInterface $session
+     * @return string|null
      */
-    private function getTargetUrlFromSession()
+    private function getTargetUrlFromSession(SessionInterface $session)
     {
         $key = sprintf('_security.%s.target_path', $this->get('security.token_storage')->getToken()->getProviderKey());
 
-        if ($this->get('session')->has($key)) {
-            return $this->get('session')->get($key);
+        if ($session->has($key)) {
+            return $session->get($key);
         }
-        return '';
+
+        return null;
     }
 
 }
