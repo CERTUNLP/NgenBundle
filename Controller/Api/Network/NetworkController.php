@@ -12,26 +12,34 @@
 namespace CertUnlp\NgenBundle\Controller\Api\Network;
 
 use CertUnlp\NgenBundle\Entity\Network\Network;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class NetworkController extends FOSRestController
+class NetworkController extends AbstractFOSRestController
 {
 
     /**
      * List all networks.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Gets a Network for a given id",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when the network is not found"
+     *     )
      * )
+     *
      *
      *
      * @param Request $request the request object
@@ -48,12 +56,29 @@ class NetworkController extends FOSRestController
     /**
      * List all networks.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="List all networks.",
+     *     @SWG\Parameter(
+     *         name="offset",
+     *         in="body",
+     *         description="Offset from which to start listing networks.",
+     *         required=false,
+     *         @SWG\Schema(type="\d+")
+     *     ),
+     *     @SWG\Parameter(
+     *         name="limit",
+     *         in="body",
+     *         description="How many networks to return.",
+     *         required=false,
+     *         @SWG\Schema(type="\d+")
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     )
      * )
+     *
      *
      * @FOS\RequestParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing networks.")
      * @FOS\RequestParam(name="limit", requirements="\d+", nullable=true, description="How many networks to return.")
@@ -81,15 +106,20 @@ class NetworkController extends FOSRestController
     /**
      * Gets a Network for a given id.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Gets a Network for a given id",
-     *   output = "CertUnlp\NgenBundle\Entity\Network\Network",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     404 = "Returned when the network is not found"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Gets a Network for a given id",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when the network is not found"
+     *     )
      * )
+     *
+     *
      *
      * @param Network $network
      * @return Network
@@ -109,15 +139,26 @@ class NetworkController extends FOSRestController
     /**
      * Create a Network from the submitted data.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Creates a new network from the submitted data.",
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Creates a new network from the submitted data.",
+     *     @SWG\Parameter(
+     *         name="network",
+     *         in="formData",
+     *         description="",
+     *         required=false,
+     *         type="object (NetworkType)"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
      *
      * @FOS\View(
      *  templateVar = "network"
@@ -134,14 +175,28 @@ class NetworkController extends FOSRestController
     /**
      * Update existing network from the submitted data or create a new network at a specific location.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     @SWG\Parameter(
+     *         name="network",
+     *         in="body",
+     *         description="",
+     *         required=false,
+     *         @SWG\Schema(type="object (NetworkType)")
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
+     *
+     *
      *
      * @FOS\View(
      *  templateVar = "network"
@@ -163,14 +218,28 @@ class NetworkController extends FOSRestController
     /**
      * Update existing network from the submitted data or create a new network at a specific location.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     @SWG\Parameter(
+     *         name="network",
+     *         in="body",
+     *         description="",
+     *         required=false,
+     *         @SWG\Schema(type="object (NetworkType)")
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
+     *
+     *
      *
      *
      * @param Request $request the request object
@@ -195,14 +264,28 @@ class NetworkController extends FOSRestController
     /**
      * Update existing network from the submitted data or create a new network at a specific location.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     @SWG\Parameter(
+     *         name="network",
+     *         in="body",
+     *         description="",
+     *         required=false,
+     *         @SWG\Schema(type="object (NetworkType)")
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     )
      * )
+     *
+     *
+     *
      *
      *
      * @param Request $request the request object

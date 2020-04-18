@@ -37,13 +37,13 @@ class IncidentSearchType extends AbstractType
             ->add('type', null, array(
                 'label' => false,
                 'required' => false,
-                'empty_value' => 'All',
+                'placeholder' => 'All',
                 'choice_value' => 'name',
                 'attr' => array('class' => 'select-filter', 'search' => 'slug')
             ))
             ->add('feed', EntityType::class, array(
                 'class' => IncidentFeed::class,
-                'empty_value' => 'All',
+                'placeholder' => 'All',
                 'required' => false,
                 'label' => false,
                 'choice_value' => 'name',
@@ -72,7 +72,7 @@ class IncidentSearchType extends AbstractType
                 'label' => false,
                 'required' => false,
                 'class' => IncidentState::class,
-                'empty_value' => 'All',
+                'placeholder' => 'All',
                 'choice_value' => 'name',
                 'attr' => array('class' => 'select-filter', 'search' => 'slug')
             ))
@@ -80,7 +80,7 @@ class IncidentSearchType extends AbstractType
                 'label' => false,
                 'required' => false,
                 'class' => IncidentTlp::class,
-                'empty_value' => 'All',
+                'placeholder' => 'All',
                 'choice_value' => 'name',
                 'attr' => array('class' => 'select-filter', 'search' => 'slug')
             ))
@@ -88,7 +88,7 @@ class IncidentSearchType extends AbstractType
                 'label' => false,
                 'required' => false,
                 'class' => User::class,
-                'empty_value' => 'All',
+                'placeholder' => 'All',
                 'choice_value' => 'name',
                 'attr' => array('class' => 'select-filter', 'search' => 'id')
             ))
@@ -96,7 +96,7 @@ class IncidentSearchType extends AbstractType
                 'label' => false,
                 'required' => false,
                 'class' => User::class,
-                'empty_value' => 'All',
+                'placeholder' => 'All',
                 'choice_value' => 'name',
                 'attr' => array('class' => 'select-filter', 'search' => 'id')
             ))
@@ -111,7 +111,7 @@ class IncidentSearchType extends AbstractType
                 'required' => false,
                 'class' => IncidentPriority::class,
                 'choice_value' => 'name',
-                'empty_value' => 'All',
+                'placeholder' => 'All',
                 'attr' => array('class' => 'select-filter', 'search' => 'name')
             ));
 

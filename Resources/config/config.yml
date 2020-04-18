@@ -68,7 +68,7 @@ swiftmailer:
             sender_address: "%cert_unlp.ngen.incident.mailer.sender_address%"
             username:  "%cert_unlp.ngen.incident.mailer.username%"
             password:  "%cert_unlp.ngen.incident.mailer.password%"
-            encryption: "%cert_unlp.ngen.incident.mailer.encryption%"
+            #        encryption: "%cert_unlp.ngen.incident.mailer.encryption%"
             port: "%cert_unlp.ngen.incident.mailer.port%"
             spool:
                 type: file
@@ -138,8 +138,7 @@ fos_rest:
     disable_csrf_role: ROLE_API
 
 
-nelmio_api_doc:
-    name: Page API
+nelmio_api_doc: ~
 
 imap:
     connections:

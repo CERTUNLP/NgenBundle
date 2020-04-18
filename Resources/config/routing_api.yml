@@ -110,7 +110,13 @@ cert_ngen_network_host_api:
     type: rest
     resource: '@CertUnlpNgenBundle/Controller/Api/Network/HostController.php'
     name_prefix:  api_
-#
-#NelmioApiDocBundle:
-#    resource: '@NelmioApiDocBundle/Resources/config/routing.yml'
-#    prefix:   /incidents/api/doc
+
+app.swagger_ui:
+    path: /api/doc
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
+
+app.swagger:
+    path: /api/doc.json
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger }

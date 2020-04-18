@@ -6,8 +6,6 @@
 # with this source code in the file LICENSE.
 
 security:
-    acl:
-        connection: default
     firewalls:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
