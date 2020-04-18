@@ -18,10 +18,10 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend;
 
 use CertUnlp\NgenBundle\Entity\Network\Host\Host;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class HostFrontendController extends Controller
 {

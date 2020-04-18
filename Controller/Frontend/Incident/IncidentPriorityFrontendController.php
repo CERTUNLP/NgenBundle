@@ -18,10 +18,10 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class IncidentPriorityFrontendController extends Controller
 {
@@ -34,7 +34,7 @@ class IncidentPriorityFrontendController extends Controller
      */
     public function homeAction(Request $request)
     {
-        return $this->getFrontendController()->homeEntity($request,null, 10, 'code', 'asc');
+        return $this->getFrontendController()->homeEntity($request, null, 10, 'code', 'asc');
     }
 
 

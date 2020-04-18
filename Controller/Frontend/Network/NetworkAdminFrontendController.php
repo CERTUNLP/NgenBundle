@@ -18,10 +18,10 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Network;
 
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class NetworkAdminFrontendController extends Controller
 {
@@ -44,7 +44,6 @@ class NetworkAdminFrontendController extends Controller
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkAdmin/Frontend:home.html.twig")
-
      * @Route("search", name="cert_unlp_ngen_network_search_network_admin")
      * @param Request $request
      * @return array

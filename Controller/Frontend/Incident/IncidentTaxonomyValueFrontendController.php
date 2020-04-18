@@ -18,10 +18,10 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class IncidentTaxonomyValueFrontendController extends Controller
 {
@@ -53,6 +53,7 @@ class IncidentTaxonomyValueFrontendController extends Controller
     {
         return $this->getFrontendController()->detailEntity($taxonomyValue);
     }
+
     /**
      * @Template("CertUnlpNgenBundle:IncidentTaxonomyValue/Frontend:frontend.html.twig")
      * @Route("search", name="cert_unlp_ngen_incident_taxonomy_value_search")
