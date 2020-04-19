@@ -1,34 +1,35 @@
 version: "3.1"
 volumes:
-  ngen-grafana-data:
-    driver: local
-    #driver: rancher-nfs
-    #external: true 
-  ngen-elastic-data:
+  ngen34-grafana-data:
     driver: local
     #driver: rancher-nfs
     #external: true
-  ngen-elasticsearch:
+  ngen34-elastic-data:
     driver: local
     #driver: rancher-nfs
     #external: true
-  ngen-bdd2:
+  ngen34-elasticsearch:
     driver: local
     #driver: rancher-nfs
     #external: true
-  ngen-incidentes:
+  ngen34-bdd:
     driver: local
     #driver: rancher-nfs
     #external: true
-  ngen-feeds:
+  ngen34-incidentes:
+    driver: local
+    #driver: rancher-nfs
+    #external: true
+  ngen34-feeds:
     driver: local
     #driver: rancher-nfs
     #external: true
 services:
     ngen-db:
       image: mysql:8.0
+      command: ["mysqld", "--upgrade=FORCE"]
       volumes:
-        - ngen-bdd2:/var/lib/mysql
+        - ngen34-bdd:/var/lib/mysql
       environment:
         - MYSQL_ROOT_PASSWORD=pass
         - MYSQL_DATABASE=ngen
@@ -45,8 +46,8 @@ services:
         - "8000:80"
       volumes:
         - '../:/application/ngen_basic/src/NgenBundle'
-        - ngen-incidentes:/application/ngen_basic/app/Resources/incident
-        - ngen-feeds:/application/ngen_basic/app/Resources/app/Resources/feed/
+        - ngen34-incidentes:/application/ngen_basic/app/Resources/incident
+        - ngen34-feeds:/application/ngen_basic/app/Resources/app/Resources/feed/
       environment:
         - PATH_WEB=/application
         - DATE_TZ=America/Argentina/Buenos_Aires
@@ -109,7 +110,7 @@ services:
        - xpack.security.enabled=false
        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       volumes:
-        - ngen-elastic-data:/usr/share/elasticsearch/data
+        - ngen34-elastic-data:/usr/share/elasticsearch/data
       ports:
         - "9200:9200"
       networks: ['ngen']
@@ -118,7 +119,7 @@ services:
       ports:
         - "3000:3000"
       volumes:
-        - ngen-grafana-data:/var/lib/grafana
+        - ngen34-grafana-data:/var/lib/grafana
       environment:
         - ELASTIC_HOST=ngen-elastic
         - ELASTIC_PORT=9200
