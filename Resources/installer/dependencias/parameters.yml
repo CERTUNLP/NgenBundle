@@ -30,5 +30,3 @@ parameters:
     imap_password: $IMAP_PASSWORD
     external_dashboard_grafana: $EXTERNAL_DASHBOARD_GRAFANA
     internal_dashboard_grafana: $INTERNAL_DASHBOARD_GRAFANA
-    grafana_user: $GRAFANA_USER
-    grafana_password: $GRAFANA_PASSWORD
