@@ -75,8 +75,6 @@ class CertUnlpNgenExtension extends Extension
 
         $container->setParameter('cert_unlp.ngen.grafana.internal.url', $config['grafana']['internal']);
         $container->setParameter('cert_unlp.ngen.grafana.external.url', $config['grafana']['external']);
-        $container->setParameter('cert_unlp.ngen.grafana.user', $config['grafana']['user']);
-        $container->setParameter('cert_unlp.ngen.grafana.password', $config['grafana']['password']);
 
         $container->setParameter('cert_unlp.ngen.incident.feed.class', $config['incidents']['feeds']['class']);
         $container->setParameter('cert_unlp.ngen.incident.feed.handler.class', $config['incidents']['feeds']['handler']['class']);
