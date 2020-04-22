@@ -11,6 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Security;
 
+use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -22,10 +24,10 @@ class ApiKeyUserProvider implements UserProviderInterface
     private $om;
     private $repository;
 
-    public function __construct(ObjectManager $om, $user_class)
+    public function __construct(ObjectManager $om, UserRepository $userRepository)
     {
-        $this->om = $om;
-        $this->repository = $this->om->getRepository($user_class);
+
+        $this->repository = $userRepository;
     }
 
     public function getUsernameForApiKey($apiKey)
@@ -46,7 +48,7 @@ class ApiKeyUserProvider implements UserProviderInterface
 
     public function supportsClass($class)
     {
-        return 'CertUnlp\NgenBundle\Entity\User' === $class;
+        return User::class === $class;
     }
 
 }

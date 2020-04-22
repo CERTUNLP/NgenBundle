@@ -11,27 +11,18 @@
 
 namespace CertUnlp\NgenBundle\Form;
 
-use Symfony\Component\Form\AbstractType;
+use FOS\CommentBundle\Form\CommentType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Description of IncidentCommentType
  *
  * @author dam
  */
-class IncidentCommentType extends AbstractType
+class IncidentCommentType extends CommentType
 {
-
-    private $commentClass;
-
-    public function __construct($commentClass)
-    {
-        $this->commentClass = $commentClass;
-    }
-
     /**
      * Configures a Comment form.
      *
@@ -44,21 +35,6 @@ class IncidentCommentType extends AbstractType
             ->add('notify_to_admin', CheckboxType::class, array('data' => false, 'mapped' => true, 'attr' => array(), 'required' => false, 'label' => 'Notify to admin'));
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     * @return void
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => $this->commentClass,
-        ));
-    }
-
-    public function getName()
-    {
-        return "fos_comment_comment";
-    }
 
 //    public function getParent() {
 //        return "fos_comment_comment";

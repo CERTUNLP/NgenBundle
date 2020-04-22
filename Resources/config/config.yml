@@ -80,7 +80,7 @@ doctrine:
 
         #        query_cache_driver:    apc
         #        metadata_cache_driver: apc
-        entity_listener_resolver: cert_unlp.ngen.doctrine.entity_listener_resolver
+#        entity_listener_resolver: cert_unlp.ngen.doctrine.entity_listener_resolver
         dql:
             string_functions:
                 inet_aton: DoctrineExtensions\Query\Mysql\InetAton
