@@ -15,7 +15,7 @@ security:
             anonymous: ~
             stateless:  true
             simple_preauth:
-                authenticator: CertUnlp\NgenBundle\Security\ApiKeyUserProvider
+                authenticator: CertUnlp\NgenBundle\Security\ApiKeyAuthenticator
         frontend:
             pattern:        ^/*
             form_login:
