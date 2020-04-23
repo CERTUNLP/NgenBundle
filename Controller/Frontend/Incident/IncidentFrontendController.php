@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController as FrontendController;
 use fados\ChartjsBundle\Model\ChartBuiderData;
 use fados\ChartjsBundle\Utils\TypeCharjs;
 use fados\ChartjsBundle\Utils\TypeColors;
@@ -29,16 +30,17 @@ class IncidentFrontendController extends Controller
      * @Template("CertUnlpNgenBundle:Incident:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_internal_incident_frontend_home")
      * @param Request $request
+     * @param FrontendController $incidentFrontendController
      * @return array
      */
-    public function homeAction(Request $request)
+    public function homeAction(Request $request, FrontendController $incidentFrontendController)
     {
-        return $this->getFrontendController()->homeEntity($request);
+        return $incidentFrontendController->homeEntity($request);
     }
 
-    public function getFrontendController()
+    public function getFrontendController($incidentFrontendController = null)
     {
-        return $this->get('cert_unlp.ngen.incident.internal.frontend.controller');
+        return $incidentFrontendController;
     }
 
     /**
