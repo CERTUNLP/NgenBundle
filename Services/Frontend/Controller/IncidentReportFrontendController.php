@@ -18,13 +18,13 @@ class IncidentReportFrontendController extends FrontendController
 
     public function newEntity(Request $request, $default_type = '')
     {
-        return array('form' => $this->formFactory->create(new $this->entityType())->createView(), 'method' => 'POST', 'default_type' => $default_type);
+        return array('form' => $this->formFactory->create(new $this->entity_type())->createView(), 'method' => 'POST', 'default_type' => $default_type);
     }
 
     public function editEntity($object, $default_type = '')
     {
 
-        return array('form' => $this->formFactory->create(new $this->entityType(), $object)->createView(), 'method' => 'patch', 'default_type' => $default_type);
+        return array('form' => $this->formFactory->create(new $this->entity_type(), $object)->createView(), 'method' => 'patch', 'default_type' => $default_type);
     }
 
 }

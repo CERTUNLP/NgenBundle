@@ -16,31 +16,32 @@ use CMEN\GoogleChartsBundle\GoogleCharts\Charts\ColumnChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\Timeline;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Persistence\ManagerRegistry;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\ThreadManagerInterface;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
-use Knp\Component\Pager\Paginator;
-use Symfony\Component\Form\FormFactory;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class FrontendController
 {
 
-    protected $entityType;
-    protected $formFactory;
+    private $entity_type;
+    private $formFactory;
     private $doctrine;
     private $paginator;
     private $finder;
     private $comment_manager;
     private $thread_manager;
 
-    public function __construct($doctrine, FormFactory $formFactory, $entityType, Paginator $paginator, PaginatedFinderInterface $finder, CommentManagerInterface $comment_manager, ThreadManagerInterface $thread_manager)
+    public function __construct(ManagerRegistry $doctrine, FormFactoryInterface $formFactory, $entity_type, PaginatorInterface $paginator, PaginatedFinderInterface $finder, CommentManagerInterface $comment_manager, ThreadManagerInterface $thread_manager)
     {
         $this->doctrine = $doctrine;
         $this->paginator = $paginator;
         $this->finder = $finder;
-        $this->entityType = $entityType;
+        $this->entity_type = $entity_type;
         $this->formFactory = $formFactory;
         $this->comment_manager = $comment_manager;
         $this->thread_manager = $thread_manager;
@@ -163,12 +164,44 @@ class FrontendController
 
     public function newEntity(Request $request)
     {
-        return array('form' => $this->formFactory->create(new $this->entityType($this->doctrine))->createView(), 'method' => 'POST');
+        return array('form' => $this->getFormFactory()->create($this->getEntityType())->createView(), 'method' => 'POST');
+    }
+
+    /**
+     * @return FormFactoryInterface
+     */
+    public function getFormFactory(): FormFactoryInterface
+    {
+        return $this->formFactory;
+    }
+
+    /**
+     * @param FormFactoryInterface $formFactory
+     */
+    public function setFormFactory(FormFactoryInterface $formFactory): void
+    {
+        $this->formFactory = $formFactory;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEntityType()
+    {
+        return $this->entity_type;
+    }
+
+    /**
+     * @param mixed $entity_type
+     */
+    public function setEntityType($entity_type): void
+    {
+        $this->entity_type = $entity_type;
     }
 
     public function editEntity($object)
     {
-        return array('form' => $this->formFactory->create(new $this->entityType($this->doctrine), $object)->createView(), 'method' => 'patch');
+        return array('form' => $this->getFormFactory()->create($this->getEntityType(), $object)->createView(), 'method' => 'patch');
     }
 
     public function detailEntity($object)
@@ -202,6 +235,38 @@ class FrontendController
             'comments' => $comments,
             'thread' => $thread,
         );
+    }
+
+    /**
+     * @return CommentManagerInterface
+     */
+    public function getCommentManager(): CommentManagerInterface
+    {
+        return $this->comment_manager;
+    }
+
+    /**
+     * @param CommentManagerInterface $comment_manager
+     */
+    public function setCommentManager(CommentManagerInterface $comment_manager): void
+    {
+        $this->comment_manager = $comment_manager;
+    }
+
+    /**
+     * @return ThreadManagerInterface
+     */
+    public function getThreadManager(): ThreadManagerInterface
+    {
+        return $this->thread_manager;
+    }
+
+    /**
+     * @param ThreadManagerInterface $thread_manager
+     */
+    public function setThreadManager(ThreadManagerInterface $thread_manager): void
+    {
+        $this->thread_manager = $thread_manager;
     }
 
 }
