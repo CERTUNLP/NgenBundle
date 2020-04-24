@@ -19,7 +19,7 @@ use Elastica\Query\Term;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class NetworkFrontendController extends FrontendController
+class NetworkFrontendControllerService extends FrontendControllerService
 {
 
     public function searchAutocompleteEntity(Request $request, string $term = '', int $limit = 7, string $defaultSortFieldName = 'createdAt', string $defaultSortDirection = 'desc', string $page = 'page', string $field = ''): JsonResponse

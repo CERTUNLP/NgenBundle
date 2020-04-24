@@ -19,11 +19,11 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class IncidentReportFrontendController extends FrontendController
+class IncidentReportFrontendControllerService extends FrontendControllerService
 {
 
     /**
-     * IncidentReportFrontendController constructor.
+     * IncidentReportFrontendControllerService constructor.
      * @param ManagerRegistry $doctrine
      * @param FormFactoryInterface $formFactory
      * @param IncidentReportType $entity_type
