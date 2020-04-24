@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ZipArchive;
 
-class IncidentFrontendController extends FrontendController
+class IncidentFrontendControllerService extends FrontendControllerService
 {
 
     /**
@@ -45,7 +45,7 @@ class IncidentFrontendController extends FrontendController
     private $comment_manager;
 
     /**
-     * IncidentFrontendController constructor.
+     * IncidentFrontendControllerService constructor.
      * @param ManagerRegistry $doctrine
      * @param FormFactoryInterface $formFactory
      * @param IncidentType $entity_type

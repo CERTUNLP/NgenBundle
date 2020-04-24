@@ -20,7 +20,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class IncidentDetectedFrontendController extends FrontendController
+class IncidentDetectedFrontendControllerService extends FrontendControllerService
 {
     /**
      * @var string
@@ -28,7 +28,7 @@ class IncidentDetectedFrontendController extends FrontendController
     private $evidence_path;
 
     /**
-     * IncidentDetectedFrontendController constructor.
+     * IncidentDetectedFrontendControllerService constructor.
      * @param ManagerRegistry $doctrine
      * @param FormFactoryInterface $formFactory
      * @param IncidentType $entity_type

@@ -24,7 +24,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class FrontendController
+class FrontendControllerService
 {
     /** F
      * @var ManagerRegistry
