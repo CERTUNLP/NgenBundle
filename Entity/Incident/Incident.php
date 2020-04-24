@@ -36,7 +36,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentRepository")
- * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Service\Listener\Entity\IncidentListener" })
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
  */
