@@ -51,13 +51,31 @@ abstract class Entity
 //     * @Gedmo\Blameable(on="create")
 //     */
 //    protected $createdBy;
-//    /**
-//     * @var boolean
-//     *
-//     * @ORM\Column(name="is_active", type="boolean")
-//     * @JMS\Expose
-//     */
-//    protected $isActive = true;
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(type="boolean")
+     * @JMS\Expose
+     */
+    private $active = true;
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     * @return Entity
+     */
+    public function setActive(bool $active): Entity
+    {
+        $this->active = $active;
+        return $this;
+    }
 
     /**
      * @return string
@@ -150,15 +168,7 @@ abstract class Entity
 //        return $this->isActive;
 //    }
 //
-//    /**
-//     * @param bool $isActive
-//     * @return Entity
-//     */
-//    public function setIsActive(bool $isActive): Entity
-//    {
-//        $this->isActive = $isActive;
-//        return $this;
-//    }
+
     /**
      * @param Collection $collection
      * @param Closure $callback

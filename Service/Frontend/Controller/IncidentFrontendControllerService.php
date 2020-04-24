@@ -46,7 +46,6 @@ class IncidentFrontendControllerService extends FrontendControllerService
 
     /**
      * IncidentFrontendControllerService constructor.
-     * @param ManagerRegistry $doctrine
      * @param FormFactoryInterface $formFactory
      * @param IncidentType $entity_type
      * @param PaginatorInterface $paginator
@@ -55,9 +54,9 @@ class IncidentFrontendControllerService extends FrontendControllerService
      * @param ThreadManagerInterface $thread_manager
      * @param string $evidence_path
      */
-    public function __construct(ManagerRegistry $doctrine, FormFactoryInterface $formFactory, IncidentType $entity_type, PaginatorInterface $paginator, PaginatedFinderInterface $elastica_finder_incident, CommentManagerInterface $comment_manager, ThreadManagerInterface $thread_manager, string $evidence_path)
+    public function __construct(FormFactoryInterface $formFactory, IncidentType $entity_type, PaginatorInterface $paginator, PaginatedFinderInterface $elastica_finder_incident, CommentManagerInterface $comment_manager, ThreadManagerInterface $thread_manager, string $evidence_path)
     {
-        parent::__construct($doctrine, $formFactory, $entity_type, $paginator, $elastica_finder_incident);
+        parent::__construct($formFactory, $entity_type, $paginator, $elastica_finder_incident);
         $this->evidence_path = $evidence_path;
 //        $this->userLogged = $securityContext->getToken()->getUser();
         $this->comment_manager = $comment_manager;

@@ -11,28 +11,56 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
-use CertUnlp\NgenBundle\Model\ApiHandlerInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-abstract class Handler implements ApiHandlerInterface
+abstract class Handler
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entity_manager;
+    /**
+     * @var ObjectRepository
+     */
+    private $repository;
+    /**
+     * @var AbstractType
+     */
+    private $entity_type;
+    /**
+     * @var FormFactoryInterface
+     */
+    private $form_factory;
 
-    protected $om;
-    protected $entityClass;
-    protected $repository;
-    protected $formFactory;
-    private $entityType;
-
-    public function __construct(ObjectManager $om, string $entityClass, string $entityType, FormFactoryInterface $formFactory)
+    /**
+     * Handler constructor.
+     * @param EntityManagerInterface $entity_manager
+     * @param ObjectRepository $repository
+     * @param AbstractType $entity_ype
+     * @param FormFactoryInterface $form_factory
+     */
+    public function __construct(EntityManagerInterface $entity_manager, ObjectRepository $repository, AbstractType $entity_ype, FormFactoryInterface $form_factory)
     {
-        $this->om = $om;
-        $this->entityClass = $entityClass;
-        $this->repository = $this->om->getRepository($this->entityClass);
-        $this->formFactory = $formFactory;
-        $this->entityType = $entityType;
+        $this->entity_manager = $entity_manager;
+        $this->repository = $repository;
+        $this->form_factory = $form_factory;
+        $this->entity_type = $entity_ype;
+    }
+
+
+    /**
+     * @param array $parameters
+     * @return object|null
+     */
+    public function get(array $parameters): ?Entity
+    {
+        return $this->getRepository()->findOneBy($parameters);
     }
 
     /**
@@ -43,173 +71,161 @@ abstract class Handler implements ApiHandlerInterface
         return $this->repository;
     }
 
-    /**
-     * @param ObjectRepository $repository
-     * @return Handler
-     */
-    public function setRepository(ObjectRepository $repository): Handler
-    {
-        $this->repository = $repository;
-        return $this;
-    }
 
     /**
-     * Get a Entity by id.
-     *
-     * @param array $parameters
-     * @return object
-     */
-    public function get(array $parameters)
-    {
-        return $this->repository->findOneBy($parameters);
-    }
-
-    /**
-     * Get a list of entities.
-     *
      * @param array $params
      * @param array $order
-     * @param int $limit the limit of the result
-     * @param int $offset starting from the offset
-     *
-     * @return array
+     * @param int $limit
+     * @param int $offset
+     * @return array|Entity[]
      */
-    public function all(array $params = array(), $order = array(), $limit = null, $offset = null)
+    public function all(array $params = [], array $order = [], int $limit = 0, int $offset = 0): array
     {
-        return $this->repository->findBy($params, $order, $limit, $offset);
+        return $this->getRepository()->findBy($params, $order, $limit, $offset);
+    }
+
+
+    /**
+     * @param array $parameters
+     * @param bool $csrf_protection
+     * @return Entity
+     */
+    public function post(array $parameters, bool $csrf_protection = false): Entity
+    {
+        $entity = $this->createEntityInstance($parameters);
+
+        return $this->processForm($entity, $parameters, Request::METHOD_POST, $csrf_protection);
     }
 
     /**
-     * Create a new Entity.
-     *
-     * @param array $parameters
-     *
-     * @param bool $csrf_protection
-     * @param null $entity_class_instance
-     * @return object
+     * @param array $params
+     * @return Entity
      */
-    public function post(array $parameters, bool $csrf_protection = false, $entity_class_instance = null)
+    private function createEntityInstance(array $params = []): Entity
     {
-        if (!$entity_class_instance) {
-            $entity_class_instance = $this->createEntityInstance($parameters);
-        }
-
-        return $this->processForm($entity_class_instance, $parameters, 'POST', $csrf_protection);
+        $class_name = $this->getRepository()->getClassName();
+        return new $class_name($params);
     }
 
-    protected function createEntityInstance(array $params)
-    {
-        return new $this->entityClass($params);
-    }
 
     /**
-     * Processes the form.
-     *
-     * @param object $entity_class_instance
+     * @param Entity $entity
      * @param array $parameters
-     * @param String $method
-     *
+     * @param string $method
      * @param bool $csrf_protection
-     * @return object
-     *
+     * @return Entity
      */
-    protected function processForm($entity_class_instance, $parameters, $method = "PUT", $csrf_protection = true)
+    public function processForm(Entity $entity, array $parameters = [], string $method = Request::METHOD_PUT, bool $csrf_protection = true): Entity
     {
-
-        $form = $this->formFactory->create(new $this->entityType($this->om), $entity_class_instance, array('csrf_protection' => $csrf_protection, 'method' => $method));
-        $form->submit($parameters, 'PATCH' !== $method);
+        $form = $this->getFormFactory()->create($this->getEntityType(), $entity, array('csrf_protection' => $csrf_protection, 'method' => $method));
+        $form->submit($parameters, Request::METHOD_PATCH !== $method);
 
         if ($form->isValid()) {
-            $entity_class_instance = $form->getData();
-            $entity_class_instance = $this->checkIfExists($entity_class_instance, $method);
+            $entity = $form->getData();
+            $entity = $this->checkIfExists($entity, $method);
 
-            $this->om->persist($entity_class_instance);
+            $this->getEntityManager()->persist($entity);
+            $this->getEntityManager()->flush();
 
-            $this->om->flush();
-
-            return $entity_class_instance;
+            return $entity;
         }
         throw new InvalidFormException
         ('Invalid submitted data', $form);
     }
 
-    abstract protected function checkIfExists($entity_class_instance, $method);
-
     /**
-     * Edit a Entity.
-     *
-     * @param object $entity_class_instance
-     * @param array $parameters
-     *
-     * @return object
+     * @return FormFactoryInterface
      */
-    public function put($entity_class_instance, array $parameters)
+    public function getFormFactory(): FormFactoryInterface
     {
-        return $this->processForm($entity_class_instance, $parameters, 'PUT', false);
+        return $this->form_factory;
     }
 
     /**
-     * Delete a Network.
-     *
-     * @param object
-     * @param array $parameters
-     *
-     * @return object
+     * @return AbstractType
      */
-    public function desactivate($entity, array $parameters = null)
+    public function getEntityType(): AbstractType
+    {
+        return $this->entity_type;
+    }
+
+    /**
+     * @param Entity $entity
+     * @param string $method
+     * @return Entity
+     */
+    abstract public function checkIfExists(Entity $entity, string $method): Entity;
+
+    /**
+     * @return EntityManagerInterface
+     */
+    public function getEntityManager(): EntityManagerInterface
+    {
+        return $this->entity_manager;
+    }
+
+
+    /**
+     * @param Entity $entity
+     * @param array $parameters
+     * @return Entity
+     */
+    public function put(Entity $entity, array $parameters = []): Entity
+    {
+        return $this->processForm($entity, $parameters, Request::METHOD_PUT, false);
+    }
+
+
+    /**
+     * @param Entity $entity
+     * @param array $parameters
+     * @return Entity
+     */
+    public function desactivate(Entity $entity, array $parameters = []): Entity
     {
         return $this->delete($entity, $parameters);
     }
 
-    /**
-     * Delete a Entity.
-     *
-     * @param object $entity_class_instance
-     * @param array $parameters
-     *
-     * @return object
-     */
-    public function delete($entity_class_instance, array $parameters = null)
-    {
-        $this->prepareToDeletion($entity_class_instance, $parameters);
-        return $this->patch($entity_class_instance, $parameters);
-    }
 
     /**
-     * Prepare to delete a Entity.
-     *
-     * @param object $entity_class_instance
+     * @param Entity $entity
      * @param array $parameters
-     *
-     * @return object
+     * @return Entity
      */
-    abstract protected function prepareToDeletion($entity_class_instance, array $parameters);
-
-    /**
-     * Partially update a Entity.
-     *
-     * @param object $entity_class_instance
-     * @param array $parameters
-     *
-     * @return object
-     */
-    public function patch($entity_class_instance, array $parameters = null)
+    public function delete(Entity $entity, array $parameters = []): Entity
     {
-        return $this->processForm($entity_class_instance, $parameters, 'PATCH', false);
-    }
-
-    /**
-     * Delete a Network.
-     *
-     * @param object $entity
-     * @param array $parameters
-     *
-     * @return object
-     */
-    public function activate($entity, array $parameters = null)
-    {
-        $entity->setIsActive(TRUE);
+        $this->prepareToDeletion($entity, $parameters);
         return $this->patch($entity, $parameters);
+    }
+
+
+    /**
+     * @param Entity $entity
+     * @param array $parameters
+     * @return Entity
+     */
+    abstract public function prepareToDeletion(Entity $entity, array $parameters = []): Entity;
+
+
+    /**
+     * @param Entity $entity
+     * @param array|null $parameters
+     * @return Entity
+     */
+    public function patch(Entity $entity, array $parameters = null): Entity
+    {
+        return $this->processForm($entity, $parameters, Request::METHOD_PATCH, false);
+    }
+
+
+    /**
+     * @param Entity $entity
+     * @param array $parameters
+     * @return Entity
+     */
+    public function activate(Entity $entity, array $parameters = []): Entity
+    {
+        return $this->patch($entity->setActive(true), $parameters);
     }
 
 }
