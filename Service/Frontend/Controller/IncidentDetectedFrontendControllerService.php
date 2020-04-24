@@ -13,7 +13,6 @@ namespace CertUnlp\NgenBundle\Service\Frontend\Controller;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
 use CertUnlp\NgenBundle\Form\IncidentType;
-use Doctrine\Persistence\ManagerRegistry;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -29,16 +28,15 @@ class IncidentDetectedFrontendControllerService extends FrontendControllerServic
 
     /**
      * IncidentDetectedFrontendControllerService constructor.
-     * @param ManagerRegistry $doctrine
      * @param FormFactoryInterface $formFactory
      * @param IncidentType $entity_type
      * @param PaginatorInterface $paginator
      * @param PaginatedFinderInterface $elastica_finder_incident
      * @param string $evidence_path
      */
-    public function __construct(ManagerRegistry $doctrine, FormFactoryInterface $formFactory, IncidentType $entity_type, PaginatorInterface $paginator, PaginatedFinderInterface $elastica_finder_incident, string $evidence_path)
+    public function __construct(FormFactoryInterface $formFactory, IncidentType $entity_type, PaginatorInterface $paginator, PaginatedFinderInterface $elastica_finder_incident, string $evidence_path)
     {
-        parent::__construct($doctrine, $formFactory, $entity_type, $paginator, $elastica_finder_incident);
+        parent::__construct($formFactory, $entity_type, $paginator, $elastica_finder_incident);
         $this->evidence_path = $evidence_path;
     }
 

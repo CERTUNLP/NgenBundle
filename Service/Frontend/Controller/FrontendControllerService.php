@@ -16,7 +16,6 @@ use CMEN\GoogleChartsBundle\GoogleCharts\Charts\ColumnChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\Timeline;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Persistence\ManagerRegistry;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\AbstractType;
@@ -26,10 +25,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FrontendControllerService
 {
-    /** F
-     * @var ManagerRegistry
-     */
-    private $doctrine;
     /**
      * @var PaginatorInterface
      */
@@ -48,22 +43,20 @@ class FrontendControllerService
     private $form_factory;
 
 
-    public function __construct(ManagerRegistry $doctrine, FormFactoryInterface $formFactory, AbstractType $entity_type, PaginatorInterface $paginator, PaginatedFinderInterface $finder)
+    /**
+     * FrontendControllerService constructor.
+     * @param FormFactoryInterface $formFactory
+     * @param AbstractType $entity_type
+     * @param PaginatorInterface $paginator
+     * @param PaginatedFinderInterface $finder
+     */
+    public function __construct(FormFactoryInterface $formFactory, AbstractType $entity_type, PaginatorInterface $paginator, PaginatedFinderInterface $finder)
     {
-        $this->doctrine = $doctrine;
         $this->paginator = $paginator;
         $this->finder = $finder;
         $this->entity_type = $entity_type;
         $this->form_factory = $formFactory;
 
-    }
-
-    /**
-     * @return ManagerRegistry
-     */
-    public function getDoctrine(): ManagerRegistry
-    {
-        return $this->doctrine;
     }
 
     /**
