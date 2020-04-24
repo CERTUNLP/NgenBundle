@@ -52,7 +52,7 @@ services:
         arguments:
             $lang: '%ngen_lang%'
 
-    #    CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController:
+    #    CertUnlp\NgenBundle\Service\Frontend\Controller\IncidentFrontendController:
     #        arguments:
     #            $finder: "@fos_elastica.finder.incidents.incident"
 
@@ -78,11 +78,11 @@ services:
     #    arguments:    ["@cert_unlp.ngen.network.handler","%cert_unlp.ngen.incident.internal.class%","@form.factory", "@security.token_storage","%cert_unlp.ngen.incident.reporter.class%"]
     #
     #  cert_unlp.ngen.incident.report.factory:
-    #    class:     CertUnlp\NgenBundle\Services\IncidentReportFactory
+    #    class:     CertUnlp\NgenBundle\Service\IncidentReportFactory
     #    arguments: ["@twig","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view","%cert_unlp.ngen.team%"]
     #
     #  cert_unlp.ngen.incident.communication.mailer:
-    #    class:        CertUnlp\NgenBundle\Services\Communications\IncidentMailer
+    #    class:        CertUnlp\NgenBundle\Service\Communications\IncidentMailer
     #    arguments:    ["@doctrine.orm.entity_manager","@fos_comment.manager.comment","%kernel.environment%","%cert_unlp.ngen.incident.internal.report.lang%","%cert_unlp.ngen.team%","@translator.default","@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","%cert_unlp.ngen.incident.internal.mailer.sender_address%","@cert_unlp.ngen.incident.report.factory","%cert_unlp.ngen.incident.evidence.path%"]
     #    tags:
     #      - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
@@ -90,7 +90,7 @@ services:
     #
     #
     #  cert_unlp.ngen.incident.communication.telegram:
-    #    class:        CertUnlp\NgenBundle\Services\Communications\IncidentTelegram
+    #    class:        CertUnlp\NgenBundle\Service\Communications\IncidentTelegram
     #    arguments:    ["@doctrine.orm.entity_manager","@fos_comment.manager.comment","%kernel.environment%","%cert_unlp.ngen.incident.internal.report.lang%","%cert_unlp.ngen.team%","@translator.default"]
     #    tags:
     #      - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
@@ -170,119 +170,119 @@ services:
     #    arguments:    ["@doctrine.orm.entity_manager","%cert_unlp.ngen.incident.decision.class%","%cert_unlp.ngen.incident.decision.form_type.class%","@form.factory"]
     #
     #  cert_unlp.ngen.network.host.handler:
-    #    class:        CertUnlp\NgenBundle\Services\Api\Handler\HostHandler
+    #    class:        CertUnlp\NgenBundle\Service\Api\Handler\HostHandler
     #    arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Network\Host\Host,CertUnlp\NgenBundle\Form\HostType,"@form.factory"]
     #
     #  cert_unlp.ngen.incident.state.edge.handler:
-    #    class:        CertUnlp\NgenBundle\Services\Api\Handler\IncidentStateEdgeHandler
+    #    class:        CertUnlp\NgenBundle\Service\Api\Handler\IncidentStateEdgeHandler
     #    arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Incident\State\IncidentStateEdge,CertUnlp\NgenBundle\Form\IncidentStateEdgeType,"@form.factory"]
     #
     #  cert_unlp.ngen.incident.state.machine:
-    #    class:        CertUnlp\NgenBundle\Services\StateMachine\StateMachine
+    #    class:        CertUnlp\NgenBundle\Service\StateMachine\StateMachine
     #    arguments:    ["@cert_unlp.ngen.incident.state.edge.handler"]
     #
     #  cert_unlp.ngen.network.host.api.controller:
-    #    class: CertUnlp\NgenBundle\Services\Api\Controller\HostApiController
+    #    class: CertUnlp\NgenBundle\Service\Api\Controller\HostApiController
     #    arguments: ["@cert_unlp.ngen.network.host.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
     #
     #  cert_unlp.ngen.incident.decision.api.controller:
-    #    class: CertUnlp\NgenBundle\Services\Api\Controller\ApiController
+    #    class: CertUnlp\NgenBundle\Service\Api\Controller\ApiController
     #    arguments: ["@cert_unlp.ngen.incident.decision.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
     #
     #  cert_unlp.ngen.incident.internal.api.controller:
-    #    class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentApiController
+    #    class: CertUnlp\NgenBundle\Service\Api\Controller\IncidentApiController
     #    arguments: ["@cert_unlp.ngen.incident.internal.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view"]
     #
     #  cert_unlp.ngen.network.api.controller:
-    #    class: CertUnlp\NgenBundle\Services\Api\Controller\NetworkApiController
+    #    class: CertUnlp\NgenBundle\Service\Api\Controller\NetworkApiController
     #    arguments: [ "@cert_unlp.ngen.network.handler", "@fos_rest.view_handler", "@cert_unlp.ngen.fos_rest.view.view"]
     #
     #  cert_unlp.ngen.network.admin.api.controller:
-    #    class: CertUnlp\NgenBundle\Services\Api\Controller\NetworkAdminApiController
+    #    class: CertUnlp\NgenBundle\Service\Api\Controller\NetworkAdminApiController
     #    arguments: [ "@cert_unlp.ngen.network.admin.handler", "@fos_rest.view_handler", "@cert_unlp.ngen.fos_rest.view.view"]
     #
     #  cert_unlp.ngen.incident.feed.api.controller:
-    #    class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentFeedApiController
+    #    class: CertUnlp\NgenBundle\Service\Api\Controller\IncidentFeedApiController
     #    arguments: ["@cert_unlp.ngen.incident.feed.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
     #
     #  cert_unlp.ngen.incident.state.api.controller:
-    #    class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentStateApiController
+    #    class: CertUnlp\NgenBundle\Service\Api\Controller\IncidentStateApiController
     #    arguments: ["@cert_unlp.ngen.incident.state.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
     #
     #  cert_unlp.ngen.incident.type.api.controller:
-    #    class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentTypeApiController
+    #    class: CertUnlp\NgenBundle\Service\Api\Controller\IncidentTypeApiController
     #    arguments: ["@cert_unlp.ngen.incident.type.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
     #
     #  cert_unlp.ngen.incident.type.report.api.controller:
-    #    class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentReportApiController
+    #    class: CertUnlp\NgenBundle\Service\Api\Controller\IncidentReportApiController
     #    arguments: ["@cert_unlp.ngen.incident.type.report.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view","%cert_unlp.ngen.incident.internal.report.markdown.path%"]
     #
     #  cert_unlp.ngen.user.api.controller:
-    #    class: CertUnlp\NgenBundle\Services\Api\Controller\UserApiController
+    #    class: CertUnlp\NgenBundle\Service\Api\Controller\UserApiController
     #    arguments: ["@cert_unlp.ngen.user.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
     #
     #  cert_unlp.ngen.network_entity.api.controller:
-    #    class: CertUnlp\NgenBundle\Services\Api\Controller\NetworkEntityApiController
+    #    class: CertUnlp\NgenBundle\Service\Api\Controller\NetworkEntityApiController
     #    arguments: ["@cert_unlp.ngen.network_entity.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
     #
     #  cert_unlp.ngen.network.host.frontend.controller:
-    #    class: CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
+    #    class: CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendController
     #    arguments: ["@doctrine.orm.entity_manager","@form.factory",CertUnlp\NgenBundle\Form\HostType,"@knp_paginator","@fos_elastica.finder.hosts.host","@fos_comment.manager.comment","@fos_comment.manager.thread"]
     #
     #  cert_unlp.ngen.incident.internal.frontend.controller:
-    #    class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController
+    #    class: CertUnlp\NgenBundle\Service\Frontend\Controller\IncidentFrontendController
     #    arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.internal.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.incident","@fos_comment.manager.comment","@fos_comment.manager.thread","@security.token_storage","%cert_unlp.ngen.incident.evidence.path%"]
     #
     #  cert_unlp.ngen.incident.detected.frontend.controller:
-    #    class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentDetectedFrontendController
+    #    class: CertUnlp\NgenBundle\Service\Frontend\Controller\IncidentDetectedFrontendController
     #    arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.internal.form_type.class%","@knp_paginator","@fos_elastica.finder.incidents.incident","@fos_comment.manager.comment","@fos_comment.manager.thread","@security.token_storage","%cert_unlp.ngen.incident.evidence.path%"]
     #
     #  cert_unlp.ngen.network.frontend.controller:
-    #    class: CertUnlp\NgenBundle\Services\Frontend\Controller\NetworkFrontendController
+    #    class: CertUnlp\NgenBundle\Service\Frontend\Controller\NetworkFrontendController
     #    arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.network.form_type.class%","@knp_paginator","@fos_elastica.finder.networks.network","@fos_comment.manager.comment","@fos_comment.manager.thread"]
     #
     #  cert_unlp.ngen.network.admin.frontend.controller:
-    #    class: CertUnlp\NgenBundle\Services\Frontend\Controller\NetworkAdminFrontendController
+    #    class: CertUnlp\NgenBundle\Service\Frontend\Controller\NetworkAdminFrontendController
     #    arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.network.admin.form_type.class%","@knp_paginator","@fos_elastica.finder.network_admins.network_admin","@fos_comment.manager.comment","@fos_comment.manager.thread"]
     #
     #  cert_unlp.ngen.incident.feed.frontend.controller:
-    #    class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFeedFrontendController
+    #    class: CertUnlp\NgenBundle\Service\Frontend\Controller\IncidentFeedFrontendController
     #    arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.feed.form_type.class%","@knp_paginator","@fos_elastica.finder.feeds.feed","@fos_comment.manager.comment","@fos_comment.manager.thread"]
     #
     #  cert_unlp.ngen.incident.state.frontend.controller:
-    #    class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentStateFrontendController
+    #    class: CertUnlp\NgenBundle\Service\Frontend\Controller\IncidentStateFrontendController
     #    arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.state.form_type.class%","@knp_paginator","@fos_elastica.finder.states.state","@fos_comment.manager.comment","@fos_comment.manager.thread"]
     #
     #  cert_unlp.ngen.incident.type.frontend.controller:
-    #    class: CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
+    #    class: CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendController
     #    arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.type.form_type.class%","@knp_paginator","@fos_elastica.finder.types.type","@fos_comment.manager.comment","@fos_comment.manager.thread"]
     #
     #  cert_unlp.ngen.incident.report.frontend.controller:
-    #    class: CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentReportFrontendController
+    #    class: CertUnlp\NgenBundle\Service\Frontend\Controller\IncidentReportFrontendController
     #    arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.type.report.form_type.class%","@knp_paginator","@fos_elastica.finder.reports.report","@fos_comment.manager.comment","@fos_comment.manager.thread"]
     #
     #  cert_unlp.ngen.user.frontend.controller:
-    #    class: CertUnlp\NgenBundle\Services\Frontend\Controller\UserFrontendController
+    #    class: CertUnlp\NgenBundle\Service\Frontend\Controller\UserFrontendController
     #    arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.user.form_type.class%","@knp_paginator","@fos_elastica.finder.users.user","@fos_comment.manager.comment","@fos_comment.manager.thread"]
     #
     #  cert_unlp.ngen.network_entity.frontend.controller:
-    #    class: CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
+    #    class: CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendController
     #    arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.network_entity.form_type.class%","@knp_paginator","@fos_elastica.finder.network_entities.network_entity","@fos_comment.manager.comment","@fos_comment.manager.thread"]
     #
     #  cert_unlp.ngen.incident.decision.frontend.controller:
-    #    class:     CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
+    #    class:     CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendController
     #    arguments: ["@doctrine.orm.entity_manager","@form.factory","%cert_unlp.ngen.incident.decision.form_type.class%","@knp_paginator","@fos_elastica.finder.decisions.decision","@fos_comment.manager.comment","@fos_comment.manager.thread"]
     #
     #  cert_unlp.ngen.incident.priority.frontend.controller:
-    #    class:     CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
+    #    class:     CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendController
     #    arguments: ["@doctrine.orm.entity_manager","@form.factory",CertUnlp\NgenBundle\Form\IncidentPriorityType,"@knp_paginator","@fos_elastica.finder.priorities.priority","@fos_comment.manager.comment","@fos_comment.manager.thread"]
     #
     #  cert_unlp.ngen.incident.priority.api.controller:
-    #    class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentPriorityApiController
+    #    class: CertUnlp\NgenBundle\Service\Api\Controller\IncidentPriorityApiController
     #    arguments: ["@cert_unlp.ngen.incident.priority.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
     #
     #  cert_unlp.ngen.incident.priority.handler:
-    #    class:         CertUnlp\NgenBundle\Services\Api\Handler\IncidentPriorityHandler
+    #    class:         CertUnlp\NgenBundle\Service\Api\Handler\IncidentPriorityHandler
     #    arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Incident\IncidentPriority,CertUnlp\NgenBundle\Form\IncidentPriorityType,"@form.factory"]
     #
     #  cert_unlp.ngen.type.has_type.validator:
@@ -292,7 +292,7 @@ services:
     #      - { name: validator.constraint_validator, alias: type.has.report.validator }
     #
     #  cert_unlp.ngen.network.rdap.client:
-    #    class: CertUnlp\NgenBundle\Services\NetworkRdapClient
+    #    class: CertUnlp\NgenBundle\Service\NetworkRdapClient
     #    arguments: ["%cert_unlp.ngen.team%","@doctrine"]
     #
     #  app.form.registration:
@@ -357,25 +357,25 @@ services:
 #      - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\DateTimeType }
 #
 #  cert_unlp.ngen.incident.taxonomy.value.frontend.controller:
-#    class:     CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
+#    class:     CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendController
 #    arguments: ["@doctrine.orm.entity_manager","@form.factory",CertUnlp\NgenBundle\Form\IncidentTaxonomyValueType,"@knp_paginator","@fos_elastica.finder.taxonomyvalues.value","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 #
 #  cert_unlp.ngen.incident.taxonomy.value.api.controller:
-#    class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentTaxonomyValueApiController
+#    class: CertUnlp\NgenBundle\Service\Api\Controller\IncidentTaxonomyValueApiController
 #    arguments: ["@cert_unlp.ngen.incident.taxonomy.value.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
 #
 #  cert_unlp.ngen.incident.taxonomy.value.handler:
-#    class:         CertUnlp\NgenBundle\Services\Api\Handler\IncidentTaxonomyValueHandler
+#    class:         CertUnlp\NgenBundle\Service\Api\Handler\IncidentTaxonomyValueHandler
 #    arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue,CertUnlp\NgenBundle\Form\IncidentTaxonomyValueType,"@form.factory"]
 #
 #  cert_unlp.ngen.incident.taxonomy.predicate.frontend.controller:
-#    class:     CertUnlp\NgenBundle\Services\Frontend\Controller\FrontendController
+#    class:     CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendController
 #    arguments: ["@doctrine.orm.entity_manager","@form.factory",CertUnlp\NgenBundle\Form\IncidentTaxonomyPredicateType,"@knp_paginator","@fos_elastica.finder.taxonomypredicates.predicate","@fos_comment.manager.comment","@fos_comment.manager.thread"]
 #
 #  cert_unlp.ngen.incident.taxonomy.predicate.api.controller:
-#    class: CertUnlp\NgenBundle\Services\Api\Controller\IncidentTaxonomyPredicateApiController
+#    class: CertUnlp\NgenBundle\Service\Api\Controller\IncidentTaxonomyPredicateApiController
 #    arguments: ["@cert_unlp.ngen.incident.taxonomy.predicate.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
 #
 #  cert_unlp.ngen.incident.taxonomy.predicate.handler:
-#    class:         CertUnlp\NgenBundle\Services\Api\Handler\IncidentTaxonomyPredicateHandler
+#    class:         CertUnlp\NgenBundle\Service\Api\Handler\IncidentTaxonomyPredicateHandler
 #    arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate,CertUnlp\NgenBundle\Form\IncidentTaxonomyPredicateType,"@form.factory"]

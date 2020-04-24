@@ -24,7 +24,7 @@ use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\HostRepository")
- * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Services\Listener\Entity\HostListener" })
+ * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Service\Listener\Entity\HostListener" })
  * @JMS\ExclusionPolicy("all")
  */
 class Host extends NetworkElement

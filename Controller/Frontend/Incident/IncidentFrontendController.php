@@ -12,7 +12,7 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendControllerService as FrontendControllerService;
+use CertUnlp\NgenBundle\Service\Frontend\Controller\IncidentFrontendControllerService as FrontendControllerService;
 use fados\ChartjsBundle\Model\ChartBuiderData;
 use fados\ChartjsBundle\Utils\TypeCharjs;
 use fados\ChartjsBundle\Utils\TypeColors;
