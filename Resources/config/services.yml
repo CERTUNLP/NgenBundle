@@ -37,6 +37,12 @@ services:
         resource: '../../../NgenBundle/Controller'
         public: true
         tags: ['controller.service_arguments']
+    CertUnlp\NgenBundle\Service\Listener\Entity\:
+        resource: '../../../NgenBundle/Service/Listener/Entity/*'
+        tags:
+            - { name: doctrine.orm.entity_listener }
+    #    CertUnlp\Service\Api\:
+    #        resource: '../../../NgenBundle/Service/Api/*'
 
     CertUnlp\NgenBundle\Controller\Frontend\User\UserResettingFrontendController:
         arguments:

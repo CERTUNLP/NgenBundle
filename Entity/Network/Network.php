@@ -31,7 +31,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"internal" = "NetworkInternal", "external" = "NetworkExternal", "rdap" = "NetworkRdap"})
  * @JMS\ExclusionPolicy("all")
- * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Service\Listener\Entity\NetworkListener" })
  */
 abstract class Network extends NetworkElement implements NetworkInterface
 {

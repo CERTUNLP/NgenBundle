@@ -12,7 +12,7 @@ use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Service\Delegator\DelegatorChain;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\CommentBundle\Model\ThreadManagerInterface;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 
 
 class IncidentListener
@@ -26,7 +26,7 @@ class IncidentListener
      */
     private $thread_manager;
     /**
-     * @var Router
+     * @var RouterInterface
      */
     private $router;
 
@@ -34,9 +34,9 @@ class IncidentListener
      * IncidentListener constructor.
      * @param DelegatorChain $delegator_chain
      * @param ThreadManagerInterface $thread_manager
-     * @param Router $router
+     * @param RouterInterface $router
      */
-    public function __construct(DelegatorChain $delegator_chain, ThreadManagerInterface $thread_manager, Router $router)
+    public function __construct(DelegatorChain $delegator_chain, ThreadManagerInterface $thread_manager, RouterInterface $router)
     {
 
         $this->delegator_chain = $delegator_chain;
