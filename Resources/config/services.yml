@@ -14,20 +14,20 @@ services:
         bind:
             $evidence_path: "%cert_unlp.ngen.incident.evidence.path%"
             $elastica_finder_incident: "@fos_elastica.finder.incidents.incident"
-#            $elastica_finder_decision: "@fos_elastica.finder.decisions.decision"
-#            $elastica_finder_feed: "@fos_elastica.finder.feeds.feed"
-#            $elastica_finder_host: "@fos_elastica.finder.hosts.host"
-#            $elastica_finder_network_admin: "@fos_elastica.finder.network_admins.network_admin"
-#            $elastica_finder_network_entity: "@fos_elastica.finder.network_entities.network_entity"
-#            $elastica_finder_network: "@fos_elastica.finder.networks.network"
-#            $elastica_finder_user: "@fos_elastica.finder.users.user"
-#            $elastica_finder_type: "@fos_elastica.finder.types.type"
-#            $elastica_finder_incident_state_action: "@fos_elastica.finder.changeStateHistory.incidentStateAction"
-#            $elastica_finder_priority: "@fos_elastica.finder.priorities.priority"
-#            $elastica_finder_report: "@fos_elastica.finder.reports.report"
-#            $elastica_finder_state: "@fos_elastica.finder.states.state"
-#            $elastica_finder_taxonomy_predicate: "@fos_elastica.finder.taxonomypredicates.predicate"
-#            $elastica_finder_taxonomy_value: "@fos_elastica.finder.taxonomyvalues.value"
+            #            $elastica_finder_decision: "@fos_elastica.finder.decisions.decision"
+            #            $elastica_finder_feed: "@fos_elastica.finder.feeds.feed"
+            #            $elastica_finder_host: "@fos_elastica.finder.hosts.host"
+            #            $elastica_finder_network_admin: "@fos_elastica.finder.network_admins.network_admin"
+            #            $elastica_finder_network_entity: "@fos_elastica.finder.network_entities.network_entity"
+            #            $elastica_finder_network: "@fos_elastica.finder.networks.network"
+            #            $elastica_finder_user: "@fos_elastica.finder.users.user"
+            #            $elastica_finder_type: "@fos_elastica.finder.types.type"
+            #            $elastica_finder_incident_state_action: "@fos_elastica.finder.changeStateHistory.incidentStateAction"
+            #            $elastica_finder_priority: "@fos_elastica.finder.priorities.priority"
+            $elastica_finder_report: "@fos_elastica.finder.reports.report"
+    #            $elastica_finder_state: "@fos_elastica.finder.states.state"
+    #            $elastica_finder_taxonomy_predicate: "@fos_elastica.finder.taxonomypredicates.predicate"
+    #            $elastica_finder_taxonomy_value: "@fos_elastica.finder.taxonomyvalues.value"
 
 
     CertUnlp\NgenBundle\:
@@ -52,9 +52,9 @@ services:
         arguments:
             $lang: '%ngen_lang%'
 
-#    CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController:
-#        arguments:
-#            $finder: "@fos_elastica.finder.incidents.incident"
+    #    CertUnlp\NgenBundle\Services\Frontend\Controller\IncidentFrontendController:
+    #        arguments:
+    #            $finder: "@fos_elastica.finder.incidents.incident"
 
     #            "@fos_comment.manager.comment","@fos_comment.manager.thread","@security.token_storage","%cert_unlp.ngen.incident.evidence.path%"]
     #

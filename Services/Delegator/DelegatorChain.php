@@ -11,11 +11,15 @@
 
 namespace CertUnlp\NgenBundle\Services\Delegator;
 
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  *
  * @author demyen
+ * @method prePersistDelegation(Incident $incident)
+ * @method postPersistDelegation(Incident $incident)
+ * @method postUpdateDelegation(Incident $incident)
  */
 class DelegatorChain
 {

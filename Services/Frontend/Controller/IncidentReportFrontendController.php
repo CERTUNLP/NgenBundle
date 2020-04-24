@@ -11,20 +11,49 @@
 
 namespace CertUnlp\NgenBundle\Services\Frontend\Controller;
 
+use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Form\IncidentReportType;
+use Doctrine\Persistence\ManagerRegistry;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class IncidentReportFrontendController extends FrontendController
 {
 
-    public function newEntity(Request $request, $default_type = '')
+    /**
+     * IncidentReportFrontendController constructor.
+     * @param ManagerRegistry $doctrine
+     * @param FormFactoryInterface $formFactory
+     * @param IncidentReportType $entity_type
+     * @param PaginatorInterface $paginator
+     * @param PaginatedFinderInterface $elastica_finder_report
+     */
+    public function __construct(ManagerRegistry $doctrine, FormFactoryInterface $formFactory, IncidentReportType $entity_type, PaginatorInterface $paginator, PaginatedFinderInterface $elastica_finder_report)
     {
-        return array('form' => $this->formFactory->create(new $this->entity_type())->createView(), 'method' => 'POST', 'default_type' => $default_type);
+        parent::__construct($doctrine, $formFactory, $entity_type, $paginator, $elastica_finder_report);
     }
 
-    public function editEntity($object, $default_type = '')
+    /**
+     * @param Request $request
+     * @param string $default_type
+     * @return array
+     */
+    public function newEntity(Request $request, string $default_type = ''): array
+    {
+        return array('form' => $this->getFormFactory()->create($this->getEntityType())->createView(), 'method' => 'POST', 'default_type' => $default_type);
+    }
+
+    /**
+     * @param Entity $object
+     * @param string $default_type
+     * @return array
+     */
+    public function editEntity(Entity $object, string $default_type = ''): array
     {
 
-        return array('form' => $this->formFactory->create(new $this->entity_type(), $object)->createView(), 'method' => 'patch', 'default_type' => $default_type);
+        return array('form' => $this->getFormFactory()->create($this->getEntityType(), $object)->createView(), 'method' => 'patch', 'default_type' => $default_type);
     }
 
 }
