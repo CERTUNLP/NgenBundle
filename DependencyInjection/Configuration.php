@@ -31,21 +31,21 @@ use CertUnlp\NgenBundle\Form\NetworkAdminType;
 use CertUnlp\NgenBundle\Form\NetworkEntityType;
 use CertUnlp\NgenBundle\Form\NetworkType;
 use CertUnlp\NgenBundle\Form\UserType;
-use CertUnlp\NgenBundle\Services\Api\Handler\IncidentDecisionHandler;
-use CertUnlp\NgenBundle\Services\Api\Handler\IncidentFeedHandler;
-use CertUnlp\NgenBundle\Services\Api\Handler\IncidentHandler;
-use CertUnlp\NgenBundle\Services\Api\Handler\IncidentReportHandler;
-use CertUnlp\NgenBundle\Services\Api\Handler\IncidentStateHandler;
-use CertUnlp\NgenBundle\Services\Api\Handler\IncidentTypeHandler;
-use CertUnlp\NgenBundle\Services\Api\Handler\NetworkAdminHandler;
-use CertUnlp\NgenBundle\Services\Api\Handler\NetworkEntityHandler;
-use CertUnlp\NgenBundle\Services\Api\Handler\NetworkHandler;
-use CertUnlp\NgenBundle\Services\Api\Handler\UserHandler;
-use CertUnlp\NgenBundle\Services\Communications\IncidentMailer;
-use CertUnlp\NgenBundle\Services\Delegator\ExternalIncidentDelegatorChain;
-use CertUnlp\NgenBundle\Services\Delegator\InternalIncidentDelegatorChain;
-use CertUnlp\NgenBundle\Services\IncidentFactory;
-use CertUnlp\NgenBundle\Services\IncidentRedmine;
+use CertUnlp\NgenBundle\Service\Api\Handler\IncidentDecisionHandler;
+use CertUnlp\NgenBundle\Service\Api\Handler\IncidentFeedHandler;
+use CertUnlp\NgenBundle\Service\Api\Handler\IncidentHandler;
+use CertUnlp\NgenBundle\Service\Api\Handler\IncidentReportHandler;
+use CertUnlp\NgenBundle\Service\Api\Handler\IncidentStateHandler;
+use CertUnlp\NgenBundle\Service\Api\Handler\IncidentTypeHandler;
+use CertUnlp\NgenBundle\Service\Api\Handler\NetworkAdminHandler;
+use CertUnlp\NgenBundle\Service\Api\Handler\NetworkEntityHandler;
+use CertUnlp\NgenBundle\Service\Api\Handler\NetworkHandler;
+use CertUnlp\NgenBundle\Service\Api\Handler\UserHandler;
+use CertUnlp\NgenBundle\Service\Communications\IncidentMailer;
+use CertUnlp\NgenBundle\Service\Delegator\ExternalIncidentDelegatorChain;
+use CertUnlp\NgenBundle\Service\Delegator\InternalIncidentDelegatorChain;
+use CertUnlp\NgenBundle\Service\IncidentFactory;
+use CertUnlp\NgenBundle\Service\IncidentRedmine;
 use CertUnlp\NgenBundle\Validator\Constraints\ValidAddressValidator;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -227,7 +227,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
             ->scalarNode('class')
-            ->defaultValue('CertUnlp\NgenBundle\Services\Api\Handler\ExternalIncidentHandler')
+            ->defaultValue('CertUnlp\NgenBundle\Service\Api\Handler\ExternalIncidentHandler')
             ->end()
             ->end()
             ->end()

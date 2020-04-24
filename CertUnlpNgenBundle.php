@@ -12,7 +12,7 @@
 namespace CertUnlp\NgenBundle;
 
 use CertUnlp\NgenBundle\DependencyInjection\CertUnlpNgenExtension;
-use CertUnlp\NgenBundle\Services\Delegator\DelegatorCompilerPass;
+use CertUnlp\NgenBundle\Service\Delegator\DelegatorCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
