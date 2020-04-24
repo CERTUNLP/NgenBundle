@@ -12,19 +12,19 @@
 namespace CertUnlp\NgenBundle\Entity\Network\Host;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\CommentBundle\Model\Thread;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\HostRepository")
- * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Network\Host\Listener\HostListener" })
+ * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Services\Listener\Entity\HostListener" })
  * @JMS\ExclusionPolicy("all")
  */
 class Host extends NetworkElement
@@ -207,18 +207,18 @@ class Host extends NetworkElement
 
     /**
      * /**
-     * @return IncidentCommentThread
+     * @return Thread
      */
-    public function getCommentThread(): IncidentCommentThread
+    public function getCommentThread(): Thread
     {
         return $this->comment_thread;
     }
 
     /**
-     * @param IncidentCommentThread $comment_thread
+     * @param Thread $comment_thread
      * @return Host
      */
-    public function setCommentThread(IncidentCommentThread $comment_thread): Host
+    public function setCommentThread(Thread $comment_thread): Host
     {
         $this->comment_thread = $comment_thread;
         return $this;

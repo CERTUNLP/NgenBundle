@@ -11,40 +11,59 @@
 
 namespace CertUnlp\NgenBundle\Services\Frontend\Controller;
 
-use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Entity;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\ColumnChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\Timeline;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
-use FOS\CommentBundle\Model\CommentManagerInterface;
-use FOS\CommentBundle\Model\ThreadManagerInterface;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class FrontendController
 {
-
-    private $entity_type;
-    private $formFactory;
+    /** F
+     * @var ManagerRegistry
+     */
     private $doctrine;
+    /**
+     * @var PaginatorInterface
+     */
     private $paginator;
+    /**
+     * @var PaginatedFinderInterface
+     */
     private $finder;
-    private $comment_manager;
-    private $thread_manager;
+    /**
+     * @var AbstractType
+     */
+    private $entity_type;
+    /**
+     * @var FormFactoryInterface
+     */
+    private $form_factory;
 
-    public function __construct(ManagerRegistry $doctrine, FormFactoryInterface $formFactory, $entity_type, PaginatorInterface $paginator, PaginatedFinderInterface $finder, CommentManagerInterface $comment_manager, ThreadManagerInterface $thread_manager)
+
+    public function __construct(ManagerRegistry $doctrine, FormFactoryInterface $formFactory, AbstractType $entity_type, PaginatorInterface $paginator, PaginatedFinderInterface $finder)
     {
         $this->doctrine = $doctrine;
         $this->paginator = $paginator;
         $this->finder = $finder;
         $this->entity_type = $entity_type;
-        $this->formFactory = $formFactory;
-        $this->comment_manager = $comment_manager;
-        $this->thread_manager = $thread_manager;
+        $this->form_factory = $formFactory;
+
+    }
+
+    /**
+     * @return ManagerRegistry
+     */
+    public function getDoctrine(): ManagerRegistry
+    {
+        return $this->doctrine;
     }
 
     /**
@@ -106,20 +125,33 @@ class FrontendController
         return $col;
     }
 
-    public function getDoctrine()
-    {
-        return $this->doctrine;
-    }
-
-    public function homeEntity(Request $request, $term = '', $limit = 7, $defaultSortFieldName = 'createdAt', $defaultSortDirection = 'desc')
+    /**
+     * @param Request $request
+     * @param string $term
+     * @param int $limit
+     * @param string $defaultSortFieldName
+     * @param string $defaultSortDirection
+     * @return array
+     */
+    public function homeEntity(Request $request, string $term = '', int $limit = 7, string $defaultSortFieldName = 'createdAt', string $defaultSortDirection = 'desc'): array
     {
         return $this->searchEntity($request, $term, $limit, $defaultSortFieldName, $defaultSortDirection);
     }
 
-    public function searchEntity(Request $request, $term = null, $limit = 7, $defaultSortFieldName = 'createdAt', $defaultSortDirection = 'desc', $page = 'page', $field = '')
+    /**
+     * @param Request $request
+     * @param string $term
+     * @param int $limit
+     * @param string $defaultSortFieldName
+     * @param string $defaultSortDirection
+     * @param string $page
+     * @param string $field
+     * @return array
+     */
+    public function searchEntity(Request $request, string $term = '', int $limit = 7, string $defaultSortFieldName = 'createdAt', string $defaultSortDirection = 'desc', string $page = 'page', string $field = ''): array
     {
         if (!$term) {
-            $term = $request->get('term') ? $request->get('term') : '*';
+            $term = $request->get('term') ?: '*';
         }
         $results = $this->getFinder()->createPaginatorAdapter($term);
         $pagination = $this->getPaginator()->paginate(
@@ -138,17 +170,30 @@ class FrontendController
     /**
      * @return PaginatedFinderInterface
      */
-    public function getFinder()
+    public function getFinder(): PaginatedFinderInterface
     {
         return $this->finder;
     }
 
-    public function getPaginator()
+    /**
+     * @return PaginatorInterface
+     */
+    public function getPaginator(): PaginatorInterface
     {
         return $this->paginator;
     }
 
-    public function searchAutocompleteEntity(Request $request, $term = null, $limit = 7, $defaultSortFieldName = 'createdAt', $defaultSortDirection = 'desc', $page = 'page', $field = '')
+    /**
+     * @param Request $request
+     * @param string $term
+     * @param int $limit
+     * @param string $defaultSortFieldName
+     * @param string $defaultSortDirection
+     * @param string $page
+     * @param string $field
+     * @return JsonResponse
+     */
+    public function searchAutocompleteEntity(Request $request, string $term = '', int $limit = 7, string $defaultSortFieldName = 'createdAt', string $defaultSortDirection = 'desc', string $page = 'page', string $field = ''): JsonResponse
     {
         if (!$term) {
             $term = $request->get('term') ?? $request->get('q') ?? '*';
@@ -162,7 +207,11 @@ class FrontendController
         return new JsonResponse($array->toArray());
     }
 
-    public function newEntity(Request $request)
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function newEntity(Request $request): array
     {
         return array('form' => $this->getFormFactory()->create($this->getEntityType())->createView(), 'method' => 'POST');
     }
@@ -172,101 +221,34 @@ class FrontendController
      */
     public function getFormFactory(): FormFactoryInterface
     {
-        return $this->formFactory;
+        return $this->form_factory;
     }
 
     /**
-     * @param FormFactoryInterface $formFactory
+     * @return AbstractType
      */
-    public function setFormFactory(FormFactoryInterface $formFactory): void
-    {
-        $this->formFactory = $formFactory;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEntityType()
+    public function getEntityType(): AbstractType
     {
         return $this->entity_type;
     }
 
     /**
-     * @param mixed $entity_type
+     * @param Entity $object
+     * @return array
      */
-    public function setEntityType($entity_type): void
-    {
-        $this->entity_type = $entity_type;
-    }
-
-    public function editEntity($object)
+    public function editEntity(Entity $object): array
     {
         return array('form' => $this->getFormFactory()->create($this->getEntityType(), $object)->createView(), 'method' => 'patch');
     }
 
-    public function detailEntity($object)
+    /**
+     * @param Entity $object
+     * @return array|Entity[]
+     */
+    public function detailEntity(Entity $object): array
     {
         return array('object' => $object);
     }
 
-    /**
-     * @param Incident $object
-     * @param Request $request
-     * @return array
-     */
-    public function commentsEntity($object, Request $request)
-    {
-        $id = $object->getId();
-        $thread = $this->thread_manager->findThreadById($id);
-        if (null === $thread) {
-            $thread = $this->thread_manager->createThread();
-            $thread->setId($id);
-            $object->setCommentThread($thread);
-//            $thread->setIncident($object);
-            $thread->setPermalink($request->getUri());
-
-            // Add the thread
-            $this->thread_manager->saveThread($thread);
-        }
-
-        $comments = $this->comment_manager->findCommentTreeByThread($thread);
-
-        return array(
-            'comments' => $comments,
-            'thread' => $thread,
-        );
-    }
-
-    /**
-     * @return CommentManagerInterface
-     */
-    public function getCommentManager(): CommentManagerInterface
-    {
-        return $this->comment_manager;
-    }
-
-    /**
-     * @param CommentManagerInterface $comment_manager
-     */
-    public function setCommentManager(CommentManagerInterface $comment_manager): void
-    {
-        $this->comment_manager = $comment_manager;
-    }
-
-    /**
-     * @return ThreadManagerInterface
-     */
-    public function getThreadManager(): ThreadManagerInterface
-    {
-        return $this->thread_manager;
-    }
-
-    /**
-     * @param ThreadManagerInterface $thread_manager
-     */
-    public function setThreadManager(ThreadManagerInterface $thread_manager): void
-    {
-        $this->thread_manager = $thread_manager;
-    }
 
 }

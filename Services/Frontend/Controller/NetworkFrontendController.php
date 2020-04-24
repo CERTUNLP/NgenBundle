@@ -22,23 +22,19 @@ use Symfony\Component\HttpFoundation\Request;
 class NetworkFrontendController extends FrontendController
 {
 
-    public function searchAutocompleteEntity(Request $request, $term = null, $limit = 7, $defaultSortFieldName = 'createdAt', $defaultSortDirection = 'desc', $page = 'page', $field = '')
+    public function searchAutocompleteEntity(Request $request, string $term = '', int $limit = 7, string $defaultSortFieldName = 'createdAt', string $defaultSortDirection = 'desc', string $page = 'page', string $field = ''): JsonResponse
     {
         if (!$term) {
             $term = $request->get('term') ?? $request->get('q') ?? '*';
         }
 
         $prefix = new Prefix();
-        $prefix
-            ->setPrefix('addressAndMask', $term);
+        $prefix->setPrefix('addressAndMask', $term);
         $prefix2 = new Term();
-        $prefix2
-            ->setTerm('isActive', true);
+        $prefix2->setTerm('isActive', true);
 
         $bool = new BoolQuery();
-        $bool
-            ->addShould($prefix)
-            ->addMust($prefix2);
+        $bool->addShould($prefix)->addMust($prefix2);
         $results = $this->getFinder()->find(Query::create($bool));
 
         $array = (new ArrayCollection($results))->map(static function ($element) {

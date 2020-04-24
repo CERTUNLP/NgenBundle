@@ -9,35 +9,37 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Entity\Incident\Listener;
+namespace CertUnlp\NgenBundle\Services\Listener\Entity;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 
 
 class IncidentDetectedListener
 {
+    /**
+     * @var string
+     */
+    private $evidence_path;
 
-    private $upload_directory;
-
-    public function __construct(string $upload_directory)
+    public function __construct(string $evidence_path)
     {
-        $this->upload_directory = $upload_directory;
+        $this->evidence_path = $evidence_path;
     }
 
     /** @ORM\PrePersist
      * @param IncidentDetected $incidentDetected
-     * @param LifecycleEventArgs $event
      */
-    public function prePersistHandler(IncidentDetected $incidentDetected, LifecycleEventArgs $event)
+    public function prePersistHandler(IncidentDetected $incidentDetected): void
     {
         $this->setFilename($incidentDetected);
         $this->uploadEvidenceFile($incidentDetected);
     }
 
-    public function setFilename(IncidentDetected $incidentDetected)
+    /**
+     * @param IncidentDetected $incidentDetected
+     */
+    public function setFilename(IncidentDetected $incidentDetected): void
     {
         if ($incidentDetected->getEvidenceFile()) {
             $ext = $incidentDetected->getIncident()->getEvidenceSubDirectory() . '/_' . sha1(uniqid(mt_rand(), true));
@@ -50,7 +52,10 @@ class IncidentDetectedListener
         }
     }
 
-    public function uploadEvidenceFile(IncidentDetected $incidentDetected)
+    /**
+     * @param IncidentDetected $incidentDetected
+     */
+    public function uploadEvidenceFile(IncidentDetected $incidentDetected): void
     {
         $uploadDir = $this->getUploadDirectory() . $incidentDetected->getIncident()->getEvidenceSubDirectory();
         if (!file_exists($uploadDir) && !mkdir($uploadDir, 0777, true) && !is_dir($uploadDir)) {
@@ -62,19 +67,21 @@ class IncidentDetectedListener
         }
     }
 
-    protected function getUploadDirectory()
+    /**
+     * @return string
+     */
+    private function getUploadDirectory(): string
     {
         // the absolute directory path where uploaded
         // documents should be saved
-        return $this->upload_directory;
+        return $this->evidence_path;
     }
 
-    /** @ORM\PreUpdate
+    /**
+     * @ORM\PreUpdate
      * @param IncidentDetected $incidentDetected
-     * @param PreUpdateEventArgs $event
      */
-
-    public function preUpdateHandler(IncidentDetected $incidentDetected, PreUpdateEventArgs $event): void
+    public function preUpdateHandler(IncidentDetected $incidentDetected): void
     {
         $this->setFilename($incidentDetected);
         $this->uploadEvidenceFile($incidentDetected);
