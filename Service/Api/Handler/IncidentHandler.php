@@ -32,10 +32,10 @@ class IncidentHandler extends Handler
     private $decision_handler;
     private $incidentStateHandler;
 
-    public function __construct(ObjectManager $om, string $entityClass, string $entityType, FormFactoryInterface $formFactory, TokenStorageInterface $context, UserHandler $user_handler, HostHandler $host_handler, IncidentDecisionHandler $decision_handler, IncidentStateHandler $incidentStateHandler)
+    public function __construct(ObjectManager $om, string $entityClass, string $entity_ype, FormFactoryInterface $form_factory, TokenStorageInterface $context, UserHandler $user_handler, HostHandler $host_handler, IncidentDecisionHandler $decision_handler, IncidentStateHandler $incidentStateHandler)
     {
 
-        parent::__construct($om, $entityClass, $entityType, $formFactory);
+        parent::__construct($om, $entityClass, $entity_ype, $form_factory);
         $this->host_handler = $host_handler;
         $this->user_handler = $user_handler;
         $this->decision_handler = $decision_handler;
@@ -43,41 +43,6 @@ class IncidentHandler extends Handler
         $this->context = $context;
     }
 
-    /**
-     * @return UserHandler
-     */
-    public function getUserHandler(): UserHandler
-    {
-        return $this->user_handler;
-    }
-
-    /**
-     * @param UserHandler $user_handler
-     * @return IncidentHandler
-     */
-    public function setUserHandler(UserHandler $user_handler): IncidentHandler
-    {
-        $this->user_handler = $user_handler;
-        return $this;
-    }
-
-    /**
-     * @return TokenStorageInterface
-     */
-    public function getContext(): TokenStorageInterface
-    {
-        return $this->context;
-    }
-
-    /**
-     * @param TokenStorageInterface $context
-     * @return IncidentHandler
-     */
-    public function setContext(TokenStorageInterface $context): IncidentHandler
-    {
-        $this->context = $context;
-        return $this;
-    }
 
     /**
      * Delete a InternalIncident.
@@ -94,22 +59,6 @@ class IncidentHandler extends Handler
     }
 
     /**
-     * @return User|object|string
-     */
-    public function getReporter()
-    {
-        return $this->getUser();
-    }
-
-    /**
-     * @return User|object|string
-     */
-    public function getUser()
-    {
-        return $this->context->getToken() ? $this->context->getToken()->getUser() : 'anon.';
-    }
-
-    /**
      * @return array
      */
     public function getToNotificateIncidents(): array
@@ -118,9 +67,6 @@ class IncidentHandler extends Handler
     }
 
 
-    /**
-     * @return array
-     */
     public function closeUnsolvedIncidents(): array
     {
         $incidents = $this->findAllUnsolved();
@@ -128,7 +74,7 @@ class IncidentHandler extends Handler
         $unClosedIncidents = [];
         foreach ($incidents as $incident) {
             if ($incident->setState($incident->getUnsolvedState())) {
-                //$this->om->persist($incident);
+                //$this->entity_manager->persist($incident);
                 $closedIncidents[$incident->getId()] = [
                     'id' => $incident->getSlug(),
                     'type' => $incident->getType()->getSlug(),
@@ -147,13 +93,10 @@ class IncidentHandler extends Handler
                 ];
             }
         }
-        $this->om->flush();
+        $this->entity_manager->flush();
         return array($closedIncidents, $unClosedIncidents);
     }
 
-    /**
-     * @return array| Incident[]
-     */
     public function findAllUnsolved(): array
     {
         return $this->getRepository()->findAllUnsolved();
@@ -166,7 +109,7 @@ class IncidentHandler extends Handler
         $unClosedIncidents = [];
         foreach ($incidents as $incident) {
             if ($incident->setState($incident->getUnattendedState())) {
-                //$this->om->persist($incident);
+                //$this->entity_manager->persist($incident);
                 $closedIncidents[$incident->getId()] = ['id' => $incident->getSlug(),
                     'type' => $incident->getType()->getSlug(),
                     'date' => $incident->getDate()->format('Y-m-d H:i:s'),
@@ -184,24 +127,15 @@ class IncidentHandler extends Handler
             }
 
         }
-        $this->om->flush();
+        $this->entity_manager->flush();
         return array($closedIncidents, $unClosedIncidents);
     }
 
-    /**
-     * @return array| Incident[]
-     */
     public function findAllUnattended(): array
     {
         return $this->getRepository()->findAllUnattended();
     }
 
-    /**
-     * @param $incident Incident
-     * @param string $method
-     * @return object|null
-     * @throws Exception
-     */
     public function checkIfExists($incident, $method)
     {
         $this->updateIncidentData($incident);
@@ -224,10 +158,7 @@ class IncidentHandler extends Handler
         $this->priorityUpdate($incident);
     }
 
-    /**
-     * @param Incident $incident
-     * @return Incident
-     */
+
     public function hostUpdate(Incident $incident): Incident
     {
         if ($incident->getAddress()) {
@@ -246,28 +177,20 @@ class IncidentHandler extends Handler
         return $incident;
     }
 
-    /**
-     * @return HostHandler
-     */
+
     public function getHostHandler(): HostHandler
     {
         return $this->host_handler;
     }
 
-    /**
-     * @param HostHandler $host_handler
-     * @return IncidentHandler
-     */
+
     public function setHostHandler(HostHandler $host_handler): IncidentHandler
     {
         $this->host_handler = $host_handler;
         return $this;
     }
 
-    /**
-     * @param Incident $incident
-     * @return Incident
-     */
+
     public function networkUpdate(Incident $incident): Incident
     {
         if ($incident->getAddress()) {
@@ -287,36 +210,15 @@ class IncidentHandler extends Handler
 
     }
 
-    /**
-     * @param Incident $incident
-     * @return Incident|null
-     */
+
     public function decisionUpdate(Incident $incident): ?Incident
     {
         return $this->getDecisionHandler()->getByIncident($incident)->doDecision($incident);
     }
 
-    /**
-     * @return IncidentDecisionHandler
-     */
-    public function getDecisionHandler(): IncidentDecisionHandler
-    {
-        return $this->decision_handler;
-    }
-
-    /**
-     * @param IncidentDecisionHandler $decision_handler
-     * @return IncidentHandler
-     */
-    public function setDecisionHandler(IncidentDecisionHandler $decision_handler): IncidentHandler
-    {
-        $this->decision_handler = $decision_handler;
-        return $this;
-    }
 
     public function timestampsUpdate(Incident $incident): void
     {
-        //FIX comprobar que actualice el updated
         if ($incident->getDate() == null) {
             try {
                 $incident->setDate(new DateTime('now'));
@@ -325,9 +227,7 @@ class IncidentHandler extends Handler
         }
     }
 
-    /**
-     * @param Incident $incident
-     */
+
     public function slugUpdate(Incident $incident): void
     {
         $firstPart = $incident->getOrigin() ? $incident->getOrigin()->getAddress() : sha1(uniqid(mt_rand(), true));
@@ -337,7 +237,7 @@ class IncidentHandler extends Handler
 
     public function priorityUpdate(Incident $incident): void
     {
-        $repository = $this->om->getRepository(IncidentPriority::class);
+        $repository = $this->entity_manager->getRepository(IncidentPriority::class);
         $priority = $repository->findOneBy(array('impact' => $incident->getImpact()->getSlug(), 'urgency' => $incident->getUrgency()->getSlug()));
         $incident->setPriority($priority);
     }
@@ -363,27 +263,6 @@ class IncidentHandler extends Handler
         return $incident;
     }
 
-    /**
-     * @param Incident $incident
-     * @param array $parameters
-     * @return object|void
-     */
-    protected function prepareToDeletion($incident, array $parameters)
-    {
-        $incident->close();
-    }
-
-    /**
-     * Processes the form.
-     *
-     * @param Incident $incident
-     * @param array $parameters
-     * @param String $method
-     *
-     * @param bool $csrf_protection
-     * @return Incident|object
-     *
-     */
     protected function processForm($incident, $parameters, $method = "PUT", $csrf_protection = true)
     {
         if (!isset($parameters['reporter']) || !$parameters['reporter']) {
@@ -393,7 +272,7 @@ class IncidentHandler extends Handler
         return parent::processForm($incident, $parameters, $method, $csrf_protection);
     }
 
-    protected function createEntityInstance(array $params)
+    private function createEntityInstance(array $params)
     {
         $incident = new $this->entityClass($params['address'] ?? null);
         $incident->setState($this->getInitialState());
@@ -401,31 +280,9 @@ class IncidentHandler extends Handler
 
     }
 
-    /**
-     * @return IncidentState
-     */
     public function getInitialState(): IncidentState
     {
         return $this->getIncidentStateHandler()->getInitialState();
     }
-
-    /**
-     * @return IncidentStateHandler
-     */
-    public function getIncidentStateHandler(): IncidentStateHandler
-    {
-        return $this->incidentStateHandler;
-    }
-
-    /**
-     * @param IncidentStateHandler $incidentStateHandler
-     * @return IncidentHandler
-     */
-    public function setIncidentStateHandler(IncidentStateHandler $incidentStateHandler): IncidentHandler
-    {
-        $this->incidentStateHandler = $incidentStateHandler;
-        return $this;
-    }
-
 
 }

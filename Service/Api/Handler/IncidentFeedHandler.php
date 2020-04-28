@@ -11,35 +11,17 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
+use CertUnlp\NgenBundle\Entity\Entity;
 
 class IncidentFeedHandler extends Handler
 {
 
+
     /**
-     * Delete a Network.
-     *
-     * @param IncidentFeed $incident_feed
-     * @param array $parameters
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function prepareToDeletion($incident_feed, array $parameters = null)
+    public function getEntityIdentificationArray(Entity $entity): array
     {
-        $incident_feed->setIsActive(FALSE);
+        return ['slug' => $entity->getSlug()];
     }
-
-    protected function checkIfExists($incident_feed, $method)
-    {
-        $incident_feedDB = $this->repository->findOneBy(['slug' => $incident_feed->getSlug()]);
-
-        if ($incident_feedDB && $method === 'POST') {
-            if (!$incident_feedDB->getIsActive()) {
-                $incident_feedDB->setIsActive(TRUE);
-            }
-            $incident_feed = $incident_feedDB;
-        }
-        return $incident_feed;
-    }
-
 }

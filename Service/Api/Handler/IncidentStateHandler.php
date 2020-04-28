@@ -11,46 +11,26 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 
 class IncidentStateHandler extends Handler
 {
 
-    /**
-     * @param IncidentState $incident_state
-     * @param array $parameters
-     *
-     * @return void
-     */
-    public function prepareToDeletion($incident_state, array $parameters = null)
-    {
-        $incident_state->setIsActive(FALSE);
-    }
 
     /**
-     * @return IncidentState
+     * @return IncidentState|Entity
      */
-    public function getInitialState(): IncidentState
+    public function getInitialState(): Entity
     {
         return $this->get(['slug' => 'initial']);
     }
 
     /**
-     * @param $incident_state IncidentState
-     * @param $method string
-     * @return object|null
+     * @inheritDoc
      */
-    protected function checkIfExists($incident_state, $method)
+    public function getEntityIdentificationArray(Entity $entity): array
     {
-        $incident_stateDB = $this->repository->findOneBy(['slug' => $incident_state->getSlug()]);
-
-        if ($incident_stateDB && $method === 'POST') {
-            if (!$incident_stateDB->getIsActive()) {
-                $incident_stateDB->setIsActive(TRUE);
-            }
-            $incident_state = $incident_stateDB;
-        }
-        return $incident_state;
+        return ['slug' => $entity->getSlug()];
     }
-
 }

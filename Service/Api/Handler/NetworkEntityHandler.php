@@ -11,39 +11,18 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
+use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
 
 class NetworkEntityHandler extends Handler
 {
 
     /**
-     * Delete a Network.
-     *
-     * @param IncidentFeed $incident_feed
-     * @param array $parameters
-     *
-     * @return void
+     * @param Entity|NetworkEntity $entity
+     * @return array
      */
-    public function prepareToDeletion($incident_feed, array $parameters = null)
+    public function getEntityIdentificationArray(Entity $entity): array
     {
-        $incident_feed->setIsActive(FALSE);
-    }
-
-    protected function checkIfExists($incident_feed, $method)
-    {
-        $incident_feedDB = $this->repository->findOneBy(['slug' => $incident_feed->getSlug()]);
-
-        if ($incident_feedDB && $method === 'POST') {
-            if (!$incident_feedDB->getIsActive()) {
-                $incident_feedDB->setIsActive(TRUE);
-            }
-            $incident_feed = $incident_feedDB;
-        }
-        return $incident_feed;
-    }
-
-    protected function createEntityInstance(array $params)
-    {
-        return new $this->entityClass($params['name']);
+        return ['slug' => $entity->getSlug()];
     }
 }

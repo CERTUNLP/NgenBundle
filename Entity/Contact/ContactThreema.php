@@ -21,7 +21,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ContactThreema extends Contact
 {
-
     public function getType(): string
     {
         return 'threema';

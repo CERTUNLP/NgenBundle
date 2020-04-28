@@ -11,37 +11,16 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
+use CertUnlp\NgenBundle\Entity\Entity;
 
 class IncidentPriorityHandler extends Handler
 {
-
     /**
-     * Delete a Priority.
-     *
-     * @param IncidentPriority $incident_priority
-     * @param array $parameters
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function prepareToDeletion($incident_priority, array $parameters = null)
+    public function getEntityIdentificationArray(Entity $entity): array
     {
-        $incident_priority->setIsActive(FALSE);
-    }
-
-    /**
-     * @param $incidentPriority
-     * @param $method
-     * @return object|null
-     */
-    protected function checkIfExists($incidentPriority, $method)
-    {
-        $incidentPriorityDB = $this->repository->findOneBy(array('id' => $incidentPriority->getId()));
-
-        if ($incidentPriorityDB && $method === 'POST') {
-            $incidentPriority = $incidentPriorityDB;
-        }
-        return $incidentPriority;
+        return ['id' => $entity->getId()];
     }
 
 }

@@ -11,27 +11,22 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
+use CertUnlp\NgenBundle\Entity\Entity;
 
 class IncidentReportHandler extends Handler
 {
 
     /**
-     * Delete a IncidentReport.
-     *
-     * @param IncidentReport $incident_report
-     * @param array $parameters
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function prepareToDeletion($incident_report, array $parameters = null)
+    public function getEntityIdentificationArray(Entity $entity): array
     {
-        $incident_report->setIsActive(FALSE);
+        return ['id' => $entity->getId()];
     }
 
-    protected function checkIfExists($incident_report, $method)
-    {
-        return $incident_report;
-    }
+//    protected function checkIfExists($incident_report, $method)
+//    {
+//        return $incident_report;
+//    }
 
 }

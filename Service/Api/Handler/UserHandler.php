@@ -11,69 +11,33 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\User;
 
 class UserHandler extends Handler
 {
 
-    /**
-     * Delete a Network.
-     *
-     * @param $user
-     * @param array $parameters
-     *
-     * @return void
-     */
-    public function prepareToDeletion($user, array $parameters = null)
-    {
-        $user->setEnabled(FALSE);
-    }
 
     /**
-     * Delete a Network.
-     *
-     * @param User $user
      * @param array $parameters
-     *
-     * @return User|object
+     * @return Entity| User
      */
-    public function desactivate($user, array $parameters = null)
+    public function createEntityInstance(array $parameters = []): Entity
     {
-        return $this->delete($user, $parameters);
-    }
-
-    /**
-     * Delete a Network.
-     *
-     * @param User $user
-     * @param array $parameters
-     *
-     * @return User|object
-     */
-    public function activate($user, array $parameters = null)
-    {
-        $user->setEnabled(TRUE);
-        return $this->patch($user, $parameters);
-    }
-
-    protected function checkIfExists($user, $method)
-    {
-        $userDB = $this->repository->findOneBy(['username' => $user->getUsername()]);
-
-        if ($userDB && $method === 'POST') {
-            if (!$userDB->isEnabled()) {
-                $userDB->setEnabled(TRUE);
-            }
-            $user = $userDB;
-        }
-        return $user;
-    }
-
-    protected function createEntityInstance(array $params)
-    {
-        $user = new $this->entityClass();
+        /** @var User $user */
+        $user = parent::createEntityInstance($parameters);
         $user->setEnabled(true);
         $user->setApiKey(sha1($user->getUsername() . time() . $user->getSalt()));
         return $user;
     }
+
+    /**
+     * @param Entity | User $entity
+     * @return array
+     */
+    public function getEntityIdentificationArray(Entity $entity): array
+    {
+        return ['username' => $entity->getUsername()];
+    }
+
 }
