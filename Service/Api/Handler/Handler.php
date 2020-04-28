@@ -55,24 +55,6 @@ abstract class Handler
 
 
     /**
-     * @param array $parameters
-     * @return object|null
-     */
-    public function get(array $parameters): ?Entity
-    {
-        return $this->getRepository()->findOneBy($parameters);
-    }
-
-    /**
-     * @return ObjectRepository
-     */
-    public function getRepository(): ObjectRepository
-    {
-        return $this->repository;
-    }
-
-
-    /**
      * @param array $params
      * @param array $order
      * @param int $limit
@@ -84,6 +66,13 @@ abstract class Handler
         return $this->getRepository()->findBy($params, $order, $limit, $offset);
     }
 
+    /**
+     * @return ObjectRepository
+     */
+    public function getRepository(): ObjectRepository
+    {
+        return $this->repository;
+    }
 
     /**
      * @param array $parameters
@@ -92,9 +81,56 @@ abstract class Handler
      */
     public function post(array $parameters, bool $csrf_protection = false): Entity
     {
-        $entity = $this->createEntityInstance($parameters);
-
+        $entity = $this->mergeIfExists($this->createEntityInstance($parameters));
         return $this->processForm($entity, $parameters, Request::METHOD_POST, $csrf_protection);
+    }
+
+    /**
+     * @param Entity $entity
+     * @return Entity
+     */
+    public function mergeIfExists(Entity $entity): Entity
+    {
+        $entity_db = $this->getIfExists($entity);
+        if ($entity_db) {
+            $entity_db->activate();
+            return $this->mergeEntity($entity_db, $entity);
+        }
+        return $entity;
+    }
+
+    /**
+     * @param Entity $entity
+     * @return Entity
+     */
+    public function getIfExists(Entity $entity): Entity
+    {
+        return $this->get($this->getEntityIdentificationArray($entity));
+    }
+
+    /**
+     * @param array $parameters
+     * @return Entity|object|null
+     */
+    public function get(array $parameters): ?Entity
+    {
+        return $this->getRepository()->findOneBy($parameters);
+    }
+
+    /**
+     * @param Entity $entity
+     * @return array
+     */
+    abstract public function getEntityIdentificationArray(Entity $entity): array;
+
+    /**
+     * @param Entity $entity
+     * @param Entity $entity_db
+     * @return Entity
+     */
+    public function mergeEntity(Entity $entity_db, Entity $entity): Entity
+    {
+        return $entity_db;
     }
 
     /**
@@ -106,7 +142,6 @@ abstract class Handler
         $class_name = $this->getRepository()->getClassName();
         return new $class_name($params);
     }
-
 
     /**
      * @param Entity $entity
@@ -122,8 +157,6 @@ abstract class Handler
 
         if ($form->isValid()) {
             $entity = $form->getData();
-            $entity = $this->checkIfExists($entity, $method);
-
             $this->getEntityManager()->persist($entity);
             $this->getEntityManager()->flush();
 
@@ -150,20 +183,12 @@ abstract class Handler
     }
 
     /**
-     * @param Entity $entity
-     * @param string $method
-     * @return Entity
-     */
-    abstract public function checkIfExists(Entity $entity, string $method): Entity;
-
-    /**
      * @return EntityManagerInterface
      */
     public function getEntityManager(): EntityManagerInterface
     {
         return $this->entity_manager;
     }
-
 
     /**
      * @param Entity $entity
@@ -183,29 +208,8 @@ abstract class Handler
      */
     public function desactivate(Entity $entity, array $parameters = []): Entity
     {
-        return $this->delete($entity, $parameters);
+        return $this->patch($entity->desactivate(), $parameters);
     }
-
-
-    /**
-     * @param Entity $entity
-     * @param array $parameters
-     * @return Entity
-     */
-    public function delete(Entity $entity, array $parameters = []): Entity
-    {
-        $this->prepareToDeletion($entity, $parameters);
-        return $this->patch($entity, $parameters);
-    }
-
-
-    /**
-     * @param Entity $entity
-     * @param array $parameters
-     * @return Entity
-     */
-    abstract public function prepareToDeletion(Entity $entity, array $parameters = []): Entity;
-
 
     /**
      * @param Entity $entity
@@ -217,6 +221,25 @@ abstract class Handler
         return $this->processForm($entity, $parameters, Request::METHOD_PATCH, false);
     }
 
+    /**
+     * @param Entity $entity
+     * @param array $parameters
+     * @return Entity
+     */
+    public function delete(Entity $entity, array $parameters = []): Entity
+    {
+        return $this->patch($this->prepareToDeletion($entity), $parameters);
+    }
+
+    /**
+     * @param Entity $entity
+     * @return Entity
+     */
+    public function prepareToDeletion(Entity $entity): Entity
+    {
+        return $entity->desactivate();
+
+    }
 
     /**
      * @param Entity $entity
@@ -225,7 +248,7 @@ abstract class Handler
      */
     public function activate(Entity $entity, array $parameters = []): Entity
     {
-        return $this->patch($entity->setActive(true), $parameters);
+        return $this->patch($entity->activate(), $parameters);
     }
 
 }
