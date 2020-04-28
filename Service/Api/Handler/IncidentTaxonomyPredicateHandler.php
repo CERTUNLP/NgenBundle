@@ -11,37 +11,16 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate;
+use CertUnlp\NgenBundle\Entity\Entity;
 
 class IncidentTaxonomyPredicateHandler extends Handler
 {
-    /**
-     * Delete a TaxonomyPredicate.
-     *
-     * @param TaxonomyPredicate $taxonomy_predicate
-     * @param array $parameters
-     *
-     * @return void
-     */
-    public function prepareToDeletion($taxonomy_predicate, array $parameters = null)
-    {
-        $taxonomy_predicate->setIsActive(FALSE);
-    }
 
     /**
-     * @param $taxonomy_predicate
-     * @param $method
-     * @return object|null
+     * @inheritDoc
      */
-    protected function checkIfExists($taxonomy_predicate, $method)
+    public function getEntityIdentificationArray(Entity $entity): array
     {
-        $taxonomy_predicateDB = $this->repository->findOneBy(array('slug' => $taxonomy_predicate->getSlug()));
-
-        if ($taxonomy_predicateDB && $method === 'POST') {
-            $taxonomy_predicate = $taxonomy_predicateDB;
-        }
-        return $taxonomy_predicate;
+        return ['slug' => $entity->getSlug()];
     }
-
-
 }

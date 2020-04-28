@@ -11,37 +11,16 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
+use CertUnlp\NgenBundle\Entity\Entity;
 
 class IncidentTaxonomyValueHandler extends Handler
 {
-    /**
-     * Delete a TaxonomyValue.
-     *
-     * @param TaxonomyValue $taxonomy_value
-     * @param array $parameters
-     *
-     * @return void
-     */
-    public function prepareToDeletion($taxonomy_value, array $parameters = null)
-    {
-        $taxonomy_value->setIsActive(FALSE);
-    }
 
     /**
-     * @param $taxonomy_value
-     * @param $method
-     * @return object|null
+     * @inheritDoc
      */
-    protected function checkIfExists($taxonomy_value, $method)
+    public function getEntityIdentificationArray(Entity $entity): array
     {
-        $taxonomy_valueDB = $this->repository->findOneBy(array('slug' => $taxonomy_value->getSlug()));
-
-        if ($taxonomy_valueDB && $method === 'POST') {
-            $taxonomy_value = $taxonomy_valueDB;
-        }
-        return $taxonomy_value;
+        return ['slug' => $entity->getSlug()];
     }
-
-
 }

@@ -11,46 +11,56 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
+use CertUnlp\NgenBundle\Entity\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
 use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
 use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
 use CertUnlp\NgenBundle\Entity\Contact\ContactThreema;
+use CertUnlp\NgenBundle\Entity\Entity;
+use Symfony\Component\Debug\Exception\ClassNotFoundException;
 
 class ContactHandler extends Handler
 {
-    public function post(array $parameters, bool $csrf_protection = false, $entity_class_instance = null)
-    {
 
-        switch ($parameters['contact_type']) {
-            case 'telegram':
-                $entity_class_instance = new ContactTelegram();
-                break;
-            case 'email':
-                $entity_class_instance = new ContactEmail();
-                break;
-            case 'phone':
-                $entity_class_instance = new ContactPhone();
-                break;
-            case 'threema':
-                $entity_class_instance = new ContactThreema();
-                break;
-
-        }
-        unset($parameters['type']);
-        return parent::post($parameters, $csrf_protection, $entity_class_instance);
-    }
-
-
-    protected function checkIfExists($entity_class_instance, $method)
-    {
-        return $entity_class_instance;
-    }
+//    protected function checkIfExists($entity, $method)
+//    {
+//        return $entity;
+//    }
 
     /**
-     * @inheritDoc
+     * @param array $parameters
+     * @return Entity| Contact
+     * @throws ClassNotFoundException
      */
-    protected function prepareToDeletion($entity_class_instance, array $parameters)
+    public function createEntityInstance(array $parameters = []): Entity
     {
-        return null;
+        switch ($parameters['contact_type']) {
+            case 'telegram':
+                $entity = new ContactTelegram();
+                break;
+            case 'email':
+                $entity = new ContactEmail();
+                break;
+            case 'phone':
+                $entity = new ContactPhone();
+                break;
+            case 'threema':
+                $entity = new ContactThreema();
+                break;
+            default:
+                throw new ClassNotFoundException('Contact class: "' . $parameters['contact_type'] . '" does not exist.', null);
+        }
+        unset($parameters['type']);
+        return $entity;
+    }
+
+
+    /**
+     * @param Entity|Contact $entity
+     * @return array
+     */
+    public function getEntityIdentificationArray(Entity $entity): array
+    {
+        return ['id' => $entity->getId()];
     }
 }

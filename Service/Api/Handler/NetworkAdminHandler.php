@@ -11,39 +11,19 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 
 class NetworkAdminHandler extends Handler
 {
 
+
     /**
-     * Delete a Network.
-     *
-     * @param NetworkAdmin $network_admin
-     * @param array $parameters
-     *
-     * @return void
+     * @param Entity|NetworkAdmin $entity
+     * @return array
      */
-    public function prepareToDeletion($network_admin, array $parameters = null)
+    public function getEntityIdentificationArray(Entity $entity): array
     {
-        $network_admin->setIsActive(FALSE);
-    }
-
-    protected function checkIfExists($network_admin, $method)
-    {
-        $network_adminDB = $this->repository->findOneBy(['id' => $network_admin->getId()]);
-
-        if ($network_adminDB && $method === 'POST') {
-            if (!$network_adminDB->getIsActive()) {
-                $network_adminDB->setIsActive(TRUE);
-            }
-            $network_admin = $network_adminDB;
-        }
-        return $network_admin;
-    }
-
-    protected function createEntityInstance(array $params)
-    {
-        return new $this->entityClass();
+        return ['id' => $entity->getId()];
     }
 }

@@ -134,13 +134,13 @@ abstract class Handler
     }
 
     /**
-     * @param array $params
+     * @param array $parameters
      * @return Entity
      */
-    private function createEntityInstance(array $params = []): Entity
+    public function createEntityInstance(array $parameters = []): Entity
     {
         $class_name = $this->getRepository()->getClassName();
-        return new $class_name($params);
+        return new $class_name($parameters);
     }
 
     /**

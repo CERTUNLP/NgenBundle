@@ -2,6 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Contact;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,7 +18,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\DiscriminatorMap({"contact"="Contact","telegram" = "ContactTelegram", "phone" = "ContactPhone", "email" = "ContactEmail", "threema"="ContactThreema"})
  * @JMS\ExclusionPolicy("all")
  */
-class Contact
+class Contact extends Entity
 {
     /**
      * @var int|null
@@ -250,5 +251,21 @@ class Contact
     {
         $this->user = $user;
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getIcon(): string
+    {
+        // TODO: Implement getIcon() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getColor(): string
+    {
+        // TODO: Implement getColor() method.
     }
 }

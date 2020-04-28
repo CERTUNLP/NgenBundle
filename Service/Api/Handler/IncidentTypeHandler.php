@@ -11,61 +11,58 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class IncidentTypeHandler extends Handler
 {
 
+    /**
+     * @var IncidentReportHandler
+     */
     private $report_handler;
 
-    public function __construct(ObjectManager $om, $entityClass, $entityType, FormFactoryInterface $formFactory, IncidentReportHandler $report_handler)
+    public function __construct(EntityManagerInterface $entity_manager, ObjectRepository $repository, AbstractType $entity_ype, FormFactoryInterface $form_factory, IncidentReportHandler $report_handler)
     {
-        parent::__construct($om, $entityClass, $entityType, $formFactory);
-
+        parent::__construct($entity_manager, $repository, $entity_ype, $form_factory);
         $this->report_handler = $report_handler;
     }
 
     /**
-     * Delete a Network.
-     *
-     * @param IncidentType $incident_type
-     * @param array $parameters
-     *
-     * @return void
+     * @param Entity|IncidentType $entity
+     * @param array|null $parameters
+     * @return Entity
      */
-    public function prepareToDeletion($incident_type, array $parameters = null)
-    {
-        $incident_type->setIsActive(FALSE);
-    }
-
-    public function patch($entity_class_instance, array $parameters = null)
+    public function patch(Entity $entity, array $parameters = null): Entity
     {
         if (isset($parameters['report'])) {
-            $report = $this->report_handler->post($parameters['report']);
-            $report->setType($entity_class_instance);
+            $report = $this->getReportHandler()->post($parameters['report']);
+            $report->setType($entity);
         }
 
-        return parent::patch($entity_class_instance, $parameters);
+        return parent::patch($entity, $parameters);
     }
 
     /**
-     * @param IncidentType $incident_type
-     * @param $method
-     * @return null|object
+     * @return IncidentReportHandler
      */
-    protected function checkIfExists($incident_type, $method)
+    public function getReportHandler(): IncidentReportHandler
     {
-        $incident_typeDB = $this->repository->findOneBy(['slug' => $incident_type->getSlug()]);
+        return $this->report_handler;
+    }
 
-        if ($incident_typeDB && $method === 'POST') {
-            if (!$incident_typeDB->getIsActive()) {
-                $incident_typeDB->setIsActive(TRUE);
-            }
-            $incident_type = $incident_typeDB;
-        }
-        return $incident_type;
+
+    /**
+     * @param Entity| IncidentType $entity
+     * @return array
+     */
+    public function getEntityIdentificationArray(Entity $entity): array
+    {
+        return ['slug' => $entity->getSlug()];
     }
 
 }

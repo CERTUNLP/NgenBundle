@@ -11,35 +11,17 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
+use CertUnlp\NgenBundle\Entity\Entity;
 
 class IncidentStateEdgeHandler extends Handler
 {
-
     /**
-     * Delete a Network.
-     *
-     * @param IncidentState $incident_state
-     * @param array $parameters
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function prepareToDeletion($incident_state, array $parameters = null)
+    public function getEntityIdentificationArray(Entity $entity): array
     {
-        $incident_state->setIsActive(FALSE);
+        return ['id' => $entity->getId()];
     }
 
-    protected function checkIfExists($incident_state_edge, $method)
-    {
-        $incident_stateDB = $this->repository->findOneBy(['id' => $incident_state_edge->getId()]);
-
-        if ($incident_stateDB && $method === 'POST') {
-            if (!$incident_stateDB->getIsActive()) {
-                $incident_stateDB->setIsActive(TRUE);
-            }
-            $incident_state_edge = $incident_stateDB;
-        }
-        return $incident_state_edge;
-    }
 
 }
