@@ -60,6 +60,15 @@ abstract class Entity
     private $active = true;
 
     /**
+     * @return Entity
+     */
+    public function activate(): Entity
+    {
+        $this->setActive(true);
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function isActive(): bool
@@ -74,6 +83,15 @@ abstract class Entity
     public function setActive(bool $active): Entity
     {
         $this->active = $active;
+        return $this;
+    }
+
+    /**
+     * @return Entity
+     */
+    public function desactivate(): Entity
+    {
+        $this->setActive(false);
         return $this;
     }
 
