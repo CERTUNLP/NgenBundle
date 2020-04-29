@@ -91,19 +91,31 @@ abstract class Handler
      */
     public function mergeIfExists(Entity $entity): Entity
     {
-        $entity_db = $this->getIfExists($entity);
-        if ($entity_db) {
-            $entity_db->activate();
-            return $this->mergeEntity($entity_db, $entity);
+        if ($this->needCheckIfExists()) {
+            $entity_db = $this->getIfExists($entity);
+            if ($entity_db) {
+                if ($this->isReactivableEntity()) {
+                    $entity_db->activate();
+                }
+                if ($this->isMergeableEntity()) {
+                    $entity_db = $this->mergeEntity($entity_db, $entity);
+                }
+                $entity = $entity_db;
+            }
         }
         return $entity;
+    }
+
+    public function needCheckIfExists(): bool
+    {
+        return true;
     }
 
     /**
      * @param Entity $entity
      * @return Entity
      */
-    public function getIfExists(Entity $entity): Entity
+    public function getIfExists(Entity $entity): ?Entity
     {
         return $this->get($this->getEntityIdentificationArray($entity));
     }
@@ -122,6 +134,18 @@ abstract class Handler
      * @return array
      */
     abstract public function getEntityIdentificationArray(Entity $entity): array;
+
+    public function isReactivableEntity(): bool
+    {
+        return true;
+
+    }
+
+    public function isMergeableEntity(): bool
+    {
+        return true;
+
+    }
 
     /**
      * @param Entity $entity
@@ -153,6 +177,7 @@ abstract class Handler
     public function processForm(Entity $entity, array $parameters = [], string $method = Request::METHOD_PUT, bool $csrf_protection = true): Entity
     {
         $form = $this->getFormFactory()->create($this->getEntityType(), $entity, array('csrf_protection' => $csrf_protection, 'method' => $method));
+        $parameters = $this->cleanParameters($parameters);
         $form->submit($parameters, Request::METHOD_PATCH !== $method);
 
         if ($form->isValid()) {
@@ -180,6 +205,15 @@ abstract class Handler
     public function getEntityType(): AbstractType
     {
         return $this->entity_type;
+    }
+
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    public function cleanParameters(array $parameters): array
+    {
+        return $parameters;
     }
 
     /**
