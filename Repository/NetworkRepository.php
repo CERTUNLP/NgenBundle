@@ -14,6 +14,7 @@ namespace CertUnlp\NgenBundle\Repository;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
 use Doctrine\ORM\Query;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * NetworkRepository
@@ -23,6 +24,11 @@ use Doctrine\ORM\Query;
  */
 class NetworkRepository extends NetworkElementRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Network::class);
+    }
+
     /**
      * @param $address string
      * @return NetworkElement|null
