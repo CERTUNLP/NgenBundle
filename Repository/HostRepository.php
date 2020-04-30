@@ -11,6 +11,9 @@
 
 namespace CertUnlp\NgenBundle\Repository;
 
+use CertUnlp\NgenBundle\Entity\Network\Host\Host;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+
 /**
  * NetworkRepository
  *
@@ -19,5 +22,8 @@ namespace CertUnlp\NgenBundle\Repository;
  */
 class HostRepository extends NetworkElementRepository
 {
-
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Host::class);
+    }
 }
