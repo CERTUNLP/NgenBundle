@@ -13,11 +13,12 @@ use JMS\Serializer\Annotation as JMS;
  * IncidentPriority
  *
  * @ORM\Table(name="incident_priority")
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IndicentPriorityRepository")
+ * @ORM\Entity(repositoryClass="IncidentPriorityRepository")
  * @JMS\ExclusionPolicy("all")
  */
 class IncidentPriority extends Entity
 {
+
     /**
      * @var integer
      *
@@ -116,6 +117,32 @@ class IncidentPriority extends Entity
     private $resolutionTime;
 
     /**
+     * {@inheritDoc}
+     */
+    public function getEntityIdentificationArray(): array
+    {
+        return ['id' => $this->getId()];
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return IncidentPriority
+     */
+    public function setId(int $id): ?IncidentPriority
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getIcon(): string
@@ -185,24 +212,6 @@ class IncidentPriority extends Entity
     public function setName(?string $name): IncidentPriority
     {
         $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     * @return IncidentPriority
-     */
-    public function setId(int $id): ?IncidentPriority
-    {
-        $this->id = $id;
         return $this;
     }
 

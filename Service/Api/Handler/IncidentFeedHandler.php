@@ -11,17 +11,17 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Form\IncidentFeedType;
+use CertUnlp\NgenBundle\Repository\IncidentFeedRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class IncidentFeedHandler extends Handler
 {
 
-
-    /**
-     * @inheritDoc
-     */
-    public function getEntityIdentificationArray(Entity $entity): array
+    public function __construct(EntityManagerInterface $entity_manager, IncidentFeedRepository $repository, IncidentFeedType $entity_ype, FormFactoryInterface $form_factory)
     {
-        return ['slug' => $entity->getSlug()];
+        parent::__construct($entity_manager, $repository, $entity_ype, $form_factory);
+
     }
 }

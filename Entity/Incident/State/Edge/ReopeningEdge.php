@@ -30,4 +30,6 @@ class ReopeningEdge extends StateEdge
         $incident->setNeedToCommunicate(true);
         return $incident;
     }
+
+   
 }

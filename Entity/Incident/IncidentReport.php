@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -29,16 +30,14 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     message="This lang is already in use on that type."
  * )
  */
-class IncidentReport
+class IncidentReport extends Entity
 {
-
     /**
      * @var string
      * @ORM\Column(name="lang", type="string", length=2)
      * @JMS\Expose
      */
     private $lang = '';
-
     /**
      * @var IncidentType|null
      *
@@ -46,7 +45,6 @@ class IncidentReport
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      */
     private $type;
-
     /**
      * @var string|null
      * @ORM\id
@@ -60,7 +58,6 @@ class IncidentReport
      * @Doctrine\ORM\Mapping\Column(length=64, unique=true)
      */
     private $slug;
-
     /**
      * @var string
      *
@@ -68,7 +65,6 @@ class IncidentReport
      * @JMS\Expose
      */
     private $problem = '';
-
     /**
      * @var string
      *
@@ -76,7 +72,6 @@ class IncidentReport
      * @JMS\Expose
      */
     private $derivated_problem = '';
-
     /**
      * @var string
      *
@@ -84,7 +79,6 @@ class IncidentReport
      * @JMS\Expose
      */
     private $verification = '';
-
     /**
      * @var string
      *
@@ -92,7 +86,6 @@ class IncidentReport
      * @JMS\Expose
      */
     private $recomendations = '';
-
     /**
      * @var string
      *
@@ -100,7 +93,6 @@ class IncidentReport
      * @JMS\Expose
      */
     private $more_information = '';
-
     /**
      * @var bool
      *
@@ -108,7 +100,6 @@ class IncidentReport
      * @JMS\Expose
      */
     private $isActive = true;
-
     /**
      * @var DateTime|null
      * @Gedmo\Timestampable(on="create")
@@ -117,7 +108,6 @@ class IncidentReport
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
-
     /**
      * @var DateTime|null
      * @Gedmo\Timestampable(on="update")
@@ -126,6 +116,42 @@ class IncidentReport
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
+
+    /**
+     * @inheritDoc
+     */
+    public function getEntityIdentificationArray(): array
+    {
+        return ['id' => $this->getId()];
+    }
+
+    /**
+     * Get id
+     *
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->getSlug();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string|null $slug
+     * @return IncidentReport
+     */
+    public function setSlug(?string $slug): IncidentReport
+    {
+        $this->slug = $slug;
+        return $this;
+    }
 
     public function __toString(): string
     {
@@ -182,34 +208,6 @@ class IncidentReport
     public function getColor(): string
     {
         return 'info';
-    }
-
-    /**
-     * Get id
-     *
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->getSlug();
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string|null $slug
-     * @return IncidentReport
-     */
-    public function setSlug(?string $slug): IncidentReport
-    {
-        $this->slug = $slug;
-        return $this;
     }
 
     /**

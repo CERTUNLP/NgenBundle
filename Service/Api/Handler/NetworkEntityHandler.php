@@ -11,18 +11,15 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Entity;
-use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
+use CertUnlp\NgenBundle\Form\NetworkEntityType;
+use CertUnlp\NgenBundle\Repository\NetworkEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class NetworkEntityHandler extends Handler
 {
-
-    /**
-     * @param Entity|NetworkEntity $entity
-     * @return array
-     */
-    public function getEntityIdentificationArray(Entity $entity): array
+    public function __construct(EntityManagerInterface $entity_manager, NetworkEntityRepository $repository, NetworkEntityType $entity_ype, FormFactoryInterface $form_factory)
     {
-        return ['slug' => $entity->getSlug()];
+        parent::__construct($entity_manager, $repository, $entity_ype, $form_factory);
     }
 }

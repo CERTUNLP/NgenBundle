@@ -34,7 +34,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class IncidentFeed extends Entity
 {
-
     /**
      * @var string
      *
@@ -82,7 +81,6 @@ class IncidentFeed extends Entity
      * @JMS\Expose
      */
     private $description = '';
-
     /**
      * @var Incident[]|Collection
      *
@@ -96,6 +94,37 @@ class IncidentFeed extends Entity
     public function __construct()
     {
         $this->incidents = new ArrayCollection();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEntityIdentificationArray(): array
+    {
+        return ['slug' => $this->getSlug()];
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return IncidentFeed
+     */
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 
     /**
@@ -166,29 +195,6 @@ class IncidentFeed extends Entity
     public function getId(): string
     {
         return $this->getSlug();
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return IncidentFeed
-     */
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
     }
 
     /**

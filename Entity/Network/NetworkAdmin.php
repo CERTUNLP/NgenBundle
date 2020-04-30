@@ -34,7 +34,6 @@ use JMS\Serializer\Annotation as JMS;
  */
 class NetworkAdmin extends Entity
 {
-
     /**
      * @var integer
      *
@@ -43,7 +42,6 @@ class NetworkAdmin extends Entity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
     /**
      * @var string
      *
@@ -51,7 +49,6 @@ class NetworkAdmin extends Entity
      * @JMS\Expose()
      */
     private $name;
-
     /**
      * @var string
      *
@@ -59,19 +56,16 @@ class NetworkAdmin extends Entity
      * @ORM\Column(name="slug", type="string", length=100,nullable=true,unique=true)
      * */
     private $slug;
-
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="network_admin",cascade={"persist"},orphanRemoval=true)
      */
     private $contacts;
-
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network",mappedBy="network_admin"))
      */
     private $networks;
-
     /**
      * @var boolean
      *
@@ -79,7 +73,6 @@ class NetworkAdmin extends Entity
      * @JMS\Expose()
      */
     private $isActive = true;
-
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="create")
@@ -88,7 +81,6 @@ class NetworkAdmin extends Entity
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
-
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="update")
@@ -107,6 +99,35 @@ class NetworkAdmin extends Entity
         $this->setName($name);
         $this->networks = new ArrayCollection();
         $this->contacts = new ArrayCollection();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEntityIdentificationArray(): array
+    {
+        return ['id' => $this->getId()];
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get id
+     *
+     * @param int $id
+     * @return integer
+     */
+    public function setId(int $id = null): int
+    {
+        return $this->id = $id;
     }
 
     public function addContact(Contact $contact): NetworkAdmin
@@ -137,27 +158,6 @@ class NetworkAdmin extends Entity
         $this->contacts->removeElement($contact);
         $contact->setNetworkAdmin();
         return $this;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    /**
-     * Get id
-     *
-     * @param int $id
-     * @return integer
-     */
-    public function setId(int $id = null): int
-    {
-        return $this->id = $id;
     }
 
     /**

@@ -81,7 +81,6 @@ class Host extends NetworkElement
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="destination",fetch="EXTRA_LAZY")
      */
     private $incidents_as_destination;
-
     private $comment_thread;
     /**
      * @var bool
@@ -96,6 +95,14 @@ class Host extends NetworkElement
         parent::__construct($term);
         $this->incidents_as_origin = new ArrayCollection();
         $this->incidents_as_destination = new ArrayCollection();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEntityIdentificationArray(): array
+    {
+        return ['address' => $this->getAddress()];
     }
 
     /**

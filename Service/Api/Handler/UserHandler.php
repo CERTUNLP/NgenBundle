@@ -13,10 +13,25 @@ namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
 use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Form\UserType;
+use CertUnlp\NgenBundle\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class UserHandler extends Handler
 {
 
+    /**
+     * UserHandler constructor.
+     * @param EntityManagerInterface $entity_manager
+     * @param UserRepository $repository
+     * @param UserType $entity_ype
+     * @param FormFactoryInterface $form_factory
+     */
+    public function __construct(EntityManagerInterface $entity_manager, UserRepository $repository, UserType $entity_ype, FormFactoryInterface $form_factory)
+    {
+        parent::__construct($entity_manager, $repository, $entity_ype, $form_factory);
+    }
 
     /**
      * @param array $parameters
@@ -29,15 +44,6 @@ class UserHandler extends Handler
         $user->setEnabled(true);
         $user->setApiKey(sha1($user->getUsername() . time() . $user->getSalt()));
         return $user;
-    }
-
-    /**
-     * @param Entity | User $entity
-     * @return array
-     */
-    public function getEntityIdentificationArray(Entity $entity): array
-    {
-        return ['username' => $entity->getUsername()];
     }
 
 }

@@ -11,19 +11,15 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Entity;
-use CertUnlp\NgenBundle\Form\IncidentReportType;
-use CertUnlp\NgenBundle\Repository\IncidentReportRepository;
+use CertUnlp\NgenBundle\Form\StateEdgeType;
+use CertUnlp\NgenBundle\Repository\StateEdgeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class IncidentReportHandler extends Handler
+class StateEdgeHandler extends Handler
 {
-    public function __construct(EntityManagerInterface $entity_manager, IncidentReportRepository $repository, IncidentReportType $entity_ype, FormFactoryInterface $form_factory)
+    public function __construct(EntityManagerInterface $entity_manager, StateEdgeRepository $repository, StateEdgeType $entity_ype, FormFactoryInterface $form_factory)
     {
         parent::__construct($entity_manager, $repository, $entity_ype, $form_factory);
     }
-
-
-
 }

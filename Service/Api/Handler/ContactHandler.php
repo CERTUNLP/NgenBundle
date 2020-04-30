@@ -22,11 +22,6 @@ use Symfony\Component\Debug\Exception\ClassNotFoundException;
 class ContactHandler extends Handler
 {
 
-//    protected function checkIfExists($entity, $method)
-//    {
-//        return $entity;
-//    }
-
     /**
      * @param array $parameters
      * @return Entity| Contact
@@ -55,12 +50,4 @@ class ContactHandler extends Handler
     }
 
 
-    /**
-     * @param Entity|Contact $entity
-     * @return array
-     */
-    public function getEntityIdentificationArray(Entity $entity): array
-    {
-        return ['id' => $entity->getId()];
-    }
 }

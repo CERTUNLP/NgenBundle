@@ -13,9 +13,9 @@ namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
 use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
-use Doctrine\Common\Persistence\ObjectRepository;
+use CertUnlp\NgenBundle\Form\IncidentTypeType;
+use CertUnlp\NgenBundle\Repository\IncidentTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class IncidentTypeHandler extends Handler
@@ -26,7 +26,7 @@ class IncidentTypeHandler extends Handler
      */
     private $report_handler;
 
-    public function __construct(EntityManagerInterface $entity_manager, ObjectRepository $repository, AbstractType $entity_ype, FormFactoryInterface $form_factory, IncidentReportHandler $report_handler)
+    public function __construct(EntityManagerInterface $entity_manager, IncidentTypeRepository $repository, IncidentTypeType $entity_ype, FormFactoryInterface $form_factory, IncidentReportHandler $report_handler)
     {
         parent::__construct($entity_manager, $repository, $entity_ype, $form_factory);
         $this->report_handler = $report_handler;
@@ -53,16 +53,6 @@ class IncidentTypeHandler extends Handler
     public function getReportHandler(): IncidentReportHandler
     {
         return $this->report_handler;
-    }
-
-
-    /**
-     * @param Entity| IncidentType $entity
-     * @return array
-     */
-    public function getEntityIdentificationArray(Entity $entity): array
-    {
-        return ['slug' => $entity->getSlug()];
     }
 
 }

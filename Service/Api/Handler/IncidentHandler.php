@@ -15,12 +15,12 @@ use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Form\IncidentType;
 use CertUnlp\NgenBundle\Repository\IncidentRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Gedmo\Sluggable\Util as Sluggable;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -32,10 +32,7 @@ class IncidentHandler extends Handler
      * @var HostHandler
      */
     private $host_handler;
-    /**
-     * @var UserHandler
-     */
-    private $user_handler;
+
     /**
      * @var IncidentDecisionHandler
      */
@@ -53,32 +50,23 @@ class IncidentHandler extends Handler
      */
     private $incident_priority_handler;
 
-    public function __construct(EntityManagerInterface $entity_manager, IncidentRepository $repository, AbstractType $entity_ype, FormFactoryInterface $form_factory, TokenStorageInterface $token_storage, UserHandler $user_handler, HostHandler $host_handler, IncidentDecisionHandler $decision_handler, IncidentStateHandler $incident_state_handler, IncidentPriorityHandler $incident_priority_handler)
+    public function __construct(EntityManagerInterface $entity_manager, IncidentRepository $repository, IncidentType $entity_type, FormFactoryInterface $form_factory, TokenStorageInterface $token_storage, UserHandler $user_handler, HostHandler $host_handler, IncidentDecisionHandler $decision_handler, IncidentStateHandler $incident_state_handler, IncidentPriorityHandler $incident_priority_handler)
     {
-
-        parent::__construct($entity_manager, $repository, $entity_ype, $form_factory);
+        parent::__construct($entity_manager, $repository, $entity_type, $form_factory);
         $this->host_handler = $host_handler;
-        $this->user_handler = $user_handler;
         $this->decision_handler = $decision_handler;
         $this->incident_state_handler = $incident_state_handler;
         $this->token_storage = $token_storage;
         $this->incident_priority_handler = $incident_priority_handler;
     }
 
-    /**
-     * @return UserHandler
-     */
-    public function getUserHandler(): UserHandler
-    {
-        return $this->user_handler;
-    }
 
     /**
      * @param Incident $incident
-     * @param $state
+     * @param IncidentState $state
      * @return Entity|Incident
      */
-    public function changeState(Incident $incident, $state): Entity
+    public function changeState(Incident $incident, IncidentState $state): Entity
     {
         $incident->setStateAndReporter($state, $this->getUser());
         return $this->patch($incident, []);
@@ -333,15 +321,6 @@ class IncidentHandler extends Handler
             return $this->getRepository()->findOneLiveBy($this->getEntityIdentificationArray($entity));
         }
         return null;
-    }
-
-    /**
-     * @param Entity $entity
-     * @return array
-     */
-    public function getEntityIdentificationArray(Entity $entity): array
-    {
-        return ['origin' => $entity->getOrigin()->getId(), 'type' => $entity->getType()->getSlug()];
     }
 
     /**

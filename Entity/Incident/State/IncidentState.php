@@ -39,7 +39,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class IncidentState extends Entity implements Translatable
 {
-
     /**
      * @var StateBehavior
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior", inversedBy="states")
@@ -122,6 +121,37 @@ class IncidentState extends Entity implements Translatable
     {
         $this->incidents = new ArrayCollection();
         $this->edges = new ArrayCollection();
+    }
+
+    /**
+     * @return array|null[]|string[]
+     */
+    public function getEntityIdentificationArray(): array
+    {
+        return ['slug' => $this->getSlug()];
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return IncidentState
+     */
+    public function setSlug(string $slug): IncidentState
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 
     /**
@@ -256,29 +286,6 @@ class IncidentState extends Entity implements Translatable
     public function isInitial(): bool
     {
         return $this->getSlug() === 'initial';
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return IncidentState
-     */
-    public function setSlug(string $slug): IncidentState
-    {
-        $this->slug = $slug;
-
-        return $this;
     }
 
     /**

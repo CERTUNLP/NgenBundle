@@ -139,6 +139,14 @@ abstract class Network extends NetworkElement implements NetworkInterface
         return 'info';
     }
 
+    /**
+     * @return array
+     */
+    public function getEntityIdentificationArray(): array
+    {
+        return ['address' => $this->getAddressAndMask()];
+    }
+
     public function getType(): string
     {
         $array = explode('\\', static::class);

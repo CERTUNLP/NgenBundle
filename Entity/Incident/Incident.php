@@ -119,7 +119,6 @@ class Incident extends Entity
      * @JMS\Groups({"api"})
      */
     private $state;
-
     /**
      * @var IncidentState
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
@@ -191,16 +190,6 @@ class Incident extends Entity
      * @JMS\Groups({"api"})
      */
     private $changeStateHistory;
-
-//    /**
-//     * @var Collection
-//     * @JMS\Expose
-//     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Message",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
-//     * @JMS\Groups({"api"})
-//     */
-//
-//    private $communicationHistory;
-
     /**
      * @var DateTime
      *
@@ -210,6 +199,15 @@ class Incident extends Entity
      * @JMS\Groups({"api"})
      */
     private $renotificationDate;
+
+//    /**
+//     * @var Collection
+//     * @JMS\Expose
+//     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Message",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
+//     * @JMS\Groups({"api"})
+//     */
+//
+//    private $communicationHistory;
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="create")
@@ -308,6 +306,50 @@ class Incident extends Entity
         }
         $this->incidentsDetected = new ArrayCollection();
         $this->changeStateHistory = new ArrayCollection();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEntityIdentificationArray(): array
+    {
+        return ['origin' => $this->getOrigin()->getId(), 'type' => $this->getType()->getSlug()];
+    }
+
+    /**
+     * @return Host
+     */
+    public function getOrigin(): ?Host
+    {
+        return $this->origin;
+    }
+
+    /**
+     * @param Host $origin
+     * @return Incident
+     */
+    public function setOrigin(Host $origin = null): Incident
+    {
+        $this->setter($this->origin, $origin);
+        return $this;
+    }
+
+    /**
+     * @return IncidentType
+     */
+    public function getType(): ?IncidentType
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param IncidentType $type
+     * @return Incident
+     */
+    public function setType(IncidentType $type = null): Incident
+    {
+        $this->setter($this->type, $type, true);
+        return $this;
     }
 
     /**
@@ -1203,7 +1245,6 @@ class Incident extends Entity
         });
     }
 
-
     /**
      * @return Collection| IncidentDetected[]
      */
@@ -1498,24 +1539,6 @@ class Incident extends Entity
     }
 
     /**
-     * @return Host
-     */
-    public function getOrigin(): ?Host
-    {
-        return $this->origin;
-    }
-
-    /**
-     * @param Host $origin
-     * @return Incident
-     */
-    public function setOrigin(Host $origin = null): Incident
-    {
-        $this->setter($this->origin, $origin);
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getIp(): ?string
@@ -1606,24 +1629,6 @@ class Incident extends Entity
     public function isDefined(): ?bool
     {
         return ($this->getOrigin() && $this->getType());
-    }
-
-    /**
-     * @return IncidentType
-     */
-    public function getType(): ?IncidentType
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param IncidentType $type
-     * @return Incident
-     */
-    public function setType(IncidentType $type = null): Incident
-    {
-        $this->setter($this->type, $type, true);
-        return $this;
     }
 
 }

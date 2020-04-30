@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity;
 
+use CertUnlp\NgenBundle\Model\EntityInterface;
 use Closure;
 use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Annotation as JMS;
@@ -18,7 +19,7 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * @JMS\ExclusionPolicy("all")
  */
-abstract class Entity
+abstract class Entity implements EntityInterface
 {
 
 //    /**
@@ -62,7 +63,7 @@ abstract class Entity
     /**
      * @return Entity
      */
-    public function activate(): Entity
+    public function activate(): EntityInterface
     {
         $this->setActive(true);
         return $this;
@@ -89,7 +90,7 @@ abstract class Entity
     /**
      * @return Entity
      */
-    public function desactivate(): Entity
+    public function desactivate(): EntityInterface
     {
         $this->setActive(false);
         return $this;
@@ -105,6 +106,7 @@ abstract class Entity
      * @return string
      */
     abstract public function getColor(): string;
+
 //
 //    /**
 //     * @return int|null

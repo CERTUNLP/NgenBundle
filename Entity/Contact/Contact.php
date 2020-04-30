@@ -20,6 +20,7 @@ use JMS\Serializer\Annotation as JMS;
  */
 class Contact extends Entity
 {
+
     /**
      * @var int|null
      *
@@ -28,40 +29,34 @@ class Contact extends Entity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
     /**
      * @var string|null
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
-
     /**
      * @var NetworkAdmin|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="contacts")
      */
     private $network_admin;
-
     /**
      * @var NetworkAdmin|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="contacts")
      */
     private $user;
-
     /**
      * @var string|null
      *
      * @ORM\Column(name="username", type="string", length=255)
      */
     private $username;
-
     /**
      * @var string|null
      *
      * @ORM\Column(name="contact_type", type="string", length=255)
      */
     private $contactType;
-
     /**
      * @var ContactCase|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase", inversedBy="contacts")
@@ -70,13 +65,30 @@ class Contact extends Entity
      * @JMS\Groups({"api"})
      */
     private $contactCase;
-
     /**
      * @var string|null
      *
      * @ORM\Column(name="encryption_key", type="string", length=4000, nullable=true)
      */
     private $encryptionKey;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEntityIdentificationArray(): array
+    {
+        return ['id' => $this->getId()];
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
     public function getEmail(): string
     {
@@ -142,16 +154,6 @@ class Contact extends Entity
         $this->contactCase = $contactCase;
         return $this;
 
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     /**

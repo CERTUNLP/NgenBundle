@@ -43,7 +43,6 @@ class IncidentType extends Entity
      * @JMS\Expose
      */
     private $name;
-
     /**
      * @var string
      * @ORM\Id
@@ -52,7 +51,6 @@ class IncidentType extends Entity
      * @JMS\Expose
      */
     private $slug;
-
     /**
      * @var boolean
      *
@@ -60,14 +58,12 @@ class IncidentType extends Entity
      * @JMS\Expose
      */
     private $isActive = true;
-
     /**
      * @var boolean
      * @ORM\Column(name="is_Classification", type="boolean")
      * @JMS\Expose
      */
     private $isClassification = false;
-
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="create")
@@ -76,7 +72,6 @@ class IncidentType extends Entity
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
-
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="update")
@@ -85,13 +80,11 @@ class IncidentType extends Entity
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
-
     /**
      * @var Collection | Incident[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="type",fetch="EXTRA_LAZY")
      */
     private $incidents;
-
     /**
      * @var string|null
      *
@@ -99,21 +92,17 @@ class IncidentType extends Entity
      * @JMS\Expose
      */
     private $description;
-
     /**
      * @var Collection | IncidentReport[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentReport",mappedBy="type",indexBy="lang"))
      */
     private $reports;
-
-
     /**
      * @var TaxonomyValue
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue")
      * @ORM\JoinColumn(name="taxonomyValue", referencedColumnName="slug",nullable=true)
      **/
     private $taxonomyValue;
-
 
     /**
      * Constructor
@@ -126,21 +115,11 @@ class IncidentType extends Entity
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
-    public function getIcon(): string
+    public function getEntityIdentificationArray(): array
     {
-        return 'cubes';
-    }
-
-    /**
-     * Get id
-     *
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->getSlug();
+        return ['slug' => $this->getSlug()];
     }
 
     /**
@@ -159,6 +138,24 @@ class IncidentType extends Entity
     {
         $this->slug = $slug;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'cubes';
+    }
+
+    /**
+     * Get id
+     *
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->getSlug();
     }
 
     /**

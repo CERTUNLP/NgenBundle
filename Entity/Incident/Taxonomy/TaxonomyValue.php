@@ -34,7 +34,6 @@ class TaxonomyValue extends Entity
      * @JMS\Groups({"api_input"})
      * */
     private $slug;
-
     /**
      * @var boolean
      *
@@ -93,13 +92,11 @@ class TaxonomyValue extends Entity
     private $version;
 
     /**
-     * Get id
-     *
-     * @return int
+     * {@inheritDoc}
      */
-    public function getId(): int
+    public function getEntityIdentificationArray(): array
     {
-        return $this->getSlug();
+        return ['slug' => $this->getSlug()];
     }
 
     /**
@@ -116,6 +113,16 @@ class TaxonomyValue extends Entity
     public function setSlug(string $slug): void
     {
         $this->slug = $slug;
+    }
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->getSlug();
     }
 
     public function __toString(): string
