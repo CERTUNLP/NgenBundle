@@ -11,19 +11,25 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Entity;
-use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
+use CertUnlp\NgenBundle\Form\NetworkAdminType;
+use CertUnlp\NgenBundle\Repository\NetworkAdminRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class NetworkAdminHandler extends Handler
 {
 
-
     /**
-     * @param Entity|NetworkAdmin $entity
-     * @return array
+     * NetworkAdminHandler constructor.
+     * @param EntityManagerInterface $entity_manager
+     * @param NetworkAdminRepository $repository
+     * @param NetworkAdminType $entity_ype
+     * @param FormFactoryInterface $form_factory
      */
-    public function getEntityIdentificationArray(Entity $entity): array
+    public function __construct(EntityManagerInterface $entity_manager, NetworkAdminRepository $repository, NetworkAdminType $entity_ype, FormFactoryInterface $form_factory)
     {
-        return ['id' => $entity->getId()];
+        parent::__construct($entity_manager, $repository, $entity_ype, $form_factory);
     }
+
+
 }

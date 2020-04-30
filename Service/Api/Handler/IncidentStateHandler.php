@@ -13,24 +13,25 @@ namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
 use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
+use CertUnlp\NgenBundle\Form\IncidentStateType;
+use CertUnlp\NgenBundle\Repository\IncidentStateRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class IncidentStateHandler extends Handler
 {
 
+    public function __construct(EntityManagerInterface $entity_manager, IncidentStateRepository $repository, IncidentStateType $entity_ype, FormFactoryInterface $form_factory)
+    {
+        parent::__construct($entity_manager, $repository, $entity_ype, $form_factory);
+    }
 
     /**
      * @return IncidentState|Entity
      */
-    public function getInitialState(): Entity
+    public function getInitialState(): IncidentState
     {
         return $this->get(['slug' => 'initial']);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getEntityIdentificationArray(Entity $entity): array
-    {
-        return ['slug' => $entity->getSlug()];
-    }
 }

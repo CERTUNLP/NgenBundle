@@ -11,16 +11,18 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Form\IncidentPriorityType;
+use CertUnlp\NgenBundle\Repository\IncidentPriorityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class IncidentPriorityHandler extends Handler
 {
-    /**
-     * @inheritDoc
-     */
-    public function getEntityIdentificationArray(Entity $entity): array
+
+    public function __construct(EntityManagerInterface $entity_manager, IncidentPriorityRepository $repository, IncidentPriorityType $entity_ype, FormFactoryInterface $form_factory)
     {
-        return ['id' => $entity->getId()];
+        parent::__construct($entity_manager, $repository, $entity_ype, $form_factory);
     }
+
 
 }

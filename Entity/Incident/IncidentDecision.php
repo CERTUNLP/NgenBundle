@@ -19,6 +19,8 @@ use JMS\Serializer\Annotation as JMS;
  */
 class IncidentDecision extends Entity
 {
+
+
     /**
      * @var int|null
      *
@@ -134,6 +136,68 @@ class IncidentDecision extends Entity
     private $isActive = true;
 
     /**
+     * @inheritDoc
+     */
+    public function getEntityIdentificationArray(): array
+    {
+        return ['type' => $this->getType() ? $this->getType()->getSlug() : 'undefined', 'feed' => $this->getFeed() ? $this->getFeed()->getSlug() : 'undefined', 'network' => $this->getNetwork() ? $this->getNetwork()->getId() : null];
+    }
+
+    /**
+     * @return IncidentType|null
+     */
+    public function getType(): ?IncidentType
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param IncidentType|null $type
+     * @return IncidentDecision
+     */
+    public function setType(?IncidentType $type): IncidentDecision
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return IncidentFeed|null
+     */
+    public function getFeed(): ?IncidentFeed
+    {
+        return $this->feed;
+    }
+
+    /**
+     * @param IncidentFeed|null $feed
+     * @return IncidentDecision
+     */
+    public function setFeed(?IncidentFeed $feed): IncidentDecision
+    {
+        $this->feed = $feed;
+        return $this;
+    }
+
+    /**
+     * @return Network|null
+     */
+    public function getNetwork(): ?Network
+    {
+        return $this->network;
+    }
+
+    /**
+     * @param Network|null $network
+     * @return IncidentDecision
+     */
+    public function setNetwork(?Network $network): IncidentDecision
+    {
+        $this->network = $network;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getIcon(): string
@@ -169,24 +233,6 @@ class IncidentDecision extends Entity
     public function setSlug(string $slug): IncidentDecision
     {
         $this->slug = $slug;
-        return $this;
-    }
-
-    /**
-     * @return IncidentFeed|null
-     */
-    public function getFeed(): ?IncidentFeed
-    {
-        return $this->feed;
-    }
-
-    /**
-     * @param IncidentFeed|null $feed
-     * @return IncidentDecision
-     */
-    public function setFeed(?IncidentFeed $feed): IncidentDecision
-    {
-        $this->feed = $feed;
         return $this;
     }
 
@@ -285,24 +331,6 @@ class IncidentDecision extends Entity
     }
 
     /**
-     * @return IncidentType|null
-     */
-    public function getType(): ?IncidentType
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param IncidentType|null $type
-     * @return IncidentDecision
-     */
-    public function setType(?IncidentType $type): IncidentDecision
-    {
-        $this->type = $type;
-        return $this;
-    }
-
-    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -353,24 +381,6 @@ class IncidentDecision extends Entity
     public function setUpdatedAt(DateTime $updatedAt): IncidentDecision
     {
         $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
-    /**
-     * @return Network|null
-     */
-    public function getNetwork(): ?Network
-    {
-        return $this->network;
-    }
-
-    /**
-     * @param Network|null $network
-     * @return IncidentDecision
-     */
-    public function setNetwork(?Network $network): IncidentDecision
-    {
-        $this->network = $network;
         return $this;
     }
 

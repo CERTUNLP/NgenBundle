@@ -42,15 +42,15 @@ abstract class Handler
      * Handler constructor.
      * @param EntityManagerInterface $entity_manager
      * @param ObjectRepository $repository
-     * @param AbstractType $entity_ype
+     * @param AbstractType $entity_type
      * @param FormFactoryInterface $form_factory
      */
-    public function __construct(EntityManagerInterface $entity_manager, ObjectRepository $repository, AbstractType $entity_ype, FormFactoryInterface $form_factory)
+    public function __construct(EntityManagerInterface $entity_manager, ObjectRepository $repository, AbstractType $entity_type, FormFactoryInterface $form_factory)
     {
         $this->entity_manager = $entity_manager;
         $this->repository = $repository;
         $this->form_factory = $form_factory;
-        $this->entity_type = $entity_ype;
+        $this->entity_type = $entity_type;
     }
 
 
@@ -133,7 +133,10 @@ abstract class Handler
      * @param Entity $entity
      * @return array
      */
-    abstract public function getEntityIdentificationArray(Entity $entity): array;
+    public function getEntityIdentificationArray(Entity $entity): array
+    {
+        return $entity->getEntityIdentificationArray();
+    }
 
     public function isReactivableEntity(): bool
     {

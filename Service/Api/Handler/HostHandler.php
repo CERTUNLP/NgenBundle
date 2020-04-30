@@ -11,29 +11,15 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Form\HostType;
+use CertUnlp\NgenBundle\Repository\HostRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class HostHandler extends Handler
 {
-
-    public function getEntityIdentificationArray(Entity $entity): array
+    public function __construct(EntityManagerInterface $entity_manager, HostRepository $repository, HostType $entity_type, FormFactoryInterface $form_factory)
     {
-        return ['address' => $entity->getAddress()];
+        parent::__construct($entity_manager, $repository, $entity_type, $form_factory);
     }
-
-//    /**
-//     * @param Entity $entity
-//     * @return Entity
-//     */
-//    public function getIfExists(Entity $entity): Entity
-//    {
-//        return $this->getRepository()->findOneByAddress($entity->getAddress());
-//    }
-
-//    private function createEntityInstance(array $params)
-//    {
-//        return new $this->entityClass($params['address']);
-//    }
-
-
 }

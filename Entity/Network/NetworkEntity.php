@@ -88,6 +88,37 @@ class NetworkEntity extends Entity
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function getEntityIdentificationArray(): array
+    {
+        return ['slug' => $this->getSlug()];
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return NetworkEntity
+     */
+    public function setSlug(string $slug): NetworkEntity
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getIcon(): string
@@ -176,29 +207,6 @@ class NetworkEntity extends Entity
     public function getNetworks(): Collection
     {
         return $this->networks;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return NetworkEntity
-     */
-    public function setSlug(string $slug): NetworkEntity
-    {
-        $this->slug = $slug;
-
-        return $this;
     }
 
     /**

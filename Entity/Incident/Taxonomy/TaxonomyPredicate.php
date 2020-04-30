@@ -34,28 +34,24 @@ class TaxonomyPredicate extends Entity
      * @ORM\Column(name="description", type="string", length=1024)
      */
     private $description;
-
     /**
      * @var string
      *
      * @ORM\Column(name="expanded", type="string", length=255)
      */
     private $expanded;
-
     /**
      * @var int
      *
      * @ORM\Column(name="version", type="integer")
      */
     private $version;
-
     /**
      * @var string
      *
      * @ORM\Column(name="value", type="string", length=255, unique=true)
      */
     private $value;
-
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="create")
@@ -64,7 +60,6 @@ class TaxonomyPredicate extends Entity
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $createdAt;
-
     /**
      * @var DateTime
      * @Gedmo\Timestampable(on="update")
@@ -73,7 +68,6 @@ class TaxonomyPredicate extends Entity
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     private $updatedAt;
-
     /**
      * @var boolean
      *
@@ -81,8 +75,6 @@ class TaxonomyPredicate extends Entity
      * @JMS\Expose
      */
     private $isActive = true;
-
-
     /**
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue",mappedBy="predicate")
      * @JMS\Exclude()
@@ -105,6 +97,14 @@ class TaxonomyPredicate extends Entity
     public function __construct()
     {
         $this->values = new ArrayCollection();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEntityIdentificationArray(): array
+    {
+        return ['slug' => $this->getSlug()];
     }
 
     /**

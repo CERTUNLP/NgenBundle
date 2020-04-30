@@ -16,6 +16,7 @@ use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
 use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
 use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Model\EntityInterface;
 use CertUnlp\NgenBundle\Model\ReporterInterface;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -24,7 +25,6 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
-use Rollerworks\Bundle\PasswordStrengthBundle\Validator\Constraints as RollerworksPassword;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -301,7 +301,7 @@ class User extends BaseUser implements ReporterInterface
      *
      * @return string
      */
-    public function getFirstname()
+    public function getFirstname(): string
     {
         return $this->firstname;
     }
@@ -324,7 +324,7 @@ class User extends BaseUser implements ReporterInterface
      *
      * @return string
      */
-    public function getLastname()
+    public function getLastname(): string
     {
         return $this->lastname;
     }
@@ -411,7 +411,11 @@ class User extends BaseUser implements ReporterInterface
         return $this;
     }
 
-    public function addContact(Contact $contact)
+    /**
+     * @param Contact $contact
+     * @return $this
+     */
+    public function addContact(Contact $contact): User
     {
         $newObj = $contact;
         switch ($contact->getContactType()) {
@@ -436,15 +440,41 @@ class User extends BaseUser implements ReporterInterface
 
     }
 
-    public function removeContact(Contact $contact)
+    /**
+     * @param Contact $contact
+     * @return $this
+     */
+    public function removeContact(Contact $contact): User
     {
         $this->contacts->removeElement($contact);
         $contact->setNetworkAdmin(null);
-//        if ($this->contacts->contains($contact)){
-//
-//        }
         return $this;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getEntityIdentificationArray(): array
+    {
+        return ['username' => $this->getUsername()];
+    }
+
+    /**
+     * @return User
+     */
+    public function activate(): EntityInterface
+    {
+        $this->setEnabled(true);
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function desactivate(): EntityInterface
+    {
+        $this->setEnabled(false);
+        return $this;
+    }
 }

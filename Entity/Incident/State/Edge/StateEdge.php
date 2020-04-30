@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Entity\Incident\State\Edge;
 
 use CertUnlp\NgenBundle\Entity\Contact\ContactCase;
+use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use DateTime;
@@ -28,7 +29,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\DiscriminatorMap({"new"= "NewEdge", "opening" = "OpeningEdge", "closing" = "ClosingEdge", "reopening" = "ReopeningEdge", "updating" = "UpdatingEdge", "discarding" = "DiscardingEdge", "edge" = "StateEdge"})
  * @JMS\ExclusionPolicy("all")
  */
-abstract class StateEdge
+abstract class StateEdge extends Entity
 {
 
     /**
@@ -134,6 +135,32 @@ abstract class StateEdge
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function getEntityIdentificationArray(): array
+    {
+        return ['id' => $this->getId()];
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return StateEdge
+     */
+    public function setId(int $id): StateEdge
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * @return ContactCase
      */
     public function getMailTeam(): ContactCase
@@ -234,24 +261,6 @@ abstract class StateEdge
     public function setOldState(IncidentState $oldState): StateEdge
     {
         $this->oldState = $oldState;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     * @return StateEdge
-     */
-    public function setId(int $id): StateEdge
-    {
-        $this->id = $id;
         return $this;
     }
 

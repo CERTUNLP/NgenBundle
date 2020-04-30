@@ -12,17 +12,33 @@
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
 use ArrayIterator;
-use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Entity\Network\Network;
+use CertUnlp\NgenBundle\Form\IncidentDecisionType;
+use CertUnlp\NgenBundle\Repository\IncidentDecisionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class IncidentDecisionHandler extends Handler
 {
+
+    /**
+     * IncidentDecisionHandler constructor.
+     * @param EntityManagerInterface $entity_manager
+     * @param IncidentDecisionRepository $repository
+     * @param IncidentDecisionType $entity_type
+     * @param FormFactoryInterface $form_factory
+     */
+    public function __construct(EntityManagerInterface $entity_manager, IncidentDecisionRepository $repository, IncidentDecisionType $entity_type, FormFactoryInterface $form_factory)
+    {
+        parent::__construct($entity_manager, $repository, $entity_type, $form_factory);
+    }
+
     /**
      * @param Incident $incident
      * @return IncidentDecision
@@ -77,11 +93,4 @@ class IncidentDecisionHandler extends Handler
         return $decisions->last();
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getEntityIdentificationArray(Entity $entity): array
-    {
-        return ['type' => $entity->getType() ? $entity->getType()->getSlug() : 'undefined', 'feed' => $entity->getFeed() ? $entity->getFeed()->getSlug() : 'undefined', 'network' => $entity->getNetwork() ? $entity->getNetwork()->getId() : null];
-    }
 }
