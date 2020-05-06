@@ -25,6 +25,7 @@ services:
             #            $elastica_finder_incident_state_action: "@fos_elastica.finder.changeStateHistory.incidentStateAction"
             #            $elastica_finder_priority: "@fos_elastica.finder.priorities.priority"
             $elastica_finder_report: "@fos_elastica.finder.reports.report"
+            $team_mail: '%cert_unlp.ngen.team.mail%'
     #            $elastica_finder_state: "@fos_elastica.finder.states.state"
     #            $elastica_finder_taxonomy_predicate: "@fos_elastica.finder.taxonomypredicates.predicate"
     #            $elastica_finder_taxonomy_value: "@fos_elastica.finder.taxonomyvalues.value"
@@ -85,11 +86,11 @@ services:
     #
     #  cert_unlp.ngen.incident.report.factory:
     #    class:     CertUnlp\NgenBundle\Service\IncidentReportFactory
-    #    arguments: ["@twig","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view","%cert_unlp.ngen.team%"]
+    #    arguments: ["@twig","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view","%cert_unlp.ngen.team_mail%"]
     #
     #  cert_unlp.ngen.incident.communication.mailer:
     #    class:        CertUnlp\NgenBundle\Service\Communications\IncidentMailer
-    #    arguments:    ["@doctrine.orm.entity_manager","@fos_comment.manager.comment","%kernel.environment%","%cert_unlp.ngen.incident.internal.report.lang%","%cert_unlp.ngen.team%","@translator.default","@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","%cert_unlp.ngen.incident.internal.mailer.sender_address%","@cert_unlp.ngen.incident.report.factory","%cert_unlp.ngen.incident.evidence.path%"]
+    #    arguments:    ["@doctrine.orm.entity_manager","@fos_comment.manager.comment","%kernel.environment%","%cert_unlp.ngen.incident.internal.report.lang%","%cert_unlp.ngen.team_mail%","@translator.default","@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","%cert_unlp.ngen.incident.internal.mailer.sender_address%","@cert_unlp.ngen.incident.report.factory","%cert_unlp.ngen.incident.evidence.path%"]
     #    tags:
     #      - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
     #      - { name: cert_unlp.ngen.incident.internal.delegate, priority: 2 }
@@ -97,7 +98,7 @@ services:
     #
     #  cert_unlp.ngen.incident.communication.telegram:
     #    class:        CertUnlp\NgenBundle\Service\Communications\IncidentTelegram
-    #    arguments:    ["@doctrine.orm.entity_manager","@fos_comment.manager.comment","%kernel.environment%","%cert_unlp.ngen.incident.internal.report.lang%","%cert_unlp.ngen.team%","@translator.default"]
+    #    arguments:    ["@doctrine.orm.entity_manager","@fos_comment.manager.comment","%kernel.environment%","%cert_unlp.ngen.incident.internal.report.lang%","%cert_unlp.ngen.team_mail%","@translator.default"]
     #    tags:
     #      - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
     #      - { name: cert_unlp.ngen.incident.internal.delegate, priority: 2 }
@@ -181,7 +182,7 @@ services:
     #
     #  cert_unlp.ngen.incident.state.edge.handler:
     #    class:        CertUnlp\NgenBundle\Service\Api\Handler\IncidentStateEdgeHandler
-    #    arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Incident\State\IncidentStateEdge,CertUnlp\NgenBundle\Form\IncidentStateEdgeType,"@form.factory"]
+    #    arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Incident\State\IncidentStateEdge,CertUnlp\NgenBundle\Form\StateEdgeType,"@form.factory"]
     #
     #  cert_unlp.ngen.incident.state.machine:
     #    class:        CertUnlp\NgenBundle\Service\StateMachine\StateMachine
@@ -299,7 +300,7 @@ services:
     #
     #  cert_unlp.ngen.network.rdap.client:
     #    class: CertUnlp\NgenBundle\Service\NetworkRdapClient
-    #    arguments: ["%cert_unlp.ngen.team%","@doctrine"]
+    #    arguments: ["%cert_unlp.ngen.team_mail%","@doctrine"]
     #
     #  app.form.registration:
     #    class: CertUnlp\NgenBundle\Form\UserRegistrationType
@@ -371,7 +372,7 @@ services:
 #    arguments: ["@cert_unlp.ngen.incident.taxonomy.value.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
 #
 #  cert_unlp.ngen.incident.taxonomy.value.handler:
-#    class:         CertUnlp\NgenBundle\Service\Api\Handler\IncidentTaxonomyValueHandler
+#    class:         CertUnlp\NgenBundle\Service\Api\Handler\TaxonomyValueHandler
 #    arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue,CertUnlp\NgenBundle\Form\IncidentTaxonomyValueType,"@form.factory"]
 #
 #  cert_unlp.ngen.incident.taxonomy.predicate.frontend.controller:
@@ -383,5 +384,5 @@ services:
 #    arguments: ["@cert_unlp.ngen.incident.taxonomy.predicate.handler","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view" ]
 #
 #  cert_unlp.ngen.incident.taxonomy.predicate.handler:
-#    class:         CertUnlp\NgenBundle\Service\Api\Handler\IncidentTaxonomyPredicateHandler
+#    class:         CertUnlp\NgenBundle\Service\Api\Handler\TaxonomyPredicateHandler
 #    arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate,CertUnlp\NgenBundle\Form\IncidentTaxonomyPredicateType,"@form.factory"]

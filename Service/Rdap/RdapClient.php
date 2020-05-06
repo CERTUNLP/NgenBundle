@@ -20,35 +20,52 @@ use Exception;
  */
 class RdapClient
 {
+    /**
+     * @var RdapResultWrapper
+     */
     private $response;
+    /**
+     * @var string
+     */
     private $request_url;
-    private $team;
-    private $doctrine;
+    /**
+     * @var string
+     */
+    private $team_mail;
 
-    public function __construct(array $team, $doctrine)
+    public function __construct(string $team_mail)
     {
-        $this->team = $team;
-        $this->doctrine = $doctrine;
+        $this->team_mail = $team_mail;
 //        $this->request_url = 'https://rdap.arin.net/registry/ip/';
         $this->request_url = 'https://rdap.lacnic.net/rdap/ip/';
     }
 
     /**
-     * @return mixed
+     * @return RdapResultWrapper
      */
-    public function getDoctrine()
+    public function getResponse(): RdapResultWrapper
     {
-        return $this->doctrine;
+        return $this->response;
     }
 
     /**
-     * @param mixed $doctrine
+     * @param RdapResultWrapper $response
      * @return RdapClient
      */
-    public function setDoctrine($doctrine)
+    public function setResponse(RdapResultWrapper $response): RdapClient
     {
-        $this->doctrine = $doctrine;
+        $this->response = $response;
         return $this;
+    }
+
+    public function requestIp(string $ip): ?RdapResultWrapper
+    {
+        try {
+            $result_file = $this->getRequestUrl() . $ip;
+            return $this->request($result_file);
+        } catch (Exception $exc) {
+            return null;
+        }
     }
 
     /**
@@ -60,35 +77,10 @@ class RdapClient
     }
 
     /**
-     * @param string $request_url
-     * @return RdapClient
-     */
-    public function setRequestUrl(string $request_url): RdapClient
-    {
-        $this->request_url = $request_url;
-        return $this;
-    }
-
-    /**
-     * @param $ip
+     * @param string $url
      * @return RdapResultWrapper|null
      */
-    public function requestIp($ip)
-    {
-        try {
-            $result_file = $this->request_url . $ip;
-            return $this->request($result_file);
-        } catch (Exception $exc) {
-            return null;
-        }
-    }
-
-    /**
-     * @param $url
-     * @return RdapResultWrapper|null
-     * @throws Exception
-     */
-    public function request($url)
+    public function request(string $url): ?RdapResultWrapper
     {
         try {
             $this->setResponse(new RdapResultWrapper(file_get_contents($url)));
@@ -99,55 +91,29 @@ class RdapClient
     }
 
     /**
-     * @param $link
-     * @return Entity| DefaultEntity
+     * @param string $link
+     * @return Entity
      */
-    public function requestEntity(string $link)
+    public function requestEntity(string $link): Entity
     {
         if ($link) {
             try {
-                return new Entity(json_decode(file_get_contents($link)));
+                return new Entity(json_decode(file_get_contents($link), false));
             } catch (Exception $exc) {
-                return new DefaultEntity(null, $this->getTeam()['mail']);
+                return new DefaultEntity(null, $this->getTeamMail());
             }
         } else {
-            return new DefaultEntity(null, $this->getTeam()['mail']);
+            return new DefaultEntity(null, $this->getTeamMail());
         }
 
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getTeam(): array
+    public function getTeamMail(): string
     {
-        return $this->team;
-    }
-
-    /**
-     * @param array $team
-     * @return RdapClient
-     */
-    public function setTeam(array $team): RdapClient
-    {
-        $this->team = $team;
-        return $this;
-    }
-
-    /**
-     * @return RdapResultWrapper
-     */
-    public function getResponse()
-    {
-        return $this->response;
-    }
-
-    /**
-     * @param RdapResultWrapper $response
-     */
-    public function setResponse(RdapResultWrapper $response)
-    {
-        $this->response = $response;
+        return $this->team_mail;
     }
 
 

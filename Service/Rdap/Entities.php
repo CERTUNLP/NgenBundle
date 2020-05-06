@@ -23,6 +23,7 @@ class Entities
      */
     private $entities;
 
+
     /**
      * Entities constructor.
      * @param array $entities
@@ -30,15 +31,12 @@ class Entities
     public function __construct(array $entities = [])
     {
         $this->entities = $entities;
-//        foreach ($entities as $entity) {
-//
-//            $this->entities[] = new Entity($entity);
-//        }
     }
 
+
     /**
-     * @param $roles array
-     * @return Entity|mixed|null
+     * @param array $roles
+     * @return Entity|null
      */
     public function getOneByRole(array $roles): ?Entity
     {
@@ -51,9 +49,10 @@ class Entities
         return null;
     }
 
+
     /**
      * @param array $roles
-     * @return Entity[]|array
+     * @return array|Entity[]
      */
     public function getByRole(array $roles): array
     {
@@ -73,7 +72,7 @@ class Entities
     /**
      * @param bool $recursive
      * @param Closure|null $callback
-     * @return Entity[] | array
+     * @return array|Entity[]
      */
     public function getEntities(bool $recursive = false, Closure $callback = null): array
     {
@@ -96,6 +95,9 @@ class Entities
 
     }
 
+    /**
+     * @return int
+     */
     public function isEmpty(): int
     {
         return !count($this->entities);

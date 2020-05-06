@@ -34,6 +34,7 @@ class CertUnlpNgenExtension extends Extension
 
 
         $container->setParameter('cert_unlp.ngen.team', $config['team']);
+        $container->setParameter('cert_unlp.ngen.team.mail', $config['team']['mail']);
         $container->setParameter('cert_unlp.ngen.resources.path', '%kernel.root_dir%/Resources/');
         $container->setParameter('cert_unlp.ngen.global.sign', $config['global']['sign']);
 
