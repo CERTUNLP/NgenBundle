@@ -29,7 +29,7 @@ class DefaultEntity extends Entity
     public function __construct(stdClass $entity_object = null, string $email)
     {
         $this->email = $email;
-        parent::__construct(json_decode($this->getJson()));
+        parent::__construct(json_decode($this->getJson(), false));
     }
 
     private function getJson(): string
