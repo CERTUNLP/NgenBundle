@@ -2,6 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
@@ -16,7 +17,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentChangeState
+class IncidentChangeState extends Entity
 {
     /**
      * @var integer
@@ -25,26 +26,25 @@ class IncidentChangeState
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
     /**
      * @var Incident
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="changeStateHistory")
-     *
-     * */
-    protected $incident;
+     */
+    private $incident;
     /**
      * @var StateEdge
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge")
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    protected $stateEdge;
+    private $stateEdge;
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")}
      * @JMS\Expose
      */
-    protected $responsable;
+    private $responsable;
     /**
      * @var string
      *
@@ -52,7 +52,7 @@ class IncidentChangeState
      * @JMS\Expose
      * @JMS\Groups({"api_input"})
      */
-    protected $method;
+    private $method;
     /**
      * @var DateTime
      *

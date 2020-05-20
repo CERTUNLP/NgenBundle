@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Repository;
 
-use CertUnlp\NgenBundle\Entity\Contact\ContactCase;
+use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

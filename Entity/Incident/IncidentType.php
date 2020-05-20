@@ -11,9 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -34,7 +33,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentType extends Entity
+class IncidentType extends EntityApiFrontend
 {
     /**
      * @var string
@@ -53,33 +52,10 @@ class IncidentType extends Entity
     private $slug;
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    private $isActive = true;
-    /**
-     * @var boolean
      * @ORM\Column(name="is_Classification", type="boolean")
      * @JMS\Expose
      */
     private $isClassification = false;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
     /**
      * @var Collection | Incident[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="type",fetch="EXTRA_LAZY")
@@ -105,39 +81,12 @@ class IncidentType extends Entity
     private $taxonomyValue;
 
     /**
-     * Constructor
+     * IncidentType constructor.
      */
     public function __construct()
     {
         $this->incidents = new ArrayCollection();
         $this->setTaxonomyValue(null);
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getEntityIdentificationArray(): array
-    {
-        return ['slug' => $this->getSlug()];
-    }
-
-    /**
-     * @return string
-     */
-    public function getSlug(): string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $slug
-     * @return IncidentType
-     */
-    public function setSlug(string $slug): IncidentType
-    {
-        $this->slug = $slug;
-        return $this;
     }
 
     /**
@@ -146,16 +95,6 @@ class IncidentType extends Entity
     public function getIcon(): string
     {
         return 'cubes';
-    }
-
-    /**
-     * Get id
-     *
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->getSlug();
     }
 
     /**
@@ -195,7 +134,7 @@ class IncidentType extends Entity
      * @param string $lang
      * @return IncidentReport
      */
-    public function getReport(string $lang = null)
+    public function getReport(string $lang = null): IncidentReport
     {
         $reporte = $this->getReports()->filter(
             static function (IncidentReport $report) use ($lang) {
@@ -232,19 +171,21 @@ class IncidentType extends Entity
     }
 
     /**
-     * @return mixed
+     * @return TaxonomyValue
      */
-    public function getTaxonomyValue(): ?TaxonomyValue
+    public function getTaxonomyValue(): TaxonomyValue
     {
         return $this->taxonomyValue;
     }
 
     /**
-     * @param mixed $taxonomyValue
+     * @param TaxonomyValue $taxonomyValue
+     * @return IncidentType
      */
-    public function setTaxonomyValue($taxonomyValue = null): void
+    public function setTaxonomyValue(TaxonomyValue $taxonomyValue): IncidentType
     {
         $this->taxonomyValue = $taxonomyValue;
+        return $this;
     }
 
     /**
@@ -291,69 +232,20 @@ class IncidentType extends Entity
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function getIsActive(): bool
+    public function getSlug(): string
     {
-        return $this->isActive;
+        return $this->slug;
     }
 
     /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
+     * @param string $slug
      * @return IncidentType
      */
-    public function setIsActive(bool $isActive): IncidentType
+    public function setSlug(string $slug): IncidentType
     {
-        $this->isActive = $isActive;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     * @return IncidentType
-     */
-    public function setCreatedAt(DateTime $createdAt): IncidentType
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /*
-    * @param string|null $description
-    * @return IncidentType
-    */
-
-    /**
-     * @param DateTime $updatedAt
-     * @return IncidentType
-     */
-    public function setUpdatedAt(DateTime $updatedAt): IncidentType
-    {
-        $this->updatedAt = $updatedAt;
+        $this->slug = $slug;
         return $this;
     }
 
@@ -387,5 +279,11 @@ class IncidentType extends Entity
         $this->isClassification = $isClassification;
     }
 
-
+    /**
+     * @return string
+     */
+    public function getIdentificatorString(): string
+    {
+        return 'slug';
+    }
 }

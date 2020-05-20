@@ -11,13 +11,13 @@
 
 namespace CertUnlp\NgenBundle\Entity;
 
-use CertUnlp\NgenBundle\Entity\Contact\Contact;
-use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
-use CertUnlp\NgenBundle\Entity\Contact\ContactPhone;
-use CertUnlp\NgenBundle\Entity\Contact\ContactTelegram;
+use CertUnlp\NgenBundle\Entity\Communication\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactEmail;
+use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactPhone;
+use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactTelegram;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Model\EntityInterface;
-use CertUnlp\NgenBundle\Model\ReporterInterface;
+use CertUnlp\NgenBundle\Model\EntityApiInterface;
+use CertUnlp\NgenBundle\Model\EntityApiFrontendInterface;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,6 +26,7 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Debug\Exception\ClassNotFoundException;
 
 /**
  * User
@@ -43,7 +44,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
  */
-class User extends BaseUser implements ReporterInterface
+class User extends BaseUser implements EntityApiFrontendInterface
 {
     /**
      * @var integer
@@ -59,7 +60,7 @@ class User extends BaseUser implements ReporterInterface
     /**
      * @ORM\Column(name="api_key", type="string", length=255, nullable=true)
      */
-    protected $apiKey;
+    private $apiKey;
     /**
      * @var string
      *
@@ -103,9 +104,15 @@ class User extends BaseUser implements ReporterInterface
     private $slug;
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="user",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\Contact",mappedBy="user",cascade={"persist"},orphanRemoval=true)
      */
     private $contacts;
+    /**
+     * @var int|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
+     * @Gedmo\Blameable(on="create")
+     */
+    private $createdBy;
 
     /**
      * Constructor
@@ -183,19 +190,21 @@ class User extends BaseUser implements ReporterInterface
     }
 
     /**
-     * @return mixed
+     * @return Collection|Incident[]|null
      */
-    public function getAssignedIncidents()
+    public function getAssignedIncidents(): ?Collection
     {
         return $this->assignedIncidents;
     }
 
     /**
-     * @param mixed $assignedIncidents
+     * @param Collection|Incident[] $assignedIncidents
+     * @return User
      */
-    public function setAssignedIncidents($assignedIncidents)
+    public function setAssignedIncidents(Collection $assignedIncidents): User
     {
         $this->assignedIncidents = $assignedIncidents;
+        return $this;
     }
 
     /**
@@ -203,7 +212,7 @@ class User extends BaseUser implements ReporterInterface
      *
      * @return DateTime
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
@@ -214,7 +223,7 @@ class User extends BaseUser implements ReporterInterface
      * @param DateTime $updatedAt
      * @return User
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(DateTime $updatedAt): User
     {
         $this->updatedAt = $updatedAt;
 
@@ -226,7 +235,7 @@ class User extends BaseUser implements ReporterInterface
      * @ORM\PrePersist
      * @ORM\PreUpdate
      */
-    public function timestampsUpdate()
+    public function timestampsUpdate(): void
     {
         $this->setUpdatedAt(new DateTime('now'));
 
@@ -240,7 +249,7 @@ class User extends BaseUser implements ReporterInterface
      *
      * @return DateTime
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
@@ -251,7 +260,7 @@ class User extends BaseUser implements ReporterInterface
      * @param DateTime $createdAt
      * @return User
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(DateTime $createdAt): User
     {
         $this->createdAt = $createdAt;
 
@@ -264,7 +273,7 @@ class User extends BaseUser implements ReporterInterface
      * @param Incident $incidents
      * @return User
      */
-    public function addIncident(Incident $incidents)
+    public function addIncident(Incident $incidents): User
     {
         $this->incidents[] = $incidents;
 
@@ -272,26 +281,14 @@ class User extends BaseUser implements ReporterInterface
     }
 
     /**
-     * Remove incidents
-     *
-     * @param Incident $incidents
+     * @return Collection| Incident[]
      */
-    public function removeIncident(Incident $incidents)
-    {
-        $this->incidents->removeElement($incidents);
-    }
-
-    /**
-     * Get incidents
-     *
-     * @return Collection
-     */
-    public function getIncidents()
+    public function getIncidents(): Collection
     {
         return $this->incidents;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getFirstname() . ' ' . $this->getLastname();
     }
@@ -312,7 +309,7 @@ class User extends BaseUser implements ReporterInterface
      * @param string $firstname
      * @return User
      */
-    public function setFirstname($firstname)
+    public function setFirstname(string $firstname): User
     {
         $this->firstname = $firstname;
 
@@ -335,7 +332,7 @@ class User extends BaseUser implements ReporterInterface
      * @param string $lastname
      * @return User
      */
-    public function setLastname($lastname)
+    public function setLastname(string $lastname): User
     {
         $this->lastname = $lastname;
 
@@ -360,7 +357,7 @@ class User extends BaseUser implements ReporterInterface
      * @JMS\Expose()
      *
      */
-    public function getFullName()
+    public function getFullName(): string
     {
         return $this->getFirstname() . ' ' . $this->getLastname();
     }
@@ -370,7 +367,7 @@ class User extends BaseUser implements ReporterInterface
      *
      * @return string
      */
-    public function getApiKey()
+    public function getApiKey(): string
     {
         return $this->apiKey;
     }
@@ -381,7 +378,7 @@ class User extends BaseUser implements ReporterInterface
      * @param string $apiKey
      * @return User
      */
-    public function setApiKey($apiKey)
+    public function setApiKey(string $apiKey): User
     {
         $this->apiKey = $apiKey;
 
@@ -393,7 +390,7 @@ class User extends BaseUser implements ReporterInterface
      *
      * @return string
      */
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -404,7 +401,7 @@ class User extends BaseUser implements ReporterInterface
      * @param string $slug
      * @return User
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug): User
     {
         $this->slug = $slug;
 
@@ -414,10 +411,10 @@ class User extends BaseUser implements ReporterInterface
     /**
      * @param Contact $contact
      * @return $this
+     * @throws ClassNotFoundException
      */
     public function addContact(Contact $contact): User
     {
-        $newObj = $contact;
         switch ($contact->getContactType()) {
             case 'telegram':
                 $newObj = $contact->castAs(new ContactTelegram());
@@ -428,6 +425,9 @@ class User extends BaseUser implements ReporterInterface
             case 'phone':
                 $newObj = $contact->castAs(new ContactPhone());
                 break;
+            default:
+                throw new ClassNotFoundException('Contact class: "' . $contact->getContactType() . '" does not exist.', null);
+
         }
 
         if (!$this->contacts->contains($newObj)) {
@@ -452,18 +452,11 @@ class User extends BaseUser implements ReporterInterface
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getEntityIdentificationArray(): array
-    {
-        return ['username' => $this->getUsername()];
-    }
 
     /**
      * @return User
      */
-    public function activate(): EntityInterface
+    public function activate(): EntityApiInterface
     {
         $this->setEnabled(true);
         return $this;
@@ -472,9 +465,25 @@ class User extends BaseUser implements ReporterInterface
     /**
      * @return User
      */
-    public function desactivate(): EntityInterface
+    public function desactivate(): EntityApiInterface
     {
         $this->setEnabled(false);
         return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getCreatedBy(): ?int
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentificatorString(): string
+    {
+        return 'id';
     }
 }

@@ -11,8 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Entity;
-use DateTime;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -30,7 +29,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     message="This lang is already in use on that type."
  * )
  */
-class IncidentReport extends Entity
+class IncidentReport extends EntityApiFrontend
 {
     /**
      * @var string
@@ -93,47 +92,6 @@ class IncidentReport extends Entity
      * @JMS\Expose
      */
     private $more_information = '';
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    private $isActive = true;
-    /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-    /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
-
-    /**
-     * @inheritDoc
-     */
-    public function getEntityIdentificationArray(): array
-    {
-        return ['id' => $this->getId()];
-    }
-
-    /**
-     * Get id
-     *
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->getSlug();
-    }
 
     /**
      * @return string|null
@@ -301,58 +259,10 @@ class IncidentReport extends Entity
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function isActive(): bool
+    public function getIdentificatorString(): string
     {
-        return $this->isActive;
+        return 'slug';
     }
-
-    /**
-     * @param bool $isActive
-     * @return IncidentReport
-     */
-    public function setIsActive(bool $isActive): IncidentReport
-    {
-        $this->isActive = $isActive;
-        return $this;
-    }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getCreatedAt(): ?DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime|null $createdAt
-     * @return IncidentReport
-     */
-    public function setCreatedAt(?DateTime $createdAt): IncidentReport
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getUpdatedAt(): ?DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param DateTime|null $updatedAt
-     * @return IncidentReport
-     */
-    public function setUpdatedAt(?DateTime $updatedAt): IncidentReport
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
-
 }

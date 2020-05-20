@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Form\IncidentTypeType;
 use CertUnlp\NgenBundle\Repository\IncidentTypeRepository;
@@ -33,11 +33,11 @@ class IncidentTypeHandler extends Handler
     }
 
     /**
-     * @param Entity|IncidentType $entity
+     * @param EntityApi|IncidentType $entity
      * @param array|null $parameters
-     * @return Entity
+     * @return EntityApi
      */
-    public function patch(Entity $entity, array $parameters = null): Entity
+    public function patch(EntityApi $entity, array $parameters = null): EntityApi
     {
         if (isset($parameters['report'])) {
             $report = $this->getReportHandler()->post($parameters['report']);

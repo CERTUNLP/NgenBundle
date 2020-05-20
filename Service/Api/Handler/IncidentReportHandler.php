@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Form\IncidentReportType;
 use CertUnlp\NgenBundle\Repository\IncidentReportRepository;
 use Doctrine\ORM\EntityManagerInterface;

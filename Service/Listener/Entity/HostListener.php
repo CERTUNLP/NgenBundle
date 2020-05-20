@@ -42,18 +42,18 @@ class HostListener
     {
         $host->guessAddress($host->getIp() ?? $host->getDomain());
 
-        $this->incidentPrePersistUpdate($host);
+        $this->prePersistUpdate($host);
     }
 
-    public function incidentPrePersistUpdate(Host $host): void
+    public function prePersistUpdate(Host $host): void
     {
         $this->slugUpdate($host);
         $this->networkUpdate($host);
     }
 
-    public function slugUpdate(Host $incident): void
+    public function slugUpdate(Host $host): void
     {
-        $incident->setSlug(Sluggable\Urlizer::urlize($incident->getAddress()));
+        $host->setSlug(Sluggable\Urlizer::urlize($host->getAddress()));
     }
 
     /**
@@ -87,7 +87,7 @@ class HostListener
      */
     public function preUpdateHandler(Host $host): void
     {
-        $this->incidentPrePersistUpdate($host);
+        $this->prePersistUpdate($host);
     }
 
 

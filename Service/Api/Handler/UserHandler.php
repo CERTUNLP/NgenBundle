@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Form\UserType;
 use CertUnlp\NgenBundle\Repository\UserRepository;
@@ -35,9 +35,9 @@ class UserHandler extends Handler
 
     /**
      * @param array $parameters
-     * @return Entity| User
+     * @return EntityApi| User
      */
-    public function createEntityInstance(array $parameters = []): Entity
+    public function createEntityInstance(array $parameters = []): EntityApi
     {
         /** @var User $user */
         $user = parent::createEntityInstance($parameters);

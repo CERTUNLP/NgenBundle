@@ -11,13 +11,11 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident\State\Edge;
 
-use CertUnlp\NgenBundle\Entity\Contact\ContactCase;
+use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase;
 use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 
 
@@ -31,7 +29,6 @@ use JMS\Serializer\Annotation as JMS;
  */
 abstract class StateEdge extends Entity
 {
-
     /**
      * @var integer
      *
@@ -41,7 +38,6 @@ abstract class StateEdge extends Entity
      * @JMS\Expose
      */
     protected $id;
-
     /**
      * @var IncidentState
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState", inversedBy="edges")
@@ -49,7 +45,6 @@ abstract class StateEdge extends Entity
      * @JMS\Expose
      */
     protected $oldState;
-
     /**
      * @var IncidentState
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
@@ -57,59 +52,65 @@ abstract class StateEdge extends Entity
      * @JMS\Expose
      */
     protected $newState;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    private $isActive = true;
-
-    /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-    /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
     /**
      * @var ContactCase|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_assigned", referencedColumnName="slug")
      */
     private $mailAssigned;
-
     /**
      * @var ContactCase|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_team", referencedColumnName="slug")
      */
 
     private $mailTeam;
-
     /**
      * @var ContactCase|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_admin", referencedColumnName="slug")
      */
     private $mailAdmin;
-
     /**
      * @var ContactCase|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_reporter", referencedColumnName="slug")
      */
     private $mailReporter;
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'long-arrow-alt-right1';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return $this->getNewState()->getColor();
+    }
+
+    /**
+     * @return IncidentState
+     */
+    public function getNewState(): IncidentState
+    {
+        return $this->newState;
+    }
+
+    /**
+     * @param IncidentState $newState
+     * @return StateEdge
+     */
+    public function setNewState(IncidentState $newState): StateEdge
+    {
+        $this->newState = $newState;
+        return $this;
+    }
 
     public function __toString(): string
     {
@@ -134,13 +135,6 @@ abstract class StateEdge extends Entity
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getEntityIdentificationArray(): array
-    {
-        return ['id' => $this->getId()];
-    }
 
     /**
      * @return int
@@ -231,24 +225,6 @@ abstract class StateEdge extends Entity
     /**
      * @return IncidentState
      */
-    public function getNewState(): IncidentState
-    {
-        return $this->newState;
-    }
-
-    /**
-     * @param IncidentState $newState
-     * @return StateEdge
-     */
-    public function setNewState(IncidentState $newState): StateEdge
-    {
-        $this->newState = $newState;
-        return $this;
-    }
-
-    /**
-     * @return IncidentState
-     */
     public function getOldState(): IncidentState
     {
         return $this->oldState;
@@ -264,58 +240,5 @@ abstract class StateEdge extends Entity
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     * @return StateEdge
-     */
-    public function setIsActive(bool $isActive): StateEdge
-    {
-        $this->isActive = $isActive;
-        return $this;
-    }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getCreatedAt(): ?DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime|null $createdAt
-     * @return StateEdge
-     */
-    public function setCreatedAt(?DateTime $createdAt): StateEdge
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getUpdatedAt(): ?DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param DateTime|null $updatedAt
-     * @return StateEdge
-     */
-    public function setUpdatedAt(?DateTime $updatedAt): StateEdge
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
 
 }

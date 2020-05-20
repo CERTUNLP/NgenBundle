@@ -11,8 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Entity;
-use DateTime;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,7 +31,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentFeed extends Entity
+class IncidentFeed extends EntityApiFrontend
 {
     /**
      * @var string
@@ -51,29 +50,6 @@ class IncidentFeed extends Entity
      * @JMS\Groups({"api_input"})
      * */
     private $slug = '';
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    private $isActive = true;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
     /**
      * @var string
      *
@@ -96,13 +72,6 @@ class IncidentFeed extends Entity
         $this->incidents = new ArrayCollection();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getEntityIdentificationArray(): array
-    {
-        return ['slug' => $this->getSlug()];
-    }
 
     /**
      * Get slug
@@ -187,94 +156,6 @@ class IncidentFeed extends Entity
         $this->description = $description;
     }
 
-    /**
-     * Get id
-     *
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->getSlug();
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean
-     */
-    public function getIsActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return IncidentFeed
-     */
-    public function setIsActive($isActive)
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean
-     */
-    public function issActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param DateTime $createdAt
-     * @return IncidentFeed
-     */
-    public function setCreatedAt(DateTime $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param DateTime $updatedAt
-     * @return IncidentFeed
-     */
-    public function setUpdatedAt(DateTime $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
 
     /**
      * Add incident
@@ -309,5 +190,13 @@ class IncidentFeed extends Entity
     public function getIncidents(): Collection
     {
         return $this->incidents;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentificatorString(): string
+    {
+        return 'slug';
     }
 }

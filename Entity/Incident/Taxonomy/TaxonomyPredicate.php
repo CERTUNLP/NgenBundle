@@ -10,7 +10,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident\Taxonomy;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -26,7 +26,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity()
  * @ORM\Table(name="taxonomy_predicate")
  */
-class TaxonomyPredicate extends Entity
+class TaxonomyPredicate extends EntityApi
 {
     /**
      * @var string
@@ -53,29 +53,6 @@ class TaxonomyPredicate extends Entity
      */
     private $value;
     /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    private $isActive = true;
-    /**
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue",mappedBy="predicate")
      * @JMS\Exclude()
      */
@@ -99,13 +76,6 @@ class TaxonomyPredicate extends Entity
         $this->values = new ArrayCollection();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getEntityIdentificationArray(): array
-    {
-        return ['slug' => $this->getSlug()];
-    }
 
     /**
      * @return string
@@ -171,39 +141,6 @@ class TaxonomyPredicate extends Entity
         return $this;
     }
 
-    /**
-     * Get updatedAt
-     *
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param DateTime $updatedAt
-     *
-     * @return taxonomyPredicate
-     */
-    public function setUpdatedAt(DateTime $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     *
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function timestampsUpdate(): self
-    {
-        return $this->setUpdatedAt(new DateTime('now'));
-    }
 
     public function __toString(): string
     {
@@ -270,37 +207,6 @@ class TaxonomyPredicate extends Entity
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     */
-    public function setIsActive(bool $isActive): void
-    {
-        $this->isActive = $isActive;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     */
-    public function setCreatedAt(DateTime $createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
 
     /**
      * @return Collection
@@ -343,6 +249,14 @@ class TaxonomyPredicate extends Entity
     public function getName(): string
     {
         return $this->getExpanded();
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentificatorString(): string
+    {
+        return 'slug';
     }
 }
 

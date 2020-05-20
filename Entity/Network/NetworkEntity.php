@@ -1,18 +1,14 @@
 <?php
-
 /*
  * This file is part of the Ngen - CSIRT Incident Report System.
- *
- * (c) CERT UNLP <support@cert.unlp.edu.ar>
- *
- * This source file is subject to the GPL v3.0 license that is bundled
- * with this source code in the file LICENSE.
+ *   (c) CERT UNLP <support@cert.unlp.edu.ar>
+ *  This source file is subject to the GPL v3.0 license that is bundled
+ *  with this source code in the file LICENSE.
  */
 
 namespace CertUnlp\NgenBundle\Entity\Network;
 
-use CertUnlp\NgenBundle\Entity\Entity;
-use DateTime;
+use CertUnlp\NgenBundle\Entity\EntityApi;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,11 +18,10 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * NetworkEntity
  *
- * @ORM\Table()
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
-class NetworkEntity extends Entity
+class NetworkEntity extends EntityApi
 {
     /**
      * @var integer
@@ -51,31 +46,11 @@ class NetworkEntity extends Entity
      * @JMS\Expose
      * */
     private $slug = '';
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network",mappedBy="network_entity")) */
+    /**
+     * @var Network
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network",mappedBy="network_entity"))
+     */
     private $networks;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    private $isActive = true;
 
     /**
      * Constructor
@@ -88,11 +63,11 @@ class NetworkEntity extends Entity
     }
 
     /**
-     * {@inheritDoc}
+     * @return string
      */
-    public function getEntityIdentificationArray(): array
+    public function getIdentificatorString(): string
     {
-        return ['slug' => $this->getSlug()];
+        return 'id';
     }
 
     /**
@@ -134,15 +109,6 @@ class NetworkEntity extends Entity
         return 'info';
     }
 
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
 
     /**
      * @return string
@@ -210,85 +176,12 @@ class NetworkEntity extends Entity
     }
 
     /**
-     * Get createdAt
-     *
-     * @return DateTime
+     * @return int
      */
-    public function getCreatedAt(): DateTime
+    public function getId(): int
     {
-        return $this->createdAt;
+        return $this->id;
     }
 
-    /**
-     * Set createdAt
-     *
-     * @param DateTime $createdAt
-     *
-     * @return NetworkEntity
-     */
-    public function setCreatedAt(DateTime $createdAt): NetworkEntity
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param DateTime $updatedAt
-     *
-     * @return NetworkEntity
-     */
-    public function setUpdatedAt(DateTime $updatedAt): NetworkEntity
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean
-     */
-    public function getIsActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     *
-     * @return NetworkEntity
-     */
-    public function setIsActive(bool $isActive): NetworkEntity
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
 
 }

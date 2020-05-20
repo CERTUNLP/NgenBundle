@@ -14,12 +14,10 @@ namespace CertUnlp\NgenBundle\Entity\Network\Host;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\CommentBundle\Model\Thread;
-use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -28,33 +26,7 @@ use JMS\Serializer\Annotation as JMS;
  */
 class Host extends NetworkElement
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Expose
-     */
-    private $id;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
-     */
-    private $createdAt;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
-     */
-    private $updatedAt;
+
     /**
      * @var string
      *
@@ -82,13 +54,6 @@ class Host extends NetworkElement
      */
     private $incidents_as_destination;
     private $comment_thread;
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    private $isActive = true;
 
     public function __construct(?string $term = null)
     {
@@ -97,13 +62,6 @@ class Host extends NetworkElement
         $this->incidents_as_destination = new ArrayCollection();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getEntityIdentificationArray(): array
-    {
-        return ['address' => $this->getAddress()];
-    }
 
     /**
      * @return string
@@ -145,52 +103,6 @@ class Host extends NetworkElement
     public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * @param int $id
-     * @return Host
-     */
-    public function setId(int $id): Host
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     * @return Host
-     */
-    public function setCreatedAt(DateTime $createdAt): Host
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param DateTime $updatedAt
-     * @return Host
-     */
-    public function setUpdatedAt(DateTime $updatedAt): Host
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
     }
 
     /**
@@ -316,5 +228,4 @@ class Host extends NetworkElement
         $this->incidents_as_destination = $incidents_as_destination;
         return $this;
     }
-
 }

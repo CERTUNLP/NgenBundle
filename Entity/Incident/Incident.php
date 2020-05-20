@@ -11,8 +11,9 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Communication\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
@@ -39,7 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
  */
-class Incident extends Entity
+class Incident extends EntityApiFrontend
 {
 
     /**
@@ -309,50 +310,6 @@ class Incident extends Entity
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function getEntityIdentificationArray(): array
-    {
-        return ['origin' => $this->getOrigin()->getId(), 'type' => $this->getType()->getSlug()];
-    }
-
-    /**
-     * @return Host
-     */
-    public function getOrigin(): ?Host
-    {
-        return $this->origin;
-    }
-
-    /**
-     * @param Host $origin
-     * @return Incident
-     */
-    public function setOrigin(Host $origin = null): Incident
-    {
-        $this->setter($this->origin, $origin);
-        return $this;
-    }
-
-    /**
-     * @return IncidentType
-     */
-    public function getType(): ?IncidentType
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param IncidentType $type
-     * @return Incident
-     */
-    public function setType(IncidentType $type = null): Incident
-    {
-        $this->setter($this->type, $type, true);
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getIcon(): string
@@ -608,12 +565,21 @@ class Incident extends Entity
 
     /**
      * @param int $id
-     * @return Incident
+     * @return Entity|Incident
      */
-    public function setId(int $id): Incident
+    public function setId($id): Entity
     {
-        $this->setter($this->id, $id);
+        $identificator_string = $this->getIdentificatorString();
+        $this->setter($this->$identificator_string, $id);
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentificatorString(): string
+    {
+        return 'id';
     }
 
     /**
@@ -795,9 +761,9 @@ class Incident extends Entity
 
     /**
      * @param DateTime $updatedAt
-     * @return Incident
+     * @return Entity
      */
-    public function setUpdatedAt(DateTime $updatedAt): Incident
+    public function setUpdatedAt(DateTime $updatedAt): Entity
     {
         $this->setter($this->updatedAt, $updatedAt);
         return $this;
@@ -1091,9 +1057,9 @@ class Incident extends Entity
 
     /**
      * @param DateTime $createdAt
-     * @return Incident
+     * @return Entity
      */
-    public function setCreatedAt(DateTime $createdAt): Incident
+    public function setCreatedAt(DateTime $createdAt): Entity
     {
         $this->setter($this->createdAt, $createdAt);
         return $this;
@@ -1539,11 +1505,21 @@ class Incident extends Entity
     }
 
     /**
-     * @return string
+     * @return Host
      */
-    public function getIp(): ?string
+    public function getOrigin(): ?Host
     {
-        return $this->getAddress();
+        return $this->origin;
+    }
+
+    /**
+     * @param Host $origin
+     * @return Incident
+     */
+    public function setOrigin(Host $origin = null): Incident
+    {
+        $this->setter($this->origin, $origin);
+        return $this;
     }
 
     /**
@@ -1631,4 +1607,21 @@ class Incident extends Entity
         return ($this->getOrigin() && $this->getType());
     }
 
+    /**
+     * @return IncidentType
+     */
+    public function getType(): ?IncidentType
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param IncidentType $type
+     * @return Incident
+     */
+    public function setType(IncidentType $type = null): Incident
+    {
+        $this->setter($this->type, $type, true);
+        return $this;
+    }
 }

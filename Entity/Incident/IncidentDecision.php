@@ -2,10 +2,9 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\Network\Network;
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -17,7 +16,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentDecisionRepository")
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentDecision extends Entity
+class IncidentDecision extends EntityApiFrontend
 {
 
 
@@ -29,84 +28,70 @@ class IncidentDecision extends Entity
      * @ORM\GeneratedValue(strategy="AUTO")
      * @JMS\Expose()
      */
-    protected $id;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose()
-     */
-    protected $createdAt;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose()
-     */
-    protected $updatedAt;
+    private $id;
     /**
      * @var IncidentType|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      * @JMS\Expose()
      */
-    protected $type;
+    private $type;
     /**
      * @var IncidentFeed|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed")
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
      * @JMS\Expose()
      */
-    protected $feed;
+    private $feed;
     /**
      * @var Network|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network")
      * @ORM\JoinColumn(name="network", referencedColumnName="id")
      * @JMS\Expose()
      */
-    protected $network;
+    private $network;
     /**
      * @var IncidentImpact|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact")
      * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
      * @JMS\Expose()
      */
-    protected $impact;
+    private $impact;
     /**
      * @var IncidentUrgency|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency")
      * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
      * @JMS\Expose()
      */
-    protected $urgency;
+    private $urgency;
     /**
      * @var IncidentTlp|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp")
      * @ORM\JoinColumn(name="tlp", referencedColumnName="slug")
      * @JMS\Expose()
      */
-    protected $tlp;
+    private $tlp;
     /**
      * @var IncidentState|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose()
      */
-    protected $state;
+    private $state;
     /**
      * @var IncidentState|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unattended_state", referencedColumnName="slug")
      * @JMS\Expose()
      */
-    protected $unattendedState;
+    private $unattendedState;
     /**
      * @var IncidentState|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unsolved_state", referencedColumnName="slug")
      * @JMS\Expose()
      */
-    protected $unsolvedState;
+    private $unsolvedState;
     /**
      * @var string
      * @ORM\Column(name="slug", type="string", length=100)
@@ -119,7 +104,7 @@ class IncidentDecision extends Entity
      * }, fields={"id"})
      *
      */
-    protected $slug;
+    private $slug = '';
     /**
      * @var boolean
      *
@@ -339,52 +324,6 @@ class IncidentDecision extends Entity
     }
 
     /**
-     * @param int|null $id
-     * @return IncidentDecision
-     */
-    public function setId(?int $id): IncidentDecision
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     * @return IncidentDecision
-     */
-    public function setCreatedAt(DateTime $createdAt): IncidentDecision
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param DateTime $updatedAt
-     * @return IncidentDecision
-     */
-    public function setUpdatedAt(DateTime $updatedAt): IncidentDecision
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
-    /**
      * @return IncidentState|null
      */
     public function getUnattendedState(): ?IncidentState
@@ -456,6 +395,12 @@ class IncidentDecision extends Entity
         return $this;
     }
 
-
+    /**
+     * @return string
+     */
+    public function getIdentificatorString(): string
+    {
+        return 'id';
+    }
 }
 

@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Form\IncidentStateType;
 use CertUnlp\NgenBundle\Repository\IncidentStateRepository;
@@ -27,7 +27,7 @@ class IncidentStateHandler extends Handler
     }
 
     /**
-     * @return IncidentState|Entity
+     * @return IncidentState|EntityApi
      */
     public function getInitialState(): IncidentState
     {

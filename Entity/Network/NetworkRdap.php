@@ -9,11 +9,11 @@
 namespace CertUnlp\NgenBundle\Entity\Network;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
- *
- * @author dam
  * @ORM\Entity()
+ * @JMS\ExclusionPolicy("all")
  */
 class NetworkRdap extends Network
 {

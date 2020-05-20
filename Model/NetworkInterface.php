@@ -31,26 +31,6 @@ interface NetworkInterface
 {
 
     /**
-     * Constructor
-     */
-    public function __construct();
-
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return Network
-     */
-    public function setIsActive(bool $isActive);
-
-    /**
-     * Get isActive
-     *
-     * @return boolean
-     */
-    public function isActive();
-
-    /**
      * Set networkAdmin
      *
      * @param NetworkAdmin $networkAdmin

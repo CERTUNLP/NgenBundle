@@ -1,6 +1,6 @@
 <?php
 
-namespace CertUnlp\NgenBundle\Entity\Contact;
+namespace CertUnlp\NgenBundle\Entity\Communication\Contact;
 
 use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
@@ -18,7 +18,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\DiscriminatorMap({"contact"="Contact","telegram" = "ContactTelegram", "phone" = "ContactPhone", "email" = "ContactEmail", "threema"="ContactThreema"})
  * @JMS\ExclusionPolicy("all")
  */
-class Contact extends Entity
+abstract class Contact extends Entity
 {
 
     /**
@@ -41,7 +41,7 @@ class Contact extends Entity
      */
     private $network_admin;
     /**
-     * @var NetworkAdmin|null
+     * @var User|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="contacts")
      */
     private $user;
@@ -57,9 +57,10 @@ class Contact extends Entity
      * @ORM\Column(name="contact_type", type="string", length=255)
      */
     private $contactType;
+
     /**
      * @var ContactCase|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase", inversedBy="contacts")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase", inversedBy="contacts")
      * @ORM\JoinColumn(name="contact_case", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"api"})
@@ -73,14 +74,6 @@ class Contact extends Entity
     private $encryptionKey;
 
     /**
-     * {@inheritDoc}
-     */
-    public function getEntityIdentificationArray(): array
-    {
-        return ['id' => $this->getId()];
-    }
-
-    /**
      * Get id
      *
      * @return integer
@@ -90,16 +83,26 @@ class Contact extends Entity
         return $this->id;
     }
 
-    public function getEmail(): string
-    {
-        return '';
-    }
+    /**
+     * @return string
+     */
+    abstract public function getEmail(): string;
 
-    public function getTelegram(): string
-    {
-        return '';
+    /**
+     * @return string
+     */
+    abstract public function getTelegram(): string;
 
-    }
+    /**
+     * @return string
+     */
+    abstract public function getPhone(): string;
+
+    /**
+     * @return string
+     */
+    abstract public function getTreema(): string;
+
 
     /**
      * @return NetworkAdmin
@@ -238,9 +241,9 @@ class Contact extends Entity
     }
 
     /**
-     * @return NetworkAdmin|null
+     * @return User|null
      */
-    public function getUser(): ?NetworkAdmin
+    public function getUser(): ?User
     {
         return $this->user;
     }
@@ -255,19 +258,4 @@ class Contact extends Entity
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getIcon(): string
-    {
-        // TODO: Implement getIcon() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getColor(): string
-    {
-        // TODO: Implement getColor() method.
-    }
 }
