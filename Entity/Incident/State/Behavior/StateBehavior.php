@@ -16,8 +16,6 @@ use JMS\Serializer\Annotation as JMS;
 
 
 /**
- * IncidentTlp
- *
  * @ORM\Entity()
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")

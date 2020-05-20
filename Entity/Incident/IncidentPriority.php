@@ -219,16 +219,6 @@ class IncidentPriority extends EntityApiFrontend
     }
 
     /**
-     * @param bool $isActive
-     * @return IncidentPriority
-     */
-    public function setIsActive(bool $isActive): IncidentPriority
-    {
-        $this->isActive = $isActive;
-        return $this;
-    }
-
-    /**
      * @return int|null
      */
     public function getUnresponseTime(): ?int

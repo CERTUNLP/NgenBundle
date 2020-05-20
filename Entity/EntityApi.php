@@ -16,6 +16,7 @@ use JMS\Serializer\Annotation as JMS;
 
 /**
  * @JMS\ExclusionPolicy("all")
+ * @ORM\MappedSuperclass()
  */
 abstract class EntityApi extends Entity
 {

@@ -20,7 +20,6 @@ use JMS\Serializer\Annotation as JMS;
 
 
 /**
- * @ORM\Table()
  * @ORM\Entity()
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")

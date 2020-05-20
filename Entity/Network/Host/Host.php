@@ -98,14 +98,6 @@ class Host extends NetworkElement
     }
 
     /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
      * @return Network
      */
     public function getNetwork(): ?Network
@@ -139,24 +131,6 @@ class Host extends NetworkElement
     public function setCommentThread(Thread $comment_thread): Host
     {
         $this->comment_thread = $comment_thread;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     * @return Host
-     */
-    public function setIsActive(bool $isActive): Host
-    {
-        $this->isActive = $isActive;
         return $this;
     }
 

@@ -35,13 +35,6 @@ class TaxonomyValue extends EntityApi
      * */
     private $slug;
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    private $isActive = true;
-    /**
      * @var string|null
      *
      * @ORM\Column(name="description", type="string", length=1024)
@@ -257,22 +250,6 @@ class TaxonomyValue extends EntityApi
     public function timestampsUpdate(): self
     {
         return $this->setUpdatedAt(new DateTime('now'));
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     */
-    public function setIsActive(bool $isActive): void
-    {
-        $this->isActive = $isActive;
     }
 
     /**

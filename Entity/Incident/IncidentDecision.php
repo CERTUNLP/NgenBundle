@@ -112,13 +112,6 @@ class IncidentDecision extends EntityApiFrontend
      * @JMS\Expose()
      */
     private $autoSaved = false;
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose()
-     */
-    private $isActive = true;
 
     /**
      * @inheritDoc
@@ -374,24 +367,6 @@ class IncidentDecision extends EntityApiFrontend
     public function setAutoSaved(bool $autoSaved): IncidentDecision
     {
         $this->autoSaved = $autoSaved;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     * @return IncidentDecision
-     */
-    public function setIsActive(bool $isActive): IncidentDecision
-    {
-        $this->isActive = $isActive;
         return $this;
     }
 
