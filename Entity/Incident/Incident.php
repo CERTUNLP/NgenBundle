@@ -210,24 +210,6 @@ class Incident extends EntityApiFrontend
 //
 //    private $communicationHistory;
     /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
-     */
-    private $createdAt;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
-     */
-    private $updatedAt;
-    /**
      * @var boolean
      */
     private $needToCommunicate = false;
@@ -751,13 +733,6 @@ class Incident extends EntityApiFrontend
         return $this;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
 
     /**
      * @param DateTime $updatedAt
@@ -1045,14 +1020,6 @@ class Incident extends EntityApiFrontend
             });
         }
         return new ArrayCollection();
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
     }
 
     /**

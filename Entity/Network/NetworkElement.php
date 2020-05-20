@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @JMS\ExclusionPolicy("all")
+ * @ORM\MappedSuperclass()
  */
 abstract class NetworkElement extends EntityApiFrontend
 {
