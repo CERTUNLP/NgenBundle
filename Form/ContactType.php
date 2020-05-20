@@ -11,8 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Form;
 
-use CertUnlp\NgenBundle\Entity\Contact\Contact;
-use CertUnlp\NgenBundle\Entity\Contact\ContactCase;
+use CertUnlp\NgenBundle\Entity\Communication\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

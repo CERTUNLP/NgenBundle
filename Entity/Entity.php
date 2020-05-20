@@ -11,206 +11,92 @@
 
 namespace CertUnlp\NgenBundle\Entity;
 
-use CertUnlp\NgenBundle\Model\EntityInterface;
-use Closure;
-use Doctrine\Common\Collections\Collection;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
 /**
  * @JMS\ExclusionPolicy("all")
  */
-abstract class Entity implements EntityInterface
+abstract class Entity
 {
 
-//    /**
-//     * @var integer|null
-//     *
-//     * @ORM\Column(name="id", type="integer")
-//     * @ORM\GeneratedValue(strategy="AUTO")
-//     * @JMS\Expose
-//     */
-//    protected $id;
-//    /**
-//     * @var DateTime|null
-//     * @Gedmo\Timestampable(on="create")
-//     * @ORM\Column(name="created_at", type="datetime", nullable=true)
-//     * @JMS\Expose
-//     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-//     */
-//    protected $createdAt;
-//    /**
-//     * @var DateTime|null
-//     * @Gedmo\Timestampable(on="update")
-//     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-//     * @JMS\Expose
-//     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-//     */
-//    protected $updatedAt;
-//    /**
-//     * @var DateTime|null
-//     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
-//     * @Gedmo\Blameable(on="create")
-//     */
-//    protected $createdBy;
     /**
-     * @var boolean
-     *
-     * @ORM\Column(type="boolean")
+     * @var DateTime|null
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
      * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
-    private $active = true;
+    private $createdAt = null;
+    /**
+     * @var DateTime|null
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    private $updatedAt = null;
+    /**
+     * @var int|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
+     * @Gedmo\Blameable(on="create")
+     */
+    private $createdBy = null;
+
 
     /**
+     * @return DateTime|null
+     */
+    public function getCreatedAt(): ?DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param DateTime|null $createdAt
      * @return Entity
      */
-    public function activate(): EntityInterface
+    public function setCreatedAt(DateTime $createdAt): Entity
     {
-        $this->setActive(true);
+        $this->createdAt = $createdAt;
         return $this;
     }
 
     /**
-     * @return bool
+     * @return DateTime|null
      */
-    public function isActive(): bool
+    public function getUpdatedAt(): ?DateTime
     {
-        return $this->active;
+        return $this->updatedAt;
     }
 
     /**
-     * @param bool $active
+     * @param DateTime|null $updatedAt
      * @return Entity
      */
-    public function setActive(bool $active): Entity
+    public function setUpdatedAt(DateTime $updatedAt): Entity
     {
-        $this->active = $active;
+        $this->updatedAt = $updatedAt;
         return $this;
     }
 
     /**
-     * @return Entity
+     * @return int|null
      */
-    public function desactivate(): EntityInterface
+    public function getCreatedBy(): ?int
     {
-        $this->setActive(false);
-        return $this;
+        return $this->createdBy;
     }
 
     /**
-     * @return string
+     * @param int|null $createdBy
+     * @return Entity
      */
-    abstract public function getIcon(): string;
-
-
-    /**
-     * @return string
-     */
-    abstract public function getColor(): string;
-
-//
-//    /**
-//     * @return int|null
-//     */
-//    public function getId(): ?int
-//    {
-//        return $this->id;
-//    }
-//
-//    /**
-//     * @param int|null $id
-//     * @return Entity
-//     */
-//    public function setId(?int $id): Entity
-//    {
-//        $this->id = $id;
-//        return $this;
-//    }
-//
-//    /**
-//     * @return DateTime|null
-//     */
-//    public function getCreatedAt(): ?DateTime
-//    {
-//        return $this->createdAt;
-//    }
-//
-//    /**
-//     * @param DateTime|null $createdAt
-//     * @return Entity
-//     */
-//    public function setCreatedAt(?DateTime $createdAt): Entity
-//    {
-//        $this->createdAt = $createdAt;
-//        return $this;
-//    }
-//
-//    /**
-//     * @return DateTime|null
-//     */
-//    public function getUpdatedAt(): ?DateTime
-//    {
-//        return $this->updatedAt;
-//    }
-//
-//    /**
-//     * @param DateTime|null $updatedAt
-//     * @return Entity
-//     */
-//    public function setUpdatedAt(?DateTime $updatedAt): Entity
-//    {
-//        $this->updatedAt = $updatedAt;
-//        return $this;
-//    }
-//
-//    /**
-//     * @return DateTime|null
-//     */
-//    public function getCreatedBy(): ?DateTime
-//    {
-//        return $this->createdBy;
-//    }
-//
-//    /**
-//     * @param DateTime|null $createdBy
-//     * @return Entity
-//     */
-//    public function setCreatedBy(?DateTime $createdBy): Entity
-//    {
-//        $this->createdBy = $createdBy;
-//        return $this;
-//    }
-//
-//    /**
-//     * @return bool
-//     */
-//    public function isActive(): bool
-//    {
-//        return $this->isActive;
-//    }
-//
-
-    /**
-     * @param Collection $collection
-     * @param Closure $callback
-     * @return array
-     */
-    public function getRatio(Collection $collection, Closure $callback): array
+    public function setCreatedBy(?int $createdBy): Entity
     {
-        $ratio = [];
-        foreach ($collection as $colectee) {
-            if (isset($ratio[$callback($colectee)])) {
-                $ratio[$callback($colectee)]++;
-            } else {
-                $ratio[$callback($colectee)] = 1;
-            }
-        }
-
-        $percentages = [];
-        foreach ($ratio as $key => $value) {
-            $percentages[] = [$key, $value];
-        }
-
-        return $percentages;
+        $this->createdBy = $createdBy;
+        return $this;
     }
 
 

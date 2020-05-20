@@ -2,7 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -16,16 +16,16 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentUrgency extends Entity implements Translatable
+class IncidentUrgency extends EntityApiFrontend implements Translatable
 {
     /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column(name="name", type="string", length=45, nullable=true)
      * @JMS\Expose
      * @Gedmo\Translatable
      */
-    private $name;
+    private $name = '';
 
     /**
      * @Gedmo\Locale
@@ -35,28 +35,28 @@ class IncidentUrgency extends Entity implements Translatable
     private $locale;
 
     /**
-     * @var string|null
+     * @var string
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
      * @JMS\Expose
      * */
-    private $slug;
+    private $slug = '';
 
     /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
      * @JMS\Expose
      */
-    private $description;
+    private $description = '';
 
 
     /**
-     * @var Collection|null
+     * @var Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority",mappedBy="urgency"))
      */
-    private $incidentsPriorities;
+    private $incidentsPriorities = null;
 
     /**
      * @return mixed
@@ -135,7 +135,10 @@ class IncidentUrgency extends Entity implements Translatable
         return $this;
     }
 
-    public function __toString()
+    /**
+     * @return string
+     */
+    public function __toString(): string
     {
         return $this->getSlug();
     }
@@ -189,5 +192,13 @@ class IncidentUrgency extends Entity implements Translatable
             default:
                 return 'info';
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentificatorString(): string
+    {
+        return 'slug';
     }
 }

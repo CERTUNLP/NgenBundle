@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Entity\Contact;
+namespace CertUnlp\NgenBundle\Entity\Communication\Contact;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,16 +19,35 @@ use Doctrine\ORM\Mapping as ORM;
  * @author einar
  * @ORM\Entity()
  */
-class ContactTelegram extends Contact
+class ContactPhone extends Contact
 {
-
-    public function getType(): string
+    public function getEmail(): string
     {
-        return 'telegram';
+        return '';
     }
 
+    /**
+     * @return string
+     */
     public function getTelegram(): string
+    {
+        return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone(): string
     {
         return $this->getUsername();
     }
+
+    /**
+     * @return string
+     */
+    public function getTreema(): string
+    {
+        return '';
+    }
+
 }

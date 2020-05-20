@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Network;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Network\Address\Address;
 use CertUnlp\NgenBundle\Entity\Network\Address\DomainAddress;
@@ -23,11 +23,9 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * NetworkElement
- *
  * @JMS\ExclusionPolicy("all")
  */
-abstract class NetworkElement extends Entity
+abstract class NetworkElement extends EntityApiFrontend
 {
     /**
      * @var string
@@ -38,8 +36,7 @@ abstract class NetworkElement extends Entity
      * @JMS\Groups({"api"})
      * @CustomAssert\ValidAddress()
      */
-    protected $ip;
-
+    private $ip;
     /**
      * @var string
      *
@@ -49,13 +46,21 @@ abstract class NetworkElement extends Entity
      * @JMS\Groups({"api"})
      * @CustomAssert\ValidAddress()
      */
-    protected $domain;
-
+    private $domain;
     /**
      * @var Address
      * @Assert\NotNull(message="not a valid address")
      */
-    protected $address;
+    private $address;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Expose
+     */
+    private $id;
 
     /**
      * Host constructor.
@@ -249,5 +254,13 @@ abstract class NetworkElement extends Entity
             return $incident->getFeed()->getSlug();
         });
 
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentificatorString(): string
+    {
+        return 'id';
     }
 }

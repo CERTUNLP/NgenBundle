@@ -11,9 +11,9 @@
 
 namespace CertUnlp\NgenBundle\Service\Communications;
 
-use CertUnlp\NgenBundle\Entity\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Communication\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Communication\Message\TelegramMessage;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Communication\TelegramMessage;
 use FOS\CommentBundle\Event\CommentPersistEvent;
 use FOS\CommentBundle\Model\SignedCommentInterface;
 

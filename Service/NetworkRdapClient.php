@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Service;
 
-use CertUnlp\NgenBundle\Entity\Contact\ContactEmail;
+use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactEmail;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
 use CertUnlp\NgenBundle\Entity\Network\NetworkRdap;

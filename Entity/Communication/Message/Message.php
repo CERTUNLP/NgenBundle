@@ -1,7 +1,14 @@
 <?php
+/**
+ * This file is part of the Ngen - CSIRT Incident Report System.
+ *   (c) CERT UNLP <support@cert.unlp.edu.ar>
+ *  This source file is subject to the GPL v3.0 license that is bundled
+ *  with this source code in the file LICENSE.
+ */
 
-namespace CertUnlp\NgenBundle\Entity\Communication;
+namespace CertUnlp\NgenBundle\Entity\Communication\Message;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\DiscriminatorMap({"telegram" = "TelegramMessage", "threema" = "ThreemaMessage", "message"="Message"})
  * @ORM\HasLifecycleCallbacks
  */
-class Message
+abstract class Message extends Entity
 {
     /**
      * @var int|null
@@ -32,20 +39,6 @@ class Message
      * @ORM\Column(name="data", type="json")
      */
     private $data;
-
-    /**
-     * @var DateTime|null
-     *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     */
-    private $updatedAt;
-
-    /**
-     * @var DateTime|null
-     *
-     * @ORM\Column(name="created_at", type="datetime", nullable=true)
-     */
-    private $createdAt;
 
     /**
      * @var array|null
@@ -102,28 +95,6 @@ class Message
         return $this;
     }
 
-    /**
-     * Get updatedAt
-     *
-     * @return DateTime
-     */
-    public function getUpdatedAt(): ?DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param DateTime $updatedAt
-     * @return Message
-     */
-    public function setUpdatedAt(DateTime $updatedAt): Message
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
 
     /**
      * Get response
@@ -209,36 +180,4 @@ class Message
         }
     }
 
-    /**
-     * Get createdAt
-     *
-     * @return DateTime
-     */
-    public function getCreatedAt(): ?DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param DateTime $createdAt
-     * @return Message
-     */
-    public function setCreatedAt(DateTime $createdAt): Message
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function isTelegram(): bool
-    {
-        return false;
-    }
-
-    public function isThreema(): bool
-    {
-        return false;
-    }
 }

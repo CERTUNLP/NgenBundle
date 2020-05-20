@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Service\Frontend\Controller;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApi;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\ColumnChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\Timeline;
@@ -226,19 +226,19 @@ class FrontendControllerService
     }
 
     /**
-     * @param Entity $object
+     * @param EntityApi $object
      * @return array
      */
-    public function editEntity(Entity $object): array
+    public function editEntity(EntityApi $object): array
     {
         return array('form' => $this->getFormFactory()->create($this->getEntityType(), $object)->createView(), 'method' => 'patch');
     }
 
     /**
-     * @param Entity $object
-     * @return array|Entity[]
+     * @param EntityApi $object
+     * @return array|EntityApi[]
      */
-    public function detailEntity(Entity $object): array
+    public function detailEntity(EntityApi $object): array
     {
         return array('object' => $object);
     }

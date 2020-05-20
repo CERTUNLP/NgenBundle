@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident\Taxonomy;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,7 +23,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity()
  * @ORM\Table(name="taxonomy_value")
  */
-class TaxonomyValue extends Entity
+class TaxonomyValue extends EntityApi
 {
     /**
      * @var string|null
@@ -69,22 +69,6 @@ class TaxonomyValue extends Entity
 
     private $predicate;
     /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-    /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
-    /**
      * @var int|null
      *
      * @ORM\Column(name="version", type="integer")
@@ -92,11 +76,13 @@ class TaxonomyValue extends Entity
     private $version;
 
     /**
-     * {@inheritDoc}
+     * Get id
+     *
+     * @return int
      */
-    public function getEntityIdentificationArray(): array
+    public function getId(): int
     {
-        return ['slug' => $this->getSlug()];
+        return $this->getSlug();
     }
 
     /**
@@ -113,16 +99,6 @@ class TaxonomyValue extends Entity
     public function setSlug(string $slug): void
     {
         $this->slug = $slug;
-    }
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->getSlug();
     }
 
     public function __toString(): string
@@ -250,30 +226,6 @@ class TaxonomyValue extends Entity
     }
 
     /**
-     * Get updatedAt
-     *
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param DateTime $updatedAt
-     *
-     * @return TaxonomyValue
-     */
-    public function setUpdatedAt(DateTime $updatedAt): TaxonomyValue
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
      * Get version
      *
      * @return integer
@@ -324,23 +276,6 @@ class TaxonomyValue extends Entity
     }
 
     /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     */
-    public function setCreatedAt(DateTime $createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
-
-
-    /**
      * @return string
      */
     public function getIcon(): string
@@ -354,6 +289,14 @@ class TaxonomyValue extends Entity
     public function getColor(): string
     {
         return 'primary';
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentificatorString(): string
+    {
+        return 'slug';
     }
 }
 

@@ -2,7 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -12,11 +12,10 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * IncidentImpact
  *
- * @ORM\Table(name="incident_impact")
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentImpact extends Entity implements Translatable
+class IncidentImpact extends EntityApiFrontend implements Translatable
 {
     /**
      * @var string
@@ -33,6 +32,22 @@ class IncidentImpact extends Entity implements Translatable
      * this is not a mapped field of entity metadata, just a simple property
      */
     private $locale;
+    /**
+     * @var string
+     * @ORM\Id
+     * @Gedmo\Slug(fields={"name"}, separator="_")
+     * @ORM\Column(name="slug", type="string", length=45)
+     * @JMS\Expose()
+     * */
+    private $slug = '';
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=512, nullable=true)
+     * @JMS\Expose()
+     */
+    private $description = '';
+
 
     /**
      * @return mixed
@@ -52,44 +67,6 @@ class IncidentImpact extends Entity implements Translatable
         return $this;
     }
 
-    /**
-     * @var string
-     * @ORM\Id
-     * @Gedmo\Slug(fields={"name"}, separator="_")
-     * @ORM\Column(name="slug", type="string", length=45)
-     * @JMS\Expose()
-     * */
-    private $slug = '';
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=512, nullable=true)
-     * @JMS\Expose()
-     */
-    private $description = '';
-    /**
-     * @var Collection|null
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority",mappedBy="impact"))
-     */
-    private $incidentsPriorities;
-
-    /**
-     * @return Collection
-     */
-    public function getIncidentsPriorities(): Collection
-    {
-        return $this->incidentsPriorities;
-    }
-
-    /**
-     * @param Collection $incidentsPriorities
-     * @return IncidentImpact
-     */
-    public function setIncidentsPriorities(Collection $incidentsPriorities): IncidentImpact
-    {
-        $this->incidentsPriorities = $incidentsPriorities;
-        return $this;
-    }
 
     public function setTranslatableLocale($locale)
     {
@@ -188,4 +165,12 @@ class IncidentImpact extends Entity implements Translatable
         }
     }
 
+
+    /**
+     * @return string
+     */
+    public function getIdentificatorString(): string
+    {
+       return 'slug';
+    }
 }

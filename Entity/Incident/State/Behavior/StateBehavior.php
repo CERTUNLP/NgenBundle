@@ -2,12 +2,11 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident\State\Behavior;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentChangeState;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,7 +24,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\DiscriminatorMap({"closed" = "ClosedBehavior", "on_treatment" = "OnTreatmentBehavior", "new" = "NewBehavior", "discarded" = "DiscardedBehavior", "behavior" = "StateBehavior"})
  * @JMS\ExclusionPolicy("all")
  */
-abstract class StateBehavior extends Entity
+abstract class StateBehavior extends EntityApi
 {
 
     /**
@@ -57,15 +56,6 @@ abstract class StateBehavior extends Entity
      * @JMS\Exclude()
      */
     private $states;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    private $isActive = true;
-
     /**
      * @var boolean
      *
@@ -102,23 +92,6 @@ abstract class StateBehavior extends Entity
      * @JMS\Expose
      */
     private $canComunicate = true;
-
-    /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-    /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
 
     public function __construct()
     {
@@ -249,62 +222,6 @@ abstract class StateBehavior extends Entity
         return $this->canAddHistory;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return StateBehavior
-     */
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     * @return StateBehavior
-     */
-    public function setIsActive(bool $isActive): self
-    {
-        $this->isActive = $isActive;
-        return $this;
-    }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getCreatedAt(): ?DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime|null $createdAt
-     * @return StateBehavior
-     */
-    public function setCreatedAt(?DateTime $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
 
     public function __toString(): string
     {
@@ -424,7 +341,6 @@ abstract class StateBehavior extends Entity
         return $incident;
     }
 
-
     public function updatePriority(Incident $incident, Incident $incidentDetected): Incident
     {
         return $incident;
@@ -440,24 +356,6 @@ abstract class StateBehavior extends Entity
         return 0;
     }
 
-    /**
-     * @return DateTime|null
-     */
-    public function getUpdatedAt(): ?DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param DateTime|null $updatedAt
-     * @return StateBehavior
-     */
-    public function setUpdatedAt(?DateTime $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
     abstract public function isAttended(): bool;
 
     abstract public function isResolved(): bool;
@@ -468,4 +366,29 @@ abstract class StateBehavior extends Entity
 
     abstract public function isDead(): bool;
 
+    /**
+     * @return string|null
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return StateBehavior
+     */
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getIdentificatorString(): string
+    {
+        return 'slug';
+    }
 }

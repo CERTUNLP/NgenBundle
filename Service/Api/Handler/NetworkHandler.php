@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
 use CertUnlp\NgenBundle\Entity\Network\NetworkExternal;
@@ -84,21 +84,21 @@ class NetworkHandler extends Handler
 
 
     /**
-     * @param Entity|Network $entity_db
-     * @param Entity|Network $entity
-     * @return Entity|Network
+     * @param EntityApi|Network $entity_db
+     * @param EntityApi|Network $entity
+     * @return EntityApi|Network
      */
-    public function mergeEntity(Entity $entity_db, Entity $entity): Entity
+    public function mergeEntity(EntityApi $entity_db, EntityApi $entity): EntityApi
     {
         return $entity_db->setNetworkAdmin($entity->getNetworkAdmin())->setNetworkEntity($entity->getNetworkEntity());
     }
 
     /**
      * @param array $parameters
-     * @return Entity|Network
+     * @return EntityApi|Network
      * @throws ClassNotFoundException
      */
-    public function createEntityInstance(array $parameters = []): Entity
+    public function createEntityInstance(array $parameters = []): EntityApi
     {
         switch ($parameters['type']) {
             case 'internal':

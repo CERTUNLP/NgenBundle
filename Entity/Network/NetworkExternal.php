@@ -12,12 +12,11 @@
 namespace CertUnlp\NgenBundle\Entity\Network;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
- * Network
- *
- * @author dam
  * @ORM\Entity()
+ * @JMS\ExclusionPolicy("all")
  */
 class NetworkExternal extends Network
 {

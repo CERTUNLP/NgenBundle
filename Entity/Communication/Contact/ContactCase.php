@@ -1,7 +1,8 @@
 <?php
 
-namespace CertUnlp\NgenBundle\Entity\Contact;
+namespace CertUnlp\NgenBundle\Entity\Communication\Contact;
 
+use CertUnlp\NgenBundle\Entity\Entity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -14,7 +15,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
-class ContactCase
+class ContactCase extends Entity
 {
     /**
      * @var string
@@ -40,8 +41,8 @@ class ContactCase
     private $description = '';
 
     /**
-     * @var Collection|null
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Contact\Contact",mappedBy="contactCase"))
+     * @var Collection|Contact[]|null
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\Contact",mappedBy="contactCase"))
      * @JMS\Exclude()
      */
     private $contacts;
@@ -70,7 +71,7 @@ class ContactCase
     }
 
     /**
-     * @return Collection|null
+     * @return Collection|Contact[]|null
      */
     public function getContacts(): ?Collection
     {
@@ -78,7 +79,7 @@ class ContactCase
     }
 
     /**
-     * @param Collection|null $contacts
+     * @param Collection|Contact[]|null $contacts
      * @return ContactCase
      */
     public function setContacts(Collection $contacts): ?ContactCase

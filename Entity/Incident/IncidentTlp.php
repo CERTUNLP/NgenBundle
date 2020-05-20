@@ -2,7 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -17,7 +17,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentTlp extends Entity implements Translatable
+class IncidentTlp extends EntityApiFrontend implements Translatable
 {
     /**
      * @var string
@@ -94,6 +94,30 @@ class IncidentTlp extends Entity implements Translatable
     public function __construct()
     {
         $this->incidents = new ArrayCollection();
+    }
+
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return IncidentTlp
+     */
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 
     /**
@@ -274,29 +298,6 @@ class IncidentTlp extends Entity implements Translatable
         return $this;
     }
 
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug(): string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return IncidentTlp
-     */
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
@@ -320,4 +321,11 @@ class IncidentTlp extends Entity implements Translatable
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getIdentificatorString(): string
+    {
+        return 'slug';
+    }
 }

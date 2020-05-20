@@ -11,12 +11,11 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident\State;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentChangeState;
 use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -37,7 +36,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentStateRepository")
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentState extends Entity implements Translatable
+class IncidentState extends EntityApiFrontend implements Translatable
 {
     /**
      * @var StateBehavior
@@ -72,35 +71,12 @@ class IncidentState extends Entity implements Translatable
      * */
     private $slug = '';
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    private $isActive = true;
-    /**
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=250, nullable=true)
      * @JMS\Expose
      */
     private $description = '';
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
     /**
      * @var StateEdge[]|Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge",mappedBy="oldState",cascade={"persist"},orphanRemoval=true)
@@ -121,37 +97,6 @@ class IncidentState extends Entity implements Translatable
     {
         $this->incidents = new ArrayCollection();
         $this->edges = new ArrayCollection();
-    }
-
-    /**
-     * @return array|null[]|string[]
-     */
-    public function getEntityIdentificationArray(): array
-    {
-        return ['slug' => $this->getSlug()];
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return IncidentState
-     */
-    public function setSlug(string $slug): IncidentState
-    {
-        $this->slug = $slug;
-
-        return $this;
     }
 
     /**
@@ -289,6 +234,29 @@ class IncidentState extends Entity implements Translatable
     }
 
     /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return IncidentState
+     */
+    public function setSlug(string $slug): IncidentState
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function isDead(): bool
@@ -353,16 +321,6 @@ class IncidentState extends Entity implements Translatable
     }
 
     /**
-     * Get id
-     *
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->getSlug();
-    }
-
-    /**
      * @return string|null
      */
 
@@ -418,71 +376,10 @@ class IncidentState extends Entity implements Translatable
     }
 
     /**
-     * Get isActive
-     *
-     * @return boolean
+     * @return string
      */
-    public function getIsActive(): bool
+    public function getIdentificatorString(): string
     {
-        return $this->isActive;
-    }
-
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return IncidentState
-     */
-    public function setIsActive(bool $isActive): IncidentState
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param DateTime $createdAt
-     * @return IncidentState
-     */
-    public function setCreatedAt(DateTime $createdAt): IncidentState
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param DateTime $updatedAt
-     * @return IncidentState
-     */
-    public function setUpdatedAt(DateTime $updatedAt): IncidentState
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
+        return 'slug';
     }
 }

@@ -2,39 +2,37 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Entity;
-use DateTime;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 
 /**
  * IncidentPriority
  *
  * @ORM\Table(name="incident_priority")
- * @ORM\Entity(repositoryClass="IncidentPriorityRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentPriorityRepository")
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentPriority extends Entity
+class IncidentPriority extends EntityApiFrontend
 {
 
     /**
-     * @var integer
+     * @var integer|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @JMS\Expose
      */
-    protected $id;
+    private $id;
     /**
      * @var IncidentImpact
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="incidentsPriorities")
      * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
      * @JMS\Expose
      */
-    protected $impact;
+    private $impact = null;
     /**
      *
      * @var IncidentUrgency
@@ -42,19 +40,12 @@ class IncidentPriority extends Entity
      * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
      * @JMS\Expose
      */
-    protected $urgency;
+    private $urgency = null;
     /**
      * @var Incident[] | Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="priority",fetch="EXTRA_LAZY")
      */
-    protected $incidents;
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    private $isActive = true;
+    private $incidents = null;
     /**
      * @var int
      *
@@ -88,22 +79,6 @@ class IncidentPriority extends Entity
      */
     private $name = '';
     /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-    /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
-    /**
      * @var integer|null
      * @ORM\Column(name="response_time", type="integer")
      * @JMS\Expose
@@ -115,32 +90,6 @@ class IncidentPriority extends Entity
      * @JMS\Expose
      */
     private $resolutionTime;
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getEntityIdentificationArray(): array
-    {
-        return ['id' => $this->getId()];
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     * @return IncidentPriority
-     */
-    public function setId(int $id): ?IncidentPriority
-    {
-        $this->id = $id;
-        return $this;
-    }
 
     /**
      * @return string
@@ -270,14 +219,6 @@ class IncidentPriority extends Entity
     }
 
     /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
      * @param bool $isActive
      * @return IncidentPriority
      */
@@ -342,42 +283,6 @@ class IncidentPriority extends Entity
     }
 
     /**
-     * @return DateTime|null
-     */
-    public function getCreatedAt(): ?DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime|null $createdAt
-     * @return IncidentPriority
-     */
-    public function setCreatedAt(?DateTime $createdAt): IncidentPriority
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getUpdatedAt(): ?DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param DateTime|null $updatedAt
-     * @return IncidentPriority
-     */
-    public function setUpdatedAt(?DateTime $updatedAt): IncidentPriority
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
-    /**
      * @return int|null
      */
     public function getResponseTime(): ?int
@@ -413,5 +318,12 @@ class IncidentPriority extends Entity
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getIdentificatorString(): string
+    {
+        return 'id';
+    }
 }
 

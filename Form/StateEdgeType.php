@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Form;
 
-use CertUnlp\NgenBundle\Entity\Contact\ContactCase;
+use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase;
 use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

@@ -14,18 +14,15 @@ namespace CertUnlp\NgenBundle\Entity\Network;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Network
  *
- * @ORM\Table()
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\NetworkRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
@@ -34,15 +31,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 abstract class Network extends NetworkElement implements NetworkInterface
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Expose
-     */
-    protected $id;
     /**
      * @var string
      *
@@ -53,64 +41,41 @@ abstract class Network extends NetworkElement implements NetworkInterface
      * )
      * @JMS\Expose
      */
-    protected $ip_mask;
+    private $ip_mask;
     /**
      * @var NetworkAdmin
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
      */
-    protected $network_admin;
+    private $network_admin;
     /**
      * @var NetworkEntity
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkEntity", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
      */
-    protected $network_entity;
+    private $network_entity;
     /**
      * @var Collection| Incident[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="network",fetch="EXTRA_LAZY")
      */
-    protected $incidents;
+    private $incidents;
     /**
      * @var Collection| Host[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host",mappedBy="network", cascade={"persist"},fetch="EXTRA_LAZY")
      */
-    protected $hosts;
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    protected $isActive = true;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    protected $createdAt;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    protected $updatedAt;
+    private $hosts;
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    protected $ip_start_address;
+    private $ip_start_address;
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    protected $ip_end_address;
+    private $ip_end_address;
     /**
      * @ORM\Column(type="string",length=2,nullable=true)
      * @JMS\Expose
@@ -139,13 +104,6 @@ abstract class Network extends NetworkElement implements NetworkInterface
         return 'info';
     }
 
-    /**
-     * @return array
-     */
-    public function getEntityIdentificationArray(): array
-    {
-        return ['address' => $this->getAddressAndMask()];
-    }
 
     public function getType(): string
     {
@@ -340,87 +298,6 @@ abstract class Network extends NetworkElement implements NetworkInterface
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     * @return Network
-     */
-    public function setId(int $id): Network
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean
-     */
-    public function getIsActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     * @return Network
-     */
-    public function setIsActive(bool $isActive): Network
-    {
-        $this->isActive = $isActive;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     * @return Network
-     */
-    public function setCreatedAt(DateTime $createdAt): Network
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param DateTime $updatedAt
-     * @return Network
-     */
-    public function setUpdatedAt(DateTime $updatedAt): Network
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
 
     /**
      * @return string
