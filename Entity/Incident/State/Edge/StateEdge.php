@@ -29,28 +29,28 @@ use JMS\Serializer\Annotation as JMS;
 abstract class StateEdge extends Entity
 {
     /**
-     * @var integer
+     * @var integer|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @JMS\Expose
      */
-    protected $id;
+    private $id;
     /**
-     * @var IncidentState
+     * @var IncidentState|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState", inversedBy="edges")
      * @ORM\JoinColumn(name="oldState", referencedColumnName="slug")
      * @JMS\Expose
      */
-    protected $oldState;
+    private $oldState;
     /**
-     * @var IncidentState
+     * @var IncidentState|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="newState", referencedColumnName="slug")
      * @JMS\Expose
      */
-    protected $newState;
+    private $newState;
     /**
      * @var ContactCase|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase")
@@ -62,7 +62,6 @@ abstract class StateEdge extends Entity
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_team", referencedColumnName="slug")
      */
-
     private $mailTeam;
     /**
      * @var ContactCase|null
