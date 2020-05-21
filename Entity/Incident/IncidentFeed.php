@@ -49,7 +49,7 @@ class IncidentFeed extends EntityApiFrontend
      * @JMS\Expose
      * @JMS\Groups({"api_input"})
      * */
-    private $slug = '';
+    protected $slug = '';
     /**
      * @var string
      *

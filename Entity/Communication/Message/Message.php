@@ -31,7 +31,7 @@ abstract class Message extends Entity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var array|null

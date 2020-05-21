@@ -22,6 +22,14 @@ abstract class EntityApi extends Entity
 {
 
     /**
+     * @var int
+     */
+    protected $id;
+    /**
+     * @var string
+     */
+    protected $slug;
+    /**
      * @var boolean
      *
      * @ORM\Column(type="boolean")
@@ -81,7 +89,7 @@ abstract class EntityApi extends Entity
     /**
      * @return int|string|null
      */
-    public function getId(): ?int
+    public function getId()
     {
         $identificator_string = $this->getIdentificatorString();
         return $this->$identificator_string;

@@ -45,7 +45,7 @@ class NetworkAdmin extends EntityApiFrontend
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
     /**
      * @var string
      *
@@ -59,7 +59,7 @@ class NetworkAdmin extends EntityApiFrontend
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true,unique=true)
      * */
-    private $slug;
+    protected $slug;
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\Contact",mappedBy="network_admin",cascade={"persist"},orphanRemoval=true)

@@ -72,7 +72,7 @@ class IncidentPriority extends EntityApiFrontend
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
      * @JMS\Expose
      */
-    private $slug = '';
+    protected $slug = '';
     /**
      * @var string
      * @ORM\Column(name="name", type="string", length=255)

@@ -31,7 +31,7 @@ class ContactCase extends Entity
      * @ORM\Column(name="slug", type="string", length=45)
      * @JMS\Expose
      * */
-    private $slug = '';
+    protected $slug = '';
     /**
      * @var string
      *

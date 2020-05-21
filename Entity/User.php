@@ -101,7 +101,7 @@ class User extends BaseUser implements EntityApiFrontendInterface
      * @Gedmo\Slug(fields={"firstname","lastname"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
      * */
-    private $slug;
+    protected $slug;
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\Contact",mappedBy="user",cascade={"persist"},orphanRemoval=true)
