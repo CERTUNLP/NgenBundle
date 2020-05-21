@@ -49,7 +49,7 @@ class IncidentType extends EntityApiFrontend
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
      * @JMS\Expose
      */
-    private $slug;
+    protected $slug;
     /**
      * @var boolean
      * @ORM\Column(name="is_Classification", type="boolean")

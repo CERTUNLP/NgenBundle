@@ -56,7 +56,7 @@ class IncidentReport extends EntityApiFrontend
      * }, fields={"lang"})
      * @Doctrine\ORM\Mapping\Column(length=64, unique=true)
      */
-    private $slug;
+    protected $slug;
     /**
      * @var string
      *
