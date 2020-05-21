@@ -36,7 +36,7 @@ abstract class StateEdge extends Entity
      * @ORM\GeneratedValue(strategy="AUTO")
      * @JMS\Expose
      */
-    private $id;
+    protected $id;
     /**
      * @var IncidentState|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState", inversedBy="edges")

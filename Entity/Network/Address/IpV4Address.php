@@ -20,23 +20,35 @@ use JMS\Serializer\Annotation as JMS;
 class IpV4Address extends IpAddress
 {
 
+    /**
+     * {@inheritDoc}
+     */
     public function getCustomNumericAddress(): string
     {
         return ip2long($this->getCustomAddress());
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public function getCustomNumericAddressMask(): string
     {
         return 0xffffffff << (32 - $this->getCustomAddress());
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public function getType(): string
     {
         return 'ip_v4';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getDefaultIpMask(): int
     {
         return 32;

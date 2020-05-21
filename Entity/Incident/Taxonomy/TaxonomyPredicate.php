@@ -66,7 +66,7 @@ class TaxonomyPredicate extends EntityApi
      * @JMS\Expose
      * @JMS\Groups({"api_input"})
      * */
-    private $slug;
+    protected $slug;
 
     /**
      * Constructor

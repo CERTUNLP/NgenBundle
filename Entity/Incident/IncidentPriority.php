@@ -25,7 +25,8 @@ class IncidentPriority extends EntityApiFrontend
      * @ORM\GeneratedValue(strategy="AUTO")
      * @JMS\Expose
      */
-    private $id;
+    protected $id;
+
     /**
      * @var IncidentImpact
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="incidentsPriorities")

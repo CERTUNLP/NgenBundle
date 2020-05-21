@@ -48,13 +48,13 @@ class Incident extends EntityApiFrontend
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    protected $temporalNotes;
+    private $temporalNotes;
     /**
      * @var File
      * @JMS\Expose
      * @JMS\Groups({"api"})
      */
-    protected $temporalEvidenceFile;
+    private $temporalEvidenceFile;
     /**
      * @var DateTime
      *
@@ -63,7 +63,7 @@ class Incident extends EntityApiFrontend
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      * @JMS\Groups({"api"})
      */
-    protected $responseDeadLine;
+    private $responseDeadLine;
     /**
      * @var DateTime
      *
@@ -72,7 +72,7 @@ class Incident extends EntityApiFrontend
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      * @JMS\Groups({"api"})
      */
-    protected $solveDeadLine;
+    private $solveDeadLine;
     /**
      * @var integer
      *
@@ -81,7 +81,7 @@ class Incident extends EntityApiFrontend
      * @ORM\GeneratedValue(strategy="AUTO")
      * @JMS\Expose
      */
-    private $id;
+    protected $id;
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="incidents")
@@ -242,7 +242,7 @@ class Incident extends EntityApiFrontend
      * @JMS\Expose
      * @JMS\Groups({"api"})
      * */
-    private $slug;
+    protected $slug;
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)

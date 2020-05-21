@@ -21,23 +21,36 @@ class IpV6Address extends IpAddress
 {
 
 
+    /**
+     * {@inheritDoc}
+     */
     public function getDefaultIpMask(): int
     {
         return 128;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public function getCustomNumericAddress(): string
     {
         return inet_pton($this->getCustomAddress());
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public function getCustomNumericAddressMask(): string
     {
         return $this->maskTobits($this->getCustomAddress());
     }
 
+    /**
+     * @param string $mask
+     * @return false|string
+     */
     private function maskTobits(string $mask)
     {
         $addr = str_repeat('f', $mask / 4);
@@ -59,6 +72,9 @@ class IpV6Address extends IpAddress
         return $addr;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getType(): string
     {
         return 'ip_v6';

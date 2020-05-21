@@ -68,6 +68,9 @@ abstract class IpAddress extends Address
         return $this->getNetwork();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getCustomAddress(): string
     {
         return $this->getIp()->getProtocolAppropriateAddress();
@@ -91,6 +94,9 @@ abstract class IpAddress extends Address
         return $this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setCustomAddressMask(string $mask): NetworkElement
     {
         if (is_callable([$this->getNetwork(), 'setIpMask'])) {
@@ -139,6 +145,9 @@ abstract class IpAddress extends Address
         return $this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function inRange(Address $other = null): bool
     {
         if ($other && get_class($other) === get_class($this)) {
