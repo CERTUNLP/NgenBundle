@@ -39,7 +39,7 @@ class IncidentImpact extends EntityApiFrontend implements Translatable
      * @ORM\Column(name="slug", type="string", length=45)
      * @JMS\Expose()
      * */
-    private $slug = '';
+    protected $slug = '';
     /**
      * @var string
      *

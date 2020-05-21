@@ -30,7 +30,7 @@ class NetworkEntity extends EntityApi
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
     /**
      * @var string
      *
@@ -45,7 +45,7 @@ class NetworkEntity extends EntityApi
      * @ORM\Column(name="slug", type="string",nullable=true)
      * @JMS\Expose
      * */
-    private $slug = '';
+    protected $slug = '';
     /**
      * @var Network
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network",mappedBy="network_entity"))

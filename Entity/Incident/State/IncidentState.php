@@ -69,7 +69,7 @@ class IncidentState extends EntityApiFrontend implements Translatable
      * @JMS\Expose
      * @JMS\Groups({"api_input"})
      * */
-    private $slug = '';
+    protected $slug = '';
     /**
      * @var string
      *

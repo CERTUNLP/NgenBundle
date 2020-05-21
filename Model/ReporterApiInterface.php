@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Model;
 
-interface ReporterInterface
+interface ReporterApiInterface
 {
     /**
      * @return string

@@ -104,7 +104,7 @@ class IncidentDecision extends EntityApiFrontend
      * }, fields={"id"})
      *
      */
-    private $slug = '';
+    protected $slug = '';
     /**
      * @var boolean
      *
