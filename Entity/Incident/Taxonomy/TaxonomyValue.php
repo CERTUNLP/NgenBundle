@@ -21,7 +21,6 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * TaxonomyValue
  * @ORM\Entity()
- * @ORM\Table(name="taxonomy_value")
  */
 class TaxonomyValue extends EntityApi
 {

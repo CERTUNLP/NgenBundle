@@ -23,7 +23,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * Description of IncidentClosingType
  *
  * @author dam
- * @ORM\Table()
  * @ORM\Entity
  * @UniqueEntity(
  *     fields={"name"},

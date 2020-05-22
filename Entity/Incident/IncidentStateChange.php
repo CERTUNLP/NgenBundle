@@ -11,13 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * IncidentChangeState
  *
- * @ORM\Table(name="incident_change_state")
- * @ORM\Entity
+ * @ORM\Entity()
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentChangeState extends Entity
+class IncidentStateChange extends Entity
 {
     /**
      * @var integer
@@ -29,7 +27,7 @@ class IncidentChangeState extends Entity
     protected $id;
     /**
      * @var Incident
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="changeStateHistory")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="state_changes")
      */
     private $incident;
     /**
@@ -89,9 +87,9 @@ class IncidentChangeState extends Entity
 
     /**
      * @param int $id
-     * @return IncidentChangeState
+     * @return IncidentStateChange
      */
-    public function setId(int $id): IncidentChangeState
+    public function setId(int $id): IncidentStateChange
     {
         $this->id = $id;
         return $this;
@@ -147,9 +145,9 @@ class IncidentChangeState extends Entity
 
     /**
      * @param StateEdge $stateEdge
-     * @return IncidentChangeState
+     * @return IncidentStateChange
      */
-    public function setStateEdge(StateEdge $stateEdge): IncidentChangeState
+    public function setStateEdge(StateEdge $stateEdge): IncidentStateChange
     {
         $this->stateEdge = $stateEdge;
         return $this;

@@ -12,7 +12,6 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * IncidentUrgency
  *
- * @ORM\Table(name="incident_urgency")
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */

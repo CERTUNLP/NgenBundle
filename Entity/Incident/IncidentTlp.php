@@ -13,7 +13,6 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * IncidentTlp
  *
- * @ORM\Table(name="incident_tlp")
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */

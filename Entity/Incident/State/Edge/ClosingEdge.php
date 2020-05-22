@@ -23,7 +23,7 @@ use JMS\Serializer\Annotation as JMS;
  */
 class ClosingEdge extends StateEdge
 {
-    public function changeIncidentStateAction(Incident $incident): Incident
+    public function changeStateAction(Incident $incident): Incident
     {
         $incident->setNeedToCommunicate(false);
         return $incident;

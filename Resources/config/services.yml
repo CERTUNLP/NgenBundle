@@ -22,7 +22,7 @@ services:
             #            $elastica_finder_network: "@fos_elastica.finder.networks.network"
             #            $elastica_finder_user: "@fos_elastica.finder.users.user"
             #            $elastica_finder_type: "@fos_elastica.finder.types.type"
-            #            $elastica_finder_incident_state_action: "@fos_elastica.finder.changeStateHistory.incidentStateAction"
+            #            $elastica_finder_incident_state_action: "@fos_elastica.finder.state_changes.incidentStateAction"
             #            $elastica_finder_priority: "@fos_elastica.finder.priorities.priority"
             $elastica_finder_report: "@fos_elastica.finder.reports.report"
             $team_mail: '%cert_unlp.ngen.team.mail%'

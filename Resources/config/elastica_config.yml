@@ -74,7 +74,7 @@ fos_elastica:
                             insert: true
                             update: true
                             delete: true
-        changeStateHistory:
+        state_changes:
             index_name: changestatehistory_%kernel.environment%
             settings:
                 index:
@@ -85,7 +85,7 @@ fos_elastica:
                                 type: custom
                                 tokenizer: uax_url_email
             types:
-                incidentStateAction:
+                state_change:
                     properties:
                         responsable:
                             type: keyword

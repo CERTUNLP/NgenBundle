@@ -81,7 +81,7 @@ class IncidentFrontendController extends Controller
         $response['piechart_feed'] = $this->getFrontendController()->makePieChart($incident->getFeedRatio());
         $response['piechart_priority'] = $this->getFrontendController()->makePieChart($incident->getPriorityRatio());
         $response['piechart_tlp'] = $this->getFrontendController()->makePieChart($incident->getTlpRatio());
-        if ($incident->getChangeStateHistory()->count() > 1) {
+        if ($incident->getStatechanges()->count() > 1) {
             $response['timeline'] = $this->getFrontendController()->makeTimeline($incident->getStateTimelineRatio());
         }
         $response['column_chart'] = $this->getFrontendController()->makeColumnChart($incident->getDateRatio());

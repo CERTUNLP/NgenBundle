@@ -13,7 +13,7 @@ namespace CertUnlp\NgenBundle\Entity\Incident\State;
 
 use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentChangeState;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentStateChange;
 use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -28,7 +28,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * Description of IncidentClosingType
  *
  * @author dam
- * @ORM\Table()
  * @UniqueEntity(
  *     fields={"name"},
  *     message="This State is already in use."
@@ -174,13 +173,13 @@ class IncidentState extends EntityApiFrontend implements Translatable
      * @param IncidentState $newState
      * @return Incident
      */
-    public function changeIncidentState(Incident $incident, IncidentState $newState = null): ?Incident
+    public function changeState(Incident $incident, IncidentState $newState = null): ?Incident
     {
         if ($newState) {
             $edge = $this->getNewStateEdge($newState);
             if ($edge) {
-                $edge->changeIncidentState($incident);
-                $incident->addChangeStateHistory(new IncidentChangeState($incident, $edge));
+                $edge->changeState($incident);
+                $incident->addStateChange(new IncidentStateChange($incident, $edge));
                 return $incident;
             }
         }

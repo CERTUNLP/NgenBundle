@@ -24,7 +24,7 @@ use JMS\Serializer\Annotation as JMS;
 class NewEdge extends StateEdge
 {
 
-    public function changeIncidentStateAction(Incident $incident): Incident
+    public function changeStateAction(Incident $incident): Incident
     {
         return $incident;
     }

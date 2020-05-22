@@ -4,7 +4,7 @@ namespace CertUnlp\NgenBundle\Entity\Incident\State\Behavior;
 
 use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentChangeState;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentStateChange;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -260,14 +260,14 @@ abstract class StateBehavior extends EntityApi
 
     /**
      * @param Incident $incident
-     * @param IncidentChangeState $changeState
+     * @param IncidentStateChange $changeState
      * @return Incident
      */
-    public function addChangeStateHistory(Incident $incident, IncidentChangeState $changeState): Incident
+    public function addStateChange(Incident $incident, IncidentStateChange $changeState): Incident
     {
 //        if ($this->canEnrich()) {
 //        var_dump($changeState->getId());
-        $incident->getChangeStateHistory()->add($changeState);
+        $incident->getStatechanges()->add($changeState);
 //        }
 
         return $incident;

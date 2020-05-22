@@ -12,7 +12,7 @@
 namespace CertUnlp\NgenBundle\Entity\Incident\State\Edge;
 
 use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase;
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,7 +26,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\DiscriminatorMap({"new"= "NewEdge", "opening" = "OpeningEdge", "closing" = "ClosingEdge", "reopening" = "ReopeningEdge", "updating" = "UpdatingEdge", "discarding" = "DiscardingEdge", "edge" = "StateEdge"})
  * @JMS\ExclusionPolicy("all")
  */
-abstract class StateEdge extends Entity
+abstract class StateEdge extends EntityApi
 {
     /**
      * @var integer|null
@@ -110,6 +110,14 @@ abstract class StateEdge extends Entity
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getIdentificatorString(): string
+    {
+        return 'id';
+    }
+
     public function __toString(): string
     {
         return (string)str_replace('\\', '', explode('Edge', get_class($this))[1]);
@@ -130,25 +138,6 @@ abstract class StateEdge extends Entity
     public function setMailAssigned(ContactCase $mailAssigned): StateEdge
     {
         $this->mailAssigned = $mailAssigned;
-        return $this;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     * @return StateEdge
-     */
-    public function setId(int $id): StateEdge
-    {
-        $this->id = $id;
         return $this;
     }
 
@@ -210,15 +199,15 @@ abstract class StateEdge extends Entity
      * @param Incident $incident
      * @return Incident
      */
-    public function changeIncidentState(Incident $incident): Incident
+    public function changeState(Incident $incident): Incident
     {
-        $this->changeIncidentStateAction($incident);
+        $this->changeStateAction($incident);
         $incident->changeState($this->getNewState());
         return $incident;
 
     }
 
-    abstract public function changeIncidentStateAction(Incident $incident): Incident;
+    abstract public function changeStateAction(Incident $incident): Incident;
 
     /**
      * @return IncidentState
