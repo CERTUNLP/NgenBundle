@@ -29,6 +29,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 abstract class NetworkElement extends EntityApiFrontend
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Expose
+     */
+    protected $id;
+    /**
      * @var string
      *
      * @ORM\Column(type="string", length=39, nullable=true)
@@ -53,15 +62,6 @@ abstract class NetworkElement extends EntityApiFrontend
      * @Assert\NotNull(message="not a valid address")
      */
     private $address;
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Expose
-     */
-    private $id;
 
     /**
      * Host constructor.
@@ -112,6 +112,44 @@ abstract class NetworkElement extends EntityApiFrontend
         return 0;
     }
 
+    /**
+     * @return string
+     */
+    public function getIp(): ?string
+    {
+        return $this->ip;
+    }
+
+    /**
+     * Set ip
+     *
+     * @param string $ip
+     * @return NetworkElement
+     */
+    public function setIp(string $ip): NetworkElement
+    {
+        $this->ip = $ip;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDomain(): ?string
+    {
+        return $this->domain;
+    }
+
+    /**
+     * @param string $domain
+     * @return NetworkElement
+     */
+    public function setDomain(string $domain): NetworkElement
+    {
+        $this->domain = $domain;
+        return $this;
+    }
+
     public function getAddressAndMask(): string
     {
         return $this->getAddress() . ($this->getAddressMask() ? '/' . $this->getAddressMask() : '');
@@ -142,27 +180,6 @@ abstract class NetworkElement extends EntityApiFrontend
         return $this->address ? $this->address->getAddressMask() : '';
     }
 
-
-    /**
-     * @return string
-     */
-    public function getIp(): ?string
-    {
-        return $this->ip;
-    }
-
-    /**
-     * Set ip
-     *
-     * @param string $ip
-     * @return NetworkElement
-     */
-    public function setIp(string $ip): NetworkElement
-    {
-        $this->ip = $ip;
-        return $this;
-    }
-
     public function equals(NetworkElement $other = null): bool
     {
         if ($other) {
@@ -187,24 +204,6 @@ abstract class NetworkElement extends EntityApiFrontend
         }
         return false;
 
-    }
-
-    /**
-     * @return string
-     */
-    public function getDomain(): ?string
-    {
-        return $this->domain;
-    }
-
-    /**
-     * @param string $domain
-     * @return NetworkElement
-     */
-    public function setDomain(string $domain): NetworkElement
-    {
-        $this->domain = $domain;
-        return $this;
     }
 
     public function __toString(): string

@@ -9,7 +9,6 @@
 namespace CertUnlp\NgenBundle\Service\Listener\Entity;
 
 use CertUnlp\NgenBundle\Entity\Network\Network;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 
 
@@ -18,7 +17,7 @@ class NetworkListener
     /** @ORM\PostLoad()
      * @param Network $network
      */
-    public function prePersistHandler(Network $network): void
+    public function postLoad(Network $network): void
     {
         if ($network->getIp()) {
             $network->guessAddress($network->getIp() . '/' . $network->getIpMask());

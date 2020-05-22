@@ -29,7 +29,7 @@ abstract class Entity
      * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
-    private $createdAt = null;
+    protected $createdAt = null;
     /**
      * @var DateTime|null
      * @Gedmo\Timestampable(on="update")
@@ -37,13 +37,13 @@ abstract class Entity
      * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
-    private $updatedAt = null;
+    protected $updatedAt = null;
     /**
      * @var int|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
      * @Gedmo\Blameable(on="create")
      */
-    private $createdBy = null;
+    protected $createdBy = null;
 
 
     /**
