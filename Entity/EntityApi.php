@@ -35,7 +35,7 @@ abstract class EntityApi extends Entity
      * @ORM\Column(type="boolean")
      * @JMS\Expose
      */
-    private $active = true;
+    protected $active = true;
 
     /**
      * @return Entity

@@ -13,8 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * IncidentDetected
  *
- * @ORM\Table(name="incident_detected")
- * @ORM\Entity
+ * @ORM\Entity()
+ * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\IncidentDetectedListener"})
  * @JMS\ExclusionPolicy("all")
  */
 class IncidentDetected extends EntityApiFrontend
