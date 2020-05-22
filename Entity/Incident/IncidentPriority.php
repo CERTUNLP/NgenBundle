@@ -10,7 +10,6 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * IncidentPriority
  *
- * @ORM\Table(name="incident_priority")
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentPriorityRepository")
  * @JMS\ExclusionPolicy("all")
  */

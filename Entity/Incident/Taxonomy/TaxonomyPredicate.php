@@ -24,7 +24,6 @@ use JMS\Serializer\Annotation as JMS;
  *
  * @author einar
  * @ORM\Entity()
- * @ORM\Table(name="taxonomy_predicate")
  */
 class TaxonomyPredicate extends EntityApi
 {

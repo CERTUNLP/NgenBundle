@@ -25,7 +25,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * IncidentType
  *
- * @ORM\Table()
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentTypeRepository")
  * @UniqueEntity(
  *     fields={"name"},

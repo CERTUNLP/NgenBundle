@@ -15,22 +15,22 @@
         <th>{{ 'Action'|trans }}</th>
     </tr>
     <tbody>
-    {% for changeHistory in incident.getChangeStateHistory %}
+    {% for stateChange in incident.getStatechanges %}
         <tr>
             <td>
-                {{ changeHistory.responsable }}
+                {{ stateChange.responsable }}
             </td>
             <td>
-                {{ changeHistory.date|date('Y-m-d H:i') }}
+                {{ stateChange.date|date('Y-m-d H:i') }}
             </td>
             <td>
-                {{ changeHistory.oldState | trans }}
+                {{ stateChange.oldState | trans }}
             </td>
             <td>
-                {{ changeHistory.newState |trans }}
+                {{ stateChange.newState |trans }}
             </td>
             <td>
-                {{ changeHistory.actionApplied |trans }}
+                {{ stateChange.actionApplied |trans }}
             </td>
 
         </tr>

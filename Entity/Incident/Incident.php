@@ -45,6 +45,24 @@ class Incident extends EntityApiFrontend
 {
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Expose
+     */
+    protected $id;
+    /**
+     * @var string
+     *
+     * @Gedmo\Slug(fields={"id"},separator="_")
+     * @ORM\Column(name="slug", type="string", length=100,nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"api"})
+     * */
+    protected $slug;
+    /**
      * @var string
      * @JMS\Expose
      * @JMS\Groups({"api"})
@@ -74,15 +92,6 @@ class Incident extends EntityApiFrontend
      * @JMS\Groups({"api"})
      */
     private $solveDeadLine;
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Expose
-     */
-    protected $id;
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="incidents")
@@ -188,19 +197,10 @@ class Incident extends EntityApiFrontend
     /**
      * @var Collection
      * @JMS\Expose
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentChangeState",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="IncidentStateChange",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
      * @JMS\Groups({"api"})
      */
-    private $changeStateHistory;
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="renotification_date", type="datetime",nullable=true)
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
-     */
-    private $renotificationDate;
+    private $state_changes;
 
 //    /**
 //     * @var Collection
@@ -210,6 +210,15 @@ class Incident extends EntityApiFrontend
 //     */
 //
 //    private $communicationHistory;
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="renotification_date", type="datetime",nullable=true)
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"api"})
+     */
+    private $renotificationDate;
     /**
      * @var boolean
      */
@@ -235,15 +244,6 @@ class Incident extends EntityApiFrontend
      * @var bool
      */
     private $notSendReport = false;
-    /**
-     * @var string
-     *
-     * @Gedmo\Slug(fields={"id"},separator="_")
-     * @ORM\Column(name="slug", type="string", length=100,nullable=true)
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     * */
-    protected $slug;
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
@@ -289,7 +289,7 @@ class Incident extends EntityApiFrontend
             $this->setAddress($term);
         }
         $this->incidentsDetected = new ArrayCollection();
-        $this->changeStateHistory = new ArrayCollection();
+        $this->state_changes = new ArrayCollection();
     }
 
     /**
@@ -326,7 +326,7 @@ class Incident extends EntityApiFrontend
     public function setState(IncidentState $state = null): ?Incident
     {
         if ($this->getState()) {
-            return $this->getState()->changeIncidentState($this, $state);
+            return $this->getState()->changeState($this, $state);
         }
         return $this->changeState($state);
     }
@@ -509,12 +509,12 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-     * @param IncidentChangeState $changeState
+     * @param IncidentStateChange $changeState
      * @return Incident
      */
-    public function addChangeStateHistory(IncidentChangeState $changeState): Incident
+    public function addStateChange(IncidentStateChange $changeState): Incident
     {
-        return $this->getBehavior()->addChangeStateHistory($this, $changeState);
+        return $this->getBehavior()->addStateChange($this, $changeState);
     }
 
     /**
@@ -843,8 +843,8 @@ class Incident extends EntityApiFrontend
      */
     public function getStateEdge(): ?StateEdge
     {
-        if ($this->getChangeStateHistory()) {
-            return $this->getChangeStateHistory()->last() ? $this->getChangeStateHistory()->last()->getStateEdge() : null;
+        if ($this->getStatechanges()) {
+            return $this->getStatechanges()->last() ? $this->getStatechanges()->last()->getStateEdge() : null;
 
         }
         return null;
@@ -853,17 +853,17 @@ class Incident extends EntityApiFrontend
     /**
      * @return Collection
      */
-    public function getChangeStateHistory(): Collection
+    public function getStatechanges(): Collection
     {
-        return $this->changeStateHistory;
+        return $this->state_changes;
     }
 
     /**
-     * @param ArrayCollection $changeStateHistory
+     * @param ArrayCollection $state_changes
      */
-    public function setChangeStateHistory(ArrayCollection $changeStateHistory): void
+    public function setStatechanges(ArrayCollection $state_changes): void
     {
-        $this->setter($this->changeStateHistory, $changeStateHistory);
+        $this->setter($this->state_changes, $state_changes);
     }
 
     /**
@@ -1011,12 +1011,12 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-     * @return IncidentChangeState[] | Collection
+     * @return IncidentStateChange[] | Collection
      */
     public function getAttendedChangeStates(): Collection
     {
-        if ($this->getChangeStateHistory()) {
-            return $this->getChangeStateHistory()->filter(static function (IncidentChangeState $changeState) {
+        if ($this->getStatechanges()) {
+            return $this->getStatechanges()->filter(static function (IncidentStateChange $changeState) {
                 return $changeState->getNewState()->isAttended();
             });
         }
@@ -1093,12 +1093,12 @@ class Incident extends EntityApiFrontend
 
     /**
      *
-     * @return IncidentChangeState[] | Collection
+     * @return IncidentStateChange[] | Collection
      */
     public function getResolvedChangeStates(): Collection
     {
-        if ($this->getChangeStateHistory()) {
-            return $this->getChangeStateHistory()->filter(static function (IncidentChangeState $changeState) {
+        if ($this->getStatechanges()) {
+            return $this->getStatechanges()->filter(static function (IncidentStateChange $changeState) {
                 return $changeState->getNewState()->isResolved();
             });
         }
@@ -1205,14 +1205,14 @@ class Incident extends EntityApiFrontend
         $states = [];
         $suffix = '';
 
-        $states_changes = $this->getChangeStateHistory()->filter(static function (IncidentChangeState $changeState) {
+        $states_changes = $this->getStatechanges()->filter(static function (IncidentStateChange $changeState) {
             return $changeState->getOldState()->getSlug() !== $changeState->getNewState()->getSlug();
         });
-        if (!$states_changes->contains($this->getChangeStateHistory()->first())) {
-            $states_changes->set(0, $this->getChangeStateHistory()->first());
+        if (!$states_changes->contains($this->getStatechanges()->first())) {
+            $states_changes->set(0, $this->getStatechanges()->first());
         }
-        if (!$states_changes->contains($this->getChangeStateHistory()->last())) {
-            $states_changes->add($this->getChangeStateHistory()->last());
+        if (!$states_changes->contains($this->getStatechanges()->last())) {
+            $states_changes->add($this->getStatechanges()->last());
         }
 
         foreach ($states_changes as $detected) {

@@ -28,7 +28,7 @@ class UpdatingEdge extends StateEdge
      * @param Incident $incident
      * @return Incident
      */
-    public function changeIncidentStateAction(Incident $incident): Incident
+    public function changeStateAction(Incident $incident): Incident
     {
         return $incident;
     }
