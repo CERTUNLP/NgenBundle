@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity;
 
+use CertUnlp\NgenBundle\Model\EntityInterface;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -20,7 +21,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\MappedSuperclass()
  * @JMS\ExclusionPolicy("all")
  */
-abstract class Entity
+abstract class Entity implements EntityInterface
 {
     /**
      * @var DateTime|null

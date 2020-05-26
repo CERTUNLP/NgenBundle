@@ -11,9 +11,9 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Form\IncidentTypeType;
+use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use CertUnlp\NgenBundle\Repository\IncidentTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -33,11 +33,11 @@ class IncidentTypeHandler extends Handler
     }
 
     /**
-     * @param EntityApi|IncidentType $entity
+     * @param EntityApiInterface|IncidentType $entity
      * @param array|null $parameters
-     * @return EntityApi
+     * @return EntityApiInterface
      */
-    public function patch(EntityApi $entity, array $parameters = null): EntityApi
+    public function patch(EntityApiInterface $entity, array $parameters = null): EntityApiInterface
     {
         if (isset($parameters['report'])) {
             $report = $this->getReportHandler()->post($parameters['report']);

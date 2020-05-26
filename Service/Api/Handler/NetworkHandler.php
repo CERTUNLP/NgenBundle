@@ -11,12 +11,12 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
 use CertUnlp\NgenBundle\Entity\Network\NetworkExternal;
 use CertUnlp\NgenBundle\Entity\Network\NetworkInternal;
 use CertUnlp\NgenBundle\Form\NetworkType;
+use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use CertUnlp\NgenBundle\Repository\NetworkRepository;
 use CertUnlp\NgenBundle\Service\NetworkRdapClient;
 use Doctrine\ORM\EntityManagerInterface;
@@ -84,21 +84,21 @@ class NetworkHandler extends Handler
 
 
     /**
-     * @param EntityApi|Network $entity_db
-     * @param EntityApi|Network $entity
-     * @return EntityApi|Network
+     * @param EntityApiInterface|Network $entity_db
+     * @param EntityApiInterface|Network $entity
+     * @return EntityApiInterface|Network
      */
-    public function mergeEntity(EntityApi $entity_db, EntityApi $entity): EntityApi
+    public function mergeEntity(EntityApiInterface $entity_db, EntityApiInterface $entity): EntityApiInterface
     {
         return $entity_db->setNetworkAdmin($entity->getNetworkAdmin())->setNetworkEntity($entity->getNetworkEntity());
     }
 
     /**
      * @param array $parameters
-     * @return EntityApi|Network
+     * @return EntityApiInterface|Network
      * @throws ClassNotFoundException
      */
-    public function createEntityInstance(array $parameters = []): EntityApi
+    public function createEntityInstance(array $parameters = []): EntityApiInterface
     {
         switch ($parameters['type']) {
             case 'internal':

@@ -33,5 +33,10 @@ interface  EntityApiInterface extends EntityInterface
      * @return string
      */
     public function getIdentificatorString(): string;
+
+    /**
+     * @return array
+     */
+    public function getEntityIdentificationArray(): array;
 }
 
