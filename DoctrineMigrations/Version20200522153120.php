@@ -22,7 +22,9 @@ final class Version20200522153120 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('RENAME TABLE incident_change_state TO incident_state_change');
+//        $this->addSql('RENAME TABLE incident_change_state TO incident_state_change');
+        $this->addSql("UPDATE `state_edge` SET `discr` = 'new' WHERE `discr` = 'initializing'");
+
 
     }
 

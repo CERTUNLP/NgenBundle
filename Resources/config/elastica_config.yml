@@ -711,8 +711,8 @@ fos_elastica:
                             insert: true
                             update: true
                             delete: true
-        taxonomyvalues:
-            index_name: taxonomyvalues_%kernel.environment%
+        taxonomy:
+            index_name: taxonomy_%kernel.environment%
             settings:
                 index:
                     max_result_window: 50000
@@ -762,12 +762,12 @@ fos_elastica:
                             insert: true
                             update: true
                             delete: true
-        taxonomypredicates:
-            index_name: taxonomypredicates_%kernel.environment%
-            settings:
-                index:
-                    max_result_window: 50000
-            types:
+#        taxonomy:
+#            index_name: taxonomypredicates_%kernel.environment%
+#            settings:
+#                index:
+#                    max_result_window: 50000
+#            types:
                 predicate:
                     properties:
                         value:

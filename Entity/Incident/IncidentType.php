@@ -36,19 +36,19 @@ class IncidentType extends EntityApiFrontend
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100)
-     * @JMS\Expose
-     */
-    private $name;
-    /**
-     * @var string
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
      * @JMS\Expose
      */
     protected $slug;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=100)
+     * @JMS\Expose
+     */
+    private $name;
     /**
      * @var boolean
      * @ORM\Column(name="is_Classification", type="boolean")
@@ -73,7 +73,7 @@ class IncidentType extends EntityApiFrontend
      */
     private $reports;
     /**
-     * @var TaxonomyValue
+     * @var TaxonomyValue|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue")
      * @ORM\JoinColumn(name="taxonomyValue", referencedColumnName="slug",nullable=true)
      **/
@@ -172,7 +172,7 @@ class IncidentType extends EntityApiFrontend
     /**
      * @return TaxonomyValue
      */
-    public function getTaxonomyValue(): TaxonomyValue
+    public function getTaxonomyValue(): ?TaxonomyValue
     {
         return $this->taxonomyValue;
     }
