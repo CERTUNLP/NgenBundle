@@ -18,8 +18,10 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Network;
 
 use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
+use CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendControllerService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,26 +32,23 @@ class NetworkEntityFrontendController extends Controller
      * @Template("CertUnlpNgenBundle:NetworkEntity:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_network_network_entity_frontend_home")
      * @param Request $request
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function homeAction(Request $request)
+    public function homeAction(Request $request, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->homeEntity($request);
-    }
-
-    public function getFrontendController()
-    {
-        return $this->get('cert_unlp.ngen.network_entity.frontend.controller');
+        return $controller_service->homeEntity($request);
     }
 
     /**
      * @Route("search/autocomplete", name="cert_unlp_ngen_network_entity_search_autocomplete")
      * @param Request $request
-     * @return array
+     * @param FrontendControllerService $controller_service
+     * @return JsonResponse
      */
-    public function searchAutocompleteNetworkAdminAction(Request $request)
+    public function searchAutocompleteNetworkAdminAction(Request $request, FrontendControllerService $controller_service): JsonResponse
     {
-        return $this->getFrontendController()->searchAutocompleteEntity($request);
+        return $controller_service->searchAutocompleteEntity($request);
 
     }
 
@@ -57,44 +56,48 @@ class NetworkEntityFrontendController extends Controller
      * @Template("CertUnlpNgenBundle:NetworkEntity:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_network_entity_search")
      * @param Request $request
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function searchNetworkEntityAction(Request $request)
+    public function searchNetworkEntityAction(Request $request, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->searchEntity($request);
+        return $controller_service->searchEntity($request);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkEntity:Frontend/networkEntityForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_network_entity_new")
      * @param Request $request
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function newNetworkEntityAction(Request $request)
+    public function newNetworkEntityAction(Request $request, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->newEntity($request);
+        return $controller_service->newEntity($request);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkEntity:Frontend/networkEntityForm.html.twig")
      * @Route("{slug}/edit", name="cert_unlp_ngen_network_entity_edit")
      * @param NetworkEntity $networkEntity
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function editNetworkEntityAction(NetworkEntity $networkEntity)
+    public function editNetworkEntityAction(NetworkEntity $networkEntity, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->editEntity($networkEntity);
+        return $controller_service->editEntity($networkEntity);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkEntity:Frontend/networkEntityDetail.html.twig")
      * @Route("{slug}/detail", name="cert_unlp_ngen_network_entity_detail")
      * @param NetworkEntity $networkEntity
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function detailNetworkEntityAction(NetworkEntity $networkEntity)
+    public function detailNetworkEntityAction(NetworkEntity $networkEntity, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->detailEntity($networkEntity);
+        return $controller_service->detailEntity($networkEntity);
     }
 
 }

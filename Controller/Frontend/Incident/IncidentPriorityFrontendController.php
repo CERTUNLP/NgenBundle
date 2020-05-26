@@ -18,6 +18,7 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
+use CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendControllerService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,62 +31,60 @@ class IncidentPriorityFrontendController extends Controller
      * @Template("CertUnlpNgenBundle:IncidentPriority:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_incident_priority_frontend_home")
      * @param Request $request
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function homeAction(Request $request)
+    public function homeAction(Request $request, FrontendControllerService $controller_service)
     {
-        return $this->getFrontendController()->homeEntity($request, null, 10, 'code', 'asc');
+        return $controller_service->homeEntity($request, null, 10, 'code', 'asc');
     }
-
-
-    public function getFrontendController()
-    {
-        return $this->get('cert_unlp.ngen.incident.priority.frontend.controller');
-    }
-
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentPriority:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_incident_priority_search")
      * @param Request $request
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function searchIncidentPriorityAction(Request $request)
+    public function searchIncidentPriorityAction(Request $request, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->searchEntity($request);
+        return $controller_service->searchEntity($request);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentPriority:Frontend/incidentPriorityForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_incident_priority_new")
      * @param Request $request
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function newIncidentPriorityAction(Request $request)
+    public function newIncidentPriorityAction(Request $request, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->newEntity($request);
+        return $controller_service->newEntity($request);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentPriority:Frontend/incidentPriorityForm.html.twig")
      * @Route("{id}/edit", name="cert_unlp_ngen_incident_priority_edit")
      * @param IncidentPriority $IncidentPriority
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function editIncidentPriorityAction(IncidentPriority $IncidentPriority)
+    public function editIncidentPriorityAction(IncidentPriority $IncidentPriority, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->editEntity($IncidentPriority);
+        return $controller_service->editEntity($IncidentPriority);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentPriority:Frontend/incidentPriorityDetail.html.twig")
      * @Route("{id}/detail", name="cert_unlp_ngen_incident_priority_detail")
      * @param IncidentPriority $IncidentPriority
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function detailIncidentPriorityAction(IncidentPriority $IncidentPriority)
+    public function detailIncidentPriorityAction(IncidentPriority $IncidentPriority, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->detailEntity($IncidentPriority);
+        return $controller_service->detailEntity($IncidentPriority);
     }
 
 }

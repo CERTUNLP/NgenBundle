@@ -18,6 +18,7 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
+use CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendControllerService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,77 +26,64 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class IncidentTypeFrontendController extends Controller
 {
-
     /**
      * @Template("CertUnlpNgenBundle:IncidentType:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_administration_type_frontend_home")
      * @param Request $request
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function homeAction(Request $request)
+    public function homeAction(Request $request, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->homeEntity($request);
-    }
-
-    public function getFrontendController()
-    {
-        return $this->get('cert_unlp.ngen.incident.type.frontend.controller');
+        return $controller_service->homeEntity($request);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentType:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_incident_type_search")
      * @param Request $request
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function searchIncidentTypeAction(Request $request)
+    public function searchIncidentTypeAction(Request $request, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->searchEntity($request);
+        return $controller_service->searchEntity($request);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentType:Frontend/incidentTypeForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_incident_type_new")
      * @param Request $request
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function newIncidentTypeAction(Request $request)
+    public function newIncidentTypeAction(Request $request, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->newEntity($request);
+        return $controller_service->newEntity($request);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentType:Frontend/incidentTypeForm.html.twig")
      * @Route("{slug}/edit", name="cert_unlp_ngen_incident_type_edit")
      * @param IncidentType $incidentType
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function editIncidentTypeAction(IncidentType $incidentType)
+    public function editIncidentTypeAction(IncidentType $incidentType, FrontendControllerService $controller_service): array
     {
-//        $incidentType->setReportEdit($this->readReportFile($incidentType));
-
-        return $this->getFrontendController()->editEntity($incidentType);
+        return $controller_service->editEntity($incidentType);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentType:Frontend/incidentTypeDetail.html.twig")
      * @Route("{slug}/detail", name="cert_unlp_ngen_incident_type_detail")
      * @param IncidentType $incidentType
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function detailIncidentTypeAction(IncidentType $incidentType)
+    public function detailIncidentTypeAction(IncidentType $incidentType, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->detailEntity($incidentType);
-    }
-
-    private function readReportFile(IncidentType $incidentType)
-    {
-        return $this->container->get('markdown.parser')->transformMarkdown(file_get_contents($this->getReportName($incidentType)));
-    }
-
-    private function getReportName(IncidentType $incidentType)
-    {
-        return $this->getParameter('cert_unlp.ngen.incident.internal.report.markdown.path') . "/" . $incidentType->getReportName();
+        return $controller_service->detailEntity($incidentType);
     }
 
 }
