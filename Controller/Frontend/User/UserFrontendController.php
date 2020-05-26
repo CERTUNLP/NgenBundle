@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\User;
 
 use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendControllerService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,60 +25,60 @@ class UserFrontendController extends Controller
      * @Template("CertUnlpNgenBundle:User:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_user_frontend_home")
      * @param Request $request
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function homeAction(Request $request)
+    public function homeAction(Request $request, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->homeEntity($request);
-    }
-
-    public function getFrontendController()
-    {
-        return $this->get('cert_unlp.ngen.user.frontend.controller');
+        return $controller_service->homeEntity($request);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:User:Frontend/home.html.twig")
      * @Route("/search", name="cert_unlp_ngen_user_search_user")
      * @param Request $request
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function searchUserAction(Request $request)
+    public function searchUserAction(Request $request, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->searchEntity($request);
+        return $controller_service->searchEntity($request);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:User:Frontend/userForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_user_new_user")
      * @param Request $request
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function newUserAction(Request $request)
+    public function newUserAction(Request $request, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->newEntity($request);
+        return $controller_service->newEntity($request);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:User:Frontend/userForm.html.twig")
      * @Route("/edit/{username}", name="cert_unlp_ngen_user_edit_user")
      * @param User $user
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function editUserAction(User $user)
+    public function editUserAction(User $user, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->editEntity($user);
+        return $controller_service->editEntity($user);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:User:Frontend/userDetail.html.twig")
      * @Route("/{username}/detail", name="cert_unlp_ngen_user_detail_user")
      * @param User $user
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function datailUserAction(User $user)
+    public function datailUserAction(User $user, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->detailEntity($user);
+        return $controller_service->detailEntity($user);
     }
 
 }

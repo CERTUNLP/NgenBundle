@@ -18,6 +18,7 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate;
+use CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendControllerService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,39 +31,36 @@ class IncidentTaxonomyPredicateFrontendController extends Controller
      * @Template("CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend:home.html.twig")
      * @Route("/", name="cert_unlp_ngen_administration_taxonomy_predicate_frontend_home")
      * @param Request $request
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function homeAction(Request $request)
+    public function homeAction(Request $request, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->homeEntity($request);
+        return $controller_service->homeEntity($request);
     }
-
-    public function getFrontendController()
-    {
-        return $this->get('cert_unlp.ngen.incident.taxonomy.predicate.frontend.controller');
-    }
-
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend:incidentTaxonomyPredicateDetail.html.twig")
      * @Route("{slug}/detail", name="cert_unlp_ngen_taxonomy_predicate_detail")
      * @param TaxonomyPredicate $taxonomyPredicate
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function detailIncidentTaxonomyPredicateAction(TaxonomyPredicate $taxonomyPredicate)
+    public function detailIncidentTaxonomyPredicateAction(TaxonomyPredicate $taxonomyPredicate, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->detailEntity($taxonomyPredicate);
+        return $controller_service->detailEntity($taxonomyPredicate);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend:frontend.html.twig")
      * @Route("search", name="cert_unlp_ngen_incident_taxonomy_predicate_search")
      * @param Request $request
+     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function searchIncidentTaxonomyPredicateAction(Request $request)
+    public function searchIncidentTaxonomyPredicateAction(Request $request, FrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->searchEntity($request);
+        return $controller_service->searchEntity($request);
     }
 
 }

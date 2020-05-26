@@ -12,15 +12,15 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Service\Frontend\Controller\IncidentFrontendControllerService as FrontendControllerService;
+use CertUnlp\NgenBundle\Service\Frontend\Controller\IncidentFrontendControllerService;
 use fados\ChartjsBundle\Model\ChartBuiderData;
 use fados\ChartjsBundle\Utils\TypeCharjs;
 use fados\ChartjsBundle\Utils\TypeColors;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class IncidentFrontendController extends Controller
@@ -30,40 +30,38 @@ class IncidentFrontendController extends Controller
      * @Template("CertUnlpNgenBundle:Incident:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_internal_incident_frontend_home")
      * @param Request $request
-     * @param FrontendControllerService $incidentFrontendController
+     * @param IncidentFrontendControllerService $controller_service
      * @return array
      */
-    public function homeAction(Request $request, FrontendControllerService $incidentFrontendController)
+    public function homeAction(Request $request, IncidentFrontendControllerService $controller_service): array
     {
-        return $incidentFrontendController->homeEntity($request);
+        return $controller_service->homeEntity($request);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_internal_incident_frontend_new_incident")
      * @param Request $request
+     * @param IncidentFrontendControllerService $controller_service
      * @return array
      */
-    public function newIncidentAction(Request $request)
+    public function newIncidentAction(Request $request, IncidentFrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->newEntity($request);
+        return $controller_service->newEntity($request);
     }
 
-    public function getFrontendController($incidentFrontendController = null)
-    {
-        return $incidentFrontendController;
-    }
 
     /**
      * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentForm.html.twig")
      * @Route("{id}/edit", name="cert_unlp_ngen_internal_incident_frontend_edit_incident_id",requirements={"id"="\d+"})
      * @Route("{slug}/edit", name="cert_unlp_ngen_internal_incident_frontend_edit_incident")
      * @param Incident $incident
+     * @param IncidentFrontendControllerService $controller_service
      * @return array
      */
-    public function editIncidentAction(Incident $incident)
+    public function editIncidentAction(Incident $incident, IncidentFrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->editEntity($incident);
+        return $controller_service->editEntity($incident);
     }
 
     /**
@@ -71,20 +69,21 @@ class IncidentFrontendController extends Controller
      * @Route("{id}/detail", name="cert_unlp_ngen_internal_incident_frontend_detail_incident_id",requirements={"id"="\d+"})
      * @Route("{slug}/detail", name="cert_unlp_ngen_internal_incident_frontend_detail_incident")
      * @param Incident $incident
+     * @param IncidentFrontendControllerService $controller_service
      * @return array
      */
-    public function detailIncidentAction(Incident $incident)
+    public function detailIncidentAction(Incident $incident, IncidentFrontendControllerService $controller_service): array
     {
         $response['object'] = $incident;
         $response['timeline'] = null;
 //        $response['piechart_state'] = $this->makePieChart($incident->getStateRatio());
-        $response['piechart_feed'] = $this->getFrontendController()->makePieChart($incident->getFeedRatio());
-        $response['piechart_priority'] = $this->getFrontendController()->makePieChart($incident->getPriorityRatio());
-        $response['piechart_tlp'] = $this->getFrontendController()->makePieChart($incident->getTlpRatio());
+        $response['piechart_feed'] = $controller_service->makePieChart($incident->getFeedRatio());
+        $response['piechart_priority'] = $controller_service->makePieChart($incident->getPriorityRatio());
+        $response['piechart_tlp'] = $controller_service->makePieChart($incident->getTlpRatio());
         if ($incident->getStatechanges()->count() > 1) {
-            $response['timeline'] = $this->getFrontendController()->makeTimeline($incident->getStateTimelineRatio());
+            $response['timeline'] = $controller_service->makeTimeline($incident->getStateTimelineRatio());
         }
-        $response['column_chart'] = $this->getFrontendController()->makeColumnChart($incident->getDateRatio());
+        $response['column_chart'] = $controller_service->makeColumnChart($incident->getDateRatio());
         return $response;
     }
 
@@ -93,35 +92,38 @@ class IncidentFrontendController extends Controller
      * @Route("{id}/evidence", name="cert_unlp_ngen_internal_incident_frontend_evidence_incident_id", requirements={"id"="\d+"})
      * @Route("{slug}/evidence", name="cert_unlp_ngen_internal_incident_frontend_evidence_incident")
      * @param Incident $incident
-     * @return BinaryFileResponse
+     * @param IncidentFrontendControllerService $controller_service
+     * @return Response
      */
-    public function evidenceIncidentAction(Incident $incident)
+    public function evidenceIncidentAction(Incident $incident, IncidentFrontendControllerService $controller_service): Response
     {
 
-        return $this->getFrontendController()->evidenceIncidentAction($incident);
+        return $controller_service->evidenceIncidentAction($incident);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:Incident:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_internal_incident_search_incident")
      * @param Request $request
+     * @param IncidentFrontendControllerService $controller_service
      * @return array
      */
-    public function searchIncidentAction(Request $request)
+    public function searchIncidentAction(Request $request, IncidentFrontendControllerService $controller_service): array
 
     {
-        return $this->getFrontendController()->homeEntity($request);
+        return $controller_service->homeEntity($request);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentComments.html.twig")
      * @param Incident $incident
      * @param Request $request
+     * @param IncidentFrontendControllerService $controller_service
      * @return array
      */
-    public function incidentCommentsAction(Incident $incident, Request $request)
+    public function incidentCommentsAction(Incident $incident, Request $request, IncidentFrontendControllerService $controller_service): array
     {
-        return $this->getFrontendController()->commentsEntity($incident, $request);
+        return $controller_service->commentsEntity($incident, $request);
     }
 
     /**
@@ -130,8 +132,7 @@ class IncidentFrontendController extends Controller
      * @param Incident $incident
      * @return array
      */
-
-    public function getListRow(Incident $incident)
+    public function getListRow(Incident $incident): array
     {
         return array('incident' => $incident);
     }
@@ -139,12 +140,12 @@ class IncidentFrontendController extends Controller
     /**
      * @Route("getFilterList", name="cert_unlp_ngen_incident_ajax_search_incident")
      * @param Request $request
+     * @param IncidentFrontendControllerService $controller_service
      * @return JsonResponse
      */
-    public function getFilterIncidentListAction(Request $request)
-
+    public function getFilterIncidentListAction(Request $request, IncidentFrontendControllerService $controller_service): JsonResponse
     {
-        $datos = $this->getFrontendController()->homeEntity($request);
+        $datos = $controller_service->homeEntity($request);
         $tabla = $this->renderView("CertUnlpNgenBundle:Incident:Frontend/list/filterList.html.twig", $datos);
         $paginador = $this->renderView("CertUnlpNgenBundle:Incident:Frontend/list/filterListPaginator.html.twig", $datos);
         $filters = $this->renderView("CertUnlpNgenBundle:Incident:Frontend/list/filterHeadersPaginator.html.twig", $datos);
