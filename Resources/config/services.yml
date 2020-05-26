@@ -27,8 +27,8 @@ services:
             $elastica_finder_report: "@fos_elastica.finder.reports.report"
             $team_mail: '%cert_unlp.ngen.team.mail%'
     #            $elastica_finder_state: "@fos_elastica.finder.states.state"
-    #            $elastica_finder_taxonomy_predicate: "@fos_elastica.finder.taxonomypredicates.predicate"
-    #            $elastica_finder_taxonomy_value: "@fos_elastica.finder.taxonomyvalues.value"
+    #            $elastica_finder_taxonomy_predicate: "@fos_elastica.finder.taxonomy.predicate"
+    #            $elastica_finder_taxonomy_value: "@fos_elastica.finder.taxonomy.value"
 
 
     CertUnlp\NgenBundle\:
