@@ -11,8 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
+use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
@@ -59,7 +59,7 @@ abstract class Handler
      * @param array $order
      * @param int $limit
      * @param int $offset
-     * @return array|EntityApi[]
+     * @return array|EntityApiInterface[]
      */
     public function all(array $params = [], array $order = [], int $limit = 0, int $offset = 0): array
     {
@@ -77,19 +77,19 @@ abstract class Handler
     /**
      * @param array $parameters
      * @param bool $csrf_protection
-     * @return EntityApi
+     * @return EntityApiInterface
      */
-    public function post(array $parameters, bool $csrf_protection = false): EntityApi
+    public function post(array $parameters, bool $csrf_protection = false): EntityApiInterface
     {
         $entity = $this->mergeIfExists($this->createEntityInstance($parameters));
         return $this->processForm($entity, $parameters, Request::METHOD_POST, $csrf_protection);
     }
 
     /**
-     * @param EntityApi $entity
-     * @return EntityApi
+     * @param EntityApiInterface $entity
+     * @return EntityApiInterface
      */
-    public function mergeIfExists(EntityApi $entity): EntityApi
+    public function mergeIfExists(EntityApiInterface $entity): EntityApiInterface
     {
         if ($this->needCheckIfExists()) {
             $entity_db = $this->getIfExists($entity);
@@ -112,28 +112,28 @@ abstract class Handler
     }
 
     /**
-     * @param EntityApi $entity
-     * @return EntityApi
+     * @param EntityApiInterface $entity
+     * @return EntityApiInterface
      */
-    public function getIfExists(EntityApi $entity): ?EntityApi
+    public function getIfExists(EntityApiInterface $entity): ?EntityApiInterface
     {
         return $this->get($this->getEntityIdentificationArray($entity));
     }
 
     /**
      * @param array $parameters
-     * @return EntityApi|object|null
+     * @return EntityApiInterface|object|null
      */
-    public function get(array $parameters): ?EntityApi
+    public function get(array $parameters): ?EntityApiInterface
     {
         return $this->getRepository()->findOneBy($parameters);
     }
 
     /**
-     * @param EntityApi $entity
+     * @param EntityApiInterface $entity
      * @return array
      */
-    public function getEntityIdentificationArray(EntityApi $entity): array
+    public function getEntityIdentificationArray(EntityApiInterface $entity): array
     {
         return $entity->getEntityIdentificationArray();
     }
@@ -151,33 +151,33 @@ abstract class Handler
     }
 
     /**
-     * @param EntityApi $entity
-     * @param EntityApi $entity_db
-     * @return EntityApi
+     * @param EntityApiInterface $entity
+     * @param EntityApiInterface $entity_db
+     * @return EntityApiInterface
      */
-    public function mergeEntity(EntityApi $entity_db, EntityApi $entity): EntityApi
+    public function mergeEntity(EntityApiInterface $entity_db, EntityApiInterface $entity): EntityApiInterface
     {
         return $entity_db;
     }
 
     /**
      * @param array $parameters
-     * @return EntityApi
+     * @return EntityApiInterface
      */
-    public function createEntityInstance(array $parameters = []): EntityApi
+    public function createEntityInstance(array $parameters = []): EntityApiInterface
     {
         $class_name = $this->getRepository()->getClassName();
         return new $class_name($parameters);
     }
 
     /**
-     * @param EntityApi $entity
+     * @param EntityApiInterface $entity
      * @param array $parameters
      * @param string $method
      * @param bool $csrf_protection
-     * @return EntityApi
+     * @return EntityApiInterface
      */
-    public function processForm(EntityApi $entity, array $parameters = [], string $method = Request::METHOD_PUT, bool $csrf_protection = true): EntityApi
+    public function processForm(EntityApiInterface $entity, array $parameters = [], string $method = Request::METHOD_PUT, bool $csrf_protection = true): EntityApiInterface
     {
         $form = $this->getFormFactory()->create($this->getEntityType(), $entity, array('csrf_protection' => $csrf_protection, 'method' => $method));
         $parameters = $this->cleanParameters($parameters);
@@ -228,62 +228,62 @@ abstract class Handler
     }
 
     /**
-     * @param EntityApi $entity
+     * @param EntityApiInterface $entity
      * @param array $parameters
-     * @return EntityApi
+     * @return EntityApiInterface
      */
-    public function put(EntityApi $entity, array $parameters = []): EntityApi
+    public function put(EntityApiInterface $entity, array $parameters = []): EntityApiInterface
     {
         return $this->processForm($entity, $parameters, Request::METHOD_PUT, false);
     }
 
 
     /**
-     * @param EntityApi $entity
+     * @param EntityApiInterface $entity
      * @param array $parameters
-     * @return EntityApi
+     * @return EntityApiInterface
      */
-    public function desactivate(EntityApi $entity, array $parameters = []): EntityApi
+    public function desactivate(EntityApiInterface $entity, array $parameters = []): EntityApiInterface
     {
         return $this->patch($entity->desactivate(), $parameters);
     }
 
     /**
-     * @param EntityApi $entity
+     * @param EntityApiInterface $entity
      * @param array|null $parameters
-     * @return EntityApi
+     * @return EntityApiInterface
      */
-    public function patch(EntityApi $entity, array $parameters = null): EntityApi
+    public function patch(EntityApiInterface $entity, array $parameters = null): EntityApiInterface
     {
         return $this->processForm($entity, $parameters, Request::METHOD_PATCH, false);
     }
 
     /**
-     * @param EntityApi $entity
+     * @param EntityApiInterface $entity
      * @param array $parameters
-     * @return EntityApi
+     * @return EntityApiInterface
      */
-    public function delete(EntityApi $entity, array $parameters = []): EntityApi
+    public function delete(EntityApiInterface $entity, array $parameters = []): EntityApiInterface
     {
         return $this->patch($this->prepareToDeletion($entity), $parameters);
     }
 
     /**
-     * @param EntityApi $entity
-     * @return EntityApi
+     * @param EntityApiInterface $entity
+     * @return EntityApiInterface
      */
-    public function prepareToDeletion(EntityApi $entity): EntityApi
+    public function prepareToDeletion(EntityApiInterface $entity): EntityApiInterface
     {
         return $entity->desactivate();
 
     }
 
     /**
-     * @param EntityApi $entity
+     * @param EntityApiInterface $entity
      * @param array $parameters
-     * @return EntityApi
+     * @return EntityApiInterface
      */
-    public function activate(EntityApi $entity, array $parameters = []): EntityApi
+    public function activate(EntityApiInterface $entity, array $parameters = []): EntityApiInterface
     {
         return $this->patch($entity->activate(), $parameters);
     }

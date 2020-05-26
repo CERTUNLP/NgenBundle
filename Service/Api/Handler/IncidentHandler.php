@@ -11,11 +11,11 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Form\IncidentType;
+use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use CertUnlp\NgenBundle\Repository\IncidentRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -64,9 +64,9 @@ class IncidentHandler extends Handler
     /**
      * @param Incident $incident
      * @param IncidentState $state
-     * @return EntityApi|Incident
+     * @return EntityApiInterface|Incident
      */
-    public function changeState(Incident $incident, IncidentState $state): EntityApi
+    public function changeState(Incident $incident, IncidentState $state): EntityApiInterface
     {
         $incident->setStateAndReporter($state, $this->getUser());
         return $this->patch($incident, []);
@@ -178,11 +178,11 @@ class IncidentHandler extends Handler
     }
 
     /**
-     * @param EntityApi|Incident $entity
-     * @return EntityApi|Incident
+     * @param EntityApiInterface|Incident $entity
+     * @return EntityApiInterface|Incident
      * @throws Exception
      */
-    public function mergeIfExists(EntityApi $entity): EntityApi
+    public function mergeIfExists(EntityApiInterface $entity): EntityApiInterface
     {
         $this->updateIncidentData($entity);
         $entity = parent::mergeIfExists($entity);
@@ -312,10 +312,10 @@ class IncidentHandler extends Handler
     }
 
     /**
-     * @param EntityApi|Incident $entity
-     * @return EntityApi|Incident
+     * @param EntityApiInterface|Incident $entity
+     * @return EntityApiInterface|Incident
      */
-    public function getIfExists(EntityApi $entity): ?EntityApi
+    public function getIfExists(EntityApiInterface $entity): ?EntityApiInterface
     {
         if ($entity->isDefined()) {
             return $this->getRepository()->findOneLiveBy($this->getEntityIdentificationArray($entity));
@@ -332,11 +332,11 @@ class IncidentHandler extends Handler
     }
 
     /**
-     * @param EntityApi|Incident $entity_db
-     * @param EntityApi|Incident $entity
-     * @return EntityApi|Incident
+     * @param EntityApiInterface|Incident $entity_db
+     * @param EntityApiInterface|Incident $entity
+     * @return EntityApiInterface|Incident
      */
-    public function mergeEntity(EntityApi $entity_db, EntityApi $entity): EntityApi
+    public function mergeEntity(EntityApiInterface $entity_db, EntityApiInterface $entity): EntityApiInterface
     {
         $entity_db->updateVariables($entity);
         return $entity_db;
@@ -356,9 +356,9 @@ class IncidentHandler extends Handler
 
     /**
      * @param array $parameters
-     * @return EntityApi|Incident
+     * @return EntityApiInterface|Incident
      */
-    public function createEntityInstance(array $parameters = []): EntityApi
+    public function createEntityInstance(array $parameters = []): EntityApiInterface
     {
         $class_name = $this->getRepository()->getClassName();
         $incident = new $class_name($params['address'] ?? null);

@@ -11,7 +11,6 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Form\IncidentReportType;
 use CertUnlp\NgenBundle\Repository\IncidentReportRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,7 +22,6 @@ class IncidentReportHandler extends Handler
     {
         parent::__construct($entity_manager, $repository, $entity_ype, $form_factory);
     }
-
 
 
 }

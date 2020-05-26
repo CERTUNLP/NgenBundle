@@ -11,9 +11,9 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Form\UserType;
+use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use CertUnlp\NgenBundle\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -35,9 +35,9 @@ class UserHandler extends Handler
 
     /**
      * @param array $parameters
-     * @return EntityApi| User
+     * @return EntityApiInterface| User
      */
-    public function createEntityInstance(array $parameters = []): EntityApi
+    public function createEntityInstance(array $parameters = []): EntityApiInterface
     {
         /** @var User $user */
         $user = parent::createEntityInstance($parameters);

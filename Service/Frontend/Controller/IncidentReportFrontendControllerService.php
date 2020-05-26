@@ -11,8 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Service\Frontend\Controller;
 
-use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Form\IncidentReportType;
+use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -44,13 +44,12 @@ class IncidentReportFrontendControllerService extends FrontendControllerService
     }
 
     /**
-     * @param EntityApi $object
+     * @param EntityApiInterface $object
      * @param string $default_type
      * @return array
      */
-    public function editEntity(EntityApi $object, string $default_type = ''): array
+    public function editEntity(EntityApiInterface $object, string $default_type = ''): array
     {
-
         return array('form' => $this->getFormFactory()->create($this->getEntityType(), $object)->createView(), 'method' => Request::METHOD_PATCH, 'default_type' => $default_type);
     }
 

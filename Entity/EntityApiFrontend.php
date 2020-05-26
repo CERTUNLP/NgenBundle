@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity;
 
+use CertUnlp\NgenBundle\Model\EntityApiFrontendInterface;
 use Closure;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,7 +21,7 @@ use JMS\Serializer\Annotation as JMS;
  * @JMS\ExclusionPolicy("all")
  * @ORM\MappedSuperclass()
  */
-abstract class EntityApiFrontend extends EntityApi
+abstract class EntityApiFrontend extends EntityApi implements EntityApiFrontendInterface
 {
 
     /**

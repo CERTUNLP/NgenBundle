@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity;
 
+use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
@@ -18,7 +19,7 @@ use JMS\Serializer\Annotation as JMS;
  * @JMS\ExclusionPolicy("all")
  * @ORM\MappedSuperclass()
  */
-abstract class EntityApi extends Entity
+abstract class EntityApi extends Entity implements EntityApiInterface
 {
 
     /**
@@ -38,9 +39,9 @@ abstract class EntityApi extends Entity
     protected $active = true;
 
     /**
-     * @return Entity
+     * @return EntityApiInterface
      */
-    public function activate(): Entity
+    public function activate(): EntityApiInterface
     {
         $this->setActive(true);
         return $this;
@@ -65,9 +66,9 @@ abstract class EntityApi extends Entity
     }
 
     /**
-     * @return Entity
+     * @return EntityApiInterface
      */
-    public function desactivate(): Entity
+    public function desactivate(): EntityApiInterface
     {
         $this->setActive(false);
         return $this;

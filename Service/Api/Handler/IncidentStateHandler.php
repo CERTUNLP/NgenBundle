@@ -11,9 +11,9 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Form\IncidentStateType;
+use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use CertUnlp\NgenBundle\Repository\IncidentStateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -27,7 +27,7 @@ class IncidentStateHandler extends Handler
     }
 
     /**
-     * @return IncidentState|EntityApi
+     * @return IncidentState|EntityApiInterface
      */
     public function getInitialState(): IncidentState
     {
