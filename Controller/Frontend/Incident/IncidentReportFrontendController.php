@@ -17,40 +17,52 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
+use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
-use CertUnlp\NgenBundle\Service\Frontend\Controller\IncidentReportFrontendControllerService;
+use CertUnlp\NgenBundle\Form\IncidentReportType;
+use CertUnlp\NgenBundle\Model\EntityApiInterface;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class IncidentReportFrontendController extends Controller
+class IncidentReportFrontendController extends FrontendController
 {
-
     /**
      * @Template("CertUnlpNgenBundle:IncidentReport:Frontend/list/incidentReportList.html.twig")
      * @param Request $request
+     * @param PaginatedFinderInterface $elastica_finder_report
      * @param string $term
-     * @param IncidentReportFrontendControllerService $controller_service
      * @return array
      */
-    public function homeAction(Request $request, IncidentReportFrontendControllerService $controller_service, string $term = ''): array
+    public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_report, string $term = ''): array
     {
-        return $controller_service->homeEntity($request, 'slug:' . $term . '-*');
+        return $this->homeEntity($request, $elastica_finder_report, 'slug:' . $term . '-*');
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentReport:Frontend/incidentReportForm.html.twig")
      * @Route("reports/new", name="cert_unlp_ngen_incident_type_report_new")
      * @param Request $request
-     * @param IncidentReportFrontendControllerService $controller_service
+     * @param IncidentReportType $entity_type
      * @return array
      */
-    public function newIncidentReportAction(Request $request, IncidentReportFrontendControllerService $controller_service): array
+    public function newIncidentReportAction(Request $request, IncidentReportType $entity_type): array
     {
-        return $controller_service->newEntity($request);
+        return $this->newEntity($request, $entity_type);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function newEntity(Request $request, AbstractType $form, string $default_type = ''): array
+    {
+        $response = parent::newEntity($request, $form);
+        $response['default_type'] = $default_type;
+        return $response;
     }
 
     /**
@@ -59,12 +71,23 @@ class IncidentReportFrontendController extends Controller
      * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      * @param IncidentType $slug
      * @param IncidentReport $lang
-     * @param IncidentReportFrontendControllerService $controller_service
+     * @param IncidentReportType $entity_type
      * @return array
      */
-    public function editIncidentReportAction(IncidentType $slug, IncidentReport $lang, IncidentReportFrontendControllerService $controller_service): array
+    public function editIncidentReportAction(IncidentType $slug, IncidentReport $lang, IncidentReportType $entity_type): array
     {
-        return $controller_service->editEntity($lang, $slug);
+        return $this->editEntity($lang, $entity_type, $slug);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public function editEntity(EntityApiInterface $object, AbstractType $form, string $default_type = ''): array
+    {
+        $response = parent::editEntity($object, $form);
+        $response['default_type'] = $default_type;
+        return $response;
     }
 
     /**
@@ -73,12 +96,11 @@ class IncidentReportFrontendController extends Controller
      * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      * @param IncidentType $slug
      * @param IncidentReport $lang
-     * @param IncidentReportFrontendControllerService $controller_service
+     * @param IncidentReportFrontendController $controller_service
      * @return array
      */
-    public function detailIncidentReportAction(IncidentType $slug, IncidentReport $lang, IncidentReportFrontendControllerService $controller_service): array
+    public function detailIncidentReportAction(IncidentType $slug, IncidentReport $lang, IncidentReportFrontendController $controller_service): array
     {
-        return $controller_service->detailEntity($lang);
+        return $this->detailEntity($lang);
     }
-
 }

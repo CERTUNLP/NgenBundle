@@ -17,38 +17,39 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend\Network;
 
+use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
-use CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendControllerService;
+use CertUnlp\NgenBundle\Form\NetworkEntityType;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class NetworkEntityFrontendController extends Controller
+class NetworkEntityFrontendController extends FrontendController
 {
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkEntity:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_network_network_entity_frontend_home")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param PaginatedFinderInterface $elastica_finder_network_entity
      * @return array
      */
-    public function homeAction(Request $request, FrontendControllerService $controller_service): array
+    public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_network_entity): array
     {
-        return $controller_service->homeEntity($request);
+        return $this->homeEntity($request, $elastica_finder_network_entity);
     }
 
     /**
      * @Route("search/autocomplete", name="cert_unlp_ngen_network_entity_search_autocomplete")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param PaginatedFinderInterface $elastica_finder_network_entity
      * @return JsonResponse
      */
-    public function searchAutocompleteNetworkAdminAction(Request $request, FrontendControllerService $controller_service): JsonResponse
+    public function searchAutocompleteNetworkAdminAction(Request $request, PaginatedFinderInterface $elastica_finder_network_entity): JsonResponse
     {
-        return $controller_service->searchAutocompleteEntity($request);
+        return $this->searchAutocompleteEntity($request, $elastica_finder_network_entity);
 
     }
 
@@ -56,48 +57,47 @@ class NetworkEntityFrontendController extends Controller
      * @Template("CertUnlpNgenBundle:NetworkEntity:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_network_entity_search")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param PaginatedFinderInterface $elastica_finder_network_entity
      * @return array
      */
-    public function searchNetworkEntityAction(Request $request, FrontendControllerService $controller_service): array
+    public function searchNetworkEntityAction(Request $request, PaginatedFinderInterface $elastica_finder_network_entity): array
     {
-        return $controller_service->searchEntity($request);
+        return $this->searchEntity($request, $elastica_finder_network_entity);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkEntity:Frontend/networkEntityForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_network_entity_new")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param NetworkEntityType $entity_type
      * @return array
      */
-    public function newNetworkEntityAction(Request $request, FrontendControllerService $controller_service): array
+    public function newNetworkEntityAction(Request $request, NetworkEntityType $entity_type): array
     {
-        return $controller_service->newEntity($request);
+        return $this->newEntity($request, $entity_type);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkEntity:Frontend/networkEntityForm.html.twig")
      * @Route("{slug}/edit", name="cert_unlp_ngen_network_entity_edit")
-     * @param NetworkEntity $networkEntity
-     * @param FrontendControllerService $controller_service
+     * @param NetworkEntity $network_entity
+     * @param NetworkEntityType $entity_type
      * @return array
      */
-    public function editNetworkEntityAction(NetworkEntity $networkEntity, FrontendControllerService $controller_service): array
+    public function editNetworkEntityAction(NetworkEntity $network_entity, NetworkEntityType $entity_type): array
     {
-        return $controller_service->editEntity($networkEntity);
+        return $this->editEntity($network_entity, $entity_type);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkEntity:Frontend/networkEntityDetail.html.twig")
      * @Route("{slug}/detail", name="cert_unlp_ngen_network_entity_detail")
-     * @param NetworkEntity $networkEntity
-     * @param FrontendControllerService $controller_service
+     * @param NetworkEntity $network_entity
      * @return array
      */
-    public function detailNetworkEntityAction(NetworkEntity $networkEntity, FrontendControllerService $controller_service): array
+    public function detailNetworkEntityAction(NetworkEntity $network_entity): array
     {
-        return $controller_service->detailEntity($networkEntity);
+        return $this->detailEntity($network_entity);
     }
 
 }

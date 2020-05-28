@@ -17,27 +17,28 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend\Network;
 
+use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
-use CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendControllerService;
+use CertUnlp\NgenBundle\Form\NetworkAdminType;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class NetworkAdminFrontendController extends Controller
+class NetworkAdminFrontendController extends FrontendController
 {
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_network_admin_frontend_home")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param PaginatedFinderInterface $elastica_finder_network_admin
      * @return array
      */
-    public function homeAction(Request $request, FrontendControllerService $controller_service): array
+    public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_network_admin): array
     {
-        return $controller_service->homeEntity($request);
+        return $this->homeEntity($request, $elastica_finder_network_admin);
     }
 
 
@@ -45,23 +46,23 @@ class NetworkAdminFrontendController extends Controller
      * @Template("CertUnlpNgenBundle:NetworkAdmin/Frontend:home.html.twig")
      * @Route("search", name="cert_unlp_ngen_network_search_network_admin")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param PaginatedFinderInterface $elastica_finder_network_admin
      * @return array
      */
-    public function searchNetworkAdminAction(Request $request, FrontendControllerService $controller_service): array
+    public function searchNetworkAdminAction(Request $request, PaginatedFinderInterface $elastica_finder_network_admin): array
     {
-        return $controller_service->searchEntity($request);
+        return $this->searchEntity($request, $elastica_finder_network_admin);
     }
 
     /**
      * @Route("search/autocomplete", name="cert_unlp_ngen_network_admin_search_autocomplete")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param PaginatedFinderInterface $elastica_finder_network_admin
      * @return JsonResponse
      */
-    public function searchAutocompleteNetworkAdminAction(Request $request, FrontendControllerService $controller_service): JsonResponse
+    public function searchAutocompleteNetworkAdminAction(Request $request, PaginatedFinderInterface $elastica_finder_network_admin): JsonResponse
     {
-        return $controller_service->searchAutocompleteEntity($request);
+        return $this->searchAutocompleteEntity($request, $elastica_finder_network_admin);
 
     }
 
@@ -69,36 +70,35 @@ class NetworkAdminFrontendController extends Controller
      * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/networkAdminForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_network_new_network_admin")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param NetworkAdminType $admin_type
      * @return array
      */
-    public function newNetworkAdminAction(Request $request, FrontendControllerService $controller_service): array
+    public function newNetworkAdminAction(Request $request, NetworkAdminType $admin_type): array
     {
-        return $controller_service->newEntity($request);
+        return $this->newEntity($request, $admin_type);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/networkAdminForm.html.twig")
      * @Route("{slug}/edit", name="cert_unlp_ngen_network_edit_network_admin")
-     * @param NetworkAdmin $networkAdmin
-     * @param FrontendControllerService $controller_service
+     * @param NetworkAdmin $network_admin
+     * @param NetworkAdminType $admin_type
      * @return array
      */
-    public function editNetworkAdminAction(NetworkAdmin $networkAdmin, FrontendControllerService $controller_service): array
+    public function editNetworkAdminAction(NetworkAdmin $network_admin, NetworkAdminType $admin_type): array
     {
-        return $controller_service->editEntity($networkAdmin);
+        return $this->editEntity($network_admin, $admin_type);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/networkAdminDetail.html.twig")
      * @Route("{slug}/detail", name="cert_unlp_ngen_network_detail_network_admin")
-     * @param NetworkAdmin $networkAdmin
-     * @param FrontendControllerService $controller_service
+     * @param NetworkAdmin $network_admin
      * @return array
      */
-    public function detailNetworkAdminAction(NetworkAdmin $networkAdmin, FrontendControllerService $controller_service): array
+    public function detailNetworkAdminAction(NetworkAdmin $network_admin): array
     {
-        return $controller_service->detailEntity($networkAdmin);
+        return $this->detailEntity($network_admin);
     }
 
 }

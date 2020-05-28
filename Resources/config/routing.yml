@@ -51,7 +51,7 @@ cert_ngen_network:
     prefix:   /community/networks
 
 cert_ngen_host:
-    resource: '@CertUnlpNgenBundle/Controller/Frontend/HostFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Network/HostFrontendController.php'
     type:   annotation
     prefix:    /community/hosts
 

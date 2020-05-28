@@ -17,74 +17,74 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
+use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
-use CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendControllerService;
+use CertUnlp\NgenBundle\Form\IncidentStateType;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class IncidentStateFrontendController extends Controller
+class IncidentStateFrontendController extends FrontendController
 {
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentState:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_administration_state_frontend_home")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param PaginatedFinderInterface $elastica_finder_state
      * @return array
      */
-    public function homeAction(Request $request, FrontendControllerService $controller_service): array
+    public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_state): array
     {
-        return $controller_service->homeEntity($request);
+        return $this->homeEntity($request, $elastica_finder_state);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentState:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_incident_state_search")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param PaginatedFinderInterface $elastica_finder_state
      * @return array
      */
-    public function searchIncidentStateAction(Request $request, FrontendControllerService $controller_service): array
+    public function searchIncidentStateAction(Request $request, PaginatedFinderInterface $elastica_finder_state): array
     {
-        return $controller_service->searchEntity($request);
+        return $this->searchEntity($request, $elastica_finder_state);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentState:Frontend/incidentStateForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_incident_state_new")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param IncidentStateType $state_type
      * @return array
      */
-    public function newIncidentStateAction(Request $request, FrontendControllerService $controller_service): array
+    public function newIncidentStateAction(Request $request, IncidentStateType $state_type): array
     {
-        return $controller_service->newEntity($request);
+        return $this->newEntity($request, $state_type);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentState:Frontend/incidentStateForm.html.twig")
      * @Route("{slug}/edit", name="cert_unlp_ngen_incident_state_edit")
      * @param IncidentState $incidentState
-     * @param FrontendControllerService $controller_service
+     * @param IncidentStateType $state_type
      * @return array
      */
-    public function editIncidentStateAction(IncidentState $incidentState, FrontendControllerService $controller_service): array
+    public function editIncidentStateAction(IncidentState $incidentState, IncidentStateType $state_type): array
     {
-        return $controller_service->editEntity($incidentState);
+        return $this->editEntity($incidentState, $state_type);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentState:Frontend/incidentStateDetail.html.twig")
      * @Route("{slug}/detail", name="cert_unlp_ngen_incident_state_detail")
      * @param IncidentState $incidentState
-     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function detailIncidentStateAction(IncidentState $incidentState, FrontendControllerService $controller_service): array
+    public function detailIncidentStateAction(IncidentState $incidentState): array
     {
-        return $controller_service->detailEntity($incidentState);
+        return $this->detailEntity($incidentState);
     }
 
 }

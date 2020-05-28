@@ -12,14 +12,13 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-class DashboardController extends Controller
+class DashboardController extends AbstractController
 {
-
 
     /**
      * @Template("CertUnlpNgenBundle:Dashboard:frontend.html.twig")
@@ -27,7 +26,7 @@ class DashboardController extends Controller
      * @param Request $request
      * @return array
      */
-    public function homeAction(Request $request)
+    public function homeAction(Request $request): array
     {
         return array("dashboard" => $this->container->getParameter('cert_unlp.ngen.grafana.internal.url'));
     }
@@ -38,7 +37,7 @@ class DashboardController extends Controller
      * @param Request $request
      * @return array
      */
-    public function externalAction(Request $request)
+    public function externalAction(Request $request): array
     {
         return array("dashboard" => $this->container->getParameter('cert_unlp.ngen.grafana.external.url'));
     }

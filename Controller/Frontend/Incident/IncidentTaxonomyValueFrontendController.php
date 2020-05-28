@@ -17,49 +17,48 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
+use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
-use CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendControllerService;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class IncidentTaxonomyValueFrontendController extends Controller
+class IncidentTaxonomyValueFrontendController extends FrontendController
 {
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentTaxonomyValue/Frontend:home.html.twig")
      * @Route("/", name="cert_unlp_ngen_administration_taxonomy_value_frontend_home")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param PaginatedFinderInterface $elastica_finder_taxonomy_value
      * @return array
      */
-    public function homeAction(Request $request, FrontendControllerService $controller_service): array
+    public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_taxonomy_value): array
     {
-        return $controller_service->homeEntity($request);
+        return $this->homeEntity($request, $elastica_finder_taxonomy_value);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentTaxonomyValue/Frontend:incidentTaxonomyValueDetail.html.twig")
      * @Route("{slug}/detail", name="cert_unlp_ngen_taxonomy_value_detail")
      * @param TaxonomyValue $taxonomyValue
-     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function detailIncidentTaxonomyValueAction(TaxonomyValue $taxonomyValue, FrontendControllerService $controller_service): array
+    public function detailIncidentTaxonomyValueAction(TaxonomyValue $taxonomyValue): array
     {
-        return $controller_service->detailEntity($taxonomyValue);
+        return $this->detailEntity($taxonomyValue);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentTaxonomyValue/Frontend:frontend.html.twig")
      * @Route("search", name="cert_unlp_ngen_incident_taxonomy_value_search")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param PaginatedFinderInterface $elastica_finder_taxonomy_value
      * @return array
      */
-    public function searchIncidentTaxonomyValueAction(Request $request, FrontendControllerService $controller_service): array
+    public function searchIncidentTaxonomyValueAction(Request $request, PaginatedFinderInterface $elastica_finder_taxonomy_value): array
     {
-        return $controller_service->searchEntity($request);
+        return $this->searchEntity($request, $elastica_finder_taxonomy_value);
     }
 }
