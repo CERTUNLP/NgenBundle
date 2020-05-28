@@ -52,7 +52,7 @@ class IncidentFrontendController extends FrontendController
             $term = $request->get('term') ?: '*';
         }
         $quickSearchForm = $this->getFormFactory()->createBuilder(IncidentSearchType::class, (new Incident), array('csrf_protection' => true));
-        return array('objects' => $this->searchEntity($request, $term, $limit, $defaultSortFieldName, $defaultSortDirection, 'pageobject', 'object')['objects'], 'search_form' => $quickSearchForm->getForm()->createView());
+        return array('objects' => $this->searchEntity($request, $finder,$term, $limit, $defaultSortFieldName, $defaultSortDirection, 'pageobject', 'object')['objects'], 'search_form' => $quickSearchForm->getForm()->createView());
 
     }
 
