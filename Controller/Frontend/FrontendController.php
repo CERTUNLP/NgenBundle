@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpPossiblePolymorphicInvocationInspection */
 
 /*
  * This file is part of the Ngen - CSIRT Incident Report System.
@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Service\Frontend\Controller;
+namespace CertUnlp\NgenBundle\Controller\Frontend;
 
 use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\ColumnChart;
@@ -18,25 +18,18 @@ use CMEN\GoogleChartsBundle\GoogleCharts\Charts\Timeline;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class FrontendControllerService
+class FrontendController extends AbstractController
 {
     /**
      * @var PaginatorInterface
      */
     private $paginator;
-    /**
-     * @var PaginatedFinderInterface
-     */
-    private $finder;
-    /**
-     * @var AbstractType
-     */
-    private $entity_type;
     /**
      * @var FormFactoryInterface
      */
@@ -45,15 +38,11 @@ class FrontendControllerService
     /**
      * FrontendControllerService constructor.
      * @param FormFactoryInterface $formFactory
-     * @param AbstractType $entity_type
      * @param PaginatorInterface $paginator
-     * @param PaginatedFinderInterface $finder
      */
-    public function __construct(FormFactoryInterface $formFactory, AbstractType $entity_type, PaginatorInterface $paginator, PaginatedFinderInterface $finder)
+    public function __construct(FormFactoryInterface $formFactory, PaginatorInterface $paginator)
     {
         $this->paginator = $paginator;
-        $this->finder = $finder;
-        $this->entity_type = $entity_type;
         $this->form_factory = $formFactory;
 
     }
@@ -119,19 +108,21 @@ class FrontendControllerService
 
     /**
      * @param Request $request
+     * @param PaginatedFinderInterface $finder
      * @param string $term
      * @param int $limit
      * @param string $defaultSortFieldName
      * @param string $defaultSortDirection
      * @return array
      */
-    public function homeEntity(Request $request, string $term = '', int $limit = 7, string $defaultSortFieldName = 'createdAt', string $defaultSortDirection = 'desc'): array
+    public function homeEntity(Request $request, PaginatedFinderInterface $finder, string $term = '', int $limit = 7, string $defaultSortFieldName = 'createdAt', string $defaultSortDirection = 'desc'): array
     {
-        return $this->searchEntity($request, $term, $limit, $defaultSortFieldName, $defaultSortDirection);
+        return $this->searchEntity($request, $finder, $term, $limit, $defaultSortFieldName, $defaultSortDirection);
     }
 
     /**
      * @param Request $request
+     * @param PaginatedFinderInterface $finder
      * @param string $term
      * @param int $limit
      * @param string $defaultSortFieldName
@@ -140,12 +131,12 @@ class FrontendControllerService
      * @param string $field
      * @return array
      */
-    public function searchEntity(Request $request, string $term = '', int $limit = 7, string $defaultSortFieldName = 'createdAt', string $defaultSortDirection = 'desc', string $page = 'page', string $field = ''): array
+    public function searchEntity(Request $request, PaginatedFinderInterface $finder, string $term = '', int $limit = 7, string $defaultSortFieldName = 'createdAt', string $defaultSortDirection = 'desc', string $page = 'page', string $field = ''): array
     {
         if (!$term) {
             $term = $request->get('term') ?: '*';
         }
-        $results = $this->getFinder()->createPaginatorAdapter($term);
+        $results = $finder->createPaginatorAdapter($term);
         $pagination = $this->getPaginator()->paginate(
             $results, $request->query->get($page, 1), $limit
             , array('pageParameterName' => 'page' . $field, 'sortFieldParameterName' => 'sort' . $field, 'sortDirectionParameterName' => 'direction' . $field, 'defaultSortFieldName' => $defaultSortFieldName, 'defaultSortDirection' => $defaultSortDirection)
@@ -159,13 +150,6 @@ class FrontendControllerService
         return array('objects' => $pagination, 'term' => $term);
     }
 
-    /**
-     * @return PaginatedFinderInterface
-     */
-    public function getFinder(): PaginatedFinderInterface
-    {
-        return $this->finder;
-    }
 
     /**
      * @return PaginatorInterface
@@ -178,20 +162,16 @@ class FrontendControllerService
     /**
      * @param Request $request
      * @param string $term
-     * @param int $limit
-     * @param string $defaultSortFieldName
-     * @param string $defaultSortDirection
-     * @param string $page
-     * @param string $field
+     * @param PaginatedFinderInterface $finder
      * @return JsonResponse
      */
-    public function searchAutocompleteEntity(Request $request, string $term = '', int $limit = 7, string $defaultSortFieldName = 'createdAt', string $defaultSortDirection = 'desc', string $page = 'page', string $field = ''): JsonResponse
+    public function searchAutocompleteEntity(Request $request, PaginatedFinderInterface $finder, string $term = ''): JsonResponse
     {
         if (!$term) {
             $term = $request->get('term') ?? $request->get('q') ?? '*';
         }
 
-        $results = $this->getFinder()->find($term . ' && isActive:"true"');
+        $results = $finder->find($term . ' && isActive:"true"');
 
         $array = (new ArrayCollection($results))->map(static function ($element) {
             return ['id' => $element->getId(), 'text' => (string)$element];
@@ -201,11 +181,12 @@ class FrontendControllerService
 
     /**
      * @param Request $request
+     * @param AbstractType $form
      * @return array
      */
-    public function newEntity(Request $request): array
+    public function newEntity(Request $request, AbstractType $form): array
     {
-        return array('form' => $this->getFormFactory()->create($this->getEntityType())->createView(), 'method' => 'POST');
+        return array('form' => $this->getFormFactory()->create($form)->createView(), 'method' => 'POST');
     }
 
     /**
@@ -217,20 +198,13 @@ class FrontendControllerService
     }
 
     /**
-     * @return AbstractType
-     */
-    public function getEntityType(): AbstractType
-    {
-        return $this->entity_type;
-    }
-
-    /**
      * @param EntityApiInterface $object
+     * @param AbstractType $form
      * @return array
      */
-    public function editEntity(EntityApiInterface $object): array
+    public function editEntity(EntityApiInterface $object, AbstractType $form): array
     {
-        return array('form' => $this->getFormFactory()->create($this->getEntityType(), $object)->createView(), 'method' => 'patch');
+        return array('form' => $this->getFormFactory()->create($form, $object)->createView(), 'method' => 'patch');
     }
 
     /**

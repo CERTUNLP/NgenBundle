@@ -17,74 +17,74 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
+use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
-use CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendControllerService;
+use CertUnlp\NgenBundle\Form\IncidentDecisionType;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class IncidentDecisionFrontendController extends Controller
+class IncidentDecisionFrontendController extends FrontendController
 {
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_incident_decision_frontend_home")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param PaginatedFinderInterface $elastica_finder_decision
      * @return array
      */
-    public function homeAction(Request $request, FrontendControllerService $controller_service): array
+    public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_decision): array
     {
-        return $controller_service->homeEntity($request);
+        return $this->homeEntity($request, $elastica_finder_decision);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_incident_decision_search")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param PaginatedFinderInterface $elastica_finder_decision
      * @return array
      */
-    public function searchIncidentDecisionAction(Request $request, FrontendControllerService $controller_service): array
+    public function searchIncidentDecisionAction(Request $request, PaginatedFinderInterface $elastica_finder_decision): array
     {
-        return $controller_service->searchEntity($request);
+        return $this->searchEntity($request, $elastica_finder_decision);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/incidentDecisionForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_incident_decision_new")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param IncidentDecisionType $type
      * @return array
      */
-    public function newIncidentDecisionAction(Request $request, FrontendControllerService $controller_service): array
+    public function newIncidentDecisionAction(Request $request, IncidentDecisionType $type): array
     {
-        return $controller_service->newEntity($request);
+        return $this->newEntity($request, $type);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/incidentDecisionForm.html.twig")
      * @Route("{id}/edit", name="cert_unlp_ngen_incident_decision_edit")
-     * @param IncidentDecision $IncidentDecision
-     * @param FrontendControllerService $controller_service
+     * @param IncidentDecision $incident_decision
+     * @param IncidentDecisionType $type
      * @return array
      */
-    public function editIncidentDecisionAction(IncidentDecision $IncidentDecision, FrontendControllerService $controller_service): array
+    public function editIncidentDecisionAction(IncidentDecision $incident_decision, IncidentDecisionType $type): array
     {
-        return $controller_service->editEntity($IncidentDecision);
+        return $this->editEntity($incident_decision, $type);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/incidentDecisionDetail.html.twig")
      * @Route("{id}/detail", name="cert_unlp_ngen_incident_decision_detail")
-     * @param IncidentDecision $IncidentDecision
-     * @param FrontendControllerService $controller_service
+     * @param IncidentDecision $incident_decision
      * @return array
      */
-    public function detailIncidentDecisionAction(IncidentDecision $IncidentDecision, FrontendControllerService $controller_service): array
+    public function detailIncidentDecisionAction(IncidentDecision $incident_decision): array
     {
-        return $controller_service->detailEntity($IncidentDecision);
+        return $this->detailEntity($incident_decision);
     }
 
 }

@@ -16,8 +16,8 @@ use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactEmail;
 use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactPhone;
 use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactTelegram;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use CertUnlp\NgenBundle\Model\EntityApiFrontendInterface;
+use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -58,6 +58,13 @@ class User extends BaseUser implements EntityApiFrontendInterface
      */
     protected $plainPassword;
     /**
+     * @var string
+     *
+     * @Gedmo\Slug(fields={"firstname","lastname"}, separator="_")
+     * @ORM\Column(name="slug", type="string", length=100,nullable=true)
+     * */
+    protected $slug;
+    /**
      * @ORM\Column(name="api_key", type="string", length=255, nullable=true)
      */
     private $apiKey;
@@ -95,13 +102,6 @@ class User extends BaseUser implements EntityApiFrontendInterface
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="assigned",fetch="EXTRA_LAZY")
      */
     private $assignedIncidents;
-    /**
-     * @var string
-     *
-     * @Gedmo\Slug(fields={"firstname","lastname"}, separator="_")
-     * @ORM\Column(name="slug", type="string", length=100,nullable=true)
-     * */
-    protected $slug;
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\Contact",mappedBy="user",cascade={"persist"},orphanRemoval=true)
@@ -452,7 +452,6 @@ class User extends BaseUser implements EntityApiFrontendInterface
     }
 
 
-
     /**
      * @return User
      */
@@ -477,6 +476,14 @@ class User extends BaseUser implements EntityApiFrontendInterface
     public function getCreatedBy(): ?int
     {
         return $this->createdBy;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEntityIdentificationArray(): array
+    {
+        return [$this->getIdentificatorString() => $this->getId()];
     }
 
     /**

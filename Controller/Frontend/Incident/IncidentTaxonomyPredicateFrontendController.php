@@ -17,50 +17,49 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
+use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate;
-use CertUnlp\NgenBundle\Service\Frontend\Controller\FrontendControllerService;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class IncidentTaxonomyPredicateFrontendController extends Controller
+class IncidentTaxonomyPredicateFrontendController extends FrontendController
 {
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend:home.html.twig")
      * @Route("/", name="cert_unlp_ngen_administration_taxonomy_predicate_frontend_home")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param PaginatedFinderInterface $elastica_finder_taxonomy_predicate
      * @return array
      */
-    public function homeAction(Request $request, FrontendControllerService $controller_service): array
+    public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_taxonomy_predicate): array
     {
-        return $controller_service->homeEntity($request);
+        return $this->homeEntity($request, $elastica_finder_taxonomy_predicate);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend:incidentTaxonomyPredicateDetail.html.twig")
      * @Route("{slug}/detail", name="cert_unlp_ngen_taxonomy_predicate_detail")
      * @param TaxonomyPredicate $taxonomyPredicate
-     * @param FrontendControllerService $controller_service
      * @return array
      */
-    public function detailIncidentTaxonomyPredicateAction(TaxonomyPredicate $taxonomyPredicate, FrontendControllerService $controller_service): array
+    public function detailIncidentTaxonomyPredicateAction(TaxonomyPredicate $taxonomyPredicate): array
     {
-        return $controller_service->detailEntity($taxonomyPredicate);
+        return $this->detailEntity($taxonomyPredicate);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend:frontend.html.twig")
      * @Route("search", name="cert_unlp_ngen_incident_taxonomy_predicate_search")
      * @param Request $request
-     * @param FrontendControllerService $controller_service
+     * @param PaginatedFinderInterface $elastica_finder_taxonomy_predicate
      * @return array
      */
-    public function searchIncidentTaxonomyPredicateAction(Request $request, FrontendControllerService $controller_service): array
+    public function searchIncidentTaxonomyPredicateAction(Request $request, PaginatedFinderInterface $elastica_finder_taxonomy_predicate): array
     {
-        return $controller_service->searchEntity($request);
+        return $this->searchEntity($request, $elastica_finder_taxonomy_predicate);
     }
 
 }

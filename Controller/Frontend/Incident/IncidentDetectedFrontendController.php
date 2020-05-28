@@ -18,24 +18,28 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
-use CertUnlp\NgenBundle\Service\Frontend\Controller\IncidentDetectedFrontendControllerService;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class IncidentDetectedFrontendController extends Controller
+class IncidentDetectedFrontendController extends AbstractController
 {
-
     /**
      * @Route("{id}/evidence_detected", name="cert_unlp_ngen_incident_frontend_evidence_incident_detected_id", requirements={"id"="\d+"})
      * @Route("{slug}/evidence_detected", name="cert_unlp_ngen_incident_detected_frontend_evidence_incident_detected_slug")
-     * @param IncidentDetected $incident
-     * @param IncidentDetectedFrontendControllerService $controller_service
+     * @param IncidentDetected $detection
+     * @param string $evidence_path
      * @return Response
      */
-    public function evidenceIncidentDetectedAction(IncidentDetected $incident, IncidentDetectedFrontendControllerService $controller_service): Response
+    public function evidenceIncidentDetectedAction(IncidentDetected $detection, string $evidence_path): Response
     {
-        return $controller_service->evidenceIncidentAction($incident);
-    }
+        $evidence_file = $evidence_path . '/' . $detection->getEvidenceFilePath();
 
+        $response = new Response(file_get_contents($evidence_file));
+        $response->headers->set('Content-Type', 'application/zip');
+        $response->headers->set('Content-Disposition', 'attachment;filename="' . $evidence_file . '"');
+        $response->headers->set('Content-length', filesize($evidence_file));
+
+        return $response;
+    }
 }
