@@ -42,5 +42,5 @@ https://github.com/CERTUNLP/NgenBundle/blob/master/USAGE.md
 ## Licencia
 
 Este software esta regirstrado bajo la licencia GPL v3.0. Para ver la licencia:
-[LICENSE](https://github.com/CERTUNLP/NgenBundle/LICENSE)
+[LICENSE](https://github.com/CERTUNLP/NgenBundle/blob/master/LICENSE)
 
