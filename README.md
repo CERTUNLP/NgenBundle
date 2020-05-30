@@ -32,15 +32,15 @@ Algunos feeds con los que NGEN ya fue integrado son:
 ## Instalación
 
 Puede verificar la documentación de como instalarlo en
-https://github.com/CERTUNLP/NgenBundle/INSTALL.md
+https://github.com/CERTUNLP/NgenBundle/blob/master/INSTALL.md
 
 ## Documentación de uso 
 
 La documentación de uso en general la encontramos en
-https://github.com/CERTUNLP/NgenBundle/USAGE.md
+https://github.com/CERTUNLP/NgenBundle/blob/master/USAGE.md
 
 ## Licencia
 
 Este software esta regirstrado bajo la licencia GPL v3.0. Para ver la licencia:
-[Resources/meta/LICENSE](https://github.com/CERTUNLP/NgenBundle/LICENSE)
+[LICENSE](https://github.com/CERTUNLP/NgenBundle/LICENSE)
 
