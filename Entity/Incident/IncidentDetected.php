@@ -14,7 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * IncidentDetected
  *
  * @ORM\Entity()
- * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\IncidentDetectedListener"})
  * @JMS\ExclusionPolicy("all")
  */
 class IncidentDetected extends EntityApiFrontend

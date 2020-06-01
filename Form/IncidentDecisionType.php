@@ -55,7 +55,7 @@ class IncidentDecisionType extends AbstractType
                     . 'open_ssdp|phishing|poodle|scan|shellshock|spam)',
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
+                        ->where('it.active = TRUE');
                 }))
             ->add('feed', EntityType::class, array(
                 'class' => IncidentFeed::class,
@@ -63,7 +63,7 @@ class IncidentDecisionType extends AbstractType
                 'description' => '(bro|external_report|netflow|shadowserver)',
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
+                        ->where('it.active = TRUE');
                 }))
             ->add('network', Select2EntityType::class, [
                 'remote_route' => 'cert_unlp_ngen_network_search_autocomplete',
@@ -78,7 +78,7 @@ class IncidentDecisionType extends AbstractType
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
+                        ->where('it.active = TRUE');
                 }))
             ->add('tlp', null, array(
                 'class' => IncidentTlp::class,
@@ -101,7 +101,7 @@ class IncidentDecisionType extends AbstractType
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
+                        ->where('it.active = TRUE');
                 }))
             ->add('unsolvedState', null, array(
                 'class' => IncidentState::class,
@@ -109,7 +109,7 @@ class IncidentDecisionType extends AbstractType
                 'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
+                        ->where('it.active = TRUE');
                 }))
             ->add('id', HiddenType::class)
             ->add('save', SubmitType::class, array(

@@ -18,9 +18,9 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
-use CertUnlp\NgenBundle\Form\Listener\IncidentDefaultFieldsListener;
+use CertUnlp\NgenBundle\Service\Listener\Form\IncidentDefaultFieldsListener;
 use DateTime;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Exception;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -33,15 +33,16 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 
 class IncidentType extends AbstractType
 {
     private $userLogged;
-    private $doctrine;
+    private $entity_manager;
 
-    public function __construct(EntityManager $doctrine = null, int $userLogged = null)
+    public function __construct(EntityManagerInterface $entity_manager, Security $userLogged)
     {
-        $this->doctrine = $doctrine;
+        $this->entity_manager = $entity_manager;
         $this->userLogged = $userLogged;
     }
 
@@ -60,7 +61,7 @@ class IncidentType extends AbstractType
                 'required' => true,
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
+                        ->where('it.active = TRUE');
                 },
                 'attr' => array('class' => 'incidentFilter'),
             ))
@@ -68,14 +69,13 @@ class IncidentType extends AbstractType
                 'required' => true,
                 'attr' => array('class' => 'incidentFilter', 'help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
                 'label' => 'Address',
-                'description' => 'The network ip and mask',
             ))
             ->add('feed', EntityType::class, array(
                 'class' => IncidentFeed::class,
                 'required' => true,
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
+                        ->where('it.active = TRUE');
                 },
                 'attr' => array('class' => 'ltdFilter'),
             ))
@@ -112,6 +112,7 @@ class IncidentType extends AbstractType
                 }))
             ->add('assigned', EntityType::class, array(
                 'class' => User::class,
+                'required' => false,
                 'placeholder' => 'Choose a responsable',
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, the assigned will be empty.'),
                 'query_builder' => static function (EntityRepository $er) {
@@ -124,7 +125,7 @@ class IncidentType extends AbstractType
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, it may be selected by incident decisions.'),
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
+                        ->where('it.active = TRUE');
                 }))
             ->add('impact', EntityType::class, array(
                 'class' => IncidentImpact::class,
@@ -151,7 +152,7 @@ class IncidentType extends AbstractType
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, it may be selected by incident decisions.'),
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
+                        ->where('it.active = TRUE');
                 }))
             ->add('responseDeadLine', DateTimeType::class, array(
                 'required' => false,
@@ -167,7 +168,7 @@ class IncidentType extends AbstractType
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, it may be selected by incident decisions.'),
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
-                        ->where('it.isActive = TRUE');
+                        ->where('it.active = TRUE');
                 }))
             ->add('solveDeadLine', DateTimeType::class, array(
                 'required' => false,
@@ -183,7 +184,7 @@ class IncidentType extends AbstractType
             ->add('save', SubmitType::class, array(
                 'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
             ))
-            ->addEventSubscriber(new IncidentDefaultFieldsListener($this->doctrine, $this->userLogged));
+            ->addEventSubscriber(new IncidentDefaultFieldsListener($this->entity_manager, $this->userLogged));
 
     }
 
