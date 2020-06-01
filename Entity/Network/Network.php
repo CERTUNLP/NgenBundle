@@ -24,7 +24,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Network
  *
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\NetworkRepository")
- * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\NetworkListener"})
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"internal" = "NetworkInternal", "external" = "NetworkExternal", "rdap" = "NetworkRdap"})

@@ -48,7 +48,7 @@ class StateEdgeType extends AbstractType
                 'label' => 'Send mail to the one who has it assigned (if available)',
                 'description' => 'Send a mail report to the one who has it assigned.',
             ))
-            ->add('isActive', EntityType::class, array(
+            ->add('active', EntityType::class, array(
                 'class' => ContactCase::class,
                 'attr' => array('align_with_widget' => true),
                 'required' => true,
