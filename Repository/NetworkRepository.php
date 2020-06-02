@@ -66,7 +66,7 @@ class NetworkRepository extends NetworkElementRepository
         $qb->select('n')
             ->from($this->getClassName(), 'n')
             ->where($qb->expr()->between('INET_ATON(:address)', 'INET_ATON(n.ip_start_address)', 'INET_ATON(n.ip_end_address)'))
-            ->andWhere('n.isActive = true')
+            ->andWhere('n.active = true')
             ->orderBy('n.ip_mask', 'DESC');
 
         $qb->setParameter('address', $address);
@@ -95,7 +95,7 @@ class NetworkRepository extends NetworkElementRepository
         $qb->select('n')
             ->from($this->getClassName(), 'n')
             ->where($qb->expr()->between('INET6_ATON(:address)', 'INET6_ATON(n.ip_start_address)', 'INET6_ATON(n.ip_end_address)'))
-            ->andWhere('n.isActive = true')
+            ->andWhere('n.active = true')
             ->orderBy('n.ip_mask', 'DESC');
 
         $qb->setParameter('address', $address);
@@ -124,7 +124,7 @@ class NetworkRepository extends NetworkElementRepository
         $qb = $em->createQueryBuilder();
         $qb->select('n')
             ->from($this->getClassName(), 'n')
-            ->andWhere('n.isActive = true')
+            ->andWhere('n.active = true')
             ->orderBy('n.ip_mask', 'DESC');
 
         $count = substr_count($domain, '.') + 1;

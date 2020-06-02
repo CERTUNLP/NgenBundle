@@ -146,11 +146,8 @@ fos_elastica:
                         updated:
                             type: date
                             property_path: updatedAt
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         admin:
                             fielddata: true
                             property_path: networkAdmin
@@ -164,7 +161,7 @@ fos_elastica:
                                     type: keyword
                                 name:
                                     type: keyword
-                                isActive:
+                                active:
                                     type: boolean
                                 contacts:
                                     type: "nested"
@@ -209,11 +206,8 @@ fos_elastica:
                             type: keyword
                         address:
                             type: keyword
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         createdAt:
                             type: date
                         created:
@@ -261,11 +255,8 @@ fos_elastica:
                             type: string
                             fielddata: true
                             analyzer: email_analyser
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         createdAt:
                             type: date
                         created:
@@ -310,11 +301,8 @@ fos_elastica:
                             type: keyword
                         slug:
                             type: keyword
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         createdAt:
                             type: date
                         created:
@@ -349,11 +337,8 @@ fos_elastica:
                             type: keyword
                         slug:
                             type: keyword
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         description:
                             type: keyword
                         createdAt:
@@ -391,11 +376,8 @@ fos_elastica:
                             type: keyword
                         slug:
                             type: keyword
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         behavior:
                             type: keyword
                         createdAt:
@@ -458,11 +440,8 @@ fos_elastica:
                         updated:
                             type: date
                             property_path: updatedAt
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         description:
                             property_path: name
                     persistence:
@@ -498,11 +477,8 @@ fos_elastica:
                         updated:
                             type: date
                             property_path: updatedAt
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         impact:
                             type: keyword
                         urgency:
@@ -546,11 +522,8 @@ fos_elastica:
                             type: keyword
                         slug:
                             type: keyword
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         description:
                             type: keyword
                         createdAt:
@@ -575,7 +548,7 @@ fos_elastica:
                                     type: keyword
                                 expanded:
                                     type: keyword
-                                isActive:
+                                active:
                                     type: boolean
                                 predicate:
                                     type: "object"
@@ -584,7 +557,7 @@ fos_elastica:
                                             type: keyword
                                         expanded:
                                             type: keyword
-                                        isActive:
+                                        active:
                                             type: boolean
                     persistence:
                         identifier: slug
@@ -621,11 +594,8 @@ fos_elastica:
                             type: text
                         more_information:
                             type: text
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         createdAt:
                             type: date
                         created:
@@ -728,11 +698,8 @@ fos_elastica:
                         name:
                             type: keyword
                             property_path: expanded
-                        isActive:
-                            type: keyword
                         active:
                             type: boolean
-                            property_path: isActive
                         description:
                             type: keyword
                         predicate:
@@ -779,11 +746,8 @@ fos_elastica:
                         name:
                             type: keyword
                             property_path: expanded
-                        isActive:
-                            type: keyword
                         active:
                             type: boolean
-                            property_path: isActive
                         description:
                             type: keyword
                         createdAt:

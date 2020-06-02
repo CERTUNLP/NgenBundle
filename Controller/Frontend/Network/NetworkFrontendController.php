@@ -73,9 +73,9 @@ class NetworkFrontendController extends FrontendController
         }
 
         $prefix = new Prefix();
-        $prefix->setPrefix('addressAndMask', $term);
+        $prefix->setPrefix('address', $term);
         $prefix2 = new Term();
-        $prefix2->setTerm('isActive', true);
+        $prefix2->setTerm('active', true);
 
         $bool = new BoolQuery();
         $bool->addShould($prefix)->addMust($prefix2);
