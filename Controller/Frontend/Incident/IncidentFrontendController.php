@@ -21,7 +21,9 @@ use fados\ChartjsBundle\Utils\TypeColors;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use FOS\CommentBundle\Model\ThreadManagerInterface;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +32,17 @@ use ZipArchive;
 
 class IncidentFrontendController extends FrontendController
 {
+    /**
+     * @var string
+     */
+    private $evidence_path;
+
+
+    public function __construct(FormFactoryInterface $formFactory, PaginatorInterface $paginator, string $evidence_path)
+    {
+        parent::__construct($formFactory, $paginator);
+        $this->evidence_path = $evidence_path;
+    }
 
     /**
      * @Template("CertUnlpNgenBundle:Incident:Frontend/home.html.twig")
@@ -52,7 +65,7 @@ class IncidentFrontendController extends FrontendController
             $term = $request->get('term') ?: '*';
         }
         $quickSearchForm = $this->getFormFactory()->createBuilder(IncidentSearchType::class, (new Incident), array('csrf_protection' => true));
-        return array('objects' => $this->searchEntity($request, $finder,$term, $limit, $defaultSortFieldName, $defaultSortDirection, 'pageobject', 'object')['objects'], 'search_form' => $quickSearchForm->getForm()->createView());
+        return array('objects' => $this->searchEntity($request, $finder, $term, $limit, $defaultSortFieldName, $defaultSortDirection, 'pageobject', 'object')['objects'], 'search_form' => $quickSearchForm->getForm()->createView());
 
     }
 
@@ -107,24 +120,23 @@ class IncidentFrontendController extends FrontendController
      * @Route("{id}/evidence", name="cert_unlp_ngen_internal_incident_frontend_evidence_incident_id", requirements={"id"="\d+"})
      * @Route("{slug}/evidence", name="cert_unlp_ngen_internal_incident_frontend_evidence_incident")
      * @param Incident $incident
-     * @param string $evidence_path
      * @return Response
      */
-    public function evidenceIncidentAction(Incident $incident, string $evidence_path): Response
+    public function evidenceIncidentAction(Incident $incident): Response
     {
         $zip = new ZipArchive();
 
         // The name of the Zip documents.
-        $evidence_directory = $evidence_path . $incident->getEvidenceSubDirectory() . '/';
+        $evidence_directory = $this->getEvidencePath() . $incident->getEvidenceSubDirectory() . '/';
         $zipName = $evidence_directory . 'EvidenceDocuments' . $incident->getSlug() . '.zip';
 //        $options = array('remove_all_path' => TRUE);
         $zip->open($zipName, ZipArchive::CREATE);
         foreach ($incident->getIncidentsDetected() as $detected) {
             if ($detected->getEvidenceFilePath()) {
-                $zip->addFile($evidence_path . $detected->getEvidenceFilePath(), $detected->getEvidenceFilePath());
+                $zip->addFile($this->getEvidencePath() . $detected->getEvidenceFilePath(), $detected->getEvidenceFilePath());
             }
         }
-        //$zip->addGlob($evidence_path . "*", GLOB_BRACE, $options);
+        //$zip->addGlob($this->getEvidencePath() . "*", GLOB_BRACE, $options);
         $zip->close();
         $response = new Response(file_get_contents($zipName));
         $response->headers->set('Content-Type', 'application/zip');
@@ -134,6 +146,14 @@ class IncidentFrontendController extends FrontendController
         @unlink($zipName);
 
         return $response;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEvidencePath(): string
+    {
+        return $this->evidence_path;
     }
 
     /**
