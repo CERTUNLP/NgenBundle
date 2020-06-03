@@ -22,10 +22,12 @@
         {{ print.colorbox(object.tlp.color,object.tlp.icon,object.tlp,'#') }}
         {{ print.colorbox(object.reporter.color,object.reporter.icon,object.reporter,path('cert_unlp_ngen_user_detail_user',{'username': object.reporter.username})) }}
         {{ print.colorbox(object.origin.color,object.origin.icon,object.address,hostlink.link(object.origin,'detail')) }}
-        {% set detail_link %}
-            {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':object.network} %}
-        {% endset %}
-        {{ print.colorbox(object.network.color,object.network.icon,object.network,detail_link) }}
+        {% if object.network %}
+            {% set detail_link %}
+                {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':object.network} %}
+            {% endset %}
+            {{ print.colorbox(object.network.color,object.network.icon,object.network,detail_link) }}
+        {% endif %}
         {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': object.id})) }}
     </h1>
 {% endblock %}
@@ -50,7 +52,7 @@
         <li class="nav-item">
             <a class="nav-link" id="state_changes-tab" data-toggle="tab" href="#state_changes" role="tab"
                aria-controls="state_changes" aria-selected="false">{{ "State Changes" |trans }}
-                <small>{{ "("~object.state_changes.count~")" }}</small>
+                <small>{{ "("~object.stateChanges.count~")" }}</small>
             </a>
         </li>
         <li class="nav-item">
@@ -534,7 +536,6 @@
             </div>
         </div>
         <div class="tab-pane fade" id="state_changes" role="tabpanel" aria-labelledby="state_changes-tab">
-
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card shadow mb-4">
