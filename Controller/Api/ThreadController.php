@@ -11,6 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 /**
  * Restful controller for the Threads.
  *
@@ -18,4 +20,15 @@ namespace CertUnlp\NgenBundle\Controller\Api;
  */
 class ThreadController extends \FOS\CommentBundle\Controller\ThreadController
 {
+    protected $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        // Override container
+        $this->container = $container;
+    }
+
+    public function setContainer(\Psr\Container\ContainerInterface $container)
+    {
+    }
 }
