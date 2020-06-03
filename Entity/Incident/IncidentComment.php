@@ -68,7 +68,7 @@ class IncidentComment extends BaseComment implements SignedCommentInterface
     /**
      * @return User|UserInterface
      */
-    public function getAuthor(): UserInterface
+    public function getAuthor(): ?UserInterface
     {
         return $this->author;
     }

@@ -186,7 +186,7 @@ fos_comment:
             thread: CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread
     form:
         comment:
-            type: fos_comment_comment
+            type: CertUnlp\NgenBundle\Form\IncidentCommentType
 #    acl: false
 #    service:
 #        acl:
