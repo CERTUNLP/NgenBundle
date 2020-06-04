@@ -40,6 +40,10 @@ fos_elastica:
                             type: integer
                         origin:
                             type: keyword
+                        address:
+                            type: keyword
+                            property_path: origin
+                            index: not_analyzed
                         network:
                             type: keyword
                         tlp:
@@ -729,12 +733,12 @@ fos_elastica:
                             insert: true
                             update: true
                             delete: true
-#        taxonomy:
-#            index_name: taxonomypredicates_%kernel.environment%
-#            settings:
-#                index:
-#                    max_result_window: 50000
-#            types:
+                #        taxonomy:
+                #            index_name: taxonomypredicates_%kernel.environment%
+                #            settings:
+                #                index:
+                #                    max_result_window: 50000
+                #            types:
                 predicate:
                     properties:
                         value:

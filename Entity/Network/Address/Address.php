@@ -52,7 +52,7 @@ abstract class Address
      */
     public function __toString(): string
     {
-        return $this->getCustomAddress() . ($this->getCustomAddressMask() ? '/' . $this->getCustomAddressMask() : '');
+        return $this->getCustomAddress();
 
     }
 
@@ -60,11 +60,6 @@ abstract class Address
      * @return string
      */
     abstract public function getCustomAddress(): string;
-
-    /**
-     * @return string
-     */
-    abstract public function getCustomAddressMask(): string;
 
     /**
      * @return string
@@ -133,6 +128,11 @@ abstract class Address
     {
         return $this->getCustomAddressMask();
     }
+
+    /**
+     * @return string
+     */
+    abstract public function getCustomAddressMask(): string;
 
     /**
      * @param string $address
