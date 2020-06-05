@@ -19,29 +19,26 @@ class IncidentUrgency extends EntityApiFrontend implements Translatable
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=45, nullable=true)
-     * @JMS\Expose
-     * @Gedmo\Translatable
-     */
-    private $name = '';
-
-    /**
-     * @Gedmo\Locale
-     * Used locale to override Translation listener`s locale
-     * this is not a mapped field of entity metadata, just a simple property
-     */
-    private $locale;
-
-    /**
-     * @var string
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
      * @JMS\Expose
      * */
     protected $slug = '';
-
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=45, nullable=true)
+     * @JMS\Expose
+     * @Gedmo\Translatable
+     */
+    private $name = '';
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
     /**
      * @var string
      *
@@ -49,13 +46,20 @@ class IncidentUrgency extends EntityApiFrontend implements Translatable
      * @JMS\Expose
      */
     private $description = '';
-
-
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority",mappedBy="urgency"))
      */
     private $incidentsPriorities = null;
+
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['name' => $parameters['name']];
+    }
 
     /**
      * @return mixed
@@ -196,7 +200,7 @@ class IncidentUrgency extends EntityApiFrontend implements Translatable
     /**
      * @return string
      */
-    public function getIdentificatorString(): string
+    public function getIdentificationString(): string
     {
         return 'slug';
     }

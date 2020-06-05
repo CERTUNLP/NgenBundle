@@ -31,19 +31,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class IncidentReport extends EntityApiFrontend
 {
     /**
-     * @var string
-     * @ORM\Column(name="lang", type="string", length=2)
-     * @JMS\Expose
-     */
-    private $lang = '';
-    /**
-     * @var IncidentType|null
-     *
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="reports")
-     * @ORM\JoinColumn(name="type", referencedColumnName="slug")
-     */
-    private $type;
-    /**
      * @var string|null
      * @ORM\id
      * @Gedmo\Slug(handlers={
@@ -56,6 +43,19 @@ class IncidentReport extends EntityApiFrontend
      * @Doctrine\ORM\Mapping\Column(length=64, unique=true)
      */
     protected $slug;
+    /**
+     * @var string
+     * @ORM\Column(name="lang", type="string", length=2)
+     * @JMS\Expose
+     */
+    private $lang = '';
+    /**
+     * @var IncidentType|null
+     *
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="reports")
+     * @ORM\JoinColumn(name="type", referencedColumnName="slug")
+     */
+    private $type;
     /**
      * @var string
      *
@@ -260,8 +260,17 @@ class IncidentReport extends EntityApiFrontend
     /**
      * @return string
      */
-    public function getIdentificatorString(): string
+    public function getIdentificationString(): string
     {
         return 'slug';
+    }
+
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['lang' => $parameters['lang'], 'type' => $parameters['type']];
     }
 }

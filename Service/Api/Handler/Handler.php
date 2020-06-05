@@ -92,7 +92,7 @@ abstract class Handler
     public function mergeIfExists(EntityApiInterface $entity): EntityApiInterface
     {
         if ($this->needCheckIfExists()) {
-            $entity_db = $this->getIfExists($entity);
+            $entity_db = $this->getByIdentification($entity);
             if ($entity_db) {
                 if ($this->isReactivableEntity()) {
                     $entity_db->activate();
@@ -115,11 +115,18 @@ abstract class Handler
      * @param EntityApiInterface $entity
      * @return EntityApiInterface
      */
-    public function getIfExists(EntityApiInterface $entity): ?EntityApiInterface
+    public function getByIdentification(EntityApiInterface $entity): ?EntityApiInterface
     {
-        return $this->get($this->getEntityIdentificationArray($entity));
+        return $this->get($entity->getIdentificationArray());
     }
-
+    /**
+     * @param EntityApiInterface $entity
+     * @return EntityApiInterface
+     */
+    public function getByDataIdentification(EntityApiInterface $entity): ?EntityApiInterface
+    {
+        return $this->get($entity->getDataIdentificationArray());
+    }
     /**
      * @param array $parameters
      * @return EntityApiInterface|object|null
@@ -127,15 +134,6 @@ abstract class Handler
     public function get(array $parameters): ?EntityApiInterface
     {
         return $this->getRepository()->findOneBy($parameters);
-    }
-
-    /**
-     * @param EntityApiInterface $entity
-     * @return array
-     */
-    public function getEntityIdentificationArray(EntityApiInterface $entity): array
-    {
-        return $entity->getEntityIdentificationArray();
     }
 
     public function isReactivableEntity(): bool

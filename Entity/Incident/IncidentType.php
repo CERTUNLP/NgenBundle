@@ -281,8 +281,17 @@ class IncidentType extends EntityApiFrontend
     /**
      * @return string
      */
-    public function getIdentificatorString(): string
+    public function getIdentificationString(): string
     {
         return 'slug';
+    }
+
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['name' => $parameters['name']];
     }
 }

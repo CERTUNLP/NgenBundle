@@ -315,10 +315,10 @@ class IncidentHandler extends Handler
      * @param EntityApiInterface|Incident $entity
      * @return EntityApiInterface|Incident
      */
-    public function getIfExists(EntityApiInterface $entity): ?EntityApiInterface
+    public function getByIdentification(EntityApiInterface $entity): ?EntityApiInterface
     {
         if ($entity->isDefined()) {
-            return $this->getRepository()->findOneLiveBy($this->getEntityIdentificationArray($entity));
+            return $this->getRepository()->findOneLiveBy($entity->getIdentificationArray());
         }
         return null;
     }

@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Controller;
 
+use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 
 class IncidentPriorityApiController extends ApiController
@@ -21,7 +22,7 @@ class IncidentPriorityApiController extends ApiController
      *
      * @param $params array
      *
-     * @return IncidentState entity
+     * @return IncidentPriority entity
      */
     public function findObjectBy($params)
 

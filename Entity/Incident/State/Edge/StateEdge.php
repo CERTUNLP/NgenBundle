@@ -113,7 +113,7 @@ abstract class StateEdge extends EntityApi
     /**
      * @return string
      */
-    public function getIdentificatorString(): string
+    public function getIdentificationString(): string
     {
         return 'id';
     }
@@ -227,5 +227,12 @@ abstract class StateEdge extends EntityApi
         return $this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['oldState' => $parameters['oldState'], 'newState' => $parameters['newState']];
+    }
 
 }

@@ -126,6 +126,15 @@ class User extends BaseUser implements EntityApiFrontendInterface
     }
 
     /**
+     * @param array $parameters
+     * @return array
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['username' => $parameters['username']];
+    }
+
+    /**
      * @return string
      */
     public function getIcon(): string
@@ -481,15 +490,15 @@ class User extends BaseUser implements EntityApiFrontendInterface
     /**
      * @return array
      */
-    public function getEntityIdentificationArray(): array
+    public function getIdentificationArray(): array
     {
-        return [$this->getIdentificatorString() => $this->getId()];
+        return [$this->getIdentificationString() => $this->getId()];
     }
 
     /**
      * @return string
      */
-    public function getIdentificatorString(): string
+    public function getIdentificationString(): string
     {
         return 'id';
     }

@@ -34,14 +34,6 @@ class IncidentFeed extends EntityApiFrontend
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100)
-     * @JMS\Expose
-     * @JMS\Groups({"api_input"})
-     */
-    private $name = '';
-    /**
-     * @var string
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
@@ -49,6 +41,14 @@ class IncidentFeed extends EntityApiFrontend
      * @JMS\Groups({"api_input"})
      * */
     protected $slug = '';
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=100)
+     * @JMS\Expose
+     * @JMS\Groups({"api_input"})
+     */
+    private $name = '';
     /**
      * @var string
      *
@@ -194,8 +194,18 @@ class IncidentFeed extends EntityApiFrontend
     /**
      * @return string
      */
-    public function getIdentificatorString(): string
+    public function getIdentificationString(): string
     {
         return 'slug';
     }
+
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['name' => $parameters['name']];
+    }
+
 }

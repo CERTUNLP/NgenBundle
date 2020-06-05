@@ -77,23 +77,23 @@ abstract class EntityApi extends Entity implements EntityApiInterface
     /**
      * @return array
      */
-    public function getEntityIdentificationArray(): array
+    public function getIdentificationArray(): array
     {
-        return [$this->getIdentificatorString() => $this->getId()];
+        return [$this->getIdentificationString() => $this->getId()];
     }
 
     /**
      * @return string
      */
-    abstract public function getIdentificatorString(): string;
+    abstract public function getIdentificationString(): string;
 
     /**
      * @return int|string|null
      */
     public function getId()
     {
-        $identificator_string = $this->getIdentificatorString();
-        return $this->$identificator_string;
+        $identification_string = $this->getIdentificationString();
+        return $this->$identification_string;
     }
 
     /**
@@ -102,9 +102,16 @@ abstract class EntityApi extends Entity implements EntityApiInterface
      */
     public function setId($id): Entity
     {
-        $identificator_string = $this->getIdentificatorString();
-        $this->$identificator_string = $id;
+        $identification_string = $this->getIdentificationString();
+        $this->$identification_string = $id;
         return $this;
     }
+
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    abstract public function getDataIdentificationArray(array $parameters): array;
+
 
 }

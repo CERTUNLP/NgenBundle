@@ -69,7 +69,7 @@ class ApiController
     }
 
     /**
-     * @return mixed
+     * @return Handler
      */
     public function getCustomHandler()
     {

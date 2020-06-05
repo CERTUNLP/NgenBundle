@@ -12,7 +12,6 @@ namespace CertUnlp\NgenBundle\Entity\Incident\Taxonomy;
 
 use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,6 +26,15 @@ use JMS\Serializer\Annotation as JMS;
  */
 class TaxonomyPredicate extends EntityApi
 {
+    /**
+     * @var string
+     * @ORM\Id
+     * @Gedmo\Slug(fields={"value"}, separator="_")
+     * @ORM\Column(name="slug", type="string", length=100)
+     * @JMS\Expose
+     * @JMS\Groups({"api_input"})
+     * */
+    protected $slug;
     /**
      * @var string
      *
@@ -57,15 +65,6 @@ class TaxonomyPredicate extends EntityApi
      */
 
     private $values;
-    /**
-     * @var string
-     * @ORM\Id
-     * @Gedmo\Slug(fields={"value"}, separator="_")
-     * @ORM\Column(name="slug", type="string", length=100)
-     * @JMS\Expose
-     * @JMS\Groups({"api_input"})
-     * */
-    protected $slug;
 
     /**
      * Constructor
@@ -75,6 +74,14 @@ class TaxonomyPredicate extends EntityApi
         $this->values = new ArrayCollection();
     }
 
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['value' => $parameters['value']];
+    }
 
     /**
      * @return string
@@ -253,7 +260,7 @@ class TaxonomyPredicate extends EntityApi
     /**
      * @return string
      */
-    public function getIdentificatorString(): string
+    public function getIdentificationString(): string
     {
         return 'slug';
     }

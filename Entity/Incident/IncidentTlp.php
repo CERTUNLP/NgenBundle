@@ -323,7 +323,7 @@ class IncidentTlp extends EntityApiFrontend implements Translatable
     /**
      * @return string
      */
-    public function getIdentificatorString(): string
+    public function getIdentificationString(): string
     {
         return 'slug';
     }

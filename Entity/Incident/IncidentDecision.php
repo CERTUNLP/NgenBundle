@@ -17,8 +17,6 @@ use JMS\Serializer\Annotation as JMS;
  */
 class IncidentDecision extends EntityApiFrontend
 {
-
-
     /**
      * @var int|null
      *
@@ -28,6 +26,19 @@ class IncidentDecision extends EntityApiFrontend
      * @JMS\Expose()
      */
     protected $id;
+    /**
+     * @var string
+     * @ORM\Column(name="slug", type="string", length=100)
+     * @Gedmo\Slug(handlers={
+     *      @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\RelativeSlugHandler", options={
+     *          @Gedmo\SlugHandlerOption(name="relationField", value="type"),
+     *          @Gedmo\SlugHandlerOption(name="relationSlugField", value="slug"),
+     *          @Gedmo\SlugHandlerOption(name="separator", value="_")
+     *      })
+     * }, fields={"id"})
+     *
+     */
+    protected $slug = '';
     /**
      * @var IncidentType|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType")
@@ -92,19 +103,6 @@ class IncidentDecision extends EntityApiFrontend
      */
     private $unsolvedState;
     /**
-     * @var string
-     * @ORM\Column(name="slug", type="string", length=100)
-     * @Gedmo\Slug(handlers={
-     *      @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\RelativeSlugHandler", options={
-     *          @Gedmo\SlugHandlerOption(name="relationField", value="type"),
-     *          @Gedmo\SlugHandlerOption(name="relationSlugField", value="slug"),
-     *          @Gedmo\SlugHandlerOption(name="separator", value="_")
-     *      })
-     * }, fields={"id"})
-     *
-     */
-    protected $slug = '';
-    /**
      * @var boolean
      *
      * @ORM\Column(name="auto_saved", type="boolean")
@@ -115,7 +113,7 @@ class IncidentDecision extends EntityApiFrontend
     /**
      * @inheritDoc
      */
-    public function getEntityIdentificationArray(): array
+    public function getIdentificationArray(): array
     {
         return ['type' => $this->getType() ? $this->getType()->getSlug() : 'undefined', 'feed' => $this->getFeed() ? $this->getFeed()->getSlug() : 'undefined', 'network' => $this->getNetwork() ? $this->getNetwork()->getId() : null];
     }
@@ -372,7 +370,7 @@ class IncidentDecision extends EntityApiFrontend
     /**
      * @return string
      */
-    public function getIdentificatorString(): string
+    public function getIdentificationString(): string
     {
         return 'id';
     }

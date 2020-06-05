@@ -38,6 +38,15 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class IncidentState extends EntityApiFrontend implements Translatable
 {
     /**
+     * @var string
+     * @ORM\Id
+     * @Gedmo\Slug(fields={"name"}, separator="_")
+     * @ORM\Column(name="slug", type="string", length=100)
+     * @JMS\Expose
+     * @JMS\Groups({"api_input"})
+     * */
+    protected $slug = '';
+    /**
      * @var StateBehavior
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior", inversedBy="states")
      * @ORM\JoinColumn(name="behavior", referencedColumnName="slug")
@@ -60,15 +69,6 @@ class IncidentState extends EntityApiFrontend implements Translatable
      * @Gedmo\Translatable
      */
     private $name = '';
-    /**
-     * @var string
-     * @ORM\Id
-     * @Gedmo\Slug(fields={"name"}, separator="_")
-     * @ORM\Column(name="slug", type="string", length=100)
-     * @JMS\Expose
-     * @JMS\Groups({"api_input"})
-     * */
-    protected $slug = '';
     /**
      * @var string
      *
@@ -96,6 +96,15 @@ class IncidentState extends EntityApiFrontend implements Translatable
     {
         $this->incidents = new ArrayCollection();
         $this->edges = new ArrayCollection();
+    }
+
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['name' => $parameters['name']];
     }
 
     /**
@@ -377,7 +386,7 @@ class IncidentState extends EntityApiFrontend implements Translatable
     /**
      * @return string
      */
-    public function getIdentificatorString(): string
+    public function getIdentificationString(): string
     {
         return 'slug';
     }

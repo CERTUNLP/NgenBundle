@@ -551,7 +551,7 @@ class Incident extends EntityApiFrontend
      */
     public function setId($id): Entity
     {
-        $identificator_string = $this->getIdentificatorString();
+        $identificator_string = $this->getIdentificationString();
         $this->setter($this->$identificator_string, $id);
         return $this;
     }
@@ -559,7 +559,7 @@ class Incident extends EntityApiFrontend
     /**
      * @return string
      */
-    public function getIdentificatorString(): string
+    public function getIdentificationString(): string
     {
         return 'id';
     }
@@ -1590,5 +1590,14 @@ class Incident extends EntityApiFrontend
     {
         $this->setter($this->type, $type, true);
         return $this;
+    }
+
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['type' => $parameters['type'], 'address' => $parameters['address']];
     }
 }

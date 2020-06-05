@@ -3,7 +3,6 @@
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
 use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
@@ -19,27 +18,26 @@ class IncidentImpact extends EntityApiFrontend implements Translatable
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string")
-     * @JMS\Expose()
-     * @Gedmo\Translatable
-     */
-    private $name = '';
-
-    /**
-     * @Gedmo\Locale
-     * Used locale to override Translation listener`s locale
-     * this is not a mapped field of entity metadata, just a simple property
-     */
-    private $locale;
-    /**
-     * @var string
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
      * @JMS\Expose()
      * */
     protected $slug = '';
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string")
+     * @JMS\Expose()
+     * @Gedmo\Translatable
+     */
+    private $name = '';
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
     /**
      * @var string
      *
@@ -165,12 +163,20 @@ class IncidentImpact extends EntityApiFrontend implements Translatable
         }
     }
 
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['name' => $parameters['name']];
+    }
 
     /**
      * @return string
      */
-    public function getIdentificatorString(): string
+    public function getIdentificationString(): string
     {
-       return 'slug';
+        return 'slug';
     }
 }
