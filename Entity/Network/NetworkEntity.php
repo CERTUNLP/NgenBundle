@@ -65,7 +65,7 @@ class NetworkEntity extends EntityApi
     /**
      * @return string
      */
-    public function getIdentificatorString(): string
+    public function getIdentificationString(): string
     {
         return 'id';
     }

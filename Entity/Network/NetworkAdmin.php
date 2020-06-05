@@ -49,17 +49,17 @@ class NetworkAdmin extends EntityApiFrontend
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string")
-     * @JMS\Expose()
-     */
-    private $name;
-    /**
-     * @var string
-     *
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true,unique=true)
      * */
     protected $slug;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string")
+     * @JMS\Expose()
+     */
+    private $name;
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\Contact",mappedBy="network_admin",cascade={"persist"},orphanRemoval=true)
@@ -82,6 +82,14 @@ class NetworkAdmin extends EntityApiFrontend
         $this->contacts = new ArrayCollection();
     }
 
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['name' => $parameters['name']];
+    }
 
     /**
      * Get id
@@ -272,7 +280,7 @@ class NetworkAdmin extends EntityApiFrontend
     /**
      * @return string
      */
-    public function getIdentificatorString(): string
+    public function getIdentificationString(): string
     {
         return 'id';
     }

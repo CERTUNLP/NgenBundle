@@ -15,7 +15,6 @@ use JMS\Serializer\Annotation as JMS;
  */
 class IncidentPriority extends EntityApiFrontend
 {
-
     /**
      * @var integer|null
      *
@@ -25,7 +24,12 @@ class IncidentPriority extends EntityApiFrontend
      * @JMS\Expose
      */
     protected $id;
-
+    /**
+     * @var string
+     * @ORM\Column(name="slug", type="string", length=255, unique=true)
+     * @JMS\Expose
+     */
+    protected $slug = '';
     /**
      * @var IncidentImpact
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="incidentsPriorities")
@@ -68,12 +72,6 @@ class IncidentPriority extends EntityApiFrontend
     private $code = 0;
     /**
      * @var string
-     * @ORM\Column(name="slug", type="string", length=255, unique=true)
-     * @JMS\Expose
-     */
-    protected $slug = '';
-    /**
-     * @var string
      * @ORM\Column(name="name", type="string", length=255)
      * @JMS\Expose
      */
@@ -90,6 +88,15 @@ class IncidentPriority extends EntityApiFrontend
      * @JMS\Expose
      */
     private $resolutionTime;
+
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['code' => $parameters['code']];
+    }
 
     /**
      * @return string
@@ -311,9 +318,17 @@ class IncidentPriority extends EntityApiFrontend
     /**
      * @return string
      */
-    public function getIdentificatorString(): string
+    public function getIdentificationString(): string
     {
         return 'id';
+    }
+
+    /**
+     * @return string
+     */
+    public function getDataIdentificationString(): string
+    {
+        return 'code';
     }
 }
 

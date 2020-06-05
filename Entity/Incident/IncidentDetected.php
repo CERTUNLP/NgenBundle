@@ -331,7 +331,7 @@ class IncidentDetected extends EntityApiFrontend
     /**
      * @return string
      */
-    public function getNotes(): string
+    public function getNotes(): ?string
     {
         return $this->notes;
     }
@@ -349,7 +349,7 @@ class IncidentDetected extends EntityApiFrontend
     /**
      * @return string
      */
-    public function getIdentificatorString(): string
+    public function getIdentificationString(): string
     {
         return 'id';
     }

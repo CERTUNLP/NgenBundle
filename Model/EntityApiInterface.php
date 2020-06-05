@@ -32,11 +32,17 @@ interface  EntityApiInterface extends EntityInterface
     /**
      * @return string
      */
-    public function getIdentificatorString(): string;
+    public function getIdentificationString(): string;
 
     /**
      * @return array
      */
-    public function getEntityIdentificationArray(): array;
+    public function getIdentificationArray(): array;
+
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    public function getDataIdentificationArray(array $parameters): array;
 }
 

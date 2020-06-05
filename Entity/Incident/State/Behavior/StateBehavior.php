@@ -4,8 +4,8 @@ namespace CertUnlp\NgenBundle\Entity\Incident\State\Behavior;
 
 use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentStateChange;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentStateChange;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -27,20 +27,19 @@ abstract class StateBehavior extends EntityApi
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(name="name", type="string", length=45, nullable=true)
-     * @JMS\Expose
-     */
-    private $name;
-
-    /**
-     * @var string|null
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
      * @JMS\Expose
      * */
     protected $slug;
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="name", type="string", length=45, nullable=true)
+     * @JMS\Expose
+     */
+    private $name;
     /**
      * @var string|null
      *
@@ -385,8 +384,19 @@ abstract class StateBehavior extends EntityApi
         return $this;
     }
 
-    public function getIdentificatorString(): string
+    /**
+     * {@inheritDoc}
+     */
+    public function getIdentificationString(): string
     {
         return 'slug';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['name' => $parameters['name']];
     }
 }
