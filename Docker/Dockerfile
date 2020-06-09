@@ -1,5 +1,6 @@
 # Este build es especifica para el desarrollo usando phpstorm y xdebug que es lo que usa el team de desarrolladores, problemente sea lo mismo para cualquiier ide
 # Lo que hara el debugger es conectarse contra el ide y pasarle la info
+# iptables -I INPUT -p tcp --dport 9000 -j ACCEPT
 # Levantando con este build ya queda instalado el xdebug, solo tenes que cambiar la ip de remote_host y cambiar el firewall de donde estas corrinedo el ide para permitir la conexion al puerto 9000 que es donde corre el debugger.
 # https://www.youtube.com/watch?v=J77iuOpnUm4
 
