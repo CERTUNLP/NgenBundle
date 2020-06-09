@@ -12,7 +12,7 @@ volumes:
     driver: local
     #driver: rancher-nfs
     #external: true
-  ngen-bdd2:
+  ngen-bdd28:
     driver: local
     #driver: rancher-nfs
     #external: true
@@ -28,7 +28,7 @@ services:
     ngen-db:
       image: mysql:5.7
       volumes:
-        - ngen-bdd2:/var/lib/mysql
+        - ngen-bdd28:/var/lib/mysql
       environment:
         - MYSQL_ROOT_PASSWORD=pass
         - MYSQL_DATABASE=ngen
@@ -38,7 +38,8 @@ services:
         - "8002:3306"
       networks: ['ngen']
     ngen-app:
-      image: einar1/ngen:0.6.40-rc31
+      build: .
+      #image: einar1/ngen:0.6.40-rc31
       networks: ['ngen']
       depends_on: ['ngen-db','ngen-elastic']
       ports:
