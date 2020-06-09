@@ -24,7 +24,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class FrontendController extends AbstractController
+abstract class FrontendController extends AbstractController
 {
     /**
      * @var PaginatorInterface

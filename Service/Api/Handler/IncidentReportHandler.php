@@ -24,4 +24,11 @@ class IncidentReportHandler extends Handler
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['lang' => $parameters['lang'], 'type' => $parameters['type']];
+    }
 }

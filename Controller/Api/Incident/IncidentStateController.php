@@ -11,24 +11,33 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
+use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
+use CertUnlp\NgenBundle\Service\Api\Handler\IncidentStateHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
+use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Operation;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Swagger\Annotations as SWG;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class IncidentStateController extends AbstractFOSRestController
+class IncidentStateController extends ApiController
 {
+    /**
+     * IncidentStateController constructor.
+     * @param IncidentStateHandler $handler
+     * @param ViewHandlerInterface $viewHandler
+     * @param View $view
+     */
+    public function __construct(IncidentStateHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    {
+        parent::__construct($handler, $viewHandler, $view);
+    }
 
     /**
-     * List all networks.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Get status.",
@@ -41,22 +50,16 @@ class IncidentStateController extends AbstractFOSRestController
      *         description="Returned when the apikey is not found"
      *     )
      * )
-     *
-     *
      * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
      * @return array
      */
     public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-
         return null;
     }
 
     /**
-     * List all incident states.
-     *
      * @Operation(
      *     tags={""},
      *     summary="List all incident states.",
@@ -79,8 +82,6 @@ class IncidentStateController extends AbstractFOSRestController
      *         description="Returned when successful"
      *     )
      * )
-     *
-     *
      * @FOS\Get("/states")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident states.")
      * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many incident states to return.")
@@ -88,26 +89,16 @@ class IncidentStateController extends AbstractFOSRestController
      * @FOS\View(
      *  templateVar="incident_states"
      * )
-     *
      * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
      * @return array
      */
     public function getIncidentStatesAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        return $this->getApiController()->getAll($request, $paramFetcher);
-    }
-
-    public function getApiController()
-    {
-
-        return $this->container->get('cert_unlp.ngen.incident.state.api.controller');
+        return $this->getAll($request, $paramFetcher);
     }
 
     /**
-     * Gets a Network for a given id.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Gets a network admin for a given id",
@@ -120,8 +111,6 @@ class IncidentStateController extends AbstractFOSRestController
      *         description="Returned when the network is not found"
      *     )
      * )
-     *
-     *
      * @param IncidentState $incident_state
      * @return IncidentState
      * @FOS\View(
@@ -136,8 +125,6 @@ class IncidentStateController extends AbstractFOSRestController
     }
 
     /**
-     * Create a Network from the submitted data.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Creates a new network from the submitted data.",
@@ -157,8 +144,6 @@ class IncidentStateController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
      * @FOS\Post("/states")
      * @param Request $request the request object
      *
@@ -166,12 +151,10 @@ class IncidentStateController extends AbstractFOSRestController
      */
     public function postIncidentStateAction(Request $request)
     {
-        return $this->getApiController()->post($request);
+        return $this->post($request);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -191,7 +174,6 @@ class IncidentStateController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
      * @FOS\Patch("/states/{slug}")
      * @param Request $request the request object
      * @param IncidentState $incident_state
@@ -200,12 +182,10 @@ class IncidentStateController extends AbstractFOSRestController
      */
     public function patchIncidentStateAction(Request $request, IncidentState $incident_state)
     {
-        return $this->getApiController()->patch($request, $incident_state, true);
+        return $this->patch($request, $incident_state, true);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -225,7 +205,6 @@ class IncidentStateController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
      * @FOS\Patch("/states/{slug}")
      * @param Request $request the request object
      * @param IncidentState $incident_state
@@ -234,12 +213,10 @@ class IncidentStateController extends AbstractFOSRestController
      */
     public function patchIncidentStateBySlugAction(Request $request, IncidentState $incident_state)
     {
-        return $this->getApiController()->patch($request, $incident_state);
+        return $this->patch($request, $incident_state);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -259,9 +236,6 @@ class IncidentStateController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param IncidentState $incident_state
      * @return FormTypeInterface|View
@@ -270,13 +244,10 @@ class IncidentStateController extends AbstractFOSRestController
      */
     public function patchIncidentStateActivateAction(Request $request, IncidentState $incident_state)
     {
-
-        return $this->getApiController()->activate($request, $incident_state);
+        return $this->activate($request, $incident_state);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -296,9 +267,6 @@ class IncidentStateController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param IncidentState $incident_state
      * @return FormTypeInterface|View
@@ -307,8 +275,7 @@ class IncidentStateController extends AbstractFOSRestController
      */
     public function patchIncidentStateDesactivateAction(Request $request, IncidentState $incident_state)
     {
-
-        return $this->getApiController()->desactivate($request, $incident_state);
+        return $this->desactivate($request, $incident_state);
     }
 
 }

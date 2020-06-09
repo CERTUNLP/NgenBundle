@@ -11,23 +11,32 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
+use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
+use CertUnlp\NgenBundle\Service\Api\Handler\IncidentTypeHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
+use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Operation;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class IncidentTypeController extends AbstractFOSRestController
+class IncidentTypeController extends ApiController
 {
+    /**
+     * IncidentTypeController constructor.
+     * @param IncidentTypeHandler $handler
+     * @param ViewHandlerInterface $viewHandler
+     * @param View $view
+     */
+    public function __construct(IncidentTypeHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    {
+        parent::__construct($handler, $viewHandler, $view);
+    }
 
     /**
-     * List all networks.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Get status.",
@@ -40,22 +49,16 @@ class IncidentTypeController extends AbstractFOSRestController
      *         description="Returned when the apikey is not found"
      *     )
      * )
-     *
-     *
      * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
      * @return array
      */
     public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-
         return null;
     }
 
     /**
-     * List all incident types.
-     *
      * @Operation(
      *     tags={""},
      *     summary="List all incident types.",
@@ -78,34 +81,22 @@ class IncidentTypeController extends AbstractFOSRestController
      *         description="Returned when successful"
      *     )
      * )
-     *
-     *
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident types.")
      * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many incident types to return.")
      *
      * @FOS\View(
      *  templateVar="incident_types"
      * )
-     *
      * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
      * @return array
      */
     public function getTypesAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        return $this->getApiController()->getAll($request, $paramFetcher);
-    }
-
-    public function getApiController()
-    {
-
-        return $this->container->get('cert_unlp.ngen.incident.type.api.controller');
+        return $this->getAll($request, $paramFetcher);
     }
 
     /**
-     * Gets a Network for a given id.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Gets a network admin for a given id",
@@ -118,8 +109,6 @@ class IncidentTypeController extends AbstractFOSRestController
      *         description="Returned when the network is not found"
      *     )
      * )
-     *
-     *
      * @param IncidentType $incident_type
      * @return IncidentType
      * @FOS\View(
@@ -132,8 +121,6 @@ class IncidentTypeController extends AbstractFOSRestController
     }
 
     /**
-     * Create a Network from the submitted data.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Creates a new network from the submitted data.",
@@ -153,8 +140,6 @@ class IncidentTypeController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
      * @FOS\Post("/types")
      * @param Request $request the request object
      *
@@ -162,12 +147,10 @@ class IncidentTypeController extends AbstractFOSRestController
      */
     public function postIncidentTypeAction(Request $request)
     {
-        return $this->getApiController()->post($request);
+        return $this->post($request);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -187,7 +170,6 @@ class IncidentTypeController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
      * @FOS\Patch("/types/{slug}")
      * @param Request $request the request object
      * @param IncidentType $incident_type
@@ -196,12 +178,10 @@ class IncidentTypeController extends AbstractFOSRestController
      */
     public function patchIncidentTypeAction(Request $request, IncidentType $incident_type)
     {
-        return $this->getApiController()->patch($request, $incident_type, true);
+        return $this->patch($request, $incident_type, true);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -221,7 +201,6 @@ class IncidentTypeController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
      * @FOS\Patch("/types/{slug}")
      * @param Request $request the request object
      * @param IncidentType $incident_type
@@ -230,12 +209,10 @@ class IncidentTypeController extends AbstractFOSRestController
      */
     public function patchIncidentTypeBySlugAction(Request $request, IncidentType $incident_type)
     {
-        return $this->getApiController()->patch($request, $incident_type, true);
+        return $this->patch($request, $incident_type, true);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -255,9 +232,6 @@ class IncidentTypeController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param IncidentType $incident_type
      * @return FormTypeInterface|View
@@ -266,13 +240,10 @@ class IncidentTypeController extends AbstractFOSRestController
      */
     public function patchIncidentTypeActivateAction(Request $request, IncidentType $incident_type)
     {
-
-        return $this->getApiController()->activate($request, $incident_type);
+        return $this->activate($request, $incident_type);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -292,9 +263,6 @@ class IncidentTypeController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param IncidentType $incident_type
      * @return FormTypeInterface|View
@@ -303,8 +271,7 @@ class IncidentTypeController extends AbstractFOSRestController
      */
     public function patchIncidentTypeDesactivateAction(Request $request, IncidentType $incident_type)
     {
-
-        return $this->getApiController()->desactivate($request, $incident_type);
+        return $this->desactivate($request, $incident_type);
     }
 
 }

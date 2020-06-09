@@ -26,7 +26,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class IncidentDecisionHandler extends Handler
 {
-
     /**
      * IncidentDecisionHandler constructor.
      * @param EntityManagerInterface $entity_manager
@@ -37,6 +36,14 @@ class IncidentDecisionHandler extends Handler
     public function __construct(EntityManagerInterface $entity_manager, IncidentDecisionRepository $repository, IncidentDecisionType $entity_type, FormFactoryInterface $form_factory)
     {
         parent::__construct($entity_manager, $repository, $entity_type, $form_factory);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['type' => $parameters['type'] ?? 'undefined', 'feed' => $parameters['feed'] ?? 'undefined', 'network' => $parameters['network'] ?? null];
     }
 
     /**

@@ -75,15 +75,6 @@ class TaxonomyPredicate extends EntityApi
     }
 
     /**
-     * @param array $parameters
-     * @return array
-     */
-    public function getDataIdentificationArray(array $parameters): array
-    {
-        return ['value' => $parameters['value']];
-    }
-
-    /**
      * @return string
      */
     public function getSlug(): string

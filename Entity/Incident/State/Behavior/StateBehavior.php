@@ -392,11 +392,4 @@ abstract class StateBehavior extends EntityApi
         return 'slug';
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getDataIdentificationArray(array $parameters): array
-    {
-        return ['name' => $parameters['name']];
-    }
 }

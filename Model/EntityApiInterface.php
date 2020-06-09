@@ -38,11 +38,5 @@ interface  EntityApiInterface extends EntityInterface
      * @return array
      */
     public function getIdentificationArray(): array;
-
-    /**
-     * @param array $parameters
-     * @return array
-     */
-    public function getDataIdentificationArray(array $parameters): array;
 }
 

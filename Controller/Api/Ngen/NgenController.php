@@ -21,8 +21,6 @@ class NgenController extends AbstractFOSRestController
 {
 
     /**
-     * Get status.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Get status.",
@@ -35,8 +33,6 @@ class NgenController extends AbstractFOSRestController
      *         description="Returned when the apikey is not found"
      *     )
      * )
-     *
-     *
      * @param Request $request
      * @return array
      * @FOS\Get("/ngen/status")
@@ -47,8 +43,6 @@ class NgenController extends AbstractFOSRestController
     }
 
     /**
-     * Get version.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Get version.",
@@ -61,8 +55,6 @@ class NgenController extends AbstractFOSRestController
      *         description="Returned when the apikey is not found"
      *     )
      * )
-     *
-     *
      * @param Request $request
      * @return string
      * @FOS\Get("/ngen/version")

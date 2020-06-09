@@ -11,23 +11,33 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
+use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
+use CertUnlp\NgenBundle\Service\Api\Handler\IncidentPriorityHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
+use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Operation;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Swagger\Annotations as SWG;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class IncidentPriorityController extends AbstractFOSRestController
+class IncidentPriorityController extends ApiController
 {
     /**
-     * List all incident priorities.
-     *
+     * IncidentPriorityController constructor.
+     * @param IncidentPriorityHandler $handler
+     * @param ViewHandlerInterface $viewHandler
+     * @param View $view
+     */
+    public function __construct(IncidentPriorityHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    {
+        parent::__construct($handler, $viewHandler, $view);
+    }
+
+    /**
      * @Operation(
      *     tags={""},
      *     summary="List all incident priorities.",
@@ -50,16 +60,12 @@ class IncidentPriorityController extends AbstractFOSRestController
      *         description="Returned when successful"
      *     )
      * )
-     *
-     *
      * @FOS\Get("/priorities")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident priorities.")
      * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many incident priorities to return.")
-     *
      * @FOS\View(
      *  templateVar="incident_priorities"
      * )
-     *
      * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
@@ -67,18 +73,10 @@ class IncidentPriorityController extends AbstractFOSRestController
      */
     public function getIncidentPrioritiesAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        return $this->getApiController()->getAll($request, $paramFetcher);
-    }
-
-    public function getApiController()
-    {
-
-        return $this->container->get('cert_unlp.ngen.incident.priority.api.controller');
+        return $this->getAll($request, $paramFetcher);
     }
 
     /**
-     * Gets a Network for a given id.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Gets a network admin for a given id",
@@ -91,8 +89,6 @@ class IncidentPriorityController extends AbstractFOSRestController
      *         description="Returned when the network is not found"
      *     )
      * )
-     *
-     *
      * @param IncidentPriority $incident_priority
      * @return IncidentPriority
      * @FOS\View(
@@ -107,8 +103,6 @@ class IncidentPriorityController extends AbstractFOSRestController
     }
 
     /**
-     * Create a Network from the submitted data.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Creates a new network from the submitted data.",
@@ -128,8 +122,6 @@ class IncidentPriorityController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
      * @FOS\Post("/priorities")
      * @param Request $request the request object
      *
@@ -137,12 +129,10 @@ class IncidentPriorityController extends AbstractFOSRestController
      */
     public function postIncidentPriorityAction(Request $request)
     {
-        return $this->getApiController()->post($request);
+        return $this->post($request);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -162,21 +152,17 @@ class IncidentPriorityController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
      * @FOS\Patch("/priorities/{id}")
      * @param Request $request the request object
      * @param IncidentPriority $incident_priority
      * @return FormTypeInterface|View
-     *
      */
     public function patchIncidentPriorityBySlugAction(Request $request, IncidentPriority $incident_priority)
     {
-        return $this->getApiController()->patch($request, $incident_priority);
+        return $this->patch($request, $incident_priority);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -196,23 +182,17 @@ class IncidentPriorityController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param IncidentPriority $incident_priority
      * @return FormTypeInterface|View
-     *
      * @FOS\Patch("/priorities/{id}/activate")
      */
     public function patchIncidentPriorityActivateAction(Request $request, IncidentPriority $incident_priority)
     {
-        return $this->getApiController()->activate($request, $incident_priority);
+        return $this->activate($request, $incident_priority);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -232,9 +212,6 @@ class IncidentPriorityController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param IncidentPriority $incident_priority
      * @return FormTypeInterface|View
@@ -243,7 +220,7 @@ class IncidentPriorityController extends AbstractFOSRestController
      */
     public function patchIncidentPriorityDesactivateAction(Request $request, IncidentPriority $incident_priority)
     {
-        return $this->getApiController()->desactivate($request, $incident_priority);
+        return $this->desactivate($request, $incident_priority);
     }
 
 }

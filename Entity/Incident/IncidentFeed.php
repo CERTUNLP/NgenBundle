@@ -199,13 +199,4 @@ class IncidentFeed extends EntityApiFrontend
         return 'slug';
     }
 
-    /**
-     * @param array $parameters
-     * @return array
-     */
-    public function getDataIdentificationArray(array $parameters): array
-    {
-        return ['name' => $parameters['name']];
-    }
-
 }

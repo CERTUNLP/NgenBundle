@@ -385,4 +385,5 @@ class IncidentDetected extends EntityApiFrontend
     {
         $this->state = $state;
     }
+
 }

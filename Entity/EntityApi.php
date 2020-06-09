@@ -30,6 +30,7 @@ abstract class EntityApi extends Entity implements EntityApiInterface
      * @var string
      */
     protected $slug;
+
     /**
      * @var boolean
      *
@@ -106,12 +107,6 @@ abstract class EntityApi extends Entity implements EntityApiInterface
         $this->$identification_string = $id;
         return $this;
     }
-
-    /**
-     * @param array $parameters
-     * @return array
-     */
-    abstract public function getDataIdentificationArray(array $parameters): array;
 
 
 }

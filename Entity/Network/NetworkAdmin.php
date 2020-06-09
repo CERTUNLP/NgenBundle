@@ -83,15 +83,6 @@ class NetworkAdmin extends EntityApiFrontend
     }
 
     /**
-     * @param array $parameters
-     * @return array
-     */
-    public function getDataIdentificationArray(array $parameters): array
-    {
-        return ['name' => $parameters['name']];
-    }
-
-    /**
      * Get id
      *
      * @return integer

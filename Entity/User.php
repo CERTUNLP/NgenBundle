@@ -125,14 +125,7 @@ class User extends BaseUser implements EntityApiFrontendInterface
         $this->contacts = new ArrayCollection();
     }
 
-    /**
-     * @param array $parameters
-     * @return array
-     */
-    public function getDataIdentificationArray(array $parameters): array
-    {
-        return ['username' => $parameters['username']];
-    }
+
 
     /**
      * @return string

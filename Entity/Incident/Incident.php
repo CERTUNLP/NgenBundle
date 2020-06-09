@@ -1591,13 +1591,4 @@ class Incident extends EntityApiFrontend
         $this->setter($this->type, $type, true);
         return $this;
     }
-
-    /**
-     * @param array $parameters
-     * @return array
-     */
-    public function getDataIdentificationArray(array $parameters): array
-    {
-        return ['type' => $parameters['type'], 'address' => $parameters['address']];
-    }
 }

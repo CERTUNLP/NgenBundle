@@ -11,23 +11,32 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
+use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate;
+use CertUnlp\NgenBundle\Service\Api\Handler\TaxonomyPredicateHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
+use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Operation;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class IncidentTaxonomyPredicateController extends AbstractFOSRestController
+class IncidentTaxonomyPredicateController extends ApiController
 {
+    /**
+     * IncidentTaxonomyPredicateController constructor.
+     * @param TaxonomyPredicateHandler $handler
+     * @param ViewHandlerInterface $viewHandler
+     * @param View $view
+     */
+    public function __construct(TaxonomyPredicateHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    {
+        parent::__construct($handler, $viewHandler, $view);
+    }
 
     /**
-     * List all incident states.
-     *
      * @Operation(
      *     tags={""},
      *     summary="List all incident states.",
@@ -50,16 +59,12 @@ class IncidentTaxonomyPredicateController extends AbstractFOSRestController
      *         description="Returned when successful"
      *     )
      * )
-     *
-     *
      * @FOS\Get("/taxonomies/predicates")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident states.")
      * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many incident states to return.")
-     *
      * @FOS\View(
      *  templateVar="incident_states"
      * )
-     *
      * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
@@ -67,18 +72,10 @@ class IncidentTaxonomyPredicateController extends AbstractFOSRestController
      */
     public function getTaxonomyPredicatesAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        return $this->getApiController()->getAll($request, $paramFetcher);
-    }
-
-    public function getApiController()
-    {
-
-        return $this->container->get('cert_unlp.ngen.incident.taxonomy.predicate.api.controller');
+        return $this->getAll($request, $paramFetcher);
     }
 
     /**
-     * Gets a Network for a given id.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Gets a network admin for a given id",
@@ -91,8 +88,6 @@ class IncidentTaxonomyPredicateController extends AbstractFOSRestController
      *         description="Returned when the network is not found"
      *     )
      * )
-     *
-     *
      * @param TaxonomyPredicate $taxonomyPredicate
      * @return TaxonomyPredicate
      * @FOS\Get("/taxonomies/predicates/{slug}")
@@ -103,8 +98,6 @@ class IncidentTaxonomyPredicateController extends AbstractFOSRestController
     }
 
     /**
-     * Create a Network from the submitted data.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Creates a new network from the submitted data.",
@@ -124,21 +117,16 @@ class IncidentTaxonomyPredicateController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
      * @FOS\Post("/taxonomies/predicates")
      * @param Request $request the request object
-     *
      * @return FormTypeInterface|View
      */
     public function postTaxonomyPredicateAction(Request $request)
     {
-        return $this->getApiController()->post($request);
+        return $this->post($request);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -151,21 +139,17 @@ class IncidentTaxonomyPredicateController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
      * @FOS\Patch("/taxonomies/predicates/{slug}")
      * @param Request $request the request object
      * @param TaxonomyPredicate $taxonomyPredicate
      * @return FormTypeInterface|View
-     *
      */
     public function patchTaxonomyPredicateAction(Request $request, TaxonomyPredicate $taxonomyPredicate)
     {
-        return $this->getApiController()->patch($request, $taxonomyPredicate, true);
+        return $this->patch($request, $taxonomyPredicate, true);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -185,7 +169,6 @@ class IncidentTaxonomyPredicateController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
      * @FOS\Patch("/taxonomies/predicates/{slug}")
      * @param Request $request the request object
      * @param TaxonomyPredicate $taxonomyPredicate
@@ -194,12 +177,10 @@ class IncidentTaxonomyPredicateController extends AbstractFOSRestController
      */
     public function patchTaxonomyPredicateBySlugAction(Request $request, TaxonomyPredicate $taxonomyPredicate)
     {
-        return $this->getApiController()->patch($request, $taxonomyPredicate);
+        return $this->patch($request, $taxonomyPredicate);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -219,24 +200,17 @@ class IncidentTaxonomyPredicateController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param TaxonomyPredicate $taxonomyPredicate
      * @return FormTypeInterface|View
-     *
      * @FOS\Patch("/taxonomies/predicates/{slug}/activate")
      */
     public function patchTaxonomyPredicateActivateAction(Request $request, TaxonomyPredicate $taxonomyPredicate)
     {
-
-        return $this->getApiController()->activate($request, $taxonomyPredicate);
+        return $this->activate($request, $taxonomyPredicate);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -256,19 +230,14 @@ class IncidentTaxonomyPredicateController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param TaxonomyPredicate $taxonomyPredicate
      * @return FormTypeInterface|View
-     *
      * @FOS\Patch("/taxonomies/predicates/{slug}/desactivate")
      */
     public function patchTaxonomyPredicateDesactivateAction(Request $request, TaxonomyPredicate $taxonomyPredicate)
     {
-
-        return $this->getApiController()->desactivate($request, $taxonomyPredicate);
+        return $this->desactivate($request, $taxonomyPredicate);
     }
 
 }

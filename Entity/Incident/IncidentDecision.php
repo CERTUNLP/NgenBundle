@@ -172,6 +172,8 @@ class IncidentDecision extends EntityApiFrontend
         return $this;
     }
 
+
+
     /**
      * @return string
      */

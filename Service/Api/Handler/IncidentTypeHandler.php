@@ -55,4 +55,11 @@ class IncidentTypeHandler extends Handler
         return $this->report_handler;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['name' => $parameters['name']];
+    }
 }

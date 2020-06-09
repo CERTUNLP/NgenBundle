@@ -11,26 +11,36 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
+use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Entity\Network\Network;
+use CertUnlp\NgenBundle\Service\Api\Handler\IncidentDecisionHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
+use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Operation;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Swagger\Annotations as SWG;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class IncidentDecisionController extends AbstractFOSRestController
+class IncidentDecisionController extends ApiController
 {
     /**
-     * List all incident decisions.
-     *
+     * IncidentDecisionController constructor.
+     * @param IncidentDecisionHandler $handler
+     * @param ViewHandlerInterface $viewHandler
+     * @param View $view
+     */
+    public function __construct(IncidentDecisionHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    {
+        parent::__construct($handler, $viewHandler, $view);
+    }
+
+    /**
      * @Operation(
      *     tags={""},
      *     summary="List all incident decisions.",
@@ -53,8 +63,6 @@ class IncidentDecisionController extends AbstractFOSRestController
      *         description="Returned when successful"
      *     )
      * )
-     *
-     *
      * @FOS\Get("/decisions")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident decisions.")
      * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many incident decisions to return.")
@@ -62,7 +70,6 @@ class IncidentDecisionController extends AbstractFOSRestController
      * @FOS\View(
      *  templateVar="incident_decisions"
      * )
-     *
      * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
@@ -70,17 +77,10 @@ class IncidentDecisionController extends AbstractFOSRestController
      */
     public function getIncidentDecisionsAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        return $this->getApiController()->getAll($request, $paramFetcher);
-    }
-
-    public function getApiController()
-    {
-
-        return $this->container->get('cert_unlp.ngen.incident.decision.api.controller');
+        return $this->getAll($request, $paramFetcher);
     }
 
     /**
-     *
      * @Operation(
      *     tags={""},
      *     summary="Gets a network admin for a given id",
@@ -93,11 +93,6 @@ class IncidentDecisionController extends AbstractFOSRestController
      *         description="Returned when the network is not found"
      *     )
      * )
-     *
-     *
-     *
-     *
-     *
      * @param IncidentType $type
      * @param IncidentFeed $feed
      * @param Network $ip_v4
@@ -118,12 +113,10 @@ class IncidentDecisionController extends AbstractFOSRestController
      */
     public function getIncidentDecisionAction(IncidentType $type, IncidentFeed $feed, Network $ip_v4 = null, Network $ip_v6 = null, Network $domains = null)
     {
-        return $this->get('cert_unlp.ngen.incident.decision.handler')->getByNetwork($type, $feed, $ip_v4 ?? $ip_v6 ?? $domains);
+        return $this->getHandler()->getByNetwork($type, $feed, $ip_v4 ?? $ip_v6 ?? $domains);
     }
 
     /**
-     * Create a Network from the submitted data.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Creates a new network from the submitted data.",
@@ -143,8 +136,6 @@ class IncidentDecisionController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
      * @FOS\Post("/decisions")
      * @param Request $request the request object
      *
@@ -152,12 +143,10 @@ class IncidentDecisionController extends AbstractFOSRestController
      */
     public function postIncidentDecisionAction(Request $request)
     {
-        return $this->getApiController()->post($request);
+        return $this->post($request);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -177,7 +166,6 @@ class IncidentDecisionController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
      * @FOS\Patch("/decisions/{id}")
      * @param Request $request the request object
      * @param IncidentDecision $incident_decision
@@ -186,12 +174,10 @@ class IncidentDecisionController extends AbstractFOSRestController
      */
     public function patchIncidentDecisionAction(Request $request, IncidentDecision $incident_decision)
     {
-        return $this->getApiController()->patch($request, $incident_decision);
+        return $this->patch($request, $incident_decision);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -211,7 +197,6 @@ class IncidentDecisionController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
      * @FOS\Patch("/decisions/{id}")
      * @param Request $request the request object
      * @param IncidentDecision $incident_decision
@@ -220,12 +205,10 @@ class IncidentDecisionController extends AbstractFOSRestController
      */
     public function patchIncidentDecisionBySlugAction(Request $request, IncidentDecision $incident_decision)
     {
-        return $this->getApiController()->patch($request, $incident_decision);
+        return $this->patch($request, $incident_decision);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -245,9 +228,6 @@ class IncidentDecisionController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param IncidentDecision $incident_decision
      * @return FormTypeInterface|View
@@ -256,13 +236,10 @@ class IncidentDecisionController extends AbstractFOSRestController
      */
     public function patchIncidentDecisionActivateAction(Request $request, IncidentDecision $incident_decision)
     {
-
-        return $this->getApiController()->activate($request, $incident_decision);
+        return $this->activate($request, $incident_decision);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -282,9 +259,6 @@ class IncidentDecisionController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param IncidentDecision $incident_decision
      * @return FormTypeInterface|View
@@ -293,8 +267,6 @@ class IncidentDecisionController extends AbstractFOSRestController
      */
     public function patchIncidentDecisionDesactivateAction(Request $request, IncidentDecision $incident_decision)
     {
-
-        return $this->getApiController()->desactivate($request, $incident_decision);
+        return $this->desactivate($request, $incident_decision);
     }
-
 }

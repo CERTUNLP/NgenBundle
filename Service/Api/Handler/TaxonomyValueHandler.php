@@ -23,5 +23,11 @@ class TaxonomyValueHandler extends Handler
         parent::__construct($entity_manager, $repository, $entity_ype, $form_factory);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['value' => $parameters['value']];
+    }
 }
