@@ -1,4 +1,4 @@
-<?php /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+<?php
 
 /*
  * This file is part of the Ngen - CSIRT Incident Report System.
