@@ -1,29 +1,19 @@
-FROM ubuntu:trusty
+# Este build es especifica para el desarrollo usando phpstorm y xdebug que es lo que usa el team de desarrolladores, problemente sea lo mismo para cualquiier ide
+# Lo que hara el debugger es conectarse contra el ide y pasarle la info
+# Levantando con este build ya queda instalado el xdebug, solo tenes que cambiar la ip de remote_host y cambiar el firewall de donde estas corrinedo el ide para permitir la conexion al puerto 9000 que es donde corre el debugger.
+# https://www.youtube.com/watch?v=J77iuOpnUm4
 
-MAINTAINER CERTunlp
+FROM certunlp/ngen:0.5.0-rc13
 
-ENV ROOT /root
+MAINTAINER Einar Lanfranco
 
-RUN apt-get update && apt-get install -y wget supervisor acl vim;
+RUN yes | pecl install xdebug \
+    && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.remote_handler=dbgp" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.remote_port=9000" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.remote_autostart=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.remote_idekey=docker" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.remote_host=172.25.0.1" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.remote_connect_back=0" >> /usr/local/etc/php/conf.d/xdebug.ini
 
-COPY files/app_dev.php $ROOT
-COPY .env $ROOT
-COPY files/install.es.sh $ROOT
-
-RUN chmod +x $ROOT/install.es.sh; \
-  bash $ROOT/install.es.sh
-
-COPY files/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-RUN ln -s /etc/elasticsearch/ /usr/share/elasticsearch/config
-
-WORKDIR /var/www/ngen/
-
-EXPOSE 80
-
-COPY files/entrypoint.sh $ROOT/entrypoint.sh
-RUN chmod +x $ROOT/entrypoint.sh
-
-ENTRYPOINT ["/root/entrypoint.sh", "--"]
-
-CMD ["/usr/bin/supervisord"]
