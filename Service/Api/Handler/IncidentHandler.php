@@ -321,6 +321,35 @@ class IncidentHandler extends Handler
             return $this->getRepository()->findOneLiveBy($entity->getIdentificationArray());
         }
         return null;
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getByDataIdentification(array $parameters): ?EntityApiInterface
+    {
+        return $this->findOneByTypeAndAddress($parameters['type'], $parameters['address']);
+    }
+
+    /**
+     * @param string $type
+     * @param string $address
+     * @return mixed
+     */
+    public function findOneByTypeAndAddress(string $type, string $address = ''): ?EntityApiInterface
+    {
+        return $this->getRepository()->findOneByTypeAndAddress($type, $address);
+
+    }
+
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['type' => $parameters['type'], 'address' => $parameters['address']];
     }
 
     /**

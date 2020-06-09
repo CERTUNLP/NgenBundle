@@ -119,14 +119,7 @@ abstract class Handler
     {
         return $this->get($entity->getIdentificationArray());
     }
-    /**
-     * @param EntityApiInterface $entity
-     * @return EntityApiInterface
-     */
-    public function getByDataIdentification(EntityApiInterface $entity): ?EntityApiInterface
-    {
-        return $this->get($entity->getDataIdentificationArray());
-    }
+
     /**
      * @param array $parameters
      * @return EntityApiInterface|object|null
@@ -224,6 +217,21 @@ abstract class Handler
     {
         return $this->entity_manager;
     }
+
+    /**
+     * @param array $parameters
+     * @return EntityApiInterface
+     */
+    public function getByDataIdentification(array $parameters): ?EntityApiInterface
+    {
+        return $this->get($this->getDataIdentificationArray($parameters));
+    }
+
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    abstract public function getDataIdentificationArray(array $parameters): array;
 
     /**
      * @param EntityApiInterface $entity

@@ -227,12 +227,4 @@ abstract class StateEdge extends EntityApi
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getDataIdentificationArray(array $parameters): array
-    {
-        return ['oldState' => $parameters['oldState'], 'newState' => $parameters['newState']];
-    }
-
 }

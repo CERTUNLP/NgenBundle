@@ -264,13 +264,4 @@ abstract class NetworkElement extends EntityApiFrontend
         return 'id';
     }
 
-    /**
-     * @param array $parameters
-     * @return array
-     */
-    public function getDataIdentificationArray(array $parameters): array
-    {
-        return ['address' => $parameters['address']];
-    }
-
 }

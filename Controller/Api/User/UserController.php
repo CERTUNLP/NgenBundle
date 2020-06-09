@@ -11,26 +11,33 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\User;
 
+use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\User;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
+use CertUnlp\NgenBundle\Service\Api\Handler\UserHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
+use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class UserController extends AbstractFOSRestController
+class UserController extends ApiController
 {
-    public function __construct()
+    /**
+     * UserController constructor.
+     * @param UserHandler $handler
+     * @param ViewHandlerInterface $viewHandler
+     * @param View $view
+     */
+    public function __construct(UserHandler $handler, ViewHandlerInterface $viewHandler, View $view)
     {
+        parent::__construct($handler, $viewHandler, $view);
     }
 
     /**
-     * List all users.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Get status.",
@@ -43,11 +50,8 @@ class UserController extends AbstractFOSRestController
      *         description="Returned when the apikey is not found"
      *     )
      * )
-     *
-     *
      * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
      * @return array
      */
     public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
@@ -57,8 +61,6 @@ class UserController extends AbstractFOSRestController
     }
 
     /**
-     * List all users.
-     *
      * @Operation(
      *     tags={""},
      *     summary="List all users.",
@@ -81,34 +83,21 @@ class UserController extends AbstractFOSRestController
      *         description="Returned when successful"
      *     )
      * )
-     *
-     *
      * @FOS\RequestParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing users.")
      * @FOS\RequestParam(name="limit", requirements="\d+", nullable=true, description="How many users to return.")
-     *
      * @FOS\View(
      *  templateVar="users"
      * )
-     *
      * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
      * @return array
      */
     public function getUsersAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        return $this->getApiController()->getAll($request, $paramFetcher);
-    }
-
-    public function getApiController()
-    {
-
-        return $this->container->get('cert_unlp.ngen.user.api.controller');
+        return $this->getAll($request, $paramFetcher);
     }
 
     /**
-     * Gets a User for a given id.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Gets a User for a given host address",
@@ -121,13 +110,9 @@ class UserController extends AbstractFOSRestController
      *         description="Returned when the user is not found"
      *     )
      * )
-     *
-     *
      * @param User $user
      * @return User
-     *
      * @FOS\Get("/users/{username}")
-     *
      * @FOS\View(
      *  templateVar="user"
      * )
@@ -139,8 +124,6 @@ class UserController extends AbstractFOSRestController
     }
 
     /**
-     * Create a User from the submitted data.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Creates a new user from the submitted data.",
@@ -209,23 +192,18 @@ class UserController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
      * @FOS\View(
      *  templateVar = "user"
      * )
      * @param Request $request the request object
-     *
      * @return FormTypeInterface|View
      */
     public function postUserAction(Request $request)
     {
-        return $this->getApiController()->post($request);
+        return $this->post($request);
     }
 
     /**
-     * Update existing user from the submitted data or create a new user at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing user from the submitted data or create a new user at a specific location.",
@@ -294,28 +272,21 @@ class UserController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
      * @FOS\View(
      *  templateVar = "user"
      * )
-     *
      * @param Request $request the request object
      * @param User $user
      * @return FormTypeInterface|View
-     *
      * @FOS\Patch("/users/{username}")
-     *
      * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
      */
     public function patchUserAction(Request $request, User $user)
     {
-        return $this->getApiController()->patch($request, $user);
+        return $this->patch($request, $user);
     }
 
     /**
-     * Update existing user from the submitted data or create a new user at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing user from the submitted data or create a new user at a specific location.",
@@ -384,13 +355,9 @@ class UserController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param User $user
      * @return FormTypeInterface|View
-     *
      * @FOS\Patch("/users/{username}/activate")
      * @FOS\View(
      *  templateVar = "user"
@@ -399,13 +366,10 @@ class UserController extends AbstractFOSRestController
      */
     public function patchUserActivateAction(Request $request, User $user)
     {
-
-        return $this->getApiController()->activate($request, $user);
+        return $this->activate($request, $user);
     }
 
     /**
-     * Update existing user from the submitted data or create a new user at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing user from the submitted data or create a new user at a specific location.",
@@ -474,13 +438,9 @@ class UserController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param User $user
      * @return FormTypeInterface|View
-     *
      * @FOS\Patch("/users/{username}/desactivate")
      * @FOS\View(
      *  templateVar = "user"
@@ -489,8 +449,7 @@ class UserController extends AbstractFOSRestController
      */
     public function patchUserDesactivateAction(Request $request, User $user)
     {
-
-        return $this->getApiController()->desactivate($request, $user);
+        return $this->desactivate($request, $user);
     }
 
 }

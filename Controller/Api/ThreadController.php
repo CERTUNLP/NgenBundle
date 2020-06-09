@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api;
 
+use FOS\CommentBundle\Controller\ThreadController as BaseThreadController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -18,13 +19,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @author Alexander <iam.asm89@gmail.com>
  */
-class ThreadController extends \FOS\CommentBundle\Controller\ThreadController
+class ThreadController extends BaseThreadController
 {
     protected $container;
 
     public function __construct(ContainerInterface $container)
     {
-        // Override container
         $this->container = $container;
     }
 

@@ -11,24 +11,33 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Network;
 
+use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
+use CertUnlp\NgenBundle\Service\Api\Handler\NetworkEntityHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
+use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Operation;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Swagger\Annotations as SWG;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class NetworkEntityController extends AbstractFOSRestController
+class NetworkEntityController extends ApiController
 {
+    /**
+     * NetworkEntityController constructor.
+     * @param NetworkEntityHandler $handler
+     * @param ViewHandlerInterface $viewHandler
+     * @param View $view
+     */
+    public function __construct(NetworkEntityHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    {
+        parent::__construct($handler, $viewHandler, $view);
+    }
 
     /**
-     * List all networks.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Get status.",
@@ -41,11 +50,8 @@ class NetworkEntityController extends AbstractFOSRestController
      *         description="Returned when the apikey is not found"
      *     )
      * )
-     *
-     *
      * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
      * @return array
      */
     public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
@@ -55,8 +61,6 @@ class NetworkEntityController extends AbstractFOSRestController
     }
 
     /**
-     * List all academic unit network_entity.
-     *
      * @Operation(
      *     tags={""},
      *     summary="List all academic unit networkentity.",
@@ -79,35 +83,22 @@ class NetworkEntityController extends AbstractFOSRestController
      *         description="Returned when successful"
      *     )
      * )
-     *
-     *
      * @FOS\Get("/networks/entities")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing academic unit network_entity.")
      * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many academic unit network_entity to return.")
-     *
      * @FOS\View(
      *  templateVar="network_entitys"
      * )
-     *
      * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
      * @return array
      */
     public function getNetworkEntitysAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        return $this->getApiController()->getAll($request, $paramFetcher);
-    }
-
-    public function getApiController()
-    {
-
-        return $this->container->get('cert_unlp.ngen.network_entity.api.controller');
+        return $this->getAll($request, $paramFetcher);
     }
 
     /**
-     * Gets a Network for a given id.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Gets a network admin for a given id",
@@ -120,8 +111,6 @@ class NetworkEntityController extends AbstractFOSRestController
      *         description="Returned when the network is not found"
      *     )
      * )
-     *
-     *
      * @param NetworkEntity $network_entity
      * @return NetworkEntity
      * @FOS\View(
@@ -136,8 +125,6 @@ class NetworkEntityController extends AbstractFOSRestController
     }
 
     /**
-     * Create a Network from the submitted data.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Creates a new network from the submitted data.",
@@ -157,21 +144,16 @@ class NetworkEntityController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
      * @FOS\Post("/networks/entities")
      * @param Request $request the request object
-     *
      * @return FormTypeInterface|View
      */
     public function postNetworkEntityAction(Request $request)
     {
-        return $this->getApiController()->post($request);
+        return $this->post($request);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -191,7 +173,6 @@ class NetworkEntityController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
      * @FOS\Patch("/networks/entities/{slug}")
      * @param Request $request the request object
      * @param NetworkEntity $network_entity
@@ -200,12 +181,10 @@ class NetworkEntityController extends AbstractFOSRestController
      */
     public function patchNetworkEntityAction(Request $request, NetworkEntity $network_entity)
     {
-        return $this->getApiController()->patch($request, $network_entity, true);
+        return $this->patch($request, $network_entity, true);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -225,7 +204,6 @@ class NetworkEntityController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
      * @FOS\Patch("/networks/entities/{slug}")
      * @param Request $request the request object
      * @param NetworkEntity $network_entity
@@ -234,12 +212,10 @@ class NetworkEntityController extends AbstractFOSRestController
      */
     public function patchNetworkEntityBySlugAction(Request $request, NetworkEntity $network_entity)
     {
-        return $this->getApiController()->patch($request, $network_entity);
+        return $this->patch($request, $network_entity);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -259,24 +235,17 @@ class NetworkEntityController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param NetworkEntity $network_entity
      * @return FormTypeInterface|View
-     *
      * @FOS\Patch("/networks/entities/{slug}/activate")
      */
     public function patchNetworkEntityActivateAction(Request $request, NetworkEntity $network_entity)
     {
-
-        return $this->getApiController()->activate($request, $network_entity);
+        return $this->activate($request, $network_entity);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -296,19 +265,14 @@ class NetworkEntityController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param NetworkEntity $network_entity
      * @return FormTypeInterface|View
-     *
      * @FOS\Patch("/networks/entities/{slug}/desactivate")
      */
     public function patchNetworkEntityDesactivateAction(Request $request, NetworkEntity $network_entity)
     {
-
-        return $this->getApiController()->desactivate($request, $network_entity);
+        return $this->desactivate($request, $network_entity);
     }
 
 }

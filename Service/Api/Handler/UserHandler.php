@@ -46,4 +46,11 @@ class UserHandler extends Handler
         return $user;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['username' => $parameters['username']];
+    }
 }

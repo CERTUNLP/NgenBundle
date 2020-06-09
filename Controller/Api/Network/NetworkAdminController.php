@@ -11,23 +11,33 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Network;
 
+use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
+use CertUnlp\NgenBundle\Service\Api\Handler\NetworkAdminHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
+use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class NetworkAdminController extends AbstractFOSRestController
+class NetworkAdminController extends ApiController
 {
+    /**
+     * NetworkAdminController constructor.
+     * @param NetworkAdminHandler $handler
+     * @param ViewHandlerInterface $viewHandler
+     * @param View $view
+     */
+    public function __construct(NetworkAdminHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    {
+        parent::__construct($handler, $viewHandler, $view);
+    }
 
     /**
-     * List all networks.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Get status.",
@@ -40,22 +50,16 @@ class NetworkAdminController extends AbstractFOSRestController
      *         description="Returned when the apikey is not found"
      *     )
      * )
-     *
-     *
      * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
      * @return array
      */
     public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-
         return null;
     }
 
     /**
-     * List all network admins.
-     *
      * @Operation(
      *     tags={""},
      *     summary="List all network admins.",
@@ -78,35 +82,22 @@ class NetworkAdminController extends AbstractFOSRestController
      *         description="Returned when successful"
      *     )
      * )
-     *
-     *
      * @FOS\Get("/networks/admins")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing network admins.")
      * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many network admins to return.")
-     *
      * @FOS\View(
      *  templateVar="network_admins"
      * )
-     *
      * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
      * @return array
      */
     public function getNetworkAdminsAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        return $this->getApiController()->getAll($request, $paramFetcher);
-    }
-
-    public function getApiController()
-    {
-
-        return $this->container->get('cert_unlp.ngen.network.admin.api.controller');
+        return $this->getAll($request, $paramFetcher);
     }
 
     /**
-     * Gets a Network for a given id.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Gets a network admin for a given id",
@@ -119,8 +110,6 @@ class NetworkAdminController extends AbstractFOSRestController
      *         description="Returned when the network is not found"
      *     )
      * )
-     *
-     *
      * @param NetworkAdmin $network_admin
      * @return NetworkAdmin
      * @FOS\View(
@@ -135,8 +124,6 @@ class NetworkAdminController extends AbstractFOSRestController
     }
 
     /**
-     * Create a Network from the submitted data.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Creates a new network from the submitted data.",
@@ -156,21 +143,16 @@ class NetworkAdminController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
      * @FOS\Post("/networks/admins")
      * @param Request $request the request object
-     *
      * @return FormTypeInterface|View
      */
     public function postNetworkAdminAction(Request $request)
     {
-        return $this->getApiController()->post($request);
+        return $this->post($request);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -190,21 +172,17 @@ class NetworkAdminController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
      * @FOS\Patch("/networks/admins/{id}", requirements={"id" = "\d+"})
      * @param Request $request the request object
      * @param NetworkAdmin $network_admin
      * @return FormTypeInterface|View
-     *
      */
     public function patchNetworkAdminAction(Request $request, NetworkAdmin $network_admin)
     {
-        return $this->getApiController()->patch($request, $network_admin, true);
+        return $this->patch($request, $network_admin, true);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -224,21 +202,17 @@ class NetworkAdminController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
      * @FOS\Patch("/networks/admins/{slug}")
      * @param Request $request the request object
      * @param NetworkAdmin $network_admin
      * @return FormTypeInterface|View
-     *
      */
     public function patchNetworkAdminBySlugAction(Request $request, NetworkAdmin $network_admin)
     {
-        return $this->getApiController()->patch($request, $network_admin, true);
+        return $this->patch($request, $network_admin, true);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -258,24 +232,17 @@ class NetworkAdminController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param NetworkAdmin $network_admin
      * @return FormTypeInterface|View
-     *
      * @FOS\Patch("/networks/admins/{id}/activate")
      */
     public function patchNetworkAdminActivateAction(Request $request, NetworkAdmin $network_admin)
     {
-
-        return $this->getApiController()->activate($request, $network_admin);
+        return $this->activate($request, $network_admin);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -295,19 +262,14 @@ class NetworkAdminController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param NetworkAdmin $network_admin
      * @return FormTypeInterface|View
-     *
      * @FOS\Patch("/networks/admins/{id}/desactivate")
      */
     public function patchNetworkAdminDesactivateAction(Request $request, NetworkAdmin $network_admin)
     {
-
-        return $this->getApiController()->desactivate($request, $network_admin);
+        return $this->desactivate($request, $network_admin);
     }
 
 }

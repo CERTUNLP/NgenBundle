@@ -265,12 +265,4 @@ class IncidentReport extends EntityApiFrontend
         return 'slug';
     }
 
-    /**
-     * @param array $parameters
-     * @return array
-     */
-    public function getDataIdentificationArray(array $parameters): array
-    {
-        return ['lang' => $parameters['lang'], 'type' => $parameters['type']];
-    }
 }

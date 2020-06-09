@@ -34,4 +34,11 @@ class IncidentStateHandler extends Handler
         return $this->get(['slug' => 'initial']);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['name' => $parameters['name']];
+    }
 }

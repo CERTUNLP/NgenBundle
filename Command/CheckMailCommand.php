@@ -39,7 +39,7 @@ class CheckMailCommand extends ContainerAwareCommand
         $output->writeln('<info>[Messages]: Starting.</info>');
         $output->writeln('<info>[Messages]: Searching for new mail...</info>');
         $ngen_Connection = $this->getContainer()->get('secit.imap')->get($connection);
-        $comment_thread_manager = $this->getContainer()->get('fos_comment.manager.thread');
+//        $comment_thread_manager = $this->getContainer()->get('fos_comment.manager.thread');
         $comment_manager = $this->getContainer()->get('fos_comment.manager.comment');
         $info = $ngen_Connection->getMailboxInfo();
         $output->writeln('<info>[Mails]: We found ' . $info->Unread . ' new messages...</info>');

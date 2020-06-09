@@ -90,15 +90,6 @@ class IncidentPriority extends EntityApiFrontend
     private $resolutionTime;
 
     /**
-     * @param array $parameters
-     * @return array
-     */
-    public function getDataIdentificationArray(array $parameters): array
-    {
-        return ['code' => $parameters['code']];
-    }
-
-    /**
      * @return string
      */
     public function getIcon(): string

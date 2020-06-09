@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 /*
  * This file is part of the Ngen - CSIRT Incident Report System.
@@ -9,55 +9,67 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Service\Api\Controller;
+namespace CertUnlp\NgenBundle\Controller\Api;
 
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
+use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use CertUnlp\NgenBundle\Service\Api\Handler\Handler;
 use CertUnlp\NgenBundle\Service\FormErrorsSerializer;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
-use FOS\RestBundle\View\ViewHandler;
-use Symfony\Component\Form\FormTypeInterface;
+use FOS\RestBundle\View\ViewHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ApiController
+abstract class ApiController extends AbstractFOSRestController
 {
-
-    private $custom_handler;
+    /**
+     * @var Handler
+     */
+    private $handler;
+    /**
+     * @var ViewHandlerInterface
+     */
     private $viewHandler;
+    /**
+     * @var View
+     */
     private $view;
 
-    public function __construct(Handler $handler, ViewHandler $viewHandler, View $view)
+    /**
+     * @param Handler $handler
+     * @param ViewHandlerInterface $viewHandler
+     * @param View $view
+     */
+    public function __construct(Handler $handler, ViewHandlerInterface $viewHandler, View $view)
     {
-        $this->custom_handler = $handler;
+        $this->handler = $handler;
         $this->viewHandler = $viewHandler;
         $this->view = $view;
     }
 
-    public function getView()
-    {
-        return $this->view;
-    }
-
     /**
      * @param View $view
-     *
      * @return Response
      */
     public function handle($view = null)
     {
         $view = $view ?: $this->view;
-        return $this->viewHandler->handle($view);
+        return $this->getViewHandler()->handle($view);
     }
 
     /**
-     * Get all objects.
-     *
-     * @param Request $request the request object
-     * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
+     * @return ViewHandlerInterface
+     */
+    public function getViewHandler(): ViewHandlerInterface
+    {
+        return $this->viewHandler;
+    }
+
+    /**
+     * @param Request $request
+     * @param ParamFetcherInterface $paramFetcher
      * @return array
      */
     public function getAll(Request $request, $paramFetcher)
@@ -65,30 +77,28 @@ class ApiController
         $offset = $paramFetcher->get('offset');
         $limit = $paramFetcher->get('limit');
 
-        return $this->getCustomHandler()->all([], [], $limit, $offset);
+        return $this->getHandler()->all([], [], $limit, $offset);
     }
 
     /**
      * @return Handler
      */
-    public function getCustomHandler()
+    public function getHandler(): Handler
     {
-        return $this->custom_handler;
+        return $this->handler;
     }
 
     /**
-     * Create a Object from the submitted data.
+     * @param Request $request
      *
-     * @param Request $request the request object
-     *
-     * @return FormTypeInterface|View
+     * @return View
      */
     public function post(Request $request)
     {
         try {
-            $object_data = array_merge($request->request->all(), $request->files->all());
+            $entity_data = array_merge($request->request->all(), $request->files->all());
 
-            $newObject = $this->getCustomHandler()->post($object_data);
+            $newObject = $this->getHandler()->post($entity_data);
 
             return $this->response([$newObject]);
         } catch (InvalidFormException $exception) {
@@ -134,185 +144,181 @@ class ApiController
     public function responseError(InvalidFormException $exception): View
     {
         $form_serializer = new FormErrorsSerializer();
-
         return $this->response(['errors' => $form_serializer->serializeFormErrors($exception->getForm(), true, true), 'code' => Response::HTTP_BAD_REQUEST, 'message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
     }
 
     /**
-     * Update existing object from the submitted data or create a new object at a specific location.
-     *
-     * @param Request $request the request object
-     * @param $object
+     * @param Request $request
+     * @param $entity
      * @param $state
      * @return View
      *
      */
-    public function patchState(Request $request, $object, $state)
+    public function patchState(Request $request, $entity, $state)
     {
 
         try {
-            $object = $this->getCustomHandler()->changeState(
-                $object, $state);
-            return $this->response([$object], Response::HTTP_NO_CONTENT);
+            $entity = $this->getHandler()->changeState(
+                $entity, $state);
+            return $this->response([$entity], Response::HTTP_NO_CONTENT);
         } catch (InvalidFormException $exception) {
             return $this->responseError($exception);
         }
     }
 
     /**
-     * Update existing object from the submitted data or create a new object at a specific location.
-     *
-     * @param Request $request the request object
-     * @param $object
+     * @param Request $requesT
+     * @param $entity
      * @param bool $reactivate
-     * @return FormTypeInterface|View
+     * @return View
      *
      */
-    public function patch(Request $request, $object, $reactivate = false)
+    public function patch(Request $request, EntityApiInterface $entity, bool $reactivate = false): ?View
     {
         try {
             if ($reactivate) {
-                return $this->doPatchAndReactivate($request, $object);
+                return $this->doPatchAndReactivate($request, $entity);
             }
-            return $this->doPatch($request, $object);
+            return $this->doPatch($request, $entity);
         } catch (InvalidFormException $exception) {
             return $this->responseError($exception);
         }
     }
 
     /**
-     * Create a Object from the submitted data.
-     *
-     * @param Request $request the request object
-     *
-     * @param $object
-     * @return FormTypeInterface|View
+     * @param Request $request
+     * @param $entity
+     * @return View
      */
-    public function doPatchAndReactivate(Request $request, $object)
+    public function doPatchAndReactivate(Request $request, EntityApiInterface $entity): ?View
     {
         try {
             $parameters = array_merge($request->request->all(), $request->files->all());
             unset($parameters['_method'], $parameters['force_edit'], $parameters['reactivate']);
 
-            $db_object = $this->findObjectBy($parameters);
+            $db_object = $this->getByDataIdentification($parameters);
 
             if (!$db_object) {
                 if ($request->get('reactivate')) {
-                    $object->setIsActive(TRUE);
+                    $entity->setActive(true);
                 }
                 if ($request->get('force_edit')) {
                     $statusCode = Response::HTTP_OK;
 
-                    $object = $this->getCustomHandler()->patch($object, $parameters);
+                    $entity = $this->getHandler()->patch($entity, $parameters);
                 } else {
                     $statusCode = Response::HTTP_CREATED;
 
-                    $this->getCustomHandler()->desactivate($object);
-                    $object = $this->getCustomHandler()->post($parameters);
+                    $this->getHandler()->desactivate($entity);
+                    $entity = $this->getHandler()->post($parameters);
                 }
             } else {
                 $statusCode = Response::HTTP_OK;
 
-                $this->getCustomHandler()->desactivate($object);
-                $this->getCustomHandler()->activate($db_object);
-                $object = $this->getCustomHandler()->patch($db_object, $parameters);
+                $this->getHandler()->desactivate($entity);
+                $this->getHandler()->activate($db_object);
+                $entity = $this->getHandler()->patch($db_object, $parameters);
             }
 
-            return $this->response([$object], $statusCode);
+            return $this->response([$entity], $statusCode);
         } catch (InvalidFormException $exception) {
             return $this->responseError($exception);
         }
     }
 
     /**
-     * Update existing object from the submitted data or create a new object at a specific location.
-     *
-     * @param Request $request the request object
-     * @param $object
-     * @return FormTypeInterface|View
+     * @param array $parameters
+     * @return EntityApiInterface|null
+     */
+    public function getByDataIdentification(array $parameters): ?EntityApiInterface
+    {
+        return $this->getHandler()->getByDataIdentification($parameters);
+    }
+
+    /**
+     * @param Request $request
+     * @param $entity
+     * @return View
      *
      */
-    public function doPatch(Request $request, $object)
+    public function doPatch(Request $request, EntityApiInterface $entity): ?View
     {
         try {
             $parameters = array_merge($request->request->all(), $request->files->all());
 
             unset($parameters['_method']);
-            $object = $this->getCustomHandler()->patch(
-                $object, $parameters
+            $entity = $this->getHandler()->patch(
+                $entity, $parameters
             );
-            return $this->response([$object], Response::HTTP_OK);
+            return $this->response([$entity], Response::HTTP_OK);
         } catch (InvalidFormException $exception) {
             return $this->responseError($exception);
         }
     }
 
     /**
-     * Update existing object from the submitted data or create a new object at a specific location.
-     *
-     *
-     * @param Request $request the request object
-     * @param object $object the object id
-     *
-     * @return FormTypeInterface|View
-     *
-     * @throws NotFoundHttpException when object not exist
+     * @param Request $request
+     * @param EntityApiInterface $entity
+     * @return View
      */
-    public function delete(Request $request, $object)
+    public function delete(Request $request, EntityApiInterface $entity): ?View
     {
         try {
 
-            $object = $this->getCustomHandler()->delete(
-                $object, $request->request->all()
+            $entity = $this->getHandler()->delete(
+                $entity, $request->request->all()
             );
 
-            return $this->response([$object], Response::HTTP_OK);
+            return $this->response([$entity], Response::HTTP_OK);
         } catch (InvalidFormException $exception) {
             return $this->responseError($exception);
         }
     }
 
     /**
-     * Delete a Network.
-     *
      * @param Request $request
-     * @param $object
+     * @param $entity
      * @return View
      */
-    public function desactivate(Request $request, $object)
-    {
-
-        try {
-            $parameters = $request->request->all();
-            unset($parameters['_method']);
-            $object = $this->getCustomHandler()->desactivate(
-                $object, $parameters
-            );
-            return $this->response([$object], Response::HTTP_NO_CONTENT);
-        } catch (InvalidFormException $exception) {
-            return $this->responseError($exception);
-        }
-    }
-
-    /**
-     * Delete a Network.
-     *
-     * @param Request $request
-     * @param $object
-     * @return View
-     */
-    public function activate(Request $request, $object)
+    public function desactivate(Request $request, EntityApiInterface $entity): ?View
     {
         try {
             $parameters = $request->request->all();
             unset($parameters['_method']);
-            $object = $this->getCustomHandler()->activate(
-                $object, $parameters
+            $entity = $this->getHandler()->desactivate(
+                $entity, $parameters
             );
-            return $this->response([$object], Response::HTTP_NO_CONTENT);
+            return $this->response([$entity], Response::HTTP_NO_CONTENT);
         } catch (InvalidFormException $exception) {
             return $this->responseError($exception);
         }
+    }
+
+    /**
+     * @param Request $request
+     * @param $entity
+     * @return View
+     */
+    public function activate(Request $request, EntityApiInterface $entity): ?View
+    {
+        try {
+            $parameters = $request->request->all();
+            unset($parameters['_method']);
+            $entity = $this->getHandler()->activate(
+                $entity, $parameters
+            );
+            return $this->response([$entity], Response::HTTP_NO_CONTENT);
+        } catch (InvalidFormException $exception) {
+            return $this->responseError($exception);
+        }
+    }
+
+    /**
+     * @return View
+     */
+    public function getView(): View
+    {
+        return $this->view;
     }
 
 }

@@ -164,15 +164,6 @@ class IncidentImpact extends EntityApiFrontend implements Translatable
     }
 
     /**
-     * @param array $parameters
-     * @return array
-     */
-    public function getDataIdentificationArray(array $parameters): array
-    {
-        return ['name' => $parameters['name']];
-    }
-
-    /**
      * @return string
      */
     public function getIdentificationString(): string

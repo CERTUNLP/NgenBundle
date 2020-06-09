@@ -98,14 +98,6 @@ class IncidentState extends EntityApiFrontend implements Translatable
         $this->edges = new ArrayCollection();
     }
 
-    /**
-     * @param array $parameters
-     * @return array
-     */
-    public function getDataIdentificationArray(array $parameters): array
-    {
-        return ['name' => $parameters['name']];
-    }
 
     /**
      * @return mixed

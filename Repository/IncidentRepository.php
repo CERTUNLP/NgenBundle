@@ -25,25 +25,12 @@ class IncidentRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array $parameters
-     * @return array|Incident[]
-     */
-    public function findNotificables($parameters = []): array
-    {
-        $query = $this->createQueryBuilder('i')
-            ->where('i.id = :id')
-            ->setParameter('id', 135592);
-
-        return $query->getQuery()->getResult();
-    }
-
-    /**
      * @param string $type
      * @param string $address
      * @return Incident
      * @throws NonUniqueResultException
      */
-    public function findOneByTypeAndAddress(string $type, $address = null): ?Incident
+    public function findOneByTypeAndAddress(string $type, string $address = ''): ?Incident
     {
         $qb = $this->queryAllLive();
         $qb = $this->queryByType($type, $qb);

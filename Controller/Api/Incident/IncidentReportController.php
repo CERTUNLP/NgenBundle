@@ -11,24 +11,33 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
+use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
+use CertUnlp\NgenBundle\Service\Api\Handler\IncidentReportHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\View\View;
+use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Operation;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Swagger\Annotations as SWG;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class IncidentReportController extends AbstractFOSRestController
+class IncidentReportController extends ApiController
 {
+    /**
+     * IncidentReportController constructor.
+     * @param IncidentReportHandler $handler
+     * @param ViewHandlerInterface $viewHandler
+     * @param View $view
+     */
+    public function __construct(IncidentReportHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    {
+        parent::__construct($handler, $viewHandler, $view);
+    }
 
     /**
-     * Gets a Network for a given id.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Gets a network admin for a given id",
@@ -41,8 +50,6 @@ class IncidentReportController extends AbstractFOSRestController
      *         description="Returned when the network is not found"
      *     )
      * )
-     *
-     *
      * @param IncidentType $slug
      * @param IncidentReport $lang
      * @return IncidentReport
@@ -57,8 +64,6 @@ class IncidentReportController extends AbstractFOSRestController
     }
 
     /**
-     * Create a Network from the submitted data.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Creates a new network from the submitted data.",
@@ -78,27 +83,16 @@ class IncidentReportController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
      * @param Request $request the request object
-     *
      * @param IncidentType $slug
      * @return FormTypeInterface|View
      */
     public function postReportAction(Request $request, IncidentType $slug)
     {
-        return $this->getApiController()->post($request);
-    }
-
-    public function getApiController()
-    {
-
-        return $this->container->get('cert_unlp.ngen.incident.type.report.api.controller');
+        return $this->post($request);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -118,23 +112,18 @@ class IncidentReportController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
      * @param Request $request the request object
      * @param IncidentType $slug
      * @param IncidentReport $lang
      * @return FormTypeInterface|View
-     *
      * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
     public function patchReportAction(Request $request, IncidentType $slug, IncidentReport $lang)
     {
-
-        return $this->getApiController()->patch($request, $lang, true);
+        return $this->patch($request, $lang, true);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -154,25 +143,18 @@ class IncidentReportController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param IncidentType $slug
      * @param IncidentReport $lang
      * @return FormTypeInterface|View
-     *
      * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
     public function patchReportActivateAction(Request $request, IncidentType $slug, IncidentReport $lang)
     {
-
-        return $this->getApiController()->activate($request, $lang);
+        return $this->activate($request, $lang);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -192,20 +174,15 @@ class IncidentReportController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param IncidentType $slug
      * @param IncidentReport $lang
      * @return FormTypeInterface|View
-     *
      * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
     public function patchReportDesactivateAction(Request $request, IncidentType $slug, IncidentReport $lang)
     {
-
-        return $this->getApiController()->desactivate($request, $lang);
+        return $this->desactivate($request, $lang);
     }
 
 }

@@ -11,23 +11,32 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
+use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
+use CertUnlp\NgenBundle\Service\Api\Handler\TaxonomyValueHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
+use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Operation;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class IncidentTaxonomyValueController extends AbstractFOSRestController
+class IncidentTaxonomyValueController extends ApiController
 {
+    /**
+     * IncidentTaxonomyValueController constructor.
+     * @param TaxonomyValueHandler $handler
+     * @param ViewHandlerInterface $viewHandler
+     * @param View $view
+     */
+    public function __construct(TaxonomyValueHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    {
+        parent::__construct($handler, $viewHandler, $view);
+    }
 
     /**
-     * List all incident states.
-     *
      * @Operation(
      *     tags={""},
      *     summary="List all incident states.",
@@ -50,35 +59,22 @@ class IncidentTaxonomyValueController extends AbstractFOSRestController
      *         description="Returned when successful"
      *     )
      * )
-     *
-     *
      * @FOS\Get("/taxonomies/values")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident states.")
      * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many incident states to return.")
-     *
      * @FOS\View(
      *  templateVar="incident_states"
      * )
-     *
      * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
      * @return array
      */
     public function getTaxonomyValuesAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        return $this->getApiController()->getAll($request, $paramFetcher);
-    }
-
-    public function getApiController()
-    {
-
-        return $this->container->get('cert_unlp.ngen.incident.taxonomy.value.api.controller');
+        return $this->getAll($request, $paramFetcher);
     }
 
     /**
-     * Gets a Network for a given id.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Gets a network admin for a given id",
@@ -91,8 +87,6 @@ class IncidentTaxonomyValueController extends AbstractFOSRestController
      *         description="Returned when the network is not found"
      *     )
      * )
-     *
-     *
      * @param TaxonomyValue $taxonomyValue
      * @return TaxonomyValue
      * @FOS\Get("/taxonomies/values/{slug}")
@@ -103,8 +97,6 @@ class IncidentTaxonomyValueController extends AbstractFOSRestController
     }
 
     /**
-     * Create a Network from the submitted data.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Creates a new network from the submitted data.",
@@ -124,21 +116,16 @@ class IncidentTaxonomyValueController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
      * @FOS\Post("/taxonomies/values")
      * @param Request $request the request object
-     *
      * @return FormTypeInterface|View
      */
     public function postTaxonomyValueAction(Request $request)
     {
-        return $this->getApiController()->post($request);
+        return $this->post($request);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -151,7 +138,6 @@ class IncidentTaxonomyValueController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
      * @FOS\Patch("/taxonomies/values/{slug}")
      * @param Request $request the request object
      * @param TaxonomyValue $taxonomyValue
@@ -160,12 +146,10 @@ class IncidentTaxonomyValueController extends AbstractFOSRestController
      */
     public function patchTaxonomyValueAction(Request $request, TaxonomyValue $taxonomyValue)
     {
-        return $this->getApiController()->patch($request, $taxonomyValue, true);
+        return $this->patch($request, $taxonomyValue, true);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -185,7 +169,6 @@ class IncidentTaxonomyValueController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
      * @FOS\Patch("/taxonomies/values/{slug}")
      * @param Request $request the request object
      * @param TaxonomyValue $taxonomyValue
@@ -194,12 +177,10 @@ class IncidentTaxonomyValueController extends AbstractFOSRestController
      */
     public function patchTaxonomyValueBySlugAction(Request $request, TaxonomyValue $taxonomyValue)
     {
-        return $this->getApiController()->patch($request, $taxonomyValue);
+        return $this->patch($request, $taxonomyValue);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -219,9 +200,6 @@ class IncidentTaxonomyValueController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param TaxonomyValue $taxonomyValue
      * @return FormTypeInterface|View
@@ -230,13 +208,10 @@ class IncidentTaxonomyValueController extends AbstractFOSRestController
      */
     public function patchTaxonomyValueActivateAction(Request $request, TaxonomyValue $taxonomyValue)
     {
-
-        return $this->getApiController()->activate($request, $taxonomyValue);
+        return $this->activate($request, $taxonomyValue);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
      * @Operation(
      *     tags={""},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
@@ -256,19 +231,14 @@ class IncidentTaxonomyValueController extends AbstractFOSRestController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     *
-     *
      * @param Request $request the request object
      * @param TaxonomyValue $taxonomyValue
      * @return FormTypeInterface|View
-     *
      * @FOS\Patch("/taxonomies/values/{slug}/desactivate")
      */
     public function patchTaxonomyValueDesactivateAction(Request $request, TaxonomyValue $taxonomyValue)
     {
-
-        return $this->getApiController()->desactivate($request, $taxonomyValue);
+        return $this->desactivate($request, $taxonomyValue);
     }
 
 }

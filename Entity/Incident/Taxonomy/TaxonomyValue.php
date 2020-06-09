@@ -68,15 +68,6 @@ class TaxonomyValue extends EntityApi
     private $version;
 
     /**
-     * @param array $parameters
-     * @return array
-     */
-    public function getDataIdentificationArray(array $parameters): array
-    {
-        return ['value' => $parameters['value']];
-    }
-
-    /**
      * Get id
      *
      * @return int

@@ -113,4 +113,19 @@ class NetworkHandler extends Handler
         return $entity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getByDataIdentification(array $parameters): ?EntityApiInterface
+    {
+        return $this->getRepository()->findOneByAddress($this->getDataIdentificationArray($parameters)['address']);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(array $parameters): array
+    {
+        return ['address' => $parameters['address']];
+    }
 }

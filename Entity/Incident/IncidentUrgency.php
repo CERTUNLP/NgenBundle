@@ -53,15 +53,6 @@ class IncidentUrgency extends EntityApiFrontend implements Translatable
     private $incidentsPriorities = null;
 
     /**
-     * @param array $parameters
-     * @return array
-     */
-    public function getDataIdentificationArray(array $parameters): array
-    {
-        return ['name' => $parameters['name']];
-    }
-
-    /**
      * @return mixed
      */
     public function getLocale()
