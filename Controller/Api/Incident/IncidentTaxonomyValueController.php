@@ -29,11 +29,10 @@ class IncidentTaxonomyValueController extends ApiController
      * IncidentTaxonomyValueController constructor.
      * @param TaxonomyValueHandler $handler
      * @param ViewHandlerInterface $viewHandler
-     * @param View $view
      */
-    public function __construct(TaxonomyValueHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    public function __construct(TaxonomyValueHandler $handler, ViewHandlerInterface $viewHandler)
     {
-        parent::__construct($handler, $viewHandler, $view);
+        parent::__construct($handler, $viewHandler);
     }
 
     /**
@@ -65,13 +64,12 @@ class IncidentTaxonomyValueController extends ApiController
      * @FOS\View(
      *  templateVar="incident_states"
      * )
-     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     * @return array
+     * @return View
      */
-    public function getTaxonomyValuesAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getTaxonomyValuesAction(ParamFetcherInterface $paramFetcher): View
     {
-        return $this->getAll($request, $paramFetcher);
+        return $this->getAll($paramFetcher);
     }
 
     /**
@@ -88,12 +86,12 @@ class IncidentTaxonomyValueController extends ApiController
      *     )
      * )
      * @param TaxonomyValue $taxonomyValue
-     * @return TaxonomyValue
+     * @return View
      * @FOS\Get("/taxonomies/values/{slug}")
      */
-    public function getTaxonomyValueAction(TaxonomyValue $taxonomyValue)
+    public function getTaxonomyValueAction(TaxonomyValue $taxonomyValue): View
     {
-        return $taxonomyValue;
+        return $this->response([$taxonomyValue]);
     }
 
     /**
@@ -118,9 +116,9 @@ class IncidentTaxonomyValueController extends ApiController
      * )
      * @FOS\Post("/taxonomies/values")
      * @param Request $request the request object
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function postTaxonomyValueAction(Request $request)
+    public function postTaxonomyValueAction(Request $request): View
     {
         return $this->post($request);
     }
@@ -141,10 +139,10 @@ class IncidentTaxonomyValueController extends ApiController
      * @FOS\Patch("/taxonomies/values/{slug}")
      * @param Request $request the request object
      * @param TaxonomyValue $taxonomyValue
-     * @return FormTypeInterface|View
+     * @return View
      *
      */
-    public function patchTaxonomyValueAction(Request $request, TaxonomyValue $taxonomyValue)
+    public function patchTaxonomyValueAction(Request $request, TaxonomyValue $taxonomyValue): View
     {
         return $this->patch($request, $taxonomyValue, true);
     }
@@ -172,10 +170,10 @@ class IncidentTaxonomyValueController extends ApiController
      * @FOS\Patch("/taxonomies/values/{slug}")
      * @param Request $request the request object
      * @param TaxonomyValue $taxonomyValue
-     * @return FormTypeInterface|View
+     * @return View
      *
      */
-    public function patchTaxonomyValueBySlugAction(Request $request, TaxonomyValue $taxonomyValue)
+    public function patchTaxonomyValueBySlugAction(Request $request, TaxonomyValue $taxonomyValue): View
     {
         return $this->patch($request, $taxonomyValue);
     }
@@ -202,11 +200,11 @@ class IncidentTaxonomyValueController extends ApiController
      * )
      * @param Request $request the request object
      * @param TaxonomyValue $taxonomyValue
-     * @return FormTypeInterface|View
+     * @return View
      *
      * @FOS\Patch("/taxonomies/values/{slug}/activate")
      */
-    public function patchTaxonomyValueActivateAction(Request $request, TaxonomyValue $taxonomyValue)
+    public function patchTaxonomyValueActivateAction(Request $request, TaxonomyValue $taxonomyValue): View
     {
         return $this->activate($request, $taxonomyValue);
     }
@@ -233,10 +231,10 @@ class IncidentTaxonomyValueController extends ApiController
      * )
      * @param Request $request the request object
      * @param TaxonomyValue $taxonomyValue
-     * @return FormTypeInterface|View
+     * @return View
      * @FOS\Patch("/taxonomies/values/{slug}/desactivate")
      */
-    public function patchTaxonomyValueDesactivateAction(Request $request, TaxonomyValue $taxonomyValue)
+    public function patchTaxonomyValueDesactivateAction(Request $request, TaxonomyValue $taxonomyValue): View
     {
         return $this->desactivate($request, $taxonomyValue);
     }

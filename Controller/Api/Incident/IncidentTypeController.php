@@ -29,11 +29,10 @@ class IncidentTypeController extends ApiController
      * IncidentTypeController constructor.
      * @param IncidentTypeHandler $handler
      * @param ViewHandlerInterface $viewHandler
-     * @param View $view
      */
-    public function __construct(IncidentTypeHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    public function __construct(IncidentTypeHandler $handler, ViewHandlerInterface $viewHandler)
     {
-        parent::__construct($handler, $viewHandler, $view);
+        parent::__construct($handler, $viewHandler);
     }
 
     /**
@@ -53,7 +52,7 @@ class IncidentTypeController extends ApiController
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      * @return array
      */
-    public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getAction(ParamFetcherInterface $paramFetcher)
     {
         return null;
     }
@@ -87,13 +86,12 @@ class IncidentTypeController extends ApiController
      * @FOS\View(
      *  templateVar="incident_types"
      * )
-     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     * @return array
+     * @return View
      */
-    public function getTypesAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getTypesAction(ParamFetcherInterface $paramFetcher): View
     {
-        return $this->getAll($request, $paramFetcher);
+        return $this->getAll($paramFetcher);
     }
 
     /**
@@ -110,14 +108,14 @@ class IncidentTypeController extends ApiController
      *     )
      * )
      * @param IncidentType $incident_type
-     * @return IncidentType
+     * @return View
      * @FOS\View(
      *  templateVar="incident_type"
      * )
      */
-    public function getTypeAction(IncidentType $incident_type)
+    public function getTypeAction(IncidentType $incident_type): View
     {
-        return $incident_type;
+        return $this->response([$incident_type]);
     }
 
     /**
@@ -143,9 +141,9 @@ class IncidentTypeController extends ApiController
      * @FOS\Post("/types")
      * @param Request $request the request object
      *
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function postIncidentTypeAction(Request $request)
+    public function postIncidentTypeAction(Request $request): View
     {
         return $this->post($request);
     }
@@ -173,41 +171,10 @@ class IncidentTypeController extends ApiController
      * @FOS\Patch("/types/{slug}")
      * @param Request $request the request object
      * @param IncidentType $incident_type
-     * @return FormTypeInterface|View
+     * @return View
      *
      */
-    public function patchIncidentTypeAction(Request $request, IncidentType $incident_type)
-    {
-        return $this->patch($request, $incident_type, true);
-    }
-
-    /**
-     * @Operation(
-     *     tags={""},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
-     *     @SWG\Parameter(
-     *         name="network",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
-     *     ),
-     *     @SWG\Response(
-     *         response="204",
-     *         description="Returned when successful"
-     *     ),
-     *     @SWG\Response(
-     *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
-     * )
-     * @FOS\Patch("/types/{slug}")
-     * @param Request $request the request object
-     * @param IncidentType $incident_type
-     * @return FormTypeInterface|View
-     *
-     */
-    public function patchIncidentTypeBySlugAction(Request $request, IncidentType $incident_type)
+    public function patchIncidentTypeAction(Request $request, IncidentType $incident_type): View
     {
         return $this->patch($request, $incident_type, true);
     }
@@ -234,11 +201,11 @@ class IncidentTypeController extends ApiController
      * )
      * @param Request $request the request object
      * @param IncidentType $incident_type
-     * @return FormTypeInterface|View
+     * @return View
      *
      * @FOS\Patch("/types/{slug}/activate")
      */
-    public function patchIncidentTypeActivateAction(Request $request, IncidentType $incident_type)
+    public function patchIncidentTypeActivateAction(Request $request, IncidentType $incident_type): View
     {
         return $this->activate($request, $incident_type);
     }
@@ -265,11 +232,11 @@ class IncidentTypeController extends ApiController
      * )
      * @param Request $request the request object
      * @param IncidentType $incident_type
-     * @return FormTypeInterface|View
+     * @return View
      *
      * @FOS\Patch("/types/{slug}/desactivate")
      */
-    public function patchIncidentTypeDesactivateAction(Request $request, IncidentType $incident_type)
+    public function patchIncidentTypeDesactivateAction(Request $request, IncidentType $incident_type): View
     {
         return $this->desactivate($request, $incident_type);
     }

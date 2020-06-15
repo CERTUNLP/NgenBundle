@@ -30,11 +30,10 @@ class IncidentFeedController extends ApiController
      * IncidentFeedController constructor.
      * @param IncidentFeedHandler $handler
      * @param ViewHandlerInterface $viewHandler
-     * @param View $view
      */
-    public function __construct(IncidentFeedHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    public function __construct(IncidentFeedHandler $handler, ViewHandlerInterface $viewHandler)
     {
-        parent::__construct($handler, $viewHandler, $view);
+        parent::__construct($handler, $viewHandler);
     }
 
     /**
@@ -55,9 +54,8 @@ class IncidentFeedController extends ApiController
      *
      * @return array
      */
-    public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getAction(ParamFetcherInterface $paramFetcher)
     {
-
         return null;
     }
 
@@ -90,13 +88,12 @@ class IncidentFeedController extends ApiController
      * @FOS\View(
      *  templateVar="incident_feeds"
      * )
-     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     * @return array
+     * @return View
      */
-    public function getIncidentFeedsAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getIncidentFeedsAction(ParamFetcherInterface $paramFetcher): View
     {
-        return $this->getAll($request, $paramFetcher);
+        return $this->getAll($paramFetcher);
     }
 
     /**
@@ -113,16 +110,16 @@ class IncidentFeedController extends ApiController
      *     )
      * )
      * @param IncidentFeed $incident_feed
-     * @return IncidentFeed
+     * @return View
      * @FOS\View(
      *  templateVar="incident_feed"
      * )
      * @ParamConverter("incident_feed", class="CertUnlpNgenBundle:Incident\IncidentFeed")
      * @FOS\Get("/feeds/{slug}")
      */
-    public function getIncidentFeedAction(IncidentFeed $incident_feed)
+    public function getIncidentFeedAction(IncidentFeed $incident_feed): View
     {
-        return $incident_feed;
+        return $this->response([$incident_feed]);
     }
 
     /**
@@ -152,9 +149,9 @@ class IncidentFeedController extends ApiController
      * @FOS\Post("/feeds")
      * @param Request $request the request object
      *
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function postIncidentFeedAction(Request $request)
+    public function postIncidentFeedAction(Request $request): View
     {
         return $this->post($request);
     }
@@ -182,10 +179,10 @@ class IncidentFeedController extends ApiController
      * @FOS\Patch("/feeds/{slug}")
      * @param Request $request the request object
      * @param IncidentFeed $incident_feed
-     * @return FormTypeInterface|View
+     * @return View
      *
      */
-    public function patchIncidentFeedAction(Request $request, IncidentFeed $incident_feed)
+    public function patchIncidentFeedAction(Request $request, IncidentFeed $incident_feed): View
     {
         return $this->patch($request, $incident_feed, true);
     }
@@ -210,45 +207,13 @@ class IncidentFeedController extends ApiController
      *         description="Returned when the form has errors"
      *     )
      * )
-     *
-     * @FOS\Patch("/feeds/{slug}")
      * @param Request $request the request object
      * @param IncidentFeed $incident_feed
-     * @return FormTypeInterface|View
-     *
-     */
-    public function patchIncidentFeedBySlugAction(Request $request, IncidentFeed $incident_feed)
-    {
-        return $this->patch($request, $incident_feed);
-    }
-
-    /**
-     * @Operation(
-     *     tags={""},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
-     *     @SWG\Parameter(
-     *         name="network",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
-     *     ),
-     *     @SWG\Response(
-     *         response="204",
-     *         description="Returned when successful"
-     *     ),
-     *     @SWG\Response(
-     *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
-     * )
-     * @param Request $request the request object
-     * @param IncidentFeed $incident_feed
-     * @return FormTypeInterface|View
+     * @return View
      *
      * @FOS\Patch("/feeds/{slug}/activate")
      */
-    public function patchIncidentFeedActivateAction(Request $request, IncidentFeed $incident_feed)
+    public function patchIncidentFeedActivateAction(Request $request, IncidentFeed $incident_feed): View
     {
         return $this->activate($request, $incident_feed);
     }
@@ -275,11 +240,11 @@ class IncidentFeedController extends ApiController
      * )
      * @param Request $request the request object
      * @param IncidentFeed $incident_feed
-     * @return FormTypeInterface|View
+     * @return View
      *
      * @FOS\Patch("/feeds/{slug}/desactivate")
      */
-    public function patchIncidentFeedDesactivateAction(Request $request, IncidentFeed $incident_feed)
+    public function patchIncidentFeedDesactivateAction(Request $request, IncidentFeed $incident_feed): View
     {
         return $this->desactivate($request, $incident_feed);
     }

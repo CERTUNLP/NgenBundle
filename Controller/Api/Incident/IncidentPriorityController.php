@@ -30,11 +30,10 @@ class IncidentPriorityController extends ApiController
      * IncidentPriorityController constructor.
      * @param IncidentPriorityHandler $handler
      * @param ViewHandlerInterface $viewHandler
-     * @param View $view
      */
-    public function __construct(IncidentPriorityHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    public function __construct(IncidentPriorityHandler $handler, ViewHandlerInterface $viewHandler)
     {
-        parent::__construct($handler, $viewHandler, $view);
+        parent::__construct($handler, $viewHandler);
     }
 
     /**
@@ -69,11 +68,11 @@ class IncidentPriorityController extends ApiController
      * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
-     * @return array
+     * @return View
      */
-    public function getIncidentPrioritiesAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getIncidentPrioritiesAction(ParamFetcherInterface $paramFetcher): View
     {
-        return $this->getAll($request, $paramFetcher);
+        return $this->getAll($paramFetcher);
     }
 
     /**
@@ -90,16 +89,16 @@ class IncidentPriorityController extends ApiController
      *     )
      * )
      * @param IncidentPriority $incident_priority
-     * @return IncidentPriority
+     * @return View
      * @FOS\View(
      *  templateVar="incident_priority"
      * )
      * @ParamConverter("incident_priority", class="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority")
      * @FOS\Get("/priorities/{id}")
      */
-    public function getIncidentPriorityAction(IncidentPriority $incident_priority)
+    public function getIncidentPriorityAction(IncidentPriority $incident_priority): View
     {
-        return $incident_priority;
+        return $this->response([$incident_priority]);
     }
 
     /**
@@ -125,9 +124,9 @@ class IncidentPriorityController extends ApiController
      * @FOS\Post("/priorities")
      * @param Request $request the request object
      *
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function postIncidentPriorityAction(Request $request)
+    public function postIncidentPriorityAction(Request $request): View
     {
         return $this->post($request);
     }
@@ -155,9 +154,9 @@ class IncidentPriorityController extends ApiController
      * @FOS\Patch("/priorities/{id}")
      * @param Request $request the request object
      * @param IncidentPriority $incident_priority
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function patchIncidentPriorityBySlugAction(Request $request, IncidentPriority $incident_priority)
+    public function patchIncidentPriorityAction(Request $request, IncidentPriority $incident_priority): View
     {
         return $this->patch($request, $incident_priority);
     }
@@ -184,10 +183,10 @@ class IncidentPriorityController extends ApiController
      * )
      * @param Request $request the request object
      * @param IncidentPriority $incident_priority
-     * @return FormTypeInterface|View
+     * @return View
      * @FOS\Patch("/priorities/{id}/activate")
      */
-    public function patchIncidentPriorityActivateAction(Request $request, IncidentPriority $incident_priority)
+    public function patchIncidentPriorityActivateAction(Request $request, IncidentPriority $incident_priority): View
     {
         return $this->activate($request, $incident_priority);
     }
@@ -214,11 +213,11 @@ class IncidentPriorityController extends ApiController
      * )
      * @param Request $request the request object
      * @param IncidentPriority $incident_priority
-     * @return FormTypeInterface|View
+     * @return View
      *
      * @FOS\Patch("/priorities/{id}/desactivate")
      */
-    public function patchIncidentPriorityDesactivateAction(Request $request, IncidentPriority $incident_priority)
+    public function patchIncidentPriorityDesactivateAction(Request $request, IncidentPriority $incident_priority): View
     {
         return $this->desactivate($request, $incident_priority);
     }

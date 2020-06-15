@@ -21,7 +21,6 @@ use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class NetworkEntityController extends ApiController
@@ -30,11 +29,10 @@ class NetworkEntityController extends ApiController
      * NetworkEntityController constructor.
      * @param NetworkEntityHandler $handler
      * @param ViewHandlerInterface $viewHandler
-     * @param View $view
      */
-    public function __construct(NetworkEntityHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    public function __construct(NetworkEntityHandler $handler, ViewHandlerInterface $viewHandler)
     {
-        parent::__construct($handler, $viewHandler, $view);
+        parent::__construct($handler, $viewHandler);
     }
 
     /**
@@ -50,13 +48,11 @@ class NetworkEntityController extends ApiController
      *         description="Returned when the apikey is not found"
      *     )
      * )
-     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      * @return array
      */
-    public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getAction(ParamFetcherInterface $paramFetcher)
     {
-
         return null;
     }
 
@@ -89,13 +85,12 @@ class NetworkEntityController extends ApiController
      * @FOS\View(
      *  templateVar="network_entitys"
      * )
-     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     * @return array
+     * @return View
      */
-    public function getNetworkEntitysAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getNetworkEntitysAction(ParamFetcherInterface $paramFetcher): View
     {
-        return $this->getAll($request, $paramFetcher);
+        return $this->getAll($paramFetcher);
     }
 
     /**
@@ -112,16 +107,16 @@ class NetworkEntityController extends ApiController
      *     )
      * )
      * @param NetworkEntity $network_entity
-     * @return NetworkEntity
+     * @return View
      * @FOS\View(
      *  templateVar="network_entity"
      * )
      * @ParamConverter("network_entity", class="CertUnlpNgenBundle:NetworkEntity")
      * @FOS\Get("/networks/entities/{slug}")
      */
-    public function getNetworkEntityAction(NetworkEntity $network_entity)
+    public function getNetworkEntityAction(NetworkEntity $network_entity): View
     {
-        return $network_entity;
+        return $this->response([$network_entity]);
     }
 
     /**
@@ -146,9 +141,9 @@ class NetworkEntityController extends ApiController
      * )
      * @FOS\Post("/networks/entities")
      * @param Request $request the request object
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function postNetworkEntityAction(Request $request)
+    public function postNetworkEntityAction(Request $request): View
     {
         return $this->post($request);
     }
@@ -176,10 +171,10 @@ class NetworkEntityController extends ApiController
      * @FOS\Patch("/networks/entities/{slug}")
      * @param Request $request the request object
      * @param NetworkEntity $network_entity
-     * @return FormTypeInterface|View
+     * @return View
      *
      */
-    public function patchNetworkEntityAction(Request $request, NetworkEntity $network_entity)
+    public function patchNetworkEntityAction(Request $request, NetworkEntity $network_entity): View
     {
         return $this->patch($request, $network_entity, true);
     }
@@ -207,10 +202,10 @@ class NetworkEntityController extends ApiController
      * @FOS\Patch("/networks/entities/{slug}")
      * @param Request $request the request object
      * @param NetworkEntity $network_entity
-     * @return FormTypeInterface|View
+     * @return View
      *
      */
-    public function patchNetworkEntityBySlugAction(Request $request, NetworkEntity $network_entity)
+    public function patchNetworkEntityBySlugAction(Request $request, NetworkEntity $network_entity): View
     {
         return $this->patch($request, $network_entity);
     }
@@ -237,10 +232,10 @@ class NetworkEntityController extends ApiController
      * )
      * @param Request $request the request object
      * @param NetworkEntity $network_entity
-     * @return FormTypeInterface|View
+     * @return View
      * @FOS\Patch("/networks/entities/{slug}/activate")
      */
-    public function patchNetworkEntityActivateAction(Request $request, NetworkEntity $network_entity)
+    public function patchNetworkEntityActivateAction(Request $request, NetworkEntity $network_entity): View
     {
         return $this->activate($request, $network_entity);
     }
@@ -267,10 +262,10 @@ class NetworkEntityController extends ApiController
      * )
      * @param Request $request the request object
      * @param NetworkEntity $network_entity
-     * @return FormTypeInterface|View
+     * @return View
      * @FOS\Patch("/networks/entities/{slug}/desactivate")
      */
-    public function patchNetworkEntityDesactivateAction(Request $request, NetworkEntity $network_entity)
+    public function patchNetworkEntityDesactivateAction(Request $request, NetworkEntity $network_entity): View
     {
         return $this->desactivate($request, $network_entity);
     }

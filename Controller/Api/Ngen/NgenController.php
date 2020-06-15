@@ -59,7 +59,7 @@ class NgenController extends AbstractFOSRestController
      * @return string
      * @FOS\Get("/ngen/version")
      */
-    public function getVersionAction(Request $request)
+    public function getVersionAction(Request $request): string
     {
         return '0.0.2';
     }

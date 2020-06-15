@@ -14,6 +14,8 @@ namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
+use CertUnlp\NgenBundle\Exception\InvalidFormException;
+use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use CertUnlp\NgenBundle\Service\Api\Handler\IncidentHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -32,11 +34,10 @@ class IncidentController extends ApiController
      * IncidentController constructor.
      * @param IncidentHandler $handler
      * @param ViewHandlerInterface $viewHandler
-     * @param View $view
      */
-    public function __construct(IncidentHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    public function __construct(IncidentHandler $handler, ViewHandlerInterface $viewHandler)
     {
-        parent::__construct($handler, $viewHandler, $view);
+        parent::__construct($handler, $viewHandler);
     }
 
     /**
@@ -53,12 +54,12 @@ class IncidentController extends ApiController
      *     )
      * )
      * @param Incident $incident
-     * @return Incident
+     * @return View
      * @FOS\Get("/incidents/{id}", name="_id",requirements={"id"="\d+"}))
      */
-    public function getIncidentAction(Incident $incident)
+    public function getIncidentAction(Incident $incident): View
     {
-        return $incident;
+        return $this->response([$incident]);
     }
 
     /**
@@ -83,9 +84,9 @@ class IncidentController extends ApiController
      * )
      * @param Request $request the request object
      *
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function postIncidentAction(Request $request)
+    public function postIncidentAction(Request $request): View
     {
         return $this->post($request);
     }
@@ -118,15 +119,13 @@ class IncidentController extends ApiController
      * @FOS\View(
      *  templateVar="incidents"
      * )
-     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
-     * @return array
+     * @return View
      */
-    public function getIncidentsAction(Request $request, ParamFetcherInterface $paramFetcher): array
+    public function getIncidentsAction(ParamFetcherInterface $paramFetcher): View
     {
-
-        return $this->getAll($request, $paramFetcher);
+        return $this->getAll($paramFetcher);
     }
 
     /**
@@ -155,11 +154,11 @@ class IncidentController extends ApiController
      * )
      * @param Request $request the request object
      * @param Incident $incident
-     * @return FormTypeInterface|View
+     * @return View
      * @FOS\Put("/incidents/{id}", name="_id",requirements={"id"="\d+"}))
      * @FOS\Put("/incidents/{slug}")
      */
-    public function putIncidentsAction(Request $request, Incident $incident)
+    public function putIncidentsAction(Request $request, Incident $incident): View
     {
         return $this->put($request, $incident);
     }
@@ -177,19 +176,33 @@ class IncidentController extends ApiController
      *         description="Returned when the form has errors"
      *     )
      * )
-     * @param Request $request the request object
      * @param Incident $incident
      * @param IncidentState $state
-     * @return FormTypeInterface|View
+     * @return View
      * @FOS\Patch("/incidents/{id}/states/{state}", name="_id",requirements={"id"="\d+"}))
      * @FOS\Patch("/incidents/{slug}/states/{state}")
      *
      */
-    public function patchIncidentStateAction(Request $request, Incident $incident, IncidentState $state)
+    public function patchIncidentStateAction(Incident $incident, IncidentState $state): View
     {
-        return $this->patchState($request, $incident, $state);
+        return $this->patchState($incident, $state);
     }
 
+    /**
+     * @param $entity
+     * @param $state
+     * @return View
+     */
+    public function patchState(EntityApiInterface $entity, IncidentState $state): View
+    {
+        try {
+            $entity = $this->getHandler()->changeState(
+                $entity, $state);
+            return $this->response([$entity], Response::HTTP_NO_CONTENT);
+        } catch (InvalidFormException $exception) {
+            return $this->responseError($exception);
+        }
+    }
 
     /**
      * @Operation(
@@ -213,11 +226,11 @@ class IncidentController extends ApiController
      * )
      * @param Request $request the request object
      * @param Incident $incident
-     * @return FormTypeInterface|View
+     * @return View
      * @FOS\Patch("/incidents/{id}", name="_id",requirements={"id"="\d+"}))
      * @FOS\Patch("/incidents/{slug}")
      */
-    public function patchIncidentAction(Request $request, Incident $incident)
+    public function patchIncidentAction(Request $request, Incident $incident): View
     {
         return $this->patch($request, $incident);
     }
@@ -250,11 +263,11 @@ class IncidentController extends ApiController
      * @param Request $request the request object
      * @param Incident $incident the incident id
      *
-     * @return FormTypeInterface|View
+     * @return View
      * @FOS\Delete("/incidents/{id}", name="_id",requirements={"id"="\d+"}))
      * @FOS\Delete("/incidents/{slug}")
      */
-    public function deleteIncidentAction(Request $request, Incident $incident)
+    public function deleteIncidentAction(Request $request, Incident $incident): View
     {
         return $this->delete($request, $incident);
     }
@@ -287,13 +300,12 @@ class IncidentController extends ApiController
      * @FOS\View(
      *  templateVar="incidents"
      * )
-     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher
-     * @return array
+     * @return View
      */
-    public function getIncidentsBeetwenDatesAction(Request $request, ParamFetcherInterface $paramFetcher): array
+    public function getIncidentsBeetwenDatesAction(ParamFetcherInterface $paramFetcher): View
     {
-        return $this->getAll($request, $paramFetcher);
+        return $this->getAll($paramFetcher);
     }
 
     /**
@@ -325,7 +337,7 @@ class IncidentController extends ApiController
      * @FOS\Get("/incidents/search/{type}/{origin}", name="_ip_v4",  requirements={"origin"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"} )
      * @FOS\Get("/incidents/search/{type}/{origin}", name="_ip_v6",  requirements={"origin"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$"} )
      */
-    public function getIncidentSearchAction(string $type, string $origin = null)
+    public function getIncidentSearchAction(string $type, string $origin = null): View
     {
         return $this->searchByTypeAndAddress($type, $origin);
 

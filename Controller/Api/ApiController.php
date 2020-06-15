@@ -40,23 +40,11 @@ abstract class ApiController extends AbstractFOSRestController
     /**
      * @param Handler $handler
      * @param ViewHandlerInterface $viewHandler
-     * @param View $view
      */
-    public function __construct(Handler $handler, ViewHandlerInterface $viewHandler, View $view)
+    public function __construct(Handler $handler, ViewHandlerInterface $viewHandler)
     {
         $this->handler = $handler;
         $this->viewHandler = $viewHandler;
-        $this->view = $view;
-    }
-
-    /**
-     * @param View $view
-     * @return Response
-     */
-    public function handle($view = null)
-    {
-        $view = $view ?: $this->view;
-        return $this->getViewHandler()->handle($view);
     }
 
     /**
@@ -68,16 +56,19 @@ abstract class ApiController extends AbstractFOSRestController
     }
 
     /**
-     * @param Request $request
      * @param ParamFetcherInterface $paramFetcher
-     * @return array
+     * @return View
      */
-    public function getAll(Request $request, $paramFetcher)
+    public function getAll(ParamFetcherInterface $paramFetcher): View
     {
-        $offset = $paramFetcher->get('offset');
-        $limit = $paramFetcher->get('limit');
-
-        return $this->getHandler()->all([], [], $limit, $offset);
+        try {
+            $offset = $paramFetcher->get('offset');
+            $limit = $paramFetcher->get('limit');
+            $objects = $this->getHandler()->all([], [], $limit, $offset);
+            return $this->response([$objects]);
+        } catch (InvalidFormException $exception) {
+            return $this->responseError($exception);
+        }
     }
 
     /**
@@ -89,52 +80,28 @@ abstract class ApiController extends AbstractFOSRestController
     }
 
     /**
-     * @param Request $request
-     *
-     * @return View
-     */
-    public function post(Request $request)
-    {
-        try {
-            $entity_data = array_merge($request->request->all(), $request->files->all());
-
-            $newObject = $this->getHandler()->post($entity_data);
-
-            return $this->response([$newObject]);
-        } catch (InvalidFormException $exception) {
-            return $this->responseError($exception);
-        }
-    }
-
-    /**
      * @param array $parameters
      * @param int $statusCode
      * @param array $headers
      * @return View
      */
-    public function response(array $parameters = array(), int $statusCode = Response::HTTP_CREATED, array $headers = array())
+    public function response(array $parameters = array(), int $statusCode = Response::HTTP_CREATED, array $headers = array()): View
     {
-        $this->setData($parameters);
-        $this->setStatusCode($statusCode);
+        $this->getView()->setData($parameters);
+        $this->getView()->setStatusCode($statusCode);
+        $this->getView()->setHeaders($headers);
+        return $this->getView();
+    }
+
+    /**
+     * @return View
+     */
+    public function getView(): View
+    {
+        if (!$this->view) {
+            $this->view = View::create();
+        }
         return $this->view;
-    }
-
-    /**
-     * @param array $data
-     * @return View
-     */
-    public function setData(array $data)
-    {
-        return $this->view->setData($data);
-    }
-
-    /**
-     * @param $statusCode
-     * @return View
-     */
-    public function setStatusCode($statusCode)
-    {
-        return $this->view->setStatusCode($statusCode);
     }
 
     /**
@@ -149,31 +116,27 @@ abstract class ApiController extends AbstractFOSRestController
 
     /**
      * @param Request $request
-     * @param $entity
-     * @param $state
-     * @return View
      *
+     * @return View
      */
-    public function patchState(Request $request, $entity, $state)
+    public function post(Request $request): View
     {
-
         try {
-            $entity = $this->getHandler()->changeState(
-                $entity, $state);
-            return $this->response([$entity], Response::HTTP_NO_CONTENT);
+            $entity_data = array_merge($request->request->all(), $request->files->all());
+            $newObject = $this->getHandler()->post($entity_data);
+            return $this->response([$newObject]);
         } catch (InvalidFormException $exception) {
             return $this->responseError($exception);
         }
     }
 
     /**
-     * @param Request $requesT
-     * @param $entity
+     * @param Request $request
+     * @param EntityApiInterface $entity
      * @param bool $reactivate
      * @return View
-     *
      */
-    public function patch(Request $request, EntityApiInterface $entity, bool $reactivate = false): ?View
+    public function patch(Request $request, EntityApiInterface $entity, bool $reactivate = false): View
     {
         try {
             if ($reactivate) {
@@ -190,7 +153,7 @@ abstract class ApiController extends AbstractFOSRestController
      * @param $entity
      * @return View
      */
-    public function doPatchAndReactivate(Request $request, EntityApiInterface $entity): ?View
+    public function doPatchAndReactivate(Request $request, EntityApiInterface $entity): View
     {
         try {
             $parameters = array_merge($request->request->all(), $request->files->all());
@@ -241,7 +204,7 @@ abstract class ApiController extends AbstractFOSRestController
      * @return View
      *
      */
-    public function doPatch(Request $request, EntityApiInterface $entity): ?View
+    public function doPatch(Request $request, EntityApiInterface $entity): View
     {
         try {
             $parameters = array_merge($request->request->all(), $request->files->all());
@@ -261,7 +224,7 @@ abstract class ApiController extends AbstractFOSRestController
      * @param EntityApiInterface $entity
      * @return View
      */
-    public function delete(Request $request, EntityApiInterface $entity): ?View
+    public function delete(Request $request, EntityApiInterface $entity): View
     {
         try {
 
@@ -280,7 +243,7 @@ abstract class ApiController extends AbstractFOSRestController
      * @param $entity
      * @return View
      */
-    public function desactivate(Request $request, EntityApiInterface $entity): ?View
+    public function desactivate(Request $request, EntityApiInterface $entity): View
     {
         try {
             $parameters = $request->request->all();
@@ -299,7 +262,7 @@ abstract class ApiController extends AbstractFOSRestController
      * @param $entity
      * @return View
      */
-    public function activate(Request $request, EntityApiInterface $entity): ?View
+    public function activate(Request $request, EntityApiInterface $entity): View
     {
         try {
             $parameters = $request->request->all();
@@ -311,14 +274,6 @@ abstract class ApiController extends AbstractFOSRestController
         } catch (InvalidFormException $exception) {
             return $this->responseError($exception);
         }
-    }
-
-    /**
-     * @return View
-     */
-    public function getView(): View
-    {
-        return $this->view;
     }
 
 }
