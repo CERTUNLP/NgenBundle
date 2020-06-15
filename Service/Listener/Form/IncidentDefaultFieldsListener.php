@@ -94,7 +94,6 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
                         'disabled' => 'disabled',
                         'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
                         'label' => 'Address',
-                        'description' => 'The network ip and mask',
                     ));
 
             }

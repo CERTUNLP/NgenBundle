@@ -39,7 +39,6 @@ class NetworkType extends AbstractType
                 'required' => true,
                 'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
                 'label' => 'Address',
-                'description' => 'The network ip and mask',
             ))
             ->add('type', ChoiceType::class, array(
                 'mapped' => false,

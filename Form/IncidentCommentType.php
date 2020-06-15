@@ -17,8 +17,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Description of IncidentCommentType
- *
  * @author dam
  */
 class IncidentCommentType extends CommentType

@@ -33,12 +33,10 @@ class IncidentPriorityType extends AbstractType
             ->add('impact', null, array(
                 'placeholder' => 'Choose a impact level',
                 'attr' => array('help_text' => 'If none is selected, the assigned impact will be Low.'),
-                'description' => 'If none is selected, the assigned impact will be Low',
             ))
             ->add('urgency', null, array(
                 'placeholder' => 'Choose a urgency level',
                 'attr' => array('help_text' => 'If none is selected, the assigned urgency will be Low'),
-                'description' => 'If none is selected, the assigned urgency will be Low',
             ))
             ->add('name', null, array(
                 'required' => true,
