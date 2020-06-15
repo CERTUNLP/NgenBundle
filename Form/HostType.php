@@ -35,11 +35,9 @@ class HostType extends AbstractType
                 'required' => true,
                 'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
                 'label' => 'Address',
-                'description' => 'The network ip and mask',
             ))
             ->add('save', SubmitType::class, array(
                 'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
-//                    'description' => "Evidence file that will be attached to the report "
             ));
 
     }

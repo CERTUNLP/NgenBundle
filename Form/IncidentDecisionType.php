@@ -49,10 +49,6 @@ class IncidentDecisionType extends AbstractType
             ->add('type', null, array(
                 'class' => \CertUnlp\NgenBundle\Entity\Incident\IncidentType::class,
                 'required' => true,
-                'description' => '(blacklist|botnet|bruteforce|bruteforcing_ssh|copyright|deface|'
-                    . 'dns_zone_transfer|dos_chargen|dos_ntp|dos_snmp|heartbleed|malware|open_dns open_ipmi|'
-                    . 'open_memcached|open_mssql|open_netbios|open_ntp_monitor|open_ntp_version|open_snmp|'
-                    . 'open_ssdp|phishing|poodle|scan|shellshock|spam)',
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.active = TRUE');
@@ -60,7 +56,6 @@ class IncidentDecisionType extends AbstractType
             ->add('feed', EntityType::class, array(
                 'class' => IncidentFeed::class,
                 'required' => true,
-                'description' => '(bro|external_report|netflow|shadowserver)',
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.active = TRUE');
@@ -75,7 +70,6 @@ class IncidentDecisionType extends AbstractType
             ->add('state', null, array(
                 'class' => IncidentState::class,
                 'placeholder' => 'Choose an incident state',
-                'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.active = TRUE');
@@ -83,22 +77,18 @@ class IncidentDecisionType extends AbstractType
             ->add('tlp', null, array(
                 'class' => IncidentTlp::class,
                 'placeholder' => 'Choose an incident TLP',
-                'description' => "(red|amber|green|white). If none is selected, the state will be 'green'.",
             ))
             ->add('impact', null, array(
                 'class' => IncidentImpact::class,
                 'placeholder' => 'Choose an impact level',
-                'description' => 'If none is selected, the assigned impact will be Low',
             ))
             ->add('urgency', null, array(
                 'class' => IncidentUrgency::class,
                 'placeholder' => 'Choose an urgency level.',
-                'description' => 'If none is selected, the assigned urgency will be Low',
             ))
             ->add('unattendedState', null, array(
                 'class' => IncidentState::class,
                 'placeholder' => 'Choose an incident state',
-                'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.active = TRUE');
@@ -106,7 +96,6 @@ class IncidentDecisionType extends AbstractType
             ->add('unsolvedState', null, array(
                 'class' => IncidentState::class,
                 'placeholder' => 'Choose an incident state',
-                'description' => "(open|closed|closed_by_inactivity|removed|unresolved|stand_by). If none is selected, the state will be 'open'.",
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.active = TRUE');
@@ -114,7 +103,6 @@ class IncidentDecisionType extends AbstractType
             ->add('id', HiddenType::class)
             ->add('save', SubmitType::class, array(
                 'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
-//                    'description' => "Evidence file that will be attached to the report "
             ));
         $doctrine = $this->doctrine;
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) use ($doctrine) {

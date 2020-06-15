@@ -39,21 +39,18 @@ class StateEdgeType extends AbstractType
                 'attr' => array('align_with_widget' => true),
                 'required' => true,
                 'label' => 'Send mail to reporter(if available)',
-                'description' => 'Send a mail report to the reporter.',
             ))
             ->add('newState', EntityType::class, array(
                 'class' => IncidentState::class,
                 'attr' => array('align_with_widget' => true),
                 'required' => true,
                 'label' => 'Send mail to the one who has it assigned (if available)',
-                'description' => 'Send a mail report to the one who has it assigned.',
             ))
             ->add('active', EntityType::class, array(
                 'class' => ContactCase::class,
                 'attr' => array('align_with_widget' => true),
                 'required' => true,
                 'label' => 'Send mail to Admin Responsable(if available)',
-                'description' => 'Send a mail report to the host administrator.',
             ))
             ->add('save', SubmitType::class, array('attr' =>
                 array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => 'slide-down'),
