@@ -21,7 +21,6 @@ use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class NetworkAdminController extends ApiController
@@ -30,11 +29,10 @@ class NetworkAdminController extends ApiController
      * NetworkAdminController constructor.
      * @param NetworkAdminHandler $handler
      * @param ViewHandlerInterface $viewHandler
-     * @param View $view
      */
-    public function __construct(NetworkAdminHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    public function __construct(NetworkAdminHandler $handler, ViewHandlerInterface $viewHandler)
     {
-        parent::__construct($handler, $viewHandler, $view);
+        parent::__construct($handler, $viewHandler);
     }
 
     /**
@@ -50,11 +48,10 @@ class NetworkAdminController extends ApiController
      *         description="Returned when the apikey is not found"
      *     )
      * )
-     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      * @return array
      */
-    public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getAction(ParamFetcherInterface $paramFetcher)
     {
         return null;
     }
@@ -88,13 +85,12 @@ class NetworkAdminController extends ApiController
      * @FOS\View(
      *  templateVar="network_admins"
      * )
-     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     * @return array
+     * @return View
      */
-    public function getNetworkAdminsAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getNetworkAdminsAction(ParamFetcherInterface $paramFetcher): View
     {
-        return $this->getAll($request, $paramFetcher);
+        return $this->getAll($paramFetcher);
     }
 
     /**
@@ -111,16 +107,16 @@ class NetworkAdminController extends ApiController
      *     )
      * )
      * @param NetworkAdmin $network_admin
-     * @return NetworkAdmin
+     * @return View
      * @FOS\View(
      *  templateVar="network_admin"
      * )
      * @ParamConverter("network_admin", class="CertUnlpNgenBundle:NetworkAdmin")
      * @FOS\Get("/networks/admins/{id}", requirements={"id" = "\d+"})
      */
-    public function getNetworkAdminAction(NetworkAdmin $network_admin)
+    public function getNetworkAdminAction(NetworkAdmin $network_admin): View
     {
-        return $network_admin;
+        return $this->response([$network_admin]);
     }
 
     /**
@@ -145,9 +141,9 @@ class NetworkAdminController extends ApiController
      * )
      * @FOS\Post("/networks/admins")
      * @param Request $request the request object
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function postNetworkAdminAction(Request $request)
+    public function postNetworkAdminAction(Request $request): View
     {
         return $this->post($request);
     }
@@ -175,9 +171,9 @@ class NetworkAdminController extends ApiController
      * @FOS\Patch("/networks/admins/{id}", requirements={"id" = "\d+"})
      * @param Request $request the request object
      * @param NetworkAdmin $network_admin
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function patchNetworkAdminAction(Request $request, NetworkAdmin $network_admin)
+    public function patchNetworkAdminAction(Request $request, NetworkAdmin $network_admin): View
     {
         return $this->patch($request, $network_admin, true);
     }
@@ -205,9 +201,9 @@ class NetworkAdminController extends ApiController
      * @FOS\Patch("/networks/admins/{slug}")
      * @param Request $request the request object
      * @param NetworkAdmin $network_admin
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function patchNetworkAdminBySlugAction(Request $request, NetworkAdmin $network_admin)
+    public function patchNetworkAdminBySlugAction(Request $request, NetworkAdmin $network_admin): View
     {
         return $this->patch($request, $network_admin, true);
     }
@@ -234,10 +230,10 @@ class NetworkAdminController extends ApiController
      * )
      * @param Request $request the request object
      * @param NetworkAdmin $network_admin
-     * @return FormTypeInterface|View
+     * @return View
      * @FOS\Patch("/networks/admins/{id}/activate")
      */
-    public function patchNetworkAdminActivateAction(Request $request, NetworkAdmin $network_admin)
+    public function patchNetworkAdminActivateAction(Request $request, NetworkAdmin $network_admin): View
     {
         return $this->activate($request, $network_admin);
     }
@@ -264,10 +260,10 @@ class NetworkAdminController extends ApiController
      * )
      * @param Request $request the request object
      * @param NetworkAdmin $network_admin
-     * @return FormTypeInterface|View
+     * @return View
      * @FOS\Patch("/networks/admins/{id}/desactivate")
      */
-    public function patchNetworkAdminDesactivateAction(Request $request, NetworkAdmin $network_admin)
+    public function patchNetworkAdminDesactivateAction(Request $request, NetworkAdmin $network_admin): View
     {
         return $this->desactivate($request, $network_admin);
     }

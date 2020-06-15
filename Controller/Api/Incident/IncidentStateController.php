@@ -30,11 +30,11 @@ class IncidentStateController extends ApiController
      * IncidentStateController constructor.
      * @param IncidentStateHandler $handler
      * @param ViewHandlerInterface $viewHandler
-     * @param View $view
+
      */
-    public function __construct(IncidentStateHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    public function __construct(IncidentStateHandler $handler, ViewHandlerInterface $viewHandler)
     {
-        parent::__construct($handler, $viewHandler, $view);
+        parent::__construct($handler, $viewHandler);
     }
 
     /**
@@ -54,7 +54,7 @@ class IncidentStateController extends ApiController
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      * @return array
      */
-    public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getAction(ParamFetcherInterface $paramFetcher)
     {
         return null;
     }
@@ -89,13 +89,12 @@ class IncidentStateController extends ApiController
      * @FOS\View(
      *  templateVar="incident_states"
      * )
-     * @param Request $request the request object
-     * @param ParamFetcherInterface $paramFetcher param fetcher service
-     * @return array
+     * @param ParamFetcherInterface $paramFetcher
+     * @return View
      */
-    public function getIncidentStatesAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getIncidentStatesAction(ParamFetcherInterface $paramFetcher): View
     {
-        return $this->getAll($request, $paramFetcher);
+        return $this->getAll($paramFetcher);
     }
 
     /**
@@ -112,16 +111,16 @@ class IncidentStateController extends ApiController
      *     )
      * )
      * @param IncidentState $incident_state
-     * @return IncidentState
+     * @return View
      * @FOS\View(
      *  templateVar="incident_state"
      * )
      * @ParamConverter("incident_state", class="CertUnlpNgenBundle:IncidentDecision")
      * @FOS\Get("/states/{slug}")
      */
-    public function getIncidentStateAction(IncidentState $incident_state)
+    public function getIncidentStateAction(IncidentState $incident_state): View
     {
-        return $incident_state;
+        return $this->response([$incident_state]);
     }
 
     /**
@@ -147,9 +146,9 @@ class IncidentStateController extends ApiController
      * @FOS\Post("/states")
      * @param Request $request the request object
      *
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function postIncidentStateAction(Request $request)
+    public function postIncidentStateAction(Request $request): View
     {
         return $this->post($request);
     }
@@ -177,10 +176,10 @@ class IncidentStateController extends ApiController
      * @FOS\Patch("/states/{slug}")
      * @param Request $request the request object
      * @param IncidentState $incident_state
-     * @return FormTypeInterface|View
+     * @return View
      *
      */
-    public function patchIncidentStateAction(Request $request, IncidentState $incident_state)
+    public function patchIncidentStateAction(Request $request, IncidentState $incident_state): View
     {
         return $this->patch($request, $incident_state, true);
     }
@@ -208,10 +207,10 @@ class IncidentStateController extends ApiController
      * @FOS\Patch("/states/{slug}")
      * @param Request $request the request object
      * @param IncidentState $incident_state
-     * @return FormTypeInterface|View
+     * @return View
      *
      */
-    public function patchIncidentStateBySlugAction(Request $request, IncidentState $incident_state)
+    public function patchIncidentStateBySlugAction(Request $request, IncidentState $incident_state): View
     {
         return $this->patch($request, $incident_state);
     }
@@ -238,11 +237,11 @@ class IncidentStateController extends ApiController
      * )
      * @param Request $request the request object
      * @param IncidentState $incident_state
-     * @return FormTypeInterface|View
+     * @return View
      *
      * @FOS\Patch("/states/{slug}/activate")
      */
-    public function patchIncidentStateActivateAction(Request $request, IncidentState $incident_state)
+    public function patchIncidentStateActivateAction(Request $request, IncidentState $incident_state): View
     {
         return $this->activate($request, $incident_state);
     }
@@ -269,11 +268,11 @@ class IncidentStateController extends ApiController
      * )
      * @param Request $request the request object
      * @param IncidentState $incident_state
-     * @return FormTypeInterface|View
+     * @return View
      *
      * @FOS\Patch("/states/{slug}/desactivate")
      */
-    public function patchIncidentStateDesactivateAction(Request $request, IncidentState $incident_state)
+    public function patchIncidentStateDesactivateAction(Request $request, IncidentState $incident_state): View
     {
         return $this->desactivate($request, $incident_state);
     }

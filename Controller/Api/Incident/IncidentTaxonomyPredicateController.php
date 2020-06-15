@@ -29,11 +29,10 @@ class IncidentTaxonomyPredicateController extends ApiController
      * IncidentTaxonomyPredicateController constructor.
      * @param TaxonomyPredicateHandler $handler
      * @param ViewHandlerInterface $viewHandler
-     * @param View $view
      */
-    public function __construct(TaxonomyPredicateHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    public function __construct(TaxonomyPredicateHandler $handler, ViewHandlerInterface $viewHandler)
     {
-        parent::__construct($handler, $viewHandler, $view);
+        parent::__construct($handler, $viewHandler);
     }
 
     /**
@@ -65,14 +64,13 @@ class IncidentTaxonomyPredicateController extends ApiController
      * @FOS\View(
      *  templateVar="incident_states"
      * )
-     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
-     * @return array
+     * @return View
      */
-    public function getTaxonomyPredicatesAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getTaxonomyPredicatesAction(ParamFetcherInterface $paramFetcher): View
     {
-        return $this->getAll($request, $paramFetcher);
+        return $this->getAll($paramFetcher);
     }
 
     /**
@@ -89,12 +87,12 @@ class IncidentTaxonomyPredicateController extends ApiController
      *     )
      * )
      * @param TaxonomyPredicate $taxonomyPredicate
-     * @return TaxonomyPredicate
+     * @return View
      * @FOS\Get("/taxonomies/predicates/{slug}")
      */
-    public function getTaxonomyPredicateAction(TaxonomyPredicate $taxonomyPredicate)
+    public function getTaxonomyPredicateAction(TaxonomyPredicate $taxonomyPredicate): View
     {
-        return $taxonomyPredicate;
+        return $this->response([$taxonomyPredicate]);
     }
 
     /**
@@ -119,9 +117,9 @@ class IncidentTaxonomyPredicateController extends ApiController
      * )
      * @FOS\Post("/taxonomies/predicates")
      * @param Request $request the request object
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function postTaxonomyPredicateAction(Request $request)
+    public function postTaxonomyPredicateAction(Request $request): View
     {
         return $this->post($request);
     }
@@ -142,9 +140,9 @@ class IncidentTaxonomyPredicateController extends ApiController
      * @FOS\Patch("/taxonomies/predicates/{slug}")
      * @param Request $request the request object
      * @param TaxonomyPredicate $taxonomyPredicate
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function patchTaxonomyPredicateAction(Request $request, TaxonomyPredicate $taxonomyPredicate)
+    public function patchTaxonomyPredicateAction(Request $request, TaxonomyPredicate $taxonomyPredicate): View
     {
         return $this->patch($request, $taxonomyPredicate, true);
     }
@@ -172,10 +170,10 @@ class IncidentTaxonomyPredicateController extends ApiController
      * @FOS\Patch("/taxonomies/predicates/{slug}")
      * @param Request $request the request object
      * @param TaxonomyPredicate $taxonomyPredicate
-     * @return FormTypeInterface|View
+     * @return View
      *
      */
-    public function patchTaxonomyPredicateBySlugAction(Request $request, TaxonomyPredicate $taxonomyPredicate)
+    public function patchTaxonomyPredicateBySlugAction(Request $request, TaxonomyPredicate $taxonomyPredicate): View
     {
         return $this->patch($request, $taxonomyPredicate);
     }
@@ -202,10 +200,10 @@ class IncidentTaxonomyPredicateController extends ApiController
      * )
      * @param Request $request the request object
      * @param TaxonomyPredicate $taxonomyPredicate
-     * @return FormTypeInterface|View
+     * @return View
      * @FOS\Patch("/taxonomies/predicates/{slug}/activate")
      */
-    public function patchTaxonomyPredicateActivateAction(Request $request, TaxonomyPredicate $taxonomyPredicate)
+    public function patchTaxonomyPredicateActivateAction(Request $request, TaxonomyPredicate $taxonomyPredicate): View
     {
         return $this->activate($request, $taxonomyPredicate);
     }
@@ -232,10 +230,10 @@ class IncidentTaxonomyPredicateController extends ApiController
      * )
      * @param Request $request the request object
      * @param TaxonomyPredicate $taxonomyPredicate
-     * @return FormTypeInterface|View
+     * @return View
      * @FOS\Patch("/taxonomies/predicates/{slug}/desactivate")
      */
-    public function patchTaxonomyPredicateDesactivateAction(Request $request, TaxonomyPredicate $taxonomyPredicate)
+    public function patchTaxonomyPredicateDesactivateAction(Request $request, TaxonomyPredicate $taxonomyPredicate): View
     {
         return $this->desactivate($request, $taxonomyPredicate);
     }

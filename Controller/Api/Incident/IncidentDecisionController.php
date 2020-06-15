@@ -33,11 +33,10 @@ class IncidentDecisionController extends ApiController
      * IncidentDecisionController constructor.
      * @param IncidentDecisionHandler $handler
      * @param ViewHandlerInterface $viewHandler
-     * @param View $view
      */
-    public function __construct(IncidentDecisionHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    public function __construct(IncidentDecisionHandler $handler, ViewHandlerInterface $viewHandler)
     {
-        parent::__construct($handler, $viewHandler, $view);
+        parent::__construct($handler, $viewHandler);
     }
 
     /**
@@ -70,14 +69,12 @@ class IncidentDecisionController extends ApiController
      * @FOS\View(
      *  templateVar="incident_decisions"
      * )
-     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
-     * @return array
+     * @return View
      */
-    public function getIncidentDecisionsAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getIncidentDecisionsAction(ParamFetcherInterface $paramFetcher): View
     {
-        return $this->getAll($request, $paramFetcher);
+        return $this->getAll($paramFetcher);
     }
 
     /**
@@ -111,7 +108,7 @@ class IncidentDecisionController extends ApiController
      * @ParamConverter("ip_v4", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneInRange", "ip_v4"="address"},isOptional=true)
      * @ParamConverter("ip_v6", class="CertUnlp\NgenBundle\Entity\Network\Network", options={"repository_method" = "findOneInRange", "ip_v6"="address"},isOptional=true)
      */
-    public function getIncidentDecisionAction(IncidentType $type, IncidentFeed $feed, Network $ip_v4 = null, Network $ip_v6 = null, Network $domains = null)
+    public function getIncidentDecisionAction(IncidentType $type, IncidentFeed $feed, Network $ip_v4 = null, Network $ip_v6 = null, Network $domains = null): IncidentDecision
     {
         return $this->getHandler()->getByNetwork($type, $feed, $ip_v4 ?? $ip_v6 ?? $domains);
     }
@@ -139,9 +136,9 @@ class IncidentDecisionController extends ApiController
      * @FOS\Post("/decisions")
      * @param Request $request the request object
      *
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function postIncidentDecisionAction(Request $request)
+    public function postIncidentDecisionAction(Request $request): View
     {
         return $this->post($request);
     }
@@ -169,10 +166,10 @@ class IncidentDecisionController extends ApiController
      * @FOS\Patch("/decisions/{id}")
      * @param Request $request the request object
      * @param IncidentDecision $incident_decision
-     * @return FormTypeInterface|View
+     * @return View
      *
      */
-    public function patchIncidentDecisionAction(Request $request, IncidentDecision $incident_decision)
+    public function patchIncidentDecisionAction(Request $request, IncidentDecision $incident_decision): View
     {
         return $this->patch($request, $incident_decision);
     }
@@ -200,10 +197,10 @@ class IncidentDecisionController extends ApiController
      * @FOS\Patch("/decisions/{id}")
      * @param Request $request the request object
      * @param IncidentDecision $incident_decision
-     * @return FormTypeInterface|View
+     * @return View
      *
      */
-    public function patchIncidentDecisionBySlugAction(Request $request, IncidentDecision $incident_decision)
+    public function patchIncidentDecisionBySlugAction(Request $request, IncidentDecision $incident_decision): View
     {
         return $this->patch($request, $incident_decision);
     }
@@ -230,11 +227,11 @@ class IncidentDecisionController extends ApiController
      * )
      * @param Request $request the request object
      * @param IncidentDecision $incident_decision
-     * @return FormTypeInterface|View
+     * @return View
      *
      * @FOS\Patch("/decisions/{id}/activate")
      */
-    public function patchIncidentDecisionActivateAction(Request $request, IncidentDecision $incident_decision)
+    public function patchIncidentDecisionActivateAction(Request $request, IncidentDecision $incident_decision): View
     {
         return $this->activate($request, $incident_decision);
     }
@@ -261,11 +258,11 @@ class IncidentDecisionController extends ApiController
      * )
      * @param Request $request the request object
      * @param IncidentDecision $incident_decision
-     * @return FormTypeInterface|View
+     * @return View
      *
      * @FOS\Patch("/decisions/{id}/desactivate")
      */
-    public function patchIncidentDecisionDesactivateAction(Request $request, IncidentDecision $incident_decision)
+    public function patchIncidentDecisionDesactivateAction(Request $request, IncidentDecision $incident_decision): View
     {
         return $this->desactivate($request, $incident_decision);
     }

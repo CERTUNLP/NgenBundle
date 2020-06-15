@@ -30,11 +30,10 @@ class IncidentReportController extends ApiController
      * IncidentReportController constructor.
      * @param IncidentReportHandler $handler
      * @param ViewHandlerInterface $viewHandler
-     * @param View $view
      */
-    public function __construct(IncidentReportHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    public function __construct(IncidentReportHandler $handler, ViewHandlerInterface $viewHandler)
     {
-        parent::__construct($handler, $viewHandler, $view);
+        parent::__construct($handler, $viewHandler);
     }
 
     /**
@@ -52,15 +51,15 @@ class IncidentReportController extends ApiController
      * )
      * @param IncidentType $slug
      * @param IncidentReport $lang
-     * @return IncidentReport
+     * @return View
      * @FOS\View(
      *  templateVar="incident_report"
      * )
      * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
-    public function getReportAction(IncidentType $slug, IncidentReport $lang)
+    public function getReportAction(IncidentType $slug, IncidentReport $lang): View
     {
-        return $lang;
+        return $this->response([$lang]);
     }
 
     /**
@@ -84,10 +83,9 @@ class IncidentReportController extends ApiController
      *     )
      * )
      * @param Request $request the request object
-     * @param IncidentType $slug
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function postReportAction(Request $request, IncidentType $slug)
+    public function postReportAction(Request $request): View
     {
         return $this->post($request);
     }
@@ -115,10 +113,10 @@ class IncidentReportController extends ApiController
      * @param Request $request the request object
      * @param IncidentType $slug
      * @param IncidentReport $lang
-     * @return FormTypeInterface|View
+     * @return View
      * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
-    public function patchReportAction(Request $request, IncidentType $slug, IncidentReport $lang)
+    public function patchReportAction(Request $request, IncidentType $slug, IncidentReport $lang): View
     {
         return $this->patch($request, $lang, true);
     }
@@ -146,10 +144,10 @@ class IncidentReportController extends ApiController
      * @param Request $request the request object
      * @param IncidentType $slug
      * @param IncidentReport $lang
-     * @return FormTypeInterface|View
+     * @return View
      * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
-    public function patchReportActivateAction(Request $request, IncidentType $slug, IncidentReport $lang)
+    public function patchReportActivateAction(Request $request, IncidentType $slug, IncidentReport $lang): View
     {
         return $this->activate($request, $lang);
     }
@@ -177,10 +175,10 @@ class IncidentReportController extends ApiController
      * @param Request $request the request object
      * @param IncidentType $slug
      * @param IncidentReport $lang
-     * @return FormTypeInterface|View
+     * @return View
      * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
-    public function patchReportDesactivateAction(Request $request, IncidentType $slug, IncidentReport $lang)
+    public function patchReportDesactivateAction(Request $request, IncidentType $slug, IncidentReport $lang): View
     {
         return $this->desactivate($request, $lang);
     }

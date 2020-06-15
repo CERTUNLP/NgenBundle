@@ -21,7 +21,6 @@ use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends ApiController
@@ -30,11 +29,10 @@ class UserController extends ApiController
      * UserController constructor.
      * @param UserHandler $handler
      * @param ViewHandlerInterface $viewHandler
-     * @param View $view
      */
-    public function __construct(UserHandler $handler, ViewHandlerInterface $viewHandler, View $view)
+    public function __construct(UserHandler $handler, ViewHandlerInterface $viewHandler)
     {
-        parent::__construct($handler, $viewHandler, $view);
+        parent::__construct($handler, $viewHandler);
     }
 
     /**
@@ -50,13 +48,11 @@ class UserController extends ApiController
      *         description="Returned when the apikey is not found"
      *     )
      * )
-     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      * @return array
      */
-    public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getAction(ParamFetcherInterface $paramFetcher)
     {
-
         return null;
     }
 
@@ -88,13 +84,12 @@ class UserController extends ApiController
      * @FOS\View(
      *  templateVar="users"
      * )
-     * @param Request $request the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     * @return array
+     * @return View
      */
-    public function getUsersAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getUsersAction(ParamFetcherInterface $paramFetcher): View
     {
-        return $this->getAll($request, $paramFetcher);
+        return $this->getAll($paramFetcher);
     }
 
     /**
@@ -111,16 +106,16 @@ class UserController extends ApiController
      *     )
      * )
      * @param User $user
-     * @return User
+     * @return View
      * @FOS\Get("/users/{username}")
      * @FOS\View(
      *  templateVar="user"
      * )
      * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
      */
-    public function getUserAction(User $user)
+    public function getUserAction(User $user): View
     {
-        return $user;
+        return $this->response([$user]);
     }
 
     /**
@@ -196,9 +191,9 @@ class UserController extends ApiController
      *  templateVar = "user"
      * )
      * @param Request $request the request object
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function postUserAction(Request $request)
+    public function postUserAction(Request $request): View
     {
         return $this->post($request);
     }
@@ -277,11 +272,11 @@ class UserController extends ApiController
      * )
      * @param Request $request the request object
      * @param User $user
-     * @return FormTypeInterface|View
+     * @return View
      * @FOS\Patch("/users/{username}")
      * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
      */
-    public function patchUserAction(Request $request, User $user)
+    public function patchUserAction(Request $request, User $user): View
     {
         return $this->patch($request, $user);
     }
@@ -357,14 +352,14 @@ class UserController extends ApiController
      * )
      * @param Request $request the request object
      * @param User $user
-     * @return FormTypeInterface|View
+     * @return View
      * @FOS\Patch("/users/{username}/activate")
      * @FOS\View(
      *  templateVar = "user"
      * )
      * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
      */
-    public function patchUserActivateAction(Request $request, User $user)
+    public function patchUserActivateAction(Request $request, User $user): View
     {
         return $this->activate($request, $user);
     }
@@ -440,14 +435,14 @@ class UserController extends ApiController
      * )
      * @param Request $request the request object
      * @param User $user
-     * @return FormTypeInterface|View
+     * @return View
      * @FOS\Patch("/users/{username}/desactivate")
      * @FOS\View(
      *  templateVar = "user"
      * )
      * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
      */
-    public function patchUserDesactivateAction(Request $request, User $user)
+    public function patchUserDesactivateAction(Request $request, User $user): View
     {
         return $this->desactivate($request, $user);
     }
