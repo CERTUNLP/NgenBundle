@@ -20,31 +20,57 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class ApiKeyUserProvider implements UserProviderInterface
 {
 
-    private $om;
+    /**
+     * @var UserRepository
+     */
     private $repository;
 
+    /**
+     * ApiKeyUserProvider constructor.
+     * @param UserRepository $userRepository
+     */
     public function __construct(UserRepository $userRepository)
     {
         $this->repository = $userRepository;
     }
 
-    public function getUsernameForApiKey($apiKey)
+    /**
+     * @param $apiKey
+     * @return User
+     */
+    public function getUsernameForApiKey(string $apiKey): ?User
     {
-
-        return $this->repository->findOneByApiKey($apiKey);
+        return $this->getRepository()->findOneByApiKey($apiKey);
     }
 
+    /**
+     * @return UserRepository
+     */
+    public function getRepository(): UserRepository
+    {
+        return $this->repository;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function loadUserByUsername($user)
     {
         return $user;
     }
 
-    public function refreshUser(UserInterface $user)
+    /**
+     * {@inheritDoc}
+     */
+    public function refreshUser(UserInterface $user): UserInterface
     {
-        throw new UnsupportedUserException();
+        throw new UnsupportedUserException('Apikey user not found');
     }
 
-    public function supportsClass($class)
+    /**
+     * {@inheritDoc}
+     */
+    public function supportsClass($class): bool
     {
         return User::class === $class;
     }

@@ -11,6 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Security;
 
+use InvalidArgumentException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
@@ -25,7 +27,12 @@ use Symfony\Component\Security\Http\Authentication\SimplePreAuthenticatorInterfa
 class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface, AuthenticationFailureHandlerInterface
 {
 
-    public function createToken(Request $request, $providerKey)
+    /**
+     * @param Request $request
+     * @param $providerKey
+     * @return PreAuthenticatedToken
+     */
+    public function createToken(Request $request, $providerKey): PreAuthenticatedToken
     {
         // look for an apikey query parameter
 
@@ -51,10 +58,16 @@ class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface, Authentica
         );
     }
 
-    public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey)
+    /**
+     * @param TokenInterface $token
+     * @param UserProviderInterface $userProvider
+     * @param $providerKey
+     * @return PreAuthenticatedToken
+     */
+    public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey): PreAuthenticatedToken
     {
         if (!$userProvider instanceof ApiKeyUserProvider) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf(
                     'The user provider must be an instance of ApiKeyUserProvider (%s was given).',
                     get_class($userProvider)
@@ -83,16 +96,19 @@ class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface, Authentica
         );
     }
 
-    public function supportsToken(TokenInterface $token, $providerKey)
+    /**
+     * @param TokenInterface $token
+     * @param $providerKey
+     * @return bool
+     */
+    public function supportsToken(TokenInterface $token, $providerKey): bool
     {
         return $token instanceof PreAuthenticatedToken && $token->getProviderKey() === $providerKey;
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
-        return new Response(
-        // this contains information about *why* authentication failed
-        // use it, or return your own message
+        return new JsonResponse(
             strtr($exception->getMessageKey(), $exception->getMessageData()),
             401
         );
