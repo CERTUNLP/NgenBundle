@@ -21,6 +21,7 @@ use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class NetworkController extends ApiController
 {
@@ -32,27 +33,6 @@ class NetworkController extends ApiController
     public function __construct(NetworkHandler $handler, ViewHandlerInterface $viewHandler)
     {
         parent::__construct($handler, $viewHandler);
-    }
-
-    /**
-     * @Operation(
-     *     tags={""},
-     *     summary="Gets a Network for a given id",
-     *     @SWG\Response(
-     *         response="200",
-     *         description="Returned when successful"
-     *     ),
-     *     @SWG\Response(
-     *         response="404",
-     *         description="Returned when the network is not found"
-     *     )
-     * )
-     * @param ParamFetcherInterface $paramFetcher param fetcher service
-     * @return array
-     */
-    public function getAction(ParamFetcherInterface $paramFetcher)
-    {
-        return null;
     }
 
     /**
@@ -115,7 +95,7 @@ class NetworkController extends ApiController
      */
     public function getNetworkAction(Network $network): View
     {
-        return $this->response([$network]);
+        return $this->response([$network], Response::HTTP_OK);
     }
 
     /**

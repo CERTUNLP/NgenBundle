@@ -22,6 +22,7 @@ use Nelmio\ApiDocBundle\Annotation\Operation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class NetworkAdminController extends ApiController
 {
@@ -33,27 +34,6 @@ class NetworkAdminController extends ApiController
     public function __construct(NetworkAdminHandler $handler, ViewHandlerInterface $viewHandler)
     {
         parent::__construct($handler, $viewHandler);
-    }
-
-    /**
-     * @Operation(
-     *     tags={""},
-     *     summary="Get status.",
-     *     @SWG\Response(
-     *         response="200",
-     *         description="Returned when successful"
-     *     ),
-     *     @SWG\Response(
-     *         response="401",
-     *         description="Returned when the apikey is not found"
-     *     )
-     * )
-     * @param ParamFetcherInterface $paramFetcher param fetcher service
-     * @return array
-     */
-    public function getAction(ParamFetcherInterface $paramFetcher)
-    {
-        return null;
     }
 
     /**
@@ -116,7 +96,7 @@ class NetworkAdminController extends ApiController
      */
     public function getNetworkAdminAction(NetworkAdmin $network_admin): View
     {
-        return $this->response([$network_admin]);
+        return $this->response([$network_admin], Response::HTTP_OK);
     }
 
     /**

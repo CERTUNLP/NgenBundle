@@ -22,6 +22,7 @@ use Nelmio\ApiDocBundle\Annotation\Operation;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class IncidentTaxonomyPredicateController extends ApiController
 {
@@ -92,7 +93,7 @@ class IncidentTaxonomyPredicateController extends ApiController
      */
     public function getTaxonomyPredicateAction(TaxonomyPredicate $taxonomyPredicate): View
     {
-        return $this->response([$taxonomyPredicate]);
+        return $this->response([$taxonomyPredicate], Response::HTTP_OK);
     }
 
     /**

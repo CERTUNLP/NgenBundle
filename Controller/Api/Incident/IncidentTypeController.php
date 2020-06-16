@@ -22,6 +22,7 @@ use Nelmio\ApiDocBundle\Annotation\Operation;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class IncidentTypeController extends ApiController
 {
@@ -33,28 +34,6 @@ class IncidentTypeController extends ApiController
     public function __construct(IncidentTypeHandler $handler, ViewHandlerInterface $viewHandler)
     {
         parent::__construct($handler, $viewHandler);
-    }
-
-    /**
-     * @Operation(
-     *     tags={""},
-     *     summary="Get status.",
-     *     @SWG\Response(
-     *         response="200",
-     *         description="Returned when successful"
-     *     ),
-     *     @SWG\Response(
-     *         response="401",
-     *         description="Returned when the apikey is not found"
-     *     )
-     * )
-     * @param Request $request the request object
-     * @param ParamFetcherInterface $paramFetcher param fetcher service
-     * @return array
-     */
-    public function getAction(ParamFetcherInterface $paramFetcher)
-    {
-        return null;
     }
 
     /**
@@ -115,7 +94,7 @@ class IncidentTypeController extends ApiController
      */
     public function getTypeAction(IncidentType $incident_type): View
     {
-        return $this->response([$incident_type]);
+        return $this->response([$incident_type], Response::HTTP_OK);
     }
 
     /**

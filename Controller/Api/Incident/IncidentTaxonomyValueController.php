@@ -22,6 +22,7 @@ use Nelmio\ApiDocBundle\Annotation\Operation;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class IncidentTaxonomyValueController extends ApiController
 {
@@ -91,7 +92,7 @@ class IncidentTaxonomyValueController extends ApiController
      */
     public function getTaxonomyValueAction(TaxonomyValue $taxonomyValue): View
     {
-        return $this->response([$taxonomyValue]);
+        return $this->response([$taxonomyValue], Response::HTTP_OK);
     }
 
     /**

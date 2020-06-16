@@ -80,14 +80,14 @@ abstract class ApiController extends AbstractFOSRestController
     }
 
     /**
-     * @param array $parameters
+     * @param array $data
      * @param int $statusCode
      * @param array $headers
      * @return View
      */
-    public function response(array $parameters = array(), int $statusCode = Response::HTTP_CREATED, array $headers = array()): View
+    public function response(array $data = array(), int $statusCode = Response::HTTP_CREATED, array $headers = array()): View
     {
-        $this->getView()->setData($parameters);
+        $this->getView()->setData($data);
         $this->getView()->setStatusCode($statusCode);
         $this->getView()->setHeaders($headers);
         return $this->getView();

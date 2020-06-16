@@ -23,6 +23,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class IncidentReportController extends ApiController
 {
@@ -59,7 +60,7 @@ class IncidentReportController extends ApiController
      */
     public function getReportAction(IncidentType $slug, IncidentReport $lang): View
     {
-        return $this->response([$lang]);
+        return $this->response([$lang], Response::HTTP_OK);
     }
 
     /**

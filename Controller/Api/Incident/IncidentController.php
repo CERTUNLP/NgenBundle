@@ -23,7 +23,6 @@ use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Swagger\Annotations as SWG;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -59,7 +58,7 @@ class IncidentController extends ApiController
      */
     public function getIncidentAction(Incident $incident): View
     {
-        return $this->response([$incident]);
+        return $this->response([$incident], Response::HTTP_OK);
     }
 
     /**

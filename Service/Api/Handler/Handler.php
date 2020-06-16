@@ -170,7 +170,7 @@ abstract class Handler
      */
     public function processForm(EntityApiInterface $entity, array $parameters = [], string $method = Request::METHOD_PUT, bool $csrf_protection = true): EntityApiInterface
     {
-        $form = $this->getFormFactory()->create($this->getEntityType(), $entity, array('csrf_protection' => $csrf_protection, 'method' => $method));
+        $form = $this->getFormFactory()->create($this->getEntityTypeClass(), $entity, array('csrf_protection' => $csrf_protection, 'method' => $method));
         $parameters = $this->cleanParameters($parameters);
         $form->submit($parameters, Request::METHOD_PATCH !== $method);
 
@@ -216,6 +216,14 @@ abstract class Handler
     public function getEntityManager(): EntityManagerInterface
     {
         return $this->entity_manager;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEntityTypeClass(): string
+    {
+        return get_class($this->entity_type);
     }
 
     /**
