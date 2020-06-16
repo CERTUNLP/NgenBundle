@@ -23,6 +23,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class IncidentFeedController extends ApiController
 {
@@ -34,29 +35,6 @@ class IncidentFeedController extends ApiController
     public function __construct(IncidentFeedHandler $handler, ViewHandlerInterface $viewHandler)
     {
         parent::__construct($handler, $viewHandler);
-    }
-
-    /**
-     * @Operation(
-     *     tags={""},
-     *     summary="Get status.",
-     *     @SWG\Response(
-     *         response="200",
-     *         description="Returned when successful"
-     *     ),
-     *     @SWG\Response(
-     *         response="401",
-     *         description="Returned when the apikey is not found"
-     *     )
-     * )
-     * @param Request $request the request object
-     * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
-     * @return array
-     */
-    public function getAction(ParamFetcherInterface $paramFetcher)
-    {
-        return null;
     }
 
     /**
@@ -119,7 +97,7 @@ class IncidentFeedController extends ApiController
      */
     public function getIncidentFeedAction(IncidentFeed $incident_feed): View
     {
-        return $this->response([$incident_feed]);
+        return $this->response([$incident_feed], Response::HTTP_OK);
     }
 
     /**

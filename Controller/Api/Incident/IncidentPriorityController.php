@@ -23,6 +23,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class IncidentPriorityController extends ApiController
 {
@@ -98,7 +99,7 @@ class IncidentPriorityController extends ApiController
      */
     public function getIncidentPriorityAction(IncidentPriority $incident_priority): View
     {
-        return $this->response([$incident_priority]);
+        return $this->response([$incident_priority], Response::HTTP_OK);
     }
 
     /**

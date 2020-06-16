@@ -62,7 +62,7 @@ class IncidentHandler extends Handler
 
 
     /**
-     * @param Incident $incident
+     * @param Incident|EntityApiInterface $incident
      * @param IncidentState $state
      * @return EntityApiInterface|Incident
      */

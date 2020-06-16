@@ -22,6 +22,7 @@ use Nelmio\ApiDocBundle\Annotation\Operation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends ApiController
 {
@@ -33,27 +34,6 @@ class UserController extends ApiController
     public function __construct(UserHandler $handler, ViewHandlerInterface $viewHandler)
     {
         parent::__construct($handler, $viewHandler);
-    }
-
-    /**
-     * @Operation(
-     *     tags={""},
-     *     summary="Get status.",
-     *     @SWG\Response(
-     *         response="200",
-     *         description="Returned when successful"
-     *     ),
-     *     @SWG\Response(
-     *         response="401",
-     *         description="Returned when the apikey is not found"
-     *     )
-     * )
-     * @param ParamFetcherInterface $paramFetcher param fetcher service
-     * @return array
-     */
-    public function getAction(ParamFetcherInterface $paramFetcher)
-    {
-        return null;
     }
 
     /**
@@ -115,7 +95,7 @@ class UserController extends ApiController
      */
     public function getUserAction(User $user): View
     {
-        return $this->response([$user]);
+        return $this->response([$user], Response::HTTP_OK);
     }
 
     /**

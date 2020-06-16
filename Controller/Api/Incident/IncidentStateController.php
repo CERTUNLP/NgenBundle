@@ -23,6 +23,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class IncidentStateController extends ApiController
 {
@@ -35,28 +36,6 @@ class IncidentStateController extends ApiController
     public function __construct(IncidentStateHandler $handler, ViewHandlerInterface $viewHandler)
     {
         parent::__construct($handler, $viewHandler);
-    }
-
-    /**
-     * @Operation(
-     *     tags={""},
-     *     summary="Get status.",
-     *     @SWG\Response(
-     *         response="200",
-     *         description="Returned when successful"
-     *     ),
-     *     @SWG\Response(
-     *         response="401",
-     *         description="Returned when the apikey is not found"
-     *     )
-     * )
-     * @param Request $request the request object
-     * @param ParamFetcherInterface $paramFetcher param fetcher service
-     * @return array
-     */
-    public function getAction(ParamFetcherInterface $paramFetcher)
-    {
-        return null;
     }
 
     /**
@@ -120,7 +99,7 @@ class IncidentStateController extends ApiController
      */
     public function getIncidentStateAction(IncidentState $incident_state): View
     {
-        return $this->response([$incident_state]);
+        return $this->response([$incident_state], Response::HTTP_OK);
     }
 
     /**
