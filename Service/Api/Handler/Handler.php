@@ -61,7 +61,7 @@ abstract class Handler
      * @param int $offset
      * @return array|EntityApiInterface[]
      */
-    public function all(array $params = [], array $order = [], int $limit = 0, int $offset = 0): array
+    public function all(array $params = [], array $order = null, int $limit = null, int $offset = null): array
     {
         return $this->getRepository()->findBy($params, $order, $limit, $offset);
     }
