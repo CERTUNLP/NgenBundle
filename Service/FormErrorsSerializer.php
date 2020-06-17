@@ -11,7 +11,14 @@ use Symfony\Component\Form\Form;
 class FormErrorsSerializer
 {
 
-    public function serializeFormErrors(Form $form, $flat_array = false, $add_form_name = false, $glue_keys = '_')
+    /**
+     * @param Form $form
+     * @param bool $flat_array
+     * @param bool $add_form_name
+     * @param string $glue_keys
+     * @return array
+     */
+    public function serializeFormErrors(Form $form, bool $flat_array = false, bool $add_form_name = false, string $glue_keys = '_'): array
     {
         $errors = array();
         $errors['global'] = array();
@@ -32,7 +39,11 @@ class FormErrorsSerializer
         return $errors;
     }
 
-    private function serialize($form)
+    /**
+     * @param Form $form
+     * @return array
+     */
+    private function serialize(Form $form): array
     {
         $local_errors = array();
         foreach ($form->getIterator() as $key => $child) {
@@ -49,7 +60,13 @@ class FormErrorsSerializer
         return $local_errors;
     }
 
-    private function arrayFlatten($array, $separator = "_", $flattened_key = '')
+    /**
+     * @param $array
+     * @param string $separator
+     * @param string $flattened_key
+     * @return array
+     */
+    private function arrayFlatten(array $array, string $separator = "_", string $flattened_key = ''): array
     {
         $flattenedArray = array();
         foreach ($array as $key => $value) {

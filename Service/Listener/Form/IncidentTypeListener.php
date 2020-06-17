@@ -27,7 +27,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Security\Core\Security;
 
-class IncidentDefaultFieldsListener implements EventSubscriberInterface
+class IncidentTypeListener implements EventSubscriberInterface
 {
     /**
      * @var EntityManager
@@ -41,7 +41,7 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
         $this->userLogged = $userLogged;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             FormEvents::POST_SET_DATA => 'onPostSetData',

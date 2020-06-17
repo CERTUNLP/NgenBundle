@@ -14,13 +14,12 @@ namespace CertUnlp\NgenBundle\Form;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
+use CertUnlp\NgenBundle\Service\Listener\Form\NetworkTypeListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
@@ -31,9 +30,8 @@ class NetworkType extends AbstractType
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
         $builder
             ->add('address', null, array(
                 'required' => true,
@@ -77,20 +75,15 @@ class NetworkType extends AbstractType
             array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
         ));
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, static function (FormEvent $event) {
-            $network = $event->getData();
-            $form = $event->getForm();
-            if ($network) {
-                $form->get('address')->setData($network->getAddressAndMask());
-            }
-        });
+        $builder->addEventSubscriber(new NetworkTypeListener());
+
     }
 
     /**
      * @param OptionsResolver $resolver
      * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => Network::class,
@@ -105,7 +98,7 @@ class NetworkType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return '';
     }

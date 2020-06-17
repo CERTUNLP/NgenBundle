@@ -18,41 +18,42 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\Network\Network;
+use CertUnlp\NgenBundle\Service\Listener\Form\IncidentDecisionTypeListener;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class IncidentDecisionType extends AbstractType
 {
-    private $doctrine;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entity_manager;
 
-    public function __construct($doctrine = null)
+    public function __construct(EntityManagerInterface $entity_manager)
     {
-        $this->doctrine = $doctrine;
+        $this->entity_manager = $entity_manager;
     }
 
-    /*
-    **
-    * @param FormBuilderInterface $builder
-    * @param array $options
-    */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * {@inheritDoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('type', null, array(
+            ->add('type', null, [
                 'class' => \CertUnlp\NgenBundle\Entity\Incident\IncidentType::class,
                 'required' => true,
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.active = TRUE');
-                }))
+                }])
             ->add('feed', EntityType::class, array(
                 'class' => IncidentFeed::class,
                 'required' => true,
@@ -103,25 +104,16 @@ class IncidentDecisionType extends AbstractType
             ->add('id', HiddenType::class)
             ->add('save', SubmitType::class, array(
                 'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
-            ));
-        $doctrine = $this->doctrine;
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) use ($doctrine) {
-            $network = $event->getData();
-            $form = $event->getForm();
-            // check if the Product object is "new"
-            // If no data is passed to the form, the data is "null".
-            // This should be considered a new "Product"
-            if (!$network) {
-                $form->get('type')->setData($doctrine->getReference(\CertUnlp\NgenBundle\Entity\Incident\IncidentType::class, 'undefined'));
-                $form->get('feed')->setData($doctrine->getReference(IncidentFeed::class, 'undefined'));
-                $form->get('state')->setData($doctrine->getReference(IncidentState::class, 'undefined'));
-                $form->get('unattendedState')->setData($doctrine->getReference(IncidentState::class, 'undefined'));
-                $form->get('unsolvedState')->setData($doctrine->getReference(IncidentState::class, 'undefined'));
-                $form->get('impact')->setData($doctrine->getReference(IncidentImpact::class, 'undefined'));
-                $form->get('urgency')->setData($doctrine->getReference(IncidentUrgency::class, 'undefined'));
-                $form->get('tlp')->setData($doctrine->getReference(IncidentTlp::class, 'green'));
-            }
-        });
+            ))
+            ->addEventSubscriber(new IncidentDecisionTypeListener($this->getEntityManager()));
+    }
+
+    /**
+     * @return EntityManagerInterface
+     */
+    public function getEntityManager(): EntityManagerInterface
+    {
+        return $this->entity_manager;
     }
 
     /**

@@ -18,7 +18,7 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
-use CertUnlp\NgenBundle\Service\Listener\Form\IncidentDefaultFieldsListener;
+use CertUnlp\NgenBundle\Service\Listener\Form\IncidentTypeListener;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -37,7 +37,13 @@ use Symfony\Component\Security\Core\Security;
 
 class IncidentType extends AbstractType
 {
+    /**
+     * @var Security
+     */
     private $userLogged;
+    /**
+     * @var EntityManagerInterface
+     */
     private $entity_manager;
 
     public function __construct(EntityManagerInterface $entity_manager, Security $userLogged)
@@ -52,8 +58,7 @@ class IncidentType extends AbstractType
      * @param array $options
      * @throws Exception
      */
-
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('type', null, array(
@@ -184,15 +189,31 @@ class IncidentType extends AbstractType
             ->add('save', SubmitType::class, array(
                 'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
             ))
-            ->addEventSubscriber(new IncidentDefaultFieldsListener($this->entity_manager, $this->userLogged));
+            ->addEventSubscriber(new IncidentTypeListener($this->getEntityManager(), $this->getUserLogged()));
 
+    }
+
+    /**
+     * @return EntityManagerInterface
+     */
+    public function getEntityManager(): EntityManagerInterface
+    {
+        return $this->entity_manager;
+    }
+
+    /**
+     * @return Security
+     */
+    public function getUserLogged(): Security
+    {
+        return $this->userLogged;
     }
 
     /**
      * @param OptionsResolver $resolver
      * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => Incident::class,
