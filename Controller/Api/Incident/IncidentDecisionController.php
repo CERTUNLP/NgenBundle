@@ -89,9 +89,24 @@ class IncidentDecisionController extends ApiController
      *              @SWG\Items(ref=@Model(type=IncidentDecision::class, groups={"api"}))
      *          )
      *     ),
-     *     @SWG\Response(
+     *      @SWG\Response(
      *         response="404",
-     *         description="Returned when the network is not found"
+     *         description="Returned when the incident is not found",
+     *          @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
      *     )
      * )
      * @param NetworkHandler $network_handler
@@ -128,9 +143,24 @@ class IncidentDecisionController extends ApiController
      *              @SWG\Items(ref=@Model(type=IncidentDecision::class, groups={"api"}))
      *          )
      *     ),
-     *     @SWG\Response(
+     *      @SWG\Response(
      *         response="404",
-     *         description="Returned when the network is not found"
+     *         description="Returned when the incident is not found",
+     *          @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
      *     )
      * )
      * @param IncidentDecision $incident_decision

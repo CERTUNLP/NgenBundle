@@ -54,7 +54,22 @@ class IncidentController extends ApiController
      *      ),
      *      @SWG\Response(
      *         response="404",
-     *         description="Returned when the incident is not found"
+     *         description="Returned when the incident is not found",
+     *          @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
      *     )
      * )
      * @param Incident $incident
@@ -320,9 +335,24 @@ class IncidentController extends ApiController
      *              @SWG\Items(ref=@Model(type=Incident::class, groups={"api"}))
      *          )
      *     ),
-     *     @SWG\Response(
+     *      @SWG\Response(
      *         response="404",
-     *         description="Returned when the incident is not found"
+     *         description="Returned when the incident is not found",
+     *          @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
      *     ),
      *     @SWG\Response(
      *         response="409",
@@ -400,9 +430,24 @@ class IncidentController extends ApiController
      *              @SWG\Items(ref=@Model(type=Incident::class, groups={"api"}))
      *          )
      *     ),
-     *     @SWG\Response(
+     *      @SWG\Response(
      *         response="404",
-     *         description="Returned when the incident is not found"
+     *         description="Returned when the incident is not found",
+     *          @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
      *     ),
      *     @SWG\Response(
      *         response="409",
@@ -462,9 +507,24 @@ class IncidentController extends ApiController
      *              @SWG\Items(ref=@Model(type=Incident::class, groups={"api"}))
      *          )
      *     ),
-     *     @SWG\Response(
+     *      @SWG\Response(
      *         response="404",
-     *         description="Returned when the incident is not found"
+     *         description="Returned when the incident is not found",
+     *          @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
      *     ),
      *     @SWG\Response(
      *         response="409",
