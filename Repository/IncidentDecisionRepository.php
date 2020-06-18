@@ -3,9 +3,10 @@
 namespace CertUnlp\NgenBundle\Repository;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class IncidentDecisionRepository extends NetworkElementRepository
+class IncidentDecisionRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
@@ -15,9 +16,9 @@ class IncidentDecisionRepository extends NetworkElementRepository
     /**
      * @param array $criteria
      * @param array|null $orderBy
-     * @return IncidentDecision[]|[]
+     * @return IncidentDecision|object| null
      */
-    public function findOneBy(array $criteria, array $orderBy = null)
+    public function findOneBy(array $criteria, array $orderBy = null): ?IncidentDecision
     {
         $get_undefined = false;
         $criteria['active'] = true;
@@ -59,7 +60,7 @@ class IncidentDecisionRepository extends NetworkElementRepository
      * @param null $offset
      * @return array|object|null
      */
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
     {
         $get_undefined = false;
         $criteria['active'] = true;
