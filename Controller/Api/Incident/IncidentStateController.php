@@ -13,15 +13,16 @@ namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
 use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
+use CertUnlp\NgenBundle\Exception\InvalidFormException;
+use CertUnlp\NgenBundle\Form\IncidentStateType;
 use CertUnlp\NgenBundle\Service\Api\Handler\IncidentStateHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -31,7 +32,6 @@ class IncidentStateController extends ApiController
      * IncidentStateController constructor.
      * @param IncidentStateHandler $handler
      * @param ViewHandlerInterface $viewHandler
-
      */
     public function __construct(IncidentStateHandler $handler, ViewHandlerInterface $viewHandler)
     {
@@ -40,34 +40,34 @@ class IncidentStateController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident states"},
      *     summary="List all incident states.",
-     *     @SWG\Parameter(
+     *      @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Offset from which to start listing incident states.",
+     *         description="Offset from which to start listing incident priorities.",
      *         required=false,
      *         type="string"
      *     ),
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="How many incident states to return.",
+     *         description="How many incident priorities to return.",
      *         required=false,
      *         type="string"
      *     ),
      *     @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
-     *     )
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentState::class, groups={"api"}))
+     *          )
+     *     ),
      * )
      * @FOS\Get("/states")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident states.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many incident states to return.")
-     *
-     * @FOS\View(
-     *  templateVar="incident_states"
-     * )
+     * @FOS\QueryParam(name="limit", requirements="\d+", strict=true, default="100", description="How many incident priorities to return.")
      * @param ParamFetcherInterface $paramFetcher
      * @return View
      */
@@ -78,11 +78,15 @@ class IncidentStateController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident states"},
      *     summary="Gets a network admin for a given id",
      *     @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentState::class, groups={"api"}))
+     *          )
      *     ),
      *     @SWG\Response(
      *         response="404",
@@ -91,36 +95,54 @@ class IncidentStateController extends ApiController
      * )
      * @param IncidentState $incident_state
      * @return View
-     * @FOS\View(
-     *  templateVar="incident_state"
-     * )
-     * @ParamConverter("incident_state", class="CertUnlpNgenBundle:IncidentDecision")
      * @FOS\Get("/states/{slug}")
      */
     public function getIncidentStateAction(IncidentState $incident_state): View
     {
-        return $this->response([$incident_state], Response::HTTP_OK);
+        try {
+            return $this->response([$incident_state], Response::HTTP_OK);
+        } catch (InvalidFormException $exception) {
+            return $this->responseError($exception);
+        }
     }
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident states"},
      *     summary="Creates a new network from the submitted data.",
      *     @SWG\Parameter(
-     *         name="network",
-     *         in="formData",
-     *         description="",
-     *         required=false,
-     *         type="object (NetworkType)"
+     *         name="form",
+     *         in="body",
+     *         description="creation parameters",
+     *         @Model(type=IncidentStateType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentState::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @FOS\Post("/states")
      * @param Request $request the request object
@@ -134,23 +156,41 @@ class IncidentStateController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident states"},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
      *     @SWG\Parameter(
-     *         name="incident_state",
+     *         name="form",
      *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (IncidentStateType)")
+     *         description="creation parameters",
+     *         @Model(type=IncidentStateType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="204",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentState::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @FOS\Patch("/states/{slug}")
      * @param Request $request the request object
@@ -165,54 +205,41 @@ class IncidentStateController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident states"},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
      *     @SWG\Parameter(
-     *         name="network",
+     *         name="form",
      *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
+     *         description="creation parameters",
+     *         @Model(type=IncidentStateType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="204",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentState::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
-     * )
-     * @FOS\Patch("/states/{slug}")
-     * @param Request $request the request object
-     * @param IncidentState $incident_state
-     * @return View
-     *
-     */
-    public function patchIncidentStateBySlugAction(Request $request, IncidentState $incident_state): View
-    {
-        return $this->patch($request, $incident_state);
-    }
-
-    /**
-     * @Operation(
-     *     tags={""},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
-     *     @SWG\Parameter(
-     *         name="network",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
-     *     ),
-     *     @SWG\Response(
-     *         response="204",
-     *         description="Returned when successful"
-     *     ),
-     *     @SWG\Response(
-     *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @param Request $request the request object
      * @param IncidentState $incident_state
@@ -227,23 +254,41 @@ class IncidentStateController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident states"},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
      *     @SWG\Parameter(
-     *         name="network",
+     *         name="form",
      *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
+     *         description="creation parameters",
+     *         @Model(type=IncidentStateType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="204",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentState::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @param Request $request the request object
      * @param IncidentState $incident_state

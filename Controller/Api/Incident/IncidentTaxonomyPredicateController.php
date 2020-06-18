@@ -13,6 +13,7 @@ namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
 use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate;
+use CertUnlp\NgenBundle\Form\IncidentTaxonomyPredicateType;
 use CertUnlp\NgenBundle\Service\Api\Handler\TaxonomyPredicateHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -20,9 +21,9 @@ use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Swagger\Annotations as SWG;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Nelmio\ApiDocBundle\Annotation\Model;
 
 class IncidentTaxonomyPredicateController extends ApiController
 {
@@ -38,7 +39,7 @@ class IncidentTaxonomyPredicateController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident taxonomy predicates"},
      *     summary="List all incident states.",
      *     @SWG\Parameter(
      *         name="offset",
@@ -56,15 +57,16 @@ class IncidentTaxonomyPredicateController extends ApiController
      *     ),
      *     @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
-     *     )
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=TaxonomyPredicate::class, groups={"api"}))
+     *          )
+     *     ),
      * )
      * @FOS\Get("/taxonomies/predicates")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident states.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many incident states to return.")
-     * @FOS\View(
-     *  templateVar="incident_states"
-     * )
+     * @FOS\QueryParam(name="limit", requirements="\d+", strict=true, default="100", description="How many incident states to return.")
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
      * @return View
@@ -76,11 +78,15 @@ class IncidentTaxonomyPredicateController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident taxonomy predicates"},
      *     summary="Gets a network admin for a given id",
      *     @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=TaxonomyPredicate::class, groups={"api"}))
+     *          )
      *     ),
      *     @SWG\Response(
      *         response="404",
@@ -98,23 +104,41 @@ class IncidentTaxonomyPredicateController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident taxonomy predicates"},
      *     summary="Creates a new network from the submitted data.",
      *     @SWG\Parameter(
-     *         name="network",
-     *         in="formData",
-     *         description="",
-     *         required=false,
-     *         type="object (NetworkType)"
+     *         name="form",
+     *         in="body",
+     *         description="creation parameters",
+     *         @Model(type=IncidentTaxonomyPredicateType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=TaxonomyPredicate::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @FOS\Post("/taxonomies/predicates")
      * @param Request $request the request object
@@ -127,16 +151,35 @@ class IncidentTaxonomyPredicateController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident taxonomy predicates"},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
      *     @SWG\Response(
      *         response="204",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=TaxonomyPredicate::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @FOS\Patch("/taxonomies/predicates/{slug}")
      * @param Request $request the request object
@@ -150,54 +193,41 @@ class IncidentTaxonomyPredicateController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident taxonomy predicates"},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
      *     @SWG\Parameter(
-     *         name="network",
+     *         name="form",
      *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
+     *         description="creation parameters",
+     *         @Model(type=IncidentTaxonomyType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="204",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=TaxonomyPredicate::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
-     * )
-     * @FOS\Patch("/taxonomies/predicates/{slug}")
-     * @param Request $request the request object
-     * @param TaxonomyPredicate $taxonomyPredicate
-     * @return View
-     *
-     */
-    public function patchTaxonomyPredicateBySlugAction(Request $request, TaxonomyPredicate $taxonomyPredicate): View
-    {
-        return $this->patch($request, $taxonomyPredicate);
-    }
-
-    /**
-     * @Operation(
-     *     tags={""},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
-     *     @SWG\Parameter(
-     *         name="network",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
-     *     ),
-     *     @SWG\Response(
-     *         response="204",
-     *         description="Returned when successful"
-     *     ),
-     *     @SWG\Response(
-     *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @param Request $request the request object
      * @param TaxonomyPredicate $taxonomyPredicate
@@ -211,23 +241,41 @@ class IncidentTaxonomyPredicateController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident taxonomy predicates"},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
      *     @SWG\Parameter(
-     *         name="network",
+     *         name="form",
      *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
+     *         description="creation parameters",
+     *         @Model(type=IncidentTaxonomyType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="204",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=TaxonomyPredicate::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @param Request $request the request object
      * @param TaxonomyPredicate $taxonomyPredicate

@@ -23,7 +23,8 @@ use Swagger\Annotations as SWG;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use Nelmio\ApiDocBundle\Annotation\Model;
+use CertUnlp\NgenBundle\Form\IncidentTypeType;
 class IncidentTypeController extends ApiController
 {
     /**
@@ -38,7 +39,7 @@ class IncidentTypeController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident types"},
      *     summary="List all incident types.",
      *     @SWG\Parameter(
      *         name="offset",
@@ -56,15 +57,15 @@ class IncidentTypeController extends ApiController
      *     ),
      *     @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
-     *     )
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentType::class, groups={"api"}))
+     *          )
+     *     ),
      * )
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident types.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many incident types to return.")
-     *
-     * @FOS\View(
-     *  templateVar="incident_types"
-     * )
+     * @FOS\QueryParam(name="limit", requirements="\d+", strict=true, default="100", description="How many incident types to return.")
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      * @return View
      */
@@ -75,22 +76,24 @@ class IncidentTypeController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident types"},
      *     summary="Gets a network admin for a given id",
-     *     @SWG\Response(
+     *      @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentType::class, groups={"api"}))
+     *          )
      *     ),
      *     @SWG\Response(
      *         response="404",
      *         description="Returned when the network is not found"
      *     )
      * )
+     * @FOS\Get("/types/{slug}")
      * @param IncidentType $incident_type
      * @return View
-     * @FOS\View(
-     *  templateVar="incident_type"
-     * )
      */
     public function getTypeAction(IncidentType $incident_type): View
     {
@@ -99,27 +102,44 @@ class IncidentTypeController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident types"},
      *     summary="Creates a new network from the submitted data.",
      *     @SWG\Parameter(
-     *         name="network",
-     *         in="formData",
-     *         description="",
-     *         required=false,
-     *         type="object (NetworkType)"
+     *         name="form",
+     *         in="body",
+     *         description="creation parameters",
+     *         @Model(type=IncidentTypeType::class, groups={"api"})
      *     ),
-     *     @SWG\Response(
+     *      @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentType::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @FOS\Post("/types")
      * @param Request $request the request object
-     *
      * @return View
      */
     public function postIncidentTypeAction(Request $request): View
@@ -129,23 +149,41 @@ class IncidentTypeController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident types"},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
      *     @SWG\Parameter(
-     *         name="network",
+     *         name="form",
      *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
+     *         description="creation parameters",
+     *         @Model(type=IncidentTypeType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="204",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentType::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @FOS\Patch("/types/{slug}")
      * @param Request $request the request object
@@ -160,28 +198,45 @@ class IncidentTypeController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident types"},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
      *     @SWG\Parameter(
-     *         name="network",
+     *         name="form",
      *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
+     *         description="creation parameters",
+     *         @Model(type=IncidentTypeType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="204",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentType::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @param Request $request the request object
      * @param IncidentType $incident_type
      * @return View
-     *
      * @FOS\Patch("/types/{slug}/activate")
      */
     public function patchIncidentTypeActivateAction(Request $request, IncidentType $incident_type): View
@@ -191,28 +246,45 @@ class IncidentTypeController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Incident types"},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
      *     @SWG\Parameter(
-     *         name="network",
+     *         name="form",
      *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
+     *         description="creation parameters",
+     *         @Model(type=IncidentTypeType::class, groups={"api"})
      *     ),
-     *     @SWG\Response(
+     *      @SWG\Response(
      *         response="204",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentType::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @param Request $request the request object
      * @param IncidentType $incident_type
      * @return View
-     *
      * @FOS\Patch("/types/{slug}/desactivate")
      */
     public function patchIncidentTypeDesactivateAction(Request $request, IncidentType $incident_type): View
