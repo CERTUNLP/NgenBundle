@@ -13,13 +13,14 @@ namespace CertUnlp\NgenBundle\Controller\Api\Network;
 
 use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
+use CertUnlp\NgenBundle\Form\NetworkEntityType;
 use CertUnlp\NgenBundle\Service\Api\Handler\NetworkEntityHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +39,7 @@ class NetworkEntityController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Network entities"},
      *     summary="List all academic unit networkentity.",
      *     @SWG\Parameter(
      *         name="offset",
@@ -54,17 +55,18 @@ class NetworkEntityController extends ApiController
      *         required=false,
      *         type="string"
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
-     *     )
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=NetworkEntity::class, groups={"api"}))
+     *          )
+     *     ),
      * )
      * @FOS\Get("/networks/entities")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing academic unit network_entity.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many academic unit network_entity to return.")
-     * @FOS\View(
-     *  templateVar="network_entitys"
-     * )
+     * @FOS\QueryParam(name="limit", requirements="\d+", strict=true, default="100", description="How many academic unit network_entity to return.")
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      * @return View
      */
@@ -75,11 +77,15 @@ class NetworkEntityController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Network entities"},
      *     summary="Gets a network admin for a given id",
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=NetworkEntity::class, groups={"api"}))
+     *          )
      *     ),
      *     @SWG\Response(
      *         response="404",
@@ -88,11 +94,8 @@ class NetworkEntityController extends ApiController
      * )
      * @param NetworkEntity $network_entity
      * @return View
-     * @FOS\View(
-     *  templateVar="network_entity"
-     * )
-     * @ParamConverter("network_entity", class="CertUnlpNgenBundle:NetworkEntity")
-     * @FOS\Get("/networks/entities/{slug}")
+     * @FOS\Get("/networks/entities/{slug}", name="_slug")
+     * @FOS\Get("/networks/entities/{id}")
      */
     public function getNetworkEntityAction(NetworkEntity $network_entity): View
     {
@@ -101,23 +104,41 @@ class NetworkEntityController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Network entities"},
      *     summary="Creates a new network from the submitted data.",
      *     @SWG\Parameter(
-     *         name="network",
-     *         in="formData",
-     *         description="",
-     *         required=false,
-     *         type="object (NetworkType)"
+     *         name="form",
+     *         in="body",
+     *         description="creation parameters",
+     *         @Model(type=NetworkEntityType::class, groups={"api"})
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=NetworkEntity::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @FOS\Post("/networks/entities")
      * @param Request $request the request object
@@ -130,25 +151,44 @@ class NetworkEntityController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Network entities"},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
      *     @SWG\Parameter(
-     *         name="network",
+     *         name="form",
      *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
+     *         description="creation parameters",
+     *         @Model(type=NetworkEntityType::class, groups={"api"})
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="204",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=NetworkEntity::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
-     * @FOS\Patch("/networks/entities/{slug}")
+     * @FOS\Patch("/networks/entities/{id}")
+     * @FOS\Patch("/networks/entities/{slug}", name="_slug")
      * @param Request $request the request object
      * @param NetworkEntity $network_entity
      * @return View
@@ -161,49 +201,21 @@ class NetworkEntityController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Network entities"},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
      *     @SWG\Parameter(
-     *         name="network",
+     *         name="form",
      *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
+     *         description="creation parameters",
+     *         @Model(type=NetworkEntityType::class, groups={"api"})
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="204",
-     *         description="Returned when successful"
-     *     ),
-     *     @SWG\Response(
-     *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
-     * )
-     * @FOS\Patch("/networks/entities/{slug}")
-     * @param Request $request the request object
-     * @param NetworkEntity $network_entity
-     * @return View
-     *
-     */
-    public function patchNetworkEntityBySlugAction(Request $request, NetworkEntity $network_entity): View
-    {
-        return $this->patch($request, $network_entity);
-    }
-
-    /**
-     * @Operation(
-     *     tags={""},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
-     *     @SWG\Parameter(
-     *         name="network",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
-     *     ),
-     *     @SWG\Response(
-     *         response="204",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=NetworkEntity::class, groups={"api"}))
+     *          )
      *     ),
      *     @SWG\Response(
      *         response="400",
@@ -213,7 +225,8 @@ class NetworkEntityController extends ApiController
      * @param Request $request the request object
      * @param NetworkEntity $network_entity
      * @return View
-     * @FOS\Patch("/networks/entities/{slug}/activate")
+     * @FOS\Patch("/networks/entities/{slug}/activate", name="_slug")
+     * @FOS\Patch("/networks/entities/{id}/activate")
      */
     public function patchNetworkEntityActivateAction(Request $request, NetworkEntity $network_entity): View
     {
@@ -222,28 +235,47 @@ class NetworkEntityController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Network entities"},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
      *     @SWG\Parameter(
-     *         name="network",
+     *         name="form",
      *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
+     *         description="creation parameters",
+     *         @Model(type=NetworkEntityType::class, groups={"api"})
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="204",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=NetworkEntity::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @param Request $request the request object
      * @param NetworkEntity $network_entity
      * @return View
-     * @FOS\Patch("/networks/entities/{slug}/desactivate")
+     * @FOS\Patch("/networks/entities/{slug}/desactivate", name="_slug")
+     * @FOS\Patch("/networks/entities/{id}/desactivate")
      */
     public function patchNetworkEntityDesactivateAction(Request $request, NetworkEntity $network_entity): View
     {

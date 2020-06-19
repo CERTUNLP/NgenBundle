@@ -13,13 +13,14 @@ namespace CertUnlp\NgenBundle\Controller\Api\Network;
 
 use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
+use CertUnlp\NgenBundle\Form\NetworkAdminType;
 use CertUnlp\NgenBundle\Service\Api\Handler\NetworkAdminHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +39,7 @@ class NetworkAdminController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Network admin"},
      *     summary="List all network admins.",
      *     @SWG\Parameter(
      *         name="offset",
@@ -54,17 +55,18 @@ class NetworkAdminController extends ApiController
      *         required=false,
      *         type="string"
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
-     *     )
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=NetworkAdmin::class, groups={"api"}))
+     *          )
+     *     ),
      * )
      * @FOS\Get("/networks/admins")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing network admins.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many network admins to return.")
-     * @FOS\View(
-     *  templateVar="network_admins"
-     * )
+     * @FOS\QueryParam(name="limit", requirements="\d+", strict=true, default="100", description="How many network admins to return.")
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      * @return View
      */
@@ -75,24 +77,25 @@ class NetworkAdminController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Network admin"},
      *     summary="Gets a network admin for a given id",
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=NetworkAdmin::class, groups={"api"}))
+     *          )
      *     ),
      *     @SWG\Response(
      *         response="404",
      *         description="Returned when the network is not found"
      *     )
      * )
+     * @FOS\Get("/networks/admins/{id}", requirements={"id" = "\d+"})
+     * @FOS\Get("/networks/admins/{slug}", name="_slug")
      * @param NetworkAdmin $network_admin
      * @return View
-     * @FOS\View(
-     *  templateVar="network_admin"
-     * )
-     * @ParamConverter("network_admin", class="CertUnlpNgenBundle:NetworkAdmin")
-     * @FOS\Get("/networks/admins/{id}", requirements={"id" = "\d+"})
      */
     public function getNetworkAdminAction(NetworkAdmin $network_admin): View
     {
@@ -101,23 +104,41 @@ class NetworkAdminController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Network admin"},
      *     summary="Creates a new network from the submitted data.",
      *     @SWG\Parameter(
-     *         name="network",
-     *         in="formData",
-     *         description="",
-     *         required=false,
-     *         type="object (NetworkType)"
+     *         name="form",
+     *         in="body",
+     *         description="creation parameters",
+     *         @Model(type=NetworkAdminType::class, groups={"api"})
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=NetworkAdmin::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @FOS\Post("/networks/admins")
      * @param Request $request the request object
@@ -130,25 +151,44 @@ class NetworkAdminController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Network admin"},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
      *     @SWG\Parameter(
-     *         name="network",
+     *         name="form",
      *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
+     *         description="creation parameters",
+     *         @Model(type=NetworkAdminType::class, groups={"api"})
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="204",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=NetworkAdmin::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @FOS\Patch("/networks/admins/{id}", requirements={"id" = "\d+"})
+     * @FOS\Patch("/networks/admins/{slug}", name="_slug")
      * @param Request $request the request object
      * @param NetworkAdmin $network_admin
      * @return View
@@ -160,58 +200,47 @@ class NetworkAdminController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Network admin"},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
      *     @SWG\Parameter(
-     *         name="network",
+     *         name="form",
      *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
+     *         description="creation parameters",
+     *         @Model(type=NetworkAdminType::class, groups={"api"})
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="204",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=NetworkAdmin::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
-     * @FOS\Patch("/networks/admins/{slug}")
-     * @param Request $request the request object
-     * @param NetworkAdmin $network_admin
-     * @return View
-     */
-    public function patchNetworkAdminBySlugAction(Request $request, NetworkAdmin $network_admin): View
-    {
-        return $this->patch($request, $network_admin, true);
-    }
-
-    /**
-     * @Operation(
-     *     tags={""},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
-     *     @SWG\Parameter(
-     *         name="network",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
-     *     ),
-     *     @SWG\Response(
-     *         response="204",
-     *         description="Returned when successful"
-     *     ),
-     *     @SWG\Response(
-     *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
-     * )
-     * @param Request $request the request object
-     * @param NetworkAdmin $network_admin
-     * @return View
      * @FOS\Patch("/networks/admins/{id}/activate")
+     * @FOS\Patch("/networks/admins/{slug}/activate",name="slug")
+     * @param Request $request the request object
+     * @param NetworkAdmin $network_admin
+     * @return View
      */
     public function patchNetworkAdminActivateAction(Request $request, NetworkAdmin $network_admin): View
     {
@@ -220,28 +249,47 @@ class NetworkAdminController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Network admin"},
      *     summary="Update existing network from the submitted data or create a new network at a specific location.",
      *     @SWG\Parameter(
-     *         name="network",
+     *         name="form",
      *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (NetworkType)")
+     *         description="creation parameters",
+     *         @Model(type=NetworkAdminType::class, groups={"api"})
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="204",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=NetworkAdmin::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
+     * @FOS\Patch("/networks/admins/{id}/desactivate")
+     * @FOS\Patch("/networks/admins/{slug}/desactivate",name="slug")
      * @param Request $request the request object
      * @param NetworkAdmin $network_admin
      * @return View
-     * @FOS\Patch("/networks/admins/{id}/desactivate")
      */
     public function patchNetworkAdminDesactivateAction(Request $request, NetworkAdmin $network_admin): View
     {
