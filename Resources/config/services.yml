@@ -12,6 +12,7 @@ services:
         autoconfigure: true
         public: false
         bind:
+            $ngen_lang: '%ngen_lang%'
             $evidence_path: "%cert_unlp.ngen.incident.evidence.path%"
             $team_mail: '%cert_unlp.ngen.team.mail%'
             $elastica_finder_incident: "@fos_elastica.finder.incidents.incident"
@@ -55,9 +56,6 @@ services:
     CertUnlp\NgenBundle\Form\IncidentCommentType:
         arguments:
             $commentClass: '%fos_comment.model.comment.class%'
-    CertUnlp\NgenBundle\Validator\Constraints\TypeHasReportValidator:
-        arguments:
-            $lang: '%ngen_lang%'
 
     #    CertUnlp\NgenBundle\Service\Frontend\Controller\IncidentFrontendController:
     #        arguments:
