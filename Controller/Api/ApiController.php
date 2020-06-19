@@ -62,15 +62,30 @@ abstract class ApiController extends AbstractFOSRestController
     public function getAll(ParamFetcherInterface $paramFetcher): View
     {
         try {
-            $offset = $paramFetcher->get('offset');
-            $limit = $paramFetcher->get('limit');
-            $objects = $this->getHandler()->all([], [], $limit, $offset);
-            return $this->response([$objects]);
+            $offset = (int)$paramFetcher->get('offset');
+            $limit = (int)$paramFetcher->get('limit');
+            $objects = $this->getHandler()->all([], null, $limit, $offset);
+            return $this->response([$objects], Response::HTTP_OK);
         } catch (InvalidFormException $exception) {
             return $this->responseError($exception);
         }
     }
 
+    /**
+     * @param array $objects
+     * @return View
+     */
+    public function responseWrapper(array $objects): View
+    {
+        try {
+            if ($objects) {
+                return $this->response([$objects], Response::HTTP_OK);
+            }
+            return $this->response([], Response::HTTP_NOT_FOUND);
+        } catch (InvalidFormException $exception) {
+            return $this->responseError($exception);
+        }
+    }
     /**
      * @return Handler
      */
@@ -112,6 +127,23 @@ abstract class ApiController extends AbstractFOSRestController
     {
         $form_serializer = new FormErrorsSerializer();
         return $this->response(['errors' => $form_serializer->serializeFormErrors($exception->getForm(), true, true), 'code' => Response::HTTP_BAD_REQUEST, 'message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @param array $parameters
+     * @return View
+     */
+    public function getOne(array $parameters): View
+    {
+        try {
+            $object = $this->getHandler()->getByDataIdentification($parameters);
+            if ($object) {
+                return $this->response([$object], Response::HTTP_OK);
+            }
+            return $this->response([], Response::HTTP_NOT_FOUND);
+        } catch (InvalidFormException $exception) {
+            return $this->responseError($exception);
+        }
     }
 
     /**

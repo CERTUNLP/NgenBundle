@@ -273,11 +273,11 @@ class IncidentReportController extends ApiController
      *          )
      *      )
      * )
+     * @FOS\Patch("/incidents/types/{type}/reports/{lang}/activate")
+     * @ParamConverter("incident_report", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      * @param Request $request the request object
      * @param IncidentReport $incident_report
      * @return View
-     * @FOS\Patch("/incidents/types/{type}/reports/{lang}/activate")
-     * @ParamConverter("incident_report", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
     public function patchReportActivateAction(Request $request, IncidentReport $incident_report): View
     {
@@ -330,11 +330,11 @@ class IncidentReportController extends ApiController
      *          )
      *      )
      * )
+     * @FOS\Patch("/incidents/types/{type}/reports/{lang}/desactivate")
+     * @ParamConverter("incident_report", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      * @param Request $request the request object
      * @param IncidentReport $incident_report
      * @return View
-     * @FOS\Patch("/incidents/types/{type}/reports/{lang}/desactivate")
-     * @ParamConverter("incident_report", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      */
     public function patchReportDesactivateAction(Request $request, IncidentReport $incident_report): View
     {
