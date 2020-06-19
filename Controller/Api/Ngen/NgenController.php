@@ -22,7 +22,7 @@ class NgenController extends AbstractFOSRestController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"root"},
      *     summary="Get status.",
      *     @SWG\Response(
      *         response="200",
@@ -35,16 +35,38 @@ class NgenController extends AbstractFOSRestController
      * )
      * @param Request $request
      * @return array
-     * @FOS\Get("/ngen/status")
+     * @FOS\Get("/status")
      */
-    public function getNgenAction(Request $request)
+    public function getNgenAction(Request $request): ?array
     {
         return null;
     }
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"root"},
+     *     summary="Get status.",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when the apikey is not found"
+     *     )
+     * )
+     * @param Request $request
+     * @return array
+     * @FOS\Get("/")
+     */
+    public function getAction(Request $request): ?array
+    {
+        return null;
+    }
+
+    /**
+     * @Operation(
+     *     tags={"root"},
      *     summary="Get version.",
      *     @SWG\Response(
      *         response="200",
@@ -57,7 +79,7 @@ class NgenController extends AbstractFOSRestController
      * )
      * @param Request $request
      * @return string
-     * @FOS\Get("/ngen/version")
+     * @FOS\Get("/version")
      */
     public function getVersionAction(Request $request): string
     {

@@ -13,13 +13,14 @@ namespace CertUnlp\NgenBundle\Controller\Api\User;
 
 use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Form\UserType;
 use CertUnlp\NgenBundle\Service\Api\Handler\UserHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,32 +39,33 @@ class UserController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Users"},
      *     summary="List all users.",
      *     @SWG\Parameter(
      *         name="offset",
-     *         in="body",
-     *         description="Offset from which to start listing users.",
+     *         in="query",
+     *         description="Offset from which to start listing incident priorities.",
      *         required=false,
-     *         @SWG\Schema(type="\d+")
+     *         type="string"
      *     ),
      *     @SWG\Parameter(
      *         name="limit",
-     *         in="body",
-     *         description="How many users to return.",
+     *         in="query",
+     *         description="How many incident priorities to return.",
      *         required=false,
-     *         @SWG\Schema(type="\d+")
+     *         type="string"
      *     ),
      *     @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
-     *     )
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=User::class, groups={"api"}))
+     *          )
+     *     ),
      * )
-     * @FOS\RequestParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing users.")
-     * @FOS\RequestParam(name="limit", requirements="\d+", nullable=true, description="How many users to return.")
-     * @FOS\View(
-     *  templateVar="users"
-     * )
+     * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident priorities.")
+     * @FOS\QueryParam(name="limit", requirements="\d+", strict=true, default="100", description="How many incident priorities to return.")
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      * @return View
      */
@@ -74,11 +76,15 @@ class UserController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Users"},
      *     summary="Gets a User for a given host address",
      *     @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=User::class, groups={"api"}))
+     *          )
      *     ),
      *     @SWG\Response(
      *         response="404",
@@ -88,10 +94,6 @@ class UserController extends ApiController
      * @param User $user
      * @return View
      * @FOS\Get("/users/{username}")
-     * @FOS\View(
-     *  templateVar="user"
-     * )
-     * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
      */
     public function getUserAction(User $user): View
     {
@@ -100,75 +102,41 @@ class UserController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Users"},
      *     summary="Creates a new user from the submitted data.",
      *     @SWG\Parameter(
-     *         name="email",
-     *         in="formData",
-     *         description="form.email",
-     *         required=false,
-     *         type="string"
-     *     ),
-     *     @SWG\Parameter(
-     *         name="username",
-     *         in="formData",
-     *         description="form.username",
-     *         required=false,
-     *         type="string"
-     *     ),
-     *     @SWG\Parameter(
-     *         name="plainPassword",
-     *         in="formData",
-     *         description="",
-     *         required=false,
-     *         type="object (RepeatedType)"
-     *     ),
-     *     @SWG\Parameter(
-     *         name="firstname",
-     *         in="formData",
-     *         description="",
-     *         required=false,
-     *         type="string"
-     *     ),
-     *     @SWG\Parameter(
-     *         name="lastname",
-     *         in="formData",
-     *         description="",
-     *         required=false,
-     *         type="string"
-     *     ),
-     *     @SWG\Parameter(
-     *         name="roles",
-     *         in="formData",
-     *         description="Roles",
-     *         required=false,
-     *         type="array of choices"
-     *     ),
-     *     @SWG\Parameter(
-     *         name="contacts",
-     *         in="formData",
-     *         description="Contacts",
-     *         required=false,
-     *         type="array of objects (ContactType)"
-     *     ),
-     *     @SWG\Parameter(
-     *         name="save",
-     *         in="formData",
-     *         description="",
-     *         required=false,
-     *         type="string"
+     *         name="form",
+     *         in="body",
+     *         description="creation parameters",
+     *         @Model(type=UserType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="200",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=User::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
-     * )
-     * @FOS\View(
-     *  templateVar = "user"
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @param Request $request the request object
      * @return View
@@ -180,81 +148,38 @@ class UserController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Users"},
      *     summary="Update existing user from the submitted data or create a new user at a specific location.",
      *     @SWG\Parameter(
-     *         name="email",
+     *         name="form",
      *         in="body",
-     *         description="form.email",
-     *         required=false,
-     *         @SWG\Schema(type="string")
+     *         description="creation parameters",
+     *         @Model(type=UserType::class, groups={"api"})
      *     ),
-     *     @SWG\Parameter(
-     *         name="username",
-     *         in="body",
-     *         description="form.username",
-     *         required=true,
-     *         @SWG\Schema(type="string")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="plainPassword",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (RepeatedType)")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="firstname",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="string")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="lastname",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="string")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="roles",
-     *         in="body",
-     *         description="Roles",
-     *         required=false,
-     *         @SWG\Schema(type="array of choices")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="contacts",
-     *         in="body",
-     *         description="Contacts",
-     *         required=false,
-     *         @SWG\Schema(type="array of objects (ContactType)")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="save",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="string")
-     *     ),
-     *     @SWG\Response(
-     *         response="204",
-     *         description="Returned when successful"
-     *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
-     * )
-     * @FOS\View(
-     *  templateVar = "user"
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @param Request $request the request object
      * @param User $user
      * @return View
      * @FOS\Patch("/users/{username}")
-     * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
      */
     public function patchUserAction(Request $request, User $user): View
     {
@@ -263,81 +188,46 @@ class UserController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Users"},
      *     summary="Update existing user from the submitted data or create a new user at a specific location.",
      *     @SWG\Parameter(
-     *         name="email",
+     *         name="form",
      *         in="body",
-     *         description="form.email",
-     *         required=false,
-     *         @SWG\Schema(type="string")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="username",
-     *         in="body",
-     *         description="form.username",
-     *         required=true,
-     *         @SWG\Schema(type="string")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="plainPassword",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (RepeatedType)")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="firstname",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="string")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="lastname",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="string")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="roles",
-     *         in="body",
-     *         description="Roles",
-     *         required=false,
-     *         @SWG\Schema(type="array of choices")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="contacts",
-     *         in="body",
-     *         description="Contacts",
-     *         required=false,
-     *         @SWG\Schema(type="array of objects (ContactType)")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="save",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="string")
+     *         description="creation parameters",
+     *         @Model(type=UserType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="204",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=User::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @param Request $request the request object
      * @param User $user
      * @return View
      * @FOS\Patch("/users/{username}/activate")
-     * @FOS\View(
-     *  templateVar = "user"
-     * )
-     * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
      */
     public function patchUserActivateAction(Request $request, User $user): View
     {
@@ -346,81 +236,46 @@ class UserController extends ApiController
 
     /**
      * @Operation(
-     *     tags={""},
+     *     tags={"Users"},
      *     summary="Update existing user from the submitted data or create a new user at a specific location.",
      *     @SWG\Parameter(
-     *         name="email",
+     *         name="form",
      *         in="body",
-     *         description="form.email",
-     *         required=false,
-     *         @SWG\Schema(type="string")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="username",
-     *         in="body",
-     *         description="form.username",
-     *         required=true,
-     *         @SWG\Schema(type="string")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="plainPassword",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="object (RepeatedType)")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="firstname",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="string")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="lastname",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="string")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="roles",
-     *         in="body",
-     *         description="Roles",
-     *         required=false,
-     *         @SWG\Schema(type="array of choices")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="contacts",
-     *         in="body",
-     *         description="Contacts",
-     *         required=false,
-     *         @SWG\Schema(type="array of objects (ContactType)")
-     *     ),
-     *     @SWG\Parameter(
-     *         name="save",
-     *         in="body",
-     *         description="",
-     *         required=false,
-     *         @SWG\Schema(type="string")
+     *         description="creation parameters",
+     *         @Model(type=UserType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="204",
-     *         description="Returned when successful"
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=User::class, groups={"api"}))
+     *          )
      *     ),
-     *     @SWG\Response(
+     *    @SWG\Response(
      *         response="400",
-     *         description="Returned when the form has errors"
-     *     )
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @param Request $request the request object
      * @param User $user
      * @return View
      * @FOS\Patch("/users/{username}/desactivate")
-     * @FOS\View(
-     *  templateVar = "user"
-     * )
-     * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
      */
     public function patchUserDesactivateAction(Request $request, User $user): View
     {

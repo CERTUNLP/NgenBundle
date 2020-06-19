@@ -15,7 +15,6 @@ use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
-use CertUnlp\NgenBundle\Exception\InvalidFormException;
 use CertUnlp\NgenBundle\Form\IncidentDecisionType;
 use CertUnlp\NgenBundle\Service\Api\Handler\IncidentDecisionHandler;
 use CertUnlp\NgenBundle\Service\Api\Handler\NetworkHandler;
@@ -27,7 +26,6 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class IncidentDecisionController extends ApiController
 {
@@ -110,19 +108,12 @@ class IncidentDecisionController extends ApiController
      */
     public function getIncidentDecisionAction(NetworkHandler $network_handler, IncidentType $type, IncidentFeed $feed, string $ip_v4 = null, string $ip_v6 = null, string $domain = null): View
     {
-        try {
-            $address = $ip_v4 ?? $ip_v6 ?? $domain;
-            if ($address) {
-                $network = $network_handler->findOneInRange($address);
-                $decision = $this->getHandler()->getByNetwork($type, $feed, $network);
-                if ($decision) {
-                    return $this->response([$decision], Response::HTTP_OK);
-                }
-            }
-            return $this->response([], Response::HTTP_NOT_FOUND);
-        } catch (InvalidFormException $exception) {
-            return $this->responseError($exception);
+        $network = null;
+        $address = $ip_v4 ?? $ip_v6 ?? $domain;
+        if ($address) {
+            $network = $network_handler->findOneInRange($address);
         }
+        return $this->getOne(['type' => $type, 'feed' => $feed, 'network' => $network]);
     }
 
     /**

@@ -95,7 +95,6 @@ class IncidentFeedController extends ApiController
      *     )
      * )
      * @FOS\Get("/feeds/{slug}")
-     * @ParamConverter("incident_feed", class="CertUnlpNgenBundle:Incident\IncidentFeed")
      * @param IncidentFeed $incident_feed
      * @return View
      */
