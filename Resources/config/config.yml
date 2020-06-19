@@ -13,10 +13,6 @@ framework:
 
 assetic:
     filters:
-        #        less:
-        #            node: /usr/bin/node
-        #            node_paths: [/usr/lib/node_modules]
-        #            apply_to: "\.less$"
         cssrewrite: ~
     bundles:
         - CertUnlpNgenBundle
@@ -105,7 +101,7 @@ sensio_framework_extra:
     request: { converters: true }
 
 fos_rest:
-    #    param_fetcher_listener: true
+    param_fetcher_listener: true
     allowed_methods_listener: true
     zone:
         - { path: '^/api/*' }
@@ -120,7 +116,33 @@ fos_rest:
             - { path: '^/api/*', priorities: ['json','html'], fallback_format: json , prefer_extension: true}
             - { path: '^/', stop: true }
 
-nelmio_api_doc: ~
+nelmio_api_doc:
+    models:
+        use_jms: true
+    areas:
+        path_patterns: # an array of regexps
+            - ^/api/(?!/doc$)
+    documentation:
+        info:
+            title: Ngen Api
+            description: Ngen Api Documentation
+            version: 1.0.0
+        securityDefinitions:
+            Bearer:
+                type: apiKey
+                description: Your api key
+                name:  apiKey
+                in: header
+            security:
+                -   api_key: []
+#        components:
+#            securitySchemes:
+#                Bearer:
+#                type: http
+#                scheme: bearer
+#                bearerFormat: JWT
+        security:
+            -   Bearer: []
 
 imap:
     connections:

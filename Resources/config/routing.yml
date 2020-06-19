@@ -125,3 +125,13 @@ cert_ngen_api:
     type: rest
     prefix: /api
     resource: '@CertUnlpNgenBundle/Resources/config/routing_api.yml'
+
+app.swagger_ui:
+    path: /api/doc
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
+
+app.swagger:
+    path: /api/doc.json
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger }

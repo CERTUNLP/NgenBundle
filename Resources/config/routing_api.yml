@@ -14,26 +14,12 @@
 
 cert_ngen_api_status:
     type: rest
-    prefix: /status
     resource: '@CertUnlpNgenBundle/Controller/Api/Ngen/NgenController.php'
     name_prefix:  api_
 
 cert_ngen_incident_api:
     type: rest
-    prefix: /
     resource: '@CertUnlpNgenBundle/Controller/Api/Incident/IncidentController.php'
-    name_prefix:  api_
-
-cert_ngen_internal_incident_api:
-    type: rest
-    prefix: /incidents
-    resource: '@CertUnlpNgenBundle/Controller/Api/Incident/InternalIncidentController.php'
-    name_prefix:  api_
-
-cert_ngen_external_incident_api:
-    type: rest
-    prefix: /incidents
-    resource: '@CertUnlpNgenBundle/Controller/Api/Incident/ExternalIncidentController.php'
     name_prefix:  api_
 
 cert_ngen_incident_feed_api:
@@ -110,13 +96,3 @@ cert_ngen_network_host_api:
     type: rest
     resource: '@CertUnlpNgenBundle/Controller/Api/Network/HostController.php'
     name_prefix:  api_
-
-app.swagger_ui:
-    path: /api/doc
-    methods: GET
-    defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
-
-app.swagger:
-    path: /api/doc.json
-    methods: GET
-    defaults: { _controller: nelmio_api_doc.controller.swagger }
