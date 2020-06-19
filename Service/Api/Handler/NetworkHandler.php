@@ -54,18 +54,19 @@ class NetworkHandler extends Handler
     }
 
     /**
-     * @param string $ip
+     * @param string $address
+     * @param bool $rdap_lookup
      * @return Network|null
      */
-    public function getByHostAddress(string $ip): ?Network
+    public function findOneInRange(string $address, bool $rdap_lookup = false): ?Network
     {
-        $network = $this->getRepository()->findOneInRange($ip);
+        $network = $this->getRepository()->findOneInRange($address);
 
-        if (!$network) {
-            switch (NetworkElement::guessType($ip)) {
+        if (!$network && $rdap_lookup) {
+            switch (NetworkElement::guessType($address)) {
                 case FILTER_FLAG_IPV6:
                 case FILTER_FLAG_IPV4:
-                    return $this->getNetworkRdapHandler()->findByIp($ip);
+                    return $this->getNetworkRdapHandler()->findByIp($address);
                     break;
                 default:
                     return null;
@@ -118,7 +119,8 @@ class NetworkHandler extends Handler
      */
     public function getByDataIdentification(array $parameters): ?EntityApiInterface
     {
-        return $this->getRepository()->findOneByAddress($this->getDataIdentificationArray($parameters)['address']);
+        $parameters= $this->getDataIdentificationArray($parameters);
+        return $this->getRepository()->findOneByAddress($parameters['address']);
     }
 
     /**
