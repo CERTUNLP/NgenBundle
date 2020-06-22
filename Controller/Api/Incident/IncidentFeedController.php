@@ -22,7 +22,6 @@ use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,14 +45,14 @@ class IncidentFeedController extends ApiController
      *     @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Offset from which to start listing incident feeds.",
+     *         description="Offset from which to start listing",
      *         required=false,
      *         type="string"
      *     ),
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="How many incident feeds to return.",
+     *         description="How many entities to return",
      *         required=false,
      *         type="string"
      *     ),
@@ -80,7 +79,7 @@ class IncidentFeedController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident feeds"},
-     *     summary="Gets a network admin for a given id",
+     *     summary="Gets a feed for a given id",
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful",
@@ -108,11 +107,52 @@ class IncidentFeedController extends ApiController
     }
 
     /**
+     * @Operation(
+     *     tags={"Incident feeds"},
+     *     summary="Removes a feed",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentFeed::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
+     * )
+     * @FOS\Delete("/feeds/{slug}"))
+     * @param IncidentFeed $incident_feed
+     * @return View
+     */
+    public function deleteIncidentFeedAction(IncidentFeed $incident_feed): View
+    {
+        return $this->delete($incident_feed);
+    }
+
+    /**
      * Create a Network from the submitted data.
      *
      * @Operation(
      *     tags={"Incident feeds"},
-     *     summary="Creates a new network from the submitted data.",
+     *     summary="Creates a new feed from the submitted data.",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -159,7 +199,7 @@ class IncidentFeedController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident feeds"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Update existing feed from the submitted data",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -207,7 +247,7 @@ class IncidentFeedController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident feeds"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Activates an existing feed",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -243,19 +283,18 @@ class IncidentFeedController extends ApiController
      *      )
      * )
      * @FOS\Patch("/feeds/{slug}/activate")
-     * @param Request $request the request object
      * @param IncidentFeed $incident_feed
      * @return View
      */
-    public function patchIncidentFeedActivateAction(Request $request, IncidentFeed $incident_feed): View
+    public function patchIncidentFeedActivateAction(IncidentFeed $incident_feed): View
     {
-        return $this->activate($request, $incident_feed);
+        return $this->activate($incident_feed);
     }
 
     /**
      * @Operation(
      *     tags={"Incident feeds"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Desactivates an existing feed",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -291,13 +330,12 @@ class IncidentFeedController extends ApiController
      *      )
      * )
      * @FOS\Patch("/feeds/{slug}/desactivate")
-     * @param Request $request the request object
      * @param IncidentFeed $incident_feed
      * @return View
      */
-    public function patchIncidentFeedDesactivateAction(Request $request, IncidentFeed $incident_feed): View
+    public function patchIncidentFeedDesactivateAction(IncidentFeed $incident_feed): View
     {
-        return $this->desactivate($request, $incident_feed);
+        return $this->desactivate($incident_feed);
     }
 
 }

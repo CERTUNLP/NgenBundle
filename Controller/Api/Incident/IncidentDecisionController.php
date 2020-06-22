@@ -42,18 +42,18 @@ class IncidentDecisionController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident decisions"},
-     *     summary="List all incident decisions.",
+     *     summary="List all incident decisions",
      *     @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Offset from which to start listing incident decisions.",
+     *         description="Offset from which to start listing",
      *         required=false,
      *         type="string"
      *     ),
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="How many incident decisions to return.",
+     *         description="How many entities to return",
      *         required=false,
      *         type="string"
      *     ),
@@ -80,7 +80,7 @@ class IncidentDecisionController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident decisions"},
-     *     summary="Gets a network admin for a given id",
+     *     summary="Gets a decision for a given type, feed and address",
      *      @SWG\Response(
      *         response="200",
      *         description="Returned when successful",
@@ -119,7 +119,74 @@ class IncidentDecisionController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident decisions"},
-     *     summary="Creates a new network from the submitted data.",
+     *     summary="Gets a decision for a given type, feed and address",
+     *      @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentDecision::class, groups={"api"}))
+     *          )
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when the network is not found"
+     *     )
+     * )
+     * @param IncidentDecision $incident_decision
+     * @return View
+     * @FOS\Get("/decisions/{id}" )
+     */
+    public function getIncidentDecisionIdAction(IncidentDecision $incident_decision): View
+    {
+        return $this->responseWrapper([$incident_decision]);
+    }
+
+    /**
+     * @Operation(
+     *     tags={"Incident decisions"},
+     *     summary="Removes a decision",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentDecision::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
+     * )
+     * @FOS\Delete("/decisions/{id}",requirements={"id"="\d+"}))
+     * @param IncidentDecision $incident_decision
+     * @return View
+     */
+    public function deleteIncidentAction(IncidentDecision $incident_decision): View
+    {
+        return $this->delete($incident_decision);
+    }
+
+    /**
+     * @Operation(
+     *     tags={"Incident decisions"},
+     *     summary="Creates a new decision from the submitted data.",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -166,7 +233,7 @@ class IncidentDecisionController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident decisions"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Update existing decision from the submitted data",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -214,7 +281,7 @@ class IncidentDecisionController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident decisions"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Activates an existing decision",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -249,20 +316,19 @@ class IncidentDecisionController extends ApiController
      *          )
      *      )
      * )
-     * @param Request $request the request object
      * @param IncidentDecision $incident_decision
      * @return View
      * @FOS\Patch("/decisions/{id}/activate")
      */
-    public function patchIncidentDecisionActivateAction(Request $request, IncidentDecision $incident_decision): View
+    public function patchIncidentDecisionActivateAction(IncidentDecision $incident_decision): View
     {
-        return $this->activate($request, $incident_decision);
+        return $this->activate($incident_decision);
     }
 
     /**
      * @Operation(
      *     tags={"Incident decisions"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Desactivates an existing decision",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -297,13 +363,12 @@ class IncidentDecisionController extends ApiController
      *          )
      *      )
      * )
-     * @param Request $request the request object
      * @param IncidentDecision $incident_decision
      * @return View
      * @FOS\Patch("/decisions/{id}/desactivate")
      */
-    public function patchIncidentDecisionDesactivateAction(Request $request, IncidentDecision $incident_decision): View
+    public function patchIncidentDecisionDesactivateAction(IncidentDecision $incident_decision): View
     {
-        return $this->desactivate($request, $incident_decision);
+        return $this->desactivate($incident_decision);
     }
 }

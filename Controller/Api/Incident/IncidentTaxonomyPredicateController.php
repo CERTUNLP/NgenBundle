@@ -19,11 +19,11 @@ use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Nelmio\ApiDocBundle\Annotation\Model;
 
 class IncidentTaxonomyPredicateController extends ApiController
 {
@@ -40,18 +40,18 @@ class IncidentTaxonomyPredicateController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident taxonomy predicates"},
-     *     summary="List all incident states.",
+     *     summary="List all taxonomy predicates.",
      *     @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Offset from which to start listing incident states.",
+     *         description="Offset from which to start listing",
      *         required=false,
      *         type="string"
      *     ),
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="How many incident states to return.",
+     *         description="How many entities to return",
      *         required=false,
      *         type="string"
      *     ),
@@ -79,7 +79,7 @@ class IncidentTaxonomyPredicateController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident taxonomy predicates"},
-     *     summary="Gets a network admin for a given id",
+     *     summary="Gets a predicate for a given id",
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful",
@@ -105,7 +105,48 @@ class IncidentTaxonomyPredicateController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident taxonomy predicates"},
-     *     summary="Creates a new network from the submitted data.",
+     *     summary="Removes a taxonomy predicate",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=TaxonomyPredicate::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
+     * )
+     * @FOS\Delete("/taxonomies/predicates/{slug}"))
+     * @param TaxonomyPredicate $taxonomy_predicate
+     * @return View
+     */
+    public function deleteIncidentStateAction(TaxonomyPredicate $taxonomy_predicate): View
+    {
+        return $this->delete($taxonomy_predicate);
+    }
+
+    /**
+     * @Operation(
+     *     tags={"Incident taxonomy predicates"},
+     *     summary="Creates a new predicate from the submitted data.",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -152,7 +193,7 @@ class IncidentTaxonomyPredicateController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident taxonomy predicates"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Update existing predicate from the submitted data",
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -194,12 +235,12 @@ class IncidentTaxonomyPredicateController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident taxonomy predicates"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Activates an existing predicate",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
      *         description="creation parameters",
-     *         @Model(type=IncidentTaxonomyType::class, groups={"api"})
+     *         @Model(type=IncidentTaxonomyPredicateType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="204",
@@ -229,25 +270,24 @@ class IncidentTaxonomyPredicateController extends ApiController
      *          )
      *      )
      * )
-     * @param Request $request the request object
      * @param TaxonomyPredicate $taxonomyPredicate
      * @return View
      * @FOS\Patch("/taxonomies/predicates/{slug}/activate")
      */
-    public function patchTaxonomyPredicateActivateAction(Request $request, TaxonomyPredicate $taxonomyPredicate): View
+    public function patchTaxonomyPredicateActivateAction(TaxonomyPredicate $taxonomyPredicate): View
     {
-        return $this->activate($request, $taxonomyPredicate);
+        return $this->activate($taxonomyPredicate);
     }
 
     /**
      * @Operation(
      *     tags={"Incident taxonomy predicates"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Desactivates an existing predicate",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
      *         description="creation parameters",
-     *         @Model(type=IncidentTaxonomyType::class, groups={"api"})
+     *         @Model(type=IncidentTaxonomyPredicateType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="204",
@@ -277,14 +317,13 @@ class IncidentTaxonomyPredicateController extends ApiController
      *          )
      *      )
      * )
-     * @param Request $request the request object
      * @param TaxonomyPredicate $taxonomyPredicate
      * @return View
      * @FOS\Patch("/taxonomies/predicates/{slug}/desactivate")
      */
-    public function patchTaxonomyPredicateDesactivateAction(Request $request, TaxonomyPredicate $taxonomyPredicate): View
+    public function patchTaxonomyPredicateDesactivateAction(TaxonomyPredicate $taxonomyPredicate): View
     {
-        return $this->desactivate($request, $taxonomyPredicate);
+        return $this->desactivate($taxonomyPredicate);
     }
 
 }

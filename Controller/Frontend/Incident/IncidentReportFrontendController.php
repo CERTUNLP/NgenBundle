@@ -67,16 +67,16 @@ class IncidentReportFrontendController extends FrontendController
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentReport:Frontend/incidentReportForm.html.twig")
-     * @Route("{slug}/reports/{lang}/edit", name="cert_unlp_ngen_incident_type_report_edit")
-     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
-     * @param IncidentType $slug
-     * @param IncidentReport $lang
+     * @Route("{type}/reports/{lang}/edit", name="cert_unlp_ngen_incident_type_report_edit")
+     * @ParamConverter("incident_report", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
+     * @param IncidentType $type
+     * @param IncidentReport $incident_report
      * @param IncidentReportType $entity_type
      * @return array
      */
-    public function editIncidentReportAction(IncidentType $slug, IncidentReport $lang, IncidentReportType $entity_type): array
+    public function editIncidentReportAction(IncidentType $type, IncidentReport $incident_report, IncidentReportType $entity_type): array
     {
-        return $this->editEntity($lang, $entity_type, $slug);
+        return $this->editEntity($incident_report, $entity_type, $type);
     }
 
 
@@ -92,14 +92,14 @@ class IncidentReportFrontendController extends FrontendController
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentReport:Frontend/incidentReportDetail.html.twig")
-     * @Route("{slug}/reports/{lang}/detail", name="cert_unlp_ngen_incident_type_report_detail")
-     * @ParamConverter("lang", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
+     * @Route("{type}/reports/{lang}/detail", name="cert_unlp_ngen_incident_type_report_detail")
+     * @ParamConverter("incident_report", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      * @param IncidentType $slug
      * @param IncidentReport $lang
      * @param IncidentReportFrontendController $controller_service
      * @return array
      */
-    public function detailIncidentReportAction(IncidentType $slug, IncidentReport $lang, IncidentReportFrontendController $controller_service): array
+    public function detailIncidentReportAction(IncidentType $slug, IncidentReport $incident_report, IncidentReportFrontendController $controller_service): array
     {
         return $this->detailEntity($lang);
     }

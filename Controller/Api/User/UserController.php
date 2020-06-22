@@ -40,18 +40,18 @@ class UserController extends ApiController
     /**
      * @Operation(
      *     tags={"Users"},
-     *     summary="List all users.",
+     *     summary="List all users",
      *     @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Offset from which to start listing incident priorities.",
+     *         description="Offset from which to start listing",
      *         required=false,
      *         type="string"
      *     ),
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="How many incident priorities to return.",
+     *         description="How many entities to return",
      *         required=false,
      *         type="string"
      *     ),
@@ -77,7 +77,48 @@ class UserController extends ApiController
     /**
      * @Operation(
      *     tags={"Users"},
-     *     summary="Gets a User for a given host address",
+     *     summary="Removes an user",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=User::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
+     * )
+     * @FOS\Delete("/users/{username}")
+     * @param User $user
+     * @return View
+     */
+    public function deleteUserAction(User $user): View
+    {
+        return $this->delete($user);
+    }
+
+    /**
+     * @Operation(
+     *     tags={"Users"},
+     *     summary="Gets a User for a given id",
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful",
@@ -149,7 +190,7 @@ class UserController extends ApiController
     /**
      * @Operation(
      *     tags={"Users"},
-     *     summary="Update existing user from the submitted data or create a new user at a specific location.",
+     *     summary="Update existing user from the submitted data",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -189,7 +230,7 @@ class UserController extends ApiController
     /**
      * @Operation(
      *     tags={"Users"},
-     *     summary="Update existing user from the submitted data or create a new user at a specific location.",
+     *     summary="Activates an existing user",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -224,20 +265,19 @@ class UserController extends ApiController
      *          )
      *      )
      * )
-     * @param Request $request the request object
      * @param User $user
      * @return View
      * @FOS\Patch("/users/{username}/activate")
      */
-    public function patchUserActivateAction(Request $request, User $user): View
+    public function patchUserActivateAction(User $user): View
     {
-        return $this->activate($request, $user);
+        return $this->activate($user);
     }
 
     /**
      * @Operation(
      *     tags={"Users"},
-     *     summary="Update existing user from the submitted data or create a new user at a specific location.",
+     *     summary="Desactivates an existing user",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -272,14 +312,13 @@ class UserController extends ApiController
      *          )
      *      )
      * )
-     * @param Request $request the request object
      * @param User $user
      * @return View
      * @FOS\Patch("/users/{username}/desactivate")
      */
-    public function patchUserDesactivateAction(Request $request, User $user): View
+    public function patchUserDesactivateAction(User $user): View
     {
-        return $this->desactivate($request, $user);
+        return $this->desactivate($user);
     }
 
 }

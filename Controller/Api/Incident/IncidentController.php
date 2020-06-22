@@ -43,7 +43,7 @@ class IncidentController extends ApiController
     /**
      * @Operation(
      *     tags={"incidents"},
-     *     summary="Get single Incident.",
+     *     summary="Gets an incident for a given id",
      *      @SWG\Response(
      *         response="200",
      *         description="Returned when successful",
@@ -119,14 +119,14 @@ class IncidentController extends ApiController
      *     @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Offset from which to start listing incidents.",
+     *         description="Offset from which to start listing",
      *         required=false,
      *         type="string"
      *     ),
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="How many incidents to return.",
+     *         description="How many entities to return",
      *         required=false,
      *         type="string"
      *     ),
@@ -152,7 +152,7 @@ class IncidentController extends ApiController
     /**
      * @Operation(
      *     tags={"incidents"},
-     *     summary="Update existing incident",
+     *     summary="Update incident state if is possible",
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -258,13 +258,7 @@ class IncidentController extends ApiController
     /**
      * @Operation(
      *     tags={"incidents"},
-     *     summary="Remove an incident",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentType::class, groups={"api"})
-     *     ),
+     *     summary="Removes an incident",
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -294,13 +288,12 @@ class IncidentController extends ApiController
      *      )
      * )
      * @FOS\Delete("/incidents/{id}", name="_id",requirements={"id"="\d+"}))
-     * @param Request $request the request object
      * @param Incident $incident the incident id
      * @return View
      */
-    public function deleteIncidentAction(Request $request, Incident $incident): View
+    public function deleteIncidentAction(Incident $incident): View
     {
-        return $this->delete($request, $incident);
+        return $this->delete($incident);
     }
 
     /**

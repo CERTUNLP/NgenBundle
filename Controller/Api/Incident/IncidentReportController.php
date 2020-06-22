@@ -46,14 +46,14 @@ class IncidentReportController extends ApiController
      *     @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Offset from which to start listing incident priorities.",
+     *         description="Offset from which to start listing",
      *         required=false,
      *         type="string"
      *     ),
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="How many incident priorities to return.",
+     *         description="How many entities to return",
      *         required=false,
      *         type="string"
      *     ),
@@ -75,6 +75,49 @@ class IncidentReportController extends ApiController
     public function getIncidentPrioritiesAction(ParamFetcherInterface $paramFetcher): View
     {
         return $this->getAll($paramFetcher);
+    }
+
+
+    /**
+     * @Operation(
+     *     tags={"Incident reports"},
+     *     summary="Removes a report",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentReport::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
+     * )
+     * @FOS\Delete("/incidents/types/{type}/reports/{lang}", name="_id", requirements={"id"="\d+"}))
+     * @FOS\Delete("/incidents/types/reports/{slug}", name="_slug")
+     * @param IncidentReport $incident_report
+     * @return View
+     */
+    public function deleteIncidentReportAction(IncidentReport $incident_report): View
+    {
+        return $this->delete($incident_report);
     }
 
     /**
@@ -103,6 +146,7 @@ class IncidentReportController extends ApiController
      *     )
      * )
      * @FOS\Get("/incidents/types/{type}/reports/{lang}")
+     * @FOS\Get("/incidents/types/reports/{slug}", name="_slug")
      * @ParamConverter("incident_report", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      * @param IncidentReport $incident_report
      * @return View
@@ -119,7 +163,7 @@ class IncidentReportController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident reports"},
-     *     summary="Creates a new network from the submitted data.",
+     *     summary="Creates a new report from the submitted data.",
      *     @SWG\Parameter(
      *         name="lang",
      *         in="path",
@@ -173,7 +217,7 @@ class IncidentReportController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident reports"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Update existing report from the submitted data",
      *     @SWG\Parameter(
      *         name="lang",
      *         in="path",
@@ -217,6 +261,7 @@ class IncidentReportController extends ApiController
      *      )
      * )
      * @FOS\Patch("/incidents/types/{type}/reports/{lang}")
+     * @FOS\Patch("/incidents/types/reports/{slug}", name="_slug")
      * @ParamConverter("incident_report", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      * @param Request $request the request object
      * @param IncidentReport $incident_report
@@ -230,7 +275,7 @@ class IncidentReportController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident reports"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Activates an existing report",
      *     @SWG\Parameter(
      *         name="lang",
      *         in="path",
@@ -274,20 +319,20 @@ class IncidentReportController extends ApiController
      *      )
      * )
      * @FOS\Patch("/incidents/types/{type}/reports/{lang}/activate")
+     * @FOS\Patch("/incidents/types/reports/{slug}/activate", name="_slug")
      * @ParamConverter("incident_report", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
-     * @param Request $request the request object
      * @param IncidentReport $incident_report
      * @return View
      */
-    public function patchReportActivateAction(Request $request, IncidentReport $incident_report): View
+    public function patchReportActivateAction(IncidentReport $incident_report): View
     {
-        return $this->activate($request, $incident_report);
+        return $this->activate($incident_report);
     }
 
     /**
      * @Operation(
      *     tags={"Incident reports"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Desactivates an existing report",
      *     @SWG\Parameter(
      *         name="lang",
      *         in="path",
@@ -331,14 +376,14 @@ class IncidentReportController extends ApiController
      *      )
      * )
      * @FOS\Patch("/incidents/types/{type}/reports/{lang}/desactivate")
+     * @FOS\Patch("/incidents/types/reports/{slug}/desactivate", name="_slug")
      * @ParamConverter("incident_report", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
-     * @param Request $request the request object
      * @param IncidentReport $incident_report
      * @return View
      */
-    public function patchReportDesactivateAction(Request $request, IncidentReport $incident_report): View
+    public function patchReportDesactivateAction(IncidentReport $incident_report): View
     {
-        return $this->desactivate($request, $incident_report);
+        return $this->desactivate($incident_report);
     }
 
 }
