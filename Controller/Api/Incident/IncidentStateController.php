@@ -45,14 +45,14 @@ class IncidentStateController extends ApiController
      *      @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Offset from which to start listing incident priorities.",
+     *         description="Offset from which to start listing",
      *         required=false,
      *         type="string"
      *     ),
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="How many incident priorities to return.",
+     *         description="How many entities to return",
      *         required=false,
      *         type="string"
      *     ),
@@ -79,7 +79,7 @@ class IncidentStateController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident states"},
-     *     summary="Gets a network admin for a given id",
+     *     summary="Gets a state for a given id",
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful",
@@ -109,7 +109,48 @@ class IncidentStateController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident states"},
-     *     summary="Creates a new network from the submitted data.",
+     *     summary="Removes a state",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentState::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
+     * )
+     * @FOS\Delete("/states/{slug}"))
+     * @param IncidentState $incident_state
+     * @return View
+     */
+    public function deleteIncidentStateAction(IncidentState $incident_state): View
+    {
+        return $this->delete($incident_state);
+    }
+
+    /**
+     * @Operation(
+     *     tags={"Incident states"},
+     *     summary="Creates a new state from the submitted data.",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -157,7 +198,7 @@ class IncidentStateController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident states"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Update state decision from the submitted data",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -206,7 +247,7 @@ class IncidentStateController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident states"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Activates an existing state",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -241,21 +282,20 @@ class IncidentStateController extends ApiController
      *          )
      *      )
      * )
-     * @param Request $request the request object
      * @param IncidentState $incident_state
      * @return View
      *
      * @FOS\Patch("/states/{slug}/activate")
      */
-    public function patchIncidentStateActivateAction(Request $request, IncidentState $incident_state): View
+    public function patchIncidentStateActivateAction(IncidentState $incident_state): View
     {
-        return $this->activate($request, $incident_state);
+        return $this->activate($incident_state);
     }
 
     /**
      * @Operation(
      *     tags={"Incident states"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Desactivates an existing state",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -290,15 +330,14 @@ class IncidentStateController extends ApiController
      *          )
      *      )
      * )
-     * @param Request $request the request object
      * @param IncidentState $incident_state
      * @return View
      *
      * @FOS\Patch("/states/{slug}/desactivate")
      */
-    public function patchIncidentStateDesactivateAction(Request $request, IncidentState $incident_state): View
+    public function patchIncidentStateDesactivateAction(IncidentState $incident_state): View
     {
-        return $this->desactivate($request, $incident_state);
+        return $this->desactivate($incident_state);
     }
 
 }

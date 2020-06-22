@@ -45,14 +45,14 @@ class IncidentPriorityController extends ApiController
      *     @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Offset from which to start listing incident priorities.",
+     *         description="Offset from which to start listing",
      *         required=false,
      *         type="string"
      *     ),
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="How many incident priorities to return.",
+     *         description="How many entities to return",
      *         required=false,
      *         type="string"
      *     ),
@@ -79,7 +79,7 @@ class IncidentPriorityController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident priorities"},
-     *     summary="Gets a network admin for a given id",
+     *     summary="Gets a priority admin for a given id",
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful",
@@ -93,7 +93,8 @@ class IncidentPriorityController extends ApiController
      *         description="Returned when the network is not found"
      *     )
      * )
-     * @FOS\Get("/priorities/{id}")
+     * @FOS\Get("/priorities/{id}", name="_id")
+     * @FOS\Get("/priorities/{urgency}/{impact}")
      * @param IncidentPriority $incident_priority
      * @return View
      */
@@ -109,37 +110,49 @@ class IncidentPriorityController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident priorities"},
-     *     summary="Gets a network admin for a given id",
+     *     summary="Removes a priority",
      *     @SWG\Response(
-     *         response="200",
+     *         response="204",
      *         description="Returned when successful",
      *          @SWG\Schema(
      *              type="array",
      *              @SWG\Items(ref=@Model(type=IncidentPriority::class, groups={"api"}))
      *          )
      *     ),
-     *     @SWG\Response(
-     *         response="404",
-     *         description="Returned when the network is not found"
-     *     )
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
-     * @FOS\Get("/priorities/{urgency}/{impact}")
+     * @FOS\Delete("/priorities/{id}", name="_id", requirements={"id"="\d+"}))
+     * @FOS\Delete("/priorities/{urgency}/{impact}")
      * @param IncidentPriority $incident_priority
      * @return View
      */
-    public function getIncidentPriorityBySlugAction(IncidentPriority $incident_priority): View
+    public function deletePriorityAction(IncidentPriority $incident_priority): View
     {
-        try {
-            return $this->response([$incident_priority], Response::HTTP_OK);
-        } catch (InvalidFormException $exception) {
-            return $this->responseError($exception);
-        }
+        return $this->delete($incident_priority);
     }
 
     /**
      * @Operation(
      *     tags={"Incident priorities"},
-     *     summary="Creates a new network from the submitted data.",
+     *     summary="Creates a new priority from the submitted data.",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -186,7 +199,7 @@ class IncidentPriorityController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident priorities"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Update existing priority from the submitted data",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -221,7 +234,8 @@ class IncidentPriorityController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Patch("/priorities/{id}")
+     * @FOS\Patch("/priorities/{id}", name="_id")
+     * @FOS\Patch("/priorities/{urgency}/{impact}")
      * @param Request $request the request object
      * @param IncidentPriority $incident_priority
      * @return View
@@ -234,7 +248,7 @@ class IncidentPriorityController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident priorities"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Activates an existing priority",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -269,20 +283,20 @@ class IncidentPriorityController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Patch("/priorities/{id}/activate")
-     * @param Request $request the request object
+     * @FOS\Patch("/priorities/{id}/activate", name="_id")
+     * @FOS\Patch("/priorities/{urgency}/{impact}/activate")
      * @param IncidentPriority $incident_priority
      * @return View
      */
-    public function patchIncidentPriorityActivateAction(Request $request, IncidentPriority $incident_priority): View
+    public function patchIncidentPriorityActivateAction(IncidentPriority $incident_priority): View
     {
-        return $this->activate($request, $incident_priority);
+        return $this->activate($incident_priority);
     }
 
     /**
      * @Operation(
      *     tags={"Incident priorities"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Desactivates an existing priority",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -317,14 +331,14 @@ class IncidentPriorityController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Patch("/priorities/{id}/desactivate")
-     * @param Request $request the request object
+     * @FOS\Patch("/priorities/{id}/desactivate", name="_id")
+     * @FOS\Patch("/priorities/{urgency}/{impact}/desactivate")
      * @param IncidentPriority $incident_priority
      * @return View
      */
-    public function patchIncidentPriorityDesactivateAction(Request $request, IncidentPriority $incident_priority): View
+    public function patchIncidentPriorityDesactivateAction(IncidentPriority $incident_priority): View
     {
-        return $this->desactivate($request, $incident_priority);
+        return $this->desactivate($incident_priority);
     }
 
 }

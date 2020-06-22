@@ -44,14 +44,14 @@ class NetworkAdminController extends ApiController
      *     @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Offset from which to start listing network admins.",
+     *         description="Offset from which to start listing",
      *         required=false,
      *         type="string"
      *     ),
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="How many network admins to return.",
+     *         description="How many entities to return",
      *         required=false,
      *         type="string"
      *     ),
@@ -73,6 +73,48 @@ class NetworkAdminController extends ApiController
     public function getNetworkAdminsAction(ParamFetcherInterface $paramFetcher): View
     {
         return $this->getAll($paramFetcher);
+    }
+
+    /**
+     * @Operation(
+     *     tags={"Network admin"},
+     *     summary="Removes a network admin",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=NetworkAdmin::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
+     * )
+     * @FOS\Delete("/networks/admins/{id}", requirements={"id" = "\d+"})
+     * @FOS\Delete("/networks/admins/{slug}", name="_slug")
+     * @param NetworkAdmin $incident_state
+     * @return View
+     */
+    public function deleteNetworkAdminAction(NetworkAdmin $incident_state): View
+    {
+        return $this->delete($incident_state);
     }
 
     /**
@@ -105,7 +147,7 @@ class NetworkAdminController extends ApiController
     /**
      * @Operation(
      *     tags={"Network admin"},
-     *     summary="Creates a new network from the submitted data.",
+     *     summary="Creates a new admin from the submitted data.",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -152,7 +194,7 @@ class NetworkAdminController extends ApiController
     /**
      * @Operation(
      *     tags={"Network admin"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Update existing admin from the submitted data",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -201,7 +243,7 @@ class NetworkAdminController extends ApiController
     /**
      * @Operation(
      *     tags={"Network admin"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Activates an existing admin",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -238,19 +280,18 @@ class NetworkAdminController extends ApiController
      * )
      * @FOS\Patch("/networks/admins/{id}/activate")
      * @FOS\Patch("/networks/admins/{slug}/activate",name="slug")
-     * @param Request $request the request object
      * @param NetworkAdmin $network_admin
      * @return View
      */
-    public function patchNetworkAdminActivateAction(Request $request, NetworkAdmin $network_admin): View
+    public function patchNetworkAdminActivateAction(NetworkAdmin $network_admin): View
     {
-        return $this->activate($request, $network_admin);
+        return $this->activate($network_admin);
     }
 
     /**
      * @Operation(
      *     tags={"Network admin"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Desactivates an existing admin",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -287,13 +328,12 @@ class NetworkAdminController extends ApiController
      * )
      * @FOS\Patch("/networks/admins/{id}/desactivate")
      * @FOS\Patch("/networks/admins/{slug}/desactivate",name="slug")
-     * @param Request $request the request object
      * @param NetworkAdmin $network_admin
      * @return View
      */
-    public function patchNetworkAdminDesactivateAction(Request $request, NetworkAdmin $network_admin): View
+    public function patchNetworkAdminDesactivateAction(NetworkAdmin $network_admin): View
     {
-        return $this->desactivate($request, $network_admin);
+        return $this->desactivate($network_admin);
     }
 
 }

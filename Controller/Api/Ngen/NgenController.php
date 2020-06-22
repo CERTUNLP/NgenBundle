@@ -45,7 +45,6 @@ class NgenController extends AbstractFOSRestController
     /**
      * @Operation(
      *     tags={"root"},
-     *     summary="Get status.",
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful"
@@ -67,7 +66,7 @@ class NgenController extends AbstractFOSRestController
     /**
      * @Operation(
      *     tags={"root"},
-     *     summary="Get version.",
+     *     summary="Get version",
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful"

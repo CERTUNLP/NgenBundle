@@ -40,18 +40,60 @@ class NetworkEntityController extends ApiController
     /**
      * @Operation(
      *     tags={"Network entities"},
-     *     summary="List all academic unit networkentity.",
+     *     summary="Removes a network entity",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=NetworkEntity::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
+     * )
+     * @FOS\Delete("/networks/entities/{id}", requirements={"id" = "\d+"})
+     * @FOS\Delete("/networks/entities/{slug}", name="_slug")
+     * @param NetworkEntity $incident_state
+     * @return View
+     */
+    public function deleteNetworkEntityAction(NetworkEntity $incident_state): View
+    {
+        return $this->delete($incident_state);
+    }
+
+    /**
+     * @Operation(
+     *     tags={"Network entities"},
+     *     summary="List all network entities",
      *     @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Offset from which to start listing academic unit network_entity.",
+     *         description="Offset from which to start listing",
      *         required=false,
      *         type="string"
      *     ),
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="How many academic unit network_entity to return.",
+     *         description="How many entities to return",
      *         required=false,
      *         type="string"
      *     ),
@@ -78,7 +120,7 @@ class NetworkEntityController extends ApiController
     /**
      * @Operation(
      *     tags={"Network entities"},
-     *     summary="Gets a network admin for a given id",
+     *     summary="Gets a network entity for a given id",
      *    @SWG\Response(
      *         response="200",
      *         description="Returned when successful",
@@ -105,7 +147,7 @@ class NetworkEntityController extends ApiController
     /**
      * @Operation(
      *     tags={"Network entities"},
-     *     summary="Creates a new network from the submitted data.",
+     *     summary="Creates a new network entity from the submitted data.",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -152,7 +194,7 @@ class NetworkEntityController extends ApiController
     /**
      * @Operation(
      *     tags={"Network entities"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Update existing entity from the submitted data",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -202,7 +244,7 @@ class NetworkEntityController extends ApiController
     /**
      * @Operation(
      *     tags={"Network entities"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Activates an existing entity",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -222,21 +264,20 @@ class NetworkEntityController extends ApiController
      *         description="Returned when the form has errors"
      *     )
      * )
-     * @param Request $request the request object
      * @param NetworkEntity $network_entity
      * @return View
      * @FOS\Patch("/networks/entities/{slug}/activate", name="_slug")
      * @FOS\Patch("/networks/entities/{id}/activate")
      */
-    public function patchNetworkEntityActivateAction(Request $request, NetworkEntity $network_entity): View
+    public function patchNetworkEntityActivateAction(NetworkEntity $network_entity): View
     {
-        return $this->activate($request, $network_entity);
+        return $this->activate($network_entity);
     }
 
     /**
      * @Operation(
      *     tags={"Network entities"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Desactivates an existing entity",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -271,15 +312,14 @@ class NetworkEntityController extends ApiController
      *          )
      *      )
      * )
-     * @param Request $request the request object
      * @param NetworkEntity $network_entity
      * @return View
      * @FOS\Patch("/networks/entities/{slug}/desactivate", name="_slug")
      * @FOS\Patch("/networks/entities/{id}/desactivate")
      */
-    public function patchNetworkEntityDesactivateAction(Request $request, NetworkEntity $network_entity): View
+    public function patchNetworkEntityDesactivateAction(NetworkEntity $network_entity): View
     {
-        return $this->desactivate($request, $network_entity);
+        return $this->desactivate($network_entity);
     }
 
 }

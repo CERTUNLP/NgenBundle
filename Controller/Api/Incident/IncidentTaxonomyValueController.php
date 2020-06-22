@@ -19,11 +19,11 @@ use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Nelmio\ApiDocBundle\Annotation\Model;
 
 class IncidentTaxonomyValueController extends ApiController
 {
@@ -40,18 +40,18 @@ class IncidentTaxonomyValueController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident taxonomy values"},
-     *     summary="List all incident states.",
+     *     summary="List all taxonomy values.",
      *     @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Offset from which to start listing incident states.",
+     *         description="Offset from which to start listing",
      *         required=false,
      *         type="string"
      *     ),
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="How many incident states to return.",
+     *         description="How many entities to return",
      *         required=false,
      *         type="string"
      *     ),
@@ -79,7 +79,48 @@ class IncidentTaxonomyValueController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident taxonomy values"},
-     *     summary="Gets a network admin for a given id",
+     *     summary="Removes a taxonomy value",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=TaxonomyValue::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
+     * )
+     * @FOS\Delete("/taxonomies/values/{slug}"))
+     * @param TaxonomyValue $taxonomy_value
+     * @return View
+     */
+    public function deleteIncidentStateAction(TaxonomyValue $taxonomy_value): View
+    {
+        return $this->delete($taxonomy_value);
+    }
+
+    /**
+     * @Operation(
+     *     tags={"Incident taxonomy values"},
+     *     summary="Gets a value for a given id",
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful",
@@ -105,7 +146,7 @@ class IncidentTaxonomyValueController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident taxonomy values"},
-     *     summary="Creates a new network from the submitted data.",
+     *     summary="Creates a new value from the submitted data.",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -152,7 +193,7 @@ class IncidentTaxonomyValueController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident taxonomy values"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Update existing value from the submitted data",
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -194,12 +235,12 @@ class IncidentTaxonomyValueController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident taxonomy values"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Activates an existing value",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
      *         description="creation parameters",
-     *         @Model(type=IncidentTaxonomyType::class, groups={"api"})
+     *         @Model(type=IncidentTaxonomyValueType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="204",
@@ -229,25 +270,24 @@ class IncidentTaxonomyValueController extends ApiController
      *          )
      *      )
      * )
-     * @param Request $request the request object
      * @param TaxonomyValue $taxonomyValue
      * @return View
      * @FOS\Patch("/taxonomies/values/{slug}/activate")
      */
-    public function patchTaxonomyValueActivateAction(Request $request, TaxonomyValue $taxonomyValue): View
+    public function patchTaxonomyValueActivateAction(TaxonomyValue $taxonomyValue): View
     {
-        return $this->activate($request, $taxonomyValue);
+        return $this->activate($taxonomyValue);
     }
 
     /**
      * @Operation(
      *     tags={"Incident taxonomy values"},
-     *     summary="Update existing network from the submitted data or create a new network at a specific location.",
+     *     summary="Desactivates an existing value",
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
      *         description="creation parameters",
-     *         @Model(type=IncidentTaxonomyType::class, groups={"api"})
+     *         @Model(type=IncidentTaxonomyValueType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="204",
@@ -277,14 +317,13 @@ class IncidentTaxonomyValueController extends ApiController
      *          )
      *      )
      * )
-     * @param Request $request the request object
      * @param TaxonomyValue $taxonomyValue
      * @return View
      * @FOS\Patch("/taxonomies/values/{slug}/desactivate")
      */
-    public function patchTaxonomyValueDesactivateAction(Request $request, TaxonomyValue $taxonomyValue): View
+    public function patchTaxonomyValueDesactivateAction(TaxonomyValue $taxonomyValue): View
     {
-        return $this->desactivate($request, $taxonomyValue);
+        return $this->desactivate($taxonomyValue);
     }
 
 }
