@@ -39,7 +39,6 @@ class IncidentDefaultFieldsListener implements EventSubscriberInterface
     {
         return array(
             FormEvents::POST_SET_DATA => 'onPostSetData',
-            FormEvents::PRE_SET_DATA => 'onPreSetData',
         );
     }
 
