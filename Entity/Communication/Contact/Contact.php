@@ -28,30 +28,39 @@ abstract class Contact extends Entity
     private $id;
     /**
      * @var string|null
-     *
      * @ORM\Column(name="name", type="string", length=255)
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $name;
     /**
      * @var NetworkAdmin|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="contacts")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $network_admin;
     /**
      * @var User|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="contacts")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $user;
     /**
      * @var string|null
      *
      * @ORM\Column(name="username", type="string", length=255)
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $username;
     /**
      * @var string|null
      *
      * @ORM\Column(name="contact_type", type="string", length=255)
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $contactType;
 
@@ -59,8 +68,8 @@ abstract class Contact extends Entity
      * @var ContactCase|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase", inversedBy="contacts")
      * @ORM\JoinColumn(name="contact_case", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $contactCase;
     /**

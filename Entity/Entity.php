@@ -27,7 +27,8 @@ abstract class Entity implements EntityInterface
      * @var DateTime|null
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read"})
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     protected $createdAt = null;
@@ -35,7 +36,8 @@ abstract class Entity implements EntityInterface
      * @var DateTime|null
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read"})
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     protected $updatedAt = null;
@@ -43,6 +45,8 @@ abstract class Entity implements EntityInterface
      * @var int|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
      * @Gedmo\Blameable(on="create")
+     * @JMS\Expose()
+     * @JMS\Groups({"read"})
      */
     protected $createdBy = null;
 

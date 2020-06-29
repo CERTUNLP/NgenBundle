@@ -41,18 +41,21 @@ abstract class Network extends NetworkElement implements NetworkInterface
      *      max = 128,
      * )
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $ip_mask;
     /**
      * @var NetworkAdmin
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $network_admin;
     /**
      * @var NetworkEntity
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkEntity", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $network_entity;
     /**
@@ -68,25 +71,25 @@ abstract class Network extends NetworkElement implements NetworkInterface
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
      */
     private $ip_start_address;
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
      */
     private $ip_end_address;
     /**
      * @ORM\Column(type="string",length=2,nullable=true)
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
      */
     private $country_code;
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
      */
     private $asn;
 

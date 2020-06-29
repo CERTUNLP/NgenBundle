@@ -19,8 +19,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * TaxonomyValue
  * @ORM\Entity()
+ * @JMS\ExclusionPolicy("all")
  */
 class TaxonomyValue extends EntityApi
 {
@@ -30,25 +30,31 @@ class TaxonomyValue extends EntityApi
      * @Gedmo\Slug(fields={"value"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
      * @JMS\Expose
-     * @JMS\Groups({"api_input"})
+     * @JMS\Groups({"read"})
      * */
     protected $slug;
     /**
      * @var string|null
      *
      * @ORM\Column(name="description", type="string", length=1024)
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $description;
     /**
      * @var string|null
      *
      * @ORM\Column(name="expanded", type="string", length=255)
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $expanded;
     /**
      * @var string|null
      *
      * @ORM\Column(name="value", type="string", length=255, unique=true)
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $value;
     /**
@@ -56,14 +62,16 @@ class TaxonomyValue extends EntityApi
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate",inversedBy="values")
      * @ORM\JoinColumn(name="taxonomyPredicate", referencedColumnName="slug",nullable=true)
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
      **/
-
     private $predicate;
+
     /**
      * @var int|null
      *
      * @ORM\Column(name="version", type="integer")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $version;
 

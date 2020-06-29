@@ -22,13 +22,15 @@ class IncidentImpact extends EntityApiFrontend implements Translatable
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
      * @JMS\Expose()
-     * */
+     * @JMS\Groups({"read"})
+     */
     protected $slug = '';
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      * @Gedmo\Translatable
      */
     private $name = '';
@@ -43,6 +45,7 @@ class IncidentImpact extends EntityApiFrontend implements Translatable
      *
      * @ORM\Column(name="description", type="string", length=512, nullable=true)
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $description = '';
 

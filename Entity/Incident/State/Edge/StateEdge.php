@@ -34,7 +34,6 @@ abstract class StateEdge extends EntityApi
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Expose
      */
     protected $id;
     /**
@@ -42,6 +41,7 @@ abstract class StateEdge extends EntityApi
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState", inversedBy="edges")
      * @ORM\JoinColumn(name="oldState", referencedColumnName="slug")
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $oldState;
     /**
@@ -49,30 +49,39 @@ abstract class StateEdge extends EntityApi
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="newState", referencedColumnName="slug")
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $newState;
     /**
      * @var ContactCase|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_assigned", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $mailAssigned;
     /**
      * @var ContactCase|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_team", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $mailTeam;
     /**
      * @var ContactCase|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_admin", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $mailAdmin;
     /**
      * @var ContactCase|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_reporter", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $mailReporter;
 

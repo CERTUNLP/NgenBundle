@@ -31,6 +31,7 @@ use Exception;
 use FOS\CommentBundle\Model\Thread;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -50,6 +51,7 @@ class Incident extends EntityApiFrontend
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @JMS\Expose
+     * @JMS\Groups({"read"})
      */
     protected $id;
     /**
@@ -58,28 +60,27 @@ class Incident extends EntityApiFrontend
      * @Gedmo\Slug(fields={"id"},separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read"})
      * */
     protected $slug;
     /**
      * @var string
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"write"})
      */
     private $temporalNotes;
     /**
      * @var File
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"write"})
      */
     private $temporalEvidenceFile;
     /**
      * @var DateTime
      *
      * @ORM\Column(name="response_dead_line", type="datetime",nullable=true))
-     * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
      */
     private $responseDeadLine;
     /**
@@ -88,19 +89,21 @@ class Incident extends EntityApiFrontend
      * @ORM\Column(name="solve_dead_line", type="datetime",nullable=true))
      * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
      */
     private $solveDeadLine;
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="incidents")
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $reporter;
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="assignedIncidents")
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $assigned;
     /**
@@ -108,17 +111,18 @@ class Incident extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="incidents")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      * @JMS\Expose
-     * @JMS\Groups({"api"})
      * @CustomAssert\TypeHasReport
+     * @JMS\Groups({"read","write"})
+     * @JMS\MaxDepth(depth=1)
      */
     private $type;
     /**
      * @var IncidentFeed
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed", inversedBy="incidents")
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
      * @Assert\NotNull
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $feed;
     /**
@@ -126,7 +130,8 @@ class Incident extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState", inversedBy="incidents")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
+     * @JMS\MaxDepth(depth=1)
      */
     private $state;
     /**
@@ -134,7 +139,8 @@ class Incident extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unattended_state", referencedColumnName="slug")
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
+     * @JMS\MaxDepth(depth=1)
      */
     private $unattendedState;
     /**
@@ -142,7 +148,8 @@ class Incident extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unsolved_state", referencedColumnName="slug")
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
+     * @JMS\MaxDepth(depth=1)
      */
     private $unsolvedState;
     /**
@@ -154,14 +161,15 @@ class Incident extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp", inversedBy="incidents")
      * @ORM\JoinColumn(name="tlp_state", referencedColumnName="slug")
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
      */
     private $tlp;
     /**
      * @var IncidentPriority
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority", inversedBy="incidents")
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
+     * @JMS\MaxDepth(depth=1)
      */
     private $priority;
     /**
@@ -183,21 +191,23 @@ class Incident extends EntityApiFrontend
      * @ORM\Column(name="date", type="datetime")
      * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
      */
     private $date;
     /**
      * @var Collection
      * @JMS\Expose
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDetected",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
+     * @JMS\MaxDepth(depth=2)
      */
     private $incidentsDetected;
     /**
      * @var Collection
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateChange",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
      * @JMS\Expose
-     * @ORM\OneToMany(targetEntity="IncidentStateChange",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
+     * @JMS\MaxDepth(depth=2)
      */
     private $state_changes;
 
@@ -213,11 +223,28 @@ class Incident extends EntityApiFrontend
      * @var DateTime
      *
      * @ORM\Column(name="renotification_date", type="datetime",nullable=true)
-     * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
      */
     private $renotificationDate;
+    /**
+     * @var Host|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_origin")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
+     */
+    private $origin;
+    /**
+     * @var Host|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_destination")
+     */
+    private $destination;
+    /**
+     * @var Network|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network", inversedBy="incidents")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
+     */
+    private $network;
     /**
      * @var boolean
      */
@@ -252,27 +279,6 @@ class Incident extends EntityApiFrontend
      * @ORM\Column(name="ltd_count", type="integer")
      */
     private $ltdCount = 0;
-    /**
-     * @var Host|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_origin")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    private $origin;
-    /**
-     * @var Host|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_destination")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    private $destination;
-    /**
-     * @var Network|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network", inversedBy="incidents")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    private $network;
     /**
      * @CustomAssert\ValidAddress()
      */
@@ -1575,11 +1581,17 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-     * @return IncidentType
+
      */
     public function getType(): ?IncidentType
     {
         return $this->type;
+    }
+
+
+    public function getTypeNme()
+    {
+        return $this->getType()->getName();
     }
 
     /**

@@ -19,10 +19,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * TaxonomyPredicate
- *
- * @author einar
  * @ORM\Entity()
+ * @JMS\ExclusionPolicy("all")
  */
 class TaxonomyPredicate extends EntityApi
 {
@@ -32,38 +30,42 @@ class TaxonomyPredicate extends EntityApi
      * @Gedmo\Slug(fields={"value"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
      * @JMS\Expose
-     * @JMS\Groups({"api_input"})
+     * @JMS\Groups({"read","write"})
      * */
     protected $slug;
     /**
      * @var string
-     *
      * @ORM\Column(name="description", type="string", length=1024)
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $description;
     /**
      * @var string
-     *
      * @ORM\Column(name="expanded", type="string", length=255)
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $expanded;
     /**
      * @var int
-     *
      * @ORM\Column(name="version", type="integer")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $version;
     /**
      * @var string
-     *
      * @ORM\Column(name="value", type="string", length=255, unique=true)
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $value;
     /**
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue",mappedBy="predicate")
-     * @JMS\Exclude()
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
-
     private $values;
 
     /**

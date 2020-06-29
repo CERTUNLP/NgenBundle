@@ -90,6 +90,8 @@ abstract class ApiController extends AbstractFOSRestController
         $this->getView()->setData($data);
         $this->getView()->setStatusCode($statusCode);
         $this->getView()->setHeaders($headers);
+        $this->getView()->getContext()->setGroups(['read']);
+        $this->getView()->getContext()->enableMaxDepth();
         return $this->getView();
     }
 

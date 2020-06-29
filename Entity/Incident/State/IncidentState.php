@@ -43,15 +43,15 @@ class IncidentState extends EntityApiFrontend implements Translatable
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
      * @JMS\Expose
-     * @JMS\Groups({"api_input"})
-     * */
+     * @JMS\Groups({"read"})
+     */
     protected $slug = '';
     /**
      * @var StateBehavior
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior", inversedBy="states")
      * @ORM\JoinColumn(name="behavior", referencedColumnName="slug")
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
      */
     private $behavior;
     /**
@@ -65,7 +65,7 @@ class IncidentState extends EntityApiFrontend implements Translatable
      *
      * @ORM\Column(name="name", type="string", length=100)
      * @JMS\Expose
-     * @JMS\Groups({"api_input"})
+     * @JMS\Groups({"read","write"})
      * @Gedmo\Translatable
      */
     private $name = '';
@@ -74,17 +74,19 @@ class IncidentState extends EntityApiFrontend implements Translatable
      *
      * @ORM\Column(name="description", type="string", length=250, nullable=true)
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $description = '';
     /**
      * @var StateEdge[]|Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge",mappedBy="oldState",cascade={"persist"},orphanRemoval=true)
      * @ORM\OrderBy({"newState" = "ASC"})
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $edges;
     /**
      * @var Incident[]|Collection
-     *
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state",fetch="EXTRA_LAZY")
      */
     private $incidents;
@@ -158,7 +160,16 @@ class IncidentState extends EntityApiFrontend implements Translatable
     {
         return $this->behavior;
     }
-
+    /**
+     * @return string
+     * @JMS\Expose()
+     * @JMS\VirtualProperty()
+     * @JMS\Groups({"read","write"})
+     */
+    public function getBehaviorSlug(): string
+    {
+        return $this->getBehavior()->getSlug();
+    }
     /**
      * @param StateBehavior $behavior
      * @return IncidentState
@@ -297,6 +308,18 @@ class IncidentState extends EntityApiFrontend implements Translatable
         return $this->getNewStates()->contains($newState);
     }
 
+    /**
+     * @return Collection
+     * @JMS\Expose()
+     * @JMS\VirtualProperty()
+     * @JMS\Groups({"read","write"})
+     */
+    public function getNewStatesSlug(): Collection
+    {
+        return $this->getEdges()->map(static function (StateEdge $edge) {
+            return $edge->getNewState()->getSlug();
+        });
+    }
     /**
      * @return IncidentState[]|ArrayCollection
      */

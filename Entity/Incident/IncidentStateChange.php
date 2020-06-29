@@ -33,22 +33,23 @@ class IncidentStateChange extends Entity
     /**
      * @var StateEdge
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $stateEdge;
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")}
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $responsable;
     /**
      * @var string
      *
      * @ORM\Column(name="method", type="string", length=25)
-     * @JMS\Expose
-     * @JMS\Groups({"api_input"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $method;
     /**
@@ -57,7 +58,8 @@ class IncidentStateChange extends Entity
      * @ORM\Column(name="date", type="datetime",nullable=true)
      * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $date;
 
@@ -129,6 +131,9 @@ class IncidentStateChange extends Entity
 
     /**
      * @return IncidentState
+     * @JMS\Expose()
+     * @JMS\VirtualProperty()
+     * @JMS\Groups({"read","write"})
      */
     public function getNewState(): IncidentState
     {
@@ -155,6 +160,9 @@ class IncidentStateChange extends Entity
 
     /**
      * @return IncidentState
+     * @JMS\Expose()
+     * @JMS\VirtualProperty()
+     * @JMS\Groups({"read","write"})
      */
     public function getOldState(): ?IncidentState
     {

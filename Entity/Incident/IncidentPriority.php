@@ -21,20 +21,21 @@ class IncidentPriority extends EntityApiFrontend
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Expose
      */
     protected $id;
     /**
      * @var string
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read"})
      */
     protected $slug = '';
     /**
      * @var IncidentImpact
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="incidentsPriorities")
      * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $impact = null;
     /**
@@ -42,7 +43,8 @@ class IncidentPriority extends EntityApiFrontend
      * @var IncidentUrgency
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency", inversedBy="incidentsPriorities")
      * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $urgency = null;
     /**
@@ -54,38 +56,44 @@ class IncidentPriority extends EntityApiFrontend
      * @var int
      *
      * @ORM\Column(name="unresponse_time", type="integer")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $unresponseTime = 0;
     /**
      * @var integer|null
      * @ORM\Column(name="unresolution_time", type="integer")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $unresolutionTime;
     /**
      * @var int
      *
      * @ORM\Column(name="code", type="integer")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $code = 0;
     /**
      * @var string
      * @ORM\Column(name="name", type="string", length=255)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $name = '';
     /**
      * @var integer|null
      * @ORM\Column(name="response_time", type="integer")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $responseTime;
     /**
      * @var integer|null
      * @ORM\Column(name="resolution_time", type="integer")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $resolutionTime;
 

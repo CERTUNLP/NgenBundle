@@ -29,8 +29,7 @@ class IncidentDetected extends EntityApiFrontend
     /**
      * @var Incident
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="incidentsDetected")
-     *
-     * */
+     */
     private $incident;
 
     /**
@@ -40,22 +39,24 @@ class IncidentDetected extends EntityApiFrontend
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="assignedIncidents")
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $assigned;
     /**
      * @var IncidentType
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="incidents")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $type;
     /**
      * @var IncidentFeed
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed", inversedBy="incidents")
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      * @Assert\NotNull
      */
     private $feed;
@@ -63,23 +64,23 @@ class IncidentDetected extends EntityApiFrontend
      * @var IncidentState
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $state;
     /**
      * @var IncidentTlp
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp", inversedBy="incidents")
      * @ORM\JoinColumn(name="tlp_state", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $tlp;
     /**
      * @var IncidentPriority
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority", inversedBy="incidents")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $priority;
     /**
@@ -88,6 +89,8 @@ class IncidentDetected extends EntityApiFrontend
     private $evidence_file;
     /**
      * @ORM\Column(name="evidence_file_path", type="string",nullable=true)
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $evidence_file_path;
     /**
@@ -97,15 +100,16 @@ class IncidentDetected extends EntityApiFrontend
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $notes;
     /**
      * @var DateTime
-     *
      * @ORM\Column(name="date", type="datetime",nullable=true)
-     * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $date;
 
