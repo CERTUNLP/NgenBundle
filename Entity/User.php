@@ -73,6 +73,7 @@ class User extends BaseUser implements EntityApiFrontendInterface
      *
      * @ORM\Column(type="string", length=50)
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $firstname;
     /**
@@ -80,18 +81,21 @@ class User extends BaseUser implements EntityApiFrontendInterface
      *
      * @ORM\Column(name="lastname", type="string", length=50)
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $lastname;
     /**
      * @var DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
+     * @JMS\Groups({"read"})
      */
     private $createdAt;
     /**
      * @var DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime")
+     * @JMS\Groups({"read"})
      */
     private $updatedAt;
     /**
@@ -105,6 +109,8 @@ class User extends BaseUser implements EntityApiFrontendInterface
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\Contact",mappedBy="user",cascade={"persist"},orphanRemoval=true)
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $contacts;
     /**
@@ -124,8 +130,6 @@ class User extends BaseUser implements EntityApiFrontendInterface
         $this->assignedIncidents = new ArrayCollection();
         $this->contacts = new ArrayCollection();
     }
-
-
 
     /**
      * @return string

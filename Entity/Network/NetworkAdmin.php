@@ -48,21 +48,25 @@ class NetworkAdmin extends EntityApiFrontend
     protected $id;
     /**
      * @var string
-     *
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true,unique=true)
-     * */
+     * @JMS\Expose
+     * @JMS\Groups({"read"})
+     */
     protected $slug;
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string")
-     * @JMS\Expose()
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $name;
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\Contact",mappedBy="network_admin",cascade={"persist"},orphanRemoval=true)
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $contacts;
     /**

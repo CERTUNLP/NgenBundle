@@ -34,18 +34,19 @@ class NetworkEntity extends EntityApi
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string")
-     * @JMS\Expose
-     */
-    private $name = '';
-    /**
-     * @var string
-     *
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string",nullable=true)
      * @JMS\Expose
-     * */
+     * @JMS\Groups({"read"})
+     */
     protected $slug = '';
+    /**
+     * @var string
+     * @ORM\Column(name="name", type="string")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
+     */
+    private $name = '';
     /**
      * @var Network
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network",mappedBy="network_entity"))

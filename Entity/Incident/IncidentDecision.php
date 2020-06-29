@@ -23,7 +23,6 @@ class IncidentDecision extends EntityApiFrontend
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Expose()
      */
     protected $id;
     /**
@@ -36,7 +35,8 @@ class IncidentDecision extends EntityApiFrontend
      *          @Gedmo\SlugHandlerOption(name="separator", value="_")
      *      })
      * }, fields={"id"})
-     *
+     * @JMS\Expose()
+     * @JMS\Groups({"read"})
      */
     protected $slug = '';
     /**
@@ -44,6 +44,7 @@ class IncidentDecision extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $type;
     /**
@@ -51,6 +52,8 @@ class IncidentDecision extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed")
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
+     *
      */
     private $feed;
     /**
@@ -58,6 +61,7 @@ class IncidentDecision extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network")
      * @ORM\JoinColumn(name="network", referencedColumnName="id")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $network;
     /**
@@ -65,6 +69,7 @@ class IncidentDecision extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact")
      * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $impact;
     /**
@@ -72,6 +77,7 @@ class IncidentDecision extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency")
      * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $urgency;
     /**
@@ -79,6 +85,7 @@ class IncidentDecision extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp")
      * @ORM\JoinColumn(name="tlp", referencedColumnName="slug")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $tlp;
     /**
@@ -86,6 +93,7 @@ class IncidentDecision extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $state;
     /**
@@ -93,6 +101,7 @@ class IncidentDecision extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unattended_state", referencedColumnName="slug")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $unattendedState;
     /**
@@ -100,6 +109,7 @@ class IncidentDecision extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unsolved_state", referencedColumnName="slug")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $unsolvedState;
     /**
@@ -107,6 +117,7 @@ class IncidentDecision extends EntityApiFrontend
      *
      * @ORM\Column(name="auto_saved", type="boolean")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $autoSaved = false;
 

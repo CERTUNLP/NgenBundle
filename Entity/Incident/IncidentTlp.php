@@ -22,7 +22,8 @@ class IncidentTlp extends EntityApiFrontend implements Translatable
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=45, nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      * @Gedmo\Translatable
      */
     private $name = '';
@@ -30,7 +31,8 @@ class IncidentTlp extends EntityApiFrontend implements Translatable
      * @var integer
      *
      * @ORM\Column(name="code", type="integer", nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $code = 0;
     /**
@@ -38,7 +40,8 @@ class IncidentTlp extends EntityApiFrontend implements Translatable
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read"})
      * */
     protected $slug = '';
     /**
@@ -51,7 +54,8 @@ class IncidentTlp extends EntityApiFrontend implements Translatable
      * @var string
      *
      * @ORM\Column(name="when", type="string", length=500, nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $when = '';
     /**
@@ -64,26 +68,28 @@ class IncidentTlp extends EntityApiFrontend implements Translatable
      * @var string
      *
      * @ORM\Column(name="why", type="string", length=500, nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $why = '';
     /**
      * @var string
      *
      * @ORM\Column(name="information", type="string", length=10, nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $information = '';
     /**
      * @var string
-     *
      * @ORM\Column(name="description", type="string", length=150, nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $description = '';
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="tlp",fetch="EXTRA_LAZY")
-     * @JMS\Exclude()
+    /**
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="tlp",fetch="EXTRA_LAZY")
      */
     private $incidents;
 

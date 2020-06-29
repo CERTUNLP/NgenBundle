@@ -41,12 +41,15 @@ class IncidentReport extends EntityApiFrontend
      *      })
      * }, fields={"lang"})
      * @Doctrine\ORM\Mapping\Column(length=64, unique=true)
+     * @JMS\Expose
+     * @JMS\Groups({"read"})
      */
     protected $slug;
     /**
      * @var string
      * @ORM\Column(name="lang", type="string", length=2)
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $lang = '';
     /**
@@ -54,6 +57,8 @@ class IncidentReport extends EntityApiFrontend
      *
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="reports")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $type;
     /**
@@ -61,6 +66,7 @@ class IncidentReport extends EntityApiFrontend
      *
      * @ORM\Column(name="problem", type="text")
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $problem = '';
     /**
@@ -68,6 +74,7 @@ class IncidentReport extends EntityApiFrontend
      *
      * @ORM\Column(name="derivated_problem", type="text",nullable=true)
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $derivated_problem = '';
     /**
@@ -75,6 +82,7 @@ class IncidentReport extends EntityApiFrontend
      *
      * @ORM\Column(name="verification", type="text",nullable=true)
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $verification = '';
     /**
@@ -82,6 +90,7 @@ class IncidentReport extends EntityApiFrontend
      *
      * @ORM\Column(name="recomendations", type="text",nullable=true)
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $recomendations = '';
     /**
@@ -89,6 +98,7 @@ class IncidentReport extends EntityApiFrontend
      *
      * @ORM\Column(name="more_information", type="text",nullable=true)
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $more_information = '';
 

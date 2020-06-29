@@ -23,8 +23,8 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @JMS\ExclusionPolicy("all")
  * @ORM\MappedSuperclass()
+ * @JMS\ExclusionPolicy("all")
  */
 abstract class NetworkElement extends EntityApiFrontend
 {
@@ -34,16 +34,15 @@ abstract class NetworkElement extends EntityApiFrontend
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Expose
      */
     protected $id;
     /**
      * @var string
      *
      * @ORM\Column(type="string", length=39, nullable=true)
-     * @JMS\Expose
      * @JMS\SerializedName("address")
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      * @CustomAssert\ValidAddress()
      */
     private $ip;
@@ -51,9 +50,9 @@ abstract class NetworkElement extends EntityApiFrontend
      * @var string
      *
      * @ORM\Column(type="string", nullable=true)
-     * @JMS\Expose
      * @JMS\SerializedName("address")
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      * @CustomAssert\ValidAddress()
      */
     private $domain;

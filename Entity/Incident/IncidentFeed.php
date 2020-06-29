@@ -38,15 +38,14 @@ class IncidentFeed extends EntityApiFrontend
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
      * @JMS\Expose
-     * @JMS\Groups({"api_input"})
-     * */
+     * @JMS\Groups({"read"})
+     **/
     protected $slug = '';
     /**
      * @var string
-     *
      * @ORM\Column(name="name", type="string", length=100)
      * @JMS\Expose
-     * @JMS\Groups({"api_input"})
+     * @JMS\Groups({"read","write"})
      */
     private $name = '';
     /**
@@ -54,11 +53,11 @@ class IncidentFeed extends EntityApiFrontend
      *
      * @ORM\Column(name="description", type="string", length=250, nullable=true)
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $description = '';
     /**
      * @var Incident[]|Collection
-     *
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="feed",fetch="EXTRA_LAZY")
      */
     private $incidents;

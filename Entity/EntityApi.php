@@ -16,8 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @JMS\ExclusionPolicy("all")
  * @ORM\MappedSuperclass()
+ * @JMS\ExclusionPolicy("all")
  */
 abstract class EntityApi extends Entity implements EntityApiInterface
 {
@@ -35,7 +35,8 @@ abstract class EntityApi extends Entity implements EntityApiInterface
      * @var boolean
      *
      * @ORM\Column(type="boolean")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     protected $active = true;
 

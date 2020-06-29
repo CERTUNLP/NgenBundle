@@ -22,14 +22,15 @@ class IncidentUrgency extends EntityApiFrontend implements Translatable
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
-     * @JMS\Expose
-     * */
+     * @JMS\Expose()
+     * @JMS\Groups({"read"})
+     */
     protected $slug = '';
     /**
      * @var string
-     *
      * @ORM\Column(name="name", type="string", length=45, nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      * @Gedmo\Translatable
      */
     private $name = '';
@@ -43,7 +44,8 @@ class IncidentUrgency extends EntityApiFrontend implements Translatable
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $description = '';
     /**

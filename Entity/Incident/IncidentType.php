@@ -23,8 +23,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 //use Doctrine\Common\Collections\Collection;
 
 /**
- * IncidentType
- *
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentTypeRepository")
  * @UniqueEntity(
  *     fields={"name"},
@@ -40,6 +38,7 @@ class IncidentType extends EntityApiFrontend
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
      * @JMS\Expose
+     * @JMS\Groups({"read"})
      */
     protected $slug;
     /**
@@ -47,12 +46,14 @@ class IncidentType extends EntityApiFrontend
      *
      * @ORM\Column(name="name", type="string", length=100)
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $name;
     /**
      * @var boolean
      * @ORM\Column(name="is_Classification", type="boolean")
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $isClassification = false;
     /**
@@ -65,18 +66,23 @@ class IncidentType extends EntityApiFrontend
      *
      * @ORM\Column(name="description", type="string", length=250, nullable=true)
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $description;
     /**
      * @var Collection | IncidentReport[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentReport",mappedBy="type",indexBy="lang"))
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $reports;
     /**
      * @var TaxonomyValue|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue")
      * @ORM\JoinColumn(name="taxonomyValue", referencedColumnName="slug",nullable=true)
-     **/
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
+     */
     private $taxonomyValue;
 
     /**
@@ -185,6 +191,39 @@ class IncidentType extends EntityApiFrontend
     {
         $this->taxonomyValue = $taxonomyValue;
         return $this;
+    }
+
+    /**
+     * @return string
+     * @JMS\Expose()
+     * @JMS\VirtualProperty()
+     * @JMS\Groups({"read","write"})
+     */
+    public function getTaxonomyValueName(): ?string
+    {
+        return $this->getTaxonomyValue()->getValue();
+    }
+
+    /**
+     * @return string
+     * @JMS\Expose()
+     * @JMS\VirtualProperty()
+     * @JMS\Groups({"read","write"})
+     */
+    public function getTaxonomyPredicateName(): ?string
+    {
+        return $this->getTaxonomyValue()->getPredicate()->getValue();
+    }
+
+    /**
+     * @return int
+     * @JMS\Expose()
+     * @JMS\VirtualProperty()
+     * @JMS\Groups({"read","write"})
+     */
+    public function getReportsCount(): int
+    {
+        return $this->getReports()->count();
     }
 
     /**

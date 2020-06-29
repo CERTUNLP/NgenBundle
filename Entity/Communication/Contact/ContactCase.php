@@ -19,36 +19,35 @@ class ContactCase extends Entity
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=45, nullable=true)
-     * @JMS\Expose
-     */
-    private $name = '';
-    /**
-     * @var string
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
      * @JMS\Expose
-     * */
+     * @JMS\Groups({"read"})
+     */
     protected $slug = '';
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=45, nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
+     */
+    private $name = '';
     /**
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $description = '';
 
     /**
-     * @var Collection|Contact[]|null
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\Contact",mappedBy="contactCase"))
-     * @JMS\Exclude()
-     */
-    private $contacts;
-    /**
      * @var int|null
      * @ORM\Column(name="level", type="integer")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $level = 0;
 

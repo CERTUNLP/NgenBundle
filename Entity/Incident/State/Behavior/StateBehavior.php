@@ -30,63 +30,66 @@ abstract class StateBehavior extends EntityApi
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=45)
-     * @JMS\Expose
-     * */
+     * @JMS\Expose()
+     * @JMS\Groups({"read"})
+     */
     protected $slug;
     /**
      * @var string|null
      *
      * @ORM\Column(name="name", type="string", length=45, nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $name;
     /**
      * @var string|null
      *
      * @ORM\Column(name="description", type="string", length=250, nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $description;
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState",mappedBy="behavior"))
+    /**
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState",mappedBy="behavior"))
      * @ORM\JoinColumn(name="states", referencedColumnName="slug")
-     * @JMS\Exclude()
      */
     private $states;
     /**
      * @var boolean
-     *
      * @ORM\Column(type="boolean")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $canEdit = true;
 
     /**
      * @var boolean
-     *
      * @ORM\Column(type="boolean")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $canEditFundamentals = true;
     /**
      * @var boolean
-     *
      * @ORM\Column( type="boolean")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $canEnrich = true;
     /**
      * @var boolean
-     *
      * @ORM\Column(type="boolean")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $canAddHistory = true;
     /**
      * @var boolean
-     *
      * @ORM\Column(type="boolean")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $canComunicate = true;
 

@@ -32,21 +32,20 @@ class Host extends NetworkElement
      * @var string
      *
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read"})
      * */
     protected $slug;
     /**
      * @var Network
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network", inversedBy="hosts", cascade={"persist"})
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $network;
     /**
      * @var Incident[]|Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="origin",fetch="EXTRA_LAZY")
-     * @JMS\Exclude()
      */
     private $incidents_as_origin;
     /**
