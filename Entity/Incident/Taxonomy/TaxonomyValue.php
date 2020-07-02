@@ -202,30 +202,6 @@ class TaxonomyValue extends EntityApi
     }
 
     /**
-     * Get value
-     *
-     * @return string
-     */
-    public function getValue(): string
-    {
-        return $this->value;
-    }
-
-    /**
-     * Set value
-     *
-     * @param string $value
-     *
-     * @return TaxonomyValue
-     */
-    public function setValue(string $value): TaxonomyValue
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    /**
      * Get version
      *
      * @return integer
@@ -281,6 +257,38 @@ class TaxonomyValue extends EntityApi
     public function getIdentificationString(): string
     {
         return 'slug';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['value' => $this->getValue()];
+    }
+
+    /**
+     * Get value
+     *
+     * @return string
+     */
+    public function getValue(): string
+    {
+        return $this->value;
+    }
+
+    /**
+     * Set value
+     *
+     * @param string $value
+     *
+     * @return TaxonomyValue
+     */
+    public function setValue(string $value): TaxonomyValue
+    {
+        $this->value = $value;
+
+        return $this;
     }
 }
 

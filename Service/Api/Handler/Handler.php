@@ -81,8 +81,59 @@ abstract class Handler
      */
     public function post(array $parameters, bool $csrf_protection = false): EntityApiInterface
     {
-        $entity = $this->mergeIfExists($this->createEntityInstance($parameters));
-        return $this->processForm($entity, $parameters, Request::METHOD_POST, $csrf_protection);
+        return $this->processForm($this->createEntityInstance($parameters), $parameters, Request::METHOD_POST, $csrf_protection);
+    }
+
+    /**
+     * @param EntityApiInterface $entity
+     * @param array $parameters
+     * @param string $method
+     * @param bool $csrf_protection
+     * @return EntityApiInterface
+     */
+    public function processForm(EntityApiInterface $entity, array $parameters = [], string $method = '', bool $csrf_protection = true): EntityApiInterface
+    {
+        $form = $this->getFormFactory()->create($this->getEntityTypeClass(), $entity, array('csrf_protection' => $csrf_protection, 'method' => $method));
+        $parameters = $this->cleanParameters($parameters);
+        $form->submit($parameters, Request::METHOD_PATCH !== $method);
+
+        if ($form->isValid()) {
+            $entity = $form->getData();
+            if ($method === Request::METHOD_POST) {
+                $entity = $this->mergeIfExists($entity);
+            }
+            $this->getEntityManager()->persist($entity);
+            $this->getEntityManager()->flush();
+
+            return $entity;
+        }
+        throw new InvalidFormException
+        ('Invalid submitted data', $form);
+    }
+
+    /**
+     * @return FormFactoryInterface
+     */
+    public function getFormFactory(): FormFactoryInterface
+    {
+        return $this->form_factory;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEntityTypeClass(): string
+    {
+        return get_class($this->entity_type);
+    }
+
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    public function cleanParameters(array $parameters): array
+    {
+        return $parameters;
     }
 
     /**
@@ -92,7 +143,7 @@ abstract class Handler
     public function mergeIfExists(EntityApiInterface $entity): EntityApiInterface
     {
         if ($this->needCheckIfExists()) {
-            $entity_db = $this->getByIdentification($entity);
+            $entity_db = $this->getByDataIdentification($entity);
             if ($entity_db) {
                 if ($this->isReactivableEntity()) {
                     $entity_db->activate();
@@ -115,9 +166,9 @@ abstract class Handler
      * @param EntityApiInterface $entity
      * @return EntityApiInterface
      */
-    public function getByIdentification(EntityApiInterface $entity): ?EntityApiInterface
+    public function getByDataIdentification(EntityApiInterface $entity): ?EntityApiInterface
     {
-        return $this->get($entity->getIdentificationArray());
+        return $this->get($entity->getDataIdentificationArray());
     }
 
     /**
@@ -132,13 +183,11 @@ abstract class Handler
     public function isReactivableEntity(): bool
     {
         return true;
-
     }
 
     public function isMergeableEntity(): bool
     {
         return true;
-
     }
 
     /**
@@ -149,6 +198,14 @@ abstract class Handler
     public function mergeEntity(EntityApiInterface $entity_db, EntityApiInterface $entity): EntityApiInterface
     {
         return $entity_db;
+    }
+
+    /**
+     * @return EntityManagerInterface
+     */
+    public function getEntityManager(): EntityManagerInterface
+    {
+        return $this->entity_manager;
     }
 
     /**
@@ -163,34 +220,11 @@ abstract class Handler
 
     /**
      * @param EntityApiInterface $entity
-     * @param array $parameters
-     * @param string $method
-     * @param bool $csrf_protection
      * @return EntityApiInterface
      */
-    public function processForm(EntityApiInterface $entity, array $parameters = [], string $method = Request::METHOD_PUT, bool $csrf_protection = true): EntityApiInterface
+    public function getByIdentification(EntityApiInterface $entity): ?EntityApiInterface
     {
-        $form = $this->getFormFactory()->create($this->getEntityTypeClass(), $entity, array('csrf_protection' => $csrf_protection, 'method' => $method));
-        $parameters = $this->cleanParameters($parameters);
-        $form->submit($parameters, Request::METHOD_PATCH !== $method);
-
-        if ($form->isValid()) {
-            $entity = $form->getData();
-            $this->getEntityManager()->persist($entity);
-            $this->getEntityManager()->flush();
-
-            return $entity;
-        }
-        throw new InvalidFormException
-        ('Invalid submitted data', $form);
-    }
-
-    /**
-     * @return FormFactoryInterface
-     */
-    public function getFormFactory(): FormFactoryInterface
-    {
-        return $this->form_factory;
+        return $this->get($entity->getIdentificationArray());
     }
 
     /**
@@ -203,43 +237,18 @@ abstract class Handler
 
     /**
      * @param array $parameters
-     * @return array
-     */
-    public function cleanParameters(array $parameters): array
-    {
-        return $parameters;
-    }
-
-    /**
-     * @return EntityManagerInterface
-     */
-    public function getEntityManager(): EntityManagerInterface
-    {
-        return $this->entity_manager;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEntityTypeClass(): string
-    {
-        return get_class($this->entity_type);
-    }
-
-    /**
-     * @param array $parameters
      * @return EntityApiInterface
      */
-    public function getByDataIdentification(array $parameters): ?EntityApiInterface
+    public function getByParamIdentification(array $parameters): ?EntityApiInterface
     {
-        return $this->get($this->getDataIdentificationArray($parameters));
+        return $this->get($this->getParamIdentificationArray($parameters));
     }
 
     /**
      * @param array $parameters
      * @return array
      */
-    abstract public function getDataIdentificationArray(array $parameters): array;
+    abstract public function getParamIdentificationArray(array $parameters): array;
 
     /**
      * @param EntityApiInterface $entity
@@ -274,12 +283,11 @@ abstract class Handler
 
     /**
      * @param EntityApiInterface $entity
-     * @param array $parameters
      * @return EntityApiInterface
      */
-    public function delete(EntityApiInterface $entity, array $parameters = []): EntityApiInterface
+    public function delete(EntityApiInterface $entity): EntityApiInterface
     {
-        return $this->patch($this->prepareToDeletion($entity), $parameters);
+        return $this->patch($this->prepareToDeletion($entity));
     }
 
     /**
@@ -289,7 +297,6 @@ abstract class Handler
     public function prepareToDeletion(EntityApiInterface $entity): EntityApiInterface
     {
         return $entity->desactivate();
-
     }
 
     /**

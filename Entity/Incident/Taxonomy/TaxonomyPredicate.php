@@ -116,31 +116,6 @@ class TaxonomyPredicate extends EntityApi
         return $this;
     }
 
-    /**
-     * Get value
-     *
-     * @return string
-     */
-    public function getValue(): string
-    {
-        return $this->value;
-    }
-
-    /**
-     * Set value
-     *
-     * @param string $value
-     *
-     * @return taxonomyPredicate
-     */
-    public function setValue(string $value): self
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-
     public function __toString(): string
     {
         return $this->getExpanded();
@@ -206,7 +181,6 @@ class TaxonomyPredicate extends EntityApi
         return $this;
     }
 
-
     /**
      * @return Collection
      */
@@ -222,7 +196,6 @@ class TaxonomyPredicate extends EntityApi
     {
         $this->values = $values;
     }
-
 
     /**
      * @return string
@@ -256,6 +229,38 @@ class TaxonomyPredicate extends EntityApi
     public function getIdentificationString(): string
     {
         return 'slug';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['value' => $this->getValue()];
+    }
+
+    /**
+     * Get value
+     *
+     * @return string
+     */
+    public function getValue(): string
+    {
+        return $this->value;
+    }
+
+    /**
+     * Set value
+     *
+     * @param string $value
+     *
+     * @return taxonomyPredicate
+     */
+    public function setValue(string $value): self
+    {
+        $this->value = $value;
+
+        return $this;
     }
 }
 

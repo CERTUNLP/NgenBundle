@@ -20,6 +20,15 @@ class IncidentTlp extends EntityApiFrontend implements Translatable
 {
     /**
      * @var string
+     * @ORM\Id
+     * @Gedmo\Slug(fields={"name"}, separator="_")
+     * @ORM\Column(name="slug", type="string", length=45)
+     * @JMS\Expose()
+     * @JMS\Groups({"read"})
+     * */
+    protected $slug = '';
+    /**
+     * @var string
      *
      * @ORM\Column(name="name", type="string", length=45, nullable=true)
      * @JMS\Expose()
@@ -35,15 +44,6 @@ class IncidentTlp extends EntityApiFrontend implements Translatable
      * @JMS\Groups({"read","write"})
      */
     private $code = 0;
-    /**
-     * @var string
-     * @ORM\Id
-     * @Gedmo\Slug(fields={"name"}, separator="_")
-     * @ORM\Column(name="slug", type="string", length=45)
-     * @JMS\Expose()
-     * @JMS\Groups({"read"})
-     * */
-    protected $slug = '';
     /**
      * @var string
      *
@@ -332,5 +332,13 @@ class IncidentTlp extends EntityApiFrontend implements Translatable
     public function getIdentificationString(): string
     {
         return 'slug';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['name' => $this->getName()];
     }
 }

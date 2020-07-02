@@ -109,5 +109,10 @@ abstract class EntityApi extends Entity implements EntityApiInterface
         return $this;
     }
 
+    /**
+     * @return array
+     */
+    abstract public function getDataIdentificationArray(): array;
+
 
 }

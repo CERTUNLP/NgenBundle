@@ -93,7 +93,6 @@ class IncidentRepository extends ServiceEntityRepository
     {
         $qb = $this->getOrCreateQueryBuilder($qb);
         if ($address) {
-
             $qb->innerJoin('i.origin', 'h')
                 ->andWhere($qb->expr()->orX(
                     $qb->expr()->eq('h.ip', ':address'),

@@ -171,42 +171,6 @@ class IncidentPriority extends EntityApiFrontend
     }
 
     /**
-     * @return IncidentImpact
-     */
-    public function getImpact(): ?IncidentImpact
-    {
-        return $this->impact;
-    }
-
-    /**
-     * @param IncidentImpact $impact
-     * @return IncidentPriority
-     */
-    public function setImpact(IncidentImpact $impact): IncidentPriority
-    {
-        $this->impact = $impact;
-        return $this;
-    }
-
-    /**
-     * @return IncidentUrgency
-     */
-    public function getUrgency(): ?IncidentUrgency
-    {
-        return $this->urgency;
-    }
-
-    /**
-     * @param IncidentUrgency $urgency
-     * @return IncidentPriority
-     */
-    public function setUrgency(IncidentUrgency $urgency): IncidentPriority
-    {
-        $this->urgency = $urgency;
-        return $this;
-    }
-
-    /**
      * @return Incident[] | Collection
      */
     public function getIncidents(): ?Collection
@@ -328,6 +292,50 @@ class IncidentPriority extends EntityApiFrontend
     public function getDataIdentificationString(): string
     {
         return 'code';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['impact' => $this->getImpact()->getId(), 'urgency' => $this->getUrgency()->getId()];
+    }
+
+    /**
+     * @return IncidentImpact
+     */
+    public function getImpact(): ?IncidentImpact
+    {
+        return $this->impact;
+    }
+
+    /**
+     * @param IncidentImpact $impact
+     * @return IncidentPriority
+     */
+    public function setImpact(IncidentImpact $impact): IncidentPriority
+    {
+        $this->impact = $impact;
+        return $this;
+    }
+
+    /**
+     * @return IncidentUrgency
+     */
+    public function getUrgency(): ?IncidentUrgency
+    {
+        return $this->urgency;
+    }
+
+    /**
+     * @param IncidentUrgency $urgency
+     * @return IncidentPriority
+     */
+    public function setUrgency(IncidentUrgency $urgency): IncidentPriority
+    {
+        $this->urgency = $urgency;
+        return $this;
     }
 }
 

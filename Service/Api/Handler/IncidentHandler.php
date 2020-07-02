@@ -68,24 +68,8 @@ class IncidentHandler extends Handler
      */
     public function changeState(Incident $incident, IncidentState $state): EntityApiInterface
     {
-        $incident->setStateAndReporter($state, $this->getUser());
+        $incident->setState($state);
         return $this->patch($incident, []);
-    }
-
-    /**
-     * @return User|object|string
-     */
-    public function getUser(): ?User
-    {
-        return $this->getTokenStorage()->getToken() ? $this->getTokenStorage()->getToken()->getUser() : null;
-    }
-
-    /**
-     * @return TokenStorageInterface
-     */
-    public function getTokenStorage(): TokenStorageInterface
-    {
-        return $this->token_storage;
     }
 
     /**
@@ -185,8 +169,7 @@ class IncidentHandler extends Handler
     public function mergeIfExists(EntityApiInterface $entity): EntityApiInterface
     {
         $this->updateIncidentData($entity);
-        $entity = parent::mergeIfExists($entity);
-        return $entity->addIncidentDetected($entity);
+        return parent::mergeIfExists($entity);
     }
 
     /**
@@ -315,10 +298,10 @@ class IncidentHandler extends Handler
      * @param EntityApiInterface|Incident $entity
      * @return EntityApiInterface|Incident
      */
-    public function getByIdentification(EntityApiInterface $entity): ?EntityApiInterface
+    public function getDataByIdentification(EntityApiInterface $entity): ?EntityApiInterface
     {
         if ($entity->isDefined()) {
-            return $this->getRepository()->findOneLiveBy($entity->getIdentificationArray());
+            return $this->getRepository()->findOneLiveBy($entity->getDataIdentificationArray());
         }
         return null;
 
@@ -327,9 +310,19 @@ class IncidentHandler extends Handler
     /**
      * {@inheritDoc}
      */
-    public function getByDataIdentification(array $parameters): ?EntityApiInterface
+    public function getByParamIdentification(array $parameters): ?EntityApiInterface
     {
+        $parameters = $this->getParamIdentificationArray($parameters);
         return $this->findOneByTypeAndAddress($parameters['type'], $parameters['address']);
+    }
+
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    public function getParamIdentificationArray(array $parameters): array
+    {
+        return ['type' => $parameters['type'], 'address' => $parameters['address']];
     }
 
     /**
@@ -341,15 +334,6 @@ class IncidentHandler extends Handler
     {
         return $this->getRepository()->findOneByTypeAndAddress($type, $address);
 
-    }
-
-    /**
-     * @param array $parameters
-     * @return array
-     */
-    public function getDataIdentificationArray(array $parameters): array
-    {
-        return ['type' => $parameters['type'], 'address' => $parameters['address']];
     }
 
     /**
@@ -367,7 +351,8 @@ class IncidentHandler extends Handler
      */
     public function mergeEntity(EntityApiInterface $entity_db, EntityApiInterface $entity): EntityApiInterface
     {
-        $entity_db->updateVariables($entity);
+        $entity_db->updateFromDetection($entity);
+        $entity_db->addIncidentDetected($entity);
         return $entity_db;
     }
 
@@ -381,6 +366,22 @@ class IncidentHandler extends Handler
             $parameters['reporter'] = $this->getUser()->getId();
         }
         return $parameters;
+    }
+
+    /**
+     * @return User|object|string
+     */
+    public function getUser(): ?User
+    {
+        return $this->getTokenStorage()->getToken() ? $this->getTokenStorage()->getToken()->getUser() : null;
+    }
+
+    /**
+     * @return TokenStorageInterface
+     */
+    public function getTokenStorage(): TokenStorageInterface
+    {
+        return $this->token_storage;
     }
 
     /**

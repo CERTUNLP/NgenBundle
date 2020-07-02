@@ -198,4 +198,11 @@ class IncidentFeed extends EntityApiFrontend
         return 'slug';
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['name' => $this->getName()];
+    }
 }

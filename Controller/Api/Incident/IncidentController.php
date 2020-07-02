@@ -396,7 +396,7 @@ class IncidentController extends ApiController
     public function searchByTypeAndAddress(string $type, string $address = ''): View
     {
         try {
-            $incident = $this->getHandler()->getByDataIdentification(['type' => $type, 'address' => $address]);
+            $incident = $this->getHandler()->getByParamIdentification(['type' => $type, 'address' => $address]);
             if ($incident) {
                 return $this->response([$incident], Response::HTTP_OK);
             }

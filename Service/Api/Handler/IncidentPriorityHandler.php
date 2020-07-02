@@ -27,8 +27,9 @@ class IncidentPriorityHandler extends Handler
     /**
      * {@inheritDoc}
      */
-    public function getDataIdentificationArray(array $parameters): array
+    public function getParamIdentificationArray(array $parameters): array
     {
-        return ['code' => $parameters['code']];
+        return ['impact' => $parameters['impact'],'urgency'=> $parameters['urgency']];
     }
+
 }

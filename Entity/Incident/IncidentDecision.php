@@ -121,14 +121,20 @@ class IncidentDecision extends EntityApiFrontend
      */
     private $autoSaved = false;
 
+//    /**
+//     * @inheritDoc
+//     */
+//    public function getIdentificationArray(): array
+//    {
+//        return ['type' => $this->getType() ? $this->getType()->getSlug() : 'undefined', 'feed' => $this->getFeed() ? $this->getFeed()->getSlug() : 'undefined', 'network' => $this->getNetwork() ? $this->getNetwork()->getId() : null];
+//    }
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    public function getIdentificationArray(): array
+    public function getDataIdentificationArray(): array
     {
         return ['type' => $this->getType() ? $this->getType()->getSlug() : 'undefined', 'feed' => $this->getFeed() ? $this->getFeed()->getSlug() : 'undefined', 'network' => $this->getNetwork() ? $this->getNetwork()->getId() : null];
     }
-
     /**
      * @return IncidentType|null
      */
@@ -233,15 +239,11 @@ class IncidentDecision extends EntityApiFrontend
         $incident->getTlp() ?: $incident->setTlp($this->getTlp());
         $incident->getImpact() ?: $incident->setImpact($this->getImpact());
         $incident->getUrgency() ?: $incident->setUrgency($this->getUrgency());
-        $incident->getState() ?: $incident->setStateAndReporter($this->getState(), $incident->getReporter());
+        $incident->getState() ?:  $incident->setState($this->getState());
         $incident->getType() ?: $incident->setType($this->getType());
 
-        if ($incident->getState()) {
-            if ($incident->getState()->isInitial()) {
-                $incident->setStateAndReporter($this->getState(), $incident->getReporter());
-            }
-        } else {
-            $incident->setStateAndReporter($this->getState(), $incident->getReporter());
+        if ($incident->getState() && $incident->getState()->isInitial()) {
+            $incident->setState($this->getState());
         }
         return $incident;
     }

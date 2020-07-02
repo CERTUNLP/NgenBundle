@@ -139,7 +139,7 @@ abstract class ApiController extends AbstractFOSRestController
     public function getOne(array $parameters): View
     {
         try {
-            $object = $this->getHandler()->getByDataIdentification($parameters);
+            $object = $this->getHandler()->getByParamIdentification($parameters);
             if ($object) {
                 return $this->response([$object], Response::HTTP_OK);
             }
@@ -194,7 +194,7 @@ abstract class ApiController extends AbstractFOSRestController
             $parameters = array_merge($request->request->all(), $request->files->all());
             unset($parameters['_method'], $parameters['force_edit'], $parameters['reactivate']);
 
-            $db_object = $this->getByDataIdentification($parameters);
+            $db_object = $this->getByParamIdentification($parameters);
 
             if (!$db_object) {
                 if ($request->get('reactivate')) {
@@ -228,9 +228,9 @@ abstract class ApiController extends AbstractFOSRestController
      * @param array $parameters
      * @return EntityApiInterface|null
      */
-    public function getByDataIdentification(array $parameters): ?EntityApiInterface
+    public function getByParamIdentification(array $parameters): ?EntityApiInterface
     {
-        return $this->getHandler()->getByDataIdentification($parameters);
+        return $this->getHandler()->getByParamIdentification($parameters);
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident\State\Behavior;
 
-use CertUnlp\NgenBundle\Entity\EntityApi;
+use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentStateChange;
@@ -22,7 +22,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\DiscriminatorMap({"closed" = "ClosedBehavior", "on_treatment" = "OnTreatmentBehavior", "new" = "NewBehavior", "discarded" = "DiscardedBehavior", "behavior" = "StateBehavior"})
  * @JMS\ExclusionPolicy("all")
  */
-abstract class StateBehavior extends EntityApi
+abstract class StateBehavior extends Entity
 {
 
     /**
@@ -267,24 +267,20 @@ abstract class StateBehavior extends EntityApi
      */
     public function addStateChange(Incident $incident, IncidentStateChange $changeState): Incident
     {
-//        if ($this->canEnrich()) {
-//        var_dump($changeState->getId());
         $incident->getStatechanges()->add($changeState);
-//        }
-
         return $incident;
     }
 
     /**
      * @param Incident $incident
-     * @param Incident $incidentDetected
+     * @param Incident $incident_detected
      * @return Incident
      */
-    public function addIncidentDetected(Incident $incident, Incident $incidentDetected): Incident
+    public function addIncidentDetected(Incident $incident, Incident $incident_detected): Incident
     {
         if ($this->canEnrich()) {
-            $nuevo = new IncidentDetected($incidentDetected, $incident);
-            $incident->getIncidentsDetected()->add($nuevo);
+            $new_incident_detected = new IncidentDetected($incident_detected, $incident);
+            $incident->getIncidentsDetected()->add($new_incident_detected);
             $incident->increaseLtdCount();
         }
         return $incident;

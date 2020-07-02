@@ -8,48 +8,48 @@
 security:
     firewalls:
         dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            pattern:  '^/(_(profiler|wdt)|css|images|js)/'
             security: false
         secured_area:
-            pattern:    ^/api/(?!(doc.json|doc)$)
+            pattern:    '^/api/(?!(doc.json|doc)$)'
             anonymous: ~
             stateless:  true
             simple_preauth:
-                authenticator: CertUnlp\NgenBundle\Security\ApiKeyAuthenticator
+                authenticator: 'CertUnlp\NgenBundle\Security\ApiKeyAuthenticator'
         frontend:
-            pattern:        ^/*
+            pattern: '^/*'
             form_login:
-                provider:       fos_userbundle
-                login_path:     fos_user_security_login
-                check_path: fos_user_security_check
-                csrf_token_generator: security.csrf.token_manager
+                provider: 'fos_userbundle'
+                login_path: 'fos_user_security_login'
+                check_path: 'fos_user_security_check'
+                csrf_token_generator: 'security.csrf.token_manager'
             anonymous:      true
             logout:
-                path: fos_user_security_logout
-                target: fos_user_security_login
+                path: 'fos_user_security_logout'
+                target: 'fos_user_security_login'
             remember_me:
-                secret:     4aca1f11eea0be14028201ecc5579fb210c90bd3
-                lifetime:   604800  # 604.800 = 3.600 * 24 * 7 = 1 semana
+                secret: '4aca1f11eea0be14028201ecc5579fb210c90bd3'
+                lifetime: 604800  # 604.800 = 3.600 * 24 * 7 = 1 semana
 
     access_control:
-        - { path: ^/users/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/users/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/users/resetting, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/users/*, roles: ROLE_USER }
-        - { path: ^/incidents/*, roles: ROLE_USER }
-        - { path: ^/networks/*, roles: ROLE_USER }
-        - { path: ^/api/doc.html, roles: ROLE_USER }
-        - { path: ^/api/*, roles: ROLE_API }
-        - { path: ^/*, roles: ROLE_USER }
+        - { path: '^/users/login', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: '^/users/register', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: '^/users/resetting', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: '^/users/*', roles: ROLE_USER }
+        - { path: '^/incidents/*', roles: ROLE_USER }
+        - { path: '^/networks/*', roles: ROLE_USER }
+        - { path: '^/api/doc.html', roles: ROLE_USER }
+        - { path: '^/api/*', roles: ROLE_API }
+        - { path: '^/*', roles: ROLE_USER }
 
     encoders:
         FOS\UserBundle\Model\UserInterface: bcrypt
 
     providers:
         cert_unlp.ngen.api.auth.apikey_user_provider:
-            id: CertUnlp\NgenBundle\Security\ApiKeyUserProvider
+            id: 'CertUnlp\NgenBundle\Security\ApiKeyUserProvider'
         fos_userbundle:
-            id: fos_user.user_provider.username
+            id: 'fos_user.user_provider.username'
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER

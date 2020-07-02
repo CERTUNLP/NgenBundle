@@ -405,4 +405,11 @@ class IncidentState extends EntityApiFrontend implements Translatable
     {
         return 'slug';
     }
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['name' => $this->getName()];
+    }
 }

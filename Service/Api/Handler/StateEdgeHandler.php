@@ -26,7 +26,7 @@ class StateEdgeHandler extends Handler
     /**
      * {@inheritDoc}
      */
-    public function getDataIdentificationArray(array $parameters): array
+    public function getParamIdentificationArray(array $parameters): array
     {
         return ['oldState' => $parameters['oldState'], 'newState' => $parameters['newState']];
     }

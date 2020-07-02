@@ -98,24 +98,6 @@ class IncidentUrgency extends EntityApiFrontend implements Translatable
     /**
      * @return string
      */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     * @return IncidentUrgency
-     */
-    public function setName(string $name): IncidentUrgency
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
@@ -196,5 +178,31 @@ class IncidentUrgency extends EntityApiFrontend implements Translatable
     public function getIdentificationString(): string
     {
         return 'slug';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['name' => $this->getName()];
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return IncidentUrgency
+     */
+    public function setName(string $name): IncidentUrgency
+    {
+        $this->name = $name;
+        return $this;
     }
 }

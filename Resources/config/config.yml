@@ -110,6 +110,7 @@ fos_rest:
         view_response_listener: force
         formats:
             json: true
+            html: true
     format_listener:
         enabled: true
         rules:
