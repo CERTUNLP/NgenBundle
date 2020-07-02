@@ -162,14 +162,14 @@ class IncidentHandler extends Handler
     }
 
     /**
-     * @param EntityApiInterface|Incident $entity
-     * @return EntityApiInterface|Incident
+     * @param EntityApiInterface $entity_api
+     * @return EntityApiInterface
      * @throws Exception
      */
-    public function mergeIfExists(EntityApiInterface $entity): EntityApiInterface
+    public function postValidationForm(EntityApiInterface $entity_api): EntityApiInterface
     {
-        $this->updateIncidentData($entity);
-        return parent::mergeIfExists($entity);
+        $this->updateIncidentData($entity_api);
+        return $entity_api;
     }
 
     /**

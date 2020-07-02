@@ -95,7 +95,6 @@ class IncidentDecisionHandler extends Handler
     /**
      * @param Incident $incident
      * @return IncidentDecision
-     * @throws Exception
      */
     public function getByIncident(Incident $incident): ?IncidentDecision
     {

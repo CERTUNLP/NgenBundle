@@ -93,22 +93,32 @@ abstract class Handler
      */
     public function processForm(EntityApiInterface $entity, array $parameters = [], string $method = '', bool $csrf_protection = true): EntityApiInterface
     {
+        $this->preProcessForm($entity);
         $form = $this->getFormFactory()->create($this->getEntityTypeClass(), $entity, array('csrf_protection' => $csrf_protection, 'method' => $method));
         $parameters = $this->cleanParameters($parameters);
         $form->submit($parameters, Request::METHOD_PATCH !== $method);
-
         if ($form->isValid()) {
-            $entity = $form->getData();
+            $this->postValidationForm($entity);
             if ($method === Request::METHOD_POST) {
                 $entity = $this->mergeIfExists($entity);
             }
             $this->getEntityManager()->persist($entity);
             $this->getEntityManager()->flush();
 
+            $this->postProcessForm($entity);
             return $entity;
         }
         throw new InvalidFormException
         ('Invalid submitted data', $form);
+    }
+
+    /**
+     * @param EntityApiInterface $entity_api
+     * @return EntityApiInterface
+     */
+    public function preProcessForm(EntityApiInterface $entity_api): EntityApiInterface
+    {
+        return $entity_api;
     }
 
     /**
@@ -134,6 +144,15 @@ abstract class Handler
     public function cleanParameters(array $parameters): array
     {
         return $parameters;
+    }
+
+    /**
+     * @param EntityApiInterface $entity_api
+     * @return EntityApiInterface
+     */
+    public function postValidationForm(EntityApiInterface $entity_api): EntityApiInterface
+    {
+        return $entity_api;
     }
 
     /**
@@ -206,6 +225,15 @@ abstract class Handler
     public function getEntityManager(): EntityManagerInterface
     {
         return $this->entity_manager;
+    }
+
+    /**
+     * @param EntityApiInterface $entity_api
+     * @return EntityApiInterface
+     */
+    public function postProcessForm(EntityApiInterface $entity_api): EntityApiInterface
+    {
+        return $entity_api;
     }
 
     /**
