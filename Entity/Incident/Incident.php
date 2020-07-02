@@ -21,6 +21,7 @@ use CertUnlp\NgenBundle\Entity\Network\Host\Host;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Model\EntityInterface;
 use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
 use DateInterval;
 use DateTime;
@@ -31,7 +32,6 @@ use Exception;
 use FOS\CommentBundle\Model\Thread;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -152,10 +152,6 @@ class Incident extends EntityApiFrontend
      * @JMS\MaxDepth(depth=1)
      */
     private $unsolvedState;
-    /**
-     * @var User
-     */
-    private $reportReporter;
     /**
      * @var IncidentTlp
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp", inversedBy="incidents")
@@ -496,24 +492,6 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-     * @return mixed
-     */
-    public function getReportReporter(): ?User
-    {
-        return $this->reportReporter;
-    }
-
-    /**
-     * @param mixed $reportReporter
-     * @return Incident
-     */
-    public function setReportReporter(User $reportReporter): Incident
-    {
-        $this->setter($this->reportReporter, $reportReporter);
-        return $this;
-    }
-
-    /**
      * @param IncidentStateChange $changeState
      * @return Incident
      */
@@ -738,7 +716,6 @@ class Incident extends EntityApiFrontend
         $this->setter($this->slug, $slug);
         return $this;
     }
-
 
     /**
      * @param DateTime $updatedAt
@@ -1486,7 +1463,7 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-     * @param Host $origin
+     * @param EntityInterface|Host $origin
      * @return Incident
      */
     public function setOrigin(Host $origin = null): Incident
@@ -1496,30 +1473,17 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-     * @param Incident $incident
+     * @param Incident $incident_detected
      * @return Incident
      */
-    public function updateVariables(Incident $incident): Incident
+    public function updateFromDetection(Incident $incident_detected): Incident
     {
-        $this->setStateAndReporter($incident->getState(), $incident->getReporter());
-        $this->updateTlp($incident);
-        $this->updatePriority($incident);
+        $this->setState($incident_detected->getState());
+        $this->updateTlp($incident_detected);
+        $this->updatePriority($incident_detected);
 
         return $this;
 
-    }
-
-    /**
-     * Set state
-     * @param IncidentState $state
-     * @param User $reporter
-     * @return Incident
-     */
-    public function setStateAndReporter(IncidentState $state, User $reporter): Incident
-    {
-        $this->setReportReporter($reporter);
-        $this->setState($state);
-        return $this;
     }
 
     /**
@@ -1559,14 +1523,6 @@ class Incident extends EntityApiFrontend
         return $this;
     }
 
-    public function patchStateAndReporter(User $reporter): Incident
-    {
-        if ($this->getLastState() && ($this->getState() !== $this->getLastState())) {
-            $this->setStateAndReporter($this->getState(), $reporter);
-        }
-        return $this;
-    }
-
     /**
      * @return mixed
      */
@@ -1581,18 +1537,12 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-
      */
     public function getType(): ?IncidentType
     {
         return $this->type;
     }
 
-
-    public function getTypeNme()
-    {
-        return $this->getType()->getName();
-    }
 
     /**
      * @param IncidentType $type
@@ -1602,5 +1552,13 @@ class Incident extends EntityApiFrontend
     {
         $this->setter($this->type, $type, true);
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['type' => $this->getType()->getId(), 'origin' => $this->getOrigin()->getId()];
     }
 }
