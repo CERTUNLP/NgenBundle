@@ -34,8 +34,12 @@ class IncidentDetected extends EntityApiFrontend
 
     /**
      * @var User
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $reporter;
+
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="assignedIncidents")
@@ -291,7 +295,7 @@ class IncidentDetected extends EntityApiFrontend
      * @param string $evidence_file
      * @return IncidentDetected
      */
-    public function setEvidenceFile(string $evidence_file): IncidentDetected
+    public function setEvidenceFile(string $evidence_file = null): IncidentDetected
     {
         $this->evidence_file = $evidence_file;
         return $this;
@@ -300,7 +304,7 @@ class IncidentDetected extends EntityApiFrontend
     /**
      * @return string
      */
-    public function getEvidenceFilePath(): string
+    public function getEvidenceFilePath(): ?string
     {
         return $this->evidence_file_path;
     }
@@ -326,7 +330,7 @@ class IncidentDetected extends EntityApiFrontend
      * @param string $evidence_file_temp
      * @return IncidentDetected
      */
-    public function setEvidenceFileTemp(string $evidence_file_temp): IncidentDetected
+    public function setEvidenceFileTemp(string $evidence_file_temp = null): IncidentDetected
     {
         $this->evidence_file_temp = $evidence_file_temp;
         return $this;
@@ -344,7 +348,7 @@ class IncidentDetected extends EntityApiFrontend
      * @param string $notes
      * @return IncidentDetected
      */
-    public function setNotes(string $notes): IncidentDetected
+    public function setNotes(string $notes = null): IncidentDetected
     {
         $this->notes = $notes;
         return $this;
@@ -390,4 +394,11 @@ class IncidentDetected extends EntityApiFrontend
         $this->state = $state;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return [];
+    }
 }
