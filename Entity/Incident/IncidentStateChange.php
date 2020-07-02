@@ -63,20 +63,13 @@ class IncidentStateChange extends Entity
      */
     private $date;
 
-    public function __construct(Incident $incident, StateEdge $stateEdge, User $responsable = null, string $method = 'frontend')
+    public function __construct(Incident $incident, StateEdge $stateEdge, string $method = 'frontend')
     {
         $this->setIncident($incident);
-        if (!$responsable) {
-            if ($incident->getReporter()) {
-                $responsable = $incident->getReporter();
-            } else {
-                $responsable = $incident->getReportReporter();
-            }
-        }
         $this->setStateEdge($stateEdge);
         $this->setDate(new DateTime('now'));
         $this->setMethod($method);
-        $this->setResponsable($responsable);
+        $this->setResponsable($incident->getReporter());
     }
 
     /**
@@ -189,10 +182,12 @@ class IncidentStateChange extends Entity
 
     /**
      * @param User $responsable
+     * @return IncidentStateChange
      */
-    public function setResponsable(User $responsable): void
+    public function setResponsable(User $responsable = null): IncidentStateChange
     {
         $this->responsable = $responsable;
+        return $this;
     }
 
     /**
