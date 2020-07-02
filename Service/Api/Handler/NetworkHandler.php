@@ -23,7 +23,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Debug\Exception\ClassNotFoundException;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class NetworkHandler extends Handler
+class NetworkHandler extends NetworkElementHandler
 {
     /**
      * @var NetworkRdapClient
@@ -114,20 +114,6 @@ class NetworkHandler extends Handler
         return $entity;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getByDataIdentification(array $parameters): ?EntityApiInterface
-    {
-        $parameters= $this->getDataIdentificationArray($parameters);
-        return $this->getRepository()->findOneByAddress($parameters['address']);
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getDataIdentificationArray(array $parameters): array
-    {
-        return ['address' => $parameters['address']];
-    }
+
 }

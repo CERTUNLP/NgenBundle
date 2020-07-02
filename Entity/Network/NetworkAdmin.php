@@ -279,4 +279,12 @@ class NetworkAdmin extends EntityApiFrontend
     {
         return 'id';
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['name' => $this->getName()];
+    }
 }

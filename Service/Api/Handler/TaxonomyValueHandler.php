@@ -26,7 +26,7 @@ class TaxonomyValueHandler extends Handler
     /**
      * {@inheritDoc}
      */
-    public function getDataIdentificationArray(array $parameters): array
+    public function getParamIdentificationArray(array $parameters): array
     {
         return ['value' => $parameters['value']];
     }

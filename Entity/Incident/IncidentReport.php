@@ -275,4 +275,11 @@ class IncidentReport extends EntityApiFrontend
         return 'slug';
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['lang' => $this->getLang(), 'type' => $this->getType()->getId()];
+    }
 }

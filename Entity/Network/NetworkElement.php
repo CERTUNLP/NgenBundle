@@ -17,6 +17,7 @@ use CertUnlp\NgenBundle\Entity\Network\Address\Address;
 use CertUnlp\NgenBundle\Entity\Network\Address\DomainAddress;
 use CertUnlp\NgenBundle\Entity\Network\Address\IpV4Address;
 use CertUnlp\NgenBundle\Entity\Network\Address\IpV6Address;
+use CertUnlp\NgenBundle\Model\EntityInterface;
 use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
@@ -179,6 +180,10 @@ abstract class NetworkElement extends EntityApiFrontend
         return $this->address ? $this->address->getAddressMask() : '';
     }
 
+    /**
+     * @param EntityInterface|NetworkElement|null $other
+     * @return bool
+     */
     public function equals(NetworkElement $other = null): bool
     {
         if ($other) {
@@ -263,4 +268,11 @@ abstract class NetworkElement extends EntityApiFrontend
         return 'id';
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['address' => $this->getAddress()];
+    }
 }

@@ -102,9 +102,9 @@ class IncidentListener
     }
 
     /**
-     * @return Router
+     * @return RouterInterface
      */
-    public function getRouter(): Router
+    public function getRouter(): RouterInterface
     {
         return $this->router;
     }

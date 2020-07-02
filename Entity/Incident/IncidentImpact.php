@@ -77,24 +77,6 @@ class IncidentImpact extends EntityApiFrontend implements Translatable
     /**
      * @return string
      */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     * @return IncidentImpact
-     */
-    public function setName(string $name): IncidentImpact
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
@@ -172,5 +154,31 @@ class IncidentImpact extends EntityApiFrontend implements Translatable
     public function getIdentificationString(): string
     {
         return 'slug';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['name' => $this->getName()];
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return IncidentImpact
+     */
+    public function setName(string $name): IncidentImpact
+    {
+        $this->name = $name;
+        return $this;
     }
 }

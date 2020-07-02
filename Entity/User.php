@@ -499,4 +499,9 @@ class User extends BaseUser implements EntityApiFrontendInterface
     {
         return 'id';
     }
+
+    public function getDataIdentificationArray(): array
+    {
+        return ['username' => $this->getUsername()];
+    }
 }

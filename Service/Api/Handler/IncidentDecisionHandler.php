@@ -18,6 +18,7 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Entity\Network\Network;
 use CertUnlp\NgenBundle\Form\IncidentDecisionType;
+use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use CertUnlp\NgenBundle\Repository\IncidentDecisionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,45 +40,22 @@ class IncidentDecisionHandler extends Handler
     }
 
     /**
+     * @param array $parameters
+     * @return EntityApiInterface
+     * @throws Exception
+     */
+    public function getByParamIdentification(array $parameters): ?EntityApiInterface
+    {
+        $parameters = $this->getParamIdentificationArray($parameters);
+        return $this->getByNetwork($parameters['type'], $parameters['feed'], $parameters['network']);
+    }
+
+    /**
      * @inheritDoc
      */
-    public function getDataIdentificationArray(array $parameters): array
+    public function getParamIdentificationArray(array $parameters): array
     {
         return ['type' => $parameters['type'] ?? 'undefined', 'feed' => $parameters['feed'] ?? 'undefined', 'network' => $parameters['network'] ?? null];
-    }
-
-    /**
-     * @param Incident $incident
-     * @return IncidentDecision
-     * @throws Exception
-     */
-    public function getByIncident(Incident $incident): ?IncidentDecision
-    {
-        $decisions = new ArrayCollection($this->all(['type' => $incident->getType() ? $incident->getType()->getSlug() : 'undefined', 'feed' => $incident->getFeed() ? $incident->getFeed()->getSlug() : 'undefined', 'get_undefined' => true]));
-
-        $ordered_decisions = $this->orderDecisionsByNetworkMask($decisions);
-
-        foreach ($ordered_decisions as $decision) {
-            if ($decision->getNetwork() === '' || ($incident->getNetwork() && $decision->getNetwork() && $incident->getNetwork()->inRange($decision->getNetwork()))) {
-                return $decision;
-            }
-        }
-
-        return $decisions->last() ?: null;
-    }
-
-    /**
-     * @param ArrayCollection $decisions
-     * @return ArrayIterator
-     * @throws Exception
-     */
-    public function orderDecisionsByNetworkMask(ArrayCollection $decisions): ArrayIterator
-    {
-        $iterator = $decisions->getIterator();
-        $iterator->uasort(static function (IncidentDecision $first, IncidentDecision $second) {
-            return (int)($first->getNetwork() ? $first->getNetwork()->getAddressMask() : -1) <= (int)($second->getNetwork() ? $second->getNetwork()->getAddressMask() : -2);
-        });
-        return $iterator;
     }
 
     /**
@@ -97,6 +75,40 @@ class IncidentDecisionHandler extends Handler
                 return $decision;
             }
         }
+        return $decisions->last() ?: null;
+    }
+
+    /**
+     * @param ArrayCollection $decisions
+     * @return ArrayIterator
+     * @throws Exception
+     */
+    public function orderDecisionsByNetworkMask(ArrayCollection $decisions): ArrayIterator
+    {
+        $iterator = $decisions->getIterator();
+        $iterator->uasort(static function (IncidentDecision $first, IncidentDecision $second) {
+            return (int)($first->getNetwork() ? $first->getNetwork()->getAddressMask() : -1) <= (int)($second->getNetwork() ? $second->getNetwork()->getAddressMask() : -2);
+        });
+        return $iterator;
+    }
+
+    /**
+     * @param Incident $incident
+     * @return IncidentDecision
+     * @throws Exception
+     */
+    public function getByIncident(Incident $incident): ?IncidentDecision
+    {
+        $decisions = new ArrayCollection($this->all(['type' => $incident->getType() ? $incident->getType()->getSlug() : 'undefined', 'feed' => $incident->getFeed() ? $incident->getFeed()->getSlug() : 'undefined', 'get_undefined' => true]));
+
+        $ordered_decisions = $this->orderDecisionsByNetworkMask($decisions);
+
+        foreach ($ordered_decisions as $decision) {
+            if ($decision->getNetwork() === '' || ($incident->getNetwork() && $decision->getNetwork() && $incident->getNetwork()->inRange($decision->getNetwork()))) {
+                return $decision;
+            }
+        }
+
         return $decisions->last() ?: null;
     }
 

@@ -184,5 +184,11 @@ class NetworkEntity extends EntityApi
         return $this->id;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['name' => $this->getName()];
+    }
 }
