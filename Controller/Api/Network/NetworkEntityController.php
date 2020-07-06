@@ -260,12 +260,6 @@ class NetworkEntityController extends ApiController
      * @Operation(
      *     tags={"Network entities"},
      *     summary="Activates an existing entity",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=NetworkEntityType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -293,12 +287,6 @@ class NetworkEntityController extends ApiController
      * @Operation(
      *     tags={"Network entities"},
      *     summary="Desactivates an existing entity",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=NetworkEntityType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",

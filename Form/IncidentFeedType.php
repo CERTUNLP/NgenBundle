@@ -37,7 +37,7 @@ class   IncidentFeedType extends AbstractType
             ));
 
         if ($builder->getData()) {
-            if (!$builder->getData()->getIsActive()) {
+            if (!$builder->getData()->isActive()) {
                 $builder
                     ->add('reactivate', CheckboxType::class, array('data' => false, 'mapped' => false, 'label_attr' => array('class' => 'alert alert-warning'), 'attr' => array('align_with_widget' => true, 'help_text' => 'If it set to true the network will be reactivated.'), 'required' => false, 'label' => 'Reactivate?'));
             }

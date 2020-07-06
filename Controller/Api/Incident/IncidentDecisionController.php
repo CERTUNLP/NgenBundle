@@ -312,12 +312,6 @@ class IncidentDecisionController extends ApiController
      * @Operation(
      *     tags={"Incident decisions"},
      *     summary="Activates an existing decision",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentDecisionType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -359,12 +353,6 @@ class IncidentDecisionController extends ApiController
      * @Operation(
      *     tags={"Incident decisions"},
      *     summary="Desactivates an existing decision",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentDecisionType::class, groups={"api"})
-     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",

@@ -263,12 +263,7 @@ class IncidentStateController extends ApiController
      * @Operation(
      *     tags={"Incident states"},
      *     summary="Activates an existing state",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentStateType::class, groups={"api"})
-     *     ),
+
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -311,12 +306,6 @@ class IncidentStateController extends ApiController
      * @Operation(
      *     tags={"Incident states"},
      *     summary="Desactivates an existing state",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentStateType::class, groups={"api"})
-     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",

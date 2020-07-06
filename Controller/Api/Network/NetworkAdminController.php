@@ -259,12 +259,6 @@ class NetworkAdminController extends ApiController
      * @Operation(
      *     tags={"Network admin"},
      *     summary="Activates an existing admin",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=NetworkAdminType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -307,12 +301,6 @@ class NetworkAdminController extends ApiController
      * @Operation(
      *     tags={"Network admin"},
      *     summary="Desactivates an existing admin",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=NetworkAdminType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",

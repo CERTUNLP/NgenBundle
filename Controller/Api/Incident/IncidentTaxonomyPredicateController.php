@@ -251,12 +251,6 @@ class IncidentTaxonomyPredicateController extends ApiController
      * @Operation(
      *     tags={"Incident taxonomy predicates"},
      *     summary="Activates an existing predicate",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentTaxonomyPredicateType::class, groups={"api"})
-     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -298,12 +292,6 @@ class IncidentTaxonomyPredicateController extends ApiController
      * @Operation(
      *     tags={"Incident taxonomy predicates"},
      *     summary="Desactivates an existing predicate",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentTaxonomyPredicateType::class, groups={"api"})
-     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
