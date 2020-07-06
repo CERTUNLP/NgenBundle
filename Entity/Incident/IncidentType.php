@@ -201,7 +201,7 @@ class IncidentType extends EntityApiFrontend
      */
     public function getTaxonomyValueName(): ?string
     {
-        return $this->getTaxonomyValue()->getValue();
+        return $this->getTaxonomyValue() ? $this->getTaxonomyValue()->getValue() : '';
     }
 
     /**
@@ -212,7 +212,7 @@ class IncidentType extends EntityApiFrontend
      */
     public function getTaxonomyPredicateName(): ?string
     {
-        return $this->getTaxonomyValue()->getPredicate()->getValue();
+        return $this->getTaxonomyValue() ? $this->getTaxonomyValue()->getPredicate()->getValue() : '';
     }
 
     /**
