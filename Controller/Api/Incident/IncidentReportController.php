@@ -299,12 +299,6 @@ class IncidentReportController extends ApiController
      *         required=true,
      *         description="Report language"
      *     ),
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentReportType::class, groups={"api"})
-     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -355,12 +349,6 @@ class IncidentReportController extends ApiController
      *         enum={"es", "en"},
      *         required=true,
      *         description="Report language"
-     *     ),
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentReportType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="204",

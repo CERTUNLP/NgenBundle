@@ -598,12 +598,6 @@ class NetworkController extends ApiController
      * @Operation(
      *     tags={"Networks"},
      *     summary="Activates an existing network",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=NetworkType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -631,12 +625,6 @@ class NetworkController extends ApiController
      * @Operation(
      *     tags={"Networks"},
      *     summary="Activates an existing network",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=NetworkType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -663,12 +651,6 @@ class NetworkController extends ApiController
      * @Operation(
      *     tags={"Networks"},
      *     summary="Activates an existing network",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=NetworkType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -695,12 +677,6 @@ class NetworkController extends ApiController
      * @Operation(
      *     tags={"Networks"},
      *     summary="Activates an existing network",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=NetworkType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -728,12 +704,6 @@ class NetworkController extends ApiController
      * @Operation(
      *     tags={"Networks"},
      *     summary="Activates an existing network",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=NetworkType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -760,12 +730,6 @@ class NetworkController extends ApiController
      * @Operation(
      *     tags={"Networks"},
      *     summary="Desactivates an existing network",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=NetworkType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -793,12 +757,6 @@ class NetworkController extends ApiController
      * @Operation(
      *     tags={"Networks"},
      *     summary="Desactivates an existing network",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=NetworkType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -826,12 +784,6 @@ class NetworkController extends ApiController
      * @Operation(
      *     tags={"Networks"},
      *     summary="Desactivates an existing network",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=NetworkType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",

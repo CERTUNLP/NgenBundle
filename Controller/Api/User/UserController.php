@@ -246,12 +246,6 @@ class UserController extends ApiController
      * @Operation(
      *     tags={"Users"},
      *     summary="Activates an existing user",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=UserType::class, groups={"api"})
-     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -293,12 +287,6 @@ class UserController extends ApiController
      * @Operation(
      *     tags={"Users"},
      *     summary="Desactivates an existing user",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=UserType::class, groups={"api"})
-     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",

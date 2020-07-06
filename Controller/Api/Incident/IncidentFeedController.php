@@ -263,12 +263,6 @@ class IncidentFeedController extends ApiController
      * @Operation(
      *     tags={"Incident feeds"},
      *     summary="Activates an existing feed",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentFeedType::class, groups={"api"})
-     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -310,12 +304,6 @@ class IncidentFeedController extends ApiController
      * @Operation(
      *     tags={"Incident feeds"},
      *     summary="Desactivates an existing feed",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentFeedType::class, groups={"api"})
-     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",

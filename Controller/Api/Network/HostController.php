@@ -590,12 +590,6 @@ class HostController extends ApiController
      * @Operation(
      *     tags={"Network hosts"},
      *     summary="Activates an existing host",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=HostType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -623,12 +617,6 @@ class HostController extends ApiController
      * @Operation(
      *     tags={"Network hosts"},
      *     summary="Activates an existing host",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=HostType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -656,12 +644,6 @@ class HostController extends ApiController
      * @Operation(
      *     tags={"Network hosts"},
      *     summary="Activates an existing host",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=HostType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -688,12 +670,6 @@ class HostController extends ApiController
      * @Operation(
      *     tags={"Network hosts"},
      *     summary="Activates an existing host",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=HostType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -720,12 +696,6 @@ class HostController extends ApiController
      * @Operation(
      *     tags={"Network hosts"},
      *     summary="Desactivates an existing host",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=HostType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -754,12 +724,6 @@ class HostController extends ApiController
      * @Operation(
      *     tags={"Network hosts"},
      *     summary="Desactivates an existing host",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=HostType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -787,12 +751,6 @@ class HostController extends ApiController
      * @Operation(
      *     tags={"Network hosts"},
      *     summary="Desactivates an existing host",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=HostType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -819,12 +777,6 @@ class HostController extends ApiController
      * @Operation(
      *     tags={"Network hosts"},
      *     summary="Desactivates an existing host",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=HostType::class, groups={"api"})
-     *     ),
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",

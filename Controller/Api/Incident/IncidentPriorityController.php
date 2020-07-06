@@ -264,12 +264,6 @@ class IncidentPriorityController extends ApiController
      * @Operation(
      *     tags={"Incident priorities"},
      *     summary="Activates an existing priority",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentPriorityType::class, groups={"api"})
-     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -312,12 +306,6 @@ class IncidentPriorityController extends ApiController
      * @Operation(
      *     tags={"Incident priorities"},
      *     summary="Desactivates an existing priority",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentPriorityType::class, groups={"api"})
-     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",

@@ -256,12 +256,6 @@ class IncidentTypeController extends ApiController
      * @Operation(
      *     tags={"Incident types"},
      *     summary="Activates an existing type",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentTypeType::class, groups={"api"})
-     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -303,12 +297,6 @@ class IncidentTypeController extends ApiController
      * @Operation(
      *     tags={"Incident types"},
      *     summary="Desactivates an existing type",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentTypeType::class, groups={"api"})
-     *     ),
      *      @SWG\Response(
      *         response="204",
      *         description="Returned when successful",

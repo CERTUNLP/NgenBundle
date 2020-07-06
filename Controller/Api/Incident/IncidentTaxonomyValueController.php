@@ -251,12 +251,6 @@ class IncidentTaxonomyValueController extends ApiController
      * @Operation(
      *     tags={"Incident taxonomy values"},
      *     summary="Activates an existing value",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentTaxonomyValueType::class, groups={"api"})
-     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -298,12 +292,6 @@ class IncidentTaxonomyValueController extends ApiController
      * @Operation(
      *     tags={"Incident taxonomy values"},
      *     summary="Desactivates an existing value",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentTaxonomyValueType::class, groups={"api"})
-     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
