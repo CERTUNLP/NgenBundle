@@ -34,6 +34,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -306,7 +307,7 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-     * @param User $responsable
+     * @param User|UserInterface $responsable
      * @return Incident
      */
     public function setResponsable(User $responsable): Incident
