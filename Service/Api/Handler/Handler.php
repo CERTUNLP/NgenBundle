@@ -315,7 +315,10 @@ abstract class Handler
      */
     public function delete(EntityApiInterface $entity): EntityApiInterface
     {
-        return $this->patch($this->prepareToDeletion($entity));
+        $this->prepareToDeletion($entity);
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
+        return $entity;
     }
 
     /**

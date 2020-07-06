@@ -17,9 +17,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 
+
 /**
  * @ORM\MappedSuperclass()
  * @JMS\ExclusionPolicy("all")
+ * @Gedmo\SoftDeleteable()
  */
 abstract class Entity implements EntityInterface
 {
@@ -49,6 +51,32 @@ abstract class Entity implements EntityInterface
      * @JMS\Groups({"read"})
      */
     protected $createdBy = null;
+    /**
+     * @var DateTime|null
+     * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
+     * @JMS\Expose()
+     * @JMS\Groups({"read"})
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    protected $deletedAt = null;
+
+    /**
+     * @return DateTime|null
+     */
+    public function getDeletedAt(): ?DateTime
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param DateTime|null $deletedAt
+     * @return Entity
+     */
+    public function setDeletedAt(?DateTime $deletedAt): Entity
+    {
+        $this->deletedAt = $deletedAt;
+        return $this;
+    }
 
 
     /**
