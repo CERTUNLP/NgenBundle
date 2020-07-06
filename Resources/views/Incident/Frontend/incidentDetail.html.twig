@@ -58,7 +58,7 @@
         <li class="nav-item">
             <a class="nav-link" id="comments-tab" data-toggle="tab" href="#comments" role="tab"
                aria-controls="comments" aria-selected="false">{{ "Comments" |trans }}
-                <small>{{ "("~object.getCommentThread.numComments~")" }}</small>
+                <small>{{ "("~object.getCommentThread.numComments??0~")" }}</small>
             </a>
         </li>
     </ul>

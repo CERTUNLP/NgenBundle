@@ -69,7 +69,7 @@ class IncidentStateChange extends Entity
         $this->setStateEdge($stateEdge);
         $this->setDate(new DateTime('now'));
         $this->setMethod($method);
-        $this->setResponsable($incident->getReporter());
+        $this->setResponsable($incident->getResponsable() ?? $incident->getReporter());
     }
 
     /**

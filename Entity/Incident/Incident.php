@@ -279,6 +279,10 @@ class Incident extends EntityApiFrontend
      * @CustomAssert\ValidAddress()
      */
     private $address;
+    /**
+     * @var User
+     */
+    private $responsable;
 
     /**
      * Incident constructor.
@@ -291,6 +295,24 @@ class Incident extends EntityApiFrontend
         }
         $this->incidentsDetected = new ArrayCollection();
         $this->state_changes = new ArrayCollection();
+    }
+
+    /**
+     * @return User
+     */
+    public function getResponsable(): User
+    {
+        return $this->responsable;
+    }
+
+    /**
+     * @param User $responsable
+     * @return Incident
+     */
+    public function setResponsable(User $responsable): Incident
+    {
+        $this->responsable = $responsable;
+        return $this;
     }
 
     /**
@@ -659,7 +681,7 @@ class Incident extends EntityApiFrontend
     /**
      * @return IncidentCommentThread
      */
-    public function getCommentThread(): IncidentCommentThread
+    public function getCommentThread(): ?IncidentCommentThread
     {
         return $this->comment_thread;
     }
