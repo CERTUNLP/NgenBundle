@@ -203,7 +203,6 @@ class IncidentController extends ApiController
      */
     public function patchIncidentStateAction(Incident $incident, IncidentState $state): View
     {
-        $incident->setResponsable($this->getUser());
         return $this->patchState($incident, $state);
     }
 
