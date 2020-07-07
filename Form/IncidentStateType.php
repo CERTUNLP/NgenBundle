@@ -11,7 +11,9 @@
 
 namespace CertUnlp\NgenBundle\Form;
 
+use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -34,6 +36,10 @@ class IncidentStateType extends AbstractType
                 'required' => true,
             ))
             ->add('description', null, array(
+                'required' => true,
+            ))
+            ->add('behavior', EntityType::class, array(
+                'class' => StateBehavior::class,
                 'required' => true,
             ));
 

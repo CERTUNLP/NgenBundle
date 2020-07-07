@@ -156,7 +156,7 @@ class IncidentState extends EntityApiFrontend implements Translatable
     /**
      * @return StateBehavior
      */
-    public function getBehavior(): StateBehavior
+    public function getBehavior(): ?StateBehavior
     {
         return $this->behavior;
     }
