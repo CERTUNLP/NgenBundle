@@ -72,6 +72,32 @@ class IncidentHandler extends Handler
         return $this->patch($incident, []);
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    public function patch(EntityApiInterface $entity, array $parameters = null): EntityApiInterface
+    {
+        $entity->setResponsable($this->getUser());
+        return parent::patch($entity, $parameters);
+    }
+
+    /**
+     * @return User|object|string
+     */
+    public function getUser(): ?User
+    {
+        return $this->getTokenStorage()->getToken() ? $this->getTokenStorage()->getToken()->getUser() : null;
+    }
+
+    /**
+     * @return TokenStorageInterface
+     */
+    public function getTokenStorage(): TokenStorageInterface
+    {
+        return $this->token_storage;
+    }
+
     /**
      * @return array|Incident[]
      */
@@ -366,22 +392,6 @@ class IncidentHandler extends Handler
             $parameters['reporter'] = $this->getUser()->getId();
         }
         return $parameters;
-    }
-
-    /**
-     * @return User|object|string
-     */
-    public function getUser(): ?User
-    {
-        return $this->getTokenStorage()->getToken() ? $this->getTokenStorage()->getToken()->getUser() : null;
-    }
-
-    /**
-     * @return TokenStorageInterface
-     */
-    public function getTokenStorage(): TokenStorageInterface
-    {
-        return $this->token_storage;
     }
 
     /**
