@@ -14,24 +14,12 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-class IncidentDecisionTypeListener implements EventSubscriberInterface
+class IncidentDecisionTypeListener extends EntityTypeListener
 {
-    /**
-     * @var EntityManager
-     */
-    private $entity_manager;
-
-    public function __construct(EntityManagerInterface $entity_manager)
-    {
-        $this->entity_manager = $entity_manager;
-    }
 
     /**
      * {@inheritDoc}
@@ -63,11 +51,4 @@ class IncidentDecisionTypeListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @return EntityManager
-     */
-    public function getEntitymanager(): EntityManager
-    {
-        return $this->entity_manager;
-    }
 }

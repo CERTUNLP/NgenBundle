@@ -8,15 +8,10 @@
 
 namespace CertUnlp\NgenBundle\Service\Listener\Form;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Security\Core\Security;
 
-class NetworkTypeListener implements EventSubscriberInterface
+class NetworkTypeListener extends EntityTypeListener
 {
     public static function getSubscribedEvents(): array
     {

@@ -25,6 +25,15 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class NetworkType extends AbstractType
 {
+    /**
+     * @var NetworkTypeListener
+     */
+    private $network_type_listener;
+
+    public function __construct(NetworkTypeListener $network_type_listener)
+    {
+        $this->network_type_listener = $network_type_listener;
+    }
 
     /**
      * @param FormBuilderInterface $builder
@@ -75,8 +84,16 @@ class NetworkType extends AbstractType
             array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
         ));
 
-        $builder->addEventSubscriber(new NetworkTypeListener());
+        $builder->addEventSubscriber($this->getNetworkTypeListener());
 
+    }
+
+    /**
+     * @return NetworkTypeListener
+     */
+    public function getNetworkTypeListener(): NetworkTypeListener
+    {
+        return $this->network_type_listener;
     }
 
     /**

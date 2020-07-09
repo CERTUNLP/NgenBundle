@@ -32,13 +32,13 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 class IncidentDecisionType extends AbstractType
 {
     /**
-     * @var EntityManagerInterface
+     * @var IncidentDecisionTypeListener
      */
-    private $entity_manager;
+    private $decision_type_listener;
 
-    public function __construct(EntityManagerInterface $entity_manager)
+    public function __construct(IncidentDecisionTypeListener $decision_type_listener)
     {
-        $this->entity_manager = $entity_manager;
+        $this->decision_type_listener = $decision_type_listener;
     }
 
     /**
@@ -105,7 +105,15 @@ class IncidentDecisionType extends AbstractType
             ->add('save', SubmitType::class, array(
                 'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
             ))
-            ->addEventSubscriber(new IncidentDecisionTypeListener($this->getEntityManager()));
+            ->addEventSubscriber($this->getDecisionTypeListener());
+    }
+
+    /**
+     * @return IncidentDecisionTypeListener
+     */
+    public function getDecisionTypeListener(): IncidentDecisionTypeListener
+    {
+        return $this->decision_type_listener;
     }
 
     /**
