@@ -63,6 +63,7 @@ class TaxonomyValue extends EntityApi
      * @ORM\JoinColumn(name="taxonomyPredicate", referencedColumnName="slug",nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
+     * @JMS\MaxDepth(depth=1)
      **/
     private $predicate;
 
