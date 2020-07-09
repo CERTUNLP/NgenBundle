@@ -31,7 +31,7 @@
     <td class="text-center">
         <div class="d-flex  align-items-center justify-content-around">
             {% for report in  incidentType.reports %}
-                {{ print.colordropbox(report.color,report.icon,report.lang,path('cert_unlp_ngen_incident_type_report_detail',{'slug': incidentType.slug, 'lang':report.lang})) }}
+                {{ print.colordropbox(report.color,report.icon,report.lang,path('cert_unlp_ngen_incident_type_report_detail',{'type': incidentType.slug, 'lang':report.lang})) }}
             {% endfor %}
         </div>
     </td>
