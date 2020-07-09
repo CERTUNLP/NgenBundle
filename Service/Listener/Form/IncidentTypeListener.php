@@ -21,13 +21,13 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\ORMException;
+use JMS\Serializer\SerializerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Security\Core\Security;
 
-class IncidentTypeListener implements EventSubscriberInterface
+class IncidentTypeListener extends EntityTypeListener
 {
     /**
      * @var EntityManager
@@ -35,9 +35,9 @@ class IncidentTypeListener implements EventSubscriberInterface
     private $entity_manager;
     private $userLogged;
 
-    public function __construct(EntityManagerInterface $entity_manager, Security $userLogged)
+    public function __construct(SerializerInterface $serializer, EntityManagerInterface $entity_manager, Security $userLogged)
     {
-        $this->entity_manager = $entity_manager;
+        parent::__construct($serializer, $entity_manager);
         $this->userLogged = $userLogged;
     }
 
@@ -123,14 +123,6 @@ class IncidentTypeListener implements EventSubscriberInterface
                 return $repository->queryNewStates($incident ? $incident->getState()->getSlug() : 'initial');
             },
         );
-    }
-
-    /**
-     * @return EntityManager
-     */
-    public function getEntitymanager(): EntityManager
-    {
-        return $this->entity_manager;
     }
 
     /**

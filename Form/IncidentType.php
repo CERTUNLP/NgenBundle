@@ -38,20 +38,14 @@ use Symfony\Component\Security\Core\Security;
 class IncidentType extends AbstractType
 {
     /**
-     * @var Security
+     * @var IncidentTypeListener
      */
-    private $userLogged;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entity_manager;
+    private $incident_type_listener;
 
-    public function __construct(EntityManagerInterface $entity_manager, Security $userLogged)
+    public function __construct(IncidentTypeListener $incident_type_listener)
     {
-        $this->entity_manager = $entity_manager;
-        $this->userLogged = $userLogged;
+        $this->incident_type_listener = $incident_type_listener;
     }
-
 
     /**
      * @param FormBuilderInterface $builder
@@ -189,8 +183,16 @@ class IncidentType extends AbstractType
             ->add('save', SubmitType::class, array(
                 'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
             ))
-            ->addEventSubscriber(new IncidentTypeListener($this->getEntityManager(), $this->getUserLogged()));
+            ->addEventSubscriber($this->getIncidentTypeListener());
 
+    }
+
+    /**
+     * @return IncidentTypeListener
+     */
+    public function getIncidentTypeListener(): IncidentTypeListener
+    {
+        return $this->incident_type_listener;
     }
 
     /**
