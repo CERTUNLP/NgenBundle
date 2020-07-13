@@ -9,14 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Form;
+namespace CertUnlp\NgenBundle\Form\Incident\State;
 
 use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase;
 use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -51,9 +50,6 @@ class StateEdgeType extends AbstractType
                 'attr' => array('align_with_widget' => true),
                 'required' => true,
                 'label' => 'Send mail to Admin Responsable(if available)',
-            ))
-            ->add('save', SubmitType::class, array('attr' =>
-                array('class' => 'save ladda-button btn-lg btn-block', 'data-style' => 'slide-down'),
             ));
     }
 
@@ -65,7 +61,6 @@ class StateEdgeType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => StateEdge::class,
-            'csrf_protection' => false,
         ));
     }
 
@@ -77,4 +72,11 @@ class StateEdgeType extends AbstractType
         return '';
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getParent(): ?string
+    {
+        return EntityType::class;
+    }
 }
