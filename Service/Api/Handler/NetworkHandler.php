@@ -11,11 +11,11 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Entity\Network\Network;
-use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
-use CertUnlp\NgenBundle\Entity\Network\NetworkExternal;
-use CertUnlp\NgenBundle\Entity\Network\NetworkInternal;
-use CertUnlp\NgenBundle\Form\NetworkType;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\NetworkElement;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\NetworkExternal;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\NetworkInternal;
+use CertUnlp\NgenBundle\Form\Constituency\NetworkElement\NetworkType;
 use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use CertUnlp\NgenBundle\Repository\NetworkRepository;
 use CertUnlp\NgenBundle\Service\NetworkRdapClient;

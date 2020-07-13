@@ -8,7 +8,7 @@
 
 namespace CertUnlp\NgenBundle\Service\Listener\Entity;
 
-use CertUnlp\NgenBundle\Entity\Network\Network;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
 use Doctrine\ORM\Mapping as ORM;
 
 

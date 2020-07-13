@@ -16,6 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class EntityTypeListener implements EventSubscriberInterface
 {
@@ -56,9 +57,10 @@ class EntityTypeListener implements EventSubscriberInterface
             foreach ($fields as $field) {
                 $this->disableField($form->get($field));
             }
-        } else {
-            $form->remove('force_edit');
+        }
 
+        if ($event->getForm()->getConfig()->getMethod() !== Request::METHOD_PATCH) {
+            $form->remove('force_edit');
         }
     }
 
@@ -70,7 +72,10 @@ class EntityTypeListener implements EventSubscriberInterface
         return $this->serializer;
     }
 
-    private function disableField(FormInterface $field)
+    /**
+     * @param FormInterface $field
+     */
+    private function disableField(FormInterface $field): void
     {
         $parent = $field->getParent();
         $options = $field->getConfig()->getOptions();
@@ -86,12 +91,5 @@ class EntityTypeListener implements EventSubscriberInterface
     public function getEntitymanager(): EntityManager
     {
         return $this->entity_manager;
-    }
-
-    private function removeField(FormInterface $field)
-    {
-        $parent = $field->getParent();
-        $name = $field->getName();
-        $parent->remove($name);
     }
 }

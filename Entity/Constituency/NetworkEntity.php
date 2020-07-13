@@ -6,7 +6,7 @@
  *  with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Entity\Network;
+namespace CertUnlp\NgenBundle\Entity\Constituency;
 
 use CertUnlp\NgenBundle\Entity\EntityApi;
 use Doctrine\Common\Collections\ArrayCollection;

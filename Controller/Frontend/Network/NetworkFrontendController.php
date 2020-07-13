@@ -12,8 +12,8 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Network;
 
 use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
-use CertUnlp\NgenBundle\Entity\Network\Network;
-use CertUnlp\NgenBundle\Form\NetworkType;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
+use CertUnlp\NgenBundle\Form\Constituency\NetworkElement\NetworkType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Elastica\Query;
 use Elastica\Query\BoolQuery;

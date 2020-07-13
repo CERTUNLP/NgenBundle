@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Validator\Constraints;
 
-use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\NetworkElement;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

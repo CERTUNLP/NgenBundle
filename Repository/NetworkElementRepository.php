@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Repository;
 
-use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\NetworkElement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 abstract class NetworkElementRepository extends ServiceEntityRepository
