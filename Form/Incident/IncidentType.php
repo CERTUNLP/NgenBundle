@@ -1,4 +1,10 @@
 <?php
+/**
+ * This file is part of the Ngen - CSIRT Incident Report System.
+ *   (c) CERT UNLP <support@cert.unlp.edu.ar>
+ *  This source file is subject to the GPL v3.0 license that is bundled
+ *  with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of the Ngen - CSIRT Incident Report System.
@@ -9,7 +15,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Form;
+namespace CertUnlp\NgenBundle\Form\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
@@ -20,7 +26,6 @@ use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Service\Listener\Form\IncidentTypeListener;
 use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Exception;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -29,11 +34,9 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Security;
 
 class IncidentType extends AbstractType
 {
@@ -180,9 +183,6 @@ class IncidentType extends AbstractType
             ->add('id', HiddenType::class, array(
                 'required' => false,
             ))
-            ->add('save', SubmitType::class, array(
-                'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
-            ))
             ->addEventSubscriber($this->getIncidentTypeListener());
 
     }
@@ -196,22 +196,6 @@ class IncidentType extends AbstractType
     }
 
     /**
-     * @return EntityManagerInterface
-     */
-    public function getEntityManager(): EntityManagerInterface
-    {
-        return $this->entity_manager;
-    }
-
-    /**
-     * @return Security
-     */
-    public function getUserLogged(): Security
-    {
-        return $this->userLogged;
-    }
-
-    /**
      * @param OptionsResolver $resolver
      * @return void
      */
@@ -219,7 +203,6 @@ class IncidentType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Incident::class,
-            'csrf_protection' => false,
         ));
     }
 
@@ -231,5 +214,12 @@ class IncidentType extends AbstractType
         return '';
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getParent(): ?string
+    {
+        return EntityType::class;
+    }
 
 }

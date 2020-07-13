@@ -1,4 +1,10 @@
 <?php
+/**
+ * This file is part of the Ngen - CSIRT Incident Report System.
+ *   (c) CERT UNLP <support@cert.unlp.edu.ar>
+ *  This source file is subject to the GPL v3.0 license that is bundled
+ *  with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of the Ngen - CSIRT Incident Report System.
@@ -9,7 +15,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Form;
+namespace CertUnlp\NgenBundle\Form\User;
 
 use CertUnlp\NgenBundle\Service\Listener\Form\UserTypeListener;
 use FOS\UserBundle\Form\Type\RegistrationFormType;
@@ -63,8 +69,6 @@ class UserType extends AbstractType
                         'class' => 'user-contacts',
                     ),
                 ))
-            ->add('save', SubmitType::class, array(
-                'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down')))
             ->addEventSubscriber(new UserTypeListener());
 
     }

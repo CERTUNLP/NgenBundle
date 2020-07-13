@@ -1,4 +1,10 @@
 <?php
+/**
+ * This file is part of the Ngen - CSIRT Incident Report System.
+ *   (c) CERT UNLP <support@cert.unlp.edu.ar>
+ *  This source file is subject to the GPL v3.0 license that is bundled
+ *  with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of the Ngen - CSIRT Incident Report System.
@@ -9,12 +15,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Form;
+namespace CertUnlp\NgenBundle\Form\Constituency\NetworkElement;
 
-use CertUnlp\NgenBundle\Entity\Network\Host\Host;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host;
+use CertUnlp\NgenBundle\Form\EntityType;
 use Exception;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -35,11 +41,7 @@ class HostType extends AbstractType
                 'required' => true,
                 'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
                 'label' => 'Address',
-            ))
-            ->add('save', SubmitType::class, array(
-                'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
             ));
-
     }
 
     /**
@@ -50,7 +52,6 @@ class HostType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Host::class,
-            'csrf_protection' => false,
         ));
     }
 
@@ -62,4 +63,11 @@ class HostType extends AbstractType
         return '';
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getParent(): ?string
+    {
+        return EntityType::class;
+    }
 }

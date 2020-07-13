@@ -1,4 +1,10 @@
 <?php
+/**
+ * This file is part of the Ngen - CSIRT Incident Report System.
+ *   (c) CERT UNLP <support@cert.unlp.edu.ar>
+ *  This source file is subject to the GPL v3.0 license that is bundled
+ *  with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of the Ngen - CSIRT Incident Report System.
@@ -9,13 +15,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Form;
+namespace CertUnlp\NgenBundle\Form\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -56,9 +62,6 @@ class IncidentPriorityType extends AbstractType
             ->add('unresponse_time', NumberType::class, array(
                 'required' => true,
             ))
-            ->add('save', SubmitType::class, array(
-                'attr' => array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
-            ))
             ->add('id', HiddenType::class);
 
     }
@@ -71,7 +74,6 @@ class IncidentPriorityType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => IncidentPriority::class,
-            'csrf_protection' => false,
         ));
     }
 
@@ -83,4 +85,11 @@ class IncidentPriorityType extends AbstractType
         return '';
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getParent(): ?string
+    {
+        return EntityType::class;
+    }
 }
