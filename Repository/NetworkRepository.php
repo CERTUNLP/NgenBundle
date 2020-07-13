@@ -11,8 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Repository;
 
-use CertUnlp\NgenBundle\Entity\Network\Network;
-use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\NetworkElement;
 use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

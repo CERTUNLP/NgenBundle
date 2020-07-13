@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Entity\Network\Address;
+namespace CertUnlp\NgenBundle\Service\Address;
 
 use JMS\Serializer\Annotation as JMS;
 

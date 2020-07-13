@@ -12,8 +12,8 @@
 namespace CertUnlp\NgenBundle\Controller\Api\Network;
 
 use CertUnlp\NgenBundle\Controller\Api\ApiController;
-use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
-use CertUnlp\NgenBundle\Form\NetworkAdminType;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin;
+use CertUnlp\NgenBundle\Form\Constituency\NetworkAdminType;
 use CertUnlp\NgenBundle\Service\Api\Handler\NetworkAdminHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Request\ParamFetcherInterface;

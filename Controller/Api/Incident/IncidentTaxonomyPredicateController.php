@@ -13,7 +13,7 @@ namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
 use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate;
-use CertUnlp\NgenBundle\Form\IncidentTaxonomyPredicateType;
+use CertUnlp\NgenBundle\Form\Incident\Taxonomy\TaxonomyPredicateType;
 use CertUnlp\NgenBundle\Service\Api\Handler\TaxonomyPredicateHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -166,7 +166,7 @@ class IncidentTaxonomyPredicateController extends ApiController
      *         name="form",
      *         in="body",
      *         description="creation parameters",
-     *         @Model(type=IncidentTaxonomyPredicateType::class, groups={"api"})
+     *         @Model(type=TaxonomyPredicateType::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="200",

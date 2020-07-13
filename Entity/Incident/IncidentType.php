@@ -46,7 +46,7 @@ class IncidentType extends EntityApiFrontend
      *
      * @ORM\Column(name="name", type="string", length=100)
      * @JMS\Expose
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $name;
     /**
@@ -91,7 +91,7 @@ class IncidentType extends EntityApiFrontend
     public function __construct()
     {
         $this->incidents = new ArrayCollection();
-        $this->setTaxonomyValue(null);
+        $this->reports = new ArrayCollection();
     }
 
     /**
@@ -118,7 +118,7 @@ class IncidentType extends EntityApiFrontend
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -187,7 +187,7 @@ class IncidentType extends EntityApiFrontend
      * @param TaxonomyValue $taxonomyValue
      * @return IncidentType
      */
-    public function setTaxonomyValue(TaxonomyValue $taxonomyValue): IncidentType
+    public function setTaxonomyValue(TaxonomyValue $taxonomyValue = null): IncidentType
     {
         $this->taxonomyValue = $taxonomyValue;
         return $this;

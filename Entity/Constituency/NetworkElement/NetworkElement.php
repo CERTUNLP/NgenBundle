@@ -1,4 +1,17 @@
 <?php
+/**
+ * This file is part of the Ngen - CSIRT Incident Report System.
+ *   (c) CERT UNLP <support@cert.unlp.edu.ar>
+ *  This source file is subject to the GPL v3.0 license that is bundled
+ *  with this source code in the file LICENSE.
+ */
+
+/**
+ * This file is part of the Ngen - CSIRT Incident Report System.
+ *   (c) CERT UNLP <support@cert.unlp.edu.ar>
+ *  This source file is subject to the GPL v3.0 license that is bundled
+ *  with this source code in the file LICENSE.
+ */
 
 /*
  * This file is part of the Ngen - CSIRT Incident Report System.
@@ -9,15 +22,15 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Entity\Network;
+namespace CertUnlp\NgenBundle\Entity\Constituency\NetworkElement;
 
 use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Network\Address\Address;
-use CertUnlp\NgenBundle\Entity\Network\Address\DomainAddress;
-use CertUnlp\NgenBundle\Entity\Network\Address\IpV4Address;
-use CertUnlp\NgenBundle\Entity\Network\Address\IpV6Address;
 use CertUnlp\NgenBundle\Model\EntityInterface;
+use CertUnlp\NgenBundle\Service\Address\Address;
+use CertUnlp\NgenBundle\Service\Address\DomainAddress;
+use CertUnlp\NgenBundle\Service\Address\IpV4Address;
+use CertUnlp\NgenBundle\Service\Address\IpV6Address;
 use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;

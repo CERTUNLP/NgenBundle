@@ -11,14 +11,14 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
-use CertUnlp\NgenBundle\Form\IncidentTaxonomyPredicateType;
+use CertUnlp\NgenBundle\Form\Incident\Taxonomy\TaxonomyPredicateType;
 use CertUnlp\NgenBundle\Repository\TaxonomyPredicateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class TaxonomyPredicateHandler extends Handler
 {
-    public function __construct(EntityManagerInterface $entity_manager, TaxonomyPredicateRepository $repository, IncidentTaxonomyPredicateType $entity_ype, FormFactoryInterface $form_factory)
+    public function __construct(EntityManagerInterface $entity_manager, TaxonomyPredicateRepository $repository, TaxonomyPredicateType $entity_ype, FormFactoryInterface $form_factory)
     {
         parent::__construct($entity_manager, $repository, $entity_ype, $form_factory);
     }

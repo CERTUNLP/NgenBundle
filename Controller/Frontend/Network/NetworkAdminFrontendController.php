@@ -18,8 +18,8 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Network;
 
 use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
-use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
-use CertUnlp\NgenBundle\Form\NetworkAdminType;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin;
+use CertUnlp\NgenBundle\Form\Constituency\NetworkAdminType;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Entity\Network\Address;
+namespace CertUnlp\NgenBundle\Service\Address;
 
-use CertUnlp\NgenBundle\Entity\Network\NetworkElement;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\NetworkElement;
 use JMS\Serializer\Annotation as JMS;
 
 /**

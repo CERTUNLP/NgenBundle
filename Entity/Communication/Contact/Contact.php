@@ -3,7 +3,7 @@
 namespace CertUnlp\NgenBundle\Entity\Communication\Contact;
 
 use CertUnlp\NgenBundle\Entity\Entity;
-use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;

@@ -24,8 +24,8 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Network;
 
 use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
-use CertUnlp\NgenBundle\Entity\Network\Host\Host;
-use CertUnlp\NgenBundle\Form\HostType;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host;
+use CertUnlp\NgenBundle\Form\Constituency\NetworkElement\HostType;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;

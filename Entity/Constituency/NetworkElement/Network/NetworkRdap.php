@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace CertUnlp\NgenBundle\Entity\Network;
+namespace CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
