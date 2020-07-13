@@ -13,7 +13,7 @@ namespace CertUnlp\NgenBundle\Controller\Frontend\User;
 
 use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\User;
-use CertUnlp\NgenBundle\Form\UserType;
+use CertUnlp\NgenBundle\Form\User\UserType;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,13 +49,12 @@ class UserFrontendController extends FrontendController
     /**
      * @Template("CertUnlpNgenBundle:User:Frontend/userForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_user_new_user")
-     * @param Request $request
      * @param UserType $user_type
      * @return array
      */
-    public function newUserAction(Request $request, UserType $user_type): array
+    public function newUserAction(UserType $user_type): array
     {
-        return $this->newEntity($request, $user_type);
+        return $this->newEntity($user_type);
     }
 
     /**

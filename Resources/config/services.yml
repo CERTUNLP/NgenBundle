@@ -53,7 +53,7 @@ services:
             $userManager: '@fos_user.user_manager'
             $mailer: '@fos_user.mailer'
             $retryTtl: '%fos_user.resetting.retry_ttl%'
-    CertUnlp\NgenBundle\Form\IncidentCommentType:
+    CertUnlp\NgenBundle\Form\Incident\IncidentCommentType:
         arguments:
             $commentClass: '%fos_comment.model.comment.class%'
 
@@ -209,7 +209,7 @@ services:
     #
     #  cert_unlp.ngen.network.host.handler:
     #    class:        CertUnlp\NgenBundle\Service\Api\Handler\HostHandler
-    #    arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Network\Host\Host,CertUnlp\NgenBundle\Form\HostType,"@form.factory"]
+    #    arguments:    ["@doctrine.orm.entity_manager",CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host,CertUnlp\NgenBundle\Form\HostType,"@form.factory"]
     #
     #  cert_unlp.ngen.incident.state.edge.handler:
     #    class:        CertUnlp\NgenBundle\Service\Api\Handler\IncidentStateEdgeHandler

@@ -18,7 +18,7 @@
 namespace CertUnlp\NgenBundle\Form\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use CertUnlp\NgenBundle\Form\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;

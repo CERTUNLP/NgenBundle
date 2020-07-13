@@ -55,14 +55,14 @@ abstract class Network extends NetworkElement implements NetworkInterface
     private $ip_mask;
     /**
      * @var NetworkAdmin
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="networks",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */
     private $network_admin;
     /**
      * @var NetworkEntity
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkEntity", inversedBy="networks",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkEntity", inversedBy="networks",cascade={"persist"})
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */
@@ -74,7 +74,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
     private $incidents;
     /**
      * @var Collection| Host[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host",mappedBy="network", cascade={"persist"},fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host",mappedBy="network", cascade={"persist"},fetch="EXTRA_LAZY")
      */
     private $hosts;
     /**

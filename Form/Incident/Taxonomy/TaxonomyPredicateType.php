@@ -12,7 +12,7 @@
 namespace CertUnlp\NgenBundle\Form\Incident\Taxonomy;
 
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use CertUnlp\NgenBundle\Form\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

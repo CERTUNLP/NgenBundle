@@ -8,6 +8,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Constituency;
 
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
 use CertUnlp\NgenBundle\Entity\EntityApi;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -49,7 +50,7 @@ class NetworkEntity extends EntityApi
     private $name = '';
     /**
      * @var Network
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network",mappedBy="network_entity"))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network",mappedBy="network_entity"))
      */
     private $networks;
 

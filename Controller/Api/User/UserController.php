@@ -13,8 +13,8 @@ namespace CertUnlp\NgenBundle\Controller\Api\User;
 
 use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\User;
-use CertUnlp\NgenBundle\Form\UserType;
-use CertUnlp\NgenBundle\Service\Api\Handler\UserHandler;
+use CertUnlp\NgenBundle\Form\User\UserType;
+use CertUnlp\NgenBundle\Service\Api\Handler\User\UserHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;

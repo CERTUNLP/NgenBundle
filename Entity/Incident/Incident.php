@@ -225,19 +225,19 @@ class Incident extends EntityApiFrontend
     private $renotificationDate;
     /**
      * @var Host|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_origin")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host", inversedBy="incidents_as_origin")
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */
     private $origin;
     /**
      * @var Host|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_destination")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host", inversedBy="incidents_as_destination")
      */
     private $destination;
     /**
      * @var Network|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network", inversedBy="incidents")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network", inversedBy="incidents")
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */

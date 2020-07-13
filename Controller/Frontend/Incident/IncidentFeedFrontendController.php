@@ -9,17 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-/**
- * Description of IncidentFeedFrontendController
- *
- * @author dam
- */
-
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
-use CertUnlp\NgenBundle\Form\IncidentFeedType;
+use CertUnlp\NgenBundle\Form\Incident\IncidentFeedType;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,13 +49,12 @@ class IncidentFeedFrontendController extends FrontendController
     /**
      * @Template("CertUnlpNgenBundle:IncidentFeed:Frontend/incidentFeedForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_incident_feed_new")
-     * @param Request $request
      * @param IncidentFeedType $type
      * @return array
      */
-    public function newIncidentFeedAction(Request $request, IncidentFeedType $type): array
+    public function newIncidentFeedAction(IncidentFeedType $type): array
     {
-        return $this->newEntity($request, $type);
+        return $this->newEntity($type);
     }
 
     /**

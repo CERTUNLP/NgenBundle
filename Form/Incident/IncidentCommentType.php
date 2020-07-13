@@ -18,7 +18,7 @@
 namespace CertUnlp\NgenBundle\Form\Incident;
 
 use FOS\CommentBundle\Form\CommentType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use CertUnlp\NgenBundle\Form\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;

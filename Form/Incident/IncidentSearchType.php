@@ -24,6 +24,7 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
 use Exception;
+use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -147,7 +148,7 @@ class IncidentSearchType extends AbstractType
      */
     public function getParent(): ?string
     {
-        return EntityType::class;
+        return EntityForm::class;
     }
 
 }
