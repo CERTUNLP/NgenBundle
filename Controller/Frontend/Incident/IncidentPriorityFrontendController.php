@@ -19,7 +19,7 @@ namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
-use CertUnlp\NgenBundle\Form\IncidentPriorityType;
+use CertUnlp\NgenBundle\Form\Incident\IncidentPriorityType;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,13 +55,12 @@ class IncidentPriorityFrontendController extends FrontendController
     /**
      * @Template("CertUnlpNgenBundle:IncidentPriority:Frontend/incidentPriorityForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_incident_priority_new")
-     * @param Request $request
      * @param IncidentPriorityType $priority_type
      * @return array
      */
-    public function newIncidentPriorityAction(Request $request, IncidentPriorityType $priority_type): array
+    public function newIncidentPriorityAction(IncidentPriorityType $priority_type): array
     {
-        return $this->newEntity($request, $priority_type);
+        return $this->newEntity($priority_type);
     }
 
     /**

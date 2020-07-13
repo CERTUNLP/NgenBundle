@@ -194,12 +194,12 @@ abstract class ApiController extends AbstractFOSRestController
             $parameters = array_merge($request->request->all(), $request->files->all());
             unset($parameters['_method'], $parameters['force_edit'], $parameters['reactivate']);
 
-            $db_object = $this->getByParamIdentification($parameters);
+//            $db_object = $this->getByParamIdentification($parameters);
 
-            if (!$db_object) {
-                if ($request->get('reactivate')) {
-                    $entity->setActive(true);
-                }
+//            if (!$db_object) {
+//                if ($request->get('reactivate')) {
+//                    $entity->setActive(true);
+//                }
                 if ($request->get('force_edit')) {
                     $statusCode = Response::HTTP_OK;
 
@@ -210,13 +210,13 @@ abstract class ApiController extends AbstractFOSRestController
                     $this->getHandler()->desactivate($entity);
                     $entity = $this->getHandler()->post($parameters);
                 }
-            } else {
-                $statusCode = Response::HTTP_OK;
-
-                $this->getHandler()->desactivate($entity);
-                $this->getHandler()->activate($db_object);
-                $entity = $this->getHandler()->patch($db_object, $parameters);
-            }
+//            } else {
+//                $statusCode = Response::HTTP_OK;
+//
+//                $this->getHandler()->desactivate($entity);
+//                $this->getHandler()->activate($db_object);
+//                $entity = $this->getHandler()->patch($db_object, $parameters);
+//            }
 
             return $this->response([$entity], $statusCode);
         } catch (InvalidFormException $exception) {

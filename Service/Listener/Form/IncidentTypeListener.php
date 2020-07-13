@@ -22,7 +22,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\ORMException;
 use JMS\Serializer\SerializerInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use CertUnlp\NgenBundle\Form\EntityType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Security\Core\Security;

@@ -13,8 +13,8 @@ namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Form\IncidentSearchType;
-use CertUnlp\NgenBundle\Form\IncidentType;
+use CertUnlp\NgenBundle\Form\Incident\IncidentSearchType;
+use CertUnlp\NgenBundle\Form\Incident\IncidentType;
 use fados\ChartjsBundle\Model\ChartBuiderData;
 use fados\ChartjsBundle\Utils\TypeCharjs;
 use fados\ChartjsBundle\Utils\TypeColors;
@@ -72,13 +72,12 @@ class IncidentFrontendController extends FrontendController
     /**
      * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_internal_incident_frontend_new_incident")
-     * @param Request $request
      * @param IncidentType $incident_type
      * @return array
      */
-    public function newIncidentAction(Request $request, IncidentType $incident_type): array
+    public function newIncidentAction(IncidentType $incident_type): array
     {
-        return $this->newEntity($request, $incident_type);
+        return $this->newEntity($incident_type);
     }
 
     /**

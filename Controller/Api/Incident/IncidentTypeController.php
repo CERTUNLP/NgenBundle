@@ -13,8 +13,8 @@ namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
 use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
-use CertUnlp\NgenBundle\Form\IncidentTypeType;
-use CertUnlp\NgenBundle\Service\Api\Handler\IncidentTypeHandler;
+use CertUnlp\NgenBundle\Form\Incident\IncidentTypeType;
+use CertUnlp\NgenBundle\Service\Api\Handler\Incident\IncidentTypeHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;

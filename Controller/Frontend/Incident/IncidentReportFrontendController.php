@@ -20,7 +20,7 @@ namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
-use CertUnlp\NgenBundle\Form\IncidentReportType;
+use CertUnlp\NgenBundle\Form\Incident\IncidentReportType;
 use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -46,21 +46,20 @@ class IncidentReportFrontendController extends FrontendController
     /**
      * @Template("CertUnlpNgenBundle:IncidentReport:Frontend/incidentReportForm.html.twig")
      * @Route("reports/new", name="cert_unlp_ngen_incident_type_report_new")
-     * @param Request $request
      * @param IncidentReportType $entity_type
      * @return array
      */
-    public function newIncidentReportAction(Request $request, IncidentReportType $entity_type): array
+    public function newIncidentReportAction(IncidentReportType $entity_type): array
     {
-        return $this->newEntity($request, $entity_type);
+        return $this->newEntity($entity_type);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function newEntity(Request $request, AbstractType $form, string $default_type = ''): array
+    public function newEntity(AbstractType $form, string $default_type = ''): array
     {
-        $response = parent::newEntity($request, $form);
+        $response = parent::newEntity($form);
         $response['default_type'] = $default_type;
         return $response;
     }

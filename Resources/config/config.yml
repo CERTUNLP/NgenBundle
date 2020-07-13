@@ -179,7 +179,7 @@ fos_comment:
             thread: CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread
     form:
         comment:
-            type: CertUnlp\NgenBundle\Form\IncidentCommentType
+            type: CertUnlp\NgenBundle\Form\Incident\IncidentCommentType
 
 stfalcon_tinymce:
     theme:

@@ -18,7 +18,7 @@
 namespace CertUnlp\NgenBundle\Form\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use CertUnlp\NgenBundle\Form\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

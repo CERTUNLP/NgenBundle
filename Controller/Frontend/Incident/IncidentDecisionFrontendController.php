@@ -9,17 +9,12 @@
  * with this source code in the file LICENSE.
  */
 
-/**
- * Description of IncidentDecisionFrontendController
- *
- * @author einar
- */
 
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
-use CertUnlp\NgenBundle\Form\IncidentDecisionType;
+use CertUnlp\NgenBundle\Form\Incident\IncidentDecisionType;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,13 +50,12 @@ class IncidentDecisionFrontendController extends FrontendController
     /**
      * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/incidentDecisionForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_incident_decision_new")
-     * @param Request $request
      * @param IncidentDecisionType $type
      * @return array
      */
-    public function newIncidentDecisionAction(Request $request, IncidentDecisionType $type): array
+    public function newIncidentDecisionAction(IncidentDecisionType $type): array
     {
-        return $this->newEntity($request, $type);
+        return $this->newEntity($type);
     }
 
     /**

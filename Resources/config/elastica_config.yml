@@ -187,7 +187,7 @@ fos_elastica:
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Network\Network
+                        model: CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network
                         provider: ~
                         finder: ~
                         listener:
@@ -229,7 +229,7 @@ fos_elastica:
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Network\Host\Host
+                        model: CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host
                         provider: ~
                         finder: ~
                         listener:
@@ -284,7 +284,7 @@ fos_elastica:
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Network\NetworkAdmin
+                        model: CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin
                         provider: ~
                         finder: ~
                         listener:
@@ -322,7 +322,7 @@ fos_elastica:
                         # listener and finder: ~
                         # propel and should be removed
                         driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Network\NetworkEntity
+                        model: CertUnlp\NgenBundle\Entity\Constituency\NetworkEntity
                         provider: ~
                         finder: ~
                         listener:

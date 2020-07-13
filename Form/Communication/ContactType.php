@@ -19,7 +19,7 @@ namespace CertUnlp\NgenBundle\Form\Communication;
 
 use CertUnlp\NgenBundle\Entity\Communication\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use CertUnlp\NgenBundle\Form\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;

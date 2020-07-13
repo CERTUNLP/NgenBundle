@@ -9,7 +9,7 @@
 namespace CertUnlp\NgenBundle\Service\Listener\Entity;
 
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host;
-use CertUnlp\NgenBundle\Service\Api\Handler\NetworkHandler;
+use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\Network\NetworkHandler;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Sluggable\Util as Sluggable;
 

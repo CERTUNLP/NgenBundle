@@ -14,8 +14,8 @@ namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
-use CertUnlp\NgenBundle\Form\IncidentStateType;
-use CertUnlp\NgenBundle\Service\Api\Handler\IncidentStateHandler;
+use CertUnlp\NgenBundle\Form\Incident\State\IncidentStateType;
+use CertUnlp\NgenBundle\Service\Api\Handler\Incident\State\IncidentStateHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
@@ -263,7 +263,6 @@ class IncidentStateController extends ApiController
      * @Operation(
      *     tags={"Incident states"},
      *     summary="Activates an existing state",
-
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",

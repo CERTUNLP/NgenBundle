@@ -10,7 +10,7 @@ namespace CertUnlp\NgenBundle\Form\Incident\State;
 
 use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use CertUnlp\NgenBundle\Form\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

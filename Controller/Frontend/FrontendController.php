@@ -180,13 +180,12 @@ abstract class FrontendController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param AbstractType $form
      * @return array
      */
-    public function newEntity(Request $request, AbstractType $form): array
+    public function newEntity(AbstractType $form): array
     {
-        return array('form' => $this->getFormFactory()->create(get_class($form),null, ['method' => Request::METHOD_POST])->createView());
+        return array('form' => $this->getFormFactory()->create(get_class($form), null, ['method' => Request::METHOD_POST])->createView());
     }
 
     /**

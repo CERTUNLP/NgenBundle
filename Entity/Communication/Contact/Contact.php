@@ -35,7 +35,7 @@ abstract class Contact extends Entity
     private $name;
     /**
      * @var NetworkAdmin|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\NetworkAdmin", inversedBy="contacts")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin", inversedBy="contacts")
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */

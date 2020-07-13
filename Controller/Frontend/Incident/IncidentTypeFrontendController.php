@@ -19,7 +19,7 @@ namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
-use CertUnlp\NgenBundle\Form\IncidentTypeType;
+use CertUnlp\NgenBundle\Form\Incident\IncidentTypeType;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,13 +54,12 @@ class IncidentTypeFrontendController extends FrontendController
     /**
      * @Template("CertUnlpNgenBundle:IncidentType:Frontend/incidentTypeForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_incident_type_new")
-     * @param Request $request
      * @param IncidentTypeType $type
      * @return array
      */
-    public function newIncidentTypeAction(Request $request, IncidentTypeType $type): array
+    public function newIncidentTypeAction(IncidentTypeType $type): array
     {
-        return $this->newEntity($request, $type);
+        return $this->newEntity($type);
     }
 
     /**
