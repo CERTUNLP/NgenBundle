@@ -10,59 +10,46 @@ namespace CertUnlp\NgenBundle\Form\Incident\State;
 
 use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
-use CertUnlp\NgenBundle\Form\EntityType;
-use Symfony\Component\Form\AbstractType;
+use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
-class IncidentStateType extends AbstractType
+class IncidentStateType extends EntityForm
 {
 
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
         $builder
-            ->add('name', null, array(
+            ->add('name', TextType::class, array(
                 'required' => true,
             ))
-            ->add('description', null, array(
+            ->add('description', TextType::class, array(
                 'required' => true,
             ))
             ->add('behavior', EntityType::class, array(
                 'class' => StateBehavior::class,
                 'required' => true,
             ));
+        parent::buildForm($builder, $options);
     }
 
     /**
      * @param OptionsResolver $resolver
      * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => IncidentState::class,
         ));
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return '';
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getParent(): ?string
-    {
-        return EntityType::class;
-    }
 }

@@ -17,6 +17,7 @@
 
 namespace CertUnlp\NgenBundle\Form\User;
 
+use CertUnlp\NgenBundle\Form\Communication\ContactType;
 use CertUnlp\NgenBundle\Service\Listener\Form\UserTypeListener;
 use FOS\UserBundle\Form\Type\RegistrationFormType;
 use Symfony\Component\Form\AbstractType;
@@ -24,7 +25,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class UserType extends AbstractType
@@ -70,7 +70,6 @@ class UserType extends AbstractType
                     ),
                 ))
             ->addEventSubscriber(new UserTypeListener());
-
     }
 
     /**

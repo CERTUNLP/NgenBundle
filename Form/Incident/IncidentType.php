@@ -21,33 +21,37 @@ use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentImpact;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentType as IncidentTypeEntity;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
+use CertUnlp\NgenBundle\Service\Listener\Form\EntityTypeListener;
 use CertUnlp\NgenBundle\Service\Listener\Form\IncidentTypeListener;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
 use Exception;
-use CertUnlp\NgenBundle\Form\EntityType;
-use Symfony\Component\Form\AbstractType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class IncidentType extends AbstractType
+class IncidentType extends EntityForm
 {
     /**
      * @var IncidentTypeListener
      */
     private $incident_type_listener;
 
-    public function __construct(IncidentTypeListener $incident_type_listener)
+    public function __construct(EntityTypeListener $entity_type_listener, IncidentTypeListener $incident_type_listener)
     {
         $this->incident_type_listener = $incident_type_listener;
+        parent::__construct($entity_type_listener);
     }
 
     /**
@@ -57,8 +61,11 @@ class IncidentType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        parent::buildForm($builder, $options);
+
         $builder
-            ->add('type', null, array(
+            ->add('type', EntityType::class, array(
+                'class' => IncidentTypeEntity::class,
                 'placeholder' => 'Choose an incident type',
                 'required' => true,
                 'query_builder' => static function (EntityRepository $er) {
@@ -67,7 +74,7 @@ class IncidentType extends AbstractType
                 },
                 'attr' => array('class' => 'incidentFilter'),
             ))
-            ->add('address', null, array(
+            ->add('address', TextType::class, array(
                 'required' => true,
                 'attr' => array('class' => 'incidentFilter', 'help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
                 'label' => 'Address',
@@ -184,7 +191,6 @@ class IncidentType extends AbstractType
                 'required' => false,
             ))
             ->addEventSubscriber($this->getIncidentTypeListener());
-
     }
 
     /**
@@ -205,21 +211,4 @@ class IncidentType extends AbstractType
             'data_class' => Incident::class,
         ));
     }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return '';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getParent(): ?string
-    {
-        return EntityType::class;
-    }
-
 }

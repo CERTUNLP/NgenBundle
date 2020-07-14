@@ -18,7 +18,6 @@
 namespace CertUnlp\NgenBundle\Form\Incident;
 
 use FOS\CommentBundle\Form\CommentType;
-use CertUnlp\NgenBundle\Form\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -34,17 +33,16 @@ class IncidentCommentType extends CommentType
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('body', TextareaType::class)
-            ->add('notify_to_admin', CheckboxType::class, array('data' => false, 'mapped' => true, 'attr' => array(), 'required' => false, 'label' => 'Notify to admin'));
+            ->add('notify_to_admin', CheckboxType::class,
+                array('data' => false,
+                    'mapped' => true,
+                    'attr' => array(),
+                    'required' => false,
+                    'label' => 'Notify to admin'));
+        parent::buildForm($builder, $options);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getParent(): ?string
-    {
-        return EntityType::class;
-    }
 }

@@ -17,52 +17,58 @@
 
 namespace CertUnlp\NgenBundle\Form\Incident;
 
+use CertUnlp\NgenBundle\Entity\Incident\IncidentImpact;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
-use CertUnlp\NgenBundle\Form\EntityType;
-use Symfony\Component\Form\AbstractType;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
+use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class IncidentPriorityType extends AbstractType
+class IncidentPriorityType extends EntityForm
 {
 
-    /*
-    **
-    * @param FormBuilderInterface $builder
-    * @param array $options
-    */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('impact', null, array(
+            ->add('impact', EntityType::class, array(
+                'class' => IncidentImpact::class,
                 'placeholder' => 'Choose a impact level',
                 'attr' => array('help_text' => 'If none is selected, the assigned impact will be Low.'),
             ))
-            ->add('urgency', null, array(
+            ->add('urgency', EntityType::class, array(
+                'class' => IncidentUrgency::class,
                 'placeholder' => 'Choose a urgency level',
                 'attr' => array('help_text' => 'If none is selected, the assigned urgency will be Low'),
             ))
-            ->add('name', null, array(
+            ->add('name', TextType::class, array(
                 'required' => true,
             ))
-            ->add('code', NumberType::class, array(
+            ->add('code', IntegerType::class, array(
                 'required' => true,
             ))
-            ->add('resolution_time', NumberType::class, array(
+            ->add('resolution_time', IntegerType::class, array(
                 'required' => true,
             ))
-            ->add('unresolution_time', NumberType::class, array(
+            ->add('unresolution_time', IntegerType::class, array(
                 'required' => true,
             ))
-            ->add('response_time', NumberType::class, array(
+            ->add('response_time', IntegerType::class, array(
                 'required' => true,
             ))
-            ->add('unresponse_time', NumberType::class, array(
+            ->add('unresponse_time', IntegerType::class, array(
                 'required' => true,
             ))
             ->add('id', HiddenType::class);
+        parent::buildForm($builder, $options);
 
     }
 
@@ -70,26 +76,12 @@ class IncidentPriorityType extends AbstractType
      * @param OptionsResolver $resolver
      * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => IncidentPriority::class,
         ));
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return '';
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getParent(): ?string
-    {
-        return EntityType::class;
-    }
 }
