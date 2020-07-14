@@ -22,27 +22,30 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentImpact;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
+use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
+use CertUnlp\NgenBundle\Service\Listener\Form\EntityTypeListener;
 use CertUnlp\NgenBundle\Service\Listener\Form\IncidentDecisionTypeListener;
 use Doctrine\ORM\EntityRepository;
-use CertUnlp\NgenBundle\Form\EntityType;
-use Symfony\Component\Form\AbstractType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
-class IncidentDecisionType extends AbstractType
+class IncidentDecisionType extends EntityForm
 {
     /**
      * @var IncidentDecisionTypeListener
      */
     private $decision_type_listener;
 
-    public function __construct(IncidentDecisionTypeListener $decision_type_listener)
+    public function __construct(EntityTypeListener $entity_type_listener, IncidentDecisionTypeListener $decision_type_listener)
     {
         $this->decision_type_listener = $decision_type_listener;
+        parent::__construct($entity_type_listener);
     }
 
     /**
@@ -51,8 +54,8 @@ class IncidentDecisionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('type', null, [
-                'class' => \CertUnlp\NgenBundle\Entity\Incident\IncidentType::class,
+            ->add('type', EntityType::class, [
+                'class' => IncidentType::class,
                 'required' => true,
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
@@ -72,33 +75,33 @@ class IncidentDecisionType extends AbstractType
                 'page_limit' => 10,
                 'placeholder' => 'Select a network',
             ])
-            ->add('state', null, array(
+            ->add('state', EntityType::class, array(
                 'class' => IncidentState::class,
                 'placeholder' => 'Choose an incident state',
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.active = TRUE');
                 }))
-            ->add('tlp', null, array(
+            ->add('tlp', EntityType::class, array(
                 'class' => IncidentTlp::class,
                 'placeholder' => 'Choose an incident TLP',
             ))
-            ->add('impact', null, array(
+            ->add('impact', EntityType::class, array(
                 'class' => IncidentImpact::class,
                 'placeholder' => 'Choose an impact level',
             ))
-            ->add('urgency', null, array(
+            ->add('urgency', EntityType::class, array(
                 'class' => IncidentUrgency::class,
                 'placeholder' => 'Choose an urgency level.',
             ))
-            ->add('unattendedState', null, array(
+            ->add('unattendedState', EntityType::class, array(
                 'class' => IncidentState::class,
                 'placeholder' => 'Choose an incident state',
                 'query_builder' => static function (EntityRepository $er) {
                     return $er->createQueryBuilder('it')
                         ->where('it.active = TRUE');
                 }))
-            ->add('unsolvedState', null, array(
+            ->add('unsolvedState', EntityType::class, array(
                 'class' => IncidentState::class,
                 'placeholder' => 'Choose an incident state',
                 'query_builder' => static function (EntityRepository $er) {
@@ -107,6 +110,7 @@ class IncidentDecisionType extends AbstractType
                 }))
             ->add('id', HiddenType::class)
             ->addEventSubscriber($this->getDecisionTypeListener());
+        parent::buildForm($builder, $options);
     }
 
     /**
@@ -121,26 +125,10 @@ class IncidentDecisionType extends AbstractType
      * @param OptionsResolver $resolver
      * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => IncidentDecision::class,
         ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return '';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getParent(): ?string
-    {
-        return EntityType::class;
     }
 }

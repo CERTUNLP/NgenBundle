@@ -18,25 +18,25 @@
 namespace CertUnlp\NgenBundle\Form\Constituency;
 
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkEntity;
-use CertUnlp\NgenBundle\Form\EntityType;
-use Symfony\Component\Form\AbstractType;
+use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class NetworkEntityType extends AbstractType
+class NetworkEntityType extends EntityForm
 {
 
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
         $builder
-            ->add('name', null, array(
+            ->add('name', TextType::class, array(
                 'required' => true,
             ));
+        parent::buildForm($builder, $options);
 
     }
 
@@ -44,26 +44,12 @@ class NetworkEntityType extends AbstractType
      * @param OptionsResolver $resolver
      * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => NetworkEntity::class,
         ));
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return '';
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getParent(): ?string
-    {
-        return EntityType::class;
-    }
 }

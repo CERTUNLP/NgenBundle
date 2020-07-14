@@ -18,54 +18,38 @@
 namespace CertUnlp\NgenBundle\Form\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
-use CertUnlp\NgenBundle\Form\EntityType;
-use Symfony\Component\Form\AbstractType;
+use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class   IncidentFeedType extends AbstractType
+class   IncidentFeedType extends EntityForm
 {
 
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
         $builder
-            ->add('name', null, array(
+            ->add('name', TextType::class, array(
                 'required' => true,
             ))
-            ->add('description', null, array(
+            ->add('description', TextType::class, array(
                 'required' => true,
             ));
+        parent::buildForm($builder, $options);
     }
 
     /**
      * @param OptionsResolver $resolver
      * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => IncidentFeed::class,
         ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return '';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getParent(): ?string
-    {
-        return EntityType::class;
     }
 }

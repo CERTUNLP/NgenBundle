@@ -38,7 +38,6 @@ class UserTypeListener implements EventSubscriberInterface
             $form
                 ->add('username', null, array(
                     'required' => true,
-                    'read_only' => 'true',
                 ))
                 ->add('plainPassword', RepeatedType::class, array(
                     'required' => false,

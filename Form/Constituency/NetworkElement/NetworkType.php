@@ -21,24 +21,26 @@ namespace CertUnlp\NgenBundle\Form\Constituency\NetworkElement;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkEntity;
-use CertUnlp\NgenBundle\Form\EntityType;
+use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
+use CertUnlp\NgenBundle\Service\Listener\Form\EntityTypeListener;
 use CertUnlp\NgenBundle\Service\Listener\Form\NetworkTypeListener;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
-class NetworkType extends AbstractType
+class NetworkType extends EntityForm
 {
     /**
      * @var NetworkTypeListener
      */
     private $network_type_listener;
 
-    public function __construct(NetworkTypeListener $network_type_listener)
+    public function __construct(EntityTypeListener $entity_type_listener, NetworkTypeListener $network_type_listener)
     {
         $this->network_type_listener = $network_type_listener;
+        parent::__construct($entity_type_listener);
     }
 
     /**
@@ -48,7 +50,7 @@ class NetworkType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('address', null, array(
+            ->add('address', TextType::class, array(
                 'required' => true,
                 'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
                 'label' => 'Address',
@@ -77,6 +79,7 @@ class NetworkType extends AbstractType
                 'placeholder' => 'Select an admin',
             ));
         $builder->addEventSubscriber($this->getNetworkTypeListener());
+        parent::buildForm($builder, $options);
 
     }
 
@@ -103,20 +106,5 @@ class NetworkType extends AbstractType
         ));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getParent(): ?string
-    {
-        return EntityType::class;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return '';
-    }
 
 }

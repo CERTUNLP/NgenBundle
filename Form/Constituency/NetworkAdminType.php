@@ -18,26 +18,27 @@
 namespace CertUnlp\NgenBundle\Form\Constituency;
 
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin;
-use CertUnlp\NgenBundle\Form\EntityType;
-use Symfony\Component\Form\AbstractType;
+use CertUnlp\NgenBundle\Form\Communication\ContactType;
+use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class NetworkAdminType extends AbstractType
+class NetworkAdminType extends EntityForm
 {
 
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
         $builder
-            ->add('name', null, array(
-                'required' => true,
+            ->add('name', TextType::class, array(
+                'required' => true
             ))
             ->add('id', HiddenType::class, array(
                 'required' => false,
@@ -57,32 +58,17 @@ class NetworkAdminType extends AbstractType
                         'class' => 'admin-contacts',
                     ),
                 ));
+        parent::buildForm($builder, $options);
     }
 
     /**
      * @param OptionsResolver $resolver
      * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => NetworkAdmin::class,
         ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return '';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getParent(): ?string
-    {
-        return EntityType::class;
     }
 }

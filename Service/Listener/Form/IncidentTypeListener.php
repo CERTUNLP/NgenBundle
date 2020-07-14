@@ -22,12 +22,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\ORMException;
 use JMS\Serializer\SerializerInterface;
-use CertUnlp\NgenBundle\Form\EntityType;
+use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Security\Core\Security;
 
-class IncidentTypeListener extends EntityTypeListener
+class  IncidentTypeListener extends EntityTypeListener
 {
     /**
      * @var EntityManager

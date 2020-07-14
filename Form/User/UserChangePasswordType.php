@@ -26,8 +26,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 class UserChangePasswordType extends AbstractType
 {
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+{
         $builder->add('oldPassword', PasswordType::class);
         $builder->add('newPassword', RepeatedType::class, array(
             'type' => 'password',

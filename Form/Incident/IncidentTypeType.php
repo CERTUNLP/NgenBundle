@@ -19,29 +19,30 @@ namespace CertUnlp\NgenBundle\Form\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
-use CertUnlp\NgenBundle\Form\EntityType;
+use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Form\AbstractType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
-class IncidentTypeType extends AbstractType
+class IncidentTypeType extends EntityForm
 {
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', null, array(
+            ->add('name', TextType::class, array(
                 'required' => true,
             ))
-            ->add('description', null, array(
+            ->add('description', TextType::class, array(
                 'required' => true,
             ))
-            ->add('taxonomyValue', null, array(
+            ->add('taxonomyValue', EntityType::class, array(
                 'class' => TaxonomyValue::class,
                 'placeholder' => 'Choose a Tanonomy Reference value',
                 'required' => false,
@@ -51,32 +52,17 @@ class IncidentTypeType extends AbstractType
                         ->orderBy('u.predicate', 'ASC');
                 }
             ));
+        parent::buildForm($builder, $options);
     }
 
     /**
      * @param OptionsResolver $resolver
      * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => IncidentType::class,
         ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return '';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getParent(): ?string
-    {
-        return EntityType::class;
     }
 }

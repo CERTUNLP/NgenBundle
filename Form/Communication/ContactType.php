@@ -19,38 +19,34 @@ namespace CertUnlp\NgenBundle\Form\Communication;
 
 use CertUnlp\NgenBundle\Entity\Communication\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase;
-use CertUnlp\NgenBundle\Form\EntityType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ContactType extends AbstractType
 {
-    public function getBlockPrefix()
-    {
-        return 'ContactType';
-    }
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
         $builder
-            ->add('name', null, array(
+            ->add('name', TextType::class, array(
                 'required' => true,
                 'attr' => array('placeholder' => 'Description'),
             ))
-            ->add('username', null, array(
+            ->add('username', TextType::class, array(
                 'required' => true,
                 'attr' => array('placeholder' => 'Email/Phone Number/Telegram chat'),
 
             ))
-            ->add('encryptionKey', null, array(
+            ->add('encryptionKey', TextType::class, array(
                 'required' => false,
                 'attr' => array('placeholder' => 'GPG public key'),
 
@@ -75,7 +71,10 @@ class ContactType extends AbstractType
 
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    /**
+     * {@inheritDoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => Contact::class,
@@ -83,18 +82,11 @@ class ContactType extends AbstractType
     }
 
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return '';
-    }
-
-    /**
      * {@inheritDoc}
      */
-    public function getParent(): ?string
+    public function getBlockPrefix(): ?string
     {
-        return EntityType::class;
+        return 'ContactType';
     }
+
 }

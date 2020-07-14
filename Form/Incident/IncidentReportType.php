@@ -19,20 +19,21 @@ namespace CertUnlp\NgenBundle\Form\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
-use CertUnlp\NgenBundle\Form\EntityType;
-use Symfony\Component\Form\AbstractType;
+use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class IncidentReportType extends AbstractType
+class IncidentReportType extends EntityForm
 {
 
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
         $builder
@@ -48,47 +49,32 @@ class IncidentReportType extends AbstractType
                 'class' => IncidentType::class,
                 'required' => true,
             ))
-            ->add('problem', null, array(
+            ->add('problem', TextType::class, array(
                 'required' => true,
             ))
-            ->add('derivated_problem', null, array(
+            ->add('derivated_problem', TextType::class, array(
                 'required' => false,
             ))
-            ->add('verification', null, array(
+            ->add('verification', TextType::class, array(
                 'required' => false,
             ))
-            ->add('recomendations', null, array(
+            ->add('recomendations', TextType::class, array(
                 'required' => false,
             ))
-            ->add('more_information', null, array(
+            ->add('more_information', TextType::class, array(
                 'required' => false,
             ));
+        parent::buildForm($builder, $options);
     }
 
     /**
      * @param OptionsResolver $resolver
      * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => IncidentReport::class,
         ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return '';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getParent(): ?string
-    {
-        return EntityType::class;
     }
 }
