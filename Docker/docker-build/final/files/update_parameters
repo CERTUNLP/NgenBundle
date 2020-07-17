@@ -1,0 +1,11 @@
+#!/bin/bash
+
+PATH_WEB="/application";
+
+cd $PATH_WEB/ngen_basic
+
+envsubst '${DB_HOST} ${DB_PORT} ${DB_NAME} ${DB_USER} ${DB_PASSWORD} ${MAILER_HOST} ${MAILER_TRANSPORT} ${MAILER_PORT} ${MAILER_ENCRYPTION} ${MAILER_USER} ${MAILER_PASSWORD} ${MAILER_SENDER} ${TEAM_MAIL} ${TEAM_ABUSE} ${TEAM_URL} ${TEAM_NAME} ${TEAM_SITE} ${TEAM_LOGO} ${NGEN_SIGN} ${NGEN_LANG} ${DEFAULT_NETWORK} ${SESSION_TIMEOUT} ${ELASTIC_HOST} ${ELASTIC_PORT} ${IMAP_SERVER} ${IMAP_PASSWORD} ${IMAP_USERNAME} ${EXTERNAL_DASHBOARD_GRAFANA} ${INTERNAL_DASHBOARD_GRAFANA} ${GRAFANA_USER} ${GRAFANA_PASSWORD}' < $PATH_WEB/ngen_basic/src/NgenBundle/Resources/installer/dependencias/parameters.yml > $PATH_WEB/ngen_basic/app/config/parameters.yml
+echo "date.timezone=${DATE_TZ}" > /usr/local/etc/php/php.ini
+echo "upload_max_filesize =${UPLOAD_MAX}" >> /usr/local/etc/php/php.ini
+echo "post_max_size = ${POST_MAX}" >> /usr/local/etc/php/php.ini
+echo "memory_limit = ${MEMORY_LIMIT}" >> /usr/local/etc/php/php.ini

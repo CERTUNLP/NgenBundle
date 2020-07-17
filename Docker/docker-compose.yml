@@ -38,10 +38,10 @@ services:
         - "8002:3306"
       networks: ['ngen']
     ngen-testing-app:
-      image: einar1/ngen:0.6.40-rc31
+      image: ngen-test
       networks: ['ngen']
       depends_on: ['ngen-testing-db','ngen-testing-elastic']
-      ports:
+      ports:do
         - "8000:80"
       volumes:
         - ngen-testing-incidentes:/application/ngen_basic/app/Resources/incident

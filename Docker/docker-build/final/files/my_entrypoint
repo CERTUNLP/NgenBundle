@@ -1,0 +1,40 @@
+#!/bin/bash
+
+PATH_WEB="/application";
+
+cd $PATH_WEB/ngen_basic
+
+bash /usr/local/bin/update_parameters
+
+rm -rf app/logs/* app/cache/*;
+mkdir -p app/cache app/logs
+chmod  g+w app/cache app/logs
+until x=$(php bin/console d:s:v 2>/dev/null|grep Mapping);do
+  echo "Base no disponible esperando para comenzar la app"
+  sleep 1
+done;
+
+if (x=$(php bin/console doctrine:query:sql "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME ='incident'" --env prod|grep "array(0)"));
+then
+ # La base no existe inserto la primer version
+ php bin/console doctrine:database:import /root/base.inicial.sql
+fi;
+
+# La base si existe aplica las migraciones que pudieran existir
+php bin/console d:m:m --no-interaction
+
+
+#Estos 10 segundos son porque el elastic demora
+sleep 10
+if [[ ! -z "${POPULATE}" ]]; then
+	php app/console fos:elastica:populate --no-reset --env prod
+	chown www-data -R $PATH_WEB/ngen_basic/app/Resources/app/Resources/feed/ $PATH_WEB/ngen_basic/app/Resources/incident
+fi
+php bin/console cache:clear --env=prod --no-debug
+echo "por hacer assets:dump"
+php bin/console assetic:dump --env=prod --no-debug
+echo "por hacer assets:install"
+php bin/console assets:install --symlink --env=prod
+ln -s $PATH_WEB/ngen_basic/vendor/fortawesome/font-awesome/webfonts web/webfonts
+chown www-data -R $PATH_WEB/ngen_basic/app/cache $PATH_WEB/ngen_basic/app/logs
+exec "$@"

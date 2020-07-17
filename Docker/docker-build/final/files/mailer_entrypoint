@@ -1,0 +1,12 @@
+#!/bin/bash
+
+PATH_WEB="/application";
+
+cd $PATH_WEB/ngen_basic
+
+### deploy
+
+bash /usr/local/bin/update_parameters
+
+php bin/console s:s:s
+#php bin/console s:s:s
