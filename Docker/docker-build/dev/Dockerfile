@@ -1,4 +1,4 @@
-FROM certunlp/ngen:0.5.0-rc13
+FROM ngen-test
 
 MAINTAINER Einar Lanfranco
 
