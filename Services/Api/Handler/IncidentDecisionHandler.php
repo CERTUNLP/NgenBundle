@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Service\Api\Handler;
+namespace CertUnlp\NgenBundle\Services\Api\Handler;
 
 use ArrayIterator;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
@@ -51,7 +51,7 @@ class IncidentDecisionHandler extends Handler
      * @return IncidentDecision
      * @throws Exception
      */
-    public function getByIncident(Incident $incident): IncidentDecision
+    public function getByIncident(Incident $incident): ?IncidentDecision
     {
         $decisions = new ArrayCollection($this->all(['type' => $incident->getType() ? $incident->getType()->getSlug() : 'undefined', 'feed' => $incident->getFeed() ? $incident->getFeed()->getSlug() : 'undefined', 'get_undefined' => true]));
 
@@ -63,7 +63,7 @@ class IncidentDecisionHandler extends Handler
             }
         }
 
-        return $decisions->last();
+        return $decisions->last() ?:null;
     }
 
     /**
@@ -97,7 +97,7 @@ class IncidentDecisionHandler extends Handler
                 return $decision;
             }
         }
-        return $decisions->last();
+        return $decisions->last() ?: null;
     }
 
 }
