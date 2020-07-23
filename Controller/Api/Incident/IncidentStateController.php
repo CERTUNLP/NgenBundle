@@ -256,7 +256,7 @@ class IncidentStateController extends ApiController
      */
     public function patchIncidentStateAction(Request $request, IncidentState $incident_state): View
     {
-        return $this->patch($request, $incident_state, true);
+        return $this->patch($request, $incident_state);
     }
 
     /**

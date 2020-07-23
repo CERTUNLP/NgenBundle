@@ -252,7 +252,7 @@ class NetworkAdminController extends ApiController
      */
     public function patchNetworkAdminAction(Request $request, NetworkAdmin $network_admin): View
     {
-        return $this->patch($request, $network_admin, true);
+        return $this->patch($request, $network_admin);
     }
 
     /**

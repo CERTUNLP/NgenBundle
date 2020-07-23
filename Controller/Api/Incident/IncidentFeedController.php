@@ -256,7 +256,7 @@ class IncidentFeedController extends ApiController
      */
     public function patchIncidentFeedAction(Request $request, IncidentFeed $incident_feed): View
     {
-        return $this->patch($request, $incident_feed, true);
+        return $this->patch($request, $incident_feed);
     }
 
     /**

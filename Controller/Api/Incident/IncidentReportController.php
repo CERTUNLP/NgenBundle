@@ -284,7 +284,7 @@ class IncidentReportController extends ApiController
      */
     public function patchReportAction(Request $request, IncidentReport $incident_report): View
     {
-        return $this->patch($request, $incident_report, true);
+        return $this->patch($request, $incident_report);
     }
 
     /**

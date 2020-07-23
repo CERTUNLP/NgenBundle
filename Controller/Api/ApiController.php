@@ -36,6 +36,10 @@ abstract class ApiController extends AbstractFOSRestController
      * @var View
      */
     private $view;
+    /**
+     * @var bool
+     */
+    private $editable;
 
     /**
      * @param Handler $handler
@@ -45,6 +49,7 @@ abstract class ApiController extends AbstractFOSRestController
     {
         $this->handler = $handler;
         $this->viewHandler = $viewHandler;
+        $this->editable = false;
     }
 
     /**
@@ -168,60 +173,40 @@ abstract class ApiController extends AbstractFOSRestController
     /**
      * @param Request $request
      * @param EntityApiInterface $entity
-     * @param bool $reactivate
      * @return View
      */
-    public function patch(Request $request, EntityApiInterface $entity, bool $reactivate = false): View
+    public function patch(Request $request, EntityApiInterface $entity): View
     {
         try {
-            if ($reactivate) {
-                return $this->doPatchAndReactivate($request, $entity);
+            $parameters = array_merge($request->request->all(), $request->files->all());
+            unset($parameters['_method']);
+            if ($request->get('force_edit') || $this->isEditable()) {
+                $entity = $this->getHandler()->patch($entity, $parameters);
+                return $this->response([$entity], Response::HTTP_OK);
             }
-            return $this->doPatch($request, $entity);
+            return $this->response(['errors' => '', 'code' => Response::HTTP_FORBIDDEN, 'message' => 'editing not enabled. please use the "force_edit" field.'], Response::HTTP_FORBIDDEN);
+
         } catch (InvalidFormException $exception) {
             return $this->responseError($exception);
         }
     }
 
     /**
-     * @param Request $request
-     * @param $entity
-     * @return View
+     * @return bool
      */
-    public function doPatchAndReactivate(Request $request, EntityApiInterface $entity): View
+    public function isEditable(): bool
     {
-        try {
-            $parameters = array_merge($request->request->all(), $request->files->all());
-            unset($parameters['_method'], $parameters['force_edit'], $parameters['reactivate']);
+        return $this->editable;
+    }
 
-//            $db_object = $this->getByParamIdentification($parameters);
-
-//            if (!$db_object) {
-//                if ($request->get('reactivate')) {
-//                    $entity->setActive(true);
-//                }
-                if ($request->get('force_edit')) {
-                    $statusCode = Response::HTTP_OK;
-
-                    $entity = $this->getHandler()->patch($entity, $parameters);
-                } else {
-                    $statusCode = Response::HTTP_CREATED;
-
-                    $this->getHandler()->desactivate($entity);
-                    $entity = $this->getHandler()->post($parameters);
-                }
-//            } else {
-//                $statusCode = Response::HTTP_OK;
-//
-//                $this->getHandler()->desactivate($entity);
-//                $this->getHandler()->activate($db_object);
-//                $entity = $this->getHandler()->patch($db_object, $parameters);
-//            }
-
-            return $this->response([$entity], $statusCode);
-        } catch (InvalidFormException $exception) {
-            return $this->responseError($exception);
-        }
+    /**
+     * @param bool $editable
+     * @return ApiController
+     */
+    public function setEditable(bool $editable): ApiController
+    {
+        $this->editable = $editable;
+        return $this;
     }
 
     /**
@@ -231,24 +216,6 @@ abstract class ApiController extends AbstractFOSRestController
     public function getByParamIdentification(array $parameters): ?EntityApiInterface
     {
         return $this->getHandler()->getByParamIdentification($parameters);
-    }
-
-    /**
-     * @param Request $request
-     * @param $entity
-     * @return View
-     *
-     */
-    public function doPatch(Request $request, EntityApiInterface $entity): View
-    {
-        try {
-            $parameters = array_merge($request->request->all(), $request->files->all());
-            unset($parameters['_method']);
-            $entity = $this->getHandler()->patch($entity, $parameters);
-            return $this->response([$entity], Response::HTTP_OK);
-        } catch (InvalidFormException $exception) {
-            return $this->responseError($exception);
-        }
     }
 
     /**

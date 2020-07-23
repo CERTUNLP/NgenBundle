@@ -185,7 +185,7 @@ abstract class FrontendController extends AbstractController
      */
     public function newEntity(AbstractType $form): array
     {
-        return array('form' => $this->getFormFactory()->create(get_class($form), null, ['method' => Request::METHOD_POST])->createView());
+        return array('form' => $this->getFormFactory()->create(get_class($form), null, ['frontend' => true, 'method' => Request::METHOD_POST])->createView());
     }
 
     /**
@@ -203,7 +203,7 @@ abstract class FrontendController extends AbstractController
      */
     public function editEntity(EntityApiInterface $object, AbstractType $form): array
     {
-        return array('form' => $this->getFormFactory()->create(get_class($form), $object, ['method' => Request::METHOD_PATCH])->createView());
+        return array('form' => $this->getFormFactory()->create(get_class($form), $object, ['frontend' => true,'method' => Request::METHOD_PATCH])->createView());
     }
 
     /**

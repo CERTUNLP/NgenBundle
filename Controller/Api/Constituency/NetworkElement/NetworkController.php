@@ -479,7 +479,7 @@ class NetworkController extends ApiController
      */
     public function patchNetworkIpv4Action(Request $request, Network $network): View
     {
-        return $this->patch($request, $network, true);
+        return $this->patch($request, $network);
     }
 
     /**
@@ -515,7 +515,7 @@ class NetworkController extends ApiController
      */
     public function patchNetworkIdAction(Request $request, Network $network): View
     {
-        return $this->patch($request, $network, true);
+        return $this->patch($request, $network);
     }
 
     /**
@@ -552,7 +552,7 @@ class NetworkController extends ApiController
      */
     public function patchNetworkIpv6Action(Request $request, Network $network): View
     {
-        return $this->patch($request, $network, true);
+        return $this->patch($request, $network);
     }
 
     /**
@@ -588,7 +588,7 @@ class NetworkController extends ApiController
      */
     public function patchNetworkDomainAction(Request $request, Network $network): View
     {
-        return $this->patch($request, $network, true);
+        return $this->patch($request, $network);
     }
 
     /**

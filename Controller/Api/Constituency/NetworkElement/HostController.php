@@ -480,7 +480,7 @@ class HostController extends ApiController
      */
     public function patchHostIpv4Action(Request $request, Host $host): View
     {
-        return $this->patch($request, $host, true);
+        return $this->patch($request, $host);
     }
 
     /**
@@ -514,7 +514,7 @@ class HostController extends ApiController
      */
     public function patchHostipv6Action(Request $request, Host $host): View
     {
-        return $this->patch($request, $host, true);
+        return $this->patch($request, $host);
     }
 
     /**
@@ -547,7 +547,7 @@ class HostController extends ApiController
      */
     public function patchHostDomainAction(Request $request, Host $host): View
     {
-        return $this->patch($request, $host, true);
+        return $this->patch($request, $host);
     }
 
     /**
@@ -580,7 +580,7 @@ class HostController extends ApiController
      */
     public function patchHostIdAction(Request $request, Host $host): View
     {
-        return $this->patch($request, $host, true);
+        return $this->patch($request, $host);
     }
 
     /**

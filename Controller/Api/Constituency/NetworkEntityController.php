@@ -253,7 +253,7 @@ class NetworkEntityController extends ApiController
      */
     public function patchNetworkEntityAction(Request $request, NetworkEntity $network_entity): View
     {
-        return $this->patch($request, $network_entity, true);
+        return $this->patch($request, $network_entity);
     }
 
     /**
