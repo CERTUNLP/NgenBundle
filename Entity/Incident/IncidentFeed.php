@@ -45,7 +45,7 @@ class IncidentFeed extends EntityApiFrontend
      * @var string
      * @ORM\Column(name="name", type="string", length=100)
      * @JMS\Expose
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $name = '';
     /**

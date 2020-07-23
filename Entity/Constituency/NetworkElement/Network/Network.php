@@ -50,7 +50,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
      *      max = 128,
      * )
      * @JMS\Expose
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $ip_mask;
     /**
@@ -80,13 +80,13 @@ abstract class Network extends NetworkElement implements NetworkInterface
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $ip_start_address;
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $ip_end_address;
     /**

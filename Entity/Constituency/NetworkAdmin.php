@@ -60,7 +60,7 @@ class NetworkAdmin extends EntityApiFrontend
      *
      * @ORM\Column(name="name", type="string")
      * @JMS\Expose
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $name;
     /**

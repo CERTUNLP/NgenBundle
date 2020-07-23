@@ -113,7 +113,7 @@ class Incident extends EntityApiFrontend
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      * @JMS\Expose
      * @CustomAssert\TypeHasReport
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      * @JMS\MaxDepth(depth=1)
      */
     private $type;
@@ -123,7 +123,7 @@ class Incident extends EntityApiFrontend
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
      * @Assert\NotNull
      * @JMS\Expose
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $feed;
     /**
@@ -278,6 +278,7 @@ class Incident extends EntityApiFrontend
     private $ltdCount = 0;
     /**
      * @CustomAssert\ValidAddress()
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $address;
     /**

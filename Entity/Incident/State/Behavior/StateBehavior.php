@@ -39,7 +39,7 @@ abstract class StateBehavior extends Entity
      *
      * @ORM\Column(name="name", type="string", length=45, nullable=true)
      * @JMS\Expose()
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $name;
     /**

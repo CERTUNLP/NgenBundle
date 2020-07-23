@@ -56,7 +56,7 @@ abstract class NetworkElement extends EntityApiFrontend
      * @ORM\Column(type="string", length=39, nullable=true)
      * @JMS\SerializedName("address")
      * @JMS\Expose()
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      * @CustomAssert\ValidAddress()
      */
     private $ip;
@@ -66,13 +66,14 @@ abstract class NetworkElement extends EntityApiFrontend
      * @ORM\Column(type="string", nullable=true)
      * @JMS\SerializedName("address")
      * @JMS\Expose()
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      * @CustomAssert\ValidAddress()
      */
     private $domain;
     /**
      * @var Address
      * @Assert\NotNull(message="not a valid address")
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $address;
 
