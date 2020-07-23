@@ -39,7 +39,7 @@ final class Version20200706163511 extends AbstractMigration
         $this->addSql('ALTER TABLE incident_priority ADD deletedAt DATETIME DEFAULT NULL');
         $this->addSql('ALTER TABLE incident_urgency ADD deletedAt DATETIME DEFAULT NULL');
         $this->addSql('ALTER TABLE incident_feed ADD deletedAt DATETIME DEFAULT NULL');
-        $this->addSql('ALTER TABLE incident_state_change ADD deletedAt DATETIME DEFAULT NULL');
+
         $this->addSql('ALTER TABLE incident_impact ADD deletedAt DATETIME DEFAULT NULL');
         $this->addSql('ALTER TABLE incident_decision ADD deletedAt DATETIME DEFAULT NULL');
         $this->addSql('ALTER TABLE incident ADD deletedAt DATETIME DEFAULT NULL');
