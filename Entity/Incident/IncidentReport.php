@@ -40,7 +40,7 @@ class IncidentReport extends EntityApiFrontend
      *          @Gedmo\SlugHandlerOption(name="separator", value="-")
      *      })
      * }, fields={"lang"})
-     * @Doctrine\ORM\Mapping\Column(length=64, unique=true)
+     * @ORM\Column(length=64, unique=true)
      * @JMS\Expose
      * @JMS\Groups({"read"})
      */

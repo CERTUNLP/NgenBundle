@@ -27,7 +27,7 @@ class UserChangePasswordType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
-{
+    {
         $builder->add('oldPassword', PasswordType::class);
         $builder->add('newPassword', RepeatedType::class, array(
             'type' => 'password',
@@ -39,7 +39,7 @@ class UserChangePasswordType extends AbstractType
                 array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
             ));
     }
-    
+
 
     public function getName()
     {

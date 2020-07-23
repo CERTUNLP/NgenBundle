@@ -30,7 +30,7 @@ class IncidentImpact extends EntityApiFrontend implements Translatable
      *
      * @ORM\Column(name="name", type="string")
      * @JMS\Expose()
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      * @Gedmo\Translatable
      */
     private $name = '';

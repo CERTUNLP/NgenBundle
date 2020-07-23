@@ -15,16 +15,16 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentTlp;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
-use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
 use Exception;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class IncidentSearchType extends EntityForm
+class IncidentSearchType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder

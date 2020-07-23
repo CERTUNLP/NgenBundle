@@ -72,14 +72,14 @@ class IncidentPriority extends EntityApiFrontend
      *
      * @ORM\Column(name="code", type="integer")
      * @JMS\Expose()
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $code = 0;
     /**
      * @var string
      * @ORM\Column(name="name", type="string", length=255)
      * @JMS\Expose()
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $name = '';
     /**

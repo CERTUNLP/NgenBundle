@@ -44,7 +44,7 @@ class TaxonomyPredicate extends EntityApi
      * @var string
      * @ORM\Column(name="expanded", type="string", length=255)
      * @JMS\Expose
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $expanded;
     /**
@@ -58,7 +58,7 @@ class TaxonomyPredicate extends EntityApi
      * @var string
      * @ORM\Column(name="value", type="string", length=255, unique=true)
      * @JMS\Expose
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $value;
     /**

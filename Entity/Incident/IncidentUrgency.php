@@ -30,7 +30,7 @@ class IncidentUrgency extends EntityApiFrontend implements Translatable
      * @var string
      * @ORM\Column(name="name", type="string", length=45, nullable=true)
      * @JMS\Expose()
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      * @Gedmo\Translatable
      */
     private $name = '';

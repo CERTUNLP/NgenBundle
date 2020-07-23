@@ -11,11 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Form\Incident\Taxonomy;
 
-use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
 use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TaxonomyValueType extends EntityForm
@@ -25,7 +21,9 @@ class TaxonomyValueType extends EntityForm
      * @return void
      */
     public function configureOptions(OptionsResolver $resolver): void
-{
+    {
+        parent::configureOptions($resolver);
+
         $resolver->setDefaults(array(
             'data_class' => TaxonomyValue::class,
         ));

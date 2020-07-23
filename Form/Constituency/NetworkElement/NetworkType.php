@@ -16,7 +16,6 @@
  */
 
 namespace CertUnlp\NgenBundle\Form\Constituency\NetworkElement;
-;
 
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
@@ -97,6 +96,8 @@ class NetworkType extends EntityForm
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
+        parent::configureOptions($resolver);
+
         $resolver->setDefaults(array(
             'data_class' => Network::class,
             'error_mapping' => [

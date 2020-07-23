@@ -207,6 +207,7 @@ class IncidentType extends EntityForm
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
+        parent::configureOptions($resolver);
         $resolver->setDefaults(array(
             'data_class' => Incident::class,
         ));
