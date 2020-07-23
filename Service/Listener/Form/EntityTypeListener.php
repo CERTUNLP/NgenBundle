@@ -59,7 +59,7 @@ class EntityTypeListener implements EventSubscriberInterface
             }
         }
 
-        if ($event->getForm()->getConfig()->getMethod() !== Request::METHOD_PATCH) {
+        if ($event->getForm()->getConfig()->getMethod() !== Request::METHOD_PATCH && $event->getForm()->getConfig()->getOption('frontend')) {
             $form->remove('force_edit');
         }
     }

@@ -244,7 +244,7 @@ class TaxonomyPredicateController extends ApiController
      */
     public function patchTaxonomyPredicateAction(Request $request, TaxonomyPredicate $taxonomyPredicate): View
     {
-        return $this->patch($request, $taxonomyPredicate, true);
+        return $this->patch($request, $taxonomyPredicate);
     }
 
     /**

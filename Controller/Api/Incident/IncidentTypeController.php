@@ -249,7 +249,7 @@ class IncidentTypeController extends ApiController
      */
     public function patchIncidentTypeAction(Request $request, IncidentType $incident_type): View
     {
-        return $this->patch($request, $incident_type, true);
+        return $this->patch($request, $incident_type);
     }
 
     /**

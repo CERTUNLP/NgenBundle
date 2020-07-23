@@ -244,7 +244,7 @@ class TaxonomyValueController extends ApiController
      */
     public function patchTaxonomyValueAction(Request $request, TaxonomyValue $taxonomyValue): View
     {
-        return $this->patch($request, $taxonomyValue, true);
+        return $this->patch($request, $taxonomyValue);
     }
 
     /**
