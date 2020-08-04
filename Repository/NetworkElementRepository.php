@@ -17,6 +17,19 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 abstract class NetworkElementRepository extends ServiceEntityRepository
 {
     /**
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @return NetworkElement|object|null
+     */
+    public function findOneBy(array $criteria, array $orderBy = null): ?NetworkElement
+    {
+        if (isset($criteria['address'])) {
+            return $this->findOneByAddress($criteria['address']);
+        }
+        return parent::findOneBy($criteria, $orderBy);
+    }
+
+    /**
      * @param string $address
      * @return NetworkElement|null| object
      */
@@ -34,5 +47,4 @@ abstract class NetworkElementRepository extends ServiceEntityRepository
                 return null;
         }
     }
-
 }
