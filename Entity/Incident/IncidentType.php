@@ -136,10 +136,10 @@ class IncidentType extends EntityApiFrontend
     /**
      * Get report
      *
-     * @param string $lang
+     * @param string|null $lang
      * @return IncidentReport
      */
-    public function getReport(string $lang = null): IncidentReport
+    public function getReport(string $lang = null): ?IncidentReport
     {
         $reporte = $this->getReports()->filter(
             static function (IncidentReport $report) use ($lang) {
@@ -153,8 +153,10 @@ class IncidentType extends EntityApiFrontend
         if ($this->getTaxonomyValue()) {
             return $this->getTaxonomyValue()->getReport();
         }
-
-        return $this->getTaxonomyValue()->getPredicate()->getReport();
+        if ($this->getTaxonomyValue() && $this->getTaxonomyValue()->getPredicate()) {
+            return $this->getTaxonomyValue()->getReport();
+        }
+        return null;
     }
 
     /**
