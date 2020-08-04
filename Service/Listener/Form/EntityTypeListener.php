@@ -53,7 +53,7 @@ class EntityTypeListener implements EventSubscriberInterface
     {
         $entity = $event->getData();
         $form = $event->getForm();
-        $this->disableFundamentalFields($entity, $form);
+        $this->disableFundamentalFields($form, $entity);
 
 
         if ($event->getForm()->getConfig()->getMethod() !== Request::METHOD_PATCH && $event->getForm()->getConfig()->getOption('frontend')) {
@@ -65,7 +65,7 @@ class EntityTypeListener implements EventSubscriberInterface
      * @param $entity
      * @param FormInterface $form
      */
-    public function disableFundamentalFields(EntityInterface $entity, FormInterface $form): void
+    public function disableFundamentalFields(FormInterface $form, EntityInterface $entity = null): void
     {
         if ($entity) {
             $fields = array_keys(json_decode($this->getSerializer()->serialize($entity, 'json', SerializationContext::create()->setGroups(array('fundamental'))->setSerializeNull(true)), true));

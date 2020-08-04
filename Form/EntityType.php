@@ -40,14 +40,15 @@ class EntityType extends AbstractType
     {
 
         $builder
-            ->add('active', CheckboxType::class)
+            ->add('active', CheckboxType::class,
+                ['required' => false])
             ->add('force_edit', CheckboxType::class,
-                array('data' => false,
+                ['data' => false,
                     'mapped' => false,
                     'label_attr' => array('class' => 'alert alert-warning'),
                     'attr' => array('align_with_widget' => true, 'help_text' => 'If it set to true the network will be edited and not replaced.(this can harm the network history)'),
                     'required' => false,
-                    'label' => 'Force edit'))
+                    'label' => 'Force edit'])
             ->add('save', SubmitType::class, array('attr' =>
                 array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
             ));
