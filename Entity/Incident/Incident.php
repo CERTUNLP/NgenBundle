@@ -303,7 +303,7 @@ class Incident extends EntityApiFrontend
     /**
      * @return User
      */
-    public function getResponsable(): User
+    public function getResponsable(): ?User
     {
         return $this->responsable;
     }
@@ -1570,7 +1570,7 @@ class Incident extends EntityApiFrontend
 
 
     /**
-     * @param IncidentType $type
+     * @param IncidentType|null $type
      * @return Incident
      */
     public function setType(IncidentType $type = null): Incident
@@ -1584,6 +1584,6 @@ class Incident extends EntityApiFrontend
      */
     public function getDataIdentificationArray(): array
     {
-        return ['type' => $this->getType()->getId(), 'origin' => $this->getOrigin()->getId()];
+        return ['type' => $this->getType()->getId(), 'origin' => $this->getOrigin() ? $this->getOrigin()->getId() : null];
     }
 }
