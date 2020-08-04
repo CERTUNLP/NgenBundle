@@ -32,7 +32,6 @@ class EntityType extends AbstractType
         $this->entity_type_listener = $entity_type_listener;
     }
 
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -51,8 +50,19 @@ class EntityType extends AbstractType
                     'label' => 'Force edit'))
             ->add('save', SubmitType::class, array('attr' =>
                 array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
-            ))
-            ->addEventSubscriber($this->entity_type_listener);
+            ));
+
+        if ($options['add_event_subscriber']) {
+            $builder->addEventSubscriber($this->getEntityTypeListener());
+        }
+    }
+
+    /**
+     * @return EntityTypeListener
+     */
+    public function getEntityTypeListener(): EntityTypeListener
+    {
+        return $this->entity_type_listener;
     }
 
     /**
@@ -63,6 +73,7 @@ class EntityType extends AbstractType
     {
         $resolver->setDefaults(array(
             'frontend' => false,
+            'add_event_subscriber' => true,
         ));
     }
 }

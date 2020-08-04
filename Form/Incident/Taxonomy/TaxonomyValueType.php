@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Form\Incident\Taxonomy;
 
+use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
 use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

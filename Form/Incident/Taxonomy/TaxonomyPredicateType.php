@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Form\Incident\Taxonomy;
 
+use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate;
 use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,10 +22,10 @@ class TaxonomyPredicateType extends EntityForm
      * @return void
      */
     public function configureOptions(OptionsResolver $resolver): void
-{
-    parent::configureOptions($resolver);
+    {
+        parent::configureOptions($resolver);
 
-    $resolver->setDefaults(array(
+        $resolver->setDefaults(array(
             'data_class' => TaxonomyPredicate::class,
         ));
     }

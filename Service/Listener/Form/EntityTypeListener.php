@@ -8,6 +8,7 @@
 
 namespace CertUnlp\NgenBundle\Service\Listener\Form;
 
+use CertUnlp\NgenBundle\Model\EntityInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializationContext;
@@ -52,15 +53,25 @@ class EntityTypeListener implements EventSubscriberInterface
     {
         $entity = $event->getData();
         $form = $event->getForm();
-        if ($entity) {
-            $fields = array_keys(json_decode($this->getSerializer()->serialize($entity, 'json', SerializationContext::create()->setGroups(array('fundamental'))), true));
-            foreach ($fields as $field) {
-                $this->disableField($form->get($field));
-            }
-        }
+        $this->disableFundamentalFields($entity, $form);
+
 
         if ($event->getForm()->getConfig()->getMethod() !== Request::METHOD_PATCH && $event->getForm()->getConfig()->getOption('frontend')) {
             $form->remove('force_edit');
+        }
+    }
+
+    /**
+     * @param $entity
+     * @param FormInterface $form
+     */
+    public function disableFundamentalFields(EntityInterface $entity, FormInterface $form): void
+    {
+        if ($entity) {
+            $fields = array_keys(json_decode($this->getSerializer()->serialize($entity, 'json', SerializationContext::create()->setGroups(array('fundamental'))->setSerializeNull(true)), true));
+            foreach ($fields as $field) {
+                $this->disableField($form->get($field));
+            }
         }
     }
 
@@ -75,14 +86,16 @@ class EntityTypeListener implements EventSubscriberInterface
     /**
      * @param FormInterface $field
      */
-    private function disableField(FormInterface $field): void
+    public function disableField(FormInterface $field): void
     {
         $parent = $field->getParent();
         $options = $field->getConfig()->getOptions();
         $name = $field->getName();
         $type = get_class($field->getConfig()->getType()->getInnerType());
 //        $parent->remove($name);
+//        $parent->add($name, $type, array_merge($options, ['attr' => ['readonly' => true]]));
         $parent->add($name, $type, array_merge($options, ['disabled' => true]));
+
     }
 
     /**
