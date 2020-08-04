@@ -110,6 +110,8 @@ class IncidentDecisionType extends EntityForm
                 }))
             ->add('id', HiddenType::class)
             ->addEventSubscriber($this->getDecisionTypeListener());
+        $options['add_event_subscriber'] = false;
+
         parent::buildForm($builder, $options);
     }
 

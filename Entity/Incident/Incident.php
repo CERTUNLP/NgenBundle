@@ -12,14 +12,14 @@
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
 use CertUnlp\NgenBundle\Entity\Communication\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
 use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Model\EntityInterface;
 use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
@@ -278,6 +278,7 @@ class Incident extends EntityApiFrontend
     private $ltdCount = 0;
     /**
      * @CustomAssert\ValidAddress()
+     * @JMS\Expose
      * @JMS\Groups({"read","write","fundamental"})
      */
     private $address;
@@ -504,7 +505,7 @@ class Incident extends EntityApiFrontend
      */
     public function canEdit(): bool
     {
-        return $this->getBehavior()->canEdit();
+        return $this->getBehavior() ? $this->getBehavior()->canEdit() : false;
     }
 
     /**
@@ -512,7 +513,7 @@ class Incident extends EntityApiFrontend
      */
     public function canEditFundamentals(): bool
     {
-        return $this->getBehavior()->canEditFundamentals();
+        return $this->getBehavior() ? $this->getBehavior()->canEditFundamentals() : false;
     }
 
     /**

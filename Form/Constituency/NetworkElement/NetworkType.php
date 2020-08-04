@@ -78,6 +78,7 @@ class NetworkType extends EntityForm
                 'placeholder' => 'Select an admin',
             ));
         $builder->addEventSubscriber($this->getNetworkTypeListener());
+        $options['add_event_subscriber'] = false;
         parent::buildForm($builder, $options);
 
     }

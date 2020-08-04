@@ -15,9 +15,9 @@ class NetworkTypeListener extends EntityTypeListener
 {
     public static function getSubscribedEvents(): array
     {
-        return array(
-            FormEvents::POST_SET_DATA => 'onPostSetData',
-        );
+        $events = parent::getSubscribedEvents();
+        $events[FormEvents::POST_SET_DATA] = 'onPostSetData';
+        return $events;
     }
 
     /**

@@ -61,6 +61,7 @@ class IncidentType extends EntityForm
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $options['add_event_subscriber'] = false;
         parent::buildForm($builder, $options);
 
         $builder
@@ -191,6 +192,8 @@ class IncidentType extends EntityForm
                 'required' => false,
             ))
             ->addEventSubscriber($this->getIncidentTypeListener());
+
+
     }
 
     /**
