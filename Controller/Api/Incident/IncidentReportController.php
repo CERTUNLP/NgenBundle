@@ -22,7 +22,6 @@ use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -82,7 +81,14 @@ class IncidentReportController extends ApiController
      * @Operation(
      *     tags={"Incident reports"},
      *     summary="Removes a report",
-     *     @SWG\Response(
+     *     @SWG\Parameter(
+     *         name="lang",
+     *         in="path",
+     *         type="string",
+     *         enum={"es", "en"},
+     *         required=true,
+     *         description="Report language"
+     *     ),     *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
      *          @SWG\Schema(
@@ -110,8 +116,7 @@ class IncidentReportController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Delete("/incidents/types/{type}/reports/{lang}", name="_id", requirements={"id"="\d+"}))
-     * @FOS\Delete("/incidents/types/reports/{slug}", name="_slug")
+     * @FOS\Delete("/incidents/types/{type}/reports/{lang}", name="_id", requirements={"id"="\d+"})
      * @param IncidentReport $incident_report
      * @return View
      */
@@ -161,8 +166,6 @@ class IncidentReportController extends ApiController
      *     )
      * )
      * @FOS\Get("/incidents/types/{type}/reports/{lang}")
-     * @FOS\Get("/incidents/types/reports/{slug}", name="_slug")
-     * @ParamConverter("incident_report", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      * @param IncidentReport $incident_report
      * @return View
      */
@@ -179,14 +182,6 @@ class IncidentReportController extends ApiController
      * @Operation(
      *     tags={"Incident reports"},
      *     summary="Creates a new report from the submitted data.",
-     *     @SWG\Parameter(
-     *         name="lang",
-     *         in="path",
-     *         type="string",
-     *         enum={"es", "en"},
-     *         required=true,
-     *         description="Report language"
-     *     ),
      *     @SWG\Parameter(
      *         name="form",
      *         in="body",
@@ -276,8 +271,6 @@ class IncidentReportController extends ApiController
      *      )
      * )
      * @FOS\Patch("/incidents/types/{type}/reports/{lang}")
-     * @FOS\Patch("/incidents/types/reports/{slug}", name="_slug")
-     * @ParamConverter("incident_report", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      * @param Request $request the request object
      * @param IncidentReport $incident_report
      * @return View
@@ -328,8 +321,6 @@ class IncidentReportController extends ApiController
      *      )
      * )
      * @FOS\Patch("/incidents/types/{type}/reports/{lang}/activate")
-     * @FOS\Patch("/incidents/types/reports/{slug}/activate", name="_slug")
-     * @ParamConverter("incident_report", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      * @param IncidentReport $incident_report
      * @return View
      */
@@ -379,8 +370,6 @@ class IncidentReportController extends ApiController
      *      )
      * )
      * @FOS\Patch("/incidents/types/{type}/reports/{lang}/desactivate")
-     * @FOS\Patch("/incidents/types/reports/{slug}/desactivate", name="_slug")
-     * @ParamConverter("incident_report", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
      * @param IncidentReport $incident_report
      * @return View
      */

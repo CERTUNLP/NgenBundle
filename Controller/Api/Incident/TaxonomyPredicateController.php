@@ -149,7 +149,7 @@ class TaxonomyPredicateController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Delete("/taxonomies/predicates/{slug}"))
+     * @FOS\Delete("/taxonomies/predicates/{slug}")
      * @param TaxonomyPredicate $taxonomy_predicate
      * @return View
      */

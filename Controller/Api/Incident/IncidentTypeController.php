@@ -147,7 +147,7 @@ class IncidentTypeController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Delete("/types/{slug}"))
+     * @FOS\Delete("/types/{slug}")
      * @param IncidentType $incident_type
      * @return View
      */

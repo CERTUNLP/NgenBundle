@@ -18,7 +18,6 @@ use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Model\EntityInterface;
 use CertUnlp\NgenBundle\Repository\IncidentStateRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use JMS\Serializer\SerializerInterface;
@@ -30,10 +29,6 @@ use Symfony\Component\Security\Core\Security;
 
 class  IncidentTypeListener extends EntityTypeListener
 {
-    /**
-     * @var EntityManager
-     */
-    private $entity_manager;
     private $userLogged;
 
     public function __construct(SerializerInterface $serializer, EntityManagerInterface $entity_manager, Security $userLogged)

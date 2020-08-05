@@ -108,7 +108,7 @@ class TaxonomyValueController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Delete("/taxonomies/values/{slug}"))
+     * @FOS\Delete("/taxonomies/values/{slug}")
      * @param TaxonomyValue $taxonomy_value
      * @return View
      */

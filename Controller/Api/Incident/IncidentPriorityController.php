@@ -154,7 +154,7 @@ class IncidentPriorityController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Delete("/priorities/{id}", name="_id", requirements={"id"="\d+"}))
+     * @FOS\Delete("/priorities/{id}", name="_id", requirements={"id"="\d+"})
      * @FOS\Delete("/priorities/{urgency}/{impact}")
      * @param IncidentPriority $incident_priority
      * @return View
