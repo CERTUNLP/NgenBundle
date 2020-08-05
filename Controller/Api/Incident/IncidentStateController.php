@@ -153,7 +153,7 @@ class IncidentStateController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Delete("/states/{slug}"))
+     * @FOS\Delete("/states/{slug}")
      * @param IncidentState $incident_state
      * @return View
      */

@@ -153,7 +153,7 @@ class IncidentFeedController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Delete("/feeds/{slug}"))
+     * @FOS\Delete("/feeds/{slug}")
      * @param IncidentFeed $incident_feed
      * @return View
      */

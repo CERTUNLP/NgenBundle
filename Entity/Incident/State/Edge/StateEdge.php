@@ -42,6 +42,7 @@ abstract class StateEdge extends Entity
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState", inversedBy="edges")
      * @ORM\JoinColumn(name="oldState", referencedColumnName="slug")
      * @JMS\Expose
+     * @JMS\MaxDepth(1)
      * @JMS\Groups({"read","write","fundamental"})
      */
     private $oldState;
@@ -50,6 +51,7 @@ abstract class StateEdge extends Entity
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="newState", referencedColumnName="slug")
      * @JMS\Expose
+     * @JMS\MaxDepth(1)
      * @JMS\Groups({"read","write","fundamental"})
      */
     private $newState;
