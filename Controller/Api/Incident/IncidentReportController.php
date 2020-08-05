@@ -88,7 +88,8 @@ class IncidentReportController extends ApiController
      *         enum={"es", "en"},
      *         required=true,
      *         description="Report language"
-     *     ),     *     @SWG\Response(
+     *     ),
+     *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
      *          @SWG\Schema(
