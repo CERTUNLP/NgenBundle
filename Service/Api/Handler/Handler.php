@@ -56,9 +56,9 @@ abstract class Handler
 
     /**
      * @param array $params
-     * @param array $order
-     * @param int $limit
-     * @param int $offset
+     * @param array|null $order
+     * @param int|null $limit
+     * @param int|null $offset
      * @return array|EntityApiInterface[]
      */
     public function all(array $params = [], array $order = null, int $limit = null, int $offset = null): array
