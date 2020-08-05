@@ -53,8 +53,9 @@ class EntityTypeListener implements EventSubscriberInterface
     {
         $entity = $event->getData();
         $form = $event->getForm();
-        $this->disableFundamentalFields($form, $entity);
-
+        if ($event->getForm()->getConfig()->getMethod() === Request::METHOD_PATCH) {
+            $this->disableFundamentalFields($form, $entity);
+        }
 
         if ($event->getForm()->getConfig()->getMethod() !== Request::METHOD_PATCH && $event->getForm()->getConfig()->getOption('frontend')) {
             $form->remove('force_edit');
