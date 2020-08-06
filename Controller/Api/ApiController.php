@@ -179,7 +179,7 @@ abstract class ApiController extends AbstractFOSRestController
     {
         try {
             $parameters = array_merge($request->request->all(), $request->files->all());
-            unset($parameters['_method']);
+//            unset($parameters['_method']);
             if ($request->get('force_edit') || $this->isEditable()) {
                 $entity = $this->getHandler()->patch($entity, $parameters);
                 return $this->response([$entity], Response::HTTP_OK);

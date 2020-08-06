@@ -15,7 +15,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\DiscriminatorMap({"contact"="Contact","telegram" = "ContactTelegram", "phone" = "ContactPhone", "email" = "ContactEmail", "threema"="ContactThreema"})
  * @JMS\ExclusionPolicy("all")
  */
-abstract class Contact extends Entity
+class Contact extends Entity
 {
 
     /**
@@ -89,26 +89,34 @@ abstract class Contact extends Entity
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    abstract public function getEmail(): string;
+    public function getEmail(): string
+    {
+        return '';
+    }
 
     /**
      * @return string
      */
-    abstract public function getTelegram(): string;
+    public function getTelegram(): string
+    {
+        return $this->getUsername();
+    }
 
     /**
      * @return string
      */
-    abstract public function getPhone(): string;
+    public function getPhone(): string
+    {
+        return '';
+    }
 
     /**
      * @return string
      */
-    abstract public function getTreema(): string;
-
+    public function getTreema(): string
+    {
+        return '';
+    }
 
     /**
      * @return NetworkAdmin

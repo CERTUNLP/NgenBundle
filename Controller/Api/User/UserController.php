@@ -35,6 +35,7 @@ class UserController extends ApiController
     public function __construct(UserHandler $handler, ViewHandlerInterface $viewHandler)
     {
         parent::__construct($handler, $viewHandler);
+        $this->setEditable(true);
     }
 
     /**

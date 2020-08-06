@@ -203,12 +203,6 @@ fos_user:
         form:
             type: 'CertUnlp\NgenBundle\Form\UserRegistrationType'
 
-jms_serializer:
-    metadata:
-        directories:
-            FOSUB:
-                namespace_prefix: "FOS\\UserBundle"
-                path: "@CertUnlpNgenBundle/Resources/config/serializer"
 twig:
     globals:
         sign: '%ngen_sign%'
