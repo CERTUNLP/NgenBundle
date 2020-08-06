@@ -22,6 +22,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\GroupInterface;
 use FOS\UserBundle\Model\User as BaseUser;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -55,8 +56,46 @@ class User extends BaseUser implements EntityApiFrontendInterface
      */
     protected $id;
     /**
+     * @var string
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
-    protected $plainPassword;
+    protected $username;
+
+    /**
+     * @var string
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
+     */
+    protected $email;
+
+    /**
+     * @var bool
+     * @JMS\Expose
+     * @JMS\SerializedName("active")
+     * @JMS\Groups({"read","write"})
+     */
+    protected $enabled;
+    /**
+     * @var DateTime|null
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
+     */
+    protected $lastLogin;
+
+    /**
+     * @var GroupInterface[]|Collection
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
+     */
+    protected $groups;
+
+    /**
+     * @var array
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
+     */
+    protected $roles;
     /**
      * @var string
      *
@@ -75,7 +114,7 @@ class User extends BaseUser implements EntityApiFrontendInterface
      * @JMS\Expose()
      * @JMS\Groups({"read","write"})
      */
-    private $firstname;
+    private $firstname = '';
     /**
      * @var string
      *
@@ -83,11 +122,12 @@ class User extends BaseUser implements EntityApiFrontendInterface
      * @JMS\Expose()
      * @JMS\Groups({"read","write"})
      */
-    private $lastname;
+    private $lastname = '';
     /**
      * @var DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
+     * @JMS\Expose
      * @JMS\Groups({"read"})
      */
     private $createdAt;
@@ -95,6 +135,7 @@ class User extends BaseUser implements EntityApiFrontendInterface
      * @var DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime")
+     * @JMS\Expose
      * @JMS\Groups({"read"})
      */
     private $updatedAt;
@@ -255,7 +296,7 @@ class User extends BaseUser implements EntityApiFrontendInterface
      *
      * @return DateTime
      */
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
