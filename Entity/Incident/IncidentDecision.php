@@ -2,17 +2,17 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
 use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 
 /**
  * IncidentDecision
  *
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentDecisionRepository")
+ * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\IncidentDecisionListener"})
  * @JMS\ExclusionPolicy("all")
  */
 class IncidentDecision extends EntityApiFrontend
@@ -25,20 +25,7 @@ class IncidentDecision extends EntityApiFrontend
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    /**
-     * @var string
-     * @ORM\Column(name="slug", type="string", length=100)
-     * @Gedmo\Slug(handlers={
-     *      @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\RelativeSlugHandler", options={
-     *          @Gedmo\SlugHandlerOption(name="relationField", value="type"),
-     *          @Gedmo\SlugHandlerOption(name="relationSlugField", value="slug"),
-     *          @Gedmo\SlugHandlerOption(name="separator", value="_")
-     *      })
-     * }, fields={"id"})
-     * @JMS\Expose()
-     * @JMS\Groups({"read"})
-     */
-    protected $slug = '';
+
     /**
      * @var IncidentType|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType")
@@ -65,19 +52,19 @@ class IncidentDecision extends EntityApiFrontend
      */
     private $network;
     /**
-     * @var IncidentImpact|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact")
-     * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
-     * @JMS\Expose()
+     * @var IncidentPriority|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority")
+     * @JMS\Expose
      * @JMS\Groups({"read","write"})
+     * @JMS\MaxDepth(depth=1)
+     */
+    private $priority;
+    /**
+     * @var IncidentImpact|null
      */
     private $impact;
     /**
      * @var IncidentUrgency|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency")
-     * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
-     * @JMS\Expose()
-     * @JMS\Groups({"read","write"})
      */
     private $urgency;
     /**
@@ -121,6 +108,24 @@ class IncidentDecision extends EntityApiFrontend
      */
     private $autoSaved = false;
 
+    /**
+     * @return IncidentPriority|null
+     */
+    public function getPriority(): ?IncidentPriority
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param IncidentPriority|null $priority
+     * @return IncidentDecision
+     */
+    public function setPriority(?IncidentPriority $priority): IncidentDecision
+    {
+        $this->priority = $priority;
+        return $this;
+    }
+
 //    /**
 //     * @inheritDoc
 //     */
@@ -128,6 +133,7 @@ class IncidentDecision extends EntityApiFrontend
 //    {
 //        return ['type' => $this->getType() ? $this->getType()->getSlug() : 'undefined', 'feed' => $this->getFeed() ? $this->getFeed()->getSlug() : 'undefined', 'network' => $this->getNetwork() ? $this->getNetwork()->getId() : null];
 //    }
+
     /**
      * {@inheritDoc}
      */
@@ -135,6 +141,7 @@ class IncidentDecision extends EntityApiFrontend
     {
         return ['type' => $this->getType() ? $this->getType()->getSlug() : 'undefined', 'feed' => $this->getFeed() ? $this->getFeed()->getSlug() : 'undefined', 'network' => $this->getNetwork() ? $this->getNetwork()->getId() : null];
     }
+
     /**
      * @return IncidentType|null
      */
@@ -190,7 +197,6 @@ class IncidentDecision extends EntityApiFrontend
     }
 
 
-
     /**
      * @return string
      */
@@ -209,25 +215,7 @@ class IncidentDecision extends EntityApiFrontend
 
     public function __toString(): string
     {
-        return $this->getSlug();
-    }
-
-    /**
-     * @return string
-     */
-    public function getSlug(): string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $slug
-     * @return IncidentDecision
-     */
-    public function setSlug(string $slug): IncidentDecision
-    {
-        $this->slug = $slug;
-        return $this;
+        return $this->getType()->getSlug() .'_'. $this->getFeed()->getSlug() ;
     }
 
     /**
@@ -239,7 +227,7 @@ class IncidentDecision extends EntityApiFrontend
         $incident->getTlp() ?: $incident->setTlp($this->getTlp());
         $incident->getImpact() ?: $incident->setImpact($this->getImpact());
         $incident->getUrgency() ?: $incident->setUrgency($this->getUrgency());
-        $incident->getState() ?:  $incident->setState($this->getState());
+        $incident->getState() ?: $incident->setState($this->getState());
         $incident->getType() ?: $incident->setType($this->getType());
 
         if ($incident->getState() && $incident->getState()->isInitial()) {

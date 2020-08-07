@@ -48,7 +48,9 @@ class IncidentDecisionTypeListener extends EntityTypeListener
             $form->get('impact')->setData($this->getEntitymanager()->getReference(IncidentImpact::class, 'undefined'));
             $form->get('urgency')->setData($this->getEntitymanager()->getReference(IncidentUrgency::class, 'undefined'));
             $form->get('tlp')->setData($this->getEntitymanager()->getReference(IncidentTlp::class, 'green'));
+        } else if ($decision->getPriority()) {
+            $form->get('impact')->setData($this->getEntitymanager()->getReference(IncidentImpact::class, $decision->getPriority()->getImpact()->getSlug()));
+            $form->get('urgency')->setData($this->getEntitymanager()->getReference(IncidentUrgency::class, $decision->getPriority()->getUrgency()->getSlug()));
         }
     }
-
 }
