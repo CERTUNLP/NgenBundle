@@ -140,12 +140,12 @@ nelmio_api_doc:
                 in: header
             security:
                 -   api_key: []
-#        components:
-#            securitySchemes:
-#                Bearer:
-#                type: http
-#                scheme: bearer
-#                bearerFormat: JWT
+        #        components:
+        #            securitySchemes:
+        #                Bearer:
+        #                type: http
+        #                scheme: bearer
+        #                bearerFormat: JWT
         security:
             -   Bearer: []
 
@@ -211,3 +211,8 @@ twig:
         - 'CertUnlpNgenBundle:Form:bootstrap_4_layout.html.twig'
         #cmen_google_charts:
         #language: "%ngen_lang%"
+stof_doctrine_extensions:
+    default_locale: "%ngen_lang%"
+    orm:
+        default:
+            blameable: true

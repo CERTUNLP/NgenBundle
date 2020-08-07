@@ -32,7 +32,8 @@ class AppKernel extends Kernel
             new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
             new SecIT\ImapBundle\ImapBundle(),
             new Rollerworks\Bundle\PasswordStrengthBundle\RollerworksPasswordStrengthBundle(),
-            new CMEN\GoogleChartsBundle\CMENGoogleChartsBundle()
+            new CMEN\GoogleChartsBundle\CMENGoogleChartsBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
         );
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

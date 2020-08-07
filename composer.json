@@ -50,6 +50,7 @@
     "ddeboer/data-import": "~0.18.0",
     "ddeboer/data-import-bundle": "~0.1.0",
     "stfalcon/tinymce-bundle": "~0.3.8",
+    "stof/doctrine-extensions-bundle": "v1.3",
     "doctrine/doctrine-migrations-bundle": "^1.1",
     "symfony/assetic-bundle": "^2.7",
     "beberlei/doctrineextensions": "^1.1",
