@@ -18,11 +18,11 @@
 namespace CertUnlp\NgenBundle\Service\Api\Handler\Incident;
 
 use ArrayIterator;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDecision;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
 use CertUnlp\NgenBundle\Form\Incident\IncidentDecisionType;
 use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use CertUnlp\NgenBundle\Repository\IncidentDecisionRepository;
@@ -78,7 +78,7 @@ class IncidentDecisionHandler extends Handler
         $ordered_decisions = $this->orderDecisionsByNetworkMask($decisions);
 
         foreach ($ordered_decisions as $decision) {
-            if (($decision->getNetwork() === '') || ($network && $decision->getNetwork() && $network->inRange($decision->getNetwork()))) {
+            if (!$decision->getNetwork() || ($network && $decision->getNetwork() && $network->inRange($decision->getNetwork()))) {
                 return $decision;
             }
         }
@@ -102,6 +102,7 @@ class IncidentDecisionHandler extends Handler
     /**
      * @param Incident $incident
      * @return IncidentDecision
+     * @throws Exception
      */
     public function getByIncident(Incident $incident): ?IncidentDecision
     {
@@ -110,7 +111,7 @@ class IncidentDecisionHandler extends Handler
         $ordered_decisions = $this->orderDecisionsByNetworkMask($decisions);
 
         foreach ($ordered_decisions as $decision) {
-            if ($decision->getNetwork() === '' || ($incident->getNetwork() && $decision->getNetwork() && $incident->getNetwork()->inRange($decision->getNetwork()))) {
+            if (!$decision->getNetwork() || ($incident->getNetwork() && $decision->getNetwork() && $incident->getNetwork()->inRange($decision->getNetwork()))) {
                 return $decision;
             }
         }

@@ -11,8 +11,9 @@
 
 namespace CertUnlp\NgenBundle\Service\Address;
 
-use JMS\Serializer\Annotation as JMS;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\NetworkElement;
+use JMS\Serializer\Annotation as JMS;
+
 /**
  *
  * @JMS\ExclusionPolicy("all")
@@ -26,7 +27,16 @@ class DomainAddress extends Address
     public function inRange(Address $other = null): bool
     {
         if ($other && get_class($other) === get_class($this)) {
-            return !count(array_diff(explode($this->getCustomAddress(), '.'), explode($other->getCustomAddress(), '.')));
+            $array = explode('.', $this->getCustomAddress());
+            $array2 = explode('.', $other->getCustomAddress());
+
+            if ($array === $array2) {
+                return true;
+            }
+            if ($array > $array2) {
+                return array_intersect($array, $array2) === $array2;
+            }
+//            return !count(array_diff(explode('.', $this->getCustomAddress()), explode('.', $other->getCustomAddress())));
         }
         return false;
 
@@ -78,14 +88,6 @@ class DomainAddress extends Address
      * {@inheritDoc}
      */
     public function getCustomNumericAddress(): string
-    {
-        return '';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getAddressMask(): string
     {
         return '';
     }
