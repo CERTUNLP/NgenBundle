@@ -56,11 +56,10 @@ class NetworkEntity extends EntityApi
 
     /**
      * Constructor
-     * @param string $name
      */
-    public function __construct(string $name = null)
+    public function __construct()
     {
-        $this->setName($name);
+//        $this->setName($name);
         $this->networks = new ArrayCollection();
     }
 
@@ -133,7 +132,7 @@ class NetworkEntity extends EntityApi
     /**
      * Set name
      *
-     * @param string $name
+     * @param string|null $name
      * @return NetworkEntity
      */
     public function setName(string $name = null): NetworkEntity

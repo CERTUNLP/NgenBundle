@@ -27,6 +27,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -38,6 +39,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"internal" = "NetworkInternal", "external" = "NetworkExternal", "rdap" = "NetworkRdap"})
  * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity(
+ *     fields={"domain"},
+ *     errorPath="address",
+ *     message="A network with the same address: {{ value }} already exist."
+ * )
+ * @UniqueEntity(
+ *     fields={"ip_start_address","ip_end_address"},
+ *     errorPath="address",
+ *     message="A network with the same address: {{ value }} already exist."
+ * )
  */
 abstract class Network extends NetworkElement implements NetworkInterface
 {
@@ -50,7 +61,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
      *      max = 128,
      * )
      * @JMS\Expose
-     * @JMS\Groups({"read","write","fundamental"})
+     * @JMS\Groups({"read","write"})
      */
     private $ip_mask;
     /**
@@ -80,13 +91,13 @@ abstract class Network extends NetworkElement implements NetworkInterface
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
-     * @JMS\Groups({"read","write","fundamental"})
+     * @JMS\Groups({"read","write"})
      */
     private $ip_start_address;
     /**
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
-     * @JMS\Groups({"read","write","fundamental"})
+     * @JMS\Groups({"read","write"})
      */
     private $ip_end_address;
     /**
@@ -348,5 +359,11 @@ abstract class Network extends NetworkElement implements NetworkInterface
         return $this;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['address' => $this->getAddressAndMask()];
+    }
 }

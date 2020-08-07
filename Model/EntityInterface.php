@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Model;
 
 
+use CertUnlp\NgenBundle\Entity\User;
 use DateTime;
 
 interface  EntityInterface
@@ -27,9 +28,9 @@ interface  EntityInterface
     public function getUpdatedAt(): ?DateTime;
 
     /**
-     * @return int|null
+     * @return User|null
      */
-    public function getCreatedBy(): ?int;
+    public function getCreatedBy(): ?User;
 
 }
 

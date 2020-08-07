@@ -78,11 +78,9 @@ class NetworkAdmin extends EntityApiFrontend
 
     /**
      * Constructor
-     * @param string $name
      */
-    public function __construct(string $name = '')
+    public function __construct()
     {
-        $this->setName($name);
         $this->networks = new ArrayCollection();
         $this->contacts = new ArrayCollection();
     }
@@ -178,7 +176,7 @@ class NetworkAdmin extends EntityApiFrontend
      *
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
