@@ -76,23 +76,6 @@ class  IncidentTypeListener extends EntityTypeListener
                 $form->get('impact')->setData($this->getEntitymanager()->getReference(IncidentImpact::class, $incident->getPriority()->getImpact()->getSlug()));
                 $form->get('urgency')->setData($this->getEntitymanager()->getReference(IncidentUrgency::class, $incident->getPriority()->getUrgency()->getSlug()));
             }
-//            if ($incident->getState() && !$incident->canEditFundamentals()) {
-//                $form->add('type', null, array(
-//                    'placeholder' => 'Choose an incident type',
-//                    'required' => true,
-//                    'disabled' => 'disabled',
-//                    'query_builder' => static function (EntityRepository $er) {
-//                        return $er->createQueryBuilder('it')
-//                            ->where('it.active = TRUE');
-//                    }))
-//                    ->add('address', null, array(
-//                        'required' => true,
-//                        'disabled' => 'disabled',
-//                        'attr' => array('help_text', 'placeholder' => 'IPV(4|6)/mask or domain'),
-//                        'label' => 'Address',
-//                    ));
-//
-//            }
         }
 
 
