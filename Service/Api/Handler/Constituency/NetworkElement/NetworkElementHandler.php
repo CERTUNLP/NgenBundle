@@ -22,14 +22,14 @@ use CertUnlp\NgenBundle\Service\Api\Handler\Handler;
 
 abstract class NetworkElementHandler extends Handler
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getByParamIdentification(array $parameters): ?EntityApiInterface
-    {
-        $parameters = $this->getParamIdentificationArray($parameters);
-        return $this->getRepository()->findOneByAddress($parameters['address']);
-    }
+//    /**
+//     * {@inheritDoc}
+//     */
+//    public function getByParamIdentification(array $parameters): ?EntityApiInterface
+//    {
+//        $parameters = $this->getParamIdentificationArray($parameters);
+//        return $this->getRepository()->findOneByAddress($parameters['address']);
+//    }
 
     /**
      * {@inheritDoc}

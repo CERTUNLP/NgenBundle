@@ -155,7 +155,7 @@ class User extends BaseUser implements EntityApiFrontendInterface
      */
     private $contacts;
     /**
-     * @var int|null
+     * @var User|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
      * @Gedmo\Blameable(on="create")
      */
@@ -518,9 +518,9 @@ class User extends BaseUser implements EntityApiFrontendInterface
     }
 
     /**
-     * @return int|null
+     * @return User|null
      */
-    public function getCreatedBy(): ?int
+    public function getCreatedBy(): ?User
     {
         return $this->createdBy;
     }

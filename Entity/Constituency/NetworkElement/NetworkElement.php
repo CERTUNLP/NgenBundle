@@ -52,11 +52,9 @@ abstract class NetworkElement extends EntityApiFrontend
     protected $id;
     /**
      * @var string
-     *
      * @ORM\Column(type="string", length=39, nullable=true)
-     * @JMS\SerializedName("address")
      * @JMS\Expose()
-     * @JMS\Groups({"read","write","fundamental"})
+     * @JMS\Groups({"read","write"})
      * @CustomAssert\ValidAddress()
      */
     private $ip;
@@ -64,16 +62,15 @@ abstract class NetworkElement extends EntityApiFrontend
      * @var string
      *
      * @ORM\Column(type="string", nullable=true)
-     * @JMS\SerializedName("address")
      * @JMS\Expose()
-     * @JMS\Groups({"read","write","fundamental"})
+     * @JMS\Groups({"read","write"})
      * @CustomAssert\ValidAddress()
      */
     private $domain;
     /**
      * @var Address
      * @Assert\NotNull(message="not a valid address")
-     * @JMS\Groups({"read","write","fundamental"})
+     * @JMS\Groups({"read","write"})
      */
     private $address;
 
@@ -171,6 +168,9 @@ abstract class NetworkElement extends EntityApiFrontend
 
     /**
      * @return string
+     * @JMS\Expose()
+     * @JMS\VirtualProperty()
+     * @JMS\Groups({"read","write"})
      */
     public function getAddress(): ?string
     {

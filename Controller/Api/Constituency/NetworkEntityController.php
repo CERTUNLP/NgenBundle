@@ -151,8 +151,8 @@ class NetworkEntityController extends ApiController
      * )
      * @param NetworkEntity $network_entity
      * @return View
+     * @FOS\Get("/networks/entities/{id}",requirements={"id" = "\d+"})
      * @FOS\Get("/networks/entities/{slug}", name="_slug")
-     * @FOS\Get("/networks/entities/{id}")
      */
     public function getNetworkEntityAction(NetworkEntity $network_entity): View
     {
@@ -244,7 +244,7 @@ class NetworkEntityController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Patch("/networks/entities/{id}")
+     * @FOS\Patch("/networks/entities/{id}",requirements={"id" = "\d+"})
      * @FOS\Patch("/networks/entities/{slug}", name="_slug")
      * @param Request $request the request object
      * @param NetworkEntity $network_entity
@@ -275,8 +275,8 @@ class NetworkEntityController extends ApiController
      * )
      * @param NetworkEntity $network_entity
      * @return View
+     * @FOS\Patch("/networks/entities/{id}/activate",requirements={"id" = "\d+"})
      * @FOS\Patch("/networks/entities/{slug}/activate", name="_slug")
-     * @FOS\Patch("/networks/entities/{id}/activate")
      */
     public function patchNetworkEntityActivateAction(NetworkEntity $network_entity): View
     {
@@ -317,8 +317,8 @@ class NetworkEntityController extends ApiController
      * )
      * @param NetworkEntity $network_entity
      * @return View
+     * @FOS\Patch("/networks/entities/{id}/desactivate",requirements={"id" = "\d+"})
      * @FOS\Patch("/networks/entities/{slug}/desactivate", name="_slug")
-     * @FOS\Patch("/networks/entities/{id}/desactivate")
      */
     public function patchNetworkEntityDesactivateAction(NetworkEntity $network_entity): View
     {

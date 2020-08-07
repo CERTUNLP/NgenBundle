@@ -74,7 +74,6 @@ class NetworkHandler extends NetworkElementHandler
                 case FILTER_FLAG_IPV6:
                 case FILTER_FLAG_IPV4:
                     return $this->getNetworkRdapHandler()->findByIp($address);
-                    break;
                 default:
                     return null;
             }
@@ -90,16 +89,16 @@ class NetworkHandler extends NetworkElementHandler
         return $this->network_rdap_handler;
     }
 
-
-    /**
-     * @param EntityApiInterface|Network $entity_db
-     * @param EntityApiInterface|Network $entity
-     * @return EntityApiInterface|Network
-     */
-    public function mergeEntity(EntityApiInterface $entity_db, EntityApiInterface $entity): EntityApiInterface
-    {
-        return $entity_db->setNetworkAdmin($entity->getNetworkAdmin())->setNetworkEntity($entity->getNetworkEntity());
-    }
+//
+//    /**
+//     * @param EntityApiInterface|Network $entity_db
+//     * @param EntityApiInterface|Network $entity
+//     * @return EntityApiInterface|Network
+//     */
+//    public function mergeEntity(EntityApiInterface $entity_db, EntityApiInterface $entity): EntityApiInterface
+//    {
+//        return $entity_db->setNetworkAdmin($entity->getNetworkAdmin())->setNetworkEntity($entity->getNetworkEntity());
+//    }
 
     /**
      * @param array $parameters

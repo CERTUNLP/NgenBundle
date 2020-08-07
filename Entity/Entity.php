@@ -44,7 +44,7 @@ abstract class Entity implements EntityInterface
      */
     protected $updatedAt = null;
     /**
-     * @var int|null
+     * @var User|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
      * @Gedmo\Blameable(on="create")
      * @JMS\Expose()
@@ -116,18 +116,18 @@ abstract class Entity implements EntityInterface
     }
 
     /**
-     * @return int|null
+     * @return User|null
      */
-    public function getCreatedBy(): ?int
+    public function getCreatedBy(): ?User
     {
         return $this->createdBy;
     }
 
     /**
-     * @param int|null $createdBy
+     * @param User|null $createdBy
      * @return Entity
      */
-    public function setCreatedBy(?int $createdBy): Entity
+    public function setCreatedBy(User $createdBy): Entity
     {
         $this->createdBy = $createdBy;
         return $this;

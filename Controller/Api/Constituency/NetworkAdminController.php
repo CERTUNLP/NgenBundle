@@ -287,7 +287,7 @@ class NetworkAdminController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Patch("/networks/admins/{id}/activate")
+     * @FOS\Patch("/networks/admins/{id}/activate", requirements={"id" = "\d+"}))
      * @FOS\Patch("/networks/admins/{slug}/activate",name="slug")
      * @param NetworkAdmin $network_admin
      * @return View
@@ -329,7 +329,7 @@ class NetworkAdminController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Patch("/networks/admins/{id}/desactivate")
+     * @FOS\Patch("/networks/admins/{id}/desactivate", requirements={"id" = "\d+"}))
      * @FOS\Patch("/networks/admins/{slug}/desactivate",name="slug")
      * @param NetworkAdmin $network_admin
      * @return View
