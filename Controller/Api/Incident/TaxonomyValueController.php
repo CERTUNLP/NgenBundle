@@ -209,6 +209,12 @@ class TaxonomyValueController extends ApiController
      * @Operation(
      *     tags={"Incident taxonomy values"},
      *     summary="Update existing value from the submitted data",
+     *     @SWG\Parameter(
+     *         name="form",
+     *         in="body",
+     *         description="creation parameters",
+     *         @Model(type=TaxonomyValueType::class, groups={"api"})
+     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -237,7 +243,7 @@ class TaxonomyValueController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Patch("/taxonomies/values/{slug}")
+     * @FOS\Patch("/taxonomies/values/{slug}",name="_asd")
      * @param Request $request the request object
      * @param TaxonomyValue $taxonomyValue
      * @return View

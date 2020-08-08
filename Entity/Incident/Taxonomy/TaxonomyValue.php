@@ -17,10 +17,16 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity()
  * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity(
+ *     fields={"value"},
+ *     errorPath="value",
+ *     message="A taxonomy with the same value: {{ value }} already exist, "
+ * )
  */
 class TaxonomyValue extends EntityApi
 {
@@ -40,7 +46,7 @@ class TaxonomyValue extends EntityApi
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */
-    private $description;
+    private $description = '';
     /**
      * @var string|null
      *
@@ -48,7 +54,7 @@ class TaxonomyValue extends EntityApi
      * @JMS\Expose
      * @JMS\Groups({"read","write","fundamental"})
      */
-    private $expanded;
+    private $expanded = '';
     /**
      * @var string|null
      *
@@ -56,7 +62,7 @@ class TaxonomyValue extends EntityApi
      * @JMS\Expose
      * @JMS\Groups({"read","write","fundamental"})
      */
-    private $value;
+    private $value = '';
     /**
      * @var TaxonomyPredicate|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate",inversedBy="values")
@@ -65,7 +71,7 @@ class TaxonomyValue extends EntityApi
      * @JMS\Groups({"read","write"})
      * @JMS\MaxDepth(depth=1)
      **/
-    private $predicate;
+    private $predicate = null;
 
     /**
      * @var int|null
@@ -112,7 +118,7 @@ class TaxonomyValue extends EntityApi
      *
      * @return TaxonomyPredicate
      */
-    public function getPredicate(): TaxonomyPredicate
+    public function getPredicate(): ?TaxonomyPredicate
     {
         return $this->predicate;
     }
@@ -207,7 +213,7 @@ class TaxonomyValue extends EntityApi
      *
      * @return integer
      */
-    public function getVersion(): int
+    public function getVersion(): ?int
     {
         return $this->version;
     }
