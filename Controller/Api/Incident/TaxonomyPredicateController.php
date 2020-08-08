@@ -209,6 +209,12 @@ class TaxonomyPredicateController extends ApiController
      * @Operation(
      *     tags={"Incident taxonomy predicates"},
      *     summary="Update existing predicate from the submitted data",
+     *     @SWG\Parameter(
+     *         name="form",
+     *         in="body",
+     *         description="creation parameters",
+     *         @Model(type=TaxonomyPredicateType::class, groups={"api"})
+     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
