@@ -11,12 +11,44 @@
 
 namespace CertUnlp\NgenBundle\Form\Incident\Taxonomy;
 
+use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate;
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
 use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TaxonomyValueType extends EntityForm
 {
+
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('value', TextType::class, array(
+                'required' => true,
+            ))
+            ->add('description', TextType::class, array(
+                'required' => true,
+            ))
+            ->add('expanded', TextType::class, array(
+                'required' => true,
+            ))
+            ->add('predicate', EntityType::class, array(
+                'class' => TaxonomyPredicate::class,
+                'required' => true,
+            ))
+            ->add('version', NumberType::class, array(
+                'required' => true,
+            ));
+        parent::buildForm($builder, $options);
+    }
+
     /**
      * @param OptionsResolver $resolver
      * @return void

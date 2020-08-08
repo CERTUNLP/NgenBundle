@@ -17,10 +17,16 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity()
  * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity(
+ *     fields={"value"},
+ *     errorPath="value",
+ *     message="A taxonomy with the same value: {{ value }} already exist, "
+ * )
  */
 class TaxonomyPredicate extends EntityApi
 {
