@@ -6,12 +6,18 @@ use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * IncidentPriority
  *
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentPriorityRepository")
+ * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\IncidentPriorityListener"})
  * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity(
+ *     fields={"impact", "urgency"},
+ *     message="This priority already exist."
+ * )
  */
 class IncidentPriority extends EntityApiFrontend
 {

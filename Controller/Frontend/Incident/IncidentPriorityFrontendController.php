@@ -65,7 +65,7 @@ class IncidentPriorityFrontendController extends FrontendController
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentPriority:Frontend/incidentPriorityForm.html.twig")
-     * @Route("{id}/edit", name="cert_unlp_ngen_incident_priority_edit")
+     * @Route("{id}/edit", name="cert_unlp_ngen_incident_priority_edit",requirements={"id"="\d+"})
      * @param IncidentPriority $IncidentPriority
      * @param IncidentPriorityType $priority_type
      * @return array
@@ -77,7 +77,7 @@ class IncidentPriorityFrontendController extends FrontendController
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentPriority:Frontend/incidentPriorityDetail.html.twig")
-     * @Route("{id}/detail", name="cert_unlp_ngen_incident_priority_detail")
+     * @Route("{id}/detail", name="cert_unlp_ngen_incident_priority_detail",requirements={"id"="\d+"})
      * @param IncidentPriority $IncidentPriority
      * @return array
      */
