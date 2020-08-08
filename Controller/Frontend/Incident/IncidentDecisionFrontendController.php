@@ -60,7 +60,7 @@ class IncidentDecisionFrontendController extends FrontendController
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/incidentDecisionForm.html.twig")
-     * @Route("{id}/edit", name="cert_unlp_ngen_incident_decision_edit")
+     * @Route("{id}/edit", name="cert_unlp_ngen_incident_decision_edit",requirements={"id"="\d+"})
      * @param IncidentDecision $incident_decision
      * @param IncidentDecisionType $type
      * @return array
@@ -72,7 +72,7 @@ class IncidentDecisionFrontendController extends FrontendController
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentDecision:Frontend/incidentDecisionDetail.html.twig")
-     * @Route("{id}/detail", name="cert_unlp_ngen_incident_decision_detail")
+     * @Route("{id}/detail", name="cert_unlp_ngen_incident_decision_detail",requirements={"id"="\d+"})
      * @param IncidentDecision $incident_decision
      * @return array
      */

@@ -165,7 +165,7 @@ class IncidentDecisionController extends ApiController
      * )
      * @param IncidentDecision $incident_decision
      * @return View
-     * @FOS\Get("/decisions/{id}" )
+     * @FOS\Get("/decisions/{id}",requirements={"id"="\d+"} )
      */
     public function getIncidentDecisionIdAction(IncidentDecision $incident_decision): View
     {
@@ -298,7 +298,7 @@ class IncidentDecisionController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Patch("/decisions/{id}")
+     * @FOS\Patch("/decisions/{id}",requirements={"id"="\d+"})
      * @param Request $request the request object
      * @param IncidentDecision $incident_decision
      * @return View
@@ -342,7 +342,7 @@ class IncidentDecisionController extends ApiController
      * )
      * @param IncidentDecision $incident_decision
      * @return View
-     * @FOS\Patch("/decisions/{id}/activate")
+     * @FOS\Patch("/decisions/{id}/activate",requirements={"id"="\d+"})
      */
     public function patchIncidentDecisionActivateAction(IncidentDecision $incident_decision): View
     {
@@ -383,7 +383,7 @@ class IncidentDecisionController extends ApiController
      * )
      * @param IncidentDecision $incident_decision
      * @return View
-     * @FOS\Patch("/decisions/{id}/desactivate")
+     * @FOS\Patch("/decisions/{id}/desactivate",requirements={"id"="\d+"})
      */
     public function patchIncidentDecisionDesactivateAction(IncidentDecision $incident_decision): View
     {
