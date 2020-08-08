@@ -108,7 +108,7 @@ class IncidentPriorityController extends ApiController
      *          )
      *     )
      * )
-     * @FOS\Get("/priorities/{id}", name="_id")
+     * @FOS\Get("/priorities/{id}", name="_id",requirements={"id"="\d+"})
      * @FOS\Get("/priorities/{urgency}/{impact}")
      * @param IncidentPriority $incident_priority
      * @return View
@@ -214,55 +214,6 @@ class IncidentPriorityController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident priorities"},
-     *     summary="Update existing priority from the submitted data",
-     *     @SWG\Parameter(
-     *         name="form",
-     *         in="body",
-     *         description="creation parameters",
-     *         @Model(type=IncidentPriorityType::class, groups={"api"})
-     *     ),
-     *     @SWG\Response(
-     *         response="204",
-     *         description="Returned when successful",
-     *          @SWG\Schema(
-     *              type="array",
-     *              @SWG\Items(ref=@Model(type=IncidentPriority::class, groups={"api"}))
-     *          )
-     *     ),
-     *    @SWG\Response(
-     *         response="400",
-     *         description="Returned when the form has errors",
-     *         @SWG\schema(
-     *              type="array",
-     *              @SWG\items(
-     *                  type="object",
-     *                  @SWG\Property(property="code", type="string"),
-     *                  @SWG\Property(property="message", type="string"),
-     *                  @SWG\Property(property="errors", type="array",
-     *                      @SWG\items(
-     *                          type="object",
-     *                          @SWG\Property(property="global", type="string"),
-     *                          @SWG\Property(property="fields", type="string"),
-     *                      )
-     *                  ),
-     *              )
-     *          )
-     *      )
-     * )
-     * @FOS\Patch("/priorities/{id}", name="_id")
-     * @FOS\Patch("/priorities/{urgency}/{impact}")
-     * @param Request $request the request object
-     * @param IncidentPriority $incident_priority
-     * @return View
-     */
-    public function patchIncidentPriorityAction(Request $request, IncidentPriority $incident_priority): View
-    {
-        return $this->patch($request, $incident_priority);
-    }
-
-    /**
-     * @Operation(
-     *     tags={"Incident priorities"},
      *     summary="Activates an existing priority",
      *     @SWG\Response(
      *         response="204",
@@ -292,8 +243,8 @@ class IncidentPriorityController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Patch("/priorities/{id}/activate", name="_id")
      * @FOS\Patch("/priorities/{urgency}/{impact}/activate")
+     * @FOS\Patch("/priorities/{id}/activate", name="_id",requirements={"id"="\d+"})
      * @param IncidentPriority $incident_priority
      * @return View
      */
@@ -334,8 +285,8 @@ class IncidentPriorityController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Patch("/priorities/{id}/desactivate", name="_id")
      * @FOS\Patch("/priorities/{urgency}/{impact}/desactivate")
+     * @FOS\Patch("/priorities/{id}/desactivate", name="_id",requirements={"id"="\d+"})
      * @param IncidentPriority $incident_priority
      * @return View
      */
@@ -344,4 +295,52 @@ class IncidentPriorityController extends ApiController
         return $this->desactivate($incident_priority);
     }
 
+    /**
+     * @Operation(
+     *     tags={"Incident priorities"},
+     *     summary="Update existing priority from the submitted data",
+     *     @SWG\Parameter(
+     *         name="form",
+     *         in="body",
+     *         description="creation parameters",
+     *         @Model(type=IncidentPriorityType::class, groups={"api"})
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentPriority::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
+     * )
+     * @FOS\Patch("/priorities/{id}", name="_id",requirements={"id"="\d+"})
+     * @FOS\Patch("/priorities/{urgency}/{impact}")
+     * @param Request $request the request object
+     * @param IncidentPriority $incident_priority
+     * @return View
+     */
+    public function patchIncidentPriorityAction(Request $request, IncidentPriority $incident_priority): View
+    {
+        return $this->patch($request, $incident_priority);
+    }
 }
