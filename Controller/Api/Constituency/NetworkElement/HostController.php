@@ -104,7 +104,7 @@ class HostController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Delete("/networks/hosts/{id}", name="_id")
+     * @FOS\Delete("/networks/hosts/{id}", name="_id",requirements={"id"="\d+"})
      * @param Host $host
      * @return View
      */
