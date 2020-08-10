@@ -388,7 +388,8 @@ class IncidentHandler extends Handler
      */
     public function mergeIfExists(EntityApiInterface $entity): EntityApiInterface
     {
-        return parent::mergeIfExists($entity)->addIncidentDetected($entity);
+        $incident = parent::mergeIfExists($entity);
+        return $incident->addIncidentDetected($entity);
     }
 
     /**

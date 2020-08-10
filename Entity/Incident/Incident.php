@@ -65,18 +65,6 @@ class Incident extends EntityApiFrontend
      * */
     protected $slug;
     /**
-     * @var string
-     * @JMS\Expose
-     * @JMS\Groups({"write"})
-     */
-    private $temporalNotes;
-    /**
-     * @var File
-     * @JMS\Expose
-     * @JMS\Groups({"write"})
-     */
-    private $temporalEvidenceFile;
-    /**
      * @var DateTime
      *
      * @ORM\Column(name="response_dead_line", type="datetime",nullable=true))
@@ -247,7 +235,7 @@ class Incident extends EntityApiFrontend
      */
     private $needToCommunicate = false;
     /**
-     * @Assert\File(maxSize = "500k")
+     * @Assert\File(maxSize = "5M")
      */
     private $evidence_file;
     /**
@@ -259,10 +247,6 @@ class Incident extends EntityApiFrontend
      * @ORM\Column(name="report_message_id", type="string",nullable=true)
      */
     private $report_message_id;
-    /**
-     * @var $evidence_file_temp
-     */
-    private $evidence_file_temp;
     /**
      * @var bool
      */
@@ -368,23 +352,6 @@ class Incident extends EntityApiFrontend
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getTemporalNotes(): ?string
-    {
-        return $this->temporalNotes;
-    }
-
-    /**
-     * @param string $temporalNotes
-     * @return Incident
-     */
-    public function setTemporalNotes(string $temporalNotes): self
-    {
-        $this->setter($this->temporalNotes, $temporalNotes);
-        return $this;
-    }
 
     /**
      * @param mixed $property
@@ -407,24 +374,6 @@ class Incident extends EntityApiFrontend
     public function getBehavior(): ?StateBehavior
     {
         return $this->getState() ? $this->getState()->getBehavior() : null;
-    }
-
-    /**
-     * @return File
-     */
-    public function getTemporalEvidenceFile(): ?File
-    {
-        return $this->temporalEvidenceFile;
-    }
-
-    /**
-     * @param string $temporalEvidenceFile
-     * @return Incident
-     */
-    public function setTemporalEvidenceFile(string $temporalEvidenceFile): self
-    {
-        $this->setter($this->temporalEvidenceFile, $temporalEvidenceFile);
-        return $this;
     }
 
     /**
@@ -664,24 +613,6 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-     * @return string
-     */
-    public function getEvidenceFileTemp(): ?string
-    {
-        return $this->evidence_file_temp;
-    }
-
-    /**
-     * @param string $evidence_file_temp
-     * @return Incident
-     */
-    public function setEvidenceFileTemp(string $evidence_file_temp = null): Incident
-    {
-        $this->setter($this->evidence_file_temp, $evidence_file_temp);
-        return $this;
-    }
-
-    /**
      * @return IncidentCommentThread
      */
     public function getCommentThread(): ?IncidentCommentThread
@@ -713,7 +644,7 @@ class Incident extends EntityApiFrontend
      */
     public function setNotes(string $notes): Incident
     {
-        $this->setter($this->temporalNotes, $notes);
+        $this->setter($this->notes, $notes);
         return $this;
     }
 
@@ -1353,12 +1284,12 @@ class Incident extends EntityApiFrontend
     /**
      * Set evidence_file
      *
-     * @param File $evidenceFile
+     * @param File|null $evidenceFile
      * @return Incident
      */
     public function setEvidenceFile(File $evidenceFile = null): Incident
     {
-        $this->setter($this->temporalEvidenceFile, $evidenceFile);
+        $this->setter($this->evidence_file, $evidenceFile);
 //        $this->setEvidenceFilePath($evidenceFile->getFilename());
         return $this;
     }
@@ -1366,7 +1297,7 @@ class Incident extends EntityApiFrontend
     /**
      * Get evidence_file_path
      *
-     * @param string $fullPath
+     * @param string|null $fullPath
      * @return string
      */
     public function getEvidenceFilePath(string $fullPath = null): string
@@ -1402,7 +1333,6 @@ class Incident extends EntityApiFrontend
      */
     public function getEvidenceSubDirectory(): ?string
     {
-        //return '/'.$this->getId().$this->getSlug();//sha1(sha1($this->getId()).sha1($this->getSlug()));
         return '/' . $this->getSlug() . '/' . sha1($this->getDate()->format('Y-m-d-h-i'));
     }
 
@@ -1415,7 +1345,7 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-     * @param DateTime $date
+     * @param DateTime|null $date
      * @return Incident
      */
     public function setDate(DateTime $date = null): Incident
