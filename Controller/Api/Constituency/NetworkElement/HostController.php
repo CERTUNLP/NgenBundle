@@ -104,11 +104,53 @@ class HostController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Delete("/networks/hosts/{id}", name="_id",requirements={"id"="\d+"})
+     * @FOS\Delete("/networks/hosts/{id}", name="_id",requirements={"id" = "\d+"})
      * @param Host $host
      * @return View
      */
     public function deleteHostIdAction(Host $host): View
+    {
+        return $this->delete($host);
+    }
+
+    /**
+     * @Operation(
+     *     tags={"Network hosts"},
+     *     summary="Removes a host",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=Host::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
+     * )
+     * @FOS\Delete("/networks/hosts/{ip_v4}", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"} )
+     * @ParamConverter("host", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host", options={"mapping": {"ip_v4": "ip"}})
+     * @param Host $host
+     * @return View
+     */
+    public function deleteHostIpv4Action(Host $host): View
     {
         return $this->delete($host);
     }
@@ -186,48 +228,8 @@ class HostController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Delete("/networks/hosts/{ip_v4}", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"} )
-     * @param Host $host
-     * @return View
-     */
-    public function deleteHostIpv4Action(Host $host): View
-    {
-        return $this->delete($host);
-    }
-
-    /**
-     * @Operation(
-     *     tags={"Network hosts"},
-     *     summary="Removes a host",
-     *     @SWG\Response(
-     *         response="204",
-     *         description="Returned when successful",
-     *          @SWG\Schema(
-     *              type="array",
-     *              @SWG\Items(ref=@Model(type=Host::class, groups={"api"}))
-     *          )
-     *     ),
-     *    @SWG\Response(
-     *         response="400",
-     *         description="Returned when the form has errors",
-     *         @SWG\schema(
-     *              type="array",
-     *              @SWG\items(
-     *                  type="object",
-     *                  @SWG\Property(property="code", type="string"),
-     *                  @SWG\Property(property="message", type="string"),
-     *                  @SWG\Property(property="errors", type="array",
-     *                      @SWG\items(
-     *                          type="object",
-     *                          @SWG\Property(property="global", type="string"),
-     *                          @SWG\Property(property="fields", type="string"),
-     *                      )
-     *                  ),
-     *              )
-     *          )
-     *      )
-     * )
      * @FOS\Delete("/networks/hosts/{ip_v6}", name="_ip_v6",  requirements={"ip_v6"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$"} )
+     * @ParamConverter("host", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host", options={"mapping": {"ip_v6": "ip"}})
      * @param Host $host
      * @return View
      */

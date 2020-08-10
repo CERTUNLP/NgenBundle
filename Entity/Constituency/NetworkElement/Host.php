@@ -18,11 +18,22 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\CommentBundle\Model\Thread;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\HostRepository")
  * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\HostListener"})
  * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity(
+ *     fields={"domain"},
+ *     errorPath="address",
+ *     message="A host with the same address: {{ value }} already exist."
+ * )
+ * @UniqueEntity(
+ *     fields={"ip"},
+ *     errorPath="address",
+ *     message="A host with the same address: {{ value }} already exist."
+ * )
  */
 class Host extends NetworkElement
 {
