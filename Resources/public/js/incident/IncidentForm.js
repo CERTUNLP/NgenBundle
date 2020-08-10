@@ -9,51 +9,51 @@
 var IncidentForm = Form.extend({
     config: function (params) {
         this.setIncidentId();
-        $("#tlp").on("change", $.proxy(this.changeTLP, this));
-        $("#type").on("change", $.proxy(this.getIncidentDecision, this));
-        $("#feed").on("change", $.proxy(this.getIncidentDecision, this));
+        $("#incident_tlp").on("change", $.proxy(this.changeTLP, this));
+        $("#incident_type").on("change", $.proxy(this.getIncidentDecision, this));
+        $("#incident_address").on("change", $.proxy(this.getIncidentDecision, this));
+        $("#incident_feed").on("change", $.proxy(this.getIncidentDecision, this));
         $(".incidentFilter").on("change", $.proxy(this.getIncident, this));
         this.changeTLP();
     },
     changeTLP: function () {
-        $("#tlp_label").first().html("TLP:" + $("#tlp option:selected").text());
-        $("#tlp_label").attr('class', "tlp-" + $("#tlp option:selected").val());
+        $("#tlp_label").first().html("TLP:" + $("#incident_tlp option:selected").text());
+        $("#tlp_label").attr('class', "tlp-" + $("#incident_tlp option:selected").val());
     },
-    getIncidentDecision: function () {
-        let $ip = $("#address").val();
-        var $id = $("#type option:selected").val() + '/' + $("#feed option:selected").val() + ($ip ? '/' + $ip : '');
+    getIncidentDecision: function (event) {
+        let $ip = $("#incident_address").val();
+        var $id = $("#incident_type option:selected").val() + '/' + $("#incident_feed option:selected").val() + ($ip ? '/' + $ip : '');
         this.laddaButton = Ladda.create(this.getSubmitButton().get(0));
         this.laddaButton.start();
         $.publish('/cert_unlp/incident/decision/read', [$id, $.proxy(this.changeDefaults, this)]);
         this.laddaButton.stop();
     },
     getIncident: function () {
-        let $ip = $("#address").val();
-        var $data = $("#type option:selected").val() + ($ip ? '/' + $ip : '');
+        let $ip = $("#incident_address").val();
+        var $data = $("#incident_type option:selected").val() + ($ip ? '/' + $ip : '');
         $.publish('/cert_unlp/incident/search', [$data, $.proxy(this.changeIncidentInfo, this)]);
     },
     changeDefaults: function (response) {
-        if (Object.keys(response).length) {
-            $("#tlp").val(response.responseJSON.tlp.slug).trigger('change');
-            $("#state").val(response.responseJSON.state.slug).trigger('change');
-            $("#impact").val(response.responseJSON.impact.slug).trigger('change');
-            $("#urgency").val(response.responseJSON.urgency.slug).trigger('change');
-            $("#unattendedState").val(response.responseJSON.unattended_state.slug).trigger('change');
-            $("#unsolvedState").val(response.responseJSON.unsolved_state.slug).trigger('change');
-            $.publish('/cert_unlp/incident/priority/read', [response.responseJSON.impact.slug + '_' + response.responseJSON.urgency.slug, $.proxy(this.changePriorityTimes, this)]);
+        if (response.responseJSON && response.responseJSON.length) {
+            $("#incident_tlp").val(response.responseJSON[0].tlp.slug).trigger('change');
+            $("#incident_state").val(response.responseJSON[0].state.slug).trigger('change');
+            $("#incident_impact").val(response.responseJSON[0].priority.impact.slug).trigger('change');
+            $("#incident_urgency").val(response.responseJSON[0].priority.urgency.slug).trigger('change');
+            $("#incident_unattendedState").val(response.responseJSON[0].unattended_state.slug).trigger('change');
+            $("#incident_unsolvedState").val(response.responseJSON[0].unsolved_state.slug).trigger('change');
+           this.changePriorityTimes(response.responseJSON[0].priority);
         }
     },
-    changePriorityTimes: function (response) {
-        if (Object.keys(response).length) {
-            var $calculo= new Date(new Date($("#solveDeadLine").val()).getTime()+ response.responseJSON.unresponse_time*60000);
-            $("#solveDeadLine").val($calculo.toISOString().substring(0, 19));
-            var $calculo2= new Date(new Date($("#responseDeadLine").val()).getTime()+ response.responseJSON.unresolution_time*60000);
-            $("#responseDeadLine").val($calculo2.toISOString().substring(0, 19));
-
+    changePriorityTimes: function (priority) {
+        if (priority) {
+            var $calculo = new Date(new Date($("#incident_solveDeadLine").val()).getTime() + priority.unresponse_time * 60000);
+            $("#incident_solveDeadLine").val($calculo.toISOString().substring(0, 19));
+            var $calculo2 = new Date(new Date($("#incident_responseDeadLine").val()).getTime() + priority.unresolution_time * 60000);
+            $("#incident_responseDeadLine").val($calculo2.toISOString().substring(0, 19));
         }
     },
     setIncidentId: function () {
-        this.incidentId = $('#id').val();
+        this.incidentId = $('#incident_id').val();
     },
     getObjectBrief: function () {
         return 'incident';
@@ -62,13 +62,14 @@ var IncidentForm = Form.extend({
         return this.incidentId;
     },
     changeIncidentInfo: function (response) {
-        if (response.responseJSON.length == 1) {
-            $('#incidentInfo').html('<hr>Incident exist!<a href="' + response.responseJSON[0].id + '/edit">Edit</a>');
-            disableIncidentFields();
-        } else if (response.responseJSON.length > 1) {
-            $('#incidentInfo').html('<hr><a href="">More than one incident with this information.</a>');
-        } else {
-            $('#incidentInfo').html('<hr>This is a new Incident');
+        if (response.responseJSON) {
+            if (response.responseJSON.length == 1) {
+                $('#incidentInfo').html('<hr>Incident exist!<a href="' + response.responseJSON[0].id + '/edit">Edit</a>');
+            } else if (response.responseJSON.length > 1) {
+                $('#incidentInfo').html('<hr><a href="">More than one incident with this information.</a>');
+            } else {
+                $('#incidentInfo').html('<hr>This is a new Incident');
+            }
         }
 
     }

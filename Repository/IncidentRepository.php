@@ -30,7 +30,7 @@ class IncidentRepository extends ServiceEntityRepository
      * @return Incident
      * @throws NonUniqueResultException
      */
-    public function findOneByTypeAndAddress(string $type, string $address = ''): ?Incident
+    public function findOneByTypeAndAddress(string $type, string $address = null): ?Incident
     {
         $qb = $this->queryAllLive();
         $qb = $this->queryByType($type, $qb);
