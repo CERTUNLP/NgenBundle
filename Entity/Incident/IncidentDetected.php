@@ -8,12 +8,15 @@ use CertUnlp\NgenBundle\Entity\User;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * IncidentDetected
  *
  * @ORM\Entity()
+ * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\IncidentDetectedListener"})
  * @JMS\ExclusionPolicy("all")
  */
 class IncidentDetected extends EntityApiFrontend
@@ -88,7 +91,7 @@ class IncidentDetected extends EntityApiFrontend
      */
     private $priority;
     /**
-     * @Assert\File(maxSize = "500k")
+     * @Assert\File(maxSize = "5M")
      */
     private $evidence_file;
     /**
@@ -124,12 +127,11 @@ class IncidentDetected extends EntityApiFrontend
         $this->setType($incident->getType());
         $this->setAssigned($incident->getAssigned());
         $this->setDate(new DateTime('now'));
-        $this->setEvidenceFile($incident->getTemporalEvidenceFile());
-        $this->setEvidenceFileTemp($incident->getEvidenceFileTemp());
+        $this->setEvidenceFile($incident->getEvidenceFile());
         if ($incident->getEvidenceFilePath() && $incident->getEvidenceFile()) {
             $this->setEvidenceFilePath($incidentFather->getEvidenceSubDirectory() . $incident->getEvidenceFilePath());
         }
-        $this->setNotes($incident->getTemporalNotes());
+        $this->setNotes($incident->getNotes());
         $this->setReporter($incident->getReporter());
         $this->setState($incident->getState());
         $this->setTlp($incident->getTlp());
@@ -284,18 +286,18 @@ class IncidentDetected extends EntityApiFrontend
     }
 
     /**
-     * @return string
+     * @return UploadedFile
      */
-    public function getEvidenceFile(): string
+    public function getEvidenceFile(): UploadedFile
     {
         return $this->evidence_file;
     }
 
     /**
-     * @param string $evidence_file
+     * @param UploadedFile|null $evidence_file
      * @return IncidentDetected
      */
-    public function setEvidenceFile(string $evidence_file = null): IncidentDetected
+    public function setEvidenceFile(UploadedFile $evidence_file = null): IncidentDetected
     {
         $this->evidence_file = $evidence_file;
         return $this;
@@ -314,7 +316,6 @@ class IncidentDetected extends EntityApiFrontend
      */
     public function setEvidenceFilePath(string $evidence_file_path): void
     {
-
         $this->evidence_file_path = $evidence_file_path;
     }
 
@@ -327,7 +328,7 @@ class IncidentDetected extends EntityApiFrontend
     }
 
     /**
-     * @param string $evidence_file_temp
+     * @param string|null $evidence_file_temp
      * @return IncidentDetected
      */
     public function setEvidenceFileTemp(string $evidence_file_temp = null): IncidentDetected
@@ -345,7 +346,7 @@ class IncidentDetected extends EntityApiFrontend
     }
 
     /**
-     * @param string $notes
+     * @param string|null $notes
      * @return IncidentDetected
      */
     public function setNotes(string $notes = null): IncidentDetected

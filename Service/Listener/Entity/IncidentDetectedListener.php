@@ -27,7 +27,8 @@ class IncidentDetectedListener
         $this->evidence_path = $evidence_path;
     }
 
-    /** @ORM\PrePersist
+    /**
+     * @ORM\PrePersist
      * @param IncidentDetected $incidentDetected
      */
     public function prePersistHandler(IncidentDetected $incidentDetected): void
