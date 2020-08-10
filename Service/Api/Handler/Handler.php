@@ -143,6 +143,7 @@ abstract class Handler
      */
     public function cleanParameters(array $parameters): array
     {
+        unset($parameters['_method']);
         return $parameters;
     }
 

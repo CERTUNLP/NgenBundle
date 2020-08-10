@@ -76,6 +76,8 @@ class  IncidentTypeListener extends EntityTypeListener
                 $form->get('impact')->setData($this->getEntitymanager()->getReference(IncidentImpact::class, $incident->getPriority()->getImpact()->getSlug()));
                 $form->get('urgency')->setData($this->getEntitymanager()->getReference(IncidentUrgency::class, $incident->getPriority()->getUrgency()->getSlug()));
             }
+            $form->remove('notes');
+            $form->remove('evidence_file');
         }
 
 

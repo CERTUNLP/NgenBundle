@@ -38,24 +38,25 @@ class EntityType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        if ($options['add_extra_fields']) {
+            $builder
+                ->add('active', CheckboxType::class,
+                    ['required' => false])
+                ->add('force_edit', CheckboxType::class,
+                    ['data' => false,
+                        'mapped' => false,
+                        'label_attr' => array('class' => 'alert alert-warning'),
+                        'attr' => array('align_with_widget' => true, 'help_text' => 'If it set to true the network will be edited and not replaced.(this can harm the network history)'),
+                        'required' => false,
+                        'label' => 'Force edit']);
 
-        $builder
-            ->add('active', CheckboxType::class,
-                ['required' => false])
-            ->add('force_edit', CheckboxType::class,
-                ['data' => false,
-                    'mapped' => false,
-                    'label_attr' => array('class' => 'alert alert-warning'),
-                    'attr' => array('align_with_widget' => true, 'help_text' => 'If it set to true the network will be edited and not replaced.(this can harm the network history)'),
-                    'required' => false,
-                    'label' => 'Force edit'])
-            ->add('save', SubmitType::class, array('attr' =>
-                array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
-            ));
-
+        }
         if ($options['add_event_subscriber']) {
             $builder->addEventSubscriber($this->getEntityTypeListener());
         }
+        $builder->add('save', SubmitType::class, array('attr' =>
+            array('class' => 'save btn btn-primary btn-block', 'data-style' => 'slide-down'),
+        ));
     }
 
     /**
@@ -75,6 +76,7 @@ class EntityType extends AbstractType
         $resolver->setDefaults(array(
             'frontend' => false,
             'add_event_subscriber' => true,
+            'add_extra_fields' => true,
         ));
     }
 

@@ -56,6 +56,7 @@ class NetworkHandler extends NetworkElementHandler
      */
     public function cleanParameters(array $parameters): array
     {
+        $parameters = parent::cleanParameters($parameters);
         unset($parameters['type']);
         return $parameters;
     }
