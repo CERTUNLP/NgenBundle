@@ -56,7 +56,6 @@ class IncidentDecision extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority")
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
-     * @JMS\MaxDepth(depth=1)
      */
     private $priority;
     /**

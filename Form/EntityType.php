@@ -77,4 +77,9 @@ class EntityType extends AbstractType
             'add_event_subscriber' => true,
         ));
     }
+
+    public function getBlockPrefix()
+    {
+        return '';
+    }
 }

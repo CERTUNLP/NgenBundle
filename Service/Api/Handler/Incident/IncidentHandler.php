@@ -354,10 +354,10 @@ class IncidentHandler extends Handler
 
     /**
      * @param string $type
-     * @param string $address
+     * @param string|null $address
      * @return mixed
      */
-    public function findOneByTypeAndAddress(string $type, string $address = ''): ?EntityApiInterface
+    public function findOneByTypeAndAddress(string $type, string $address = null): ?EntityApiInterface
     {
         return $this->getRepository()->findOneByTypeAndAddress($type, $address);
 
