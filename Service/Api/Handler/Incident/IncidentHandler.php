@@ -398,6 +398,7 @@ class IncidentHandler extends Handler
      */
     public function cleanParameters(array $parameters): array
     {
+        $parameters = parent::cleanParameters($parameters);
         if (!isset($parameters['reporter']) || !$parameters['reporter']) {
             $parameters['reporter'] = $this->getUser()->getId();
         }
