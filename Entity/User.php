@@ -27,7 +27,6 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Debug\Exception\ClassNotFoundException;
 
 /**
  * User
@@ -458,33 +457,28 @@ class User extends BaseUser implements EntityApiFrontendInterface
     /**
      * @param Contact $contact
      * @return $this
-     * @throws ClassNotFoundException
      */
     public function addContact(Contact $contact): User
     {
         switch ($contact->getContactType()) {
             case 'telegram':
-                $newObj = $contact->castAs(new ContactTelegram());
+                $new_contact = $contact->castAs(new ContactTelegram());
                 break;
             case 'mail':
-                $newObj = $contact->castAs(new ContactEmail());
+                $new_contact = $contact->castAs(new ContactEmail());
                 break;
             case 'phone':
-                $newObj = $contact->castAs(new ContactPhone());
+                $new_contact = $contact->castAs(new ContactPhone());
                 break;
             default:
-                throw new ClassNotFoundException('Contact class: "' . $contact->getContactType() . '" does not exist.', null);
+                $new_contact = null;
 
         }
-
-        if (!$this->contacts->contains($newObj)) {
-            $newObj->setUser($this);
+        if ($new_contact && !$this->contacts->contains($new_contact)) {
+            $new_contact->setUser($this);
+            $this->contacts->add($new_contact);
         }
-
-        $this->contacts->add($newObj);
-
         return $this;
-
     }
 
     /**

@@ -263,7 +263,6 @@ class IncidentHandler extends Handler
             }
         }
         return $incident;
-
     }
 
     /**

@@ -54,6 +54,12 @@ class Host extends NetworkElement
      */
     private $network;
     /**
+     * @var Network
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
+     */
+    private $temp_network = null;
+    /**
      * @var Incident[]|Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="origin",fetch="EXTRA_LAZY")
      */
@@ -72,6 +78,28 @@ class Host extends NetworkElement
         $this->incidents_as_destination = new ArrayCollection();
     }
 
+    public function isAutoUpdatable(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @return Network
+     */
+    public function getTempNetwork(): ?Network
+    {
+        return $this->temp_network;
+    }
+
+    /**
+     * @param Network|null $temp_network
+     * @return Host
+     */
+    public function setTempNetwork(Network $temp_network = null): Host
+    {
+        $this->temp_network = $temp_network;
+        return $this;
+    }
 
     /**
      * @return string

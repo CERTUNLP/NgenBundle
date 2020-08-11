@@ -32,28 +32,7 @@ class HostListener
     public function postLoadHandler(Host $host): void
     {
         $host->guessAddress($host->getIp() ?? $host->getDomain());
-//        $this->networkUpdate($host);
-    }
-
-    /** @ORM\PrePersist
-     * @param Host $host
-     */
-    public function prePersistHandler(Host $host): void
-    {
-        $host->guessAddress($host->getIp() ?? $host->getDomain());
-
-        $this->prePersistUpdate($host);
-    }
-
-    public function prePersistUpdate(Host $host): void
-    {
-        $this->slugUpdate($host);
         $this->networkUpdate($host);
-    }
-
-    public function slugUpdate(Host $host): void
-    {
-        $host->setSlug(Sluggable\Urlizer::urlize($host->getAddress()));
     }
 
     /**
@@ -61,17 +40,8 @@ class HostListener
      */
     public function networkUpdate(Host $host): void
     {
-        $network = $host->getNetwork();
-        $network_new = $this->getNetworkHandler()->findOneInRange($host->getAddress());
-        if ($network_new) {
-            if ($network) {
-                if (!$network->equals($network_new)) {
-                    $host->setNetwork($network_new);
-                }
-            } else {
-                $host->setNetwork($network_new);
-            }
-        }
+        $network = $this->getNetworkHandler()->findOneInRange($host->getAddress());
+        $host->setTempNetwork($network);
     }
 
     /**
@@ -82,7 +52,35 @@ class HostListener
         return $this->network_handler;
     }
 
-    /** @ORM\PreUpdate
+    /**
+     * @ORM\PrePersist
+     * @param Host $host
+     */
+    public function prePersistHandler(Host $host): void
+    {
+        $host->guessAddress($host->getIp() ?? $host->getDomain());
+        $this->prePersistUpdate($host);
+    }
+
+    /**
+     * @param Host $host
+     */
+    public function prePersistUpdate(Host $host): void
+    {
+        $this->slugUpdate($host);
+        $this->networkUpdate($host);
+    }
+
+    /**
+     * @param Host $host
+     */
+    public function slugUpdate(Host $host): void
+    {
+        $host->setSlug(Sluggable\Urlizer::urlize($host->getAddress()));
+    }
+
+    /**
+     * @ORM\PreUpdate
      * @param Host $host
      */
     public function preUpdateHandler(Host $host): void
