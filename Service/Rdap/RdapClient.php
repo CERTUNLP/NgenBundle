@@ -94,18 +94,16 @@ class RdapClient
      * @param string $link
      * @return Entity
      */
-    public function requestEntity(string $link): Entity
+    public function requestEntity(string $link): ?Entity
     {
         if ($link) {
             try {
                 return new Entity(json_decode(file_get_contents($link), false));
             } catch (Exception $exc) {
-                return new DefaultEntity(null, $this->getTeamMail());
+                return null;
             }
-        } else {
-            return new DefaultEntity(null, $this->getTeamMail());
         }
-
+        return null;
     }
 
     /**

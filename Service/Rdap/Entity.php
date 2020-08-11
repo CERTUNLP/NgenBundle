@@ -1,14 +1,7 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace CertUnlp\NgenBundle\Service\Rdap;
 
-//use CertUnlp\NgenBundle\Service\Rdap\Entity;
 use stdClass;
 
 /**
@@ -175,9 +168,9 @@ class Entity
     }
 
     /**
-     * @return Entities|Entity
+     * @return array | Entity[]
      */
-    public function getEntities()
+    public function getEntities(): array
     {
 //        $entities = [];
 //        if ($callback) {

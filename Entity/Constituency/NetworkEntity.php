@@ -59,7 +59,6 @@ class NetworkEntity extends EntityApi
      */
     public function __construct()
     {
-//        $this->setName($name);
         $this->networks = new ArrayCollection();
     }
 
