@@ -305,7 +305,7 @@ abstract class Handler
      * @param array|null $parameters
      * @return EntityApiInterface
      */
-    public function patch(EntityApiInterface $entity, array $parameters = null): EntityApiInterface
+    public function patch(EntityApiInterface $entity, array $parameters = []): EntityApiInterface
     {
         return $this->processForm($entity, $parameters, Request::METHOD_PATCH, false);
     }
