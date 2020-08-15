@@ -35,7 +35,7 @@ class IncidentPriority extends EntityApiFrontend
      * @JMS\Expose()
      * @JMS\Groups({"read"})
      */
-    protected $slug = '';
+    protected $slug;
     /**
      * @var IncidentImpact
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="incidentsPriorities")

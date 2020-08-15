@@ -40,7 +40,7 @@ class IncidentFeed extends EntityApiFrontend
      * @JMS\Expose
      * @JMS\Groups({"read"})
      **/
-    protected $slug = '';
+    protected $slug;
     /**
      * @var string
      * @ORM\Column(name="name", type="string", length=100)
