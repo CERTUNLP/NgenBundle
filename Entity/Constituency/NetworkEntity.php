@@ -46,7 +46,7 @@ class NetworkEntity extends EntityApi
      * @JMS\Expose
      * @JMS\Groups({"read"})
      */
-    protected $slug = '';
+    protected $slug;
     /**
      * @var string
      * @ORM\Column(name="name", type="string")
