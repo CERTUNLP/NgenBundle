@@ -13,7 +13,7 @@ namespace CertUnlp\NgenBundle\Command;
 
 use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\HostHandler;
 use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\Network\NetworkHandler;
-use Exception;
+use Metaregistrar\RDAP\RdapException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -49,10 +49,11 @@ class NetworkUpdateCommand extends ContainerAwareCommand
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int|void|null
-     * @throws Exception
      */
     public function execute(InputInterface $input, OutputInterface $output): void
     {
+//        $rdap_client = new Rdap();
+
         $output->writeln('[network update]: Starting.');
         $limit = 50;
         $offset = 0;
@@ -60,10 +61,17 @@ class NetworkUpdateCommand extends ContainerAwareCommand
         while ($hosts) {
             $output->writeln('[network update]: Found ' . count($hosts) . ' hosts to update.');
             foreach ($hosts as $host) {
-                $output->write('[network update]: Searching network for host: ' . $host);
-                $network = $this->getNetworkHandler()->findOneInRange($host->getAddress(), true);
+                $output->write('[network update]: Searching: ' . $host);
+                try {
+                    $network = $this->getNetworkHandler()->findOneInRange($host->getAddress(), true);
+//                    $network = $rdap_client->search($host->getAddress());
+                } catch (RdapException $e) {
+                    $network = null;
+                }
                 if ($network) {
-                    $output->writeln('<info>...Found network: ' . $network . '</info>');
+                    $output->write('<info> Found: ' . $network . '</info>');
+                    $output->write('<comment> Admin: ' . $network->getNetworkAdmin() . '</comment>');
+                    $output->writeln('<comment> Entity: ' . $network->getNetworkEntity() . '</comment>');
                     $host->setNetwork($network);
                     $this->getHostHandler()->patch($host);
                 } else {
@@ -71,7 +79,7 @@ class NetworkUpdateCommand extends ContainerAwareCommand
                 }
             }
             $offset += $limit;
-            $hosts = $this->getHostHandler()->all(['network' => null], null, $limit, $offset);
+            $hosts = $this->getHostHandler()->all(['network' => null], ['id' => 'desc'], $limit, $offset);
         }
         $output->writeln('[network update]: Finished.');
 
