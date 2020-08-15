@@ -28,6 +28,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Debug\Exception\ClassNotFoundException;
 
 
@@ -36,6 +37,11 @@ use Symfony\Component\Debug\Exception\ClassNotFoundException;
  *
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\NetworkAdminRepository")
  * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity(
+ *     fields={"name"},
+ *     errorPath="name",
+ *     message="A network adminwith the same name: {{ value }} already exist."
+ * )
  */
 class NetworkAdmin extends EntityApiFrontend
 {
@@ -105,7 +111,7 @@ class NetworkAdmin extends EntityApiFrontend
             case 'telegram':
                 $new_contact = $contact->castAs(new ContactTelegram());
                 break;
-            case 'mail':
+            case 'mail' || 'email':
                 $new_contact = $contact->castAs(new ContactEmail());
                 break;
             case 'phone':
@@ -165,7 +171,7 @@ class NetworkAdmin extends EntityApiFrontend
 
     public function __toString(): string
     {
-        return $this->getName() . ' (' . $this->getEmailsAsString() . ')';
+        return $this->getName();
     }
 
     /**

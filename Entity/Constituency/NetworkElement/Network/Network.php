@@ -128,13 +128,6 @@ abstract class Network extends NetworkElement implements NetworkInterface
         return 'info';
     }
 
-
-    public function getType(): string
-    {
-        $array = explode('\\', static::class);
-        return strtolower(str_replace('Network', '', array_pop($array)));
-    }
-
     /**
      * Get startAddress
      *
@@ -188,7 +181,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
     }
 
     /**
-     * @param NetworkAdmin $network_admin
+     * @param NetworkAdmin|null $network_admin
      * @return Network
      */
     public function setNetworkAdmin(NetworkAdmin $network_admin = null): Network
@@ -226,7 +219,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
     }
 
     /**
-     * @param NetworkEntity $network_entity
+     * @param NetworkEntity|null $network_entity
      * @return Network
      */
     public function setNetworkEntity(NetworkEntity $network_entity = null): Network
@@ -322,7 +315,6 @@ abstract class Network extends NetworkElement implements NetworkInterface
         return $this;
     }
 
-
     /**
      * @return string
      */
@@ -335,7 +327,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
      * @param mixed $country_code
      * @return Network
      */
-    public function setCountryCode(string $country_code): Network
+    public function setCountryCode(?string $country_code): Network
     {
         $this->country_code = $country_code;
         return $this;
@@ -365,5 +357,16 @@ abstract class Network extends NetworkElement implements NetworkInterface
     public function getDataIdentificationArray(): array
     {
         return ['address' => $this->getAddressAndMask()];
+    }
+
+    public function __toString(): string
+    {
+        return parent::__toString() . ' (' . strtolower($this->getType()) . ')';
+    }
+
+    public function getType(): string
+    {
+        $array = explode('\\', static::class);
+        return strtolower(str_replace('Network', '', array_pop($array)));
     }
 }

@@ -20,7 +20,6 @@ namespace CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\Ne
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\NetworkExternal;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\NetworkInternal;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\NetworkElement;
 use CertUnlp\NgenBundle\Form\Constituency\NetworkElement\NetworkType;
 use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use CertUnlp\NgenBundle\Repository\NetworkRepository;
@@ -71,13 +70,7 @@ class NetworkHandler extends NetworkElementHandler
         $network = $this->getRepository()->findOneInRange($address);
 
         if (!$network && $rdap_lookup) {
-            switch (NetworkElement::guessType($address)) {
-                case FILTER_FLAG_IPV6:
-                case FILTER_FLAG_IPV4:
-                    return $this->getNetworkRdapHandler()->findByIp($address);
-                default:
-                    return null;
-            }
+            return $this->getNetworkRdapHandler()->findByIp($address);
         }
         return $network;
     }
