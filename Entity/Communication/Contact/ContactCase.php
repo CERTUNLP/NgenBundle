@@ -25,7 +25,7 @@ class ContactCase extends Entity
      * @JMS\Expose
      * @JMS\Groups({"read"})
      */
-    protected $slug = '';
+    protected $slug;
     /**
      * @var string
      *

@@ -26,7 +26,7 @@ class IncidentTlp extends EntityApiFrontend implements Translatable
      * @JMS\Expose()
      * @JMS\Groups({"read"})
      * */
-    protected $slug = '';
+    protected $slug;
     /**
      * @var string
      *

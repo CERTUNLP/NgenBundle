@@ -45,7 +45,7 @@ class IncidentState extends EntityApiFrontend implements Translatable
      * @JMS\Expose
      * @JMS\Groups({"read"})
      */
-    protected $slug = '';
+    protected $slug;
     /**
      * @var StateBehavior
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior", inversedBy="states")
