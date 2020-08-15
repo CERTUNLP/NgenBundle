@@ -18,9 +18,12 @@ use CertUnlp\NgenBundle\Entity\Constituency\NetworkEntity;
 use CertUnlp\NgenBundle\Repository\ContactCaseRepository;
 use CertUnlp\NgenBundle\Repository\NetworkAdminRepository;
 use CertUnlp\NgenBundle\Repository\NetworkEntityRepository;
-use CertUnlp\NgenBundle\Service\Rdap\RdapClient;
+use Metaregistrar\RDAP\Data\RdapEntity;
+use Metaregistrar\RDAP\Rdap;
+use Metaregistrar\RDAP\RdapException;
+use Metaregistrar\RDAP\Responses\RdapResponse;
 
-class NetworkRdapClient extends RdapClient
+class NetworkRdapClient
 {
 
     /**
@@ -35,31 +38,40 @@ class NetworkRdapClient extends RdapClient
      * @var ContactCaseRepository
      */
     private $contact_case_repository;
+    /**
+     * @var Rdap
+     */
+    private $rdap;
+    /**
+     * @var RdapResponse
+     */
+    private $response;
 
 
-    public function __construct(string $team_mail, NetworkEntityRepository $network_entity_repository, NetworkAdminRepository $network_admin_repository, ContactCaseRepository $contact_case_repository)
+    public function __construct(NetworkEntityRepository $network_entity_repository, NetworkAdminRepository $network_admin_repository, ContactCaseRepository $contact_case_repository)
     {
-        parent::__construct($team_mail);
         $this->network_entity_repository = $network_entity_repository;
         $this->network_admin_repository = $network_admin_repository;
         $this->contact_case_repository = $contact_case_repository;
+        $this->rdap = new Rdap();
     }
 
     /**
      * @param string $ip
      * @return NetworkRdap|null
+     * @throws RdapException
      */
     public function findByIp(string $ip): ?NetworkRdap
     {
-        $response = $this->requestIp($ip);
+        $response = $this->getRdap()->search($ip);
         if ($response) {
-            $this->setResponse($this->requestIp($ip));
+            $this->setResponse($response);
             $admin = $this->getNetworkAdmin();
             if ($admin) {
-                $network = new NetworkRdap($this->getStartAddress() . '/' . $this->getCidrMask());
+                $network = new NetworkRdap($response->getStartAddress() . '/' . $this->getCidrMask());
                 $network->setNetworkAdmin($admin);
                 $network->setNetworkEntity($this->getNetworkEntity());
-                $network->setCountryCode($this->getCountry());
+                $network->setCountryCode($response->getCountry());
                 return $network;
             }
         }
@@ -67,45 +79,72 @@ class NetworkRdapClient extends RdapClient
     }
 
     /**
+     * @return Rdap
+     */
+    public function getRdap(): Rdap
+    {
+        return $this->rdap;
+    }
+
+    /**
      * @return NetworkAdmin|null
      */
     public function getNetworkAdmin(): ?NetworkAdmin
     {
-        $this->seachForAbuseEntities();
-        if ($this->getAbuseEntityName()) {
-            $admin = $this->getNetworkAdminRepository()->findOneByName($this->getAbuseEntityName());
+        $abuse_entity = $this->getAbuseEntity($this->getResponse()->getEntities());
+        if ($abuse_entity) {
+            $admin = $this->getNetworkAdminRepository()->findOneByName($this->getAbuseEntityName($abuse_entity));
             if (!$admin) {
-                $admin = $this->createNetworkAdmin();
+                $admin = $this->createNetworkAdmin($abuse_entity);
             }
             return $admin;
         }
         return null;
     }
 
-    public function seachForAbuseEntities(): void
+    /**
+     * @param array $entities
+     * @return NetworkAdmin|null
+     */
+    public function getAbuseEntity(array $entities): ?RdapEntity
     {
-        if ($this->getResponse()->getAbuseEntities()) {
-            foreach ($this->getResponse()->getAbuseEntities() as $index => $abuse) {
-                if (!$abuse->getEmails()) {
-                    $new_entity = $this->requestEntity($abuse->getSelfLink());
-                    if ($new_entity && $new_entity->getEmails()) {
-                        $abuse->getObject()->vcardArray = $new_entity->getObject()->vcardArray;
-                    }
-                }
+        foreach ($entities as $entity) {
+            if ($this->isAbuseOrTechnicalEntity($entity)) {
+                return $entity;
+            }
+            $abuse_entity = $this->getAbuseEntity($entity->getEntities());
+            if ($abuse_entity) {
+                return $abuse_entity;
             }
         }
+        return null;
     }
 
     /**
-     * @return string|null
+     * @param RdapEntity $entity
+     * @return bool
      */
-    public function getAbuseEntityName(): ?string
+    private function isAbuseOrTechnicalEntity(RdapEntity $entity): bool
     {
-        $abuse_entity = $this->getResponse()->getAbuseEntity();
-        if ($abuse_entity) {
-            return $abuse_entity->getName() . '(' . $abuse_entity->getHandle() . ')';
-        }
-        return null;
+        return in_array('abuse', $entity->getRoles(), true);
+    }
+
+    /**
+     * @return RdapResponse
+     */
+    public function getResponse(): RdapResponse
+    {
+        return $this->response;
+    }
+
+    /**
+     * @param RdapResponse $response
+     * @return NetworkRdapClient
+     */
+    public function setResponse(RdapResponse $response): NetworkRdapClient
+    {
+        $this->response = $response;
+        return $this;
     }
 
     /**
@@ -117,33 +156,84 @@ class NetworkRdapClient extends RdapClient
     }
 
     /**
-     * @return NetworkAdmin
+     * @param RdapEntity $abuse_entity
+     * @return string|null
      */
-    private function createNetworkAdmin(): NetworkAdmin
+    public function getAbuseEntityName(RdapEntity $abuse_entity): ?string
     {
-        $admin = new NetworkAdmin();
-        $admin->setName($this->getAbuseEntityName());
-        foreach ($this->getAbuseEntityEmails() as $email) {
-            $contact = new Contact();
-            $contact->setUsername($email);
-            $contact->setName($this->getAbuseEntityName());
-            $contact->setNetworkAdmin($admin);
-            $contact->setContactType('email');
-            $contact->setContactCase($this->getContactCaseRepository()->findOneBySlug('all'));
-            $admin->addContact($contact);
+        if ($abuse_entity) {
+            $name = $this->getEntityName($abuse_entity);
+            $handle = $abuse_entity->getHandle() ? '(' . $abuse_entity->getHandle() . ')' : '';
+            if ($name) {
+                return $name . $handle;
+            }
         }
-        return $admin;
+        return null;
     }
 
     /**
+     * @param RdapEntity $entity
+     * @return string|null
+     */
+    public function getEntityName(RdapEntity $entity): ?string
+    {
+        foreach ($entity->getVcards() as $vcards) {
+            foreach ($vcards as $vcard) {
+                if ($vcard->getName() === 'fn') {
+                    return $vcard->getContentSimple();
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param RdapEntity $abuse_entity
+     * @return NetworkAdmin
+     */
+    private function createNetworkAdmin(RdapEntity $abuse_entity): ?NetworkAdmin
+    {
+        $name = $this->getAbuseEntityName($abuse_entity);
+        $abuse_contacts = $this->getAbuseEntityContact($abuse_entity);
+        if ($name && $abuse_contacts) {
+            $admin = new NetworkAdmin();
+            $admin->setName($name);
+
+            foreach ($abuse_contacts as $abuse_contact) {
+                $contact = new Contact();
+                $contact->setUsername($abuse_contact['email']);
+                $contact->setName($abuse_contact['name']);
+                $contact->setNetworkAdmin($admin);
+                $contact->setContactType('email');
+                $contact->setContactCase($this->getContactCaseRepository()->findOneBySlug('all'));
+                $admin->addContact($contact);
+            }
+            return $admin;
+        }
+        return null;
+    }
+
+    /**
+     * @param RdapEntity $abuse_entity
      * @return array
      */
-    public function getAbuseEntityEmails(): array
+    public function getAbuseEntityContact(RdapEntity $abuse_entity): array
     {
-        if ($this->getResponse()->getAbuseEntity()) {
-            return $this->getResponse()->getAbuseEntity()->getEmails();
+        $contact = [];
+        foreach ($abuse_entity->getVcards() as $id => $vcards) {
+            foreach ($vcards as $vcard) {
+                if ($vcard->getName() === 'fn') {
+                    $contact[$id]['name'] = $vcard->getContentSimple();
+                }
+                if ($vcard->getName() === 'email') {
+                    $contact[$id]['email'] = $vcard->getContentSimple();
+                }
+            }
+            if (!isset($contact[$id]['email'])) {
+                unset($contact[$id]);
+            }
         }
-        return [];
+        return $contact;
     }
 
     /**
@@ -155,26 +245,15 @@ class NetworkRdapClient extends RdapClient
     }
 
     /**
-     * @return string
-     */
-    public function getStartAddress(): string
-    {
-        $response = $this->getResponse()->getStartAddress();
-        if (strpos($response, '/') !== false) {
-            $response = explode('/', $response)[0];
-        }
-        return $response;
-    }
-
-    /**
      * @return int
      */
     public function getCidrMask(): int
     {
-        if ($this->getResponse()->getCidr() !== 0) {
-            return $this->getResponse()->getCidr();
+        foreach ($this->getResponse()->getCidrs() as $cidr) {
+            if ($cidr['v4prefix'] === $this->getResponse()->getStartAddress()) {
+                return $cidr['length'];
+            }
         }
-
         return $this->getMaskFromAddresses();
     }
 
@@ -191,6 +270,18 @@ class NetworkRdapClient extends RdapClient
             $result = $this->calculateMaskV4($this->getStartAddress(), $this->getEndAddress());
         }
         return $result;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStartAddress(): string
+    {
+        $response = $this->getResponse()->getStartAddress();
+        if (strpos($response, '/') !== false) {
+            $response = explode('/', $response)[0];
+        }
+        return $response;
     }
 
     /**
@@ -247,12 +338,23 @@ class NetworkRdapClient extends RdapClient
      */
     public function getNetworkEntity(): NetworkEntity
     {
-        $network_entity = $this->getNetworkEntityRepository()->findOneByName($this->getNetworkEntityName() ?? 'Undefined');
+        $name = $this->getNetworkEntityName() ?? 'Undefined';
+        $network_entity = $this->getNetworkEntityRepository()->findOneByName($name);
         if (!$network_entity) {
             $network_entity = new NetworkEntity();
-            $network_entity->setName($this->getNetworkEntityName());
+            $network_entity->setName($name);
         }
         return $network_entity;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNetworkEntityName(): ?string
+    {
+        $name = $this->getResponse()->getName() ?: 'Undefined';
+        $handle = $this->getResponse()->getHandle() ?: 'Undefined';
+        return $name . ' (' . $handle . ')';
     }
 
     /**
@@ -261,26 +363,6 @@ class NetworkRdapClient extends RdapClient
     public function getNetworkEntityRepository(): NetworkEntityRepository
     {
         return $this->network_entity_repository;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getNetworkEntityName(): ?string
-    {
-        if ($this->getResponse()->getName()) {
-            $handle = $this->getResponse()->getHandle() ? ' (' . $this->getResponse()->getHandle() . ')' : ' ';
-            return $this->getResponse()->getName() . $handle;
-        }
-        return null;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCountry(): string
-    {
-        return $this->getResponse()->getCountry();
     }
 
 }

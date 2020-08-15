@@ -15,12 +15,18 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * NetworkEntity
  *
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity(
+ *     fields={"name"},
+ *     errorPath="name",
+ *     message="A network entity with the same name: {{ value }} already exist."
+ * )
  */
 class NetworkEntity extends EntityApi
 {
