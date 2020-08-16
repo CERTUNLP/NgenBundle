@@ -14,7 +14,6 @@ services:
         bind:
             $ngen_lang: '%ngen_lang%'
             $evidence_path: "%cert_unlp.ngen.incident.evidence.path%"
-            $team_mail: '%cert_unlp.ngen.team.mail%'
             $elastica_finder_incident: "@fos_elastica.finder.incidents.incident"
             $elastica_finder_decision: "@fos_elastica.finder.decisions.decision"
             $elastica_finder_feed: "@fos_elastica.finder.feeds.feed"
