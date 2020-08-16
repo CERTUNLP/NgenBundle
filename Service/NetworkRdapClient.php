@@ -68,7 +68,7 @@ class NetworkRdapClient
             $this->setResponse($response);
             $admin = $this->getNetworkAdmin();
             if ($admin) {
-                $network = new NetworkRdap($response->getStartAddress() . '/' . $this->getCidrMask());
+                $network = new NetworkRdap($this->getAddress());
                 $network->setNetworkAdmin($admin);
                 $network->setNetworkEntity($this->getNetworkEntity());
                 $network->setCountryCode($response->getCountry());
@@ -245,12 +245,24 @@ class NetworkRdapClient
     }
 
     /**
+     * @return string
+     */
+    private function getAddress(): string
+    {
+        if (in_array($this->getRdap()->getProtocol(), [$this->getRdap()::IPV4, $this->getRdap()::IPV6], true)) {
+            return $this->getResponse()->getStartAddress() . '/' . $this->getCidrMask();
+        }
+        return $this->getResponse()->getHandle();
+    }
+
+    /**
      * @return int
      */
     public function getCidrMask(): int
     {
         foreach ($this->getResponse()->getCidrs() as $cidr) {
-            if ($cidr['v4prefix'] === $this->getResponse()->getStartAddress()) {
+            $prefix = $this->getResponse()->getIpVersion();
+            if ($cidr[$prefix . 'prefix'] === $this->getResponse()->getStartAddress()) {
                 return $cidr['length'];
             }
         }
@@ -263,38 +275,13 @@ class NetworkRdapClient
     public function getMaskFromAddresses(): int
     {
         if ($this->getResponse()->getIpVersion() === 'v6') {
-            $start = explode(':', $this->getStartAddress());
-            $end = explode(':', $this->getEndAddress());
+            $start = explode(':', $this->getResponse()->getStartAddress());
+            $end = explode(':', $this->getResponse()->getEndAddress());
             $result = 128 - 16 * count(array_diff($end, $start));
         } else {
-            $result = $this->calculateMaskV4($this->getStartAddress(), $this->getEndAddress());
+            $result = $this->calculateMaskV4($this->getResponse()->getStartAddress(), $this->getResponse()->getEndAddress());
         }
         return $result;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStartAddress(): string
-    {
-        $response = $this->getResponse()->getStartAddress();
-        if (strpos($response, '/') !== false) {
-            $response = explode('/', $response)[0];
-        }
-        return $response;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEndAddress(): string
-    {
-        $response = $this->getResponse()->getEndAddress();
-        if (strpos($response, '/') !== false) {
-            $response = explode('/', $response)[0];
-        }
-        return $response;
-
     }
 
     /**

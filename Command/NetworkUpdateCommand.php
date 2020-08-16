@@ -57,7 +57,7 @@ class NetworkUpdateCommand extends ContainerAwareCommand
         $output->writeln('[network update]: Starting.');
         $limit = 50;
         $offset = 0;
-        $hosts = $this->getHostHandler()->all(['network' => null], null, $limit, $offset);
+        $hosts = $this->getHostHandler()->all(['network' => null], ['id' => 'desc'], $limit, $offset);
         while ($hosts) {
             $output->writeln('[network update]: Found ' . count($hosts) . ' hosts to update.');
             foreach ($hosts as $host) {
