@@ -11,9 +11,9 @@
 
 namespace CertUnlp\NgenBundle\Command;
 
+use CertUnlp\NgenBundle\Exception\InvalidFormException;
 use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\HostHandler;
 use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\Network\NetworkHandler;
-use Metaregistrar\RDAP\RdapException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -57,29 +57,29 @@ class NetworkUpdateCommand extends ContainerAwareCommand
         $output->writeln('[network update]: Starting.');
         $limit = 50;
         $offset = 0;
-        $hosts = $this->getHostHandler()->all(['network' => null], ['id' => 'desc'], $limit, $offset);
+        $hosts = $this->getHostHandler()->all(['network' => null, 'ip' => '96.8.28.31'], ['ip'=>'desc'], $limit, $offset);
         while ($hosts) {
             $output->writeln('[network update]: Found ' . count($hosts) . ' hosts to update.');
             foreach ($hosts as $host) {
                 $output->write('[network update]: Searching: ' . $host);
-                try {
-                    $network = $this->getNetworkHandler()->findOneInRange($host->getAddress(), true);
-//                    $network = $rdap_client->search($host->getAddress());
-                } catch (RdapException $e) {
-                    $network = null;
-                }
+                $network = $this->getNetworkHandler()->findOneInRange($host->getAddress(), true);
                 if ($network) {
                     $output->write('<info> Found: ' . $network . '</info>');
                     $output->write('<comment> Admin: ' . $network->getNetworkAdmin() . '</comment>');
                     $output->writeln('<comment> Entity: ' . $network->getNetworkEntity() . '</comment>');
                     $host->setNetwork($network);
+                    try {
                     $this->getHostHandler()->patch($host);
+
+                    }catch (InvalidFormException $exception){
+                        echo $exception;
+                    }
                 } else {
                     $output->writeln('<error>...Not Found</error>');
                 }
             }
             $offset += $limit;
-            $hosts = $this->getHostHandler()->all(['network' => null], ['id' => 'desc'], $limit, $offset);
+            $hosts = $this->getHostHandler()->all(['network' => null, 'domain' => null], ['ip'=>'desc'], $limit, $offset);
         }
         $output->writeln('[network update]: Finished.');
 

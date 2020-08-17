@@ -18,6 +18,7 @@ use CertUnlp\NgenBundle\Entity\Constituency\NetworkEntity;
 use CertUnlp\NgenBundle\Repository\ContactCaseRepository;
 use CertUnlp\NgenBundle\Repository\NetworkAdminRepository;
 use CertUnlp\NgenBundle\Repository\NetworkEntityRepository;
+use Darsyn\IP\Version\Multi as IP;
 use Metaregistrar\RDAP\Data\RdapEntity;
 use Metaregistrar\RDAP\Rdap;
 use Metaregistrar\RDAP\RdapException;
@@ -57,21 +58,21 @@ class NetworkRdapClient
     }
 
     /**
-     * @param string $ip
+     * @param string $address
      * @return NetworkRdap|null
      * @throws RdapException
      */
-    public function findByIp(string $ip): ?NetworkRdap
+    public function search(string $address): ?NetworkRdap
     {
-        $response = $this->getRdap()->search($ip);
+        $response = $this->getRdap()->search($address);
         if ($response) {
             $this->setResponse($response);
             $admin = $this->getNetworkAdmin();
             if ($admin) {
-                $network = new NetworkRdap($this->getAddress());
+                $network = new NetworkRdap($this->getAddress($address));
                 $network->setNetworkAdmin($admin);
                 $network->setNetworkEntity($this->getNetworkEntity());
-                $network->setCountryCode($response->getCountry());
+                $network->setCountryCode($this->getCountry());
                 return $network;
             }
         }
@@ -162,8 +163,8 @@ class NetworkRdapClient
     public function getAbuseEntityName(RdapEntity $abuse_entity): ?string
     {
         if ($abuse_entity) {
-            $name = $this->getEntityName($abuse_entity);
-            $handle = $abuse_entity->getHandle() ? '(' . $abuse_entity->getHandle() . ')' : '';
+            $name = $this->getEntityName($abuse_entity) ?: $this->getResponse()->getName() ?: 'Undefined';
+            $handle = $abuse_entity->getHandle() ? ' (' . $abuse_entity->getHandle() . ')' : ' (' . ($this->getResponse()->getHandle() ?: 'Undefined') . ')';
             if ($name) {
                 return $name . $handle;
             }
@@ -202,7 +203,7 @@ class NetworkRdapClient
             foreach ($abuse_contacts as $abuse_contact) {
                 $contact = new Contact();
                 $contact->setUsername($abuse_contact['email']);
-                $contact->setName($abuse_contact['name']);
+                $contact->setName($abuse_contact['name'] ?: $name);
                 $contact->setNetworkAdmin($admin);
                 $contact->setContactType('email');
                 $contact->setContactCase($this->getContactCaseRepository()->findOneBySlug('all'));
@@ -245,70 +246,89 @@ class NetworkRdapClient
     }
 
     /**
+     * @param string $address
      * @return string
+     * @throws \Darsyn\IP\Exception\InvalidCidrException
+     * @throws \Darsyn\IP\Exception\InvalidIpAddressException
+     * @throws \Darsyn\IP\Exception\WrongVersionException
      */
-    private function getAddress(): string
+    private function getAddress(string $address): string
     {
         if (in_array($this->getRdap()->getProtocol(), [$this->getRdap()::IPV4, $this->getRdap()::IPV6], true)) {
-            return $this->getResponse()->getStartAddress() . '/' . $this->getCidrMask();
+            $cidrs = $this->getCidrsFromAddresses();
+            foreach ($cidrs as $cidr) {
+                $prefix = $this->getResponse()->getIpVersion();
+                $address_object = IP::factory($address);
+                $network_object = IP::factory($cidr[$prefix . 'prefix']);
+                if ($address_object->inRange($network_object, $cidr['length'])) {
+                    return $cidr[$prefix . 'prefix'] . '/' . $cidr['length'];
+                }
+            }
+        }
+        if ($this->getRdap()->getProtocol() === $this->getRdap()::DOMAIN) {
+            return $this->getResponse()->getLDHName();
         }
         return $this->getResponse()->getHandle();
     }
 
     /**
-     * @return int
+     * @return array
      */
-    public function getCidrMask(): int
+    public function getCidrsFromAddresses(): array
     {
-        foreach ($this->getResponse()->getCidrs() as $cidr) {
-            $prefix = $this->getResponse()->getIpVersion();
-            if ($cidr[$prefix . 'prefix'] === $this->getResponse()->getStartAddress()) {
-                return $cidr['length'];
-            }
+        if ($this->getResponse()->getCidrs()) {
+            return $this->getResponse()->getCidrs();
         }
-        return $this->getMaskFromAddresses();
-    }
-
-    /**
-     * @return int
-     */
-    public function getMaskFromAddresses(): int
-    {
         if ($this->getResponse()->getIpVersion() === 'v6') {
             $start = explode(':', $this->getResponse()->getStartAddress());
             $end = explode(':', $this->getResponse()->getEndAddress());
             $result = 128 - 16 * count(array_diff($end, $start));
         } else {
-            $result = $this->calculateMaskV4($this->getResponse()->getStartAddress(), $this->getResponse()->getEndAddress());
+            $result = $this->getCidrV4($this->getResponse()->getStartAddress(), $this->getResponse()->getEndAddress());
         }
         return $result;
+
     }
 
     /**
-     * @param string $startStr
-     * @param string $endStr
-     * @return int
+     * @param string $ipStart
+     * @param string $ipEnd
+     * @return array
      */
-    private function calculateMaskV4(string $startStr, string $endStr): int
+    private function getCidrV4(string $ipStart, string $ipEnd): array
     {
-        $start = ip2long($startStr);
-        $end = ip2long($endStr);
-        $maxSize = 32;
-        while ($maxSize > 0) {
-            $mask = hexdec($this->iMask($maxSize - 1));
-            $maskBase = $start & $mask;
-            if ($maskBase !== $start) {
-                break;
-            }
-            $maxSize--;
+        if (is_string($ipStart) || is_string($ipEnd)) {
+            $start = ip2long($ipStart);
+            $end = ip2long($ipEnd);
+        } else {
+            $start = $ipStart;
+            $end = $ipEnd;
         }
-        $x = log($end - $start + 1) / log(2);
-        $maxDiff = floor(32 - floor($x));
-        if ($maxSize < $maxDiff) {
-            $maxSize = $maxDiff;
-        }
-        return $maxSize;
 
+        $result = array();
+
+        while ($end >= $start) {
+            $maxSize = 32;
+            while ($maxSize > 0) {
+                $mask = hexdec($this->iMask($maxSize - 1));
+                $maskBase = $start & $mask;
+                if ($maskBase !== $start) {
+                    break;
+                }
+                $maxSize--;
+            }
+            $x = log($end - $start + 1) / log(2);
+            $maxDiff = floor(32 - floor($x));
+
+            if ($maxSize < $maxDiff) {
+                $maxSize = $maxDiff;
+            }
+
+            $ip = long2ip($start);
+            $result[] = ['v4prefix' => $ip, 'length' => (int)$maxSize];
+            $start += 2 ** (32 - $maxSize);
+        }
+        return $result;
     }
 
     /**
@@ -317,7 +337,7 @@ class NetworkRdapClient
      */
     private function iMask(int $mask): string
     {
-        return base_convert((2 ** 32) - (2 ** (32 - $mask)), 10, 16);
+        return base_convert(((2 ** 32) - (2 ** (32 - $mask))), 10, 16);
     }
 
     /**
@@ -352,4 +372,15 @@ class NetworkRdapClient
         return $this->network_entity_repository;
     }
 
+    /**
+     * @return string|null
+     */
+    private function getCountry(): ?string
+    {
+        if (in_array($this->getRdap()->getProtocol(), [$this->getRdap()::IPV4, $this->getRdap()::IPV6], true)) {
+            $this->getResponse()->getCountry();
+
+        }
+        return null;
+    }
 }
