@@ -26,6 +26,7 @@ use CertUnlp\NgenBundle\Repository\NetworkRepository;
 use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\NetworkElementHandler;
 use CertUnlp\NgenBundle\Service\NetworkRdapClient;
 use Doctrine\ORM\EntityManagerInterface;
+use Metaregistrar\RDAP\RdapException;
 use Symfony\Component\Debug\Exception\ClassNotFoundException;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -70,7 +71,11 @@ class NetworkHandler extends NetworkElementHandler
         $network = $this->getRepository()->findOneInRange($address);
 
         if (!$network && $rdap_lookup) {
-            return $this->getNetworkRdapHandler()->findByIp($address);
+            try {
+                return $this->getNetworkRdapHandler()->search($address);
+            } catch (RdapException $e) {
+                $network = null;
+            }
         }
         return $network;
     }
