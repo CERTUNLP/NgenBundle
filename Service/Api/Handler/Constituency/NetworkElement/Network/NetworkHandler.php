@@ -20,6 +20,7 @@ namespace CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\Ne
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\NetworkExternal;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\NetworkInternal;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\NetworkRdap;
 use CertUnlp\NgenBundle\Form\Constituency\NetworkElement\NetworkType;
 use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use CertUnlp\NgenBundle\Repository\NetworkRepository;
@@ -101,6 +102,9 @@ class NetworkHandler extends NetworkElementHandler
                 break;
             case 'external':
                 $entity = new NetworkExternal($parameters['address']);
+                break;
+            case 'rdap':
+                $entity = new NetworkRdap($parameters['address']);
                 break;
             default:
                 throw new ClassNotFoundException('Network class: "' . $parameters['type'] . '" does not exist.', null);

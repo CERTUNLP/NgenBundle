@@ -57,7 +57,7 @@ class NetworkUpdateCommand extends ContainerAwareCommand
         $output->writeln('[network update]: Starting.');
         $limit = 50;
         $offset = 0;
-        $hosts = $this->getHostHandler()->all(['network' => null, 'ip' => '96.8.28.31'], ['ip'=>'desc'], $limit, $offset);
+        $hosts = $this->getHostHandler()->all(['network' => null], ['id' => 'desc'], $limit, $offset);
         while ($hosts) {
             $output->writeln('[network update]: Found ' . count($hosts) . ' hosts to update.');
             foreach ($hosts as $host) {
@@ -69,9 +69,8 @@ class NetworkUpdateCommand extends ContainerAwareCommand
                     $output->writeln('<comment> Entity: ' . $network->getNetworkEntity() . '</comment>');
                     $host->setNetwork($network);
                     try {
-                    $this->getHostHandler()->patch($host);
-
-                    }catch (InvalidFormException $exception){
+                        $this->getHostHandler()->patch($host);
+                    } catch (InvalidFormException $exception) {
                         echo $exception;
                     }
                 } else {
@@ -79,7 +78,7 @@ class NetworkUpdateCommand extends ContainerAwareCommand
                 }
             }
             $offset += $limit;
-            $hosts = $this->getHostHandler()->all(['network' => null, 'domain' => null], ['ip'=>'desc'], $limit, $offset);
+            $hosts = $this->getHostHandler()->all(['network' => null], ['id' => 'desc'], $limit, $offset);
         }
         $output->writeln('[network update]: Finished.');
 
