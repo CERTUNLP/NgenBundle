@@ -18,11 +18,11 @@ use CertUnlp\NgenBundle\Entity\Constituency\NetworkEntity;
 use CertUnlp\NgenBundle\Repository\ContactCaseRepository;
 use CertUnlp\NgenBundle\Repository\NetworkAdminRepository;
 use CertUnlp\NgenBundle\Repository\NetworkEntityRepository;
-use Darsyn\IP\Version\Multi as IP;
 use Metaregistrar\RDAP\Data\RdapEntity;
 use Metaregistrar\RDAP\Rdap;
 use Metaregistrar\RDAP\RdapException;
 use Metaregistrar\RDAP\Responses\RdapResponse;
+use Symfony\Component\HttpFoundation\IpUtils;
 
 class NetworkRdapClient
 {
@@ -68,8 +68,9 @@ class NetworkRdapClient
         if ($response) {
             $this->setResponse($response);
             $admin = $this->getNetworkAdmin();
-            if ($admin) {
-                $network = new NetworkRdap($this->getAddress($address));
+            $validated_address = $this->getAddress($address);
+            if ($admin && $validated_address) {
+                $network = new NetworkRdap($validated_address);
                 $network->setNetworkAdmin($admin);
                 $network->setNetworkEntity($this->getNetworkEntity());
                 $network->setCountryCode($this->getCountry());
@@ -248,22 +249,18 @@ class NetworkRdapClient
     /**
      * @param string $address
      * @return string
-     * @throws \Darsyn\IP\Exception\InvalidCidrException
-     * @throws \Darsyn\IP\Exception\InvalidIpAddressException
-     * @throws \Darsyn\IP\Exception\WrongVersionException
      */
-    private function getAddress(string $address): string
+    private function getAddress(string $address): ?string
     {
         if (in_array($this->getRdap()->getProtocol(), [$this->getRdap()::IPV4, $this->getRdap()::IPV6], true)) {
             $cidrs = $this->getCidrsFromAddresses();
             foreach ($cidrs as $cidr) {
                 $prefix = $this->getResponse()->getIpVersion();
-                $address_object = IP::factory($address);
-                $network_object = IP::factory($cidr[$prefix . 'prefix']);
-                if ($address_object->inRange($network_object, $cidr['length'])) {
+                if (IpUtils::checkIp($address, $cidr[$prefix . 'prefix'] . '/' . $cidr['length'])) {
                     return $cidr[$prefix . 'prefix'] . '/' . $cidr['length'];
                 }
             }
+            return null;
         }
         if ($this->getRdap()->getProtocol() === $this->getRdap()::DOMAIN) {
             return $this->getResponse()->getLDHName();
@@ -279,14 +276,10 @@ class NetworkRdapClient
         if ($this->getResponse()->getCidrs()) {
             return $this->getResponse()->getCidrs();
         }
-        if ($this->getResponse()->getIpVersion() === 'v6') {
-            $start = explode(':', $this->getResponse()->getStartAddress());
-            $end = explode(':', $this->getResponse()->getEndAddress());
-            $result = 128 - 16 * count(array_diff($end, $start));
-        } else {
-            $result = $this->getCidrV4($this->getResponse()->getStartAddress(), $this->getResponse()->getEndAddress());
+        if ($this->getResponse()->getIpVersion() === 'v4') {
+            return $this->getCidrV4($this->getResponse()->getStartAddress(), $this->getResponse()->getEndAddress());
         }
-        return $result;
+        return [];
 
     }
 
