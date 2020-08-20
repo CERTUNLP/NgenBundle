@@ -39,10 +39,9 @@ class IncidentStateRepository extends ServiceEntityRepository
             $slugs[] = $item['slug'];
         }
         $qb = $this->getOrCreateQueryBuilder($qb);
-
-        $qb
-            ->where($qb->expr()->in('i.slug', $slugs));
-
+        if ($slugs) {
+            $qb->where($qb->expr()->in('i.slug', $slugs));
+        }
         return $qb;
 
     }

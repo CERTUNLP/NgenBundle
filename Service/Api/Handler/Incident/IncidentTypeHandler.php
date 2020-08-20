@@ -44,7 +44,7 @@ class IncidentTypeHandler extends Handler
      * @param array|null $parameters
      * @return EntityApiInterface
      */
-    public function patch(EntityApiInterface $entity, array $parameters = null): EntityApiInterface
+    public function patch(EntityApiInterface $entity, array $parameters = []): EntityApiInterface
     {
         if (isset($parameters['report'])) {
             $report = $this->getReportHandler()->post($parameters['report']);
