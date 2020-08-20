@@ -34,7 +34,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -160,11 +159,11 @@ class Incident extends EntityApiFrontend
     /**
      * @var IncidentImpact
      */
-    private $impact;
+    private $impact = null;
     /**
      * @var IncidentUrgency
      */
-    private $urgency;
+    private $urgency = null;
     /**
      * @var IncidentCommentThread
      * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread",mappedBy="incident",fetch="EXTRA_LAZY"))
@@ -293,10 +292,10 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-     * @param User|UserInterface $responsable
+     * @param User|null $responsable
      * @return Incident
      */
-    public function setResponsable(User $responsable): Incident
+    public function setResponsable(?User $responsable): Incident
     {
         $this->responsable = $responsable;
         return $this;
@@ -352,6 +351,23 @@ class Incident extends EntityApiFrontend
         return $this;
     }
 
+    /**
+     * @return DateTime
+     */
+    public function getResponseDeadLine(): ?DateTime
+    {
+        return $this->responseDeadLine;
+    }
+
+    /**
+     * @param DateTime $responseDeadLine
+     * @return Incident
+     */
+    public function setResponseDeadLine(DateTime $responseDeadLine = null): self
+    {
+        $this->setter($this->responseDeadLine, $responseDeadLine);
+        return $this;
+    }
 
     /**
      * @param mixed $property
@@ -374,24 +390,6 @@ class Incident extends EntityApiFrontend
     public function getBehavior(): ?StateBehavior
     {
         return $this->getState() ? $this->getState()->getBehavior() : null;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getResponseDeadLine(): ?DateTime
-    {
-        return $this->responseDeadLine;
-    }
-
-    /**
-     * @param DateTime $responseDeadLine
-     * @return Incident
-     */
-    public function setResponseDeadLine(DateTime $responseDeadLine = null): self
-    {
-        $this->setter($this->responseDeadLine, $responseDeadLine);
-        return $this;
     }
 
     /**
@@ -567,10 +565,10 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-     * @param IncidentUrgency $urgency
+     * @param IncidentUrgency|null $urgency
      * @return Incident
      */
-    public function setUrgency(IncidentUrgency $urgency): Incident
+    public function setUrgency(?IncidentUrgency $urgency): Incident
     {
         $this->setter($this->urgency, $urgency);
         return $this;
@@ -588,7 +586,7 @@ class Incident extends EntityApiFrontend
      * @param IncidentImpact $impact
      * @return Incident
      */
-    public function setImpact(IncidentImpact $impact): Incident
+    public function setImpact(?IncidentImpact $impact): Incident
     {
         $this->setter($this->impact, $impact);
         return $this;

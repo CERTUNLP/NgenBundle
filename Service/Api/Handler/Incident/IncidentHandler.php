@@ -77,7 +77,7 @@ class IncidentHandler extends Handler
     /**
      * {@inheritDoc}
      */
-    public function patch(EntityApiInterface $entity, array $parameters = null): EntityApiInterface
+    public function patch(EntityApiInterface $entity, array $parameters = []): EntityApiInterface
     {
         $entity->setResponsable($this->getUser());
         return parent::patch($entity, $parameters);
@@ -308,8 +308,12 @@ class IncidentHandler extends Handler
      */
     public function priorityUpdate(Incident $incident): void
     {
-        $priority = $this->getIncidentPriorityHandler()->get(['impact' => $incident->getImpact()->getSlug(), 'urgency' => $incident->getUrgency()->getSlug()]);
-        $incident->setPriority($priority);
+        $impact = $incident->getImpact() ? $incident->getImpact()->getSlug() : null;
+        $urgency = $incident->getUrgency() ? $incident->getUrgency()->getSlug() : null;
+        if ($impact && $urgency) {
+            $priority = $this->getIncidentPriorityHandler()->get(['impact' => $incident->getImpact()->getSlug(), 'urgency' => $incident->getUrgency()->getSlug()]);
+            $incident->setPriority($priority);
+        }
     }
 
     /**
@@ -399,7 +403,7 @@ class IncidentHandler extends Handler
     {
         $parameters = parent::cleanParameters($parameters);
         if (!isset($parameters['reporter']) || !$parameters['reporter']) {
-            $parameters['reporter'] = $this->getUser()->getId();
+            $parameters['reporter'] = $this->getUser() ? $this->getUser()->getId() : null;
         }
         return $parameters;
     }

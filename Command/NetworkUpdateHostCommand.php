@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class NetworkUpdateCommand extends ContainerAwareCommand
+class NetworkUpdateHostCommand extends ContainerAwareCommand
 {
     /**
      * @var HostHandler
@@ -39,8 +39,8 @@ class NetworkUpdateCommand extends ContainerAwareCommand
     public function configure()
     {
         $this
-            ->setName('cert_unlp:network:update')
-            ->setDescription('Execute a list of enrichments for the incidents');
+            ->setName('cert_unlp:network:update:host')
+            ->setDescription('Execute a list of enrichments for the hosts');
 //            ->addOption('all', '-a', InputOption::VALUE_OPTIONAL, 'execute all enrichments', true)
 //            ->addOption('enrichment', '-en', InputOption::VALUE_OPTIONAL, 'execute the enrichment given');
     }
@@ -52,14 +52,13 @@ class NetworkUpdateCommand extends ContainerAwareCommand
      */
     public function execute(InputInterface $input, OutputInterface $output): void
     {
-//        $rdap_client = new Rdap();
-
         $output->writeln('[network update]: Starting.');
         $limit = 50;
         $offset = 0;
         $hosts = $this->getHostHandler()->all(['network' => null], ['id' => 'desc'], $limit, $offset);
         while ($hosts) {
-            $output->writeln('[network update]: Found ' . count($hosts) . ' hosts to update.');
+            $output->write('[network update]:<info> Found ' . count($hosts) . ' hosts to update.</info>');
+            $output->writeln('<info>Total analyzed ' . $offset . '</info>');
             foreach ($hosts as $host) {
                 $output->write('[network update]: Searching: ' . $host);
                 $network = $this->getNetworkHandler()->findOneInRange($host->getAddress(), true);
