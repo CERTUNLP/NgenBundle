@@ -23,7 +23,6 @@ class CertUnlpNgenBundle extends Bundle
     {
         parent::build($container);
 
-//        $container->addCompilerPass(new DoctrineEntityListenerPass());
         $container->addCompilerPass(new DelegatorCompilerPass());
     }
 
