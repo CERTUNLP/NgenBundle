@@ -35,7 +35,7 @@ use Symfony\Component\Debug\Exception\ClassNotFoundException;
 /**
  * NetworkAdmin
  *
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\NetworkAdminRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Constituency\NetworkAdminRepository")
  * @JMS\ExclusionPolicy("all")
  * @UniqueEntity(
  *     fields={"name"},

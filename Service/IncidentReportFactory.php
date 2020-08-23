@@ -13,68 +13,115 @@ namespace CertUnlp\NgenBundle\Service;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use FOS\RestBundle\View\View;
-use FOS\RestBundle\View\ViewHandler;
+use FOS\RestBundle\View\ViewHandlerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\SyntaxError;
 
 class IncidentReportFactory
 {
 
-    protected $templating;
-    private $viewHandler;
-    private $view;
-    private $team;
-    private $custom_handler;
 
-    public function __construct(Environment $templating, ViewHandler $viewHandler, View $view, $team)
+    /**
+     * @var Environment
+     */
+    private $templating;
+    /**
+     * @var ViewHandlerInterface
+     */
+    private $viewHandler;
+    /**
+     * @var View
+     */
+    private $view;
+    /**
+     * @var array
+     */
+    private $team;
+
+    public function __construct(Environment $templating, ViewHandlerInterface $viewHandler, array $ngen_team)
     {
         $this->templating = $templating;
         $this->viewHandler = $viewHandler;
-        $this->view = $view;
-        $this->team = $team;
-    }
-
-    public function getReport(Incident $incident, string $lang)
-    {
-        $data = array('report' => $incident->getType()->getReport($lang), 'incident' => $incident, 'team' => $this->team);
-        $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/mail.html.twig');
-        $this->getView()->setTemplateData($data);
-        $html = $this->viewHandler->renderTemplate($this->getView(), 'html');
-        $parameters = array('incident' => $incident);
-
-        return $this->templating->createTemplate($html)->render($parameters);
-    }
-
-    public function getView()
-    {
-        return $this->view;
-    }
-
-    public function getReportReply($incident, $body, $lang)
-    {
-        $data = array('report' => $incident->getType()->getReport($lang), 'incident' => $incident, 'body' => $body, 'team' => $this->team);
-        $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/mailReply.html.twig');
-        $this->getView()->setTemplateData($data);
-        $html = $this->viewHandler->renderTemplate($this->getView(), 'html');
-        $parameters = array('incident' => $incident);
-
-        return $this->templating->createTemplate($html)->render($parameters);
-    }
-
-    public function getCustomHandler()
-    {
-        return $this->custom_handler;
+        $this->team = $ngen_team;
     }
 
     /**
-     * @param View $view
-     *
+     * @param Incident $incident
+     * @param string $lang
+     * @return string
+     * @throws LoaderError
+     * @throws SyntaxError
+     */
+    public function getReport(Incident $incident, string $lang): ?string
+    {
+        $report = $incident->getType()->getReport($lang);
+        if ($report) {
+            $data = array('report' => $report, 'incident' => $incident, 'team' => $this->getTeam());
+            $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/mail.html.twig');
+            $this->getView()->setTemplateData($data);
+            $html = $this->getViewHandler()->renderTemplate($this->getView(), 'html');
+            $parameters = array('incident' => $incident);
+            return $this->getTemplating()->createTemplate($html)->render($parameters);
+        }
+        return null;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTeam(): array
+    {
+        return $this->team;
+    }
+
+    /**
+     * @return View
+     */
+    public function getView(): View
+    {
+        if (!$this->view) {
+            $this->view = View::create();
+        }
+        return $this->view;
+    }
+
+    /**
+     * @return ViewHandlerInterface
+     */
+    public function getViewHandler(): ViewHandlerInterface
+    {
+        return $this->viewHandler;
+    }
+
+    /**
+     * @return Environment
+     */
+    public function getTemplating(): Environment
+    {
+        return $this->templating;
+    }
+
+    public function getReportReply(Incident $incident, string $body, string $lang): string
+    {
+        $data = array('report' => $incident->getType()->getReport($lang), 'incident' => $incident, 'body' => $body, 'team' => $this->getTeam());
+        $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/mailReply.html.twig');
+        $this->getView()->setTemplateData($data);
+        $html = $this->getViewHandler()->renderTemplate($this->getView(), 'html');
+        $parameters = array('incident' => $incident);
+
+        return $this->getTemplating()->createTemplate($html)->render($parameters);
+    }
+
+    /**
+     * @param View|null $view
      * @return Response
      */
-    public function handle($view = null)
+    public function handle(View $view = null): Response
     {
-        $view = $view ? $view : $this->view;
-        return $this->viewHandler->handle($view);
+        $view = $view ?: $this->getView();
+        return $this->getViewHandler()->handle($view);
     }
 
     /**
@@ -83,29 +130,29 @@ class IncidentReportFactory
      * @param array $headers
      * @return View
      */
-    public function response(array $parameters = array(), $statusCode = Response::HTTP_CREATED, array $headers = array())
+    public function response(array $parameters = array(), int $statusCode = Response::HTTP_CREATED, array $headers = array()): View
     {
         $this->setData($parameters);
         $this->setStatusCode($statusCode);
-        return $this->view;
+        return $this->getView();
     }
 
     /**
      * @param array $data
      * @return View
      */
-    public function setData(array $data)
+    public function setData(array $data): View
     {
-        return $this->view->setData($data);
+        return $this->getView()->setData($data);
     }
 
     /**
      * @param $statusCode
      * @return View
      */
-    public function setStatusCode($statusCode)
+    public function setStatusCode(int $statusCode): View
     {
-        return $this->view->setStatusCode($statusCode);
+        return $this->getView()->setStatusCode($statusCode);
     }
 
 }

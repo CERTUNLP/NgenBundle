@@ -18,7 +18,7 @@
 namespace CertUnlp\NgenBundle\Service\Api\Handler\Incident\State;
 
 use CertUnlp\NgenBundle\Form\Incident\State\StateEdgeType;
-use CertUnlp\NgenBundle\Repository\StateEdgeRepository;
+use CertUnlp\NgenBundle\Repository\Incident\State\StateEdgeRepository;
 use CertUnlp\NgenBundle\Service\Api\Handler\Handler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;

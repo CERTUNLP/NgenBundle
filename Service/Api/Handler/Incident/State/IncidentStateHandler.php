@@ -20,7 +20,7 @@ namespace CertUnlp\NgenBundle\Service\Api\Handler\Incident\State;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Form\Incident\State\IncidentStateType;
 use CertUnlp\NgenBundle\Model\EntityApiInterface;
-use CertUnlp\NgenBundle\Repository\IncidentStateRepository;
+use CertUnlp\NgenBundle\Repository\Incident\State\IncidentStateRepository;
 use CertUnlp\NgenBundle\Service\Api\Handler\Handler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;

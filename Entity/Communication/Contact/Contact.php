@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\ContactRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Communication\Contact\ContactRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"contact"="Contact","telegram" = "ContactTelegram", "phone" = "ContactPhone", "email" = "ContactEmail", "threema"="ContactThreema"})

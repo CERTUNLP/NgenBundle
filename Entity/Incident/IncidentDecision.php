@@ -11,7 +11,7 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * IncidentDecision
  *
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentDecisionRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Incident\IncidentDecisionRepository")
  * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\IncidentDecisionListener"})
  * @JMS\ExclusionPolicy("all")
  */

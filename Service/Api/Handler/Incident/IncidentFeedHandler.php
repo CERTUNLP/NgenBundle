@@ -9,7 +9,7 @@
 namespace CertUnlp\NgenBundle\Service\Api\Handler\Incident;
 
 use CertUnlp\NgenBundle\Form\Incident\IncidentFeedType;
-use CertUnlp\NgenBundle\Repository\IncidentFeedRepository;
+use CertUnlp\NgenBundle\Repository\Incident\IncidentFeedRepository;
 use CertUnlp\NgenBundle\Service\Api\Handler\Handler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;

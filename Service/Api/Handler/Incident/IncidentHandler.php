@@ -13,7 +13,7 @@ use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Form\Incident\IncidentType;
 use CertUnlp\NgenBundle\Model\EntityApiInterface;
-use CertUnlp\NgenBundle\Repository\IncidentRepository;
+use CertUnlp\NgenBundle\Repository\Incident\IncidentRepository;
 use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\HostHandler;
 use CertUnlp\NgenBundle\Service\Api\Handler\Handler;
 use CertUnlp\NgenBundle\Service\Api\Handler\Incident\State\IncidentStateHandler;
@@ -403,7 +403,9 @@ class IncidentHandler extends Handler
     {
         $parameters = parent::cleanParameters($parameters);
         if (!isset($parameters['reporter']) || !$parameters['reporter']) {
-            $parameters['reporter'] = $this->getUser() ? $this->getUser()->getId() : null;
+            if ($this->getUser()) {
+                $parameters['reporter'] = $this->getUser()->getId();
+            }
         }
         return $parameters;
     }

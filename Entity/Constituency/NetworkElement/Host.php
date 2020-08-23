@@ -21,7 +21,7 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\HostRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Constituency\NetworkElement\HostRepository")
  * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\HostListener"})
  * @JMS\ExclusionPolicy("all")
  * @UniqueEntity(

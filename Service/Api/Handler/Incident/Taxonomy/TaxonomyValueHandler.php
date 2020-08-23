@@ -18,7 +18,7 @@
 namespace CertUnlp\NgenBundle\Service\Api\Handler\Incident\Taxonomy;
 
 use CertUnlp\NgenBundle\Form\Incident\Taxonomy\TaxonomyValueType;
-use CertUnlp\NgenBundle\Repository\TaxonomyValueRepository;
+use CertUnlp\NgenBundle\Repository\Incident\Taxonomy\TaxonomyValueRepository;
 use CertUnlp\NgenBundle\Service\Api\Handler\Handler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;

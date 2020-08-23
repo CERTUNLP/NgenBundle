@@ -18,7 +18,7 @@
 namespace CertUnlp\NgenBundle\Service\Api\Handler\Constituency;
 
 use CertUnlp\NgenBundle\Form\Constituency\NetworkEntityType;
-use CertUnlp\NgenBundle\Repository\NetworkEntityRepository;
+use CertUnlp\NgenBundle\Repository\Constituency\NetworkEntityRepository;
 use CertUnlp\NgenBundle\Service\Api\Handler\Handler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;

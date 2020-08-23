@@ -23,7 +23,7 @@ use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\NetworkIntern
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\NetworkRdap;
 use CertUnlp\NgenBundle\Form\Constituency\NetworkElement\NetworkType;
 use CertUnlp\NgenBundle\Model\EntityApiInterface;
-use CertUnlp\NgenBundle\Repository\NetworkRepository;
+use CertUnlp\NgenBundle\Repository\Constituency\NetworkElement\NetworkRepository;
 use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\NetworkElementHandler;
 use CertUnlp\NgenBundle\Service\NetworkRdapClient;
 use Doctrine\ORM\EntityManagerInterface;

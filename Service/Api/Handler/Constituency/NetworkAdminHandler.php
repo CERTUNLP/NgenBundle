@@ -18,7 +18,7 @@
 namespace CertUnlp\NgenBundle\Service\Api\Handler\Constituency;
 
 use CertUnlp\NgenBundle\Form\Constituency\NetworkAdminType;
-use CertUnlp\NgenBundle\Repository\NetworkAdminRepository;
+use CertUnlp\NgenBundle\Repository\Constituency\NetworkAdminRepository;
 use CertUnlp\NgenBundle\Service\Api\Handler\Handler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;

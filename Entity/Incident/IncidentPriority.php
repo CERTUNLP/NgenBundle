@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * IncidentPriority
  *
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentPriorityRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Incident\IncidentPriorityRepository")
  * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\IncidentPriorityListener"})
  * @JMS\ExclusionPolicy("all")
  * @UniqueEntity(

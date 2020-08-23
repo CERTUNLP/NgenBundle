@@ -32,7 +32,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     fields={"name"},
  *     message="This State is already in use."
  * )
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentStateRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Incident\State\IncidentStateRepository")
  * @JMS\ExclusionPolicy("all")
  */
 class IncidentState extends EntityApiFrontend implements Translatable

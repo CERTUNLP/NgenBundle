@@ -23,7 +23,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 //use Doctrine\Common\Collections\Collection;
 
 /**
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentTypeRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Incident\IncidentTypeRepository")
  * @UniqueEntity(
  *     fields={"name"},
  *     message="This type is already in use."
@@ -287,6 +287,14 @@ class IncidentType extends EntityApiFrontend
     {
         $this->slug = $slug;
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUndefined(): bool
+    {
+        return $this->slug === 'undefined';
     }
 
     /**

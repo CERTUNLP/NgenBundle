@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\NetworkRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Constituency\NetworkElement\NetworkRepository")
  * @JMS\ExclusionPolicy("all")
  */
 class NetworkExternal extends Network
