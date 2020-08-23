@@ -10,7 +10,7 @@ namespace CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement;
 
 use CertUnlp\NgenBundle\Form\Constituency\NetworkElement\HostType;
 use CertUnlp\NgenBundle\Model\EntityApiInterface;
-use CertUnlp\NgenBundle\Repository\HostRepository;
+use CertUnlp\NgenBundle\Repository\Constituency\NetworkElement\HostRepository;
 use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\Network\NetworkHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;

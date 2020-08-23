@@ -17,7 +17,7 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Model\EntityInterface;
-use CertUnlp\NgenBundle\Repository\IncidentStateRepository;
+use CertUnlp\NgenBundle\Repository\Incident\State\IncidentStateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use JMS\Serializer\SerializerInterface;
@@ -76,8 +76,6 @@ class  IncidentTypeListener extends EntityTypeListener
                 $form->get('impact')->setData($this->getEntitymanager()->getReference(IncidentImpact::class, $incident->getPriority()->getImpact()->getSlug()));
                 $form->get('urgency')->setData($this->getEntitymanager()->getReference(IncidentUrgency::class, $incident->getPriority()->getUrgency()->getSlug()));
             }
-            $form->remove('notes');
-            $form->remove('evidence_file');
         }
 
 

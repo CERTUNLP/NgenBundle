@@ -20,7 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * IncidentReport
  *
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentReportRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Incident\IncidentReportRepository")
  * @JMS\ExclusionPolicy("all")
  * @UniqueEntity(
  *     fields={"lang", "type"},

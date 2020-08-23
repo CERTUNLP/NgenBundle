@@ -9,15 +9,16 @@
  * with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Repository;
+namespace CertUnlp\NgenBundle\Repository\Incident\Taxonomy;
 
-use CertUnlp\NgenBundle\Entity\Communication\ThreemaMessage;
+use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ThreemaMessageRepository extends MessageRepository
+class TaxonomyPredicateRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, ThreemaMessage::class);
+        parent::__construct($registry, TaxonomyPredicate::class);
     }
 }

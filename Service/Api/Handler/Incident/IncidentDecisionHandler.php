@@ -25,7 +25,7 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Form\Incident\IncidentDecisionType;
 use CertUnlp\NgenBundle\Model\EntityApiInterface;
-use CertUnlp\NgenBundle\Repository\IncidentDecisionRepository;
+use CertUnlp\NgenBundle\Repository\Incident\IncidentDecisionRepository;
 use CertUnlp\NgenBundle\Service\Api\Handler\Handler;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;

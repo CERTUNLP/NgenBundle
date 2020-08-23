@@ -12,7 +12,7 @@
 namespace CertUnlp\NgenBundle\Security;
 
 use CertUnlp\NgenBundle\Entity\User;
-use CertUnlp\NgenBundle\Repository\UserRepository;
+use CertUnlp\NgenBundle\Repository\User\UserRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;

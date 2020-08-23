@@ -288,7 +288,7 @@ class IncidentDetected extends EntityApiFrontend
     /**
      * @return UploadedFile
      */
-    public function getEvidenceFile(): UploadedFile
+    public function getEvidenceFile(): ?UploadedFile
     {
         return $this->evidence_file;
     }

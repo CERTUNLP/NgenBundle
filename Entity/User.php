@@ -32,7 +32,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * User
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\User\UserRepository")
  * @UniqueEntity(
  *     fields={"username"},
  *     message="This username is already in use."

@@ -18,7 +18,7 @@
 namespace CertUnlp\NgenBundle\Service\Api\Handler\Incident;
 
 use CertUnlp\NgenBundle\Form\Incident\IncidentPriorityType;
-use CertUnlp\NgenBundle\Repository\IncidentPriorityRepository;
+use CertUnlp\NgenBundle\Repository\Incident\IncidentPriorityRepository;
 use CertUnlp\NgenBundle\Service\Api\Handler\Handler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;

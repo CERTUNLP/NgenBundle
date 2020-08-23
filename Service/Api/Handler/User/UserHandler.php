@@ -20,7 +20,7 @@ namespace CertUnlp\NgenBundle\Service\Api\Handler\User;
 use CertUnlp\NgenBundle\Entity\User;
 use CertUnlp\NgenBundle\Form\User\UserType;
 use CertUnlp\NgenBundle\Model\EntityApiInterface;
-use CertUnlp\NgenBundle\Repository\UserRepository;
+use CertUnlp\NgenBundle\Repository\User\UserRepository;
 use CertUnlp\NgenBundle\Service\Api\Handler\Handler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
