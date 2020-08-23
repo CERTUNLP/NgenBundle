@@ -13,6 +13,10 @@ services:
         public: false
         bind:
             $ngen_lang: '%ngen_lang%'
+            $ngen_team: '%cert_unlp.ngen.team%'
+            $environment: '%kernel.environment%'
+            $ngen_team_mail: '%cert_unlp.ngen.team.mail%'
+            $ngen_team_name: '%cert_unlp.ngen.team.name%'
             $evidence_path: "%cert_unlp.ngen.incident.evidence.path%"
             $elastica_finder_incident: "@fos_elastica.finder.incidents.incident"
             $elastica_finder_decision: "@fos_elastica.finder.decisions.decision"
@@ -88,6 +92,19 @@ services:
         calls:
             - [ setAnnotationReader, [ "@annotation_reader" ] ]
 
+    CertUnlp\NgenBundle\Command\MessageEmailCommand:
+        arguments:
+            $mailer: "@swiftmailer.mailer.cert_unlp.ngen.incident.mailer"
+
+    CertUnlp\NgenBundle\Service\Communications\IncidentCommunicationMailer:
+        tags:
+            - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
+            - { name: cert_unlp.ngen.incident.delegate, priority: 2 }
+
+    CertUnlp\NgenBundle\Service\Communications\IncidentCommunicationTelegram:
+        tags:
+            - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
+            - { name: cert_unlp.ngen.incident.delegate, priority: 2 }
 
     #    CertUnlp\NgenBundle\Service\Frontend\Controller\IncidentFrontendController:
     #        arguments:
@@ -118,23 +135,9 @@ services:
     #    class:     CertUnlp\NgenBundle\Service\IncidentReportFactory
     #    arguments: ["@twig","@fos_rest.view_handler","@cert_unlp.ngen.fos_rest.view.view","%cert_unlp.ngen.team_mail%"]
     #
-    #  cert_unlp.ngen.incident.communication.mailer:
-    #    class:        CertUnlp\NgenBundle\Service\Communications\IncidentMailer
-    #    arguments:    ["@doctrine.orm.entity_manager","@fos_comment.manager.comment","%kernel.environment%","%cert_unlp.ngen.incident.internal.report.lang%","%cert_unlp.ngen.team_mail%","@translator.default","@swiftmailer.mailer.cert_unlp.ngen.incident.mailer","%cert_unlp.ngen.incident.internal.mailer.sender_address%","@cert_unlp.ngen.incident.report.factory","%cert_unlp.ngen.incident.evidence.path%"]
-    #    tags:
-    #      - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
-    #      - { name: cert_unlp.ngen.incident.internal.delegate, priority: 2 }
     #
-    #
-    #  cert_unlp.ngen.incident.communication.telegram:
-    #    class:        CertUnlp\NgenBundle\Service\Communications\IncidentTelegram
-    #    arguments:    ["@doctrine.orm.entity_manager","@fos_comment.manager.comment","%kernel.environment%","%cert_unlp.ngen.incident.internal.report.lang%","%cert_unlp.ngen.team_mail%","@translator.default"]
-    #    tags:
-    #      - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }
-    #      - { name: cert_unlp.ngen.incident.internal.delegate, priority: 2 }
-    #
-    #  cert_unlp.ngen.incident.internal.delegator_chain:
-    #    class:        "%cert_unlp.ngen.incident.internal.delegator_chain.class%"
+    #      cert_unlp.ngen.incident.internal.delegator_chain:
+    #        class:        "%cert_unlp.ngen.incident.internal.delegator_chain.class%"
     #
     #  cert_unlp.ngen.incident.external.delegator_chain:
     #    class:        "%cert_unlp.ngen.incident.external.delegator_chain.class%"
