@@ -14,16 +14,14 @@ namespace CertUnlp\NgenBundle\Service\Communications;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Service\IncidentReportFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\CommentBundle\Event\CommentPersistEvent;
 use FOS\CommentBundle\Model\CommentManagerInterface;
-use FOS\CommentBundle\Model\SignedCommentInterface;
 use Swift_Attachment;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use ZipArchive;
 
-class IncidentMailer extends IncidentCommunication
+class IncidentCommunicationMailerOld
 {
 
     protected $mailer;
@@ -76,12 +74,8 @@ class IncidentMailer extends IncidentCommunication
             $evidence_path = $this->upload_directory . "/";
 
             foreach ($incident->getIncidentsDetected() as $detected) {
-                if ($detected->getEvidenceFilePath()) {
-                    if (file_exists($evidence_path . $detected->getEvidenceFilePath())) {
-                        $message->attach(Swift_Attachment::fromPath($evidence_path . $detected->getEvidenceFilePath()));
-                    } else {
-                        $detected->setEvidenceFilePath(null);
-                    }
+                if ($detected->getEvidenceFilePath() && file_exists($evidence_path . $detected->getEvidenceFilePath())) {
+                    $message->attach(Swift_Attachment::fromPath($evidence_path . $detected->getEvidenceFilePath()));
                 }
             }
             if ($incident->getReportMessageId()) {
@@ -100,18 +94,18 @@ class IncidentMailer extends IncidentCommunication
      */
     public function getBody(Incident $incident, string $type = 'html')
     {
-        return $this->report_factory->getReport($incident, $this->lang);
+        return $this->report_factory->getReport($incident, $this->getLang());
     }
 
     public function mailSubject(bool $renotification = false)
     {
-        return $this->environment . $this->getMailSubject($renotification);
+        return $this->getEnvironment() . $this->getMailSubject($renotification);
     }
 
     public function getMailSubject(bool $renotification = false): string
     {
-        $renotification_text = $renotification ? '[' . $this->translator->trans('subject_mail_renotificacion') . ']' : '';
-        return $renotification_text . '[TLP:%s][%s] ' . $this->translator->trans('subject_mail_incidente') . ' [ID:%s]';
+        $renotification_text = $renotification ? '[' . $this->getTranslator()->trans('subject_mail_renotificacion') . ']' : '';
+        return $renotification_text . '[TLP:%s][%s] ' . $this->getTranslator()->trans('subject_mail_incidente') . ' [ID:%s]';
     }
 
     public function getEvidenceFileName(Incident $incident)
@@ -134,21 +128,6 @@ class IncidentMailer extends IncidentCommunication
         $zip->close();
 
         return $zipName;
-    }
-
-    public function onCommentPrePersist(CommentPersistEvent $event)
-    {
-        $comment = $event->getComment();
-        if (!$this->commentManager->isNewComment($comment) || !$comment->getThread()->getIncident()->canCommunicateComment()) {
-            return;
-        }
-        if ($comment instanceof SignedCommentInterface) {
-            $author = $comment->getAuthor();
-            if ($author->getUserName() === 'mailbot') {
-                return;
-            }
-        }
-        $this->comunicate_reply($comment->getThread()->getIncident(), $comment->getBody(), $comment->getNotifyToAdmin());
     }
 
     public function comunicate_reply(Incident $incident, string $body = '', bool $notify_to_admins = true)
@@ -177,7 +156,7 @@ class IncidentMailer extends IncidentCommunication
 
     public function getReplyBody(Incident $incident, string $body = '')
     {
-        return $this->report_factory->getReportReply($incident, $body, $this->lang);
+        return $this->report_factory->getReportReply($incident, $body, $this->getLang());
 
     }
 

@@ -9,24 +9,22 @@
 namespace CertUnlp\NgenBundle\Entity\Communication\Message;
 
 use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Message
- *
  * @ORM\Table(name="message")
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\MessageRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Communication\Message\MessageRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"telegram" = "TelegramMessage", "threema" = "ThreemaMessage", "message"="Message"})
+ * @ORM\DiscriminatorMap({"telegram" = "MessageTelegram", "email" = "MessageEmail", "message"="Message"})
  * @ORM\HasLifecycleCallbacks
  */
 abstract class Message extends Entity
 {
     /**
      * @var int|null
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -34,47 +32,48 @@ abstract class Message extends Entity
     protected $id;
 
     /**
-     * @var array|null
-     *
-     * @ORM\Column(name="data", type="json")
+     * @var array
+     * @ORM\Column(type="json")
      */
-    private $data;
+    private $data = [];
 
     /**
-     * @var array|null
-     *
-     * @ORM\Column(name="response", type="json",nullable=true)
+     * @var array
+     * @ORM\Column(type="json",nullable=true)
      */
-
-    private $response;
+    private $response = [];
 
     /**
-     * @var bool|null
-     *
-     * @ORM\Column(name="pending", type="boolean", nullable=true)
+     * @var bool
+     * @ORM\Column(type="boolean")
      */
-    private $pending;
+    private $pending = true;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="incident_id", type="integer")
+     * @var Incident
+     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="messages")
      */
-    private $incidentId;
+    private $incident = null;
 
     /**
-     * Get id
-     *
-     * @return integer
+     * @return int|null
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * Get data
-     *
+     * @param int|null $id
+     * @return Message
+     */
+    public function setId(?int $id): Message
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getData(): array
@@ -83,22 +82,16 @@ abstract class Message extends Entity
     }
 
     /**
-     * Set data
-     *
      * @param array $data
      * @return Message
      */
     public function setData(array $data): Message
     {
         $this->data = $data;
-
         return $this;
     }
 
-
     /**
-     * Get response
-     *
      * @return array
      */
     public function getResponse(): array
@@ -107,77 +100,61 @@ abstract class Message extends Entity
     }
 
     /**
-     * Set response
-     *
      * @param array $response
      * @return Message
      */
     public function setResponse(array $response): Message
     {
         $this->response = $response;
-
         return $this;
     }
 
     /**
-     * Get pending
-     *
-     * @return boolean
+     * @param array $response
+     * @return Message
      */
-    public function getPending(): bool
+    public function addResponse(array $response): Message
+    {
+        $date = new DateTime();
+        $this->response[$date->getTimestamp()] = $response;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPending(): bool
     {
         return $this->pending;
     }
 
     /**
-     * Set pending
-     *
-     * @param boolean $pending
+     * @param bool $pending
      * @return Message
      */
     public function setPending(bool $pending): Message
     {
         $this->pending = $pending;
-
         return $this;
     }
 
     /**
-     * Get incidentId
-     *
-     * @return integer
+     * @return Incident
      */
-    public function getIncidentId(): int
+    public function getIncident(): Incident
     {
-        return $this->incidentId;
+        return $this->incident;
     }
 
     /**
-     * Set incidentId
-     *
-     * @param integer $incidentId
+     * @param Incident $incident
      * @return Message
      */
-    public function setIncidentId(int $incidentId): Message
+    public function setIncident(Incident $incident): Message
     {
-        $this->incidentId = $incidentId;
-
+        $this->incident = $incident;
         return $this;
     }
 
-    /**
-     *
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function timestampsUpdate(): void
-    {
-        $this->setUpdatedAt(new DateTime('now'));
-
-        if ($this->getCreatedAt() == null) {
-            $this->setCreatedAt(new DateTime('now'));
-            $this->setPending(true);
-        }
-    }
 
 }
