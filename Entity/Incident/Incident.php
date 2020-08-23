@@ -37,7 +37,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Incident\IncidentRepository")
+ * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\IncidentListener"})
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
  */
@@ -194,15 +195,13 @@ class Incident extends EntityApiFrontend
      * @JMS\MaxDepth(depth=2)
      */
     private $state_changes;
-
-//    /**
-//     * @var Collection
-//     * @JMS\Expose
-//     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Message",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
-//     * @JMS\Groups({"api"})
-//     */
-//
-//    private $communicationHistory;
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Message\Message",mappedBy="incident")
+     * @JMS\Expose
+     * @JMS\Groups({"read"})
+     */
+    private $messages;
     /**
      * @var DateTime
      *
@@ -217,6 +216,15 @@ class Incident extends EntityApiFrontend
      * @JMS\Groups({"read","write"})
      */
     private $origin;
+
+//    /**
+//     * @var Collection
+//     * @JMS\Expose
+//     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Message",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
+//     * @JMS\Groups({"api"})
+//     */
+//
+//    private $communicationHistory;
     /**
      * @var Host|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host", inversedBy="incidents_as_destination")
@@ -281,6 +289,24 @@ class Incident extends EntityApiFrontend
         }
         $this->incidentsDetected = new ArrayCollection();
         $this->state_changes = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    /**
+     * @param Collection $messages
+     * @return Incident
+     */
+    public function setMessages(Collection $messages): Incident
+    {
+        $this->messages = $messages;
+        return $this;
     }
 
     /**
@@ -595,7 +621,7 @@ class Incident extends EntityApiFrontend
     /**
      * @return string
      */
-    public function getReportMessageId(): string
+    public function getReportMessageId(): ?string
     {
         return $this->report_message_id;
     }
@@ -1206,9 +1232,8 @@ class Incident extends EntityApiFrontend
      * @return bool
      */
     public function canCommunicate(): bool
-
     {
-        return !$this->isNotSendReport() && $this->getBehavior()->canComunicate() && $this->isNeedToCommunicate();
+        return !$this->isNotSendReport() && $this->getBehavior()->canComunicate() && $this->isNeedToCommunicate() && !$this->getType()->isUndefined();
     }
 
     /**
