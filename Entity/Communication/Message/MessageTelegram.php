@@ -20,12 +20,12 @@ namespace CertUnlp\NgenBundle\Entity\Communication\Message;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * TelegramMessage
+ * MessageTelegram
  *
  * @author einar
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\TelegramMessageRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Communication\Message\MessageTelegramRepository")
  */
-class TelegramMessage extends Message
+class MessageTelegram extends Message
 {
     /**
      * @return string
