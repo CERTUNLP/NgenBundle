@@ -83,16 +83,6 @@ cert_unlp_ngen:
             sender_address: '%mailer_sender%'
             port: '%mailer_port%'
             encryption: '%mailer_encryption%'
-        internal:
-            mailer:
-                sender_address: '%mailer_sender%'
-            reports:
-                lang: "%ngen_lang%"
-        external:
-            mailer:
-                sender_address: '%mailer_sender%'
-    networks:
-        default_network: '%default_network%'
     global:
         sign: true
     grafana:
