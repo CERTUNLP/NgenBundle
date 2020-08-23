@@ -35,37 +35,12 @@ class CertUnlpNgenExtension extends Extension
 
         $container->setParameter('cert_unlp.ngen.team', $config['team']);
         $container->setParameter('cert_unlp.ngen.team.mail', $config['team']['mail']);
+        $container->setParameter('cert_unlp.ngen.team.name', $config['team']['name']);
         $container->setParameter('cert_unlp.ngen.resources.path', '%kernel.root_dir%/Resources/');
         $container->setParameter('cert_unlp.ngen.global.sign', $config['global']['sign']);
 
-        $container->setParameter('cert_unlp.ngen.incident.internal.class', $config['incidents']['internal']['class']);
-        $container->setParameter('cert_unlp.ngen.incident.external.class', $config['incidents']['external']['class']);
-
         $container->setParameter('cert_unlp.ngen.incident.evidence.path', $config['incidents']['evidence']['path']);
         $container->setParameter('cert_unlp.ngen.incident.evidence.prefix', $config['incidents']['evidence']['prefix']);
-
-        $container->setParameter('cert_unlp.ngen.incident.internal.handler.class', $config['incidents']['internal']['handler']['class']);
-        $container->setParameter('cert_unlp.ngen.incident.external.handler.class', $config['incidents']['external']['handler']['class']);
-
-        $container->setParameter('cert_unlp.ngen.incident.internal.delegator_chain.class', $config['incidents']['internal']['delegator_chain']['class']);
-        $container->setParameter('cert_unlp.ngen.incident.external.delegator_chain.class', $config['incidents']['external']['delegator_chain']['class']);
-
-        $container->setParameter('cert_unlp.ngen.incident.internal.form_type.class', $config['incidents']['internal']['form_type']['class']);
-        $container->setParameter('cert_unlp.ngen.incident.external.form_type.class', $config['incidents']['external']['form_type']['class']);
-
-        $container->setParameter('cert_unlp.ngen.incident.factory.class', $config['incidents']['factory']['class']);
-        $container->setParameter('cert_unlp.ngen.incident.reporter.class', $config['incidents']['reporter']['class']);
-
-        $container->setParameter('cert_unlp.ngen.incident.internal.report.lang', $config['incidents']['internal']['reports']['lang']);
-        $container->setParameter('cert_unlp.ngen.incident.internal.report.markdown.path', $config['incidents']['internal']['reports']['markdown']['path']);
-        $container->setParameter('cert_unlp.ngen.incident.internal.report.twig.path', $config['incidents']['internal']['reports']['twig']['path']);
-
-        $container->setParameter('cert_unlp.ngen.incident.external.report.lang', $config['incidents']['external']['reports']['lang']);
-        $container->setParameter('cert_unlp.ngen.incident.external.report.markdown.path', $config['incidents']['external']['reports']['markdown']['path']);
-        $container->setParameter('cert_unlp.ngen.incident.external.report.twig.path', $config['incidents']['external']['reports']['twig']['path']);
-
-        $container->setParameter('cert_unlp.ngen.incident.external.mailer.class', $config['incidents']['external']['mailer']['class']);
-        $container->setParameter('cert_unlp.ngen.incident.internal.mailer.class', $config['incidents']['internal']['mailer']['class']);
 
         $container->setParameter('cert_unlp.ngen.incident.mailer.host', $config['incidents']['mailer']['host']);
         $container->setParameter('cert_unlp.ngen.incident.mailer.transport', $config['incidents']['mailer']['transport']);
@@ -77,68 +52,11 @@ class CertUnlpNgenExtension extends Extension
         $container->setParameter('cert_unlp.ngen.grafana.internal.url', $config['grafana']['internal']);
         $container->setParameter('cert_unlp.ngen.grafana.external.url', $config['grafana']['external']);
 
-        $container->setParameter('cert_unlp.ngen.incident.feed.class', $config['incidents']['feeds']['class']);
-        $container->setParameter('cert_unlp.ngen.incident.feed.handler.class', $config['incidents']['feeds']['handler']['class']);
-        $container->setParameter('cert_unlp.ngen.incident.feed.form_type.class', $config['incidents']['feeds']['form_type']['class']);
-
-        $container->setParameter('cert_unlp.ngen.incident.state.class', $config['incidents']['states']['class']);
-        $container->setParameter('cert_unlp.ngen.incident.state.handler.class', $config['incidents']['states']['handler']['class']);
-        $container->setParameter('cert_unlp.ngen.incident.state.form_type.class', $config['incidents']['states']['form_type']['class']);
-
-        $container->setParameter('cert_unlp.ngen.incident.type.class', $config['incidents']['types']['class']);
-        $container->setParameter('cert_unlp.ngen.incident.type.handler.class', $config['incidents']['types']['handler']['class']);
-        $container->setParameter('cert_unlp.ngen.incident.type.form_type.class', $config['incidents']['types']['form_type']['class']);
-
-        $container->setParameter('cert_unlp.ngen.incident.type.report.class', $config['incidents']['types']['reports']['class']);
-        $container->setParameter('cert_unlp.ngen.incident.type.report.handler.class', $config['incidents']['types']['reports']['handler']['class']);
-        $container->setParameter('cert_unlp.ngen.incident.type.report.form_type.class', $config['incidents']['types']['reports']['form_type']['class']);
-
-        $container->setParameter('cert_unlp.ngen.network_entity.class', $config['network_entity']['class']);
-        $container->setParameter('cert_unlp.ngen.network_entity.handler.class', $config['network_entity']['handler']['class']);
-        $container->setParameter('cert_unlp.ngen.network_entity.form_type.class', $config['network_entity']['form_type']['class']);
-
-        $container->setParameter('cert_unlp.ngen.incident.decision.class', $config['incident_decision']['class']);
-        $container->setParameter('cert_unlp.ngen.incident.decision.handler.class', $config['incident_decision']['handler']['class']);
-        $container->setParameter('cert_unlp.ngen.incident.decision.form_type.class', $config['incident_decision']['form_type']['class']);
-
         if (isset($config['incidents']['mailer']['sender_address'])) {
             $container->setParameter('cert_unlp.ngen.incident.mailer.sender_address', $config['incidents']['mailer']['sender_address']);
         } else {
             $container->setParameter('cert_unlp.ngen.incident.mailer.sender_address', $config['team']['mail']);
         }
-
-        if (isset($config['incidents']['internal']['mailer']['sender_address'])) {
-            $container->setParameter('cert_unlp.ngen.incident.internal.mailer.sender_address', $config['incidents']['internal']['mailer']['sender_address']);
-        } else {
-            $container->setParameter('cert_unlp.ngen.incident.internal.mailer.sender_address', $container->getParameter('cert_unlp.ngen.incident.mailer.sender_address'));
-        }
-
-        if (isset($config['incidents']['external']['mailer']['sender_address'])) {
-            $container->setParameter('cert_unlp.ngen.incident.external.mailer.sender_address', $config['incidents']['external']['mailer']['sender_address']);
-        } else {
-            $container->setParameter('cert_unlp.ngen.incident.external.mailer.sender_address', $container->getParameter('cert_unlp.ngen.incident.mailer.sender_address'));
-        }
-
-        $container->setParameter('cert_unlp.ngen.seed.redmine.class', $config['seeds']['redmine']['class']);
-        $container->setParameter('cert_unlp.ngen.seed.redmine.url', $config['seeds']['redmine']['url']);
-        $container->setParameter('cert_unlp.ngen.seed.redmine.key', $config['seeds']['redmine']['key']);
-
-        $container->setParameter('cert_unlp.ngen.network.class', $config['networks']['class']);
-        $container->setParameter('cert_unlp.ngen.network.default_network', $config['networks']['default_network']);
-        $container->setParameter('cert_unlp.ngen.network.handler.class', $config['networks']['handler']['class']);
-        $container->setParameter('cert_unlp.ngen.network.validator.class', $config['networks']['validator']['class']);
-        $container->setParameter('cert_unlp.ngen.network.form_type.class', $config['networks']['form_type']['class']);
-
-        $container->setParameter('cert_unlp.ngen.network.admin.class', $config['networks']['admin']['class']);
-        $container->setParameter('cert_unlp.ngen.network.admin.handler.class', $config['networks']['admin']['handler']['class']);
-        $container->setParameter('cert_unlp.ngen.network.admin.form_type.class', $config['networks']['admin']['form_type']['class']);
-
-        $container->setParameter('cert_unlp.ngen.user.class', $config['users']['class']);
-        $container->setParameter('cert_unlp.ngen.user.handler.class', $config['users']['handler']['class']);
-        $container->setParameter('cert_unlp.ngen.user.form_type.class', $config['users']['form_type']['class']);
-
-        $container->setParameter('cert_unlp.ngen.message.class', $config['messages']['class']);
-        $container->setParameter('cert_unlp.ngen.message.handler.class', $config['messages']['handler']['class']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
