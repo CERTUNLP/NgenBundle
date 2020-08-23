@@ -32,24 +32,7 @@ class HostListener
     public function postLoadHandler(Host $host): void
     {
         $host->guessAddress($host->getIp() ?? $host->getDomain());
-        $this->networkUpdate($host);
-    }
-
-    /**
-     * @param Host $host
-     */
-    public function networkUpdate(Host $host): void
-    {
-        $network = $this->getNetworkHandler()->findOneInRange($host->getAddress());
-        $host->setTempNetwork($network);
-    }
-
-    /**
-     * @return NetworkHandler
-     */
-    public function getNetworkHandler(): NetworkHandler
-    {
-        return $this->network_handler;
+//        $this->networkUpdate($host);
     }
 
     /**
@@ -77,6 +60,23 @@ class HostListener
     public function slugUpdate(Host $host): void
     {
         $host->setSlug(Sluggable\Urlizer::urlize($host->getAddress()));
+    }
+
+    /**
+     * @param Host $host
+     */
+    public function networkUpdate(Host $host): void
+    {
+        $network = $this->getNetworkHandler()->findOneInRange($host->getAddress());
+        $host->setNetwork($network);
+    }
+
+    /**
+     * @return NetworkHandler
+     */
+    public function getNetworkHandler(): NetworkHandler
+    {
+        return $this->network_handler;
     }
 
     /**
