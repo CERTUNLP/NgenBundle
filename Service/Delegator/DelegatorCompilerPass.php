@@ -25,34 +25,19 @@ class DelegatorCompilerPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('cert_unlp.ngen.incident.internal.delegator_chain')) {
+
+        if (!$container->has(DelegatorChain::class)) {
             return;
         }
 
-        if (!$container->hasDefinition('cert_unlp.ngen.incident.external.delegator_chain')) {
-            return;
-        }
+        $delegator = $container->findDefinition(DelegatorChain::class);
 
-        $definition_internal_delegator = $container->getDefinition('cert_unlp.ngen.incident.internal.delegator_chain');
-        $definition_external_delegator = $container->getDefinition('cert_unlp.ngen.incident.external.delegator_chain');
+        $tagged_services = $container->findTaggedServiceIds('cert_unlp.ngen.incident.delegate');
 
-        $internal_tagged_services = $container->findTaggedServiceIds('cert_unlp.ngen.incident.internal.delegate');
-        $external_tagged_services = $container->findTaggedServiceIds('cert_unlp.ngen.incident.external.delegate');
-
-        foreach ($internal_tagged_services as $id => $tags) {
+        foreach ($tagged_services as $id => $tags) {
             foreach ($tags as $attributes) {
-
-                $definition_internal_delegator->addMethodCall(
-                    'addDelegate', array(new Reference($id), isset($attributes["alias"]) ? $attributes["alias"] : null, isset($attributes["priority"]) ? $attributes["priority"] : null)
-                );
-            }
-        }
-
-        foreach ($external_tagged_services as $id => $tags) {
-            foreach ($tags as $attributes) {
-
-                $definition_external_delegator->addMethodCall(
-                    'addDelegate', array(new Reference($id), isset($attributes["alias"]) ? $attributes["alias"] : null, isset($attributes["priority"]) ? $attributes["priority"] : null)
+                $delegator->addMethodCall(
+                    'addDelegate', array(new Reference($id), $attributes["alias"] ?? null, $attributes["priority"] ?? null)
                 );
             }
         }

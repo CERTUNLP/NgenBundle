@@ -16,7 +16,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  *
- * @author demyen
+ * @author dam
  * @method prePersistDelegation(Incident $incident)
  * @method postPersistDelegation(Incident $incident)
  * @method postUpdateDelegation(Incident $incident)
@@ -26,38 +26,56 @@ class DelegatorChain
 
     private $delegates = array();
 
-    public function addDelegates($delegates = [])
+    /**
+     * @param array $delegates
+     */
+    public function addDelegates(array $delegates = []): void
     {
         foreach ($delegates as $delegate) {
             $this->addDelegate($delegate);
         }
     }
 
-    public function addDelegate($delegate, $alias = null, $priority = null)
+    /**
+     * @param $delegate
+     * @param null $alias
+     * @param null $priority
+     */
+    public function addDelegate($delegate, $alias = null, $priority = null): void
     {
         $delegateWrapper = new DelegateWrapper($delegate, $alias, $priority);
         if (isset($this->delegates[$delegateWrapper->getDelegateKey()])) {
             throw new Exception('Key ' . $delegateWrapper->getDelegateKey() . ' already in use.');
         }
-
         $this->delegates[$delegateWrapper->getDelegateKey()] = $delegateWrapper;
         $this->sortDelegatesByPriority();
     }
 
-    public function sortDelegatesByPriority()
-    {
 
-        usort($this->delegates, array($this, 'cmp'));
+    /**
+     *
+     */
+    public function sortDelegatesByPriority(): void
+    {
+        usort($this->delegates, static function ($a, $b) {
+            return strcmp($a->getPriority(), $b->getPriority());
+        });
     }
 
-    public function removeDelegate(DelegateInterface $delegate)
+    /**
+     * @param DelegateInterface $delegate
+     */
+    public function removeDelegate(DelegateInterface $delegate): void
     {
-
         if (isset($this->delegates[$delegate->getDelegateKey()])) {
             unset($this->delegates[$delegate->getDelegateKey()]);
         }
     }
 
+    /**
+     * @param $name
+     * @param $arguments
+     */
     public function __call($name, $arguments)
     {
         $delegation_method = $this->explodeDelegationMethod($name);
@@ -68,7 +86,11 @@ class DelegatorChain
         }
     }
 
-    private function explodeDelegationMethod($delegation_method)
+    /**
+     * @param $delegation_method
+     * @return string|null
+     */
+    private function explodeDelegationMethod(string $delegation_method): ?string
     {
         $explode = explode(',', preg_replace('/([a-z0-9])([A-Z])/', '$1,$2', $delegation_method));
 
@@ -76,19 +98,18 @@ class DelegatorChain
             return $delegation_method;
         }
 
-        return false;
+        return null;
     }
 
-    public function doDelegation($function, $arguments)
+    /**
+     * @param $function
+     * @param $arguments
+     */
+    public function doDelegation(string $function, array $arguments): void
     {
         foreach ($this->delegates as $delegate) {
-            $delegate->doDelegation($function, $arguments);
+            $delegate->doDelegation($function, $arguments[0]);
         }
-    }
-
-    private function cmp($a, $b)
-    {
-        return strcmp($a->getPriority(), $b->getPriority());
     }
 
 }
