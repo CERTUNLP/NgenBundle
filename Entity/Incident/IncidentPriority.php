@@ -38,7 +38,7 @@ class IncidentPriority extends EntityApiFrontend
     protected $slug;
     /**
      * @var IncidentImpact
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="incidentsPriorities")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact")
      * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
      * @JMS\Expose()
      * @JMS\Groups({"read","write"})
@@ -47,7 +47,7 @@ class IncidentPriority extends EntityApiFrontend
     /**
      *
      * @var IncidentUrgency
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency", inversedBy="incidentsPriorities")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency")
      * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
      * @JMS\Expose()
      * @JMS\Groups({"read","write"})

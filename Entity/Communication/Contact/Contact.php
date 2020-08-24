@@ -66,7 +66,7 @@ class Contact extends Entity
 
     /**
      * @var ContactCase|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase", inversedBy="contacts")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase")
      * @ORM\JoinColumn(name="contact_case", referencedColumnName="slug")
      * @JMS\Expose()
      * @JMS\Groups({"read","write"})
