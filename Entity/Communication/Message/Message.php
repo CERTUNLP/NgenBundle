@@ -51,7 +51,7 @@ abstract class Message extends Entity
 
     /**
      * @var Incident
-     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="messages")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="messages")
      */
     private $incident = null;
 

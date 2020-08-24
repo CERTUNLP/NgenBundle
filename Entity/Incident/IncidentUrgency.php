@@ -48,11 +48,6 @@ class IncidentUrgency extends EntityApiFrontend implements Translatable
      * @JMS\Groups({"read","write"})
      */
     private $description = '';
-    /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority",mappedBy="urgency"))
-     */
-    private $incidentsPriorities = null;
 
     /**
      * @return mixed

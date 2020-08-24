@@ -87,6 +87,18 @@ abstract class NetworkElement extends EntityApiFrontend
 
     public function guessAddress(string $term): NetworkElement
     {
+        $address = $this->createAddressObject($term);
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * @param string $term
+     * @return Address
+     */
+    private function createAddressObject(string $term): Address
+    {
         $whitout_mask = explode('/', $term)[0];
 
         switch ($this::guessType($whitout_mask)) {
@@ -102,9 +114,7 @@ abstract class NetworkElement extends EntityApiFrontend
             default:
                 $address = null;
         }
-        $this->address = $address;
-
-        return $this;
+        return $address;
     }
 
     public static function guessType(string $term): int
@@ -224,11 +234,19 @@ abstract class NetworkElement extends EntityApiFrontend
 
     }
 
+    public function inRangeAddress(string $address): bool
+    {
+        $address_object = $this->createAddressObject($address);
+        if ($address_object) {
+            return $this->address->inRange($address_object);
+        }
+        return false;
+    }
+
     public function __toString(): string
     {
         return $this->address->__toString();
     }
-
 
     /**
      * @return array
