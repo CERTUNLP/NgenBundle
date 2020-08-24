@@ -11,6 +11,19 @@
             </span>
     </a>
 {% endmacro %}
+{% macro colorboxbutton(color,icon,text,id,class) %}
+    <button class="btn btn-icon-split btn-sm btn-{{ color }} {{ class }}  shadow-sm"
+       role="button"
+       data-id="{{ id?id:'' }}"
+       title="{{ text }}">
+            <span class="icon text-white-50">
+                {{ icon('fas fa-'~icon~' fa-xs text-white-50') }}
+            </span>
+        <span class="text">
+                {{ text }}
+            </span>
+    </button>
+{% endmacro %}
 {% macro colordropbox(color,icon,text,href,id) %}
     <div class="dropdown">
         <button id="dropdownMenuButton"

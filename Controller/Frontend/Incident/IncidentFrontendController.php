@@ -12,6 +12,7 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
+use CertUnlp\NgenBundle\Entity\Communication\Message\Message;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Form\Incident\IncidentSearchType;
 use CertUnlp\NgenBundle\Form\Incident\IncidentType;
@@ -220,5 +221,18 @@ class IncidentFrontendController extends FrontendController
         $filters = $this->renderView("CertUnlpNgenBundle:Incident:Frontend/list/filterHeadersPaginator.html.twig", $datos);
         $indice = $datos['objects']->getPaginationData();
         return new JsonResponse(array('tabla' => $tabla, 'indice' => $indice, 'paginador' => $paginador, 'filters' => $filters));
+    }
+
+    /**
+     * @Route("messages/{id}/pending", methods={"post"},requirements={"id"="\d+"})
+     * @param Message $message
+     * @return Response
+     */
+    public function getPendingMessageAction(Message $message): Response
+    {
+        $message->setPending(true);
+        $this->getDoctrine()->getManager()->persist($message);
+        $this->getDoctrine()->getManager()->flush();
+        return new Response();
     }
 }

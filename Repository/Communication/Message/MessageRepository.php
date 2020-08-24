@@ -9,9 +9,14 @@
 
 namespace CertUnlp\NgenBundle\Repository\Communication\Message;
 
+use CertUnlp\NgenBundle\Entity\Communication\Message\Message;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-abstract class MessageRepository extends ServiceEntityRepository
+class MessageRepository extends ServiceEntityRepository
 {
-
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Message::class);
+    }
 }

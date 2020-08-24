@@ -10,9 +10,10 @@
 namespace CertUnlp\NgenBundle\Repository\Communication\Message;
 
 use CertUnlp\NgenBundle\Entity\Communication\Message\MessageTelegram;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class MessageTelegramRepository extends MessageRepository
+class MessageTelegramRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

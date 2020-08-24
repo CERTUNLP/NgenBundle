@@ -10,9 +10,10 @@
 namespace CertUnlp\NgenBundle\Repository\Communication\Message;
 
 use CertUnlp\NgenBundle\Entity\Communication\Message\MessageEmail;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class MessageEmailRepository extends MessageRepository
+class MessageEmailRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
