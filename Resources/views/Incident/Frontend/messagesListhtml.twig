@@ -15,10 +15,15 @@ with this source code in the file LICENSE.
             <h6 class="card-header m-0 font-weight-bold text-primary border-left-{{ message.pending ?'warning': 'success' }}"
                 role="tab"
                 id="heading{{ message.id }}">
+
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ message.id }}"
-                   aria-expanded="true"
+                   aria-expanded="true" style="text-decoration: none"
                    aria-controls="collapse{{ message.id }}" class="collapsed d-block">
-                    <i class="fa fa-chevron-down pull-right"></i> Message {{ message }}
+                    <button class="btn btn-{{ message.color }} btn-circle btn-sm">
+                        <i class="fas fa-{{ message.icon }}"></i>
+                    </button>
+                    Message {{ message }}
+                    <i class="fa fa-chevron-down float-right"></i>
                 </a>
             </h6>
             <div id="collapse{{ message.id }}" class="collapse" role="tabpanel"
