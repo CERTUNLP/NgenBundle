@@ -30,19 +30,16 @@ abstract class Message extends Entity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
+    /**
+     * @var array
+     * @ORM\Column(type="json",nullable=true)
+     */
+    protected $response = [];
     /**
      * @var array
      * @ORM\Column(type="json")
      */
     private $data = [];
-
-    /**
-     * @var array
-     * @ORM\Column(type="json",nullable=true)
-     */
-    private $response = [];
-
     /**
      * @var bool
      * @ORM\Column(type="boolean")
@@ -54,6 +51,11 @@ abstract class Message extends Entity
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="messages")
      */
     private $incident = null;
+
+    public function __toString(): string
+    {
+        return '#' . $this->getId() . ' (' . strtolower($this->getType()) . ')';
+    }
 
     /**
      * @return int|null
@@ -71,6 +73,12 @@ abstract class Message extends Entity
     {
         $this->id = $id;
         return $this;
+    }
+
+    public function getType(): string
+    {
+        $array = explode('\\', static::class);
+        return strtolower(str_replace('Message', '', array_pop($array)));
     }
 
     /**
@@ -121,24 +129,6 @@ abstract class Message extends Entity
     }
 
     /**
-     * @return bool
-     */
-    public function isPending(): bool
-    {
-        return $this->pending;
-    }
-
-    /**
-     * @param bool $pending
-     * @return Message
-     */
-    public function setPending(bool $pending): Message
-    {
-        $this->pending = $pending;
-        return $this;
-    }
-
-    /**
      * @return Incident
      */
     public function getIncident(): Incident
@@ -157,4 +147,30 @@ abstract class Message extends Entity
     }
 
 
+
+    /**
+     * @return bool
+     */
+    public function isPending(): bool
+    {
+        return $this->pending;
+    }
+
+    /**
+     * @param bool $pending
+     * @return Message
+     */
+    public function setPending(bool $pending): Message
+    {
+        $this->pending = $pending;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return $this->isPending() ? 'warning' : 'success';
+    }
 }

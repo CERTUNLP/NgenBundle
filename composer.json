@@ -60,8 +60,8 @@
     "ext-curl": "*",
     "secit-pl/imap-bundle": "*",
     "rollerworks/password-strength-bundle": "^1.7",
-    "cmen/google-charts-bundle": "^3.1"
-
+    "cmen/google-charts-bundle": "^3.1",
+    "ext-zip": "*"
   },
   "require-dev": {
     "symfony/assetic-bundle": "^2.7",

@@ -14,6 +14,7 @@ var Incident = Frontend.extend({
         $('.select-filter').on('change', $.proxy(this.search, this));
         $('.multiple-select-filter').on('blur', $.proxy(this.search, this));
         $('.data-filter').on('submit', $.proxy(this.search, this));
+        $('.message-set-pending').on('click', $.proxy(this.messagePending, this));
         $('#generalSearch').on('submit', $.proxy(this.search, this));
         $(document).on("click", 'a.colorbox-filter', $.proxy(this.filterListDropdown, this));
     },
@@ -38,6 +39,16 @@ var Incident = Frontend.extend({
             tr.html($(data).html());
             $.publish('/cert_unlp/notify/success', ["The state has been changed successfully"]);
             tr.focus();
+        });
+    },
+    messagePending: function (event) {
+        id = $(event.currentTarget).data('id');
+        $.post("/messages/" + id + '/pending', function () {
+            $(event.currentTarget).siblings('.d-none').removeClass('d-none')
+            $(event.currentTarget).toggle()
+            $(event.currentTarget).parents('.card').first().children('h6').removeClass('border-left-success')
+            $(event.currentTarget).parents('.card').first().children('h6').addClass('border-left-warning')
+            $.publish('/cert_unlp/notify/success', ["Message scheduled"]);
         });
     },
     filterListDropdown: function (event) {

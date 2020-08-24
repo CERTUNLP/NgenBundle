@@ -63,6 +63,12 @@ with this source code in the file LICENSE.
                 <small>{{ "("~object.getCommentThread.numComments??0~")" }}</small>
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" id="messages-tab" data-toggle="tab" href="#messages" role="tab"
+               aria-controls="messages" aria-selected="false">{{ "Messages" |trans }}
+                <small>{{ "("~object.messages.count??0~")" }}</small>
+            </a>
+        </li>
     </ul>
 
     <div class="tab-content pt-2" id="myTabContent">
@@ -161,7 +167,7 @@ with this source code in the file LICENSE.
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                            Change states
+                                            {{ 'State changes'|trans }}
                                         </div>
                                         <div id="timeline" class="chart">
                                         </div>
@@ -578,6 +584,25 @@ with this source code in the file LICENSE.
                 </div>
             </div>
         </div>
+        <div class="tab-pane fade" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card shadow mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">
+                                {{ 'Messages'|trans }}
+                            </h6>
+
+                        </div>
+                        <div class="card-body overflow-auto" style="max-height: 70vh">
+                            {% block messages_body %}
+                                {% include "@CertUnlpNgen/Incident/Frontend/messagesListhtml.twig" with {'incident': object} %}
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -613,6 +638,7 @@ with this source code in the file LICENSE.
             $(document).ready(function () {
                 window.api_key = '{{ app.user.apikey }}';
             });
+            var Incident = new Incident();
 
         </script>
         {% javascripts '@CertUnlpNgenBundle/Resources/public/js/incident/comments.js' %}

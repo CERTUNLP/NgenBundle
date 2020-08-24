@@ -8,6 +8,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Communication\Message;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,4 +17,25 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MessageEmail extends Message
 {
+    /**
+     * @param array $response
+     * @return Message
+     */
+    public function addResponse(array $response): Message
+    {
+        $date = new DateTime();
+        $new_response['success'] = (bool)$response['success'];
+        $new_response['data'] = $response['errors'];
+        $new_response['date'] = $date->getTimestamp();
+        $this->response[$date->getTimestamp()] = $new_response;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'envelope';
+    }
 }

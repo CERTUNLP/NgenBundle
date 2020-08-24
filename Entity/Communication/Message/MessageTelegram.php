@@ -17,11 +17,12 @@
 
 namespace CertUnlp\NgenBundle\Entity\Communication\Message;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * MessageTelegram
- *
+ * http://localhost:8000/app_dev.php/messages/2/pending*
  * @author einar
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Communication\Message\MessageTelegramRepository")
  */
@@ -46,10 +47,30 @@ class MessageTelegram extends Message
     /**
      * @return string
      */
+    public function getIcon(): string
+    {
+        return 'paper-plane';
+    }
+
+    /**
+     * @return string
+     */
     public function getMessage(): string
     {
         return $this->getData()['message'];
     }
 
-
+    /**
+     * @param array $response
+     * @return Message
+     */
+    public function addResponse(array $response): Message
+    {
+        $date = new DateTime();
+        $new_response['success'] = (bool)$response['ok'];
+        $new_response['data'] = $response['result'];
+        $new_response['date'] = $date->getTimestamp();
+        $this->response[$date->getTimestamp()] = $new_response;
+        return $this;
+    }
 }
