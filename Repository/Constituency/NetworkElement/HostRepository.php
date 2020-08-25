@@ -9,6 +9,8 @@
 namespace CertUnlp\NgenBundle\Repository\Constituency\NetworkElement;
 
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\NetworkElement;
+use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class HostRepository extends NetworkElementRepository
@@ -16,5 +18,126 @@ class HostRepository extends NetworkElementRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Host::class);
+    }
+
+    /**
+     * @param $address string
+     * @return NetworkElement|null
+     */
+    public function findOneInRange(string $address): ?NetworkElement
+    {
+        switch (NetworkElement::guessType($address)) {
+            case FILTER_FLAG_IPV4:
+                return $this->finOneInRangeIpV4($address);
+                break;
+            case FILTER_FLAG_IPV6:
+                return $this->finOneInRangeIpV6($address);
+                break;
+            case FILTER_VALIDATE_DOMAIN:
+                return $this->finOneInRangeDomain($address);
+                break;
+            default:
+                return null;
+        }
+
+    }
+
+    /**
+     * @param string $address
+     * @return NetworkElement|null
+     */
+    public function finOneInRangeIpV4(string $address): ?NetworkElement
+    {
+        $results = $this->queryInRangeIpV4($address)->getResult();
+        return $results ? $results[0] : null;
+    }
+
+    /**
+     * @param string $address
+     * @return Query
+     */
+    public function queryInRangeIpV4(string $address): Query
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('h')
+            ->from($this->getClassName(), 'h')
+            ->where($qb->expr()->between('INET_ATON(h.ip)', 'INET_ATON(:start_address)', 'INET_ATON(:end_address)'))
+            ->andWhere('h.active = true')
+            ;
+
+        $qb->setParameter('start_address', $start_address);
+        $qb->setParameter('end_address', $end_address);
+
+        return $qb->getQuery();
+    }
+
+    /**
+     * @param string $address
+     * @return NetworkElement|null
+     */
+    public function finOneInRangeIpV6(string $address): ?NetworkElement
+    {
+        $results = $this->queryInRangeIpV6($address)->getResult();
+        return $results ? $results[0] : null;
+    }
+
+    /**
+     * @param string $address
+     * @return Query
+     */
+    public function queryInRangeIpV6(string $address): Query
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('h')
+            ->from($this->getClassName(), 'h')
+            ->where($qb->expr()->between('INET6_ATON(h.ip)', 'INET6_ATON(:start_address)', 'INET6_ATON(:end_address)'))
+            ->andWhere('n.active = true')
+            ->orderBy('n.ip_mask', 'DESC');
+
+        $qb->setParameter('start_address', $start_address);
+        $qb->setParameter('end_address', $end_address);
+
+        return $qb->getQuery();
+
+    }
+
+    /**
+     * @param string $address
+     * @return NetworkElement|null
+     */
+    public function finOneInRangeDomain(string $address): ?NetworkElement
+    {
+        $results = $this->queryInRangeDomain($address)->getResult();
+        return $results ? $results[0] : null;
+    }
+
+    /**
+     * @param string $domain
+     * @return Query
+     */
+    public function queryInRangeDomain(string $domain): Query
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('n')
+            ->from($this->getClassName(), 'n')
+            ->andWhere('n.active = true');
+
+        $count = substr_count($domain, '.') + 1;
+
+        $qb->where($qb->expr()->eq('SUBSTRING_INDEX(:domain,\'.\',:count1 )', 'n.domain'));
+        $qb->setParameter('count1', -1);
+
+        for ($i = $count; $i > 1; $i--) {
+            $qb->orWhere($qb->expr()->eq('SUBSTRING_INDEX(:domain,\'.\',:count' . $i . ')', 'n.domain'));
+            $qb->setParameter('count' . $i, $i * -1);
+        }
+
+        $qb->setParameter('domain', $domain);
+
+        return $qb->getQuery();
+
     }
 }

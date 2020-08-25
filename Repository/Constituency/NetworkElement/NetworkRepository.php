@@ -121,7 +121,9 @@ class NetworkRepository extends NetworkElementRepository
         $qb = $em->createQueryBuilder();
         $qb->select('n')
             ->from($this->getClassName(), 'n')
-            ->andWhere('n.active = true');
+            ->andWhere('n.active = true')
+            ->orderBy('LENGTH(n.domain)', 'DESC');
+
 
         $count = substr_count($domain, '.') + 1;
 

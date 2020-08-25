@@ -14,6 +14,7 @@ namespace CertUnlp\NgenBundle\Command;
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
 use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\HostHandler;
 use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\Network\NetworkHandler;
+use phpDocumentor\Reflection\Types\True_;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -50,36 +51,39 @@ class NetworkUpdateHostCommand extends ContainerAwareCommand
      * @param OutputInterface $output
      * @return int|void|null
      */
-    public function execute(InputInterface $input, OutputInterface $output): void
+    public function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('[network update]: Starting.');
-        $limit = 50;
-        $offset = 0;
-        $hosts = $this->getHostHandler()->all(['network' => null], ['id' => 'desc'], $limit, $offset);
-        while ($hosts) {
-            $output->write('[network update]:<info> Found ' . count($hosts) . ' hosts to update.</info>');
-            $output->writeln('<info>Total analyzed ' . $offset . '</info>');
-            foreach ($hosts as $host) {
-                $output->write('[network update]: Searching: ' . $host);
-                $network = $this->getNetworkHandler()->findOneInRange($host->getAddress(), true);
-                if ($network) {
-                    $output->write('<info> Found: ' . $network . '</info>');
-                    $output->write('<comment> Admin: ' . $network->getNetworkAdmin() . '</comment>');
-                    $output->writeln('<comment> Entity: ' . $network->getNetworkEntity() . '</comment>');
-                    $host->setNetwork($network);
-                    try {
-                        $this->getHostHandler()->patch($host);
-                    } catch (InvalidFormException $exception) {
-                        echo $exception;
-                    }
-                } else {
-                    $output->writeln('<error>...Not Found</error>');
-                }
-            }
-            $offset += $limit;
-            $hosts = $this->getHostHandler()->all(['network' => null], ['id' => 'desc'], $limit, $offset);
-        }
-        $output->writeln('[network update]: Finished.');
+        $network = $this->getNetworkHandler()->findOneInRange('journal.info.unlp.edu.ar');
+        return $network;
+//
+//        $output->writeln('[network update]: Starting.');
+//        $limit = 50;
+//        $offset = 0;
+//        $hosts = $this->getHostHandler()->all(['network' => null], ['id' => 'desc'], $limit, $offset);
+//        while ($hosts) {
+//            $output->write('[network update]:<info> Found ' . count($hosts) . ' hosts to update.</info>');
+//            $output->writeln('<info>Total analyzed ' . $offset . '</info>');
+//            foreach ($hosts as $host) {
+//                $output->write('[network update]: Searching: ' . $host);
+//                $network = $this->getNetworkHandler()->findOneInRange($host->getAddress(), true);
+//                if ($network) {
+//                    $output->write('<info> Found: ' . $network . '</info>');
+//                    $output->write('<comment> Admin: ' . $network->getNetworkAdmin() . '</comment>');
+//                    $output->writeln('<comment> Entity: ' . $network->getNetworkEntity() . '</comment>');
+//                    $host->setNetwork($network);
+//                    try {
+//                        $this->getHostHandler()->patch($host);
+//                    } catch (InvalidFormException $exception) {
+//                        echo $exception;
+//                    }
+//                } else {
+//                    $output->writeln('<error>...Not Found</error>');
+//                }
+//            }
+//            $offset += $limit;
+//            $hosts = $this->getHostHandler()->all(['network' => null], ['id' => 'desc'], $limit, $offset);
+//        }
+//        $output->writeln('[network update]: Finished.');
 
     }
 
