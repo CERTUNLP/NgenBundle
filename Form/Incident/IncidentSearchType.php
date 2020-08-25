@@ -131,4 +131,8 @@ class IncidentSearchType extends AbstractType
     }
 
 
+    public function getBlockPrefix()
+    {
+        return '';
+    }
 }
