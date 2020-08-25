@@ -103,15 +103,28 @@ class IncidentReportFactory
         return $this->templating;
     }
 
-    public function getReportReply(Incident $incident, string $body, string $lang): string
+    /**
+     * @param Incident $incident
+     * @param string $body
+     * @param string $lang
+     * @return string|null
+     * @throws LoaderError
+     * @throws SyntaxError
+     */
+    public function getReportReply(Incident $incident, string $body, string $lang): ?string
     {
-        $data = array('report' => $incident->getType()->getReport($lang), 'incident' => $incident, 'body' => $body, 'team' => $this->getTeam());
-        $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/mailReply.html.twig');
-        $this->getView()->setTemplateData($data);
-        $html = $this->getViewHandler()->renderTemplate($this->getView(), 'html');
-        $parameters = array('incident' => $incident);
+        $report = $incident->getType()->getReport($lang);
+        if ($report) {
 
-        return $this->getTemplating()->createTemplate($html)->render($parameters);
+            $data = array('report' => $report, 'incident' => $incident, 'body' => $body, 'team' => $this->getTeam());
+            $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/mailReply.html.twig');
+            $this->getView()->setTemplateData($data);
+            $html = $this->getViewHandler()->renderTemplate($this->getView(), 'html');
+            $parameters = array('incident' => $incident);
+
+            return $this->getTemplating()->createTemplate($html)->render($parameters);
+        }
+        return null;
     }
 
     /**

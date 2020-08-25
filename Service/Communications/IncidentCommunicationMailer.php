@@ -16,6 +16,7 @@ use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactTelegram;
 use CertUnlp\NgenBundle\Entity\Communication\Message\Message;
 use CertUnlp\NgenBundle\Entity\Communication\Message\MessageEmail;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentComment;
 use CertUnlp\NgenBundle\Service\IncidentReportFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -87,6 +88,7 @@ class IncidentCommunicationMailer extends IncidentCommunication
         $data['body'] = $this->getBody($incident);
         $data['subject'] = sprintf($this->mailSubject(false), $incident->getTlp(), $this->getTeamName(), $incident->getType()->getName(), $incident->getAddress(), $incident->getId());
         $data['evidence_files'] = $this->getEvidenceFiles($incident);
+        $data['notify_admin'] = true;
 
         return $data;
     }
@@ -174,6 +176,45 @@ class IncidentCommunicationMailer extends IncidentCommunication
     }
 
     /**
+     * @param IncidentComment $comment
+     * @param Contact|null $contact
+     * @return array
+     * @throws LoaderError
+     * @throws SyntaxError
+     */
+    public function createCommentDataJson(IncidentComment $comment, $contact): array
+    {
+        $data = parent::createCommentDataJson($comment, $contact);
+        $incident = $comment->getThread()->getIncident();
+        $data['body'] = $this->getReplyBody($comment);
+        $data['subject'] = sprintf($this->replySubject(), $incident->getTlp(), $this->getTeamName(), $incident->getType()->getName(), $incident->getAddress(), $incident->getId());
+        $data['evidence_files'] = [];
+        $data['notify_admin'] = $comment->getNotifyToAdmin();
+
+        return $data;
+    }
+
+    /**
+     * @param IncidentComment $comment
+     * @return string|null
+     * @throws LoaderError
+     * @throws SyntaxError
+     */
+    public function getReplyBody(IncidentComment $comment): ?string
+    {
+        return $this->getReportFactory()->getReportReply($comment->getThread()->getIncident(), $comment->getBody(), $this->getLang());
+
+    }
+
+    /**
+     * @return string
+     */
+    public function replySubject(): string
+    {
+        return 'Comment:' . $this->mailSubject();
+    }
+
+    /**
      * @param Incident $incident
      * @return string
      * @throws LoaderError
@@ -182,5 +223,16 @@ class IncidentCommunicationMailer extends IncidentCommunication
     public function getDataMessage(Incident $incident): string
     {
         return $this->getBody($incident);
+    }
+
+    /**
+     * @param IncidentComment $comment
+     * @return string
+     * @throws LoaderError
+     * @throws SyntaxError
+     */
+    public function getCommentDataMessage(IncidentComment $comment): string
+    {
+        return $this->getReplyBody($comment);
     }
 }

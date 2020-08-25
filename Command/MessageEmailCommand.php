@@ -101,23 +101,26 @@ class MessageEmailCommand extends ContainerAwareCommand
      */
     public function sendMail(MessageEmail $message_email): ?array
     {
-        $emails = [];
+        $admin_emails = $message_email->getIncident()->getEmails();
+        $send_to_team = $this->sendToTeam($message_email);
 
-        if ($message_email->getIncident()->getStateEdge()->getMailTeam()->getLevel() >= $message_email->getIncident()->getPriority()->getCode()) {
-            $emails = array($this->getNgenTeamMail());
-        }
-
-        $emails = array_merge($emails, $message_email->getIncident()->getEmails());
-        if ($emails) {
-            $html = $message_email->getData()['body'];
+        if ($admin_emails || $send_to_team) {
+            $html = $message_email->getBody();
             $message = Swift_Message::newInstance()
-                ->setSubject($message_email->getData()['subject'])
+                ->setSubject($message_email->getSubject())
                 ->setFrom($this->getNgenTeamMail())
                 ->setSender($this->getNgenTeamMail())
-                ->setTo($emails)
                 ->addPart($html, 'text/html');
 
-            foreach ($message_email->getData()['evidence_files'] as $evidence_file) {
+            if ($admin_emails && $message_email->isNotifyToAdmin()) {
+                $message
+                    ->setTo($admin_emails);
+            }
+            if ($send_to_team) {
+                $message
+                    ->addTo($this->getNgenTeamMail());
+            }
+            foreach ($message_email->getEvidenceFiles() as $evidence_file) {
                 $message->attach(Swift_Attachment::fromPath($evidence_file));
             }
             if ($message_email->getIncident()->getReportMessageId()) {
@@ -128,6 +131,11 @@ class MessageEmailCommand extends ContainerAwareCommand
             return ['success' => $respose, 'errors' => $errors];
         }
         return null;
+    }
+
+    private function sendToTeam(MessageEmail $message_email): bool
+    {
+        return $message_email->getIncident()->getStateEdge()->getMailTeam()->getLevel() >= $message_email->getIncident()->getPriority()->getCode();
     }
 
     /**

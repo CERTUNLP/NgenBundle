@@ -38,4 +38,37 @@ class MessageEmail extends Message
     {
         return 'envelope';
     }
+
+    /**
+     * @return string
+     */
+    public function getBody(): string
+    {
+        return $this->getData()['body'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubject(): string
+    {
+        return $this->getData()['subject'];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNotifyToAdmin(): bool
+    {
+        return $this->getData()['notify_admin'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getEvidenceFiles(): array
+    {
+        return $this->getData()['evidence_files'];
+    }
+
 }

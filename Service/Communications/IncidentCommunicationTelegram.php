@@ -16,6 +16,7 @@ use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactTelegram;
 use CertUnlp\NgenBundle\Entity\Communication\Message\Message;
 use CertUnlp\NgenBundle\Entity\Communication\Message\MessageTelegram;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentComment;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class IncidentCommunicationTelegram extends IncidentCommunication
@@ -36,6 +37,32 @@ class IncidentCommunicationTelegram extends IncidentCommunication
     public function createMessage(): Message
     {
         return new MessageTelegram();
+    }
+
+    /**
+     * @param IncidentComment $comment
+     */
+    public function comunicate_comment(IncidentComment $comment): void
+    {
+        if ($comment->getNotifyToAdmin()) {
+            parent::comunicate_comment($comment);
+        }
+    }
+
+    /**
+     * @param IncidentComment $comment
+     * @param Contact|null $contact
+     * @return array
+     */
+    public function createCommentDataJson(IncidentComment $comment, ?Contact $contact): array
+    {
+        $data = parent::createCommentDataJson($comment, $contact);
+        if ($contact) {
+            $credentials = explode('@', $contact->getUsername());
+            $data['token'] = $credentials[0];
+            $data['chatid'] = $credentials[1];
+        }
+        return $data;
     }
 
     /**
@@ -63,7 +90,7 @@ class IncidentCommunicationTelegram extends IncidentCommunication
         $formato = $this->getTranslator()->trans('telegram_message');
         $comment = $incident->getNotes();
         if ($comment) {
-            $formato .= sprintf(PHP_EOL . PHP_EOL . '*' . $this->getTranslator()->trans('Note/Comment') . ':*  %s', $comment);
+            $formato .= sprintf(PHP_EOL . PHP_EOL . '*' . $this->getTranslator()->trans('Note') . ':*  %s', $comment);
         }
         return sprintf($formato, $this->getTelegramIcon($incident->getPriority()->getSlug()), $incident->getAddress(), $incident->getType()->getName(), $incident->getPriority()->getName(), $incident->getTlp()->getSlug(), $this->getTlpIcon($incident->getTlp()->getSlug()));
     }
@@ -106,5 +133,17 @@ class IncidentCommunicationTelegram extends IncidentCommunication
             $state = "\u{26AA}";
         }
         return $state;
+    }
+
+    public function getCommentDataMessage(IncidentComment $comment): string
+    {
+        $formato = $this->getTranslator()->trans('telegram_message');
+        $incident = $comment->getThread()->getIncident();
+        $body = $comment->getBody();
+        if ($body) {
+            $formato .= sprintf(PHP_EOL . PHP_EOL . '*' . $this->getTranslator()->trans('Comment') . ':*  %s', $body);
+        }
+        return sprintf($formato, $this->getTelegramIcon($incident->getPriority()->getSlug()), $incident->getAddress(), $incident->getType()->getName(), $incident->getPriority()->getName(), $incident->getTlp()->getSlug(), $this->getTlpIcon($incident->getTlp()->getSlug()));
+
     }
 }

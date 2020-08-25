@@ -92,9 +92,6 @@ services:
         calls:
             - [ setAnnotationReader, [ "@annotation_reader" ] ]
 
-    CertUnlp\NgenBundle\Command\MessageEmailCommand:
-        arguments:
-            $mailer: "@swiftmailer.mailer.cert_unlp.ngen.incident.mailer"
 
     CertUnlp\NgenBundle\Service\Communications\IncidentCommunicationMailer:
         tags:

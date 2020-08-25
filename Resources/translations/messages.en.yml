@@ -12,4 +12,3 @@ verification_title: 'How to verify the issue'
 recomendations_title: Recommendations
 more_information_tit originalle: 'For more information'
 telegram_message: '%s Incident on host "*%s*" of type "*%s*" with priority "*%s*" TLP: %s(%s)'
-Dashboard: 'messages'

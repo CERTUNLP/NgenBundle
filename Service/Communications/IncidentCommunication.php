@@ -14,6 +14,7 @@ namespace CertUnlp\NgenBundle\Service\Communications;
 use CertUnlp\NgenBundle\Entity\Communication\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Communication\Message\Message;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentComment;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\CommentBundle\Event\CommentPersistEvent;
@@ -58,7 +59,7 @@ abstract class IncidentCommunication
                 return;
             }
         }
-        $this->comunicate_reply($comment->getThread()->getIncident(), $comment->getBody(), $comment->getNotifyToAdmin());
+        $this->comunicate_comment($comment);
     }
 
     /**
@@ -70,26 +71,60 @@ abstract class IncidentCommunication
     }
 
     /**
-     * @param Incident $incident
-     * @param string $body
-     * @param bool $notify_to_admins
+     * @param IncidentComment $comment
      * @return void
      */
-    public function comunicate_reply(Incident $incident, string $body = '', bool $notify_to_admins = true)
+    public function comunicate_comment(IncidentComment $comment): void
     {
-//        if ($notify_to_admins) {
-//            $contacts = $this->getContacts($incident);
-//            if ($contacts) {
-//                foreach ($contacts as $contact) {
-//                    $message = $this->createMessage();
-//                    $message->setData($this->createDataJson($incident, $contact));
-//                    $message->setIncident($incident);
-//                    $message->setPending(true);
-//                    $this->getDoctrine()->persist($message);
-//                }
-//                $this->getDoctrine()->flush();
-//            }
-//        }
+        $incident = $comment->getThread()->getIncident();
+        $contacts = $this->getContacts($incident);
+        if ($contacts) {
+            foreach ($contacts as $contact) {
+                $message = $this->createMessage();
+                $message->setData($this->createCommentDataJson($comment, $contact));
+                $message->setIncident($incident);
+                $message->setPending(true);
+                $this->getDoctrine()->persist($message);
+            }
+            $this->getDoctrine()->flush();
+        }
+    }
+
+
+    /**
+     * @param Incident $incident
+     * @return ArrayCollection| Contact[]
+     */
+    abstract public function getContacts(Incident $incident): ArrayCollection;
+
+    /**
+     * @return Message
+     */
+    abstract public function createMessage(): Message;
+
+    /**
+     * @param IncidentComment $comment
+     * @param Contact|null $contact
+     * @return array
+     */
+    public function createCommentDataJson(IncidentComment $comment, ?Contact $contact): array
+    {
+        $data['message'] = $this->getCommentDataMessage($comment);
+        return $data;
+    }
+
+    /**
+     * @param IncidentComment $comment
+     * @return string
+     */
+    abstract public function getCommentDataMessage(IncidentComment $comment): string;
+
+    /**
+     * @return EntityManagerInterface
+     */
+    public function getDoctrine(): EntityManagerInterface
+    {
+        return $this->doctrine;
     }
 
     /**
@@ -123,17 +158,6 @@ abstract class IncidentCommunication
 
     /**
      * @param Incident $incident
-     * @return ArrayCollection| Contact[]
-     */
-    abstract public function getContacts(Incident $incident): ArrayCollection;
-
-    /**
-     * @return Message
-     */
-    abstract public function createMessage(): Message;
-
-    /**
-     * @param Incident $incident
      * @param Contact|null $contact
      * @return array
      */
@@ -148,14 +172,6 @@ abstract class IncidentCommunication
      * @return string
      */
     abstract public function getDataMessage(Incident $incident): string;
-
-    /**
-     * @return EntityManagerInterface
-     */
-    public function getDoctrine(): EntityManagerInterface
-    {
-        return $this->doctrine;
-    }
 
     /**
      * @param Incident $incident
