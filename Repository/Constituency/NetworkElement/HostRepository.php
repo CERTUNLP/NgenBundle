@@ -9,6 +9,7 @@
 namespace CertUnlp\NgenBundle\Repository\Constituency\NetworkElement;
 
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\NetworkInternal;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\NetworkElement;
 use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -22,31 +23,29 @@ class HostRepository extends NetworkElementRepository
 
     /**
      * @param $address string
+     * @param bool $limit_less_especific
      * @return NetworkElement|null
      */
-    public function findOneInRange(string $address): ?NetworkElement
+    public function findOneInRange(string $address, bool $limit_less_especific = false): ?NetworkElement
     {
         switch (NetworkElement::guessType($address)) {
             case FILTER_FLAG_IPV4:
-                return $this->finOneInRangeIpV4($address);
-                break;
+                return $this->findOneInRangeIpV4($address, $limit_less_especific);
             case FILTER_FLAG_IPV6:
-                return $this->finOneInRangeIpV6($address);
-                break;
+                return $this->findOneInRangeIpV6($address, $limit_less_especific);
             case FILTER_VALIDATE_DOMAIN:
-                return $this->finOneInRangeDomain($address);
-                break;
+                return $this->findOneInRangeDomain($address, $limit_less_especific);
             default:
                 return null;
         }
-
     }
 
     /**
      * @param string $address
+     * @param bool $limit_less_especific
      * @return NetworkElement|null
      */
-    public function finOneInRangeIpV4(string $address): ?NetworkElement
+    public function findOneInRangeIpV4(string $address, bool $limit_less_especific = false): ?NetworkElement
     {
         $results = $this->queryInRangeIpV4($address)->getResult();
         return $results ? $results[0] : null;
@@ -54,50 +53,64 @@ class HostRepository extends NetworkElementRepository
 
     /**
      * @param string $address
+     * @param bool $limit_less_especific
      * @return Query
      */
-    public function queryInRangeIpV4(string $address): Query
+    public function queryInRangeIpV4(string $address, bool $limit_less_especific = false): Query
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
         $qb->select('h')
             ->from($this->getClassName(), 'h')
             ->where($qb->expr()->between('INET_ATON(h.ip)', 'INET_ATON(:start_address)', 'INET_ATON(:end_address)'))
-            ->andWhere('h.active = true')
-            ;
+            ->andWhere('h.active = true');
+        $network = new NetworkInternal($address);
+        if ($limit_less_especific) {
+            $qb->innerJoin('h.network', 'n')
+                ->andWhere($qb->expr()->lt('n.ip_mask', ':mask'));
+            $qb->setParameter('mask', (int)$network->getAddressMask());
+        }
 
-        $qb->setParameter('start_address', $start_address);
-        $qb->setParameter('end_address', $end_address);
+        $qb->setParameter('start_address', $network->getStartAddress());
+        $qb->setParameter('end_address', $network->getEndAddress());
 
         return $qb->getQuery();
     }
 
     /**
      * @param string $address
+     * @param bool $limit_less_especific
      * @return NetworkElement|null
      */
-    public function finOneInRangeIpV6(string $address): ?NetworkElement
+    public function findOneInRangeIpV6(string $address, bool $limit_less_especific = false): ?NetworkElement
     {
-        $results = $this->queryInRangeIpV6($address)->getResult();
+        $results = $this->queryInRangeIpV6($address, $limit_less_especific)->getResult();
         return $results ? $results[0] : null;
     }
 
     /**
      * @param string $address
+     * @param bool $limit_less_especific
      * @return Query
      */
-    public function queryInRangeIpV6(string $address): Query
+    public function queryInRangeIpV6(string $address, bool $limit_less_especific = false): Query
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
         $qb->select('h')
             ->from($this->getClassName(), 'h')
             ->where($qb->expr()->between('INET6_ATON(h.ip)', 'INET6_ATON(:start_address)', 'INET6_ATON(:end_address)'))
-            ->andWhere('n.active = true')
-            ->orderBy('n.ip_mask', 'DESC');
+            ->andWhere('h.active = true')
+            ->orderBy('h.ip_mask', 'DESC');
 
-        $qb->setParameter('start_address', $start_address);
-        $qb->setParameter('end_address', $end_address);
+        $network = new NetworkInternal($address);
+        if ($limit_less_especific) {
+            $qb->innerJoin('h.network', 'n')
+                ->andWhere($qb->expr()->lt('n.ip_mask', ':mask'));
+            $qb->setParameter('mask', (int)$network->getAddressMask());
+        }
+        $qb->setParameter('start_address', $network->getStartAddress());
+        $qb->setParameter('end_address', $network->getEndAddress());
 
         return $qb->getQuery();
 
@@ -105,39 +118,92 @@ class HostRepository extends NetworkElementRepository
 
     /**
      * @param string $address
+     * @param bool $limit_less_especific
      * @return NetworkElement|null
      */
-    public function finOneInRangeDomain(string $address): ?NetworkElement
+    public function findOneInRangeDomain(string $address, bool $limit_less_especific = false): ?NetworkElement
     {
-        $results = $this->queryInRangeDomain($address)->getResult();
+        $results = $this->queryInRangeDomain($address, $limit_less_especific)->getResult();
         return $results ? $results[0] : null;
     }
 
     /**
      * @param string $domain
+     * @param bool $limit_less_especific
      * @return Query
      */
-    public function queryInRangeDomain(string $domain): Query
+    public function queryInRangeDomain(string $domain, bool $limit_less_especific = false): Query
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
-        $qb->select('n')
-            ->from($this->getClassName(), 'n')
-            ->andWhere('n.active = true');
+        $qb->select('h')
+            ->from($this->getClassName(), 'h')
+            ->andWhere('h.active = true')
+            ->orderBy('LENGTH(h.domain)', 'DESC');
+
+        if ($limit_less_especific) {
+            $qb->innerJoin('h.network', 'n')
+                ->andWhere($qb->expr()->lt('LENGTH(n.domain)', ':length'));
+            $qb->setParameter('length', strlen($domain));
+        }
 
         $count = substr_count($domain, '.') + 1;
 
-        $qb->where($qb->expr()->eq('SUBSTRING_INDEX(:domain,\'.\',:count1 )', 'n.domain'));
-        $qb->setParameter('count1', -1);
-
-        for ($i = $count; $i > 1; $i--) {
-            $qb->orWhere($qb->expr()->eq('SUBSTRING_INDEX(:domain,\'.\',:count' . $i . ')', 'n.domain'));
-            $qb->setParameter('count' . $i, $i * -1);
-        }
+        $qb->andWhere($qb->expr()->eq('SUBSTRING_INDEX(h.domain,\'.\',:count )', ':domain'));
+        $qb->setParameter('count', $count * -1);
 
         $qb->setParameter('domain', $domain);
 
         return $qb->getQuery();
 
+    }
+
+    /**
+     * @param $address string
+     * @param bool $limit_less_especific
+     * @return NetworkElement[]|null
+     */
+    public function findInRange(string $address, bool $limit_less_especific = false): ?array
+    {
+        switch (NetworkElement::guessType($address)) {
+            case FILTER_FLAG_IPV4:
+                return $this->findInRangeIpV4($address, $limit_less_especific);
+            case FILTER_FLAG_IPV6:
+                return $this->findInRangeIpV6($address, $limit_less_especific);
+            case FILTER_VALIDATE_DOMAIN:
+                return $this->findInRangeDomain($address, $limit_less_especific);
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * @param string $address
+     * @param bool $limit_less_especific
+     * @return NetworkElement[]|null
+     */
+    public function findInRangeIpV4(string $address, bool $limit_less_especific = false): ?array
+    {
+        return $this->queryInRangeIpV4($address, $limit_less_especific)->getResult();
+    }
+
+    /**
+     * @param string $address
+     * @param bool $limit_less_especific
+     * @return NetworkElement[]|null
+     */
+    public function findInRangeIpV6(string $address, bool $limit_less_especific = false): ?array
+    {
+        return $this->queryInRangeIpV6($address, $limit_less_especific)->getResult();
+    }
+
+    /**
+     * @param string $address
+     * @param bool $limit_less_especific
+     * @return NetworkElement[]|null
+     */
+    public function findInRangeDomain(string $address, bool $limit_less_especific = false): ?array
+    {
+        return $this->queryInRangeDomain($address, $limit_less_especific)->getResult();
     }
 }
