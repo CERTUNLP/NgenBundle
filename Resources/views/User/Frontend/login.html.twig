@@ -42,7 +42,7 @@ with this source code in the file LICENSE.
                                     <input type="hidden" name="_csrf_token"
                                            value="{{ csrf_token('authenticate') }}"/>
                                     {% if error %}
-                                        <div class="alert-danger">{{ error.message }}</div>
+                                        <div class="alert-danger col-md-3 offset-10">{{ error.message }}</div>
                                     {% endif %}
                                     <div class="form-group">
                                         <input value="{{ last_username }}" type="text" id="username"

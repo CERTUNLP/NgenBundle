@@ -44,7 +44,7 @@ var Form = Class.extend({
                 $.each(jqXHR.responseJSON.errors.global, function (n, error) {
                     ul.append($('<li>' + error + '</li>'));
                 });
-                div = $('<div id="global-errors" class="alert alert-danger"></div>');
+                div = $('<div id="global-errors" class="alert alert-danger col-md-3 offset-10"></div>');
                 this.form.before(div.append(ul));
             }
             if (jqXHR.responseJSON.hasOwnProperty('errors')) {
