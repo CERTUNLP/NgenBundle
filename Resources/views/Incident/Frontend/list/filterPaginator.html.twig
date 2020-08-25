@@ -8,42 +8,7 @@
 #}
 <tr id="filtrosMostrar" class="filtrosMostrar">
     <th></th>
-    <th class="text-center">
-        <form method='post' action="javascript:void(0);" role="search">
-            {{ form_row(search_form.state) }}
-        </form>
-    </th>
     <th></th>
-    <th class="text-center">
-        <form method='post' action="javascript:void(0);" role="search">
-            {{ form_row(search_form.tlp) }}
-        </form>
-    </th>
-    <th class="text-center">
-        <form method='post' action="javascript:void(0);" role="search">
-            {{ form_row(search_form.priority) }}
-        </form>
-    </th>
-    <th class="text-center">
-        <form method='post' class="data-filter" action="javascript:void(0);" role="search">
-            {{ form_row(search_form.address) }}
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
-                   style="display:none" value="option1" checked>
-            <label class="form-check-label" for="inlineCheckbox1" style="display:none">*</label>
-        </form>
-
-    </th>
-    <th class="text-center">
-        <form method='post' action="javascript:void(0);" role="search">
-            {{ form_row(search_form.type) }}
-        </form>
-    </th>
-
-    <th class="text-center">
-        <form method='post' action="javascript:void(0);" role="search">
-            {{ form_row(search_form.feed) }}
-        </form>
-    </th>
     <th class="text-center">
         <form method='post' class="data-filter" action="javascript:void(0);" role="search">
             {{ form_row(search_form.dates) }}
@@ -54,7 +19,7 @@
     </th>
     <th class="text-center">
         <form method='post' class="data-filter" action="javascript:void(0);" role="search">
-            {{ form_row(search_form.updatesAt) }}
+            {{ form_row(search_form.address) }}
             <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
                    style="display:none" value="option1" checked>
             <label class="form-check-label" for="inlineCheckbox1" style="display:none">*</label>
@@ -62,9 +27,42 @@
     </th>
     <th class="text-center">
         <form method='post' action="javascript:void(0);" role="search">
-            {{ form_row(search_form.ltdCount) }}
+            {{ form_row(search_form.type) }}
         </form>
     </th>
+    <th class="text-center">
+        <form method='post' action="javascript:void(0);" role="search">
+            {{ form_row(search_form.state) }}
+        </form>
+    </th>
+{#    <th class="text-center">#}
+{#        <form method='post' action="javascript:void(0);" role="search">#}
+{#            {{ form_row(search_form.tlp) }}#}
+{#        </form>#}
+{#    </th>#}
+    <th class="text-center">
+        <form method='post' action="javascript:void(0);" role="search">
+            {{ form_row(search_form.priority) }}
+        </form>
+    </th>
+    <th class="text-center">
+        <form method='post' action="javascript:void(0);" role="search">
+            {{ form_row(search_form.feed) }}
+        </form>
+    </th>
+    <th class="text-center">
+        <form method='post' class="data-filter" action="javascript:void(0);" role="search">
+            {{ form_row(search_form.updatesAt) }}
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                   style="display:none" value="option1" checked>
+            <label class="form-check-label" for="inlineCheckbox1" style="display:none">*</label>
+        </form>
+    </th>
+{#    <th class="text-center">#}
+{#        <form method='post' action="javascript:void(0);" role="search">#}
+{#            {{ form_row(search_form.ltdCount) }}#}
+{#        </form>#}
+{#    </th>#}
     <th class="text-center">
         <form method='post' action="javascript:void(0);" role="search">
             {{ form_row(search_form.reporter) }}
