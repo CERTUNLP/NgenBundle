@@ -117,16 +117,18 @@ abstract class NetworkElement extends EntityApiFrontend
         return $address;
     }
 
-    public static function guessType(string $term): int
+    public static function guessType(string $address): int
     {
-        if (filter_var($term, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+        [$address_without_mask] = explode('/', $address);
+
+        if (filter_var($address_without_mask, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
             return FILTER_FLAG_IPV4;
         }
 
-        if (filter_var($term, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        if (filter_var($address_without_mask, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
             return FILTER_FLAG_IPV6;
         }
-        if (filter_var($term, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+        if (filter_var($address_without_mask, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
             return FILTER_VALIDATE_DOMAIN;
 
         }

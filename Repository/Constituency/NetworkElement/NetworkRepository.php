@@ -21,38 +21,6 @@ class NetworkRepository extends NetworkElementRepository
     }
 
     /**
-     * @param $address string
-     * @return NetworkElement|null
-     */
-    public function findOneInRange(string $address): ?NetworkElement
-    {
-        switch (NetworkElement::guessType($address)) {
-            case FILTER_FLAG_IPV4:
-                return $this->finOneInRangeIpV4($address);
-                break;
-            case FILTER_FLAG_IPV6:
-                return $this->finOneInRangeIpV6($address);
-                break;
-            case FILTER_VALIDATE_DOMAIN:
-                return $this->finOneInRangeDomain($address);
-                break;
-            default:
-                return null;
-        }
-
-    }
-
-    /**
-     * @param string $address
-     * @return NetworkElement|null
-     */
-    public function finOneInRangeIpV4(string $address): ?NetworkElement
-    {
-        $results = $this->queryInRangeIpV4($address)->getResult();
-        return $results ? $results[0] : null;
-    }
-
-    /**
      * @param string $address
      * @return Query
      */
@@ -69,16 +37,6 @@ class NetworkRepository extends NetworkElementRepository
         $qb->setParameter('address', $address);
 
         return $qb->getQuery();
-    }
-
-    /**
-     * @param string $address
-     * @return NetworkElement|null
-     */
-    public function finOneInRangeIpV6(string $address): ?NetworkElement
-    {
-        $results = $this->queryInRangeIpV6($address)->getResult();
-        return $results ? $results[0] : null;
     }
 
     /**
@@ -102,16 +60,6 @@ class NetworkRepository extends NetworkElementRepository
     }
 
     /**
-     * @param string $address
-     * @return NetworkElement|null
-     */
-    public function finOneInRangeDomain(string $address): ?NetworkElement
-    {
-        $results = $this->queryInRangeDomain($address)->getResult();
-        return $results ? $results[0] : null;
-    }
-
-    /**
      * @param string $domain
      * @return Query
      */
@@ -123,7 +71,6 @@ class NetworkRepository extends NetworkElementRepository
             ->from($this->getClassName(), 'n')
             ->andWhere('n.active = true')
             ->orderBy('LENGTH(n.domain)', 'DESC');
-
 
         $count = substr_count($domain, '.') + 1;
 
@@ -147,15 +94,14 @@ class NetworkRepository extends NetworkElementRepository
      */
     public function findOneByIp(string $address): ?NetworkElement
     {
-        $address_and_mask = explode('/', $address);
-        switch (Network::guessType($address_and_mask[0])) {
+        [$ip, $mask] = explode('/', $address);
+        switch (Network::guessType($ip)) {
             case FILTER_FLAG_IPV6:
             case FILTER_FLAG_IPV4:
-                if (isset($address_and_mask[1])) {
-                    return $this->findOneBy(['ip' => $address_and_mask[0], 'ip_mask' => $address_and_mask[1]]);
+                if (isset($mask)) {
+                    return $this->findOneBy(['ip' => $ip, 'ip_mask' => $mask]);
                 }
-                return $this->findOneBy(['ip' => $address_and_mask[0]]);
-                break;
+                return $this->findOneBy(['ip' => $ip]);
             default:
                 return null;
         }
