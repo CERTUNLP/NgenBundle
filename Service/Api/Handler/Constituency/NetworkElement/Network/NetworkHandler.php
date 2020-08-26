@@ -17,10 +17,7 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\Network;
 
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\NetworkExternal;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\NetworkInternal;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\NetworkRdap;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
 use CertUnlp\NgenBundle\Form\Constituency\NetworkElement\NetworkType;
 use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use CertUnlp\NgenBundle\Repository\Constituency\NetworkElement\NetworkRepository;
@@ -28,7 +25,6 @@ use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\NetworkE
 use CertUnlp\NgenBundle\Service\NetworkRdapClient;
 use Doctrine\ORM\EntityManagerInterface;
 use Metaregistrar\RDAP\RdapException;
-use Symfony\Component\Debug\Exception\ClassNotFoundException;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class NetworkHandler extends NetworkElementHandler
@@ -50,16 +46,6 @@ class NetworkHandler extends NetworkElementHandler
     {
         parent::__construct($entity_manager, $repository, $entity_ype, $form_factory);
         $this->network_rdap_handler = $network_rdap_handler;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function cleanParameters(array $parameters): array
-    {
-        $parameters = parent::cleanParameters($parameters);
-        unset($parameters['type']);
-        return $parameters;
     }
 
     /**
@@ -92,24 +78,11 @@ class NetworkHandler extends NetworkElementHandler
     /**
      * @param array $parameters
      * @return EntityApiInterface|Network
-     * @throws ClassNotFoundException
      */
     public function createEntityInstance(array $parameters = []): EntityApiInterface
     {
-        switch ($parameters['type']) {
-            case 'internal':
-                $entity = new NetworkInternal($parameters['address']);
-                break;
-            case 'external':
-                $entity = new NetworkExternal($parameters['address']);
-                break;
-            case 'rdap':
-                $entity = new NetworkRdap($parameters['address']);
-                break;
-            default:
-                throw new ClassNotFoundException('Network class: "' . $parameters['type'] . '" does not exist.', null);
-        }
-        return $entity;
+        $class_name = $this->getRepository()->getClassName();
+        return new $class_name($parameters['address']);
     }
 
 

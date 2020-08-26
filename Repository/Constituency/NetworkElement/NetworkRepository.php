@@ -8,7 +8,7 @@
 
 namespace CertUnlp\NgenBundle\Repository\Constituency\NetworkElement;
 
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\NetworkElement;
 use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\RegistryInterface;

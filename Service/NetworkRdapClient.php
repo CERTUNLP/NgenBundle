@@ -13,7 +13,7 @@ namespace CertUnlp\NgenBundle\Service;
 
 use CertUnlp\NgenBundle\Entity\Communication\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\NetworkRdap;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkEntity;
 use CertUnlp\NgenBundle\Repository\Communication\Contact\ContactCaseRepository;
 use CertUnlp\NgenBundle\Repository\Constituency\NetworkAdminRepository;
@@ -59,10 +59,10 @@ class NetworkRdapClient
 
     /**
      * @param string $address
-     * @return NetworkRdap|null
+     * @return Network|null
      * @throws RdapException
      */
-    public function search(string $address): ?NetworkRdap
+    public function search(string $address): ?Network
     {
         $response = $this->getRdap()->search($address);
         if ($response) {
@@ -70,8 +70,9 @@ class NetworkRdapClient
             $admin = $this->getNetworkAdmin();
             $validated_address = $this->getAddress($address);
             if ($admin && $validated_address) {
-                $network = new NetworkRdap($validated_address);
+                $network = new Network($validated_address);
                 $network->setNetworkAdmin($admin);
+                $network->setType('rdap');
                 $network->setNetworkEntity($this->getNetworkEntity());
                 $network->setCountryCode($this->getCountry());
                 return $network;

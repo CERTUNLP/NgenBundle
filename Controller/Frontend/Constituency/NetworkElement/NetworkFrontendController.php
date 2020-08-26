@@ -9,7 +9,7 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Constituency\NetworkElement;
 
 use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
 use CertUnlp\NgenBundle\Form\Constituency\NetworkElement\NetworkType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Elastica\Query;

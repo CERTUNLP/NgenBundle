@@ -8,7 +8,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Constituency;
 
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
 use CertUnlp\NgenBundle\Entity\EntityApi;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

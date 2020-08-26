@@ -21,7 +21,7 @@ use CertUnlp\NgenBundle\Entity\Communication\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactEmail;
 use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactPhone;
 use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactTelegram;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
 use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

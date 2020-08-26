@@ -14,7 +14,7 @@ namespace CertUnlp\NgenBundle\Entity\Incident;
 use CertUnlp\NgenBundle\Entity\Communication\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
 use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;

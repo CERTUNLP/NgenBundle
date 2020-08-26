@@ -9,7 +9,7 @@
 namespace CertUnlp\NgenBundle\Controller\Api\Constituency\NetworkElement;
 
 use CertUnlp\NgenBundle\Controller\Api\ApiController;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
 use CertUnlp\NgenBundle\Form\Constituency\NetworkElement\NetworkType;
 use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\Network\NetworkHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;

@@ -18,7 +18,7 @@
 namespace CertUnlp\NgenBundle\Form\Constituency\NetworkElement;
 
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkEntity;
 use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
 use CertUnlp\NgenBundle\Service\Listener\Form\EntityTypeListener;
@@ -55,15 +55,16 @@ class NetworkType extends EntityForm
                 'label' => 'Address',
             ))
             ->add('type', ChoiceType::class, array(
-                'mapped' => false,
                 'required' => true,
                 'choices' => array(
                     'Internal' => 'internal',
                     'External' => 'external',
+                    'Rdap' => 'rdap',
                 ),
                 'choices_as_values' => true,
             ))
             ->add('networkEntity', Select2EntityType::class, [
+                'required' => true,
                 'remote_route' => 'cert_unlp_ngen_network_entity_search_autocomplete',
                 'class' => NetworkEntity::class,
                 'minimum_input_length' => 3,
@@ -71,6 +72,7 @@ class NetworkType extends EntityForm
                 'placeholder' => 'Select an entity',
             ])
             ->add('networkAdmin', Select2EntityType::class, array(
+                'required' => true,
                 'remote_route' => 'cert_unlp_ngen_network_admin_search_autocomplete',
                 'class' => NetworkAdmin::class,
                 'minimum_input_length' => 3,
