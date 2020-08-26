@@ -39,7 +39,7 @@ var Form = Class.extend({
             // if (jqXHR.responseJSON.hasOwnProperty('message')) {
             //     ul.append($('<li>' + jqXHR.responseJSON.message + '</li>'));
             // }
-            if (jqXHR.responseJSON.errors.hasOwnProperty('global') && jqXHR.responseJSON.errors.global.length) {
+            if (jqXHR.responseJSON.hasOwnProperty('errors') &&jqXHR.responseJSON.errors.hasOwnProperty('global') && jqXHR.responseJSON.errors.global.length) {
                 ul = $('<ul></ul>');
                 $.each(jqXHR.responseJSON.errors.global, function (n, error) {
                     ul.append($('<li>' + error + '</li>'));

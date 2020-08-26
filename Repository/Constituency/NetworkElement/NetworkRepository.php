@@ -65,6 +65,8 @@ class NetworkRepository extends NetworkElementRepository
      */
     public function queryInRangeDomain(string $domain): Query
     {
+        [$domain] = explode('/', $domain);
+
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
         $qb->select('n')

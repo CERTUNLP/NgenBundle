@@ -79,14 +79,7 @@ class HostListener
         return $this->network_handler;
     }
 
-    /**
-     * @ORM\PreUpdate
-     * @param Host $host
-     */
-    public function preUpdateHandler(Host $host): void
-    {
-        $this->prePersistUpdate($host);
-    }
+
 
 
 }
