@@ -45,7 +45,7 @@ class IncidentDecision extends EntityApiFrontend
     private $feed;
     /**
      * @var Network|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network")
      * @ORM\JoinColumn(name="network", referencedColumnName="id")
      * @JMS\Expose()
      * @JMS\Groups({"read","write"})

@@ -48,7 +48,7 @@ class Host extends NetworkElement
     protected $slug;
     /**
      * @var Network
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network", inversedBy="hosts", cascade={"persist"}))
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network", inversedBy="hosts", cascade={"persist"}))
      * @JMS\Expose()
      * @JMS\Groups({"read","write"})
      */
@@ -207,9 +207,9 @@ class Host extends NetworkElement
      * @param string $type
      * @return Collection
      */
-    public function getliveIncidentsAsOriginOfType(string $type): Collection
+    public function getliveIncidentOfType(string $type): Collection
     {
-        return $this->getliveIncidentsAsOrigin()->filter(static function (Incident $incident) use ($type) {
+        return $this->getliveIncidents()->filter(static function (Incident $incident) use ($type) {
             return $incident->getType()->getSlug() === $type;
         });
     }
@@ -219,7 +219,7 @@ class Host extends NetworkElement
      *
      * @return Collection
      */
-    public function getliveIncidentsAsOrigin(): Collection
+    public function getliveIncidents(): Collection
     {
         return $this->getIncidents()->filter(static function (Incident $incident) {
             return $incident->isLive();
