@@ -83,6 +83,14 @@ class TaxonomyValue extends EntityApi
     private $version;
 
     /**
+     * @return bool
+     */
+    public function canEditFundamentals(): bool
+    {
+        return false;
+    }
+
+    /**
      * Get id
      *
      * @return int

@@ -36,10 +36,7 @@ abstract class ApiController extends AbstractFOSRestController
      * @var View
      */
     private $view;
-    /**
-     * @var bool
-     */
-    private $editable;
+
 
     /**
      * @param Handler $handler
@@ -49,7 +46,6 @@ abstract class ApiController extends AbstractFOSRestController
     {
         $this->handler = $handler;
         $this->viewHandler = $viewHandler;
-        $this->editable = false;
     }
 
     /**
@@ -180,33 +176,12 @@ abstract class ApiController extends AbstractFOSRestController
         try {
             $parameters = array_merge($request->request->all(), $request->files->all());
 //            unset($parameters['_method']);
-            if ($request->get('force_edit') || $this->isEditable()) {
-                $entity = $this->getHandler()->patch($entity, $parameters);
-                return $this->response([$entity], Response::HTTP_OK);
-            }
-            return $this->response(['errors' => '', 'code' => Response::HTTP_FORBIDDEN, 'message' => 'editing not enabled. please use the "force_edit" field.'], Response::HTTP_FORBIDDEN);
+            $entity = $this->getHandler()->patch($entity, $parameters);
+            return $this->response([$entity], Response::HTTP_OK);
 
         } catch (InvalidFormException $exception) {
             return $this->responseError($exception);
         }
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEditable(): bool
-    {
-        return $this->editable;
-    }
-
-    /**
-     * @param bool $editable
-     * @return ApiController
-     */
-    public function setEditable(bool $editable): ApiController
-    {
-        $this->editable = $editable;
-        return $this;
     }
 
     /**

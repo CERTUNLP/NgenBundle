@@ -6,15 +6,6 @@
  *  with this source code in the file LICENSE.
  */
 
-/*
- * This file is part of the Ngen - CSIRT Incident Report System.
- *
- * (c) CERT UNLP <support@cert.unlp.edu.ar>
- *
- * This source file is subject to the GPL v3.0 license that is bundled
- * with this source code in the file LICENSE.
- */
-
 namespace CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
 
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin;
@@ -31,8 +22,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Network
- *
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Constituency\NetworkElement\NetworkRepository")
  * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\NetworkListener"})
  * @ORM\InheritanceType("SINGLE_TABLE")
@@ -292,7 +281,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
      */
     public function getliveIncidentsOfType(string $type): Collection
     {
-        return $this->getliveIncidents()->filter(static function (Incident $incident) use ($type) {
+        return $this->getLiveIncidents()->filter(static function (Incident $incident) use ($type) {
             return $incident->getType()->getSlug() === $type;
         });
     }
@@ -302,7 +291,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
      *
      * @return Collection
      */
-    public function getliveIncidents(): Collection
+    public function getLiveIncidents(): Collection
     {
         return $this->getIncidents()->filter(static function (Incident $incident) {
             return $incident->isLive();
@@ -327,6 +316,26 @@ abstract class Network extends NetworkElement implements NetworkInterface
     {
         $this->incidents = $incidents;
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canEditFundamentals(): bool
+    {
+        return $this->getDeadIncidents()->isEmpty();
+    }
+
+    /**
+     * Get incidents
+     *
+     * @return Collection
+     */
+    public function getDeadIncidents(): Collection
+    {
+        return $this->getIncidents()->filter(static function (Incident $incident) {
+            return $incident->isDead();
+        });
     }
 
     /**
@@ -375,7 +384,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
 
     public function __toString(): string
     {
-        return parent::__toString() . ' (' . strtolower($this->getType()) . ')';
+        return $this->getAddressAndMask() . ' (' . strtolower($this->getType()) . ')';
     }
 
     public function getType(): string

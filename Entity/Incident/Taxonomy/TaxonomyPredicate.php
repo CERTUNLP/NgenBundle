@@ -12,7 +12,6 @@ namespace CertUnlp\NgenBundle\Entity\Incident\Taxonomy;
 
 use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -75,13 +74,24 @@ class TaxonomyPredicate extends EntityApi
     private $values;
 
     /**
-     * Constructor
+     * @return bool
      */
-    public function __construct()
+    public function canEditFundamentals(): bool
     {
-        $this->values = new ArrayCollection();
+        return false;
     }
 
+    /**
+     * Get incidents
+     *
+     * @return Collection
+     */
+    public function getDeadIncidents(): Collection
+    {
+        return $this->getIncidents()->filter(static function (Incident $incident) {
+            return $incident->isDead();
+        });
+    }
     /**
      * @return string
      */

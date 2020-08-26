@@ -70,6 +70,35 @@ class IncidentFeed extends EntityApiFrontend
         $this->incidents = new ArrayCollection();
     }
 
+    /**
+     * @return bool
+     */
+    public function canEditFundamentals(): bool
+    {
+        return $this->getDeadIncidents()->isEmpty();
+    }
+
+    /**
+     * Get incidents
+     *
+     * @return Collection
+     */
+    public function getDeadIncidents(): Collection
+    {
+        return $this->getIncidents()->filter(static function (Incident $incident) {
+            return $incident->isDead();
+        });
+    }
+
+    /**
+     * Get incidents
+     *
+     * @return Collection
+     */
+    public function getIncidents(): Collection
+    {
+        return $this->incidents;
+    }
 
     /**
      * Get slug
@@ -154,7 +183,6 @@ class IncidentFeed extends EntityApiFrontend
         $this->description = $description;
     }
 
-
     /**
      * Add incident
      *
@@ -178,16 +206,6 @@ class IncidentFeed extends EntityApiFrontend
     public function removeIncident(Incident $incident): bool
     {
         return $this->incidents->removeElement($incident);
-    }
-
-    /**
-     * Get incidents
-     *
-     * @return Collection
-     */
-    public function getIncidents(): Collection
-    {
-        return $this->incidents;
     }
 
     /**

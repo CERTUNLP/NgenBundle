@@ -114,5 +114,11 @@ abstract class EntityApi extends Entity implements EntityApiInterface
      */
     abstract public function getDataIdentificationArray(): array;
 
-
+    /**
+     * @return bool
+     */
+    public function canEditFundamentals(): bool
+    {
+        return true;
+    }
 }
