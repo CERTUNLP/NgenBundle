@@ -66,7 +66,7 @@ class NetworkAdmin extends EntityApiFrontend
      *
      * @ORM\Column(name="name", type="string")
      * @JMS\Expose
-     * @JMS\Groups({"read","write","fundamental"})
+     * @JMS\Groups({"read","write"})
      */
     private $name;
     /**
@@ -90,7 +90,25 @@ class NetworkAdmin extends EntityApiFrontend
         $this->networks = new ArrayCollection();
         $this->contacts = new ArrayCollection();
     }
+    /**
+     * @return bool
+     */
+    public function canEditFundamentals(): bool
+    {
+        return $this->getNetworks()->isEmpty();
+    }
 
+    /**
+     * Get incidents
+     *
+     * @return Collection
+     */
+    public function getDeadIncidents(): Collection
+    {
+        return $this->getIncidents()->filter(static function (Incident $incident) {
+            return $incident->isDead();
+        });
+    }
     /**
      * Get id
      *

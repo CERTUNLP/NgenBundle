@@ -104,6 +104,44 @@ class IncidentPriority extends EntityApiFrontend
     private $resolutionTime;
 
     /**
+     * @return bool
+     */
+    public function canEditFundamentals(): bool
+    {
+        return $this->getDeadIncidents()->isEmpty();
+    }
+
+    /**
+     * Get incidents
+     *
+     * @return Collection
+     */
+    public function getDeadIncidents(): Collection
+    {
+        return $this->getIncidents()->filter(static function (Incident $incident) {
+            return $incident->isDead();
+        });
+    }
+
+    /**
+     * @return Incident[] | Collection
+     */
+    public function getIncidents(): ?Collection
+    {
+        return $this->incidents;
+    }
+
+    /**
+     * @param Incident[] | Collection $incidents
+     * @return IncidentPriority
+     */
+    public function setIncidents(Collection $incidents): IncidentPriority
+    {
+        $this->incidents = $incidents;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getIcon(): string
@@ -173,24 +211,6 @@ class IncidentPriority extends EntityApiFrontend
     public function setName(?string $name): IncidentPriority
     {
         $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @return Incident[] | Collection
-     */
-    public function getIncidents(): ?Collection
-    {
-        return $this->incidents;
-    }
-
-    /**
-     * @param Incident[] | Collection $incidents
-     * @return IncidentPriority
-     */
-    public function setIncidents(Collection $incidents): IncidentPriority
-    {
-        $this->incidents = $incidents;
         return $this;
     }
 

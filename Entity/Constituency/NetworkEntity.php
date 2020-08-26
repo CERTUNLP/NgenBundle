@@ -51,7 +51,7 @@ class NetworkEntity extends EntityApi
      * @var string
      * @ORM\Column(name="name", type="string")
      * @JMS\Expose
-     * @JMS\Groups({"read","write","fundamental"})
+     * @JMS\Groups({"read","write"})
      */
     private $name = '';
     /**

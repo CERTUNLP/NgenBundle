@@ -16,7 +16,6 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User;
-use CertUnlp\NgenBundle\Model\EntityInterface;
 use CertUnlp\NgenBundle\Repository\Incident\State\IncidentStateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
@@ -24,7 +23,6 @@ use JMS\Serializer\SerializerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\Security;
 
 class  IncidentTypeListener extends EntityTypeListener
@@ -109,7 +107,7 @@ class  IncidentTypeListener extends EntityTypeListener
      */
     public function getUserId(): int
     {
-        return $this->getEntitymanager()->getRepository(User::class)->findOneBy(['username' => $this->getUserLogged()->getUser()->getUsername()])->getId();
+        return (int)$this->getEntitymanager()->getRepository(User::class)->findOneBy(['username' => $this->getUserLogged()->getUser()->getUsername()])->getId();
     }
 
     /**
@@ -118,17 +116,6 @@ class  IncidentTypeListener extends EntityTypeListener
     public function getUserLogged(): Security
     {
         return $this->userLogged;
-    }
-
-    /**
-     * @param EntityInterface|null $entity
-     * @param FormInterface $form
-     */
-    public function disableFundamentalFields(FormInterface $form, EntityInterface $entity = null): void
-    {
-        if ($entity && !$entity->canEditFundamentals()) {
-            parent::disableFundamentalFields($form, $entity);
-        }
     }
 
 }

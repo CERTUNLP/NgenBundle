@@ -40,6 +40,7 @@ class NetworkListener
 
     /**
      * @ORM\PrePersist
+     * @ORM\PreUpdate
      * @param Network $network
      */
     public function prePersistHandler(Network $network): void

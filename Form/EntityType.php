@@ -42,13 +42,7 @@ class EntityType extends AbstractType
             $builder
                 ->add('active', CheckboxType::class,
                     ['required' => false])
-                ->add('force_edit', CheckboxType::class,
-                    ['data' => false,
-                        'mapped' => false,
-                        'label_attr' => array('class' => 'alert alert-warning'),
-                        'attr' => array('align_with_widget' => true, 'help_text' => 'If it set to true the network will be edited and not replaced.(this can harm the network history)'),
-                        'required' => false,
-                        'label' => 'Force edit']);
+               ;
 
         }
         if ($options['add_event_subscriber']) {

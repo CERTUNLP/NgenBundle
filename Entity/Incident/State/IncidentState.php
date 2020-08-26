@@ -100,23 +100,24 @@ class IncidentState extends EntityApiFrontend implements Translatable
         $this->edges = new ArrayCollection();
     }
 
-
     /**
-     * @return mixed
+     * @return bool
      */
-    public function getLocale()
+    public function canEditFundamentals(): bool
     {
-        return $this->locale;
+        return $this->getDeadIncidents()->isEmpty();
     }
 
     /**
-     * @param mixed $locale
-     * @return IncidentState
+     * Get incidents
+     *
+     * @return Collection
      */
-    public function setLocale($locale)
+    public function getDeadIncidents(): Collection
     {
-        $this->locale = $locale;
-        return $this;
+        return $this->getIncidents()->filter(static function (Incident $incident) {
+            return $incident->isDead();
+        });
     }
 
     /**
@@ -134,6 +135,24 @@ class IncidentState extends EntityApiFrontend implements Translatable
     public function setIncidents(Collection $incidents): self
     {
         $this->incidents = $incidents;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @param mixed $locale
+     * @return IncidentState
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
         return $this;
     }
 
@@ -160,16 +179,7 @@ class IncidentState extends EntityApiFrontend implements Translatable
     {
         return $this->behavior;
     }
-    /**
-     * @return string
-     * @JMS\Expose()
-     * @JMS\VirtualProperty()
-     * @JMS\Groups({"read","write"})
-     */
-    public function getBehaviorSlug(): string
-    {
-        return $this->getBehavior()->getSlug();
-    }
+
     /**
      * @param StateBehavior $behavior
      * @return IncidentState
@@ -181,8 +191,19 @@ class IncidentState extends EntityApiFrontend implements Translatable
     }
 
     /**
+     * @return string
+     * @JMS\Expose()
+     * @JMS\VirtualProperty()
+     * @JMS\Groups({"read","write"})
+     */
+    public function getBehaviorSlug(): string
+    {
+        return $this->getBehavior()->getSlug();
+    }
+
+    /**
      * @param Incident $incident
-     * @param IncidentState $newState
+     * @param IncidentState|null $newState
      * @return Incident
      */
     public function changeState(Incident $incident, IncidentState $newState = null): ?Incident
@@ -309,6 +330,16 @@ class IncidentState extends EntityApiFrontend implements Translatable
     }
 
     /**
+     * @return IncidentState[]|ArrayCollection
+     */
+    public function getNewStates(): Collection
+    {
+        return $this->getEdges()->map(static function (StateEdge $edge) {
+            return $edge->getNewState();
+        });
+    }
+
+    /**
      * @return Collection
      * @JMS\Expose()
      * @JMS\VirtualProperty()
@@ -318,15 +349,6 @@ class IncidentState extends EntityApiFrontend implements Translatable
     {
         return $this->getEdges()->map(static function (StateEdge $edge) {
             return $edge->getNewState()->getSlug();
-        });
-    }
-    /**
-     * @return IncidentState[]|ArrayCollection
-     */
-    public function getNewStates(): Collection
-    {
-        return $this->getEdges()->map(static function (StateEdge $edge) {
-            return $edge->getNewState();
         });
     }
 
@@ -405,6 +427,7 @@ class IncidentState extends EntityApiFrontend implements Translatable
     {
         return 'slug';
     }
+
     /**
      * {@inheritDoc}
      */

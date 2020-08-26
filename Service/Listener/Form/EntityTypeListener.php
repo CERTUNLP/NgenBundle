@@ -56,10 +56,6 @@ class EntityTypeListener implements EventSubscriberInterface
         if ($event->getForm()->getConfig()->getMethod() === Request::METHOD_PATCH) {
             $this->disableFundamentalFields($form, $entity);
         }
-
-        if ($event->getForm()->getConfig()->getMethod() !== Request::METHOD_PATCH && $event->getForm()->getConfig()->getOption('frontend')) {
-            $form->remove('force_edit');
-        }
     }
 
     /**
@@ -68,7 +64,7 @@ class EntityTypeListener implements EventSubscriberInterface
      */
     public function disableFundamentalFields(FormInterface $form, EntityInterface $entity = null): void
     {
-        if ($entity) {
+        if ($entity && !$entity->canEditFundamentals()) {
             $fields = array_keys(json_decode($this->getSerializer()->serialize($entity, 'json', SerializationContext::create()->setGroups(array('fundamental'))->setSerializeNull(true)), true));
             foreach ($fields as $field) {
                 $this->disableField($form->get($field));
@@ -93,8 +89,6 @@ class EntityTypeListener implements EventSubscriberInterface
         $options = $field->getConfig()->getOptions();
         $name = $field->getName();
         $type = get_class($field->getConfig()->getType()->getInnerType());
-//        $parent->remove($name);
-//        $parent->add($name, $type, array_merge($options, ['attr' => ['readonly' => true]]));
         $parent->add($name, $type, array_merge($options, ['disabled' => true]));
 
     }

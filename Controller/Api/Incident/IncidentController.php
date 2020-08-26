@@ -39,7 +39,6 @@ class IncidentController extends ApiController
     public function __construct(IncidentHandler $handler, ViewHandlerInterface $viewHandler)
     {
         parent::__construct($handler, $viewHandler);
-        $this->setEditable(true);
     }
 
     /**
