@@ -48,7 +48,7 @@ class Host extends NetworkElement
     protected $slug;
     /**
      * @var Network
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network", inversedBy="hosts")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network", inversedBy="hosts", cascade={"persist"}))
      * @JMS\Expose()
      * @JMS\Groups({"read","write"})
      */
@@ -61,21 +61,16 @@ class Host extends NetworkElement
     private $temp_network = null;
     /**
      * @var Incident[]|Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="origin",fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="origin",fetch="EXTRA_LAZY", cascade={"persist"})
      */
-    private $incidents_as_origin;
-    /**
-     * @var Incident[]|Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="destination",fetch="EXTRA_LAZY")
-     */
-    private $incidents_as_destination;
+    private $incidents;
+
     private $comment_thread;
 
     public function __construct(?string $term = null)
     {
         parent::__construct($term);
-        $this->incidents_as_origin = new ArrayCollection();
-        $this->incidents_as_destination = new ArrayCollection();
+        $this->incidents = new ArrayCollection();
     }
 
     public function isAutoUpdatable(): bool
@@ -135,6 +130,7 @@ class Host extends NetworkElement
         return $this;
     }
 
+
     /**
      * @return Network
      */
@@ -150,7 +146,20 @@ class Host extends NetworkElement
     public function setNetwork(Network $network = null): Host
     {
         $this->network = $network;
+        foreach ($this->getIncidents() as $incident) {
+            if (!$this->getNetwork()->equals($incident->getNetwork())) {
+                $incident->setNetwork($this->getNetwork());
+            }
+        }
         return $this;
+    }
+
+    /**
+     * @return Incident[]|Collection
+     */
+    public function getIncidents(): Collection
+    {
+        return $this->incidents;
     }
 
     /**
@@ -192,52 +201,31 @@ class Host extends NetworkElement
      */
     public function getliveIncidentsAsOrigin(): Collection
     {
-        return $this->getIncidentsAsOrigin()->filter(static function (Incident $incident) {
+        return $this->getIncidents()->filter(static function (Incident $incident) {
             return $incident->isLive();
         });
     }
 
-    /**
-     * @return Incident[]|Collection
-     */
-    public function getIncidentsAsOrigin(): Collection
+    public function addIncident(Incident $incident): ?Host
     {
-        return $this->incidents_as_origin;
-    }
-
-    /**
-     * @param Incident[]|Collection $incidents_as_origin
-     * @return Host
-     */
-    public function setIncidentsAsOrigin(Collection $incidents_as_origin): self
-    {
-        $this->incidents_as_origin = $incidents_as_origin;
+        if ($this->incidents->contains($incident)) {
+            return $this;
+        }
+        $this->incidents[] = $incident;
+        $incident->setOrigin($this);
         return $this;
+
     }
 
-    /**
-     * @return Incident[]|Collection
-     */
-    public function getIncidents(): Collection
+    public function removeIncident(Incident $incident): ?Host
     {
-        return $this->getIncidentsAsOrigin();
-    }
-
-    /**
-     * @return Incident[]|Collection
-     */
-    public function getIncidentsAsDestination(): Collection
-    {
-        return $this->incidents_as_destination;
-    }
-
-    /**
-     * @param Incident[]|Collection $incidents_as_destination
-     * @return Host
-     */
-    public function setIncidentsAsDestination(Collection $incidents_as_destination): self
-    {
-        $this->incidents_as_destination = $incidents_as_destination;
+        if (!$this->incidents->contains($incident)) {
+            return $this;
+        }
+        $this->incidents->removeElement($incident);
+        $incident->setOrigin(null);
         return $this;
+
     }
+
 }
