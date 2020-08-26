@@ -232,7 +232,7 @@ class Incident extends EntityApiFrontend
     private $destination;
     /**
      * @var Network|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network", inversedBy="incidents")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network", inversedBy="incidents")
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */

@@ -91,11 +91,11 @@ with this source code in the file LICENSE.
                                                     </a>
                                                 </div>
                                                 <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                    live incidents: {{ object.origin.liveincidentsasorigin.count }}
+                                                    live incidents: {{ object.origin.liveIncidents.count }}
                                                 </div>
                                                 <div class="h6 mb-0 font-weight-bold text-gray-800">
                                                     live {{ object.type }}
-                                                    incidents: {{ object.origin.liveincidentsasoriginoftype(object.type.slug).count }}
+                                                    incidents: {{ object.origin.liveIncidentOfType(object.type.slug).count }}
                                                 </div>
                                             </div>
                                             <div class="col-auto">
@@ -119,7 +119,7 @@ with this source code in the file LICENSE.
                                             </div>
                                             {% if object.origin %}
                                                 <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                    live incidents: {{ object.origin.liveincidentsasorigin.count }}
+                                                    live incidents: {{ object.origin.liveIncidents.count }}
                                                 </div>
                                             {% endif %}
                                         </div>

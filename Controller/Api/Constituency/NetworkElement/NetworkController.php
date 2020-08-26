@@ -148,7 +148,7 @@ class NetworkController extends ApiController
      * @param Network $network
      * @return View
      * @FOS\Get("/networks/{ip_v4}/{ip_mask}", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_mask"="^[1-3]?[0-9]$"} )
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network", options={"mapping": {"ip_v4": "ip","ip_mask": "ip_mask"}})
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network", options={"mapping": {"ip_v4": "ip","ip_mask": "ip_mask"}})
      */
     public function getNetworkIpv4Action(Network $network): View
     {
@@ -190,7 +190,7 @@ class NetworkController extends ApiController
      * @param Network $network
      * @return View
      * @FOS\Get("/networks/{ip_v6}/{ip_mask}", name="_ip_v6",  requirements={"ip_v6"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$","ip_mask"="^(([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$"} )
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network", options={"mapping": {"ip_v6": "ip","ip_mask": "ip_mask"}})
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network", options={"mapping": {"ip_v6": "ip","ip_mask": "ip_mask"}})
      */
     public function getNetworkIpv6Action(Network $network): View
     {
@@ -358,7 +358,7 @@ class NetworkController extends ApiController
      *      )
      * )
      * @FOS\Delete("/networks/{ip_v4}/{ip_mask}", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_mask"="^[1-3]?[0-9]$"} )
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network", options={"mapping": {"ip_v4": "ip","ip_mask": "ip_mask"}})
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network", options={"mapping": {"ip_v4": "ip","ip_mask": "ip_mask"}})
      * @param Network $network
      * @return View
      */
@@ -400,7 +400,7 @@ class NetworkController extends ApiController
      *      )
      * )
      * @FOS\Delete("/networks/{ip_v6}/{ip_mask}", name="_ip_v6",  requirements={"ip_v6"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$","ip_mask"="^(([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$"} )
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network", options={"mapping": {"ip_v6": "ip","ip_mask": "ip_mask"}})
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network", options={"mapping": {"ip_v6": "ip","ip_mask": "ip_mask"}})
      * @param Network $network
      * @return View
      */
@@ -477,7 +477,7 @@ class NetworkController extends ApiController
      * @param Network $network
      * @return View
      * @FOS\Patch("/networks/{ip_v4}/{ip_mask}", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_mask"="^[1-3]?[0-9]$"} )
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network", options={"mapping": {"ip_v4": "ip","ip_mask": "ip_mask"}})
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network", options={"mapping": {"ip_v4": "ip","ip_mask": "ip_mask"}})
      */
     public function patchNetworkIpv4Action(Request $request, Network $network): View
     {
@@ -550,7 +550,7 @@ class NetworkController extends ApiController
      * @param Network $network
      * @return View
      * @FOS\Patch("/networks/{ip_v6}/{ip_mask}", name="_ip_v6",   requirements={"ip_v6"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$","ip_mask"="^(([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$"} )
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network", options={"mapping": {"ip_v6": "ip","ip_mask": "ip_mask"}})
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network", options={"mapping": {"ip_v6": "ip","ip_mask": "ip_mask"}})
      */
     public function patchNetworkIpv6Action(Request $request, Network $network): View
     {
@@ -613,7 +613,7 @@ class NetworkController extends ApiController
      * @param Network $network
      * @return View
      * @FOS\Patch("/networks/{ip_v4}/{ip_mask}/activate", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_mask"="^[1-3]?[0-9]$"} )
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network", options={"mapping": {"ip_v4": "ip","ip_mask": "ip_mask"}})
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network", options={"mapping": {"ip_v4": "ip","ip_mask": "ip_mask"}})
      */
     public function patchNetworkIpv4ActivateAction(Network $network): View
     {
@@ -692,7 +692,7 @@ class NetworkController extends ApiController
      * @param Network $network
      * @return View
      * @FOS\Patch("/networks/{ip_v6}/{ip_mask}/activate", name="_ip_v6",  requirements={"ip_v6"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$","ip_mask"="^(([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$"} )
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network", options={"mapping": {"ip_v6": "ip","ip_mask": "ip_mask"}})
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network", options={"mapping": {"ip_v6": "ip","ip_mask": "ip_mask"}})
      */
     public function patchNetworkIpv6ActivateAction(Network $network): View
     {
@@ -745,7 +745,7 @@ class NetworkController extends ApiController
      * @param Network $network
      * @return View
      * @FOS\Patch("/networks/{ip_v4}/{ip_mask}/desactivate", name="_ip_v4",  requirements={"ip_v4"="^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$","ip_mask"="^[1-3]?[0-9]$"} )
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network", options={"mapping": {"ip_v4": "ip","ip_mask": "ip_mask"}})
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network", options={"mapping": {"ip_v4": "ip","ip_mask": "ip_mask"}})
      */
     public function patchNetworkIpv4DesactivateAction(Network $network): View
     {
@@ -772,7 +772,7 @@ class NetworkController extends ApiController
      * @param Network $network
      * @return View
      * @FOS\Patch("/networks/{ip_v6}/{ip_mask}/desactivate", name="_ip_v6",  requirements={"ip_v6"="^(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))$","ip_mask"="^(([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$"} )
-     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network", options={"mapping": {"ip_v6": "ip","ip_mask": "ip_mask"}})
+     * @ParamConverter("network", class="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network", options={"mapping": {"ip_v6": "ip","ip_mask": "ip_mask"}})
      */
     public function patchNetworkIpv6DesactivateAction(Network $network): View
     {

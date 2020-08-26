@@ -56,7 +56,7 @@ class NetworkEntity extends EntityApi
     private $name = '';
     /**
      * @var Network
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network",mappedBy="network_entity"))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network",mappedBy="network_entity"))
      */
     private $networks;
 

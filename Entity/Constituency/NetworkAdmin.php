@@ -78,7 +78,7 @@ class NetworkAdmin extends EntityApiFrontend
     private $contacts;
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network",mappedBy="network_admin"))
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network",mappedBy="network_admin"))
      */
     private $networks;
 
