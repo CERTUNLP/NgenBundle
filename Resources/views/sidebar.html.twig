@@ -52,15 +52,15 @@
 
 <!-- Heading -->
 {#<div class="sidebar-heading"></div>#}
-<li class="nav-item {{ ('community' in app.request.requesturi)? 'active' : '' }}">
-    <a class="nav-link {{ ('community' in app.request.requesturi)? '' : 'collapsed' }}"
+<li class="nav-item {{ ('contituency' in app.request.requesturi)? 'active' : '' }}">
+    <a class="nav-link {{ ('contituency' in app.request.requesturi)? '' : 'collapsed' }}"
        href="#" data-toggle="collapse"
        data-target="#collapseNetworks"
        aria-controls="collapseTwo">
-        <span>{{ icon('share-alt-square') }} {{ 'Community'| trans }}</span>
+        <span>{{ icon('share-alt-square') }} {{ 'Contituency'| trans }}</span>
     </a>
     <div id="collapseNetworks"
-         class="collapse {{ ('community' in app.request.requesturi)? 'show': '' }}"
+         class="collapse {{ ('contituency' in app.request.requesturi)? 'show': '' }}"
          aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Network elements</h6>

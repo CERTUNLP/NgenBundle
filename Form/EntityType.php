@@ -13,7 +13,6 @@ namespace CertUnlp\NgenBundle\Form;
 
 use CertUnlp\NgenBundle\Service\Listener\Form\EntityTypeListener;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -38,13 +37,6 @@ class EntityType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        if ($options['add_extra_fields']) {
-            $builder
-                ->add('active', CheckboxType::class,
-                    ['required' => false])
-               ;
-
-        }
         if ($options['add_event_subscriber']) {
             $builder->addEventSubscriber($this->getEntityTypeListener());
         }

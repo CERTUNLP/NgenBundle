@@ -1,16 +1,14 @@
 <?php
-/**
+/*
  * This file is part of the Ngen - CSIRT Incident Report System.
  *   (c) CERT UNLP <support@cert.unlp.edu.ar>
  *  This source file is subject to the GPL v3.0 license that is bundled
  *  with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
+namespace CertUnlp\NgenBundle\Entity\Constituency\NetworkElement;
 
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\NetworkElement;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkEntity;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Model\NetworkInterface;
@@ -24,9 +22,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Constituency\NetworkElement\NetworkRepository")
  * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\NetworkListener"})
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"internal" = "NetworkInternal", "external" = "NetworkExternal", "rdap" = "NetworkRdap"})
  * @JMS\ExclusionPolicy("all")
  * @UniqueEntity(
  *     fields={"domain"},
@@ -39,11 +34,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     message="A network with the same address: {{ value }} already exist."
  * )
  */
-abstract class Network extends NetworkElement implements NetworkInterface
+class Network extends NetworkElement implements NetworkInterface
 {
     /**
      * @var string
-     *
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\Range(
      *      min = 1,
@@ -78,29 +72,40 @@ abstract class Network extends NetworkElement implements NetworkInterface
      */
     private $hosts;
     /**
+     * @var string
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */
     private $ip_start_address;
     /**
+     * @var string
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */
     private $ip_end_address;
     /**
+     * @var string
      * @ORM\Column(type="string",length=2,nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */
     private $country_code;
     /**
+     * @var string
      * @ORM\Column(type="string",nullable=true)
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */
     private $asn;
+    /**
+     * @var string
+     * @ORM\Column(type="string", columnDefinition="ENUM('internal', 'external','rdap')")s
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
+     */
+    private $type = 'internal';
 
     public function __construct(string $term = null)
     {
@@ -109,14 +114,6 @@ abstract class Network extends NetworkElement implements NetworkInterface
         $this->hosts = new ArrayCollection();
     }
 
-
-    /**
-     * @return string
-     */
-    public function getColor(): string
-    {
-        return 'info';
-    }
 
     /**
      * Get startAddress
@@ -387,9 +384,64 @@ abstract class Network extends NetworkElement implements NetworkInterface
         return $this->getAddressAndMask() . ' (' . strtolower($this->getType()) . ')';
     }
 
+    /**
+     * @return string
+     */
     public function getType(): string
     {
-        $array = explode('\\', static::class);
-        return strtolower(str_replace('Network', '', array_pop($array)));
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     * @return Network
+     */
+    public function setType(string $type): Network
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        switch ($this->getType()) {
+            case'rdap':
+                return 'project-diagram';
+            case'external':
+                return 'share-alt';
+            default:
+                return 'share-alt-square';
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        switch ($this->getType()) {
+            case'rdap':
+            case'external':
+                return 'primary';
+            default:
+                return 'info';
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInternal(): bool
+    {
+        switch ($this->getType()) {
+            case'rdap':
+            case'external':
+                return false;
+            default:
+                return true;
+        }
     }
 }

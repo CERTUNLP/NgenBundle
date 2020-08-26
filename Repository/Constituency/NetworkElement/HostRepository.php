@@ -9,7 +9,7 @@
 namespace CertUnlp\NgenBundle\Repository\Constituency\NetworkElement;
 
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\NetworkInternal;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\NetworkElement;
 use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -64,7 +64,7 @@ class HostRepository extends NetworkElementRepository
             ->from($this->getClassName(), 'h')
             ->where($qb->expr()->between('INET_ATON(h.ip)', 'INET_ATON(:start_address)', 'INET_ATON(:end_address)'))
             ->andWhere('h.active = true');
-        $network = new NetworkInternal($address);
+        $network = new Network($address);
         if ($limit_less_especific) {
             $qb->innerJoin('h.network', 'n')
                 ->andWhere($qb->expr()->lte('n.ip_mask', ':mask'))
@@ -105,7 +105,7 @@ class HostRepository extends NetworkElementRepository
             ->andWhere('h.active = true')
             ->orderBy('h.ip_mask', 'DESC');
 
-        $network = new NetworkInternal($address);
+        $network = new Network($address);
         if ($limit_less_especific) {
             $qb->innerJoin('h.network', 'n')
                 ->andWhere($qb->expr()->lte('n.ip_mask', ':mask'))

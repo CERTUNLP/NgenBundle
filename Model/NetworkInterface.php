@@ -12,7 +12,7 @@
 namespace CertUnlp\NgenBundle\Model;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkEntity;
 use Doctrine\Common\Collections\Collection;
