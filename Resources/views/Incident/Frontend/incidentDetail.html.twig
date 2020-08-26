@@ -393,22 +393,12 @@ with this source code in the file LICENSE.
                                     </div>
                                 </div>
                                 {% if object.origin and object.origin.network %}
-
                                     <div class="row">
                                         <div class="col-6 col-sm-6 border">
-                                            {{ 'Network Entity'|trans }}
+                                            {{ 'Network'|trans }}
                                         </div>
                                         <div class="col-6 col-sm-6 border">
-                                            {{ object.origin.network.networkEntity }}
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-6 col-sm-6 border">
-                                            {{ 'Network Admin'|trans }}
-                                        </div>
-                                        <div class="col-6 col-sm-6 border">
-                                            {{ object.origin.network.networkAdmin }}
-
+                                            {{ object.origin.network }}
                                         </div>
                                     </div>
                                 {% endif %}
@@ -418,7 +408,14 @@ with this source code in the file LICENSE.
                     {% block network_body %}
                         <div class="card shadow mb-4">
                             <div class="card-header">
-                                <h6 class="m-0 font-weight-bold text-primary">{{ "Network Information"|trans }}</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">
+                                    {{ "Network Information"|trans }}
+                                    {% if object.origin and object.origin.network and not (object.origin.network == object.network) %}
+                                    <button class="btn btn-warning btn-circle btn-sm">
+                                        <i class="fas fa-exclamation"></i>
+                                    </button>
+                                </h6>
+                                {% endif %}
                             </div>
                             <div class="card-body">
                                 <div>
