@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class NetworkHostUpdateCommand extends ContainerAwareCommand
+class NetworkRenewHostCommand extends ContainerAwareCommand
 {
     /**
      * @var HostHandler
@@ -39,7 +39,7 @@ class NetworkHostUpdateCommand extends ContainerAwareCommand
     public function configure()
     {
         $this
-            ->setName('cert_unlp:network:host:update')
+            ->setName('cert_unlp:network:renew:host')
             ->setDescription('Host update for new networks topology');
 //            ->addOption('all', '-a', InputOption::VALUE_OPTIONAL, 'execute all enrichments', true)
 //            ->addOption('enrichment', '-en', InputOption::VALUE_OPTIONAL, 'execute the enrichment given');
@@ -52,20 +52,20 @@ class NetworkHostUpdateCommand extends ContainerAwareCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('[network update]: Starting.');
+        $output->writeln('[network host renew]: Starting.');
         $limit = 50;
         $offset = 0;
         $networks = $this->getNetworkHandler()->all([], ['id' => 'desc'], $limit, $offset);
         while ($networks) {
-            $output->write('[network update]:<info> Found ' . count($networks) . ' hosts to update.</info>');
+            $output->write('[network host renew]:<info> Found ' . count($networks) . ' hosts to update.</info>');
             $output->writeln('<info>Total analyzed ' . $offset . '</info>');
             foreach ($networks as $network) {
-                $output->write('[network update]: Searching new hosts for: ' . $network->getAddressAndMask());
+                $output->write('[network host renew]: Searching new hosts for: ' . $network->getAddressAndMask());
                 $hosts = $this->getHostHandler()->getRepository()->findInRange($network->getAddressAndMask(), true);
                 $output->writeln('<info> Found ' . count($hosts) . ' hosts to update.</info>');
 
                 foreach ($hosts as $host) {
-                    $output->write('<comment>[network update]: Updating: ' . $host . ' from:' . $host->getNetwork()->getAddressAndMask() . ' to: ' . $network->getAddressAndMask() . '</comment>');
+                    $output->write('<comment>[network host renew]: Updating: ' . $host . ' from:' . $host->getNetwork()->getAddressAndMask() . ' to: ' . $network->getAddressAndMask() . '</comment>');
                     $host->setNetwork($network);
                     try {
                         $this->getHostHandler()->patch($host);
@@ -77,7 +77,7 @@ class NetworkHostUpdateCommand extends ContainerAwareCommand
                 $offset += $limit;
                 $networks = $this->getNetworkHandler()->all([], ['id' => 'desc'], $limit, $offset);
             }
-            $output->writeln('[network update]: Finished.');
+            $output->writeln('[network host renew]: Finished.');
         }
     }
 
