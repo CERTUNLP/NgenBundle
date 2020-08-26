@@ -55,7 +55,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=40, nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      * @Assert\Range(
      *      min = 1,
      *      max = 128,
@@ -117,6 +117,7 @@ abstract class Network extends NetworkElement implements NetworkInterface
     {
         parent::__construct($term);
         $this->incidents = new ArrayCollection();
+        $this->hosts = new ArrayCollection();
     }
 
 
@@ -236,15 +237,28 @@ abstract class Network extends NetworkElement implements NetworkInterface
         return $this->hosts;
     }
 
-    /**
-     * @param Host $hosts
-     * @return Network
-     */
-    public function setHosts(Host $hosts): Network
+    public function addHost(Host $host): ?Network
     {
-        $this->hosts = $hosts;
+        if ($this->hosts->contains($host)) {
+            return $this;
+        }
+        $this->hosts[] = $host;
+        $host->setNetwork($this);
         return $this;
+
     }
+
+    public function removeHost(Host $host): ?Network
+    {
+        if (!$this->hosts->contains($host)) {
+            return $this;
+        }
+        $this->hosts->removeElement($host);
+        $host->setNetwork(null);
+        return $this;
+
+    }
+
 
     /**
      * Add incidents

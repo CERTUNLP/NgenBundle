@@ -67,8 +67,10 @@ class HostRepository extends NetworkElementRepository
         $network = new NetworkInternal($address);
         if ($limit_less_especific) {
             $qb->innerJoin('h.network', 'n')
-                ->andWhere($qb->expr()->lt('n.ip_mask', ':mask'));
+                ->andWhere($qb->expr()->lte('n.ip_mask', ':mask'))
+                ->andWhere($qb->expr()->neq('n.ip', ':ip'));
             $qb->setParameter('mask', (int)$network->getAddressMask());
+            $qb->setParameter('ip', $network->getAddress());
         }
 
         $qb->setParameter('start_address', $network->getStartAddress());
@@ -106,8 +108,10 @@ class HostRepository extends NetworkElementRepository
         $network = new NetworkInternal($address);
         if ($limit_less_especific) {
             $qb->innerJoin('h.network', 'n')
-                ->andWhere($qb->expr()->lt('n.ip_mask', ':mask'));
+                ->andWhere($qb->expr()->lte('n.ip_mask', ':mask'))
+                ->andWhere($qb->expr()->neq('n.ip', ':ip'));
             $qb->setParameter('mask', (int)$network->getAddressMask());
+            $qb->setParameter('ip', $network->getAddress());
         }
         $qb->setParameter('start_address', $network->getStartAddress());
         $qb->setParameter('end_address', $network->getEndAddress());
@@ -134,6 +138,8 @@ class HostRepository extends NetworkElementRepository
      */
     public function queryInRangeDomain(string $domain, bool $limit_less_especific = false): Query
     {
+        [$domain] = explode('/', $domain);
+
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
         $qb->select('h')

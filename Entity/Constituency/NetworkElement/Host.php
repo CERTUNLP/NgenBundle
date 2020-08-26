@@ -48,7 +48,7 @@ class Host extends NetworkElement
     protected $slug;
     /**
      * @var Network
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network", inversedBy="hosts", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network\Network", inversedBy="hosts")
      * @JMS\Expose()
      * @JMS\Groups({"read","write"})
      */
@@ -144,7 +144,7 @@ class Host extends NetworkElement
     }
 
     /**
-     * @param Network $network
+     * @param Network|null $network
      * @return Host
      */
     public function setNetwork(Network $network = null): Host
