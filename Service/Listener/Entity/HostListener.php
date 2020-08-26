@@ -78,8 +78,4 @@ class HostListener
     {
         return $this->network_handler;
     }
-
-
-
-
 }
