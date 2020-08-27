@@ -99,7 +99,7 @@ class IncidentType extends EntityApiFrontend
      */
     public function canEditFundamentals(): bool
     {
-        return $this->getDeadIncidents()->isEmpty() && !$this->isUndefined();
+        return $this->getDeadIncidents()->isEmpty() && !$this->isUndefined() && $this->getReports()->isEmpty();
     }
 
     /**
@@ -138,6 +138,24 @@ class IncidentType extends EntityApiFrontend
     public function isUndefined(): bool
     {
         return $this->slug === 'undefined';
+    }
+
+    /**
+     * @return IncidentReport[]|Collection
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    /**
+     * @param IncidentReport[]|Collection $reports
+     * @return IncidentType
+     */
+    public function setReports(Collection $reports): self
+    {
+        $this->reports = $reports;
+        return $this;
     }
 
     /**
@@ -203,24 +221,6 @@ class IncidentType extends EntityApiFrontend
             return $this->getTaxonomyValue()->getReport();
         }
         return null;
-    }
-
-    /**
-     * @return IncidentReport[]|Collection
-     */
-    public function getReports(): Collection
-    {
-        return $this->reports;
-    }
-
-    /**
-     * @param IncidentReport[]|Collection $reports
-     * @return IncidentType
-     */
-    public function setReports(Collection $reports): self
-    {
-        $this->reports = $reports;
-        return $this;
     }
 
     /**
