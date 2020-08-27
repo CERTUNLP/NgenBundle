@@ -21,11 +21,9 @@ use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Form\Incident\IncidentReportType;
-use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -45,61 +43,40 @@ class IncidentReportFrontendController extends FrontendController
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentReport:Frontend/incidentReportForm.html.twig")
-     * @Route("reports/new", name="cert_unlp_ngen_incident_type_report_new")
+     * @Route("{type}/reports/new", name="cert_unlp_ngen_incident_type_report_new")
+     * @ParamConverter("type", class="CertUnlp\NgenBundle\Entity\Incident\IncidentType", options={"mapping": {"type": "slug"}})
      * @param IncidentReportType $entity_type
+     * @param IncidentType $type
      * @return array
      */
-    public function newIncidentReportAction(IncidentReportType $entity_type): array
+    public function newIncidentReportAction(IncidentReportType $entity_type, IncidentType $type): array
     {
-        return $this->newEntity($entity_type);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function newEntity(AbstractType $form, string $default_type = ''): array
-    {
-        $response = parent::newEntity($form);
-        $response['default_type'] = $default_type;
-        return $response;
+        $report = new IncidentReport();
+        $report->setType($type);
+        return array('form' => $this->getFormFactory()->create(get_class($entity_type), $report, ['frontend' => true, 'method' => Request::METHOD_POST])->createView());
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentReport:Frontend/incidentReportForm.html.twig")
      * @Route("{type}/reports/{lang}/edit", name="cert_unlp_ngen_incident_type_report_edit")
-     * @ParamConverter("incident_report", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
-     * @param IncidentType $type
      * @param IncidentReport $incident_report
      * @param IncidentReportType $entity_type
      * @return array
      */
-    public function editIncidentReportAction(IncidentType $type, IncidentReport $incident_report, IncidentReportType $entity_type): array
+    public function editIncidentReportAction(IncidentReport $incident_report, IncidentReportType $entity_type): array
     {
-        return $this->editEntity($incident_report, $entity_type, $type);
+        return $this->editEntity($incident_report, $entity_type);
     }
 
-
-    /**
-     * {@inheritDoc}
-     */
-    public function editEntity(EntityApiInterface $object, AbstractType $form, string $default_type = ''): array
-    {
-        $response = parent::editEntity($object, $form);
-        $response['default_type'] = $default_type;
-        return $response;
-    }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentReport:Frontend/incidentReportDetail.html.twig")
      * @Route("{type}/reports/{lang}/detail", name="cert_unlp_ngen_incident_type_report_detail")
-     * @ParamConverter("incident_report", class="CertUnlp\NgenBundle\Entity\Incident\IncidentReport", options={"mapping": {"lang": "lang", "slug": "type"}})
-     * @param IncidentType $slug
-     * @param IncidentReport $lang
-     * @param IncidentReportFrontendController $controller_service
+     * @param IncidentReport $incident_report
      * @return array
      */
-    public function detailIncidentReportAction(IncidentType $slug, IncidentReport $incident_report, IncidentReportFrontendController $controller_service): array
+    public function detailIncidentReportAction(IncidentReport $incident_report): array
     {
-        return $this->detailEntity($lang);
+        return $this->detailEntity($incident_report);
     }
 }

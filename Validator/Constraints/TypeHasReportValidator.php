@@ -16,7 +16,6 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class TypeHasReportValidator extends ConstraintValidator
 {
-
     private $lang;
 
     public function __construct(string $ngen_lang)
@@ -26,7 +25,6 @@ class TypeHasReportValidator extends ConstraintValidator
 
     public function validate($type, Constraint $constraint)
     {
-
         if ($type && !empty($constraint->message) && !$type->getReport($this->lang) && $type->getSlug() !== 'undefined') {
             $this->context->addViolation(
                 $constraint->message, array('%string%' => $this->lang)

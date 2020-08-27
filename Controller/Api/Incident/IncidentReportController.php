@@ -22,6 +22,7 @@ use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -217,6 +218,9 @@ class IncidentReportController extends ApiController
      *          )
      *      )
      * )
+     * @FOS\Post("/incidents/types/{type}/reports", name="_type")
+     * @FOS\Post("/incidents/types/reports")
+     * @ParamConverter("type", class="CertUnlp\NgenBundle\Entity\Incident\IncidentType", options={"mapping": {"type": "slug"}})
      * @param Request $request the request object
      * @return View
      */
