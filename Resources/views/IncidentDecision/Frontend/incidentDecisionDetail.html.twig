@@ -1,10 +1,10 @@
-{# 
- This file is part of the Ngen - CSIRT Incident Report System.
- 
- (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
- This source file is subject to the GPL v3.0 license that is bundled
- with this source code in the file LICENSE.
+{#
+This file is part of the Ngen - CSIRT Incident Report System.
+
+(c) CERT UNLP <support@cert.unlp.edu.ar>
+
+This source file is subject to the GPL v3.0 license that is bundled
+with this source code in the file LICENSE.
 #}
 
 {% extends 'CertUnlpNgenBundle::IncidentDecision/Frontend/frontend.html.twig' %}
@@ -17,13 +17,15 @@
         {{ print.statusbox(object) }}
         {{ print.colorbox(object.type.color,object.type.icon,object.type,path('cert_unlp_ngen_incident_type_detail',{'slug': object.type.slug})) }}
         {{ print.colorbox(object.state.color,object.state.icon,object.state,path('cert_unlp_ngen_incident_state_detail',{'slug': object.state.slug})) }}
-        {#        {{ print.colorbox(object.priority.color,object.priority.icon,object.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': object.priority.id})) }}#}
+         {{ print.colorbox(object.priority.color,object.priority.icon,object.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': object.priority.id})) }}
         {{ print.colorbox(object.feed.color,object.feed.icon,object.feed,path('cert_unlp_ngen_incident_feed_detail',{'slug': object.feed.slug})) }}
         {{ print.colorbox(object.tlp.color,object.tlp.icon,object.tlp,'#') }}
-        {% set detail_link %}
-            {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':object.network} %}
-        {% endset %}
-        {{ print.colorbox(object.network.color,object.network.icon,object.network,detail_link) }}
+        {% if object.network %}
+            {% set detail_link %}
+                {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':object.network} %}
+            {% endset %}
+            {{ print.colorbox(object.network.color,object.network.icon,object.network,detail_link) }}
+        {% endif %}
         {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': object.id})) }}
     </h1>
 {% endblock %}

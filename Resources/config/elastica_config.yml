@@ -483,9 +483,7 @@ fos_elastica:
                             property_path: updatedAt
                         active:
                             type: boolean
-                        impact:
-                            type: keyword
-                        urgency:
+                        priority:
                             type: keyword
                         state:
                             type: keyword
