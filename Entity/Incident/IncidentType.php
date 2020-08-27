@@ -138,7 +138,7 @@ class IncidentType extends Entity
      *
      * @return string
      */
-    public function getId(): string
+    public function getId(): ?string
     {
         return $this->getSlug();
     }
@@ -146,7 +146,7 @@ class IncidentType extends Entity
     /**
      * @return string
      */
-    public function getSlug(): string
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -169,7 +169,7 @@ class IncidentType extends Entity
         return 'info';
     }
 
-    public function __toString(): string
+    public function __toString(): ?string
     {
         return $this->getName();
     }
@@ -177,7 +177,7 @@ class IncidentType extends Entity
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -219,7 +219,7 @@ class IncidentType extends Entity
     /**
      * @return IncidentReport[]|Collection
      */
-    public function getReports(): Collection
+    public function getReports(): ?Collection
     {
         return $this->reports;
     }
