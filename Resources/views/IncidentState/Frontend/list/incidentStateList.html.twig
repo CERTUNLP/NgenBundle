@@ -1,8 +1,8 @@
-{# 
+{#
  This file is part of the Ngen - CSIRT Incident Report System.
- 
+
  (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
+
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
@@ -22,11 +22,10 @@
                     <th>{{ knp_pagination_sortable(incidentStates, 'Active'|trans, 'active') }}</th>
                     <th>{{ knp_pagination_sortable(incidentStates, 'Name'|trans, 'name') }}</th>
                     <th>{{ knp_pagination_sortable(incidentStates, 'Behavior'|trans, 'behavior') }}</th>
-                    <th>{{ 'Description'|trans }}</th>
                     <th>{{ knp_pagination_sortable(incidentStates, 'Created'|trans, 'created') }}</th>
                     <th>{{ knp_pagination_sortable(incidentStates, 'Updated'|trans, 'updated') }}</th>
                 </tr>
-                </thead>tr
+                </thead>
                 <tbody>
                 {% for incidentState in incidentStates %}
                     {% include 'CertUnlpNgenBundle:IncidentState:Frontend/list/incidentStateListRow.html.twig' with {'incidentState': incidentState} %}

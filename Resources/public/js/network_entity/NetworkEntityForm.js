@@ -11,7 +11,7 @@ var NetworkEntityForm = Form.extend({
         this.setNetworkEntityId();
     },
     getObjectBrief: function () {
-        return 'network_entity';
+        return 'network/entity';
     },
     getObjectId: function () {
         return this.getNetworkEntityId();

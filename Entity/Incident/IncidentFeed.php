@@ -75,7 +75,7 @@ class IncidentFeed extends EntityApiFrontend
      */
     public function canEditFundamentals(): bool
     {
-        return $this->getDeadIncidents()->isEmpty();
+        return $this->getDeadIncidents()->isEmpty() && !$this->isUndefined();
     }
 
     /**
@@ -98,6 +98,14 @@ class IncidentFeed extends EntityApiFrontend
     public function getIncidents(): Collection
     {
         return $this->incidents;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUndefined(): bool
+    {
+        return $this->getSlug() === 'undefined';
     }
 
     /**

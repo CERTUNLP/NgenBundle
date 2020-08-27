@@ -25,8 +25,6 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Description of IncidentClosingType
- *
  * @author dam
  * @UniqueEntity(
  *     fields={"name"},
@@ -105,7 +103,7 @@ class IncidentState extends EntityApiFrontend implements Translatable
      */
     public function canEditFundamentals(): bool
     {
-        return $this->getDeadIncidents()->isEmpty();
+        return $this->getDeadIncidents()->isEmpty() && !$this->isInitial() && !$this->isUndefined();
     }
 
     /**
@@ -136,6 +134,45 @@ class IncidentState extends EntityApiFrontend implements Translatable
     {
         $this->incidents = $incidents;
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInitial(): bool
+    {
+        return $this->getSlug() === 'initial';
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return IncidentState
+     */
+    public function setSlug(string $slug): IncidentState
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUndefined(): bool
+    {
+        return $this->getSlug() === 'undefined';
     }
 
     /**
@@ -255,37 +292,6 @@ class IncidentState extends EntityApiFrontend implements Translatable
     public function isLive(): bool
     {
         return $this->getBehavior()->isLive();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isInitial(): bool
-    {
-        return $this->getSlug() === 'initial';
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return IncidentState
-     */
-    public function setSlug(string $slug): IncidentState
-    {
-        $this->slug = $slug;
-
-        return $this;
     }
 
     /**
