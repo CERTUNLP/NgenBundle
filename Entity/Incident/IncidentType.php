@@ -99,7 +99,7 @@ class IncidentType extends EntityApiFrontend
      */
     public function canEditFundamentals(): bool
     {
-        return $this->getDeadIncidents()->isEmpty();
+        return $this->getDeadIncidents()->isEmpty() && !$this->isUndefined();
     }
 
     /**
@@ -130,6 +130,14 @@ class IncidentType extends EntityApiFrontend
     {
         $this->incidents = $incidents;
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUndefined(): bool
+    {
+        return $this->slug === 'undefined';
     }
 
     /**
@@ -307,14 +315,6 @@ class IncidentType extends EntityApiFrontend
     {
         $this->slug = $slug;
         return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isUndefined(): bool
-    {
-        return $this->slug === 'undefined';
     }
 
     /**

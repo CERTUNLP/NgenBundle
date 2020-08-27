@@ -27,6 +27,9 @@ use Symfony\Component\Security\Core\Security;
 
 class  IncidentTypeListener extends EntityTypeListener
 {
+    /**
+     * @var Security
+     */
     private $userLogged;
 
     public function __construct(SerializerInterface $serializer, EntityManagerInterface $entity_manager, Security $userLogged)
