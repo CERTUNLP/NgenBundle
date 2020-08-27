@@ -21,9 +21,6 @@
         </div>
     </td>
     <td class="text-center">
-        {{ incidentType.description | default('No description')| trans }}
-    </td>
-    <td class="text-center">
         {% if incidentType.taxonomyValue %}
             {{ print.colordropbox(incidentType.taxonomyValue.color,incidentType.taxonomyValue.icon,incidentType.taxonomyValue.name,path('cert_unlp_ngen_taxonomy_value_detail',{'slug': incidentType.taxonomyValue.slug})) }}
         {% endif %}
