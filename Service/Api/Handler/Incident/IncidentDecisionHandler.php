@@ -62,7 +62,7 @@ class IncidentDecisionHandler extends Handler
      */
     public function getParamIdentificationArray(array $parameters): array
     {
-        return ['type' => $parameters['type'] ?? 'undefined', 'feed' => $parameters['feed'] ?? 'undefined', 'network' => $parameters['network'] ?? null];
+        return ['type' => $parameters['type'], 'feed' => $parameters['feed'], 'network' => $parameters['network']];
     }
 
     /**
@@ -72,11 +72,13 @@ class IncidentDecisionHandler extends Handler
      * @return IncidentDecision|null
      * @throws Exception
      */
-    public function getByNetwork(IncidentType $type = null, IncidentFeed $feed = null, Network $network = null): ?IncidentDecision
+    public function getByNetwork(IncidentType $type, IncidentFeed $feed, Network $network = null): ?IncidentDecision
     {
-        $decisions = new ArrayCollection($this->all(['type' => $type ? $type->getSlug() : 'undefined', 'feed' => $feed ? $feed->getSlug() : 'undefined', 'get_undefined' => true]));
+        $decisions = new ArrayCollection($this->all(['type' => $type->getSlug(), 'feed' => $feed->getSlug(), 'get_undefined' => true]));
         $ordered_decisions = $this->orderDecisionsByNetworkMask($decisions);
-
+        $ordered_description = (new ArrayCollection($ordered_decisions->getArrayCopy()))->map(static function ($a) {
+            return [$a->getId(), $a->getType()->getSlug(), $a->getFeed()->getSlug(), $a->getNetwork() ? $a->getNetwork()->getAddressAndMask() : null];
+        });
         foreach ($ordered_decisions as $decision) {
             if (!$decision->getNetwork() || ($network && $decision->getNetwork() && $network->inRange($decision->getNetwork()))) {
                 return $decision;
@@ -94,7 +96,9 @@ class IncidentDecisionHandler extends Handler
     {
         $iterator = $decisions->getIterator();
         $iterator->uasort(static function (IncidentDecision $first, IncidentDecision $second) {
-            return (int)($first->getNetwork() ? $first->getNetwork()->getAddressMask() : -1) <= (int)($second->getNetwork() ? $second->getNetwork()->getAddressMask() : -2);
+            $first_num = ($first->getType()->isUndefined() ? 0 : 2) + ($first->getFeed()->isUndefined() ? 0 : 1) + ($first->getNetwork() ? $first->getNetwork()->getAddressMask() : 0);
+            $second_num = ($second->getType()->isUndefined() ? 0 : 2) + ($second->getFeed()->isUndefined() ? 0 : 1) + ($second->getNetwork() ? $second->getNetwork()->getAddressMask() : 0);
+            return $first_num < $second_num;
         });
         return $iterator;
     }
@@ -106,7 +110,7 @@ class IncidentDecisionHandler extends Handler
      */
     public function getByIncident(Incident $incident): ?IncidentDecision
     {
-        $decisions = new ArrayCollection($this->all(['type' => $incident->getType() ? $incident->getType()->getSlug() : 'undefined', 'feed' => $incident->getFeed() ? $incident->getFeed()->getSlug() : 'undefined', 'get_undefined' => true]));
+        $decisions = new ArrayCollection($this->all(['type' => $incident->getType()->getSlug(), 'feed' => $incident->getFeed()->getSlug(), 'get_undefined' => true]));
 
         $ordered_decisions = $this->orderDecisionsByNetworkMask($decisions);
 

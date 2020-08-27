@@ -22,73 +22,21 @@ class IncidentDecisionRepository extends ServiceEntityRepository
     /**
      * @param array $criteria
      * @param array|null $orderBy
-     * @return IncidentDecision|object| null
-     */
-    public function findOneBy(array $criteria, array $orderBy = null): ?IncidentDecision
-    {
-        $get_undefined = false;
-        $criteria['active'] = true;
-        $criteria['network'] = is_object($criteria['network']) ? $criteria['network']->getId() : $criteria['network'];
-        if (!$criteria['network']) {
-            unset($criteria['network']);
-        }
-        if (isset($criteria['get_undefined'])) {
-            $get_undefined = $criteria['get_undefined'];
-            unset($criteria['get_undefined']);
-        }
-        if ($get_undefined) {
-            $decision = null;
-            if (isset($criteria['type'], $criteria['feed'])) {
-                $decision = parent::findOneBy(array('feed' => $criteria['feed'], 'type' => $criteria['type'], 'network' => $criteria['network'] ?? null, 'active' => true), $orderBy);
-            }
-            if (!$decision && isset($criteria['type']) && !isset($criteria['feed'])) {
-                $decision = parent::findOneBy(array('feed' => 'undefined', 'type' => $criteria['type'], 'network' => $criteria['network'] ?? null, 'active' => true), $orderBy);
-            }
-            if (!$decision && !isset($criteria['type']) && isset($criteria['feed'])) {
-                $decision = parent::findOneBy(array('feed' => $criteria['feed'], 'type' => 'undefined', 'network' => $criteria['network'] ?? null, 'active' => true), $orderBy);
-            }
-            if (!$decision && isset($criteria['network'])) {
-                $decision = parent::findOneBy(array('feed' => 'undefined', 'type' => 'undefined', 'network' => $criteria['network'], 'active' => true), $orderBy);
-            }
-            if (!$decision) {
-                $decision = parent::findOneBy(array('feed' => 'undefined', 'type' => 'undefined', 'network' => null, 'active' => true), $orderBy);
-            }
-            return $decision;
-        }
-
-        return parent::findOneBy($criteria, $orderBy);
-    }
-
-    /**
-     * @param array $criteria
-     * @param array|null $orderBy
      * @param null $limit
      * @param null $offset
      * @return array|object|null
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
     {
-        $get_undefined = false;
-        $criteria['active'] = true;
+        $criteria1 = array('type' => $criteria['type'], 'feed' => $criteria['feed'], 'active' => true);
+        $criteria2 = array('type' => $criteria['type'], 'feed' => 'undefined', 'active' => true);
+        $criteria3 = array('type' => 'undefined', 'feed' => $criteria['feed'], 'active' => true);
+        $criteria4 = array('type' => 'undefined', 'feed' => 'undefined', 'active' => true);
         if (isset($criteria['get_undefined'])) {
-            $get_undefined = $criteria['get_undefined'];
-            unset($criteria['get_undefined']);
-        }
-        if ($get_undefined) {
-            $decision = null;
-            if (isset($criteria['type'], $criteria['feed'])) {
-                $decision = parent::findBy(array('feed' => $criteria['feed'], 'type' => $criteria['type'], 'active' => true), $orderBy, $limit, $offset);
-            }
-            if (!$decision && isset($criteria['type']) && !isset($criteria['feed'])) {
-                $decision = parent::findBy(array('feed' => 'undefined', 'type' => $criteria['type'], 'active' => true), $orderBy, $limit, $offset);
-            }
-            if (!$decision && !isset($criteria['type']) && isset($criteria['feed'])) {
-                $decision = parent::findBy(array('feed' => $criteria['feed'], 'type' => 'undefined', 'active' => true), $orderBy, $limit, $offset);
-            }
-            if (!$decision && isset($criteria['network'])) {
-                $decision = parent::findBy(array('feed' => 'undefined', 'type' => 'undefined', 'active' => true), $orderBy, $limit, $offset);
-            }
-            $decision = array_merge($decision, parent::findBy(array('feed' => 'undefined', 'type' => 'undefined', 'active' => true), $orderBy, $limit, $offset));
+            $decision = parent::findBy($criteria1, $orderBy, $limit, $offset);
+            $decision = array_merge($decision, parent::findBy($criteria2, $orderBy, $limit, $offset));
+            $decision = array_merge($decision, parent::findBy($criteria3, $orderBy, $limit, $offset));
+            $decision = array_merge($decision, parent::findBy($criteria4, $orderBy, $limit, $offset));
             return $decision;
         }
         return parent::findBy($criteria, $orderBy, $limit, $offset);
