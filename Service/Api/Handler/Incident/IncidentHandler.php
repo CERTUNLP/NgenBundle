@@ -321,7 +321,11 @@ class IncidentHandler extends Handler
         $impact = $incident->getImpact() ? $incident->getImpact()->getSlug() : null;
         $urgency = $incident->getUrgency() ? $incident->getUrgency()->getSlug() : null;
         if ($impact && $urgency) {
-            $priority = $this->getIncidentPriorityHandler()->get(['impact' => $incident->getImpact()->getSlug(), 'urgency' => $incident->getUrgency()->getSlug()]);
+            if ($incident->getImpact()->isUndefined() || $incident->getUrgency()->isUndefined()) {
+                $priority = $this->getIncidentPriorityHandler()->get(['impact' => 'undefined', 'urgency' => 'undefined']);
+            } else {
+                $priority = $this->getIncidentPriorityHandler()->get(['impact' => $incident->getImpact()->getSlug(), 'urgency' => $incident->getUrgency()->getSlug()]);
+            }
             $incident->setPriority($priority);
         }
     }
