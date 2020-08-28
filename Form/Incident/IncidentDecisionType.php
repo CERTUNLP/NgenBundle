@@ -26,6 +26,7 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
+use CertUnlp\NgenBundle\Repository\Incident\State\IncidentStateRepository;
 use CertUnlp\NgenBundle\Service\Listener\Form\EntityTypeListener;
 use CertUnlp\NgenBundle\Service\Listener\Form\IncidentDecisionTypeListener;
 use Doctrine\ORM\EntityRepository;
@@ -78,9 +79,8 @@ class IncidentDecisionType extends EntityForm
             ->add('state', EntityType::class, array(
                 'class' => IncidentState::class,
                 'placeholder' => 'Choose an incident state',
-                'query_builder' => static function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.active = TRUE');
+                'query_builder' => static function (IncidentStateRepository $repository) {
+                    return $repository->queryNewStates('initial');
                 }))
             ->add('tlp', EntityType::class, array(
                 'class' => IncidentTlp::class,
