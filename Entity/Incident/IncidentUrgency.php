@@ -68,6 +68,14 @@ class IncidentUrgency extends EntityApiFrontend implements Translatable
     }
 
     /**
+     * @return bool
+     */
+    public function isUndefined(): bool
+    {
+        return $this->slug === 'undefined';
+    }
+
+    /**
      * @return Collection|null
      */
     public function getIncidentsPriorities(): ?Collection

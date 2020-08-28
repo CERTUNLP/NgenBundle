@@ -25,18 +25,6 @@ class IncidentDecisionListener
         $this->priority_handler = $priority_handler;
     }
 
-    /** @ORM\PrePersist
-     * @param IncidentDecision $decision
-     */
-    public function prePersistHandler(IncidentDecision $decision): void
-    {
-        $this->prePersistUpdate($decision);
-    }
-
-    public function prePersistUpdate(IncidentDecision $decision): void
-    {
-        $this->priorityUpdate($decision);
-    }
 
     /**
      * @param IncidentDecision $decision
@@ -44,7 +32,11 @@ class IncidentDecisionListener
     public function priorityUpdate(IncidentDecision $decision): void
     {
         if ($decision->getImpact() && $decision->getUrgency()) {
-            $priority = $this->getPriorityHandler()->get(['impact' => $decision->getImpact()->getSlug(), 'urgency' => $decision->getUrgency()->getSlug()]);
+            if ($decision->getImpact()->isUndefined() || $decision->getUrgency()->isUndefined()) {
+                $priority = $this->getPriorityHandler()->get(['impact' => 'undefined', 'urgency' => 'undefined']);
+            } else {
+                $priority = $this->getPriorityHandler()->get(['impact' => $decision->getImpact()->getSlug(), 'urgency' => $decision->getUrgency()->getSlug()]);
+            }
             $decision->setPriority($priority);
         }
     }
@@ -57,12 +49,12 @@ class IncidentDecisionListener
         return $this->priority_handler;
     }
 
-    /** @ORM\PreUpdate
+    /** @ORM\PreFlush
      * @param IncidentDecision $decision
      */
     public function preUpdateHandler(IncidentDecision $decision): void
     {
-        $this->prePersistUpdate($decision);
+        $this->priorityUpdate($decision);
     }
 
 

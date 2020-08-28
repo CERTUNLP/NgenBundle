@@ -134,7 +134,7 @@ class IncidentDecision extends EntityApiFrontend
      */
     public function canEditFundamentals(): bool
     {
-        return !$this->isUndefined() && $this->getNetwork() !== null;
+        return !$this->isUndefined() || $this->getNetwork() !== null;
     }
 
     /**
