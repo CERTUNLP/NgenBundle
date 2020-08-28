@@ -76,9 +76,7 @@ class IncidentDecisionHandler extends Handler
     {
         $decisions = new ArrayCollection($this->all(['type' => $type->getSlug(), 'feed' => $feed->getSlug(), 'get_undefined' => true]));
         $ordered_decisions = $this->orderDecisionsByNetworkMask($decisions);
-        $ordered_description = (new ArrayCollection($ordered_decisions->getArrayCopy()))->map(static function ($a) {
-            return [$a->getId(), $a->getType()->getSlug(), $a->getFeed()->getSlug(), $a->getNetwork() ? $a->getNetwork()->getAddressAndMask() : null];
-        });
+
         foreach ($ordered_decisions as $decision) {
             if (!$decision->getNetwork() || ($network && $decision->getNetwork() && $network->inRange($decision->getNetwork()))) {
                 return $decision;

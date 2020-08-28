@@ -99,10 +99,7 @@ abstract class Handler
         $parameters = $this->cleanParameters($parameters);
         $form->submit($parameters, Request::METHOD_PATCH !== $method);
         if ($form->isValid()) {
-            $this->postValidationForm($entity);
-            if ($method === Request::METHOD_POST) {
-                $entity = $this->mergeIfExists($entity);
-            }
+            $this->postValidationForm($entity, $method);
             $this->getEntityManager()->persist($entity);
             $this->getEntityManager()->flush();
 
@@ -150,75 +147,12 @@ abstract class Handler
 
     /**
      * @param EntityApiInterface $entity_api
+     * @param string|null $method
      * @return EntityApiInterface
      */
-    public function postValidationForm(EntityApiInterface $entity_api): EntityApiInterface
+    public function postValidationForm(EntityApiInterface $entity_api, string $method = null): EntityApiInterface
     {
         return $entity_api;
-    }
-
-    /**
-     * @param EntityApiInterface $entity
-     * @return EntityApiInterface
-     */
-    public function mergeIfExists(EntityApiInterface $entity): EntityApiInterface
-    {
-        if ($this->needCheckIfExists()) {
-            $entity_db = $this->getByDataIdentification($entity);
-            if ($entity_db) {
-                if ($this->isReactivableEntity()) {
-                    $entity_db->activate();
-                }
-                if ($this->isMergeableEntity()) {
-                    $entity_db = $this->mergeEntity($entity_db, $entity);
-                }
-                $entity = $entity_db;
-            }
-        }
-        return $entity;
-    }
-
-    public function needCheckIfExists(): bool
-    {
-        return true;
-    }
-
-    /**
-     * @param EntityApiInterface $entity
-     * @return EntityApiInterface
-     */
-    public function getByDataIdentification(EntityApiInterface $entity): ?EntityApiInterface
-    {
-        return $this->get($entity->getDataIdentificationArray());
-    }
-
-    /**
-     * @param array $parameters
-     * @return EntityApiInterface|object|null
-     */
-    public function get(array $parameters): ?EntityApiInterface
-    {
-        return $this->getRepository()->findOneBy($parameters);
-    }
-
-    public function isReactivableEntity(): bool
-    {
-        return true;
-    }
-
-    public function isMergeableEntity(): bool
-    {
-        return true;
-    }
-
-    /**
-     * @param EntityApiInterface $entity
-     * @param EntityApiInterface $entity_db
-     * @return EntityApiInterface
-     */
-    public function mergeEntity(EntityApiInterface $entity_db, EntityApiInterface $entity): EntityApiInterface
-    {
-        return $entity_db;
     }
 
     /**
@@ -247,6 +181,25 @@ abstract class Handler
         $class_name = $this->getRepository()->getClassName();
         return new $class_name($parameters);
     }
+
+    /**
+     * @param EntityApiInterface $entity
+     * @return EntityApiInterface
+     */
+    public function getByDataIdentification(EntityApiInterface $entity): ?EntityApiInterface
+    {
+        return $this->get($entity->getDataIdentificationArray());
+    }
+
+    /**
+     * @param array $parameters
+     * @return EntityApiInterface|object|null
+     */
+    public function get(array $parameters): ?EntityApiInterface
+    {
+        return $this->getRepository()->findOneBy($parameters);
+    }
+
 
     /**
      * @param EntityApiInterface $entity
