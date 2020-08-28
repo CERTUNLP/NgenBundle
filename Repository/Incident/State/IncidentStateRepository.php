@@ -46,7 +46,8 @@ class IncidentStateRepository extends ServiceEntityRepository
         }
         $qb = $this->getOrCreateQueryBuilder($qb);
         if ($slugs) {
-            $qb->where($qb->expr()->in('i.slug', $slugs));
+            $qb->where($qb->expr()->in('state.slug', $slugs))
+            ->andWhere('state.active = true');
         }
         return $qb;
 
@@ -78,6 +79,6 @@ class IncidentStateRepository extends ServiceEntityRepository
      */
     private function getOrCreateQueryBuilder(QueryBuilder $qb = null): QueryBuilder
     {
-        return $qb ?: $this->createQueryBuilder('i');
+        return $qb ?: $this->createQueryBuilder('state');
     }
 }
