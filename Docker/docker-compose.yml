@@ -2,31 +2,20 @@ version: "3.1"
 volumes:
   ngen-testing-grafana-data:
     driver: local
-    #driver: rancher-nfs
-    #external: true
   ngen-testing-elastic-data:
     driver: local
-    #driver: rancher-nfs
-    #external: true
   ngen-testing-elasticsearch:
     driver: local
-    #driver: rancher-nfs
-    #external: true
   ngen-testing-bdd:
     driver: local
-    #driver: rancher-nfs
-    #external: true
   ngen-testing-incidentes:
     driver: local
-    #driver: rancher-nfs
-    #external: true
   ngen-testing-feeds:
     driver: local
-    #driver: rancher-nfs
-    #external: true
 services:
     ngen-testing-db:
-      image: mysql:5.7
+      image: mysql:8.0
+      command: ["mysqld", "--upgrade=FORCE"]
       volumes:
         - ngen-testing-bdd:/var/lib/mysql
       environment:
@@ -41,7 +30,7 @@ services:
       image: ngen-test
       networks: ['ngen']
       depends_on: ['ngen-testing-db','ngen-testing-elastic']
-      ports:do
+      ports:
         - "8000:80"
       volumes:
         - ngen-testing-incidentes:/application/ngen_basic/app/Resources/incident
@@ -99,7 +88,7 @@ services:
       - ngen-testing-grafana:ngen-grafana
       networks: ['ngen']
     ngen-testing-elastic:
-      image: docker.elastic.co/elasticsearch/elasticsearch:5.6.10
+      image: docker.elastic.co/elasticsearch/elasticsearch:6.8.12
       environment:
        - cluster.name=docker-cluster
        - discovery.type=single-node
@@ -111,7 +100,7 @@ services:
         - "9200:9200"
       networks: ['ngen']
     ngen-testing-grafana:
-      image: einar1/ngen-grafana:0.8
+      image: certunlp/grafana:1.0
       ports:
         - "3000:3000"
       volumes:
