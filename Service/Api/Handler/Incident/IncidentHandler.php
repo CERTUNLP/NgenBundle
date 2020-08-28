@@ -23,6 +23,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Gedmo\Sluggable\Util as Sluggable;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 
@@ -189,13 +190,22 @@ class IncidentHandler extends Handler
     }
 
     /**
-     * @param EntityApiInterface $entity_api
-     * @return EntityApiInterface
+     * @param EntityApiInterface|Incident $entity_api
+     * @param string|null $method
+     * @return EntityApiInterface|Incident
      * @throws Exception
      */
-    public function postValidationForm(EntityApiInterface $entity_api): EntityApiInterface
+    public function postValidationForm(EntityApiInterface $entity_api, string $method = null): EntityApiInterface
     {
         $this->updateIncidentData($entity_api);
+        if ($method === Request::METHOD_POST) {
+            $entity_db = $this->getByDataIdentification($entity_api);
+            if ($entity_db) {
+                $entity_db->updateFromDetection($entity_api);
+                $entity_db->addIncidentDetected($entity_api);
+                return $entity_db;
+            }
+        }
         return $entity_api;
     }
 
@@ -364,35 +374,6 @@ class IncidentHandler extends Handler
     {
         return $this->getRepository()->findOneByTypeAndAddress($type, $address);
 
-    }
-
-    /**
-     * @return bool
-     */
-    public function isReactivableEntity(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @param EntityApiInterface|Incident $entity_db
-     * @param EntityApiInterface|Incident $entity
-     * @return EntityApiInterface|Incident
-     */
-    public function mergeEntity(EntityApiInterface $entity_db, EntityApiInterface $entity): EntityApiInterface
-    {
-        $entity_db->updateFromDetection($entity);
-        return $entity_db;
-    }
-
-    /**
-     * @param EntityApiInterface $entity
-     * @return EntityApiInterface
-     */
-    public function mergeIfExists(EntityApiInterface $entity): EntityApiInterface
-    {
-        $incident = parent::mergeIfExists($entity);
-        return $incident->addIncidentDetected($entity);
     }
 
     /**
