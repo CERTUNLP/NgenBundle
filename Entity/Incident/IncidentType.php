@@ -143,7 +143,7 @@ class IncidentType extends EntityApiFrontend
     /**
      * @return IncidentReport[]|Collection
      */
-    public function getReports(): Collection
+    public function getReports(): ?Collection
     {
         return $this->reports;
     }
@@ -167,6 +167,34 @@ class IncidentType extends EntityApiFrontend
     }
 
     /**
+     * Get id
+     *
+     * @return string
+     */
+    public function getId(): ?string
+    {
+        return $this->getSlug();
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     * @return IncidentType
+     */
+    public function setSlug(string $slug): IncidentType
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getColor(): string
@@ -174,7 +202,7 @@ class IncidentType extends EntityApiFrontend
         return 'info';
     }
 
-    public function __toString(): string
+    public function __toString(): ?string
     {
         return $this->getName();
     }
