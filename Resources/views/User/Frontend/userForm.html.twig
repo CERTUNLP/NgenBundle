@@ -1,15 +1,15 @@
-{# 
- This file is part of the Ngen - CSIRT Incident Report System.
- 
- (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
- This source file is subject to the GPL v3.0 license that is bundled
- with this source code in the file LICENSE.
+{#
+This file is part of the Ngen - CSIRT Incident Report System.
+
+(c) CERT UNLP <support@cert.unlp.edu.ar>
+
+This source file is subject to the GPL v3.0 license that is bundled
+with this source code in the file LICENSE.
 #}
 
 {% extends 'CertUnlpNgenBundle::User/Frontend/frontend.html.twig' %}
 {% block content_header %}
-   <h1 class="h3 mb-0 text-gray-800">{{ icon('plus-circle fa-fw') }}{{ 'add user'|trans }}</h1>
+    <h1 class="h3 mb-0 text-gray-800">{{ icon('plus-circle fa-fw') }}{{ 'add user'|trans }}</h1>
 {% endblock %}
 {% block content_body %}
     <div id="error">
@@ -32,7 +32,15 @@
     <script>
         var user_form = new UserForm();
         $('.user-contacts').collection({
-                min: 0,
+                drag_drop: false,
+                allow_up: false,
+                allow_down: false,
+                allow_duplicate: false,
+                fade_in: false,
+                fade_out: false,
+                add_at_the_end: true,
+                init_with_n_elements: 0,
+                add: '<a href="#" class="btn btn-info d-block"><span class="fa fa-plus "></span></a>',
             }
         );
     </script>

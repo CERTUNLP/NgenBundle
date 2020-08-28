@@ -12,7 +12,7 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\User;
 
 use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
-use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Entity\User\User;
 use CertUnlp\NgenBundle\Form\User\UserType;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
