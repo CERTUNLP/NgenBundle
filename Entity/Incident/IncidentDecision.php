@@ -7,13 +7,18 @@ use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * IncidentDecision
- *
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Incident\IncidentDecisionRepository")
  * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\IncidentDecisionListener"})
  * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity(
+ *     fields={"type","feed","network"},
+ *     errorPath="type",
+ *     ignoreNull=false,
+ *     message="This decision already in exists."
+ * )
  */
 class IncidentDecision extends EntityApiFrontend
 {
@@ -40,7 +45,6 @@ class IncidentDecision extends EntityApiFrontend
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
      * @JMS\Expose()
      * @JMS\Groups({"read","write"})
-     *
      */
     private $feed;
     /**
@@ -214,7 +218,7 @@ class IncidentDecision extends EntityApiFrontend
 
     public function __toString(): string
     {
-        return $this->getType()->getSlug() .'_'. $this->getFeed()->getSlug() ;
+        return $this->getType()->getSlug() . '_' . $this->getFeed()->getSlug();
     }
 
     /**
