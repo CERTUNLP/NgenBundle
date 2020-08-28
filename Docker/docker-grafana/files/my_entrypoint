@@ -1,0 +1,8 @@
+#!/bin/bash
+sed  -i "s/ELASTIC_URL/$ELASTIC_HOST:$ELASTIC_PORT/g" /etc/grafana/provisioning/datasources/datasource.yml
+PASSVIEWER=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
+curl -XPOST -H "Content-Type: application/json" -d '{"name":"Viewer","email":"viewer@localhost","login":"viewer","password":"$PASSVIEWER"}' http://admin:admin@localhost:3000/api/admin/users
+NGENIP=`dig $NGEN_APP +short`
+sed -ri -e "s/whitelist =.*/whitelist = $NGENIP/g" /etc/grafana/grafana.ini
+sed -ri -e "s/;root_url =.*/root_url = http:\/\/ngen-app:3000\/grafana/g" /etc/grafana/grafana.ini
+bash /run.sh

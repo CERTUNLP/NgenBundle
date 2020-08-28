@@ -2,28 +2,16 @@ version: "3.1"
 volumes:
   ngen34-grafana-data:
     driver: local
-    #driver: rancher-nfs
-    #external: true
   ngen34-elastic-data:
     driver: local
-    #driver: rancher-nfs
-    #external: true
   ngen34-elasticsearch:
     driver: local
-    #driver: rancher-nfs
-    #external: true
   ngen34-bdd:
     driver: local
-    #driver: rancher-nfs
-    #external: true
   ngen34-incidentes:
     driver: local
-    #driver: rancher-nfs
-    #external: true
   ngen34-feeds:
     driver: local
-    #driver: rancher-nfs
-    #external: true
 services:
     ngen-db:
       image: mysql:8.0
@@ -86,7 +74,6 @@ services:
         - USER_GRAFANA=admin
         - PASS_GRAFANA=admin
         - GRAFANA_HOST=http://ngen-grafana:3000/
-
       links:
         - ngen-elastic:ngen-elastic
         - ngen-grafana:ngen-grafana
@@ -115,7 +102,7 @@ services:
         - "9200:9200"
       networks: ['ngen']
     ngen-grafana:
-      image: einar1/ngen-grafana:0.8
+      build: ./docker-grafana/
       ports:
         - "3000:3000"
       volumes:
