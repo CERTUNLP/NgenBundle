@@ -16,7 +16,7 @@ use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
-use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Entity\User\User;
 use DateTime;
 use FOS\CommentBundle\Model\Thread;
 use Symfony\Component\HttpFoundation\File\File;

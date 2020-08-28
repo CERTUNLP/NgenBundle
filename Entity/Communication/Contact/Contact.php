@@ -4,7 +4,7 @@ namespace CertUnlp\NgenBundle\Entity\Communication\Contact;
 
 use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin;
-use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Entity\User\User;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
@@ -42,7 +42,7 @@ class Contact extends Entity
     private $network_admin;
     /**
      * @var User|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="contacts")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User\User", inversedBy="contacts")
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */

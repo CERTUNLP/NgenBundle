@@ -11,6 +11,7 @@
 namespace CertUnlp\NgenBundle\Entity\Incident\Taxonomy;
 
 use CertUnlp\NgenBundle\Entity\EntityApi;
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -92,6 +93,7 @@ class TaxonomyPredicate extends EntityApi
             return $incident->isDead();
         });
     }
+
     /**
      * @return string
      */

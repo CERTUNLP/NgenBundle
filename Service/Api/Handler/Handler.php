@@ -102,7 +102,6 @@ abstract class Handler
             $this->postValidationForm($entity, $method);
             $this->getEntityManager()->persist($entity);
             $this->getEntityManager()->flush();
-
             $this->postProcessForm($entity);
             return $entity;
         }

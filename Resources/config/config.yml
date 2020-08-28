@@ -194,7 +194,7 @@ stfalcon_tinymce:
 fos_user:
     db_driver: orm # other valid values are 'mongodb' and 'couchdb'
     firewall_name: frontend
-    user_class: CertUnlp\NgenBundle\Entity\User
+    user_class: CertUnlp\NgenBundle\Entity\User\User
     from_email:
         address: "%cert_unlp.ngen.incident.mailer.sender_address%"
         sender_name: "%cert_unlp.ngen.incident.mailer.sender_address%"

@@ -17,7 +17,7 @@
 
 namespace CertUnlp\NgenBundle\Service\Api\Handler\User;
 
-use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Entity\User\User;
 use CertUnlp\NgenBundle\Form\User\UserType;
 use CertUnlp\NgenBundle\Model\EntityApiInterface;
 use CertUnlp\NgenBundle\Repository\User\UserRepository;
@@ -49,8 +49,22 @@ class UserHandler extends Handler
         /** @var User $user */
         $user = parent::createEntityInstance($parameters);
         $user->setEnabled(true);
-        $user->setApiKey(sha1($user->getUsername() . time() . $user->getSalt()));
+        $user->setApiKey(sha1($user->getUsername() . time() . $user->getEmailsAsString()));
         return $user;
+    }
+
+    /**
+     * @param EntityApiInterface $entity_api
+     * @param string|null $method
+     * @return EntityApiInterface
+     */
+    public function postValidationForm(EntityApiInterface $entity_api, string $method = null): EntityApiInterface
+    {
+        if ($entity_api->isGenerateApiKey()) {
+            $entity_api->setApiKey(sha1($entity_api->getUsername() . time() . $entity_api->getEmailsAsString()));
+        }
+        return parent::postValidationForm($entity_api, $method);
+
     }
 
     /**

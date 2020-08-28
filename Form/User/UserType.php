@@ -18,16 +18,18 @@
 namespace CertUnlp\NgenBundle\Form\User;
 
 use CertUnlp\NgenBundle\Form\Communication\ContactType;
+use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
 use CertUnlp\NgenBundle\Service\Listener\Form\UserTypeListener;
 use FOS\UserBundle\Form\Type\RegistrationFormType;
-use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class UserType extends AbstractType
+class UserType extends EntityForm
 {
 
     /**
@@ -36,9 +38,19 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
         $choices = $this->roleChoices();
 
-        $builder->add('firstname')
+        $builder
+            ->add('apiKey', TextType::class, array(
+                'attr' => ['disabled' => true],
+            ))
+            ->add('generate_api_key', CheckboxType::class, array(
+                'data' => false,
+                'required' => false,
+                'label' => 'Generate a new apikey',
+            ))
+            ->add('firstname')
             ->add('lastname')
             ->add('plainPassword', RepeatedType::class, array(
                 'type' => PasswordType::class,
@@ -70,6 +82,9 @@ class UserType extends AbstractType
                     ),
                 ))
             ->addEventSubscriber(new UserTypeListener());
+        $options['add_event_subscriber'] = false;
+        $options['add_extra_fields'] = false;
+        parent::buildForm($builder, $options);
     }
 
     /**

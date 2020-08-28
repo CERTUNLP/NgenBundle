@@ -2,14 +2,12 @@
 
 /*
  * This file is part of the Ngen - CSIRT Incident Report System.
- *
- * (c) CERT UNLP <support@cert.unlp.edu.ar>
- *
- * This source file is subject to the GPL v3.0 license that is bundled
- * with this source code in the file LICENSE.
+ *   (c) CERT UNLP <support@cert.unlp.edu.ar>
+ *  This source file is subject to the GPL v3.0 license that is bundled
+ *  with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Command;
+namespace CertUnlp\NgenBundle\Command\Communication;
 
 use CertUnlp\NgenBundle\Entity\Communication\Message\MessageEmail;
 use CertUnlp\NgenBundle\Repository\Communication\Message\MessageEmailRepository;
@@ -68,7 +66,7 @@ class MessageEmailCommand extends ContainerAwareCommand
             foreach ($messages as $message) {
                 $output->write('<comment>[message][email]: sending message(' . $message->getId() . ') </comment>');
                 $decode_result = $this->sendMail($message);
-                if ($decode_result['success']) {
+                if ($decode_result['response']['success']) {
                     $message->addResponse($decode_result);
                     $message->setPending(false);
                     $output->writeln('<info>...sended. </info>');
@@ -127,8 +125,14 @@ class MessageEmailCommand extends ContainerAwareCommand
                 $message->setId($message_email->getIncident()->getReportMessageId());
             }
             $errors = [];
-            $respose = $this->getMailer()->send($message, $errors);
-            return ['success' => $respose, 'errors' => $errors];
+            $success = $this->getMailer()->send($message, $error_recipents);
+            $respose['success'] = $success;
+            $respose['recipents'] = $message->getTo();
+            if (!$success) {
+                $errors['recipents'] = $message->getTo();
+                $errors['error'] = $error_recipents;
+            }
+            return ['response' => $respose, 'errors' => $errors];
         }
         return null;
     }

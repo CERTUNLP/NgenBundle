@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\Request;
 
 class UserTypeListener implements EventSubscriberInterface
 {
@@ -29,11 +30,13 @@ class UserTypeListener implements EventSubscriberInterface
      */
     public function onPreSetData(FormEvent $event): void
     {
-        // get the form
         $form = $event->getForm();
         $data = $event->getData();
 
-        // disable field if it has been populated with a client already
+        if ($event->getForm()->getConfig()->getMethod() !== Request::METHOD_PATCH) {
+            $form->remove('generate_api_key')
+                ->remove('apiKey');
+        }
         if ($data) {
             $form
                 ->add('username', null, array(

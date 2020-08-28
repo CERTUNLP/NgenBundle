@@ -20,7 +20,7 @@ use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
-use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Entity\User\User;
 use CertUnlp\NgenBundle\Model\EntityInterface;
 use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
 use DateInterval;
@@ -83,14 +83,14 @@ class Incident extends EntityApiFrontend
     private $solveDeadLine;
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="incidents")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User\User", inversedBy="incidents")
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */
     private $reporter;
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="assignedIncidents")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User\User", inversedBy="assignedIncidents")
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */
@@ -1273,6 +1273,23 @@ class Incident extends EntityApiFrontend
     }
 
     /**
+     */
+    public function getType(): ?IncidentType
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param IncidentType|null $type
+     * @return Incident
+     */
+    public function setType(IncidentType $type = null): Incident
+    {
+        $this->setter($this->type, $type, true);
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getTelegrams(): array
@@ -1512,24 +1529,6 @@ class Incident extends EntityApiFrontend
     public function isDefined(): ?bool
     {
         return ($this->getOrigin() && $this->getType());
-    }
-
-    /**
-     */
-    public function getType(): ?IncidentType
-    {
-        return $this->type;
-    }
-
-
-    /**
-     * @param IncidentType|null $type
-     * @return Incident
-     */
-    public function setType(IncidentType $type = null): Incident
-    {
-        $this->setter($this->type, $type, true);
-        return $this;
     }
 
     /**
