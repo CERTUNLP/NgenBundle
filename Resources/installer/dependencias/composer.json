@@ -53,6 +53,8 @@
     "gedmo/doctrine-extensions": "^2.4",
     "incenteev/composer-parameter-handler": "^2.0",
     "knplabs/knp-paginator-bundle": "^4.1",
+    "knplabs/knp-components": "v2.3.3",
+    "certunlp/rdap-client": "~1.1",
     "nelmio/api-doc-bundle": "^3.6",
     "ninsuo/symfony-collection": "^2.1",
     "rollerworks/password-strength-bundle": "^2.2",
@@ -76,7 +78,8 @@
     "beberlei/doctrineextensions": "~1.2",
     "darsyn/ip": "^4.0",
     "ext-json": "*",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "ext-zip": "*"
   },
   "require-dev": {
     "sensio/generator-bundle": "^3.0",
@@ -92,10 +95,10 @@
       "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
     ],
     "post-install-cmd": [
-      "@symfony-scripts"
+      "Fuz\\Symfony\\Collection\\ScriptHandler::postInstall"
     ],
     "post-update-cmd": [
-      "@symfony-scripts"
+      "Fuz\\Symfony\\Collection\\ScriptHandler::postUpdate"
     ]
   },
   "config": {
