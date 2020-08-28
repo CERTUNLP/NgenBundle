@@ -28,11 +28,11 @@ class IncidentDecisionRepository extends ServiceEntityRepository
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
     {
-        $criteria1 = array('type' => $criteria['type'], 'feed' => $criteria['feed'], 'active' => true);
-        $criteria2 = array('type' => $criteria['type'], 'feed' => 'undefined', 'active' => true);
-        $criteria3 = array('type' => 'undefined', 'feed' => $criteria['feed'], 'active' => true);
-        $criteria4 = array('type' => 'undefined', 'feed' => 'undefined', 'active' => true);
         if (isset($criteria['get_undefined'])) {
+            $criteria1 = array('type' => $criteria['type'], 'feed' => $criteria['feed'], 'active' => true);
+            $criteria2 = array('type' => $criteria['type'], 'feed' => 'undefined', 'active' => true);
+            $criteria3 = array('type' => 'undefined', 'feed' => $criteria['feed'], 'active' => true);
+            $criteria4 = array('type' => 'undefined', 'feed' => 'undefined', 'active' => true);
             $decision = parent::findBy($criteria1, $orderBy, $limit, $offset);
             $decision = array_merge($decision, parent::findBy($criteria2, $orderBy, $limit, $offset));
             $decision = array_merge($decision, parent::findBy($criteria3, $orderBy, $limit, $offset));
