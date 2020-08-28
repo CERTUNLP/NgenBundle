@@ -327,23 +327,6 @@ class IncidentType extends EntityApiFrontend
         });
     }
 
-    /**
-     * @return string
-     */
-    public function getSlug(): string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $slug
-     * @return IncidentType
-     */
-    public function setSlug(string $slug): IncidentType
-    {
-        $this->slug = $slug;
-        return $this;
-    }
 
     /**
      * @return string|null
