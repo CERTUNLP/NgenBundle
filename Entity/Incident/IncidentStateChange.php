@@ -5,7 +5,7 @@ namespace CertUnlp\NgenBundle\Entity\Incident;
 use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
-use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Entity\User\User;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
@@ -39,7 +39,7 @@ class IncidentStateChange extends Entity
     private $stateEdge;
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")}
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User\User")}
      * @JMS\Expose()
      * @JMS\Groups({"read","write"})
      */

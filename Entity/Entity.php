@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity;
 
+use CertUnlp\NgenBundle\Entity\User\User;
 use CertUnlp\NgenBundle\Model\EntityInterface;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -45,7 +46,7 @@ abstract class Entity implements EntityInterface
     protected $updatedAt = null;
     /**
      * @var User|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User\User")
      * @Gedmo\Blameable(on="create")
      * @JMS\Expose()
      * @JMS\Groups({"read"})
