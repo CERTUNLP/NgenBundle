@@ -36,7 +36,7 @@ class IncidentDecision extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      * @JMS\Expose()
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $type;
     /**
@@ -44,7 +44,7 @@ class IncidentDecision extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed")
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
      * @JMS\Expose()
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $feed;
     /**
@@ -52,7 +52,7 @@ class IncidentDecision extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network")
      * @ORM\JoinColumn(name="network", referencedColumnName="id")
      * @JMS\Expose()
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $network;
     /**
@@ -129,20 +129,20 @@ class IncidentDecision extends EntityApiFrontend
         return $this;
     }
 
-//    /**
-//     * @inheritDoc
-//     */
-//    public function getIdentificationArray(): array
-//    {
-//        return ['type' => $this->getType() ? $this->getType()->getSlug() : 'undefined', 'feed' => $this->getFeed() ? $this->getFeed()->getSlug() : 'undefined', 'network' => $this->getNetwork() ? $this->getNetwork()->getId() : null];
-//    }
+    /**
+     * @return bool
+     */
+    public function canEditFundamentals(): bool
+    {
+        return !$this->isUndefined() && $this->getNetwork() !== null;
+    }
 
     /**
-     * {@inheritDoc}
+     * @return bool
      */
-    public function getDataIdentificationArray(): array
+    public function isUndefined(): bool
     {
-        return ['type' => $this->getType() ? $this->getType()->getSlug() : 'undefined', 'feed' => $this->getFeed() ? $this->getFeed()->getSlug() : 'undefined', 'network' => $this->getNetwork() ? $this->getNetwork()->getId() : null];
+        return $this->getType()->isUndefined() && $this->getFeed()->isUndefined();
     }
 
     /**
@@ -199,6 +199,13 @@ class IncidentDecision extends EntityApiFrontend
         return $this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['type' => $this->getType() ? $this->getType()->getSlug() : 'undefined', 'feed' => $this->getFeed() ? $this->getFeed()->getSlug() : 'undefined', 'network' => $this->getNetwork() ? $this->getNetwork()->getId() : null];
+    }
 
     /**
      * @return string
