@@ -100,7 +100,6 @@ class Incident extends EntityApiFrontend
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="incidents")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      * @JMS\Expose
-     * @CustomAssert\TypeHasReport
      * @JMS\Groups({"read","write","fundamental"})
      * @JMS\MaxDepth(depth=1)
      */
