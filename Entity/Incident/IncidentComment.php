@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Entity\User\User;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\CommentBundle\Entity\Comment as BaseComment;
 use FOS\CommentBundle\Entity\Thread;
@@ -45,7 +45,7 @@ class IncidentComment extends BaseComment implements SignedCommentInterface
      * Author of the comment
      *
      * @var User
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User\User")
      */
     private $author = null;
     /**

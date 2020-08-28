@@ -12,7 +12,7 @@
 namespace CertUnlp\NgenBundle\Model;
 
 
-use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Entity\User\User;
 use DateTime;
 
 interface  EntityInterface

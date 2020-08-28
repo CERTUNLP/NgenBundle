@@ -2,14 +2,12 @@
 
 /*
  * This file is part of the Ngen - CSIRT Incident Report System.
- *
- * (c) CERT UNLP <support@cert.unlp.edu.ar>
- *
- * This source file is subject to the GPL v3.0 license that is bundled
- * with this source code in the file LICENSE.
+ *   (c) CERT UNLP <support@cert.unlp.edu.ar>
+ *  This source file is subject to the GPL v3.0 license that is bundled
+ *  with this source code in the file LICENSE.
  */
 
-namespace CertUnlp\NgenBundle\Entity;
+namespace CertUnlp\NgenBundle\Entity\User;
 
 use CertUnlp\NgenBundle\Entity\Communication\Contact\Contact;
 use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactEmail;
@@ -107,6 +105,10 @@ class User extends BaseUser implements EntityApiFrontendInterface
      */
     private $apiKey;
     /**
+     * @var bool
+     */
+    private $generate_api_key=false;
+    /**
      * @var string
      *
      * @ORM\Column(type="string", length=50)
@@ -155,7 +157,7 @@ class User extends BaseUser implements EntityApiFrontendInterface
     private $contacts;
     /**
      * @var User|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User\User")
      * @Gedmo\Blameable(on="create")
      */
     private $createdBy;
@@ -169,6 +171,24 @@ class User extends BaseUser implements EntityApiFrontendInterface
         $this->incidents = new ArrayCollection();
         $this->assignedIncidents = new ArrayCollection();
         $this->contacts = new ArrayCollection();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGenerateApiKey(): bool
+    {
+        return $this->generate_api_key;
+    }
+
+    /**
+     * @param bool $generate_api_key
+     * @return User
+     */
+    public function setGenerateApiKey(bool $generate_api_key): User
+    {
+        $this->generate_api_key = $generate_api_key;
+        return $this;
     }
 
     /**
@@ -206,8 +226,8 @@ class User extends BaseUser implements EntityApiFrontendInterface
     {
         $array_mails = $this->getContacts()->map(static function (Contact $value) {
             return $value->getEmail();
-        }); // [2, 3, 4]
-        return $array_mails->toArray();
+        });
+        return array_merge($array_mails->toArray(), [$this->getEmail()]);
     }
 
     /**
