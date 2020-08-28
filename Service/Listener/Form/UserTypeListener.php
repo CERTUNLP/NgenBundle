@@ -37,6 +37,7 @@ class UserTypeListener implements EventSubscriberInterface
             $form->remove('generate_api_key')
                 ->remove('apiKey');
         }
+
         if ($data) {
             $form
                 ->add('username', null, array(
