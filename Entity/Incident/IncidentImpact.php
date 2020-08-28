@@ -68,6 +68,13 @@ class IncidentImpact extends EntityApiFrontend implements Translatable
         return $this;
     }
 
+    /**
+     * @return bool
+     */
+    public function isUndefined(): bool
+    {
+        return $this->slug === 'undefined';
+    }
 
     public function setTranslatableLocale($locale)
     {
