@@ -26,22 +26,34 @@
   "autoload": {
     "psr-4": {
       "CertUnlp\\NgenBundle\\": "src/NgenBundle/"
-    }
+    },
+    "classmap": [
+      "app/AppKernel.php",
+      "app/AppCache.php"
+    ]
   },
   "require": {
     "php": ">=7.2",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-zip": "^1.15",
+    "beberlei/doctrineextensions": "~1.2",
+    "certunlp/rdap-client": "~1.1",
     "cmen/google-charts-bundle": "^3.2",
+    "components/jquery": "~3.4",
+    "darsyn/ip": "^4.0",
     "doctrine/doctrine-bundle": "^1.6",
+    "doctrine/doctrine-fixtures-bundle": "^3.3",
     "doctrine/doctrine-migrations-bundle": "^2.1",
     "doctrine/orm": "^2.5",
+    "fortawesome/font-awesome": "~5.13.0",
     "friendsofsymfony/comment-bundle": "^3.0",
     "friendsofsymfony/elastica-bundle": "^5.1",
     "friendsofsymfony/user-bundle": "^2.1",
     "gedmo/doctrine-extensions": "^2.4",
     "incenteev/composer-parameter-handler": "^2.0",
-    "knplabs/knp-paginator-bundle": "^4.1",
     "knplabs/knp-components": "v2.3.3",
-    "certunlp/rdap-client": "~1.1",
+    "knplabs/knp-paginator-bundle": "^4.1",
     "nelmio/api-doc-bundle": "^3.6",
     "ninsuo/symfony-collection": "^2.1",
     "rollerworks/password-strength-bundle": "^2.2",
@@ -51,19 +63,13 @@
     "stfalcon/tinymce-bundle": "^2.4",
     "stof/doctrine-extensions-bundle": "v1.3",
     "symfony/assetic-bundle": "^2.8",
+    "symfony/monolog-bundle": "^3.1.0",
+    "symfony/swiftmailer-bundle": "^2.6.4",
     "symfony/symfony": "3.4.*",
     "tetranz/select2entity-bundle": "^2.10",
-    "twig/twig": "^1.0||^2.0",
-    "doctrine/doctrine-fixtures-bundle": "^3.3",
-    "twig/extensions": "~1.5",
-    "components/jquery": "~3.4",
     "twbs/bootstrap": "~4.4.1",
-    "fortawesome/font-awesome": "~5.13.0",
-    "beberlei/doctrineextensions": "~1.2",
-    "darsyn/ip": "^4.0",
-    "ext-json": "*",
-    "ext-curl": "*",
-    "ext-zip": "*"
+    "twig/extensions": "~1.5",
+    "twig/twig": "^1.0||^2.0"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
