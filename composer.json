@@ -43,7 +43,6 @@
     "components/jquery": "~3.4",
     "darsyn/ip": "^4.0",
     "doctrine/doctrine-bundle": "^1.6",
-    "doctrine/doctrine-fixtures-bundle": "^3.3",
     "doctrine/doctrine-migrations-bundle": "^2.1",
     "doctrine/orm": "^2.5",
     "fortawesome/font-awesome": "~5.13.0",
