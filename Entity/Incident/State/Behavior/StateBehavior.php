@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 /**
@@ -21,6 +22,10 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"closed" = "ClosedBehavior", "on_treatment" = "OnTreatmentBehavior", "new" = "NewBehavior", "discarded" = "DiscardedBehavior", "behavior" = "StateBehavior"})
  * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity(
+ *     fields={"name"},
+ *     message="This behvior already in exists."
+ * )
  */
 abstract class StateBehavior extends Entity
 {

@@ -20,8 +20,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-//use Doctrine\Common\Collections\Collection;
-
 /**
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Incident\IncidentTypeRepository")
  * @UniqueEntity(
@@ -79,7 +77,7 @@ class IncidentType extends EntityApiFrontend
     /**
      * @var TaxonomyValue|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue")
-     * @ORM\JoinColumn(name="taxonomyValue", referencedColumnName="slug",nullable=true)
+     * @ORM\JoinColumn(name="taxonomyValue", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */

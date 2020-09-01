@@ -13,11 +13,11 @@ namespace CertUnlp\NgenBundle\Entity\Incident\State\Edge;
 
 use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase;
 use CertUnlp\NgenBundle\Entity\Entity;
-use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 /**
@@ -26,6 +26,10 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"new"= "NewEdge", "opening" = "OpeningEdge", "closing" = "ClosingEdge", "reopening" = "ReopeningEdge", "updating" = "UpdatingEdge", "discarding" = "DiscardingEdge", "edge" = "StateEdge"})
  * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity(
+ *     fields={"oldState","newState"},
+ *     message="This behvior already in exists."
+ * )
  */
 abstract class StateEdge extends Entity
 {
