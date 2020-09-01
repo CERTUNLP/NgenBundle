@@ -76,6 +76,8 @@ doctrine:
                 class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
                 enabled: true
     dbal:
+        mapping_types:
+            enum: string
         types:
             ip: Darsyn\IP\Doctrine\MultiType
 
@@ -193,12 +195,12 @@ stof_doctrine_extensions:
             blameable: true
 
 doctrine_migrations:
-    dir_name: "%kernel.root_dir%/../vendor/certunlp/ngen-bundle/DoctrineMigrations"
+    dir_name: "%kernel.root_dir%/../src/NgenBundle/DoctrineMigrations"
 
 cert_unlp_ngen:
     team:
         mail: '%team_mail%'
-        abuse:  '%team_abuse%'
+        abuse: '%team_abuse%'
         url: '%team_url%'
         name: '%team_name%'
     incidents:

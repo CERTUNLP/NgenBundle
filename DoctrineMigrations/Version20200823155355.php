@@ -22,7 +22,7 @@ final class Version20200823155355 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE message CHANGE pending pending TINYINT(1) NOT NULL, CHANGE incident_id incident_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE message CHANGE pending pending TINYINT(1) NOT NULL, CHANGE incident incident_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE message ADD CONSTRAINT FK_B6BD307F59E53FB9 FOREIGN KEY (incident_id) REFERENCES incident (id)');
         $this->addSql('CREATE INDEX IDX_B6BD307F59E53FB9 ON message (incident_id)');
     }
