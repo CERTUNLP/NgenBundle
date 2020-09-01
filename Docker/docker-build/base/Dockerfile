@@ -19,7 +19,8 @@ RUN symfony  new ngen_basic 3.4
 #La de aabajo hay que sacar la rama y usar master
 RUN rm -fr /root/.composer/cache && cd /application/ngen_basic/src && git clone -b master-docker-3.4 https://github.com/CERTUNLP/NgenBundle.git
 
-RUN cd /application/ngen_basic && cp src/NgenBundle/Resources/installer/dependencias/composer.json . && COMPOSER_MEMORY_LIMIT=-1  composer -vvvv update
-
+RUN cd /application/ngen_basic  \
+&& cp src/NgenBundle/composer.json .  \
+&& COMPOSER_MEMORY_LIMIT=-1  composer -vvvv update
 
 CMD ["/usr/local/bin/apache2-foreground"]

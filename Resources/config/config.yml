@@ -7,9 +7,14 @@
 imports:
     - { resource: elastica_config.yml }
 
+parameters:
+    locale: "%ngen_lang%"
 framework:
     http_method_override: true
-    translator: ~
+    default_locale: "%ngen_lang%"
+    translator: { fallbacks: [ "%ngen_lang%" ] }
+    templating:
+        engines: [ 'twig' ]
 
 assetic:
     filters:
@@ -48,35 +53,10 @@ assetic:
             inputs:
                 - "%kernel.root_dir%/../vendor/components/jquery/jquery.min.js"
 
-    #
-#        fontawesome_fonts:
-#            inputs:
-#                - %kernel.root_dir%/../vendor/fortawesome/font-awesome/webfonts/
-##            filters:
-##                    - less
-##                    - cssrewrite
-#            output: webfonts
-swiftmailer:
-    mailers:
-        cert_unlp.ngen.incident.mailer:
-            #            transport: "%cert_unlp.ngen.incident.mailer.transport%"
-            host:      "%cert_unlp.ngen.incident.mailer.host%"
-            sender_address: "%cert_unlp.ngen.incident.mailer.sender_address%"
-            username:  "%cert_unlp.ngen.incident.mailer.username%"
-            password:  "%cert_unlp.ngen.incident.mailer.password%"
-            #        encryption: "%cert_unlp.ngen.incident.mailer.encryption%"
-            port: "%cert_unlp.ngen.incident.mailer.port%"
-            spool:
-                type: file
-                path: "%kernel.root_dir%/Resources/incident/mails"
 doctrine:
     orm:
         auto_mapping: true
         auto_generate_proxy_classes: "%kernel.debug%"
-
-        #        query_cache_driver:    apc
-        #        metadata_cache_driver: apc
-        #        entity_listener_resolver: cert_unlp.ngen.doctrine.entity_listener_resolver
         dql:
             string_functions:
                 inet_aton: DoctrineExtensions\Query\Mysql\InetAton
@@ -118,8 +98,8 @@ fos_rest:
     format_listener:
         enabled: true
         rules:
-            - { path: '^/api/threads/*', priorities: ['html'], fallback_format: html , prefer_extension: true}
-            - { path: '^/api/*', priorities: ['json','html'], fallback_format: json , prefer_extension: true}
+            - { path: '^/api/threads/*', priorities: [ 'html' ], fallback_format: html , prefer_extension: true }
+            - { path: '^/api/*', priorities: [ 'json','html' ], fallback_format: json , prefer_extension: true }
             - { path: '^/', stop: true }
 
 nelmio_api_doc:
@@ -137,18 +117,12 @@ nelmio_api_doc:
             Bearer:
                 type: apiKey
                 description: Your api key
-                name:  apiKey
+                name: apiKey
                 in: header
             security:
-                -   api_key: []
-        #        components:
-        #            securitySchemes:
-        #                Bearer:
-        #                type: http
-        #                scheme: bearer
-        #                bearerFormat: JWT
+                -   api_key: [ ]
         security:
-            -   Bearer: []
+            -   Bearer: [ ]
 
 imap:
     connections:
@@ -217,3 +191,27 @@ stof_doctrine_extensions:
     orm:
         default:
             blameable: true
+
+doctrine_migrations:
+    dir_name: "%kernel.root_dir%/../vendor/certunlp/ngen-bundle/DoctrineMigrations"
+
+cert_unlp_ngen:
+    team:
+        mail: '%team_mail%'
+        abuse:  '%team_abuse%'
+        url: '%team_url%'
+        name: '%team_name%'
+    incidents:
+        mailer:
+            transport: '%mailer_transport%'
+            host: '%mailer_host%'
+            username: '%mailer_user%'
+            password: '%mailer_password%'
+            sender_address: '%mailer_sender%'
+            port: '%mailer_port%'
+            encryption: '%mailer_encryption%'
+    global:
+        sign: true
+    grafana:
+        external: '%external_dashboard_grafana%'
+        internal: '%internal_dashboard_grafana%'
