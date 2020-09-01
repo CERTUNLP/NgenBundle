@@ -1,122 +1,122 @@
 version: "3.1"
 volumes:
-  ngen-testing-grafana-data:
-    driver: local
-  ngen-testing-elastic-data:
-    driver: local
-  ngen-testing-elasticsearch:
-    driver: local
-  ngen-testing-bdd:
-    driver: local
-  ngen-testing-incidentes:
-    driver: local
-  ngen-testing-feeds:
-    driver: local
+    ngen-testing-grafana-data:
+        driver: local
+    ngen-testing-elastic-data:
+        driver: local
+    ngen-testing-elasticsearch:
+        driver: local
+    ngen-testing-bdd:
+        driver: local
+    ngen-testing-incidentes:
+        driver: local
+    ngen-testing-feeds:
+        driver: local
 services:
     ngen-testing-db:
-      image: mysql:8.0
-      command: ["mysqld", "--upgrade=FORCE"]
-      volumes:
-        - ngen-testing-bdd:/var/lib/mysql
-      environment:
-        - MYSQL_ROOT_PASSWORD=pass
-        - MYSQL_DATABASE=ngen
-        - MYSQL_USER=ngenuser
-        - MYSQL_PASSWORD=ngenpass
-      ports:
-        - "8002:3306"
-      networks: ['ngen']
+        image: mysql:8.0
+        command: [ "mysqld", "--upgrade=FORCE" ]
+        volumes:
+            - ngen-testing-bdd:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=pass
+            - MYSQL_DATABASE=ngen
+            - MYSQL_USER=ngenuser
+            - MYSQL_PASSWORD=ngenpass
+        ports:
+            - "8002:3306"
+        networks: [ 'ngen' ]
     ngen-testing-app:
-      image: ngen-test
-      networks: ['ngen']
-      depends_on: ['ngen-testing-db','ngen-testing-elastic']
-      ports:
-        - "8000:80"
-      volumes:
-        - ngen-testing-incidentes:/application/ngen_basic/app/Resources/incident
-        - ngen-testing-feeds:/application/ngen_basic/app/Resources/app/Resources/feed/
-      environment:
-        - PATH_WEB=/application
-        - DATE_TZ=America/Argentina/Buenos_Aires
-        - MEMORY_LIMIT=1024M
-        - POST_MAX=20M
-        - UPLOAD_MAX=20M
-        - DB_HOST=ngen-testing-db
-        - DB_PORT=3306
-        - DB_NAME=ngen
-        - DB_USER=ngenuser
-        - DB_PASSWORD=ngenpass
-        - MAILER_TRANSPORT=smtp
-        - MAILER_PORT=1025
-        - MAILER_ENCRYPTION=null
-        - MAILER_HOST=ngen-testing-mail
-        - MAILER_USER=null
-        - MAILER_PASSWORD=null
-        - MAILER_SENDER=pepe@localhost
-        - TEAM_MAIL=pepe@localhost
-        - TEAM_ABUSE=pepe@localhost
-        - TEAM_URL=http://www.cert.unlp.edu.ar
-        - TEAM_NAME=CERTUNLP
-        - NGEN_SIGN=true
-        - NGEN_LANG=en
-        - DEFAULT_NETWORK=10.0.0.0
-        - ELASTIC_HOST=ngen-testing-elastic
-        - ELASTIC_PORT=9200
-        - SESSION_TIMEOUT=1800
-        - IMAP_SERVER=localhost:993/imap/ssl/novalidate-cert
-        - IMAP_USERNAME=pepe
-        - IMAP_PASSWORD=pass
-        - EXTERNAL_DASHBOARD_GRAFANA=d/incidentesexternos/incidentes-externos?from=now-24h&to=now&orgId=1&theme=light&kiosk=tv
-        - INTERNAL_DASHBOARD_GRAFANA=d/incidentesinternos/incidentes-internos?from=now-24h&to=now&orgId=1&theme=light&kiosk=tv
-        - USER_GRAFANA=admin
-        - PASS_GRAFANA=admin
-        - GRAFANA_HOST=http://ngen-testing-grafana:3000/
-        - POPULATE=true
-      links:
-        - ngen-testing-elastic:ngen-testing-elastic
-        - ngen-testing-db:ngen-testing-db
-        - ngen-testing-mail:ngen-testing-mail
+        image: ngen-test
+        networks: [ 'ngen' ]
+        depends_on: [ 'ngen-testing-db','ngen-testing-elastic' ]
+        ports:
+            - "8000:80"
+        volumes:
+            - ngen-testing-incidentes:/application/ngen_basic/app/Resources/incident
+            - ngen-testing-feeds:/application/ngen_basic/app/Resources/app/Resources/feed/
+        environment:
+            - PATH_WEB=/application
+            - DATE_TZ=America/Argentina/Buenos_Aires
+            - MEMORY_LIMIT=1024M
+            - POST_MAX=20M
+            - UPLOAD_MAX=20M
+            - DB_HOST=ngen-testing-db
+            - DB_PORT=3306
+            - DB_NAME=ngen
+            - DB_USER=ngenuser
+            - DB_PASSWORD=ngenpass
+            - MAILER_TRANSPORT=smtp
+            - MAILER_PORT=1025
+            - MAILER_ENCRYPTION=null
+            - MAILER_HOST=ngen-testing-mail
+            - MAILER_USER=null
+            - MAILER_PASSWORD=null
+            - MAILER_SENDER=pepe@localhost
+            - TEAM_MAIL=pepe@localhost
+            - TEAM_ABUSE=pepe@localhost
+            - TEAM_URL=http://www.cert.unlp.edu.ar
+            - TEAM_NAME=CERTUNLP
+            - NGEN_SIGN=true
+            - NGEN_LANG=en
+            - DEFAULT_NETWORK=10.0.0.0
+            - ELASTIC_HOST=ngen-testing-elastic
+            - ELASTIC_PORT=9200
+            - SESSION_TIMEOUT=1800
+            - IMAP_SERVER=localhost:993/imap/ssl/novalidate-cert
+            - IMAP_USERNAME=pepe
+            - IMAP_PASSWORD=pass
+            - EXTERNAL_DASHBOARD_GRAFANA=d/incidentesexternos/incidentes-externos?from=now-24h&to=now&orgId=1&theme=light&kiosk=tv
+            - INTERNAL_DASHBOARD_GRAFANA=d/incidentesinternos/incidentes-internos?from=now-24h&to=now&orgId=1&theme=light&kiosk=tv
+            - USER_GRAFANA=admin
+            - PASS_GRAFANA=admin
+            - GRAFANA_HOST=http://ngen-testing-grafana:3000/
+            - POPULATE=true
+        links:
+            - ngen-testing-elastic:ngen-testing-elastic
+            - ngen-testing-db:ngen-testing-db
+            - ngen-testing-mail:ngen-testing-mail
     ngen-testing-proxy:
-      image: nginx:latest
-      container_name: ngen-testing-proxy
-      volumes:
-       - ./nginx/:/etc/nginx/conf.d/
-      ports:
-       - 443:443
-      links:
-      - ngen-testing-app:ngen-app
-      - ngen-testing-grafana:ngen-grafana
-      networks: ['ngen']
+        image: nginx:latest
+        container_name: ngen-testing-proxy
+        volumes:
+            - ./nginx/:/etc/nginx/conf.d/
+        ports:
+            - 443:443
+        links:
+            - ngen-testing-app:ngen-app
+            - ngen-testing-grafana:ngen-grafana
+        networks: [ 'ngen' ]
     ngen-testing-elastic:
-      image: docker.elastic.co/elasticsearch/elasticsearch:6.8.12
-      environment:
-       - cluster.name=docker-cluster
-       - discovery.type=single-node
-       - xpack.security.enabled=false
-       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      volumes:
-        - ngen-testing-elastic-data:/usr/share/elasticsearch/data
-      ports:
-        - "9200:9200"
-      networks: ['ngen']
+        image: docker.elastic.co/elasticsearch/elasticsearch:6.8.12
+        environment:
+            - cluster.name=docker-cluster
+            - discovery.type=single-node
+            - xpack.security.enabled=false
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        volumes:
+            - ngen-testing-elastic-data:/usr/share/elasticsearch/data
+        ports:
+            - "9200:9200"
+        networks: [ 'ngen' ]
     ngen-testing-grafana:
-      image: certunlp/grafana:1.0
-      ports:
-        - "3000:3000"
-      volumes:
-        - ngen-testing-grafana-data:/var/lib/grafana
-      environment:
-        - ELASTIC_HOST=ngen-testing-elastic
-        - ELASTIC_PORT=9200
-        - NGEN_APP=ngen-testing-app
-      networks: ['ngen']
-      depends_on: ['ngen-testing-elastic']
-      links:
-          - ngen-testing-app:ngen-app
-          - ngen-testing-elastic:ngen-testing-elastic
+        image: certunlp/grafana:1.0
+        ports:
+            - "3000:3000"
+        volumes:
+            - ngen-testing-grafana-data:/var/lib/grafana
+        environment:
+            - ELASTIC_HOST=ngen-testing-elastic
+            - ELASTIC_PORT=9200
+            - NGEN_APP=ngen-testing-app
+        networks: [ 'ngen' ]
+        depends_on: [ 'ngen-testing-elastic' ]
+        links:
+            - ngen-testing-app:ngen-app
+            - ngen-testing-elastic:ngen-testing-elastic
     ngen-testing-mail:
-      image: schickling/mailcatcher
-      ports:
-        - "8001:1080"
-      networks: ['ngen']
-networks: {ngen: {}}
+        image: schickling/mailcatcher
+        ports:
+            - "8001:1080"
+        networks: [ 'ngen' ]
+networks: { ngen: { } }
