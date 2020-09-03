@@ -90,6 +90,10 @@ services:
         calls:
             - [ setAnnotationReader, [ "@annotation_reader" ] ]
 
+    CertUnlp\NgenBundle\Command\Communication\MessageEmailCommand:
+        arguments:
+            $mailer: "@swiftmailer.mailer.cert_unlp.ngen.incident.mailer"
+
     CertUnlp\NgenBundle\Service\Communications\IncidentCommunicationMailer:
         tags:
             - { name: kernel.event_listener, event: fos_comment.comment.pre_persist, method: onCommentPrePersist, priority: -1 }

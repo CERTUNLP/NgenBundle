@@ -39,24 +39,10 @@ class CertUnlpNgenExtension extends Extension
         $container->setParameter('cert_unlp.ngen.resources.path', '%kernel.root_dir%/Resources/');
         $container->setParameter('cert_unlp.ngen.global.sign', $config['global']['sign']);
 
-        $container->setParameter('cert_unlp.ngen.incident.evidence.path', $config['incidents']['evidence']['path']);
-        $container->setParameter('cert_unlp.ngen.incident.evidence.prefix', $config['incidents']['evidence']['prefix']);
-
-        $container->setParameter('cert_unlp.ngen.incident.mailer.host', $config['incidents']['mailer']['host']);
-        $container->setParameter('cert_unlp.ngen.incident.mailer.transport', $config['incidents']['mailer']['transport']);
-        $container->setParameter('cert_unlp.ngen.incident.mailer.encryption', $config['incidents']['mailer']['encryption']);
-        $container->setParameter('cert_unlp.ngen.incident.mailer.port', $config['incidents']['mailer']['port']);
-        $container->setParameter('cert_unlp.ngen.incident.mailer.username', $config['incidents']['mailer']['username']);
-        $container->setParameter('cert_unlp.ngen.incident.mailer.password', $config['incidents']['mailer']['password']);
+        $container->setParameter('cert_unlp.ngen.incident.evidence.path', $config['incident']['evidence_path']);
 
         $container->setParameter('cert_unlp.ngen.grafana.internal.url', $config['grafana']['internal']);
         $container->setParameter('cert_unlp.ngen.grafana.external.url', $config['grafana']['external']);
-
-        if (isset($config['incidents']['mailer']['sender_address'])) {
-            $container->setParameter('cert_unlp.ngen.incident.mailer.sender_address', $config['incidents']['mailer']['sender_address']);
-        } else {
-            $container->setParameter('cert_unlp.ngen.incident.mailer.sender_address', $config['team']['mail']);
-        }
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
