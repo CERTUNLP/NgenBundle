@@ -85,7 +85,7 @@ class IncidentCommunicationTelegram extends IncidentCommunication
      * @param Incident $incident
      * @return string
      */
-    public function getDataMessage(Incident $incident): string
+    public function getDataMessage(Incident $incident): ?string
     {
         $formato = $this->getTranslator()->trans('telegram_message');
         $comment = $incident->getNotes();
@@ -135,7 +135,7 @@ class IncidentCommunicationTelegram extends IncidentCommunication
         return $state;
     }
 
-    public function getCommentDataMessage(IncidentComment $comment): string
+    public function getCommentDataMessage(IncidentComment $comment): ?string
     {
         $formato = $this->getTranslator()->trans('telegram_message');
         $incident = $comment->getThread()->getIncident();

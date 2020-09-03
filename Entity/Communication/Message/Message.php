@@ -82,6 +82,14 @@ abstract class Message extends Entity
     }
 
     /**
+     * @return bool
+     */
+    public function isEmpty(): bool
+    {
+        return empty($this->data['message']);
+    }
+
+    /**
      * @return array
      */
     public function getData(): array
@@ -146,7 +154,13 @@ abstract class Message extends Entity
         return $this;
     }
 
-
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return $this->isPending() ? 'warning' : 'success';
+    }
 
     /**
      * @return bool
@@ -164,13 +178,5 @@ abstract class Message extends Entity
     {
         $this->pending = $pending;
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getColor(): string
-    {
-        return $this->isPending() ? 'warning' : 'success';
     }
 }

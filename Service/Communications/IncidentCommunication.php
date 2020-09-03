@@ -84,7 +84,9 @@ abstract class IncidentCommunication
                 $message->setData($this->createCommentDataJson($comment, $contact));
                 $message->setIncident($incident);
                 $message->setPending(true);
-                $this->getDoctrine()->persist($message);
+                if (!$message->isEmpty()) {
+                    $this->getDoctrine()->persist($message);
+                }
             }
             $this->getDoctrine()->flush();
         }
@@ -117,7 +119,7 @@ abstract class IncidentCommunication
      * @param IncidentComment $comment
      * @return string
      */
-    abstract public function getCommentDataMessage(IncidentComment $comment): string;
+    abstract public function getCommentDataMessage(IncidentComment $comment): ?string;
 
     /**
      * @return EntityManagerInterface
@@ -150,7 +152,9 @@ abstract class IncidentCommunication
                 $message->setData($this->createDataJson($incident, $contact));
                 $message->setIncident($incident);
                 $message->setPending(true);
-                $this->getDoctrine()->persist($message);
+                if (!$message->isEmpty()) {
+                    $this->getDoctrine()->persist($message);
+                }
             }
             $this->getDoctrine()->flush();
         }
@@ -171,7 +175,7 @@ abstract class IncidentCommunication
      * @param Incident $incident
      * @return string
      */
-    abstract public function getDataMessage(Incident $incident): string;
+    abstract public function getDataMessage(Incident $incident): ?string;
 
     /**
      * @param Incident $incident

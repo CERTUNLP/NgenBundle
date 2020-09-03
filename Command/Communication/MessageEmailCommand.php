@@ -66,7 +66,7 @@ class MessageEmailCommand extends ContainerAwareCommand
             foreach ($messages as $message) {
                 $output->write('<comment>[message][email]: sending message(' . $message->getId() . ') </comment>');
                 $decode_result = $this->sendMail($message);
-                if ($decode_result['response']['success']) {
+                if ($decode_result['success']) {
                     $message->addResponse($decode_result);
                     $message->setPending(false);
                     $output->writeln('<info>...sended. </info>');
@@ -126,13 +126,12 @@ class MessageEmailCommand extends ContainerAwareCommand
             }
             $errors = [];
             $success = $this->getMailer()->send($message, $error_recipents);
-            $respose['success'] = $success;
             $respose['recipents'] = $message->getTo();
             if (!$success) {
                 $errors['recipents'] = $message->getTo();
                 $errors['error'] = $error_recipents;
             }
-            return ['response' => $respose, 'errors' => $errors];
+            return ['response' => $respose, 'errors' => $errors, 'success' => $success];
         }
         return null;
     }
