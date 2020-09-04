@@ -42,7 +42,7 @@ class MessageEmail extends Message
     /**
      * @return string
      */
-    public function getBody(): string
+    public function getBody(): ?string
     {
         return $this->getData()['body'];
     }

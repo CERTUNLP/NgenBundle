@@ -8,5 +8,4 @@ cd $PATH_WEB/ngen_basic
 
 bash /usr/local/bin/update_parameters
 
-php bin/console s:s:s
-#php bin/console s:s:s
+php bin/console swiftmailer:spool:send
