@@ -172,8 +172,8 @@ fos_user:
     firewall_name: frontend
     user_class: CertUnlp\NgenBundle\Entity\User\User
     from_email:
-        address: "%cert_unlp.ngen.incident.mailer.sender_address%"
-        sender_name: "%cert_unlp.ngen.incident.mailer.sender_address%"
+        address: "%mailer_sender%"
+        sender_name: "%mailer_sender%"
     registration:
         confirmation:
             enabled: true
@@ -203,17 +203,23 @@ cert_unlp_ngen:
         abuse: '%team_abuse%'
         url: '%team_url%'
         name: '%team_name%'
-    incidents:
-        mailer:
+    global:
+        sign: true
+    grafana:
+        external: '%external_dashboard_grafana%'
+        internal: '%internal_dashboard_grafana%'
+
+swiftmailer:
+    mailers:
+        cert_unlp.ngen.incident.mailer:
+            #            transport: "%cert_unlp.ngen.incident.mailer.transport%"
             transport: '%mailer_transport%'
             host: '%mailer_host%'
             username: '%mailer_user%'
             password: '%mailer_password%'
             sender_address: '%mailer_sender%'
             port: '%mailer_port%'
-            encryption: '%mailer_encryption%'
-    global:
-        sign: true
-    grafana:
-        external: '%external_dashboard_grafana%'
-        internal: '%internal_dashboard_grafana%'
+#            encryption: '%mailer_encryption%'
+            spool:
+                type: file
+                path: "%kernel.root_dir%/Resources/incident/mails"

@@ -9,19 +9,22 @@ bash /usr/local/bin/update_parameters
 rm -rf app/logs/* app/cache/*;
 mkdir -p app/cache app/logs
 chmod  g+w app/cache app/logs
-until x=$(php bin/console d:s:v 2>/dev/null|grep Mapping);do
+until x=$(php bin/console doctrine:schema:validate 2>/dev/null|grep "[OK]");do
   echo "Base no disponible esperando para comenzar la app"
   sleep 1
 done;
 
-if (x=$(php bin/console doctrine:query:sql "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME ='incident'" --env prod|grep "array(0)"));
+if php bin/console doctrine:query:sql "SELECT * FROM INFORMATION_SCHEMA.TABLES"|grep incident
 then
+ echo "base ya creada"
+else
  # La base no existe inserto la primer version
+ echo "Instalando base inicial"
  php bin/console doctrine:database:import /root/base.inicial.sql
 fi;
 
 # La base si existe aplica las migraciones que pudieran existir
-php bin/console d:m:m --no-interaction
+php bin/console doctrine:migrations:migrate --no-interaction
 
 
 #Estos 10 segundos son porque el elastic demora

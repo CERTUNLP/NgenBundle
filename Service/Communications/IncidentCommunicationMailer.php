@@ -12,7 +12,7 @@
 namespace CertUnlp\NgenBundle\Service\Communications;
 
 use CertUnlp\NgenBundle\Entity\Communication\Contact\Contact;
-use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactTelegram;
+use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactEmail;
 use CertUnlp\NgenBundle\Entity\Communication\Message\Message;
 use CertUnlp\NgenBundle\Entity\Communication\Message\MessageEmail;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
@@ -22,8 +22,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\CommentBundle\Model\CommentManagerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Twig\Error\LoaderError;
-use Twig\Error\SyntaxError;
 
 class IncidentCommunicationMailer extends IncidentCommunication
 {
@@ -60,7 +58,26 @@ class IncidentCommunicationMailer extends IncidentCommunication
 
     /**
      * @param Incident $incident
-     * @return ArrayCollection|ContactTelegram[]
+     * @return void
+     */
+    public function comunicate(Incident $incident): void
+    {
+        $contacts = $this->getContacts($incident);
+        if ($contacts) {
+            $message = $this->createMessage();
+            $message->setData($this->createDataJson($incident));
+            $message->setIncident($incident);
+            $message->setPending(true);
+            if (!$message->isEmpty()) {
+                $this->getDoctrine()->persist($message);
+            }
+            $this->getDoctrine()->flush();
+        }
+    }
+
+    /**
+     * @param Incident $incident
+     * @return ArrayCollection|ContactEmail[]
      */
     public function getContacts(Incident $incident): ArrayCollection
     {
@@ -79,10 +96,8 @@ class IncidentCommunicationMailer extends IncidentCommunication
      * @param Incident $incident
      * @param Contact|null $contact
      * @return array
-     * @throws LoaderError
-     * @throws SyntaxError
      */
-    public function createDataJson(Incident $incident, ?Contact $contact): array
+    public function createDataJson(Incident $incident, ?Contact $contact = null): array
     {
         $data = parent::createDataJson($incident, $contact);
         $data['body'] = $this->getBody($incident);
@@ -96,8 +111,6 @@ class IncidentCommunicationMailer extends IncidentCommunication
     /**
      * @param Incident $incident
      * @return string|null
-     * @throws LoaderError
-     * @throws SyntaxError
      */
     public function getBody(Incident $incident): ?string
     {
@@ -177,12 +190,30 @@ class IncidentCommunicationMailer extends IncidentCommunication
 
     /**
      * @param IncidentComment $comment
+     * @return void
+     */
+    public function comunicate_comment(IncidentComment $comment): void
+    {
+        $incident = $comment->getThread()->getIncident();
+        $contacts = $this->getContacts($incident);
+        if ($contacts) {
+            $message = $this->createMessage();
+            $message->setData($this->createCommentDataJson($comment));
+            $message->setIncident($incident);
+            $message->setPending(true);
+            if (!$message->isEmpty()) {
+                $this->getDoctrine()->persist($message);
+            }
+            $this->getDoctrine()->flush();
+        }
+    }
+
+    /**
+     * @param IncidentComment $comment
      * @param Contact|null $contact
      * @return array
-     * @throws LoaderError
-     * @throws SyntaxError
      */
-    public function createCommentDataJson(IncidentComment $comment, $contact): array
+    public function createCommentDataJson(IncidentComment $comment, Contact $contact = null): array
     {
         $data = parent::createCommentDataJson($comment, $contact);
         $incident = $comment->getThread()->getIncident();
@@ -197,8 +228,6 @@ class IncidentCommunicationMailer extends IncidentCommunication
     /**
      * @param IncidentComment $comment
      * @return string|null
-     * @throws LoaderError
-     * @throws SyntaxError
      */
     public function getReplyBody(IncidentComment $comment): ?string
     {
@@ -217,10 +246,8 @@ class IncidentCommunicationMailer extends IncidentCommunication
     /**
      * @param Incident $incident
      * @return string
-     * @throws LoaderError
-     * @throws SyntaxError
      */
-    public function getDataMessage(Incident $incident): string
+    public function getDataMessage(Incident $incident): ?string
     {
         return $this->getBody($incident);
     }
@@ -228,10 +255,8 @@ class IncidentCommunicationMailer extends IncidentCommunication
     /**
      * @param IncidentComment $comment
      * @return string
-     * @throws LoaderError
-     * @throws SyntaxError
      */
-    public function getCommentDataMessage(IncidentComment $comment): string
+    public function getCommentDataMessage(IncidentComment $comment): ?string
     {
         return $this->getReplyBody($comment);
     }

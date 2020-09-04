@@ -16,13 +16,10 @@ use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
-use Twig\Error\LoaderError;
-use Twig\Error\SyntaxError;
+use Twig\Error\Error;
 
 class IncidentReportFactory
 {
-
-
     /**
      * @var Environment
      */
@@ -51,8 +48,6 @@ class IncidentReportFactory
      * @param Incident $incident
      * @param string $lang
      * @return string
-     * @throws LoaderError
-     * @throws SyntaxError
      */
     public function getReport(Incident $incident, string $lang): ?string
     {
@@ -63,7 +58,11 @@ class IncidentReportFactory
             $this->getView()->setTemplateData($data);
             $html = $this->getViewHandler()->renderTemplate($this->getView(), 'html');
             $parameters = array('incident' => $incident);
-            return $this->getTemplating()->createTemplate($html)->render($parameters);
+            try {
+                return $this->getTemplating()->createTemplate($html)->render($parameters);
+            } catch (Error $e) {
+                return null;
+            }
         }
         return null;
     }
@@ -108,8 +107,6 @@ class IncidentReportFactory
      * @param string $body
      * @param string $lang
      * @return string|null
-     * @throws LoaderError
-     * @throws SyntaxError
      */
     public function getReportReply(Incident $incident, string $body, string $lang): ?string
     {
@@ -121,8 +118,11 @@ class IncidentReportFactory
             $this->getView()->setTemplateData($data);
             $html = $this->getViewHandler()->renderTemplate($this->getView(), 'html');
             $parameters = array('incident' => $incident);
-
-            return $this->getTemplating()->createTemplate($html)->render($parameters);
+            try {
+                return $this->getTemplating()->createTemplate($html)->render($parameters);
+            } catch (Error $e) {
+                return null;
+            }
         }
         return null;
     }
