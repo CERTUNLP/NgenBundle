@@ -57,7 +57,7 @@ class NetworkRenewHostCommand extends ContainerAwareCommand
         $offset = 0;
         $networks = $this->getNetworkHandler()->all([], ['id' => 'desc'], $limit, $offset);
         while ($networks) {
-            $output->write('[network host renew]:<info> Found ' . count($networks) . ' hosts to update.</info>');
+            $output->write('[network host renew]:<info> Found ' . count($networks) . ' networks to update.</info>');
             $output->writeln('<info>Total analyzed ' . $offset . '</info>');
             foreach ($networks as $network) {
                 $output->write('[network host renew]: Searching new hosts for: ' . $network->getAddressAndMask());
@@ -74,11 +74,11 @@ class NetworkRenewHostCommand extends ContainerAwareCommand
                         $output->writeln('<error>...Error</error>');
                     }
                 }
-                $offset += $limit;
-                $networks = $this->getNetworkHandler()->all([], ['id' => 'desc'], $limit, $offset);
             }
-            $output->writeln('[network host renew]: Finished.');
+            $offset += $limit;
+            $networks = $this->getNetworkHandler()->all([], ['id' => 'desc'], $limit, $offset);
         }
+        $output->writeln('[network host renew]: Finished.');
     }
 
     /**

@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Command;
 
+use CertUnlp\NgenBundle\Exception\InvalidFormException;
 use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\HostHandler;
 use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\Network\NetworkHandler;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
