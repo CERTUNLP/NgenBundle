@@ -2,7 +2,7 @@ FROM grafana/grafana:latest
 MAINTAINER CERTunlp
 WORKDIR "/"
 USER root
-RUN apk add --update --no-cache bind-tools
+RUN apk add --update --no-cache bind-tools curl
 USER grafana
 ADD files/grafana.ini /etc/grafana/grafana.ini
 ADD files/dashboard /etc/grafana/provisioning/dashboards/
