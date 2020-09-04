@@ -23,18 +23,10 @@ final class Version20200901023302 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE network CHANGE type type ENUM(\'internal\', \'external\',\'rdap\')');
-        $this->addSql('ALTER TABLE incident_comment_thread DROP FOREIGN KEY FK_E073862F1FB8D185');
-        $this->addSql('DROP INDEX UNIQ_E073862F1FB8D185 ON incident_comment_thread');
-        $this->addSql('ALTER TABLE incident_comment_thread DROP host_id');
-        $this->addSql('ALTER TABLE incident_state_change DROP FOREIGN KEY FK_CCFC5A1DCB9A3939');
-        $this->addSql('DROP INDEX IDX_CCFC5A1D17EA0C41 ON incident_state_change');
-        $this->addSql('DROP INDEX IDX_CCFC5A1DCB9A3939 ON incident_state_change');
-        $this->addSql('ALTER TABLE incident_state_change DROP newState, DROP oldState');
         $this->addSql('ALTER TABLE incident_state_change RENAME INDEX idx_ccfc5a1d59e53fb9 TO IDX_7A2C142459E53FB9');
         $this->addSql('ALTER TABLE incident_state_change RENAME INDEX idx_ccfc5a1d2f0d3b98 TO IDX_7A2C14242F0D3B98');
         $this->addSql('ALTER TABLE incident_state_change RENAME INDEX idx_ccfc5a1d53c59d72 TO IDX_7A2C142453C59D72');
         $this->addSql('ALTER TABLE incident_state_change RENAME INDEX idx_ccfc5a1db03a8386 TO IDX_7A2C1424B03A8386');
-        $this->addSql('ALTER TABLE incident_type RENAME INDEX fk_66d22096e371859c TO IDX_66D22096E371859C');
         $this->addSql('ALTER TABLE incident_detected ADD CONSTRAINT FK_F9976331E1CFE6F5 FOREIGN KEY (reporter_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE incident_decision CHANGE auto_saved auto_saved TINYINT(1) NOT NULL');
     }
