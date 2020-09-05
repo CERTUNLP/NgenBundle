@@ -2,7 +2,7 @@
 
 
 cp /application/ngen_basic/src/NgenBundle/Docker/docker-build/final/files/parameters.yml /application/ngen_basic/app/config/parameters.yml
-RUN sed  -i 's/$DB_SECRET/'"$(echo $RANDOM -d|sha256sum| awk '{print $1}')"'/'  /application/ngen_basic/app/config/parameters.yml
+sed  -i 's/$DB_SECRET/'"$(echo $RANDOM -d|sha256sum| awk '{print $1}')"'/'  /application/ngen_basic/app/config/parameters.yml
 
 echo "date.timezone=${DATE_TZ}" > /usr/local/etc/php/php.ini
 echo "upload_max_filesize =${UPLOAD_MAX}" >> /usr/local/etc/php/php.ini

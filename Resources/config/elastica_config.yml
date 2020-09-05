@@ -43,7 +43,6 @@ fos_elastica:
                         address:
                             type: keyword
                             property_path: origin
-                            index: not_analyzed
                         network:
                             type: keyword
                         tlp:
@@ -135,7 +134,6 @@ fos_elastica:
                         address:
                             type: keyword
                             property_path: addressAndMask
-                            index: not_analyzed
                         ip_mask:
                             type: integer
                         domain:
@@ -171,10 +169,9 @@ fos_elastica:
                                     type: "nested"
                                     properties:
                                         email:
-                                            type: string
-                                            analyzer: email_analyser
+                                            type: keyword
                                         telegram:
-                                            type: string
+                                            type: keyword
                         networkEntity:
                             type: "object"
                             properties:
@@ -256,8 +253,7 @@ fos_elastica:
                         slug:
                             type: keyword
                         emails:
-                            type: string
-                            fielddata: true
+                            type: text
                             analyzer: email_analyser
                         active:
                             type: boolean
@@ -275,10 +271,10 @@ fos_elastica:
                             type: "nested"
                             properties:
                                 email:
-                                    type: string
+                                    type: text
                                     analyzer: email_analyser
                                 telegram:
-                                    type: string
+                                    type: text
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
@@ -649,7 +645,7 @@ fos_elastica:
                         slug:
                             type: keyword
                         email:
-                            type: string
+                            type: text
                             analyzer: email_analyser
                             fielddata: true
                         isEnabled:
@@ -666,10 +662,10 @@ fos_elastica:
                             type: "nested"
                             properties:
                                 email:
-                                    type: string
+                                    type: text
                                     analyzer: email_analyser
                                 telegram:
-                                    type: string
+                                    type: text
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel
@@ -683,7 +679,7 @@ fos_elastica:
                             insert: true
                             update: true
                             delete: true
-        taxonomy:
+        taxonomy_value:
             index_name: taxonomy_%kernel.environment%
             settings:
                 index:
@@ -731,12 +727,12 @@ fos_elastica:
                             insert: true
                             update: true
                             delete: true
-                #        taxonomy:
-                #            index_name: taxonomypredicates_%kernel.environment%
-                #            settings:
-                #                index:
-                #                    max_result_window: 50000
-                #            types:
+        taxonomy_predicate:
+            index_name: taxonomy_%kernel.environment%
+            settings:
+                index:
+                    max_result_window: 50000
+            types:
                 predicate:
                     properties:
                         value:

@@ -21,6 +21,7 @@ else
  # La base no existe inserto la primer version
  echo "Instalando base inicial"
  php bin/console doctrine:database:import /root/base.inicial.sql
+ php bin/console fos:elastica:populate --no-reset --env prod
 fi;
 
 # La base si existe aplica las migraciones que pudieran existir
@@ -30,7 +31,7 @@ php bin/console doctrine:migrations:migrate --no-interaction
 #Estos 10 segundos son porque el elastic demora
 sleep 10
 if [[ ! -z "${POPULATE}" ]]; then
-	php app/console fos:elastica:populate --no-reset --env prod
+	php bin/console fos:elastica:populate --no-reset --env prod
 	chown www-data -R $PATH_WEB/ngen_basic/app/Resources/app/Resources/feed/ $PATH_WEB/ngen_basic/app/Resources/incident
 fi
 php bin/console cache:clear --env=prod --no-debug
@@ -39,5 +40,7 @@ php bin/console assetic:dump --env=prod --no-debug
 echo "por hacer assets:install"
 php bin/console assets:install --symlink --env=prod
 ln -s $PATH_WEB/ngen_basic/vendor/fortawesome/font-awesome/webfonts web/webfonts
-chown www-data -R $PATH_WEB/ngen_basic/app/cache $PATH_WEB/ngen_basic/app/logs
+chown www-data -R $PATH_WEB/ngen_basic/ngen_basic/var/sessions 
+chown www-data -R $PATH_WEB/ngen_basic/ngen_basic/var/logs 
+chown www-data -R $PATH_WEB/ngen_basic/ngen_basic/var/cache 
 exec "$@"
