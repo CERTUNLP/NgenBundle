@@ -18,6 +18,8 @@ services:
             $ngen_team_mail: '%cert_unlp.ngen.team.mail%'
             $ngen_team_name: '%cert_unlp.ngen.team.name%'
             $evidence_path: "%cert_unlp.ngen.incident.evidence.path%"
+            $grafana_internal_url: "%cert_unlp.ngen.grafana.internal.url%"
+            $grafana_external_url: "%cert_unlp.ngen.grafana.external.url%"
             $elastica_finder_incident: "@fos_elastica.finder.incidents.incident"
             $elastica_finder_decision: "@fos_elastica.finder.decisions.decision"
             $elastica_finder_feed: "@fos_elastica.finder.feeds.feed"
