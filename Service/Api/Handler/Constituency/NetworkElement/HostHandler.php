@@ -40,27 +40,6 @@ class HostHandler extends NetworkElementHandler
     }
 
     /**
-     */
-    public function updateAllNetworks(): void
-    {
-        $hosts = $this->all(['network' => null], null, 50);
-        while ($hosts) {
-            foreach ($hosts as $host) {
-                if (!$host->getNetwork()) {
-                    $host->setNetwork($this->getNetworkHandler()->findOneInRange($host->getAddress(), true));
-                } else {
-                    $network = $this->getNetworkHandler()->findOneInRange($host->getAddress());
-                    if ($host->isAutoUpdatable()) {
-                        $host->setNetwork($network);
-                        $this->patch($host);
-                    }
-                }
-            }
-            $hosts = $this->all(['network' => null], [], 50);
-        }
-    }
-
-    /**
      * @return NetworkHandler
      */
     public function getNetworkHandler(): NetworkHandler

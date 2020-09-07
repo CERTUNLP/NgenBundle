@@ -55,7 +55,7 @@ class NetworkUpdateHostCommand extends ContainerAwareCommand
         $output->writeln('[network update]: Starting.');
         $limit = 50;
         $offset = 0;
-        $default_network = $this->getNetworkHandler()->get(['ip'=>'0.0.0.0'])->getId();
+        $default_network = $this->getNetworkHandler()->getDefaultNetwork()->getId();
         $hosts = $this->getHostHandler()->all(['network' => $default_network], null, $limit, $offset);
         while ($hosts) {
             $output->write('[network update]:<info> Found ' . count($hosts) . ' hosts to update.</info>');
@@ -63,7 +63,7 @@ class NetworkUpdateHostCommand extends ContainerAwareCommand
             foreach ($hosts as $host) {
                 $output->write('[network update]: Searching: ' . $host);
                 $network = $this->getNetworkHandler()->findOneInRange($host->getAddress(), true);
-                if ($network) {
+                if ($network && !$network->isDefault()) {
                     $output->write('<info> Found: ' . $network . '</info>');
                     if (!$network->getId()) {
                         $output->write('<info> (NEW) </info>');
@@ -87,19 +87,19 @@ class NetworkUpdateHostCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return HostHandler
-     */
-    public function getHostHandler(): HostHandler
-    {
-        return $this->host_handler;
-    }
-
-    /**
      * @return NetworkHandler
      */
     public function getNetworkHandler(): NetworkHandler
     {
         return $this->network_handler;
+    }
+
+    /**
+     * @return HostHandler
+     */
+    public function getHostHandler(): HostHandler
+    {
+        return $this->host_handler;
     }
 
 }

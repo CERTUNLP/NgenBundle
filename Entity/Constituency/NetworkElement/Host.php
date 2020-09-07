@@ -73,11 +73,6 @@ class Host extends NetworkElement
         $this->incidents = new ArrayCollection();
     }
 
-    public function isAutoUpdatable(): bool
-    {
-        return true;
-    }
-
     /**
      * @return Network
      */

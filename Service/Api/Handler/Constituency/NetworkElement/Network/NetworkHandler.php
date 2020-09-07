@@ -59,10 +59,13 @@ class NetworkHandler extends NetworkElementHandler
 
         if (!$network && $rdap_lookup) {
             try {
-                return $this->getNetworkRdapHandler()->search($address);
+                $network = $this->getNetworkRdapHandler()->search($address);
             } catch (RdapException $e) {
                 $network = null;
             }
+        }
+        if (!$network) {
+            $network = $this->getDefaultNetwork();
         }
         return $network;
     }
@@ -73,6 +76,14 @@ class NetworkHandler extends NetworkElementHandler
     public function getNetworkRdapHandler(): NetworkRdapClient
     {
         return $this->network_rdap_handler;
+    }
+
+    /**
+     * @return EntityApiInterface|Network
+     */
+    public function getDefaultNetwork(): Network
+    {
+        return $this->get(['ip_mask' => '0']);
     }
 
     /**
