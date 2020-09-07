@@ -140,7 +140,11 @@ abstract class IpAddress extends Address
     public function setCustomEndAddress(): IpAddress
     {
         if (is_callable([$this->getNetwork(), 'setEndAddress'])) {
-            $this->getNetwork()->setEndAddress($this->getIp()->getBroadcastIp((int)$this->getCustomAddressMask())->getProtocolAppropriateAddress());
+            if ($this->getCustomAddressMask() === "0") {
+                $this->getNetwork()->setEndAddress($this->getIp()->getNetworkIp((int)$this->getCustomAddressMask())->getProtocolAppropriateAddress());
+            } else {
+                $this->getNetwork()->setEndAddress($this->getIp()->getBroadcastIp((int)$this->getCustomAddressMask())->getProtocolAppropriateAddress());
+            }
         }
         return $this;
     }
