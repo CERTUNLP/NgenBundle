@@ -64,13 +64,14 @@ class HostRepository extends NetworkElementRepository
             ->from($this->getClassName(), 'h')
             ->where($qb->expr()->between('INET_ATON(h.ip)', 'INET_ATON(:start_address)', 'INET_ATON(:end_address)'))
             ->andWhere('h.active = true');
+
         $network = new Network($address);
         if ($limit_less_especific) {
             $qb->innerJoin('h.network', 'n')
                 ->andWhere($qb->expr()->lte('n.ip_mask', ':mask'))
-                ->andWhere($qb->expr()->neq('n.ip', ':ip'));
+                ->andWhere($qb->expr()->neq('n.ip_start_address', ':start_address'))
+                ->andWhere($qb->expr()->neq('n.ip_end_address', ':end_address'));
             $qb->setParameter('mask', (int)$network->getAddressMask());
-            $qb->setParameter('ip', $network->getAddress());
         }
 
         $qb->setParameter('start_address', $network->getStartAddress());
@@ -102,16 +103,15 @@ class HostRepository extends NetworkElementRepository
         $qb->select('h')
             ->from($this->getClassName(), 'h')
             ->where($qb->expr()->between('INET6_ATON(h.ip)', 'INET6_ATON(:start_address)', 'INET6_ATON(:end_address)'))
-            ->andWhere('h.active = true')
-            ->orderBy('h.ip_mask', 'DESC');
+            ->andWhere('h.active = true');
 
         $network = new Network($address);
         if ($limit_less_especific) {
             $qb->innerJoin('h.network', 'n')
                 ->andWhere($qb->expr()->lte('n.ip_mask', ':mask'))
-                ->andWhere($qb->expr()->neq('n.ip', ':ip'));
+                ->andWhere($qb->expr()->neq('n.ip_start_address', ':start_address'))
+                ->andWhere($qb->expr()->neq('n.ip_end_address', ':end_address'));
             $qb->setParameter('mask', (int)$network->getAddressMask());
-            $qb->setParameter('ip', $network->getAddress());
         }
         $qb->setParameter('start_address', $network->getStartAddress());
         $qb->setParameter('end_address', $network->getEndAddress());
