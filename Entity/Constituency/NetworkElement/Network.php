@@ -320,7 +320,7 @@ class Network extends NetworkElement implements NetworkInterface
      */
     public function canEditFundamentals(): bool
     {
-        return $this->getDeadIncidents()->isEmpty();
+        return $this->getDeadIncidents()->isEmpty() && $this->getAddressMask() !== "0";
     }
 
     /**
