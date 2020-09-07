@@ -22,6 +22,7 @@ else
  echo "Instalando base inicial"
  php bin/console doctrine:database:import /root/base.inicial.sql
  php bin/console fos:elastica:populate --no-reset --env prod
+ chown www-data -R $PATH_WEB/ngen_basic/app/Resources/app/Resources/feed/ $PATH_WEB/ngen_basic/app/Resources/incident
 fi;
 
 # La base si existe aplica las migraciones que pudieran existir
