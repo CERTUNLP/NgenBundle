@@ -24,7 +24,7 @@ services:
             - MYSQL_USER=ngenuser
             - MYSQL_PASSWORD=ngenpass
         cap_add:
-            - SYS_NICE  
+            - SYS_NICE
         ports:
             - "8002:3306"
         networks: [ 'ngen' ]
@@ -84,9 +84,11 @@ services:
         image: nginx:latest
         container_name: ngen-testing-proxy
         volumes:
-            - ./nginx/:/etc/nginx/conf.d/
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+            - ./nginx/ssl:/etc/nginx/ssl
         ports:
             - 443:443
+            - 1443:1443
         links:
             - ngen-testing-app:ngen-app
             - ngen-testing-grafana:ngen-grafana
