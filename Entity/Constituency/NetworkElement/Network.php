@@ -114,7 +114,6 @@ class Network extends NetworkElement implements NetworkInterface
         $this->hosts = new ArrayCollection();
     }
 
-
     /**
      * Get startAddress
      *
@@ -123,6 +122,14 @@ class Network extends NetworkElement implements NetworkInterface
     public function getStartAddress(): ?string
     {
         return $this->ip_start_address;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDefault(): bool
+    {
+        return $this->getAddressMask() === '0';
     }
 
     /**
@@ -320,7 +327,7 @@ class Network extends NetworkElement implements NetworkInterface
      */
     public function canEditFundamentals(): bool
     {
-        return $this->getDeadIncidents()->isEmpty() && $this->getAddressMask() !== "0";
+        return $this->getDeadIncidents()->isEmpty() && !$this->isDefault();
     }
 
     /**

@@ -1809,7 +1809,9 @@ LOCK TABLES `network` WRITE;
     DISABLE KEYS */;
 INSERT INTO `network`
 VALUES (1, 1, 1, 16, '192.168.0.0', 1, '2020-08-31 22:55:11', '2020-08-31 22:55:11', NULL, 'internal', NULL,
-        '192.168.0.0', '192.168.255.255', NULL, 1, NULL);
+        '192.168.0.0', '192.168.255.255', NULL, 1, NULL),
+       (1, 1, 1, 0, '0.0.0.0', 1, '2020-08-31 22:55:11', '2020-08-31 22:55:11', '0', 'internal', NULL,
+        '0.0.0.0', '0.0.0.0', NULL, 1, NULL);
 /*!40000 ALTER TABLE `network`
     ENABLE KEYS */;
 UNLOCK TABLES;

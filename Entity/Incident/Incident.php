@@ -897,12 +897,16 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-     * @param Network $network
+     * @param Network|null $network
      * @return Incident
      */
     public function setNetwork(Network $network = null): Incident
     {
-        $this->setter($this->network, $network);
+        if ($this->getNetwork() && $this->getNetwork()->isDefault()) {
+            $this->network = $network;
+        } else {
+            $this->setter($this->network, $network);
+        }
         return $this;
     }
 
