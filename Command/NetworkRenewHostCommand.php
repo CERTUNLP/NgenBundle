@@ -55,7 +55,7 @@ class NetworkRenewHostCommand extends ContainerAwareCommand
         $output->writeln('[network host renew]: Starting.');
         $limit = 50;
         $offset = 0;
-        $networks = $this->getNetworkHandler()->all([], ['id' => 'desc'], $limit, $offset);
+        $networks = $this->getNetworkHandler()->all([], ['ip_mask' => 'desc'], $limit, $offset);
         while ($networks) {
             $output->write('[network host renew]:<info> Found ' . count($networks) . ' networks to update.</info>');
             $output->writeln('<info>Total analyzed ' . $offset . '</info>');
@@ -63,12 +63,13 @@ class NetworkRenewHostCommand extends ContainerAwareCommand
                 $output->write('[network host renew]: Searching new hosts for: ' . $network->getAddressAndMask());
                 $hosts = $this->getHostHandler()->getRepository()->findInRange($network->getAddressAndMask(), true);
                 $output->writeln('<info> Found ' . count($hosts) . ' hosts to update.</info>');
-
-                foreach ($hosts as $host) {
-                    $output->write('<comment>[network host renew]: Updating: ' . $host . ' from:' . $host->getNetwork()->getAddressAndMask() . ' to: ' . $network->getAddressAndMask() . '</comment>');
-                    $host->setNetwork($network);
+                if ($hosts) {
+                    foreach ($hosts as $host) {
+                        $output->writeln('<comment>[network host renew]: Updating: ' . $host . ' from:' . $host->getNetwork()->getAddressAndMask() . ' to: ' . $network->getAddressAndMask() . '</comment>');
+                        $network->addHost($host);
+                    }
                     try {
-                        $this->getHostHandler()->patch($host);
+                        $this->getNetworkHandler()->patch($network);
                         $output->writeln('<info>...Done</info>');
                     } catch (InvalidFormException $exception) {
                         $output->writeln('<error>...Error</error>');
@@ -76,7 +77,7 @@ class NetworkRenewHostCommand extends ContainerAwareCommand
                 }
             }
             $offset += $limit;
-            $networks = $this->getNetworkHandler()->all([], ['id' => 'desc'], $limit, $offset);
+            $networks = $this->getNetworkHandler()->all([], ['ip_mask' => 'desc'], $limit, $offset);
         }
         $output->writeln('[network host renew]: Finished.');
     }

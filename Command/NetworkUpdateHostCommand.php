@@ -55,15 +55,18 @@ class NetworkUpdateHostCommand extends ContainerAwareCommand
         $output->writeln('[network update]: Starting.');
         $limit = 50;
         $offset = 0;
-        $hosts = $this->getHostHandler()->all(['network' => null], ['id' => 'desc'], $limit, $offset);
+        $hosts = $this->getHostHandler()->all(['network' => 22688], null, $limit, $offset);
         while ($hosts) {
             $output->write('[network update]:<info> Found ' . count($hosts) . ' hosts to update.</info>');
             $output->writeln('<info>Total analyzed ' . $offset . '</info>');
             foreach ($hosts as $host) {
                 $output->write('[network update]: Searching: ' . $host);
                 $network = $this->getNetworkHandler()->findOneInRange($host->getAddress(), true);
-                if ($network) {
+                if ($network && $network->getId() !== $host->getNetwork()->getId()) {
                     $output->write('<info> Found: ' . $network . '</info>');
+                    if (!$network->getId()) {
+                        $output->write('<info> (NEW) </info>');
+                    }
                     $output->write('<comment> Admin: ' . $network->getNetworkAdmin() . '</comment>');
                     $output->writeln('<comment> Entity: ' . $network->getNetworkEntity() . '</comment>');
                     $host->setNetwork($network);
@@ -77,7 +80,7 @@ class NetworkUpdateHostCommand extends ContainerAwareCommand
                 }
             }
             $offset += $limit;
-            $hosts = $this->getHostHandler()->all(['network' => null], ['id' => 'desc'], $limit, $offset);
+            $hosts = $this->getHostHandler()->all(['network' => 22688], null, $limit, $offset);
         }
         $output->writeln('[network update]: Finished.');
     }
