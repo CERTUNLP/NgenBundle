@@ -232,7 +232,10 @@ class NetworkRdapClient
                     $contact[$id]['email'] = $vcard->getContentSimple();
                 }
             }
-            if (!isset($contact[$id]['email'])) {
+            if (!isset($contact[$id]['name'])) {
+                $contact[$id]['name'] = false;
+            }
+            if (!isset($contact[$id]['email']) ||(isset($contact[$id]['email']) && !$contact[$id]['email']) ) {
                 unset($contact[$id]);
             }
         }
