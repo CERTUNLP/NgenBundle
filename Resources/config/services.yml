@@ -39,7 +39,7 @@ services:
 
     CertUnlp\NgenBundle\:
         resource: '../../../NgenBundle/*'
-        exclude: '../../../NgenBundle/{Entity,Tests,Docker,DoctrineMigrations}'
+        exclude: '../../../NgenBundle/{Entity,Tests,Utils,Docker,DoctrineMigrations}'
     CertUnlp\NgenBundle\Controller\:
         resource: '../../../NgenBundle/Controller'
         public: true
