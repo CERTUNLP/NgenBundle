@@ -41,7 +41,7 @@ php bin/console assetic:dump --env=prod --no-debug
 echo "por hacer assets:install"
 php bin/console assets:install --symlink --env=prod
 ln -s $PATH_WEB/ngen_basic/vendor/fortawesome/font-awesome/webfonts web/webfonts
-chown www-data -R $PATH_WEB/ngen_basic/ngen_basic/var/sessions 
-chown www-data -R $PATH_WEB/ngen_basic/ngen_basic/var/logs 
-chown www-data -R $PATH_WEB/ngen_basic/ngen_basic/var/cache 
+chown www-data -R $PATH_WEB/ngen_basic/var/sessions
+chown www-data -R $PATH_WEB/ngen_basic/var/logs
+chown www-data -R $PATH_WEB/ngen_basic/var/cache 
 exec "$@"
