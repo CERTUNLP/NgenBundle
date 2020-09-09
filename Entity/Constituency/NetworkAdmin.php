@@ -29,7 +29,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Debug\Exception\ClassNotFoundException;
 
 
 /**
@@ -90,12 +89,23 @@ class NetworkAdmin extends EntityApiFrontend
         $this->networks = new ArrayCollection();
         $this->contacts = new ArrayCollection();
     }
+
     /**
      * @return bool
      */
     public function canEditFundamentals(): bool
     {
         return $this->getNetworks()->isEmpty();
+    }
+
+    /**
+     * Get networks
+     *
+     * @return Collection
+     */
+    public function getNetworks(): Collection
+    {
+        return $this->networks;
     }
 
     /**
@@ -109,6 +119,7 @@ class NetworkAdmin extends EntityApiFrontend
             return $incident->isDead();
         });
     }
+
     /**
      * Get id
      *
@@ -177,16 +188,6 @@ class NetworkAdmin extends EntityApiFrontend
         return $this->networks->removeElement($networks);
     }
 
-    /**
-     * Get networks
-     *
-     * @return Collection
-     */
-    public function getNetworks(): Collection
-    {
-        return $this->networks;
-    }
-
     public function __toString(): string
     {
         return $this->getName();
@@ -234,7 +235,7 @@ class NetworkAdmin extends EntityApiFrontend
     {
         $array_mails = $this->getContacts()->map(static function (Contact $value) {
             return $value->getEmail();
-        }); // [2, 3, 4]
+        });
         return $array_mails->toArray();
     }
 

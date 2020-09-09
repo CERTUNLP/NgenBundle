@@ -54,20 +54,10 @@ class IncidentFrontendController extends FrontendController
      */
     public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_incident): array
     {
-        return $this->homeEntity($request, $elastica_finder_incident);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function homeEntity(Request $request, PaginatedFinderInterface $finder, string $term = '', int $limit = 7, string $defaultSortFieldName = 'createdAt', string $defaultSortDirection = 'desc'): array
-    {
-        if (!$term) {
-            $term = $request->get('term') ?: '*';
-        }
+        $term = $request->get('term') ?: '*';
         $quickSearchForm = $this->getFormFactory()->createBuilder(IncidentSearchType::class, (new Incident), array('csrf_protection' => true));
-        return array('objects' => $this->searchEntity($request, $finder, $term, $limit, $defaultSortFieldName, $defaultSortDirection, 'pageobject', 'object')['objects'], 'search_form' => $quickSearchForm->getForm()->createView());
 
+        return array('objects' => [], 'term' => $term, 'search_form' => $quickSearchForm->getForm()->createView());
     }
 
     /**
@@ -166,6 +156,20 @@ class IncidentFrontendController extends FrontendController
     public function searchIncidentAction(Request $request, PaginatedFinderInterface $elastica_finder_incident): array
     {
         return $this->homeEntity($request, $elastica_finder_incident);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function homeEntity(Request $request, PaginatedFinderInterface $finder, string $term = '', int $limit = 7, string $defaultSortFieldName = 'createdAt', string $defaultSortDirection = 'desc'): array
+    {
+        if (!$term) {
+            $term = $request->get('term') ?: '*';
+        }
+        $quickSearchForm = $this->getFormFactory()->createBuilder(IncidentSearchType::class, (new Incident), array('csrf_protection' => true));
+        $search = $this->searchEntity($request, $finder, $term, $limit, $defaultSortFieldName, $defaultSortDirection, 'pageobject', 'object');
+        return array('objects' => $search['objects'], 'term' => $search['term'], 'search_form' => $quickSearchForm->getForm()->createView());
+
     }
 
     /**

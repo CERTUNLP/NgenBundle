@@ -90,15 +90,6 @@ class TaxonomyValue extends EntityApi
         return false;
     }
 
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->getSlug();
-    }
 
     /**
      * @return string

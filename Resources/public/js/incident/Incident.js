@@ -9,14 +9,16 @@
 var Incident = Frontend.extend({
     init: function () {
         this.eventTarget = null;
+        this.search_terms = new SearchTerm();
         $(document).on("click", 'a.state-label', $.proxy(this.changeState, this));
-        // $('.form-check-input').on('change', $.proxy(this.search, this));
-        $('.select-filter').on('change', $.proxy(this.search, this));
-        $('.multiple-select-filter').on('blur', $.proxy(this.search, this));
-        $('.data-filter').on('submit', $.proxy(this.search, this));
+        // $('.form-check-input').on('change', $.proxy(this.filterListHeaders, this));
+        $('.select-filter').on('change', $.proxy(this.filterListHeaders, this));
+        $('.multiple-select-filter').on('blur', $.proxy(this.filterListHeaders, this));
+        $('.data-filter').on('submit', $.proxy(this.filterListHeaders, this));
         $('.message-set-pending').on('click', $.proxy(this.messagePending, this));
         $('#generalSearch').on('submit', $.proxy(this.search, this));
         $(document).on("click", 'a.colorbox-filter', $.proxy(this.filterListDropdown, this));
+        this.search();
     },
     getObjectBrief: function () {
         return 'incident';
@@ -55,20 +57,25 @@ var Incident = Frontend.extend({
         event.preventDefault();
         let $th = $('.filtrosMostrar').find('th').eq($(event.currentTarget).parents('td').index());
         let $input;
-        let $event;
         if ($th.find('select').length) {
             $input = $th.find('select');
-            $event = 'change';
         } else {
             $input = $th.find('input');
-            if ($input.hasClass('multiple-select-filter')) {
-                $event = 'blur';
-            } else {
-                $event = 'change';
-            }
         }
         $input.val($(event.currentTarget).data('id'));
-        $input.trigger($event);
+        $input.data('id', $(event.currentTarget).data('id'));
+        this.search_terms.filterList(event);
+
+    },
+    filterListHeaders: function (event) {
+        event.preventDefault();
+        if ($(event.currentTarget).val()) {
+            $(event.currentTarget).data('id', $(event.currentTarget).val());
+        }else{
+            $(event.currentTarget).data('id', '');
+            $(event.currentTarget).data('action', 'delete');
+        }
+        this.search_terms.filterList(event);
 
     },
     filterListComplete: function (query) {
@@ -96,64 +103,13 @@ var Incident = Frontend.extend({
                 return false;
             });
 
+            $.publish('/cert_unlp/incident/updatelist');
             $.publish('/cert_unlp/notify/success', ["The list was filtered"]);
         });
     },
-    search: function (event) {
-        event.preventDefault();
-        query = '*';
+    search: function () {
         self = this;
-        $(".multiple-select-filter").each(function () {
-            if ($(this).val() != null && $(this).val().length > 0) {
-                subquery = '(';
-                parametros = JSON.parse($(this).attr('search'));
-                valor = self.sanitize($(this).val());
-                if ($(this).parent().parent().children('.form-check-input')[0] != null && $(this).parent().parent().children('.form-check-input')[0].checked) {
-                    // valor = valor + '*';
-                }
-                if ($(this).attr('index') != null && $(this).attr('index').length > 0) {
-                    name = $(this).attr('index');
-                } else {
-                    name = $(this).attr('name');
-                }
-                parametros.forEach(function (element, index) {
-                    if (index == 0) {
-                        subquery = subquery + name + '.' + element + ':' + valor;
-                    } else {
-                        subquery = subquery + ' || ' + name + '.' + element + ':' + valor;
-                    }
-                });
-                query = (query) + ' && ' + subquery + ')';
-            }
-        });
-        $(".select-filter").each(function () {
-            if ($(this).attr('index') != null && $(this).attr('index').length > 0) {
-                name = $(this).attr('index');
-            } else {
-                name = $(this).attr('name');
-            }
-            if ($(this).val() != null && $(this).val() != 0 && $(this).val().length > 0) {
-                valor = self.sanitize($(this).val());
-                if ($(this).parent().parent().children('.form-check-input')[0] != null && $(this).parent().parent().children('.form-check-input')[0].checked) {
-                    // valor = valor + '*';
-                }
-                // if ($(this).attr('search') != null && $(this).attr('search').length > 0) {
-                //     query = (query) + ' && ' + name + '.' + $(this).attr('search') + ':' + valor;
-                // } else {
-                query = (query) + ' && ' + name + ':' + valor;
-                // }
-            }
-        });
-
-        $("#generalSearch").each(function () {
-            if ($(this).find('input[name="term"]').val() != null && $(this).find('input[name="term"]').val().length > 0) {
-                valor = self.sanitize($(this).find('input[name="term"]').val());
-                name = 'term';
-                query = (query) + ' && ' + valor;
-
-            }
-        });
-        this.query = query;
+        this.query = this.search_terms.getQuery() ? this.search_terms.getQuery() : '*';
         this.filterListComplete(this.query);
         return false;
     },

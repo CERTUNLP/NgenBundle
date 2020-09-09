@@ -205,6 +205,7 @@ class IncidentHandler extends Handler
                 $entity_db->addIncidentDetected($entity_api);
                 return $entity_db;
             }
+            $entity_api->addIncidentDetected($entity_api);
         }
         return $entity_api;
     }
