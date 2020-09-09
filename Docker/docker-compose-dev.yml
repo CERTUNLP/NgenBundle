@@ -78,7 +78,7 @@ services:
             - INTERNAL_DASHBOARD_GRAFANA=d/incidentesinternos/incidentes-internos?from=now-24h&to=now&orgId=1&theme=light&kiosk=tv
             - USER_GRAFANA=admin
             - PASS_GRAFANA=admin
-            - GRAFANA_HOST=http://ngen-grafana:3000/
+            - GRAFANA_HOST=http://ngen-grafana:3000
             - PHP_IDE_CONFIG=serverName=docker-server
         links:
             - ngen-elastic:ngen-elastic

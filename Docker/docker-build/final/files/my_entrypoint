@@ -24,8 +24,10 @@ else
  php bin/console fos:elastica:populate --no-reset --env prod
  chown www-data -R $PATH_WEB/ngen_basic/app/Resources/app/Resources/feed/ $PATH_WEB/ngen_basic/app/Resources/incident
  chmod + $PATH_WEB/ngen_basic/src/NgenBundle/Utils/validateApiKey.php
- #PASSVIEWER=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
- #curl -XPOST -H "Content-Type: application/json" -d '{"name":"Viewer","email":"viewer@localhost","login":"viewer","password":"$PASSVIEWER"}' http://admin:admin@localhost:3000/api/admin/users
+ PASSVIEWER=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
+ curl -XPOST -H "Content-Type: application/json" -d '{"name":"Viewer","email":"viewer@localhost","login":"viewer","password":"$PASSVIEWER"}' --username $USER_GRAFANA:$PASS_GRAFANA $GRAFANA_HOST/api/admin/users
+
+
 fi;
 
 # La base si existe aplica las migraciones que pudieran existir
