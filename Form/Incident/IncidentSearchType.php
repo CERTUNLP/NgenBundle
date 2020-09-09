@@ -41,7 +41,7 @@ class IncidentSearchType extends AbstractType
                 'required' => false,
                 'placeholder' => 'All',
                 'choice_value' => 'name',
-                'attr' => array('class' => 'select-filter', 'search' => 'slug')
+                'attr' => array('class' => 'select-filter', 'search' => 'slug', 'data-action' => 'add' ,'data-id' => '')
             ))
             ->add('feed', EntityType::class, array(
                 'class' => IncidentFeed::class,
@@ -56,21 +56,21 @@ class IncidentSearchType extends AbstractType
                 'label' => false,
                 'empty_data' => 'google',
                 'mapped' => false,
-                'attr' => array('class' => 'select-filter', 'search' => json_encode([]), 'index' => 'origin')
+                'attr' => array('class' => 'select-filter', 'search' => json_encode([]), 'index' => 'origin', 'data-action' => 'add' ,'data-id' => '')
             ))
             ->add('dates', DateType::class, array(
                 'required' => false,
                 'label' => false,
                 'mapped' => false,
                 'widget' => 'single_text',
-                'attr' => array('class' => 'select-filter', 'index' => 'date', 'size' => 11),
+                'attr' => array('class' => 'select-filter', 'index' => 'date', 'size' => 11, 'data-action' => 'add' ,'data-id' => ''),
             ))
             ->add('updatesAt', DateType::class, array(
                 'required' => false,
                 'label' => false,
                 'mapped' => false,
                 'widget' => 'single_text',
-                'attr' => array('class' => 'select-filter', 'index' => 'updatedAt', 'size' => 11),
+                'attr' => array('class' => 'select-filter', 'index' => 'updatedAt', 'size' => 11, 'data-action' => 'add' ,'data-id' => ''),
             ))
             ->add('state', EntityType::class, array(
                 'label' => false,
@@ -78,7 +78,7 @@ class IncidentSearchType extends AbstractType
                 'class' => IncidentState::class,
                 'placeholder' => 'All',
                 'choice_value' => 'name',
-                'attr' => array('class' => 'select-filter', 'search' => 'slug')
+                'attr' => array('class' => 'select-filter', 'search' => 'slug', 'data-action' => 'add' ,'data-id' => '')
             ))
             ->add('tlp', EntityType::class, array(
                 'label' => false,
@@ -86,7 +86,7 @@ class IncidentSearchType extends AbstractType
                 'class' => IncidentTlp::class,
                 'placeholder' => 'All',
                 'choice_value' => 'name',
-                'attr' => array('class' => 'select-filter', 'search' => 'slug')
+                'attr' => array('class' => 'select-filter', 'search' => 'slug', 'data-action' => 'add' ,'data-id' => '')
             ))
             ->add('reporter', EntityType::class, array(
                 'label' => false,
@@ -94,7 +94,7 @@ class IncidentSearchType extends AbstractType
                 'class' => User::class,
                 'placeholder' => 'All',
                 'choice_value' => 'name',
-                'attr' => array('class' => 'select-filter', 'search' => 'id')
+                'attr' => array('class' => 'select-filter', 'search' => 'id', 'data-action' => 'add' ,'data-id' => '')
             ))
             ->add('assigned', EntityType::class, array(
                 'label' => false,
@@ -102,7 +102,7 @@ class IncidentSearchType extends AbstractType
                 'class' => User::class,
                 'placeholder' => 'All',
                 'choice_value' => 'name',
-                'attr' => array('class' => 'select-filter', 'search' => 'id')
+                'attr' => array('class' => 'select-filter', 'search' => 'id', 'data-action' => 'add' ,'data-id' => '')
             ))
             ->add('ltdCount', IntegerType::class, array(
                 'label' => false,
@@ -115,7 +115,7 @@ class IncidentSearchType extends AbstractType
                 'class' => IncidentPriority::class,
                 'choice_value' => 'name',
                 'placeholder' => 'All',
-                'attr' => array('class' => 'select-filter', 'search' => 'name')
+                'attr' => array('class' => 'select-filter', 'search' => 'name', 'data-action' => 'add' ,'data-id' => '')
             ));
     }
 

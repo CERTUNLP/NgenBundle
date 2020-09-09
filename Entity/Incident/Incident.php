@@ -21,7 +21,6 @@ use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Entity\User\User;
-use CertUnlp\NgenBundle\Model\EntityInterface;
 use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
 use DateInterval;
 use DateTime;
@@ -1395,24 +1394,6 @@ class Incident extends EntityApiFrontend
     /**
      * @return Host
      */
-    public function getDestination(): ?Host
-    {
-        return $this->destination;
-    }
-
-    /**
-     * @param Host $destination
-     * @return Incident
-     */
-    public function setDestination(Host $destination): Incident
-    {
-        $this->setter($this->destination, $destination);
-        return $this;
-    }
-
-    /**
-     * @return Host
-     */
     public function getHostAddress(): ?string
     {
         return $this->getAddress();
@@ -1456,7 +1437,7 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-     * @param EntityInterface|Host $origin
+     * @param Host|null $origin
      * @return Incident
      */
     public function setOrigin(Host $origin = null): Incident

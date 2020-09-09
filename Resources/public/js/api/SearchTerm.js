@@ -12,6 +12,9 @@ var SearchTerm = Class.extend({
         this.search_input = this.search_form.find('input');
         this.initTerms();
         this.updateButtonFilters();
+        this.search_input.on('change', $.proxy(this.initTerms, this));
+        $.subscribe('/cert_unlp/incident/updatelist', $.proxy(this.initTerms, this));
+        $.subscribe('/cert_unlp/incident/updatelist', $.proxy(this.updateButtonFilters, this));
     },
     updateButtonFilters: function () {
         self = this;
@@ -19,15 +22,16 @@ var SearchTerm = Class.extend({
 
             let $key = self.termKey($term);
             let $value = self.termValue($term);
-
-            self.column($key).each(function (b, $td) {
-                if ($($td).find('.colorbox-filter').data('id').toString() === $value) {
-                    $($td).find('.colorbox-filter').data('action', 'remove');
-                    $($td).find('i').each(function (b, $icon) {
-                        $($icon).toggleClass('fas fa-filter').toggleClass('fas fa-backspace');
-                    })
-                }
-            });
+            if ($value) {
+                self.column($key).each(function (b, $td) {
+                    if ($($td).find('.colorbox-filter').data('id').toString() === $value) {
+                        $($td).find('.colorbox-filter').data('action', 'remove');
+                        $($td).find('i').each(function (b, $icon) {
+                            $($icon).toggleClass('fas fa-filter').toggleClass('fas fa-backspace');
+                        })
+                    }
+                });
+            }
         });
     },
     termKey: function ($term) {
@@ -39,7 +43,10 @@ var SearchTerm = Class.extend({
 
     },
     termValue: function ($term) {
-        return $term.split(': ')[1].replace(/"/g, '').replace(/\\/g, '');
+        if ($term.split(': ')[1]) {
+            return $term.split(': ')[1].replace(/"/g, '').replace(/\\/g, '');
+        }
+        return false;
     },
     initTerms: function () {
         if (this.search_input.val() === '*' || !this.search_input.val()) {
@@ -57,8 +64,11 @@ var SearchTerm = Class.extend({
         this.submit();
     },
     submit: function () {
-        this.search_input.val(this.search_terms.join(' && '));
+        this.search_input.val(this.getQuery());
         this.search_form.trigger('submit');
+    },
+    getQuery: function () {
+        return this.search_terms.join(' && ');
     },
     eventAdd: function ($key, $value) {
         if (this.exists($key)) {
@@ -68,12 +78,14 @@ var SearchTerm = Class.extend({
                 this.delete($key);
             }
         } else {
-            this.add($key, $value);
+            if ($value) {
+                this.add($key, $value);
+            }
         }
     },
     eventKey: function () {
         // return $.camelCase(this.header().text().toLowerCase().trim().replace(/ /g, '-'));
-        return $(this.header().find('a.sortable').attr('href').split('?')[1].split('&')).filter(function (a, b) {
+        return $(this.header().find('a').attr('href').split('?')[1].split('&')).filter(function (a, b) {
             return b.includes('sort');
         }).get(0).split('=')[1]
     },
@@ -116,16 +128,17 @@ var SearchTerm = Class.extend({
         return $value;
     },
     add: function ($key, $value) {
-
         return this.search_terms.push($key + ': ' + this.sanitize($value))
     },
     header: function () {
-        return $('table').find('th').eq(this.target.parents('td').index());
+        let $index = this.target.parents('td').index();
+        $index = $index === -1 ? this.target.parents('th').index() : $index;
+        return $('div.card-body table').find('th').eq($index);
 
     },
     column: function ($key) {
         let $index = $("th:contains('" + $key + "')").index() + 1;
-        return $('table tr td:nth-child(' + $index + ')');
+        return $('div.card-body table tr td:nth-child(' + $index + ')');
 
     },
     replace: function ($key, $value) {
