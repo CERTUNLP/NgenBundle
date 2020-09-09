@@ -23,6 +23,8 @@ services:
             - MYSQL_DATABASE=ngen
             - MYSQL_USER=ngenuser
             - MYSQL_PASSWORD=ngenpass
+        cap_add:
+            - SYS_NICE
         ports:
             - "8002:3306"
         networks: [ 'ngen' ]
@@ -94,7 +96,7 @@ services:
             - ngen-app:ngen-app
         networks: [ 'ngen' ]
     ngen-elastic:
-        image: docker.elastic.co/elasticsearch/elasticsearch:5.6.10
+        image: docker.elastic.co/elasticsearch/elasticsearch:6.8.12
         environment:
             - cluster.name=docker-cluster
             - discovery.type=single-node

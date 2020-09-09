@@ -16,6 +16,7 @@ use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\HostHand
 use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\Network\NetworkHandler;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class NetworkUpdateHostCommand extends ContainerAwareCommand
@@ -40,8 +41,8 @@ class NetworkUpdateHostCommand extends ContainerAwareCommand
     {
         $this
             ->setName('cert_unlp:network:update:host')
-            ->setDescription('Execute a list of enrichments for the hosts');
-//            ->addOption('all', '-a', InputOption::VALUE_OPTIONAL, 'execute all enrichments', true)
+            ->setDescription('search networks for hosts that doesn\'t have one.')
+            ->addOption('max', '--max', InputOption::VALUE_OPTIONAL, 'limit the update to first $max host', -1);
 //            ->addOption('enrichment', '-en', InputOption::VALUE_OPTIONAL, 'execute the enrichment given');
     }
 
@@ -55,9 +56,10 @@ class NetworkUpdateHostCommand extends ContainerAwareCommand
         $output->writeln('[network update]: Starting.');
         $limit = 50;
         $offset = 0;
+        $max = (int)$input->getOption('max');
         $default_network = $this->getNetworkHandler()->getDefaultNetwork()->getId();
-        $hosts = $this->getHostHandler()->all(['network' => $default_network], null, $limit, $offset);
-        while ($hosts) {
+        $hosts = $this->getHostHandler()->all(['network' => $default_network], ['id' => 'desc'], $limit, $offset);
+        while ($hosts && $offset !== $max) {
             $output->write('[network update]:<info> Found ' . count($hosts) . ' hosts to update.</info>');
             $output->writeln('<info>Total analyzed ' . $offset . '</info>');
             foreach ($hosts as $host) {
@@ -81,7 +83,10 @@ class NetworkUpdateHostCommand extends ContainerAwareCommand
                 }
             }
             $offset += $limit;
-            $hosts = $this->getHostHandler()->all(['network' => $default_network], null, $limit, $offset);
+            $hosts = $this->getHostHandler()->all(['network' => $default_network], ['id' => 'desc'], $limit, $offset);
+        }
+        if ($offset === $max) {
+            $output->writeln('[network update]: Reached Max parameter.');
         }
         $output->writeln('[network update]: Finished.');
     }
