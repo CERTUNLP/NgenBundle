@@ -106,15 +106,27 @@ services:
             - "9200:9200"
         networks: [ 'ngen' ]
     ngen-testing-grafana:
-        image: certunlp/grafana:1.0
+        image: grafana/grafana:latest
         ports:
             - "3000:3000"
         volumes:
             - ngen-testing-grafana-data:/var/lib/grafana
+            - ./grafana/dashboard:/etc/grafana/provisioning/dashboards/
+            - ./grafana/datasources:/etc/grafana/provisioning/datasources/
         environment:
-            - ELASTIC_HOST=ngen-testing-elastic
-            - ELASTIC_PORT=9200
-            - NGEN_APP=ngen-testing-app
+            #- ELASTIC_HOST=ngen-testing-elastic
+            #- ELASTIC_PORT=9200
+            #- NGEN_APP=ngen-testing-app
+            - GF_SERVER_ROOT_URL=http://ngen-testing-elastic/grafana/
+            - GF_SERVER_SERVE_FROM_SUB_PATH=true
+            - GF_USERS_ALLOW_SIGN_UP=false
+            - GF_USERS_AUTO_ASSIGN_ORG=true
+            - GF_USERS_AUTO_ASSIGN_ORG_ROLE=Viewer
+            - GF_AUTH_PROXY_ENABLED=true
+            - GF_AUTH_HEADER_NAME=X-WEBAUTH-USER
+            - GF_AUTH_HEADER_PROPERTY=username
+            - GF_AUTH_AUTO_SIGN_UP=true
+            - GF_SECURITY_ALLOW_EMBEDDING=true
         networks: [ 'ngen' ]
         depends_on: [ 'ngen-testing-elastic' ]
         links:
