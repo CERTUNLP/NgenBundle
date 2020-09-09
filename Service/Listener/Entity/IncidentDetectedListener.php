@@ -73,8 +73,6 @@ class IncidentDetectedListener
      */
     private function getUploadDirectory(): string
     {
-        // the absolute directory path where uploaded
-        // documents should be saved
         return $this->evidence_path;
     }
 
