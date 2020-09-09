@@ -680,7 +680,7 @@ fos_elastica:
                             update: true
                             delete: true
         taxonomy_value:
-            index_name: taxonomy_%kernel.environment%
+            index_name: taxonomy_value_%kernel.environment%
             settings:
                 index:
                     max_result_window: 50000
@@ -728,7 +728,7 @@ fos_elastica:
                             update: true
                             delete: true
         taxonomy_predicate:
-            index_name: taxonomy_%kernel.environment%
+            index_name: taxonomy_predicate_%kernel.environment%
             settings:
                 index:
                     max_result_window: 50000

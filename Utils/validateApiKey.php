@@ -5,7 +5,7 @@ $apikey = $_ENV["PASS"];
 $apikey = escapeshellarg($apikey);
 
 if (preg_match('/^\'[A-Za-z0-9]+\'$/', $apikey)) {
-	$cmd = "curl -s -f -H 'apikey: " . $apikey . "' http://localhost/api/status/ngen/version.json";
+	$cmd = "curl -s -f -H 'apikey: " . $apikey . "' http://localhost/api/version.json";
 	exec($cmd, $output, $exitcode);
 	exit($exitcode);
 }

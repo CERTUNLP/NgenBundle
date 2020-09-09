@@ -6,6 +6,7 @@ datasources:
     editable: true
     access: proxy
     database: "incidents_prod*"
-    url: http://ELASTIC_URL
+    url: http://elasticsearch:9200
     jsonData:
       timeField: "createdAt"
+      esVersion: 60
