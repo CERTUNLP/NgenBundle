@@ -22,9 +22,9 @@
     </td>
     <td class="text-center">
         <div class="float-left">
-            {% for email in networkAdmin.emails %}
-                {{ print.colordropbox(networkAdmin.color,'envelope',email,'#',email) }}
-            {% endfor %}
+{#            {% for email in networkAdmin.emails %}#}
+                {{ print.colordropbox(networkAdmin.color,'envelope',networkAdmin.emails[0],'#',networkAdmin.emails[0]) }}
+{#            {% endfor %}#}
         </div>
     </td>
     <td class="text-center">
