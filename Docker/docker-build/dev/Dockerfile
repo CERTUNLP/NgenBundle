@@ -1,4 +1,4 @@
-FROM ngen-test
+FROM ngen-final
 
 MAINTAINER Einar Lanfranco
 

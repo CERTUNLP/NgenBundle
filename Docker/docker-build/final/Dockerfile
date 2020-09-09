@@ -12,7 +12,6 @@ ADD files/AppKernel.php /application/ngen_basic/app/AppKernel.php
 ADD files/000-default.conf /etc/apache2/sites-available/000-default.conf
 ADD files/routing.yml /application/ngen_basic/app/config/routing.yml
 ADD files/sql/base.inicial.sql /root/
-ADD files/update_parameters /usr/local/bin/update_parameters
 ADD files/my_entrypoint /usr/local/bin/my_entrypoint
 ADD files/mailer_entrypoint /usr/local/bin/mailer_entrypoint
 
