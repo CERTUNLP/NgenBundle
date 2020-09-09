@@ -1,22 +1,24 @@
 {
   "annotations": {
-    "list": [{
-      "builtIn": 1,
-      "datasource": "-- Grafana --",
-      "enable": true,
-      "hide": true,
-      "iconColor": "rgba(0, 211, 255, 1)",
-      "name": "Annotations & Alerts",
-      "type": "dashboard"
-    }]
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 2,
-  "iteration": 1556751535179,
+  "iteration": 1599692868862,
   "links": [],
-  "panels": [{
+  "panels": [
+    {
       "cacheTimeout": null,
       "colorBackground": false,
       "colorValue": true,
@@ -26,6 +28,12 @@
         "#99440a"
       ],
       "datasource": "Elastic Incidentes",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 200,
@@ -43,17 +51,15 @@
       "hideTimeOverride": true,
       "id": 12,
       "interval": null,
-      "links": [{
-        "dashUri": "db/incidentes-table",
-        "dashboard": "Incidentes Table",
-        "includeVars": true,
-        "keepTime": true,
-        "params": "var-type=internal&var-state=open",
-        "title": "Incidentes Table",
-        "type": "dashboard"
-      }],
+      "links": [
+        {
+          "title": "Incidentes Table",
+          "url": "dashboard/db/incidentes-table?$__url_time_range&$__all_variables&var-type=internal&var-state=open"
+        }
+      ],
       "mappingType": 1,
-      "mappingTypes": [{
+      "mappingTypes": [
+        {
           "name": "value to text",
           "value": 1
         },
@@ -69,49 +75,61 @@
       "postfixFontSize": "50%",
       "prefix": "",
       "prefixFontSize": "50%",
-      "rangeMaps": [{
-        "from": "null",
-        "text": "N/A",
-        "to": "null"
-      }],
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "date",
-      "targets": [{
-        "bucketAggs": [{
-          "field": "createdAt",
-          "id": "2",
-          "settings": {
-            "interval": "1y",
-            "min_doc_count": 0,
-            "trimEdges": 0
-          },
-          "type": "date_histogram"
-        }],
-        "metrics": [{
-          "field": "select field",
-          "id": "1",
-          "type": "count"
-        }],
-        "query": "NOT network.discr:\"internal\" AND state.slug:\"undefined\"",
-        "refId": "A",
-        "timeField": "createdAt"
-      }],
+      "tableColumn": "",
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "$$hashKey": "object:1155",
+              "field": "createdAt",
+              "id": "2",
+              "settings": {
+                "interval": "1y",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "metrics": [
+            {
+              "$$hashKey": "object:1153",
+              "field": "select field",
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "network_data.internal:false AND state:\"Undefined\"",
+          "refId": "A",
+          "timeField": "createdAt"
+        }
+      ],
       "thresholds": "40,130",
       "timeFrom": "100y",
       "title": "Incidentes Undefined",
       "transparent": true,
       "type": "singlestat",
       "valueFontSize": "150%",
-      "valueMaps": [{
-        "op": "=",
-        "text": "N/A",
-        "value": "null"
-      }],
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
       "valueName": "total"
     },
     {
@@ -124,6 +142,12 @@
         "#cca300"
       ],
       "datasource": "Elastic Incidentes",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 200,
@@ -141,17 +165,15 @@
       "hideTimeOverride": true,
       "id": 13,
       "interval": null,
-      "links": [{
-        "dashUri": "db/incidentes-table",
-        "dashboard": "Incidentes Table",
-        "includeVars": true,
-        "keepTime": true,
-        "params": "var-type=internal&var-state=open",
-        "title": "Incidentes Table",
-        "type": "dashboard"
-      }],
+      "links": [
+        {
+          "title": "Incidentes Table",
+          "url": "dashboard/db/incidentes-table?$__url_time_range&$__all_variables&var-type=internal&var-state=open"
+        }
+      ],
       "mappingType": 1,
-      "mappingTypes": [{
+      "mappingTypes": [
+        {
           "name": "value to text",
           "value": 1
         },
@@ -167,49 +189,61 @@
       "postfixFontSize": "50%",
       "prefix": "",
       "prefixFontSize": "50%",
-      "rangeMaps": [{
-        "from": "null",
-        "text": "N/A",
-        "to": "null"
-      }],
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "date",
-      "targets": [{
-        "bucketAggs": [{
-          "field": "createdAt",
-          "id": "2",
-          "settings": {
-            "interval": "1y",
-            "min_doc_count": 0,
-            "trimEdges": 0
-          },
-          "type": "date_histogram"
-        }],
-        "metrics": [{
-          "field": "select field",
-          "id": "1",
-          "type": "count"
-        }],
-        "query": "NOT network.discr:\"internal\" AND state.slug:\"staging\"",
-        "refId": "A",
-        "timeField": "createdAt"
-      }],
+      "tableColumn": "",
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "$$hashKey": "object:1207",
+              "field": "createdAt",
+              "id": "2",
+              "settings": {
+                "interval": "1y",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "metrics": [
+            {
+              "$$hashKey": "object:1205",
+              "field": "select field",
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "network_data.internal:false  AND state:\"Staging\"",
+          "refId": "A",
+          "timeField": "createdAt"
+        }
+      ],
       "thresholds": "40,130",
       "timeFrom": "100y",
       "title": "Incidentes Staging",
       "transparent": true,
       "type": "singlestat",
       "valueFontSize": "150%",
-      "valueMaps": [{
-        "op": "=",
-        "text": "N/A",
-        "value": "null"
-      }],
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
       "valueName": "total"
     },
     {
@@ -222,6 +256,12 @@
         "#5195ce"
       ],
       "datasource": "Elastic Incidentes",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 200,
@@ -239,17 +279,15 @@
       "hideTimeOverride": true,
       "id": 4,
       "interval": null,
-      "links": [{
-        "dashUri": "db/incidentes-table",
-        "dashboard": "Incidentes Table",
-        "includeVars": true,
-        "keepTime": true,
-        "params": "var-type=internal&var-state=open",
-        "title": "Incidentes Table",
-        "type": "dashboard"
-      }],
+      "links": [
+        {
+          "title": "Incidentes Table",
+          "url": "dashboard/db/incidentes-table?$__url_time_range&$__all_variables&var-type=internal&var-state=open"
+        }
+      ],
       "mappingType": 1,
-      "mappingTypes": [{
+      "mappingTypes": [
+        {
           "name": "value to text",
           "value": 1
         },
@@ -265,49 +303,61 @@
       "postfixFontSize": "50%",
       "prefix": "",
       "prefixFontSize": "50%",
-      "rangeMaps": [{
-        "from": "null",
-        "text": "N/A",
-        "to": "null"
-      }],
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "date",
-      "targets": [{
-        "bucketAggs": [{
-          "field": "createdAt",
-          "id": "2",
-          "settings": {
-            "interval": "1y",
-            "min_doc_count": 0,
-            "trimEdges": 0
-          },
-          "type": "date_histogram"
-        }],
-        "metrics": [{
-          "field": "select field",
-          "id": "1",
-          "type": "count"
-        }],
-        "query": "NOT network.discr:\"internal\" AND state.slug:\"open\"",
-        "refId": "A",
-        "timeField": "createdAt"
-      }],
+      "tableColumn": "",
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "$$hashKey": "object:1359",
+              "field": "createdAt",
+              "id": "2",
+              "settings": {
+                "interval": "1y",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "metrics": [
+            {
+              "$$hashKey": "object:1357",
+              "field": "select field",
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "network_data.internal:false AND state:\"Open\"",
+          "refId": "A",
+          "timeField": "createdAt"
+        }
+      ],
       "thresholds": "40,130",
       "timeFrom": "100y",
       "title": "Incidentes Abiertos",
       "transparent": true,
       "type": "singlestat",
       "valueFontSize": "150%",
-      "valueMaps": [{
-        "op": "=",
-        "text": "N/A",
-        "value": "null"
-      }],
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
       "valueName": "total"
     },
     {
@@ -320,6 +370,12 @@
         "#3f6833"
       ],
       "datasource": "Elastic Incidentes",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 200,
@@ -337,17 +393,15 @@
       "hideTimeOverride": true,
       "id": 9,
       "interval": null,
-      "links": [{
-        "dashUri": "db/incidentes-table",
-        "dashboard": "Incidentes Table",
-        "includeVars": true,
-        "keepTime": true,
-        "params": "var-type=internal&var-state=closed",
-        "title": "Incidentes Table",
-        "type": "dashboard"
-      }],
+      "links": [
+        {
+          "title": "Incidentes Table",
+          "url": "dashboard/db/incidentes-table?$__url_time_range&$__all_variables&var-type=internal&var-state=closed"
+        }
+      ],
       "mappingType": 1,
-      "mappingTypes": [{
+      "mappingTypes": [
+        {
           "name": "value to text",
           "value": 1
         },
@@ -363,49 +417,61 @@
       "postfixFontSize": "50%",
       "prefix": "",
       "prefixFontSize": "50%",
-      "rangeMaps": [{
-        "from": "null",
-        "text": "N/A",
-        "to": "null"
-      }],
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "date",
-      "targets": [{
-        "bucketAggs": [{
-          "field": "createdAt",
-          "id": "2",
-          "settings": {
-            "interval": "1y",
-            "min_doc_count": 0,
-            "trimEdges": 0
-          },
-          "type": "date_histogram"
-        }],
-        "metrics": [{
-          "field": "select field",
-          "id": "1",
-          "type": "count"
-        }],
-        "query": "NOT network.discr:\"internal\"  AND state.slug:\"closed\"",
-        "refId": "A",
-        "timeField": "createdAt"
-      }],
+      "tableColumn": "",
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "$$hashKey": "object:1411",
+              "field": "createdAt",
+              "id": "2",
+              "settings": {
+                "interval": "1y",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "metrics": [
+            {
+              "$$hashKey": "object:1409",
+              "field": "select field",
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "network_data.internal:false AND state:\"Closed\"",
+          "refId": "A",
+          "timeField": "createdAt"
+        }
+      ],
       "thresholds": "40,130",
       "timeFrom": "100y",
       "title": "Incidentes Cerrados",
       "transparent": true,
       "type": "singlestat",
       "valueFontSize": "150%",
-      "valueMaps": [{
-        "op": "=",
-        "text": "N/A",
-        "value": "null"
-      }],
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
       "valueName": "total"
     },
     {
@@ -418,6 +484,12 @@
         "#bf1b00"
       ],
       "datasource": "Elastic Incidentes",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 200,
@@ -435,17 +507,15 @@
       "hideTimeOverride": true,
       "id": 11,
       "interval": null,
-      "links": [{
-        "dashUri": "db/incidentes-table",
-        "dashboard": "Incidentes Table",
-        "includeVars": true,
-        "keepTime": true,
-        "params": "var-type=internal&var-state=removed",
-        "title": "Incidentes Table",
-        "type": "dashboard"
-      }],
+      "links": [
+        {
+          "title": "Incidentes Table",
+          "url": "dashboard/db/incidentes-table?$__url_time_range&$__all_variables&var-type=internal&var-state=removed"
+        }
+      ],
       "mappingType": 1,
-      "mappingTypes": [{
+      "mappingTypes": [
+        {
           "name": "value to text",
           "value": 1
         },
@@ -461,49 +531,61 @@
       "postfixFontSize": "50%",
       "prefix": "",
       "prefixFontSize": "50%",
-      "rangeMaps": [{
-        "from": "null",
-        "text": "N/A",
-        "to": "null"
-      }],
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "date",
-      "targets": [{
-        "bucketAggs": [{
-          "field": "createdAt",
-          "id": "2",
-          "settings": {
-            "interval": "1y",
-            "min_doc_count": 0,
-            "trimEdges": 0
-          },
-          "type": "date_histogram"
-        }],
-        "metrics": [{
-          "field": "select field",
-          "id": "1",
-          "type": "count"
-        }],
-        "query": "NOT network.discr:\"internal\"  AND state.slug:\"removed\"",
-        "refId": "A",
-        "timeField": "createdAt"
-      }],
+      "tableColumn": "",
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "$$hashKey": "object:1513",
+              "field": "createdAt",
+              "id": "2",
+              "settings": {
+                "interval": "1y",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "metrics": [
+            {
+              "$$hashKey": "object:1511",
+              "field": "select field",
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "network_data.internal:false  AND state:\"Removed\"",
+          "refId": "A",
+          "timeField": "createdAt"
+        }
+      ],
       "thresholds": "40,130",
       "timeFrom": "100y",
       "title": "Incidentes Eliminados",
       "transparent": true,
       "type": "singlestat",
       "valueFontSize": "150%",
-      "valueMaps": [{
-        "op": "=",
-        "text": "N/A",
-        "value": "null"
-      }],
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
       "valueName": "total"
     },
     {
@@ -516,6 +598,12 @@
         "#6d1f62"
       ],
       "datasource": "Elastic Incidentes",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 200,
@@ -533,17 +621,15 @@
       "hideTimeOverride": true,
       "id": 10,
       "interval": null,
-      "links": [{
-        "dashUri": "db/incidentes-table",
-        "dashboard": "Incidentes Table",
-        "includeVars": true,
-        "keepTime": true,
-        "params": "var-type=internal&var-state=closed_by_inactivity",
-        "title": "Incidentes Table",
-        "type": "dashboard"
-      }],
+      "links": [
+        {
+          "title": "Incidentes Table",
+          "url": "dashboard/db/incidentes-table?$__url_time_range&$__all_variables&var-type=internal&var-state=closed_by_inactivity"
+        }
+      ],
       "mappingType": 1,
-      "mappingTypes": [{
+      "mappingTypes": [
+        {
           "name": "value to text",
           "value": 1
         },
@@ -559,49 +645,61 @@
       "postfixFontSize": "50%",
       "prefix": "",
       "prefixFontSize": "50%",
-      "rangeMaps": [{
-        "from": "null",
-        "text": "N/A",
-        "to": "null"
-      }],
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "date",
-      "targets": [{
-        "bucketAggs": [{
-          "field": "createdAt",
-          "id": "2",
-          "settings": {
-            "interval": "1y",
-            "min_doc_count": 0,
-            "trimEdges": 0
-          },
-          "type": "date_histogram"
-        }],
-        "metrics": [{
-          "field": "select field",
-          "id": "1",
-          "type": "count"
-        }],
-        "query": "NOT network.discr:\"internal\"  AND state.slug:\"closed_by_inactivity\"",
-        "refId": "A",
-        "timeField": "createdAt"
-      }],
+      "tableColumn": "",
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "$$hashKey": "object:1565",
+              "field": "createdAt",
+              "id": "2",
+              "settings": {
+                "interval": "1y",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "metrics": [
+            {
+              "$$hashKey": "object:1563",
+              "field": "select field",
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "network_data.internal:false AND state:\"Closed by inactivity\"",
+          "refId": "A",
+          "timeField": "createdAt"
+        }
+      ],
       "thresholds": "40,130",
       "timeFrom": "100y",
       "title": "Incidentes Cerrados Por Inactividad",
       "transparent": true,
       "type": "singlestat",
       "valueFontSize": "150%",
-      "valueMaps": [{
-        "op": "=",
-        "text": "N/A",
-        "value": "null"
-      }],
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
       "valueName": "total"
     },
     {
@@ -610,13 +708,21 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Elastic Incidentes",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 11,
         "w": 24,
         "x": 0,
         "y": 4
       },
+      "hiddenSeries": false,
       "id": 6,
       "legend": {
         "alignAsTable": true,
@@ -636,6 +742,7 @@
       "links": [],
       "nullPointMode": "null",
       "percentage": false,
+      "pluginVersion": "7.1.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -643,41 +750,50 @@
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
-      "targets": [{
-        "bucketAggs": [{
-            "fake": true,
-            "field": "network.networkEntity.name",
-            "id": "3",
-            "settings": {
-              "min_doc_count": 1,
-              "order": "desc",
-              "orderBy": "_count",
-              "size": "20"
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "$$hashKey": "object:1617",
+              "fake": true,
+              "field": "network_data.networkEntity",
+              "id": "3",
+              "settings": {
+                "min_doc_count": 1,
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "20"
+              },
+              "type": "terms"
             },
-            "type": "terms"
-          },
-          {
-            "field": "createdAt",
-            "id": "2",
-            "settings": {
-              "interval": "1d",
-              "min_doc_count": 0,
-              "trimEdges": 0
-            },
-            "type": "date_histogram"
-          }
-        ],
-        "metrics": [{
-          "field": "select field",
-          "id": "1",
-          "type": "count"
-        }],
-        "query": "NOT network.discr:\"internal\"",
-        "refId": "A",
-        "timeField": "createdAt"
-      }],
+            {
+              "$$hashKey": "object:1618",
+              "field": "createdAt",
+              "id": "2",
+              "settings": {
+                "interval": "1d",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "metrics": [
+            {
+              "$$hashKey": "object:1615",
+              "field": "select field",
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "network_data.internal:false",
+          "refId": "A",
+          "timeField": "createdAt"
+        }
+      ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Incidentes por dia por entidad",
       "tooltip": {
@@ -693,7 +809,8 @@
         "show": true,
         "values": []
       },
-      "yaxes": [{
+      "yaxes": [
+        {
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -729,6 +846,12 @@
       },
       "dataFormat": "tsbuckets",
       "datasource": "Elastic Incidentes",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 10,
         "w": 14,
@@ -736,45 +859,55 @@
         "y": 15
       },
       "heatmap": {},
+      "hideZeroBuckets": false,
       "highlightCards": true,
       "id": 8,
       "legend": {
         "show": true
       },
       "links": [],
-      "targets": [{
-        "bucketAggs": [{
-            "fake": true,
-            "field": "network.networkEntity.name",
-            "id": "3",
-            "settings": {
-              "min_doc_count": 1,
-              "order": "desc",
-              "orderBy": "_term",
-              "size": "20"
+      "reverseYBuckets": false,
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "$$hashKey": "object:1649",
+              "fake": true,
+              "field": "network_data.networkEntity",
+              "id": "3",
+              "settings": {
+                "min_doc_count": 1,
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "20"
+              },
+              "type": "terms"
             },
-            "type": "terms"
-          },
-          {
-            "field": "createdAt",
-            "id": "2",
-            "settings": {
-              "interval": "1d",
-              "min_doc_count": 0,
-              "trimEdges": 0
-            },
-            "type": "date_histogram"
-          }
-        ],
-        "metrics": [{
-          "field": "select field",
-          "id": "1",
-          "type": "count"
-        }],
-        "query": "NOT network.discr:\"internal\"",
-        "refId": "A",
-        "timeField": "createdAt"
-      }],
+            {
+              "$$hashKey": "object:1650",
+              "field": "createdAt",
+              "id": "2",
+              "settings": {
+                "interval": "1d",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "metrics": [
+            {
+              "$$hashKey": "object:1647",
+              "field": "select field",
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "network_data.internal:false",
+          "refId": "A",
+          "timeField": "createdAt"
+        }
+      ],
       "timeFrom": "1M",
       "title": "Incidentes por entidad (top 20) por dia",
       "tooltip": {
@@ -806,13 +939,21 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Elastic Incidentes",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 4,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 10,
         "x": 14,
         "y": 15
       },
+      "hiddenSeries": false,
       "id": 2,
       "legend": {
         "avg": false,
@@ -828,6 +969,7 @@
       "links": [],
       "nullPointMode": "null",
       "percentage": false,
+      "pluginVersion": "7.1.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -835,28 +977,35 @@
       "spaceLength": 10,
       "stack": true,
       "steppedLine": true,
-      "targets": [{
-        "bucketAggs": [{
-          "field": "createdAt",
-          "id": "2",
-          "settings": {
-            "interval": "1d",
-            "min_doc_count": 0,
-            "trimEdges": 0
-          },
-          "type": "date_histogram"
-        }],
-        "metrics": [{
-          "field": "select field",
-          "id": "1",
-          "type": "count"
-        }],
-        "query": "NOT network.discr:\"internal\"",
-        "refId": "A",
-        "timeField": "createdAt"
-      }],
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "field": "createdAt",
+              "id": "2",
+              "settings": {
+                "interval": "1d",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "network_data.internal:false",
+          "refId": "A",
+          "timeField": "createdAt"
+        }
+      ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Incidentes externos",
       "tooltip": {
@@ -872,7 +1021,8 @@
         "show": true,
         "values": []
       },
-      "yaxes": [{
+      "yaxes": [
+        {
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -895,22 +1045,24 @@
       }
     }
   ],
-  "schemaVersion": 16,
+  "schemaVersion": 26,
   "style": "light",
   "tags": [],
   "templating": {
-    "list": [{
-      "datasource": "Elastic Incidentes",
-      "filters": [],
-      "hide": 0,
-      "label": "Agregar nuevo filtro",
-      "name": "Filtro",
-      "skipUrlSync": false,
-      "type": "adhoc"
-    }]
+    "list": [
+      {
+        "datasource": "Elastic Incidentes",
+        "filters": [],
+        "hide": 0,
+        "label": "Agregar nuevo filtro",
+        "name": "Filtro",
+        "skipUrlSync": false,
+        "type": "adhoc"
+      }
+    ]
   },
   "time": {
-    "from": "now-1y",
+    "from": "now-10y",
     "to": "now"
   },
   "timepicker": {
