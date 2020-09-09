@@ -25,15 +25,15 @@ services:
             - MYSQL_PASSWORD=ngenpass
         cap_add:
             - SYS_NICE
-        ports:
-            - "8002:3306"
+        #ports:
+           #- "8002:3306"
         networks: [ 'ngen' ]
     ngen-testing-app:
         image: ngen-final
         networks: [ 'ngen' ]
         depends_on: [ 'ngen-testing-db','ngen-testing-elastic' ]
-        ports:
-            - "8000:80"
+        #ports:
+        #    - "8000:80"
         volumes:
             - ngen-testing-incidentes:/application/ngen_basic/app/Resources/incident
             - ngen-testing-feeds:/application/ngen_basic/app/Resources/app/Resources/feed/
@@ -102,13 +102,13 @@ services:
             - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
         volumes:
             - ngen-testing-elastic-data:/usr/share/elasticsearch/data
-        ports:
-            - "9200:9200"
+        #ports:
+           #- "9200:9200"
         networks: [ 'ngen' ]
     ngen-testing-grafana:
         image: grafana/grafana:latest
-        ports:
-            - "3000:3000"
+        #ports:
+        #    - "3000:3000"
         volumes:
             - ngen-testing-grafana-data:/var/lib/grafana
             - ./grafana/dashboard:/etc/grafana/provisioning/dashboards/
