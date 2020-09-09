@@ -32,7 +32,7 @@ function wait_for_database {
 done;
 }
 
-function update_database_and_index{
+function update_database_and_index {
   if php bin/console doctrine:query:sql "SELECT * FROM INFORMATION_SCHEMA.TABLES"|grep incident
   then
    echo "base existente, revisamos las migraciones"
@@ -52,8 +52,8 @@ function update_database_and_index{
    chown www-data -R $PATH_WEB/ngen_basic/app/Resources/app/Resources/feed/ $PATH_WEB/ngen_basic/app/Resources/incident
    chmod +x $PATH_WEB/ngen_basic/src/NgenBundle/Utils/validateApiKey.php
    PASSVIEWER=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
-   curl -XPOST -H "Content-Type: application/json" -d '{"name":"Viewer","email":"viewer@localhost","login":"viewer","password":"$PASSVIEWER"}' -username $USER_GRAFANA:$PASS_GRAFANA $GRAFANA_HOST/api/admin/users
-  fi;
+   curl -XPOST -H "Content-Type: application/json" -d '{"name":"Viewer","email":"viewer@localhost","login":"viewer","password":"$PASSVIEWER"}' -u $USER_GRAFANA:$PASS_GRAFANA $GRAFANA_HOST/api/admin/users
+  fi
 }
 
 function symfony_stuff {
@@ -67,10 +67,9 @@ function symfony_stuff {
 cd $PATH_WEB/ngen_basic
 update_parameters_yml
 update_php_ini
-clean_cache_and_logs
 wait_for_database
 update_database_and_index
 symfony_stuff
-
+clean_cache_and_logs
 
 exec "$@"

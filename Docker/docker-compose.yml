@@ -114,9 +114,6 @@ services:
             - ./grafana/dashboard:/etc/grafana/provisioning/dashboards/
             - ./grafana/datasources:/etc/grafana/provisioning/datasources/
         environment:
-            #- ELASTIC_HOST=ngen-testing-elastic
-            #- ELASTIC_PORT=9200
-            #- NGEN_APP=ngen-testing-app
             - GF_SERVER_ROOT_URL=http://ngen-testing-elastic/grafana/
             - GF_SERVER_SERVE_FROM_SUB_PATH=true
             - GF_USERS_ALLOW_SIGN_UP=false
@@ -131,7 +128,7 @@ services:
         depends_on: [ 'ngen-testing-elastic' ]
         links:
             - ngen-testing-app:ngen-app
-            - ngen-testing-elastic:ngen-testing-elastic
+            - ngen-testing-elastic:elasticsearch
     ngen-testing-mail:
         image: schickling/mailcatcher
         ports:

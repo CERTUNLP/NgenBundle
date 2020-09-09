@@ -9,3 +9,4 @@ datasources:
     url: http://elasticsearch:9200
     jsonData:
       timeField: "createdAt"
+      esVersion: 60
