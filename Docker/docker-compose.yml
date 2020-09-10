@@ -29,7 +29,7 @@ services:
            #- "8002:3306"
         networks: [ 'ngen' ]
     ngen-testing-app:
-        image: ngen-final
+        image: certunlp/ngen:1.0.0
         networks: [ 'ngen' ]
         depends_on: [ 'ngen-testing-db','ngen-testing-elastic' ]
         #ports:
