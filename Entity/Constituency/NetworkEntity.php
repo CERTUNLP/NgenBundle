@@ -51,7 +51,7 @@ class NetworkEntity extends EntityApi
      * @var string
      * @ORM\Column(name="name", type="string")
      * @JMS\Expose
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $name = '';
     /**
@@ -74,6 +74,37 @@ class NetworkEntity extends EntityApi
     public function getIdentificationString(): string
     {
         return 'id';
+    }
+
+    /**
+     * @return bool
+     */
+    public function canEditFundamentals(): bool
+    {
+        return $this->getName() !== 'Undefined';
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string|null $name
+     * @return NetworkEntity
+     */
+    public function setName(string $name = null): NetworkEntity
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -115,36 +146,12 @@ class NetworkEntity extends EntityApi
         return 'info';
     }
 
-
     /**
      * @return string
      */
     public function __toString(): string
     {
         return $this->getName();
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string|null $name
-     * @return NetworkEntity
-     */
-    public function setName(string $name = null): NetworkEntity
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     /**

@@ -65,7 +65,7 @@ class NetworkAdmin extends EntityApiFrontend
      *
      * @ORM\Column(name="name", type="string")
      * @JMS\Expose
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $name;
     /**
@@ -95,7 +95,7 @@ class NetworkAdmin extends EntityApiFrontend
      */
     public function canEditFundamentals(): bool
     {
-        return $this->getNetworks()->isEmpty();
+        return $this->getName() !== 'Undefined';
     }
 
     /**
