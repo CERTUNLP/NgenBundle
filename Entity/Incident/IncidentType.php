@@ -97,7 +97,7 @@ class IncidentType extends EntityApiFrontend
      */
     public function canEditFundamentals(): bool
     {
-        return $this->getDeadIncidents()->isEmpty() && !$this->isUndefined() && $this->getReports()->isEmpty();
+        return $this->getDeadIncidents()->isEmpty() && !$this->isUndefined() && !$this->getReports()->isEmpty();
     }
 
     /**
