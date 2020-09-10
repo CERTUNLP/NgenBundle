@@ -11,216 +11,334 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
+use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
+use CertUnlp\NgenBundle\Exception\InvalidFormException;
+use CertUnlp\NgenBundle\Form\Incident\IncidentFeedType;
+use CertUnlp\NgenBundle\Service\Api\Handler\Incident\IncidentFeedHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Form\FormTypeInterface;
+use FOS\RestBundle\View\ViewHandlerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class IncidentFeedController extends FOSRestController
+class IncidentFeedController extends ApiController
 {
-
     /**
-     * List all networks.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
-     * )
-     *
-     *
-     * @param Request $request the request object
-     * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
-     * @return array
+     * IncidentFeedController constructor.
+     * @param IncidentFeedHandler $handler
+     * @param ViewHandlerInterface $viewHandler
      */
-    public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function __construct(IncidentFeedHandler $handler, ViewHandlerInterface $viewHandler)
     {
-
-        return null;
+        parent::__construct($handler, $viewHandler);
     }
 
     /**
-     * List all incident feeds.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
+     * @Operation(
+     *     tags={"Incident feeds"},
+     *     summary="List all incident feeds.",
+     *     @SWG\Parameter(
+     *         name="offset",
+     *         in="query",
+     *         description="Offset from which to start listing",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         description="How many entities to return",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentFeed::class, groups={"api"}))
+     *          )
+     *     )
      * )
-     *
      * @FOS\Get("/feeds")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident feeds.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many incident feeds to return.")
-     *
-     * @FOS\View(
-     *  templateVar="incident_feeds"
-     * )
-     *
-     * @param Request $request the request object
+     * @FOS\QueryParam(name="limit", requirements="\d+", strict=true, default="100", description="How many incident feeds to return.")
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
-     * @return array
+     * @return View
      */
-    public function getIncidentFeedsAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getIncidentFeedsAction(ParamFetcherInterface $paramFetcher): View
     {
-        return $this->getApiController()->getAll($request, $paramFetcher);
-    }
-
-    public function getApiController()
-    {
-
-        return $this->container->get('cert_unlp.ngen.incident.feed.api.controller');
+        return $this->getAll($paramFetcher);
     }
 
     /**
-     * Gets a Network for a given id.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Gets a network admin for a given id",
-     *   output = "CertUnlp\NgenBundle\Entity\Incident\IncidentFeed",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     404 = "Returned when the network is not found"
-     *   }
+     * @Operation(
+     *     tags={"Incident feeds"},
+     *     summary="Gets a feed for a given id",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentFeed::class, groups={"api"}))
+     *          )
+     *     ),
+     *      @SWG\Response(
+     *         response="404",
+     *         description="Returned when the incident is not found",
+     *          @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *     )
      * )
-     *
-     * @param IncidentFeed $incident_feed
-     * @return IncidentFeed
-     * @FOS\View(
-     *  templateVar="incident_feed"
-     * )
-     * @ParamConverter("incident_feed", class="CertUnlpNgenBundle:Incident\IncidentFeed")
      * @FOS\Get("/feeds/{slug}")
+     * @param IncidentFeed $incident_feed
+     * @return View
      */
-    public function getIncidentFeedAction(IncidentFeed $incident_feed)
+    public function getIncidentFeedAction(IncidentFeed $incident_feed): View
     {
-        return $incident_feed;
+        try {
+            return $this->response([$incident_feed], Response::HTTP_OK);
+        } catch (InvalidFormException $exception) {
+            return $this->responseError($exception);
+        }
+    }
+
+    /**
+     * @Operation(
+     *     tags={"Incident feeds"},
+     *     summary="Removes a feed",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentFeed::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
+     * )
+     * @FOS\Delete("/feeds/{slug}")
+     * @param IncidentFeed $incident_feed
+     * @return View
+     */
+    public function deleteIncidentFeedAction(IncidentFeed $incident_feed): View
+    {
+        return $this->delete($incident_feed);
     }
 
     /**
      * Create a Network from the submitted data.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Creates a new network from the submitted data.",
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={"Incident feeds"},
+     *     summary="Creates a new feed from the submitted data.",
+     *     @SWG\Parameter(
+     *         name="form",
+     *         in="body",
+     *         description="creation parameters",
+     *         @Model(type=IncidentFeedType::class, groups={"api"})
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentFeed::class, groups={"api"}))
+     *          )
+     *      ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
-     *
      * @FOS\Post("/feeds")
      * @param Request $request the request object
-     *
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function postIncidentFeedAction(Request $request)
+    public function postIncidentFeedAction(Request $request): View
     {
-        return $this->getApiController()->post($request);
+        return $this->post($request);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={"Incident feeds"},
+     *     summary="Update existing feed from the submitted data",
+     *     @SWG\Parameter(
+     *         name="form",
+     *         in="body",
+     *         description="creation parameters",
+     *         @Model(type=IncidentFeedType::class, groups={"api"})
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentFeed::class, groups={"api"}))
+     *          )
+     *      ),
+     *      @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @FOS\Patch("/feeds/{slug}")
      * @param Request $request the request object
      * @param IncidentFeed $incident_feed
-     * @return FormTypeInterface|View
-     *
+     * @return View
      */
-    public function patchIncidentFeedAction(Request $request, IncidentFeed $incident_feed)
+    public function patchIncidentFeedAction(Request $request, IncidentFeed $incident_feed): View
     {
-        return $this->getApiController()->patch($request, $incident_feed, true);
+        return $this->patch($request, $incident_feed);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={"Incident feeds"},
+     *     summary="Activates an existing feed",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentFeed::class, groups={"api"}))
+     *          )
+     *      ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
-     * @FOS\Patch("/feeds/{slug}")
-     * @param Request $request the request object
-     * @param IncidentFeed $incident_feed
-     * @return FormTypeInterface|View
-     *
-     */
-    public function patchIncidentFeedBySlugAction(Request $request, IncidentFeed $incident_feed)
-    {
-        return $this->getApiController()->patch($request, $incident_feed);
-    }
-
-    /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
-     * )
-     *
-     *
-     * @param Request $request the request object
-     * @param IncidentFeed $incident_feed
-     * @return FormTypeInterface|View
-     *
      * @FOS\Patch("/feeds/{slug}/activate")
+     * @param IncidentFeed $incident_feed
+     * @return View
      */
-    public function patchIncidentFeedActivateAction(Request $request, IncidentFeed $incident_feed)
+    public function patchIncidentFeedActivateAction(IncidentFeed $incident_feed): View
     {
-
-        return $this->getApiController()->activate($request, $incident_feed);
+        return $this->activate($incident_feed);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={"Incident feeds"},
+     *     summary="Desactivates an existing feed",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentFeed::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
-     *
-     *
-     * @param Request $request the request object
-     * @param IncidentFeed $incident_feed
-     * @return FormTypeInterface|View
-     *
      * @FOS\Patch("/feeds/{slug}/desactivate")
+     * @param IncidentFeed $incident_feed
+     * @return View
      */
-    public function patchIncidentFeedDesactivateAction(Request $request, IncidentFeed $incident_feed)
+    public function patchIncidentFeedDesactivateAction(IncidentFeed $incident_feed): View
     {
-
-        return $this->getApiController()->desactivate($request, $incident_feed);
+        return $this->desactivate($incident_feed);
     }
 
 }

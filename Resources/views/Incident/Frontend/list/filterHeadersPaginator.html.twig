@@ -7,14 +7,14 @@
  with this source code in the file LICENSE.
 #}
     <th class="text-center header">{{ 'Actions'|trans }}</th>
-    <th class="text-center header">{{ knp_pagination_sortable(objects, 'State'| trans, 'state') }}</th>
     <th class="text-center header">Time</th>
-    <th class="text-center header">{{ knp_pagination_sortable(objects, 'TLP'| trans, 'tlp') }}</th>
-    <th class="text-center header">{{ knp_pagination_sortable(objects, 'Priority'| trans, 'priority') }}</th>
-    <th class="text-center header">{{ knp_pagination_sortable(objects, 'Address'| trans , 'origin') }}</th>
-    <th class="text-center header">{{ knp_pagination_sortable(objects, 'Type'| trans, 'type') }}</th>
-    <th class="text-center header">{{ knp_pagination_sortable(objects, 'Feed'| trans, 'feed') }}</th>
-    <th class="text-center header">{{ knp_pagination_sortable(objects, 'Date'| trans, 'date') }}</th>
-    <th class="text-center header">{{ knp_pagination_sortable(objects, 'Updated'| trans, 'updated') }}</th>
-    <th class="text-center header">{{ knp_pagination_sortable(objects, 'Reports'| trans, 'ltdCount') }}</th>
-    <th class="text-center header">{{ knp_pagination_sortable(objects, 'Reporter'| trans , 'reporter') }}</th>
+    <th class="text-center header sortable">{{ knp_pagination_sortable(objects, 'Date'| trans, 'date') }}</th>
+    <th class="text-center header sortable">{{ knp_pagination_sortable(objects, 'Address'| trans , 'address') }}</th>
+    <th class="text-center header sortable">{{ knp_pagination_sortable(objects, 'Type'| trans, 'type') }}</th>
+    <th class="text-center header sortable">{{ knp_pagination_sortable(objects, 'State'| trans, 'state') }}</th>
+{#    <th class="text-center header">{{ knp_pagination_sortable(objects, 'TLP'| trans, 'tlp') }}</th>#}
+    <th class="text-center header sortable">{{ knp_pagination_sortable(objects, 'Priority'| trans, 'priority') }}</th>
+    <th class="text-center header sortable">{{ knp_pagination_sortable(objects, 'Feed'| trans, 'feed') }}</th>
+    <th class="text-center header sortable">{{ knp_pagination_sortable(objects, 'Updated'| trans, 'updated') }}</th>
+{#    <th class="text-center header">{{ knp_pagination_sortable(objects, 'Reports'| trans, 'ltdCount') }}</th>#}
+    <th class="text-center header sortable">{{ knp_pagination_sortable(objects, 'Reporter'| trans , 'reporter') }}</th>

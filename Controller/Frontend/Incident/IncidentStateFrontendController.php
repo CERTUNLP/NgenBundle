@@ -17,62 +17,62 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
+use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use CertUnlp\NgenBundle\Form\Incident\State\IncidentStateType;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
-class IncidentStateFrontendController extends Controller
+class IncidentStateFrontendController extends FrontendController
 {
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentState:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_administration_state_frontend_home")
      * @param Request $request
+     * @param PaginatedFinderInterface $elastica_finder_state
      * @return array
      */
-    public function homeAction(Request $request)
+    public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_state): array
     {
-        return $this->getFrontendController()->homeEntity($request);
-    }
-
-    public function getFrontendController()
-    {
-        return $this->get('cert_unlp.ngen.incident.state.frontend.controller');
+        return $this->homeEntity($request, $elastica_finder_state);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentState:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_incident_state_search")
      * @param Request $request
+     * @param PaginatedFinderInterface $elastica_finder_state
      * @return array
      */
-    public function searchIncidentStateAction(Request $request)
+    public function searchIncidentStateAction(Request $request, PaginatedFinderInterface $elastica_finder_state): array
     {
-        return $this->getFrontendController()->searchEntity($request);
+        return $this->searchEntity($request, $elastica_finder_state);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentState:Frontend/incidentStateForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_incident_state_new")
-     * @param Request $request
+     * @param IncidentStateType $state_type
      * @return array
      */
-    public function newIncidentStateAction(Request $request)
+    public function newIncidentStateAction(IncidentStateType $state_type): array
     {
-        return $this->getFrontendController()->newEntity($request);
+        return $this->newEntity($state_type);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentState:Frontend/incidentStateForm.html.twig")
      * @Route("{slug}/edit", name="cert_unlp_ngen_incident_state_edit")
      * @param IncidentState $incidentState
+     * @param IncidentStateType $state_type
      * @return array
      */
-    public function editIncidentStateAction(IncidentState $incidentState)
+    public function editIncidentStateAction(IncidentState $incidentState, IncidentStateType $state_type): array
     {
-        return $this->getFrontendController()->editEntity($incidentState);
+        return $this->editEntity($incidentState, $state_type);
     }
 
     /**
@@ -81,9 +81,9 @@ class IncidentStateFrontendController extends Controller
      * @param IncidentState $incidentState
      * @return array
      */
-    public function detailIncidentStateAction(IncidentState $incidentState)
+    public function detailIncidentStateAction(IncidentState $incidentState): array
     {
-        return $this->getFrontendController()->detailEntity($incidentState);
+        return $this->detailEntity($incidentState);
     }
 
 }

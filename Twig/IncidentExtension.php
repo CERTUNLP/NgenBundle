@@ -12,21 +12,12 @@
 namespace CertUnlp\NgenBundle\Twig;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 
 class IncidentExtension extends AbstractExtension
 {
-    protected $doctrine;
-
-    public function __construct(RegistryInterface $doctrine)
-    {
-        $this->doctrine = $doctrine;
-    }
-
-    // Retrieve doctrine from the constructor
 
     public function getFunctions()
     {

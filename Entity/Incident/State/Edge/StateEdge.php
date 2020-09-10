@@ -11,104 +11,128 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident\State\Edge;
 
-use CertUnlp\NgenBundle\Entity\Contact\ContactCase;
+use CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase;
+use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 /**
- * @ORM\Table()
  * @ORM\Entity()
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"new"= "NewEdge", "opening" = "OpeningEdge", "closing" = "ClosingEdge", "reopening" = "ReopeningEdge", "updating" = "UpdatingEdge", "discarding" = "DiscardingEdge", "edge" = "StateEdge"})
  * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity(
+ *     fields={"oldState","newState"},
+ *     message="This behvior already in exists."
+ * )
  */
-abstract class StateEdge
+abstract class StateEdge extends Entity
 {
-
     /**
-     * @var integer
+     * @var integer|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Expose
      */
     protected $id;
-
     /**
-     * @var IncidentState
+     * @var IncidentState|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState", inversedBy="edges")
      * @ORM\JoinColumn(name="oldState", referencedColumnName="slug")
      * @JMS\Expose
+     * @JMS\MaxDepth(1)
+     * @JMS\Groups({"read","write","fundamental"})
      */
-    protected $oldState;
-
+    private $oldState;
     /**
-     * @var IncidentState
+     * @var IncidentState|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="newState", referencedColumnName="slug")
      * @JMS\Expose
+     * @JMS\MaxDepth(1)
+     * @JMS\Groups({"read","write","fundamental"})
      */
-    protected $newState;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    private $isActive = true;
-
-    /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-    /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
+    private $newState;
     /**
      * @var ContactCase|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_assigned", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $mailAssigned;
-
     /**
      * @var ContactCase|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_team", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
-
     private $mailTeam;
-
     /**
      * @var ContactCase|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_admin", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $mailAdmin;
-
     /**
      * @var ContactCase|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Contact\ContactCase")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Contact\ContactCase")
      * @ORM\JoinColumn(name="mail_reporter", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $mailReporter;
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'long-arrow-alt-right1';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return $this->getNewState()->getColor();
+    }
+
+    /**
+     * @return IncidentState
+     */
+    public function getNewState(): IncidentState
+    {
+        return $this->newState;
+    }
+
+    /**
+     * @param IncidentState $newState
+     * @return StateEdge
+     */
+    public function setNewState(IncidentState $newState): StateEdge
+    {
+        $this->newState = $newState;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentificationString(): string
+    {
+        return 'id';
+    }
 
     public function __toString(): string
     {
@@ -191,33 +215,15 @@ abstract class StateEdge
      * @param Incident $incident
      * @return Incident
      */
-    public function changeIncidentState(Incident $incident): Incident
+    public function changeState(Incident $incident): Incident
     {
-        $this->changeIncidentStateAction($incident);
+        $this->changeStateAction($incident);
         $incident->changeState($this->getNewState());
         return $incident;
 
     }
 
-    abstract public function changeIncidentStateAction(Incident $incident): Incident;
-
-    /**
-     * @return IncidentState
-     */
-    public function getNewState(): IncidentState
-    {
-        return $this->newState;
-    }
-
-    /**
-     * @param IncidentState $newState
-     * @return StateEdge
-     */
-    public function setNewState(IncidentState $newState): StateEdge
-    {
-        $this->newState = $newState;
-        return $this;
-    }
+    abstract public function changeStateAction(Incident $incident): Incident;
 
     /**
      * @return IncidentState
@@ -234,78 +240,6 @@ abstract class StateEdge
     public function setOldState(IncidentState $oldState): StateEdge
     {
         $this->oldState = $oldState;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     * @return StateEdge
-     */
-    public function setId(int $id): StateEdge
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     * @return StateEdge
-     */
-    public function setIsActive(bool $isActive): StateEdge
-    {
-        $this->isActive = $isActive;
-        return $this;
-    }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getCreatedAt(): ?DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime|null $createdAt
-     * @return StateEdge
-     */
-    public function setCreatedAt(?DateTime $createdAt): StateEdge
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getUpdatedAt(): ?DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param DateTime|null $updatedAt
-     * @return StateEdge
-     */
-    public function setUpdatedAt(?DateTime $updatedAt): StateEdge
-    {
-        $this->updatedAt = $updatedAt;
         return $this;
     }
 

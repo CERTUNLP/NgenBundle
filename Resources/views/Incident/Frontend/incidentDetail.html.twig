@@ -1,10 +1,10 @@
-{# 
- This file is part of the Ngen - CSIRT Incident Report System.
- 
- (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
- This source file is subject to the GPL v3.0 license that is bundled
- with this source code in the file LICENSE.
+{#
+This file is part of the Ngen - CSIRT Incident Report System.
+
+(c) CERT UNLP <support@cert.unlp.edu.ar>
+
+This source file is subject to the GPL v3.0 license that is bundled
+with this source code in the file LICENSE.
 #}
 
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
@@ -21,16 +21,20 @@
         {{ print.colorbox(object.priority.color,object.priority.icon,object.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': object.priority.id})) }}
         {{ print.colorbox(object.tlp.color,object.tlp.icon,object.tlp,'#') }}
         {{ print.colorbox(object.reporter.color,object.reporter.icon,object.reporter,path('cert_unlp_ngen_user_detail_user',{'username': object.reporter.username})) }}
-        {{ print.colorbox(object.origin.color,object.origin.icon,object.address,hostlink.link(object.origin,'detail')) }}
-        {% set detail_link %}
-            {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':object.network} %}
-        {% endset %}
-        {{ print.colorbox(object.network.color,object.network.icon,object.network,detail_link) }}
+        {% if object.origin %}
+            {{ print.colorbox(object.origin.color,object.origin.icon,object.address,hostlink.link(object.origin,'detail')) }}
+        {% endif %}
+        {% if object.network %}
+            {% set detail_link %}
+                {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':object.network} %}
+            {% endset %}
+            {{ print.colorbox(object.network.color,object.network.icon,object.network,detail_link) }}
+        {% endif %}
         {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': object.id})) }}
     </h1>
 {% endblock %}
 {% block content_body %}
-    {#    <div class="row">#}
+    {# <div class="row"> #}
     <ul class="nav nav-tabs shadow-" id="myTab" role="tablist">
         <li class="nav-item ">
             <a class="nav-link active" id="summary-tab" data-toggle="tab" href="#summary" role="tab"
@@ -50,13 +54,19 @@
         <li class="nav-item">
             <a class="nav-link" id="state_changes-tab" data-toggle="tab" href="#state_changes" role="tab"
                aria-controls="state_changes" aria-selected="false">{{ "State Changes" |trans }}
-                <small>{{ "("~object.changeStateHistory.count~")" }}</small>
+                <small>{{ "("~object.stateChanges.count~")" }}</small>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="comments-tab" data-toggle="tab" href="#comments" role="tab"
                aria-controls="comments" aria-selected="false">{{ "Comments" |trans }}
-                <small>{{ "("~object.getCommentThread.numComments~")" }}</small>
+                <small>{{ "("~object.getCommentThread.numComments??0~")" }}</small>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="messages-tab" data-toggle="tab" href="#messages" role="tab"
+               aria-controls="messages" aria-selected="false">{{ "Messages" |trans }}
+                <small>{{ "("~object.messages.count??0~")" }}</small>
             </a>
         </li>
     </ul>
@@ -68,31 +78,35 @@
                     <div class="row col-md-12 ml-0 ">
                         {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'card', 'response': true} %}
                         {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'card', 'response': false} %}
-                        <div class="col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                                <a class="text-xs font-weight-bold text-info text-uppercase mb-1"
-                                                   href="{{ hostlink.link(object.origin,'detail') }}">Host {{ object.origin }}
-                                                </a>
+                        {% if object.origin %}
+                            <div class="col-md-6 mb-4">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                    <a class="text-xs font-weight-bold text-info text-uppercase mb-1"
+                                                       href="{{ hostlink.link(object.origin,'detail') }}">Host {{ object.origin }}
+                                                    </a>
+                                                </div>
+                                                <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                                    live incidents: {{ object.origin.liveIncidents.count }}
+                                                </div>
+                                                <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                                    live {{ object.type }}
+                                                    incidents: {{ object.origin.liveIncidentOfType(object.type.slug).count }}
+                                                </div>
                                             </div>
-                                            <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                live incidents: {{ object.origin.liveincidentsasorigin.count }}
-                                            </div>
-                                            <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                live {{ object.type }}
-                                                incidents: {{ object.origin.liveincidentsasoriginoftype(object.type.slug).count }}
+                                            <div class="col-auto">
+                                                <i class="fas fa-{{ object.origin.icon }} fa-2x text-gray-300"></i>
                                             </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-{{ object.origin.icon }} fa-2x text-gray-300"></i>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        {% endif %}
                         <div class=" col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
@@ -103,9 +117,11 @@
                                                    href="{{ path('cert_unlp_ngen_incident_type_detail',{'slug':object.type.slug}) }}">Type {{ object.type }}
                                                 </a>
                                             </div>
-                                            <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                                live incidents: {{ object.origin.liveincidentsasorigin.count }}
-                                            </div>
+                                            {% if object.origin %}
+                                                <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                                    live incidents: {{ object.origin.liveIncidents.count }}
+                                                </div>
+                                            {% endif %}
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-{{ object.type.icon }} fa-2x text-gray-300"></i>
@@ -151,7 +167,7 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                            Change states
+                                            {{ 'State changes'|trans }}
                                         </div>
                                         <div id="timeline" class="chart">
                                         </div>
@@ -377,22 +393,12 @@
                                     </div>
                                 </div>
                                 {% if object.origin and object.origin.network %}
-
                                     <div class="row">
                                         <div class="col-6 col-sm-6 border">
-                                            {{ 'Network Entity'|trans }}
+                                            {{ 'Network'|trans }}
                                         </div>
                                         <div class="col-6 col-sm-6 border">
-                                            {{ object.origin.network.networkEntity }}
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-6 col-sm-6 border">
-                                            {{ 'Network Admin'|trans }}
-                                        </div>
-                                        <div class="col-6 col-sm-6 border">
-                                            {{ object.origin.network.networkAdmin }}
-
+                                            {{ object.origin.network }}
                                         </div>
                                     </div>
                                 {% endif %}
@@ -402,7 +408,14 @@
                     {% block network_body %}
                         <div class="card shadow mb-4">
                             <div class="card-header">
-                                <h6 class="m-0 font-weight-bold text-primary">{{ "Network Information"|trans }}</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">
+                                    {{ "Network Information"|trans }}
+                                    {% if object.origin and object.origin.network and not (object.origin.network == object.network) %}
+                                    <button class="btn btn-warning btn-circle btn-sm">
+                                        <i class="fas fa-exclamation"></i>
+                                    </button>
+                                </h6>
+                                {% endif %}
                             </div>
                             <div class="card-body">
                                 <div>
@@ -534,14 +547,13 @@
             </div>
         </div>
         <div class="tab-pane fade" id="state_changes" role="tabpanel" aria-labelledby="state_changes-tab">
-
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card shadow mb-4">
                         <div class="d-flex card-header align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">{{ 'Historical State Changes'|trans }} </h6>
                             <h6 class="m-0 font-weight-normal text-primary">
-                                <b>{{ object.getChangeStateHistory.count }}</b> {{ 'state changes'|trans }}</h6>
+                                <b>{{ object.getStatechanges.count }}</b> {{ 'state changes'|trans }}</h6>
                         </div>
                         <div class="card-body overflow-auto" style="max-height: 50vh">
                             {% include "CertUnlpNgenBundle:Incident:Frontend/historyChangeSummary.html.twig" with {'incident': object} %}
@@ -563,6 +575,25 @@
                         <div class="card-body overflow-auto" style="max-height: 70vh">
                             {% block comments_body %}
                                 {{ render(controller('CertUnlpNgenBundle:Frontend/Incident/IncidentFrontend:incidentComments', {'incident': object, 'request': app.request})) }}
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card shadow mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">
+                                {{ 'Messages'|trans }}
+                            </h6>
+
+                        </div>
+                        <div class="card-body overflow-auto" style="max-height: 70vh">
+                            {% block messages_body %}
+                                {% include "@CertUnlpNgen/Incident/Frontend/messagesListhtml.twig" with {'incident': object} %}
                             {% endblock %}
                         </div>
                     </div>
@@ -604,6 +635,7 @@
             $(document).ready(function () {
                 window.api_key = '{{ app.user.apikey }}';
             });
+            var Incident = new Incident();
 
         </script>
         {% javascripts '@CertUnlpNgenBundle/Resources/public/js/incident/comments.js' %}

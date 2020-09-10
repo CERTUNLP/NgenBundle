@@ -11,9 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,108 +20,140 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-//use Doctrine\Common\Collections\Collection;
-
 /**
- * IncidentType
- *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentTypeRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Incident\IncidentTypeRepository")
  * @UniqueEntity(
  *     fields={"name"},
  *     message="This type is already in use."
  * )
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentType extends Entity
+class IncidentType extends EntityApiFrontend
 {
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100)
-     * @JMS\Expose
-     */
-    private $name;
-
     /**
      * @var string
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100,nullable=true)
      * @JMS\Expose
+     * @JMS\Groups({"read"})
      */
-    private $slug;
-
+    protected $slug;
     /**
-     * @var boolean
+     * @var string
      *
-     * @ORM\Column(name="is_active", type="boolean")
+     * @ORM\Column(name="name", type="string", length=100)
      * @JMS\Expose
+     * @JMS\Groups({"read","write","fundamental"})
      */
-    private $isActive = true;
-
+    private $name;
     /**
      * @var boolean
      * @ORM\Column(name="is_Classification", type="boolean")
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $isClassification = false;
-
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
-
     /**
      * @var Collection | Incident[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="type",fetch="EXTRA_LAZY")
      */
     private $incidents;
-
     /**
      * @var string|null
      *
      * @ORM\Column(name="description", type="string", length=250, nullable=true)
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $description;
-
     /**
      * @var Collection | IncidentReport[]
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentReport",mappedBy="type",indexBy="lang"))
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $reports;
-
-
     /**
-     * @var TaxonomyValue
+     * @var TaxonomyValue|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue")
-     * @ORM\JoinColumn(name="taxonomyValue", referencedColumnName="slug",nullable=true)
-     **/
+     * @ORM\JoinColumn(name="taxonomyValue", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
+     */
     private $taxonomyValue;
 
-
     /**
-     * Constructor
+     * IncidentType constructor.
      */
     public function __construct()
     {
         $this->incidents = new ArrayCollection();
-        $this->setTaxonomyValue(null);
+        $this->reports = new ArrayCollection();
+    }
 
+    /**
+     * @return bool
+     */
+    public function canEditFundamentals(): bool
+    {
+        return $this->getDeadIncidents()->isEmpty() && !$this->isUndefined() && $this->getReports()->isEmpty();
+    }
+
+    /**
+     * Get incidents
+     *
+     * @return Collection
+     */
+    public function getDeadIncidents(): Collection
+    {
+        return $this->getIncidents()->filter(static function (Incident $incident) {
+            return $incident->isDead();
+        });
+    }
+
+    /**
+     * @return Incident[]|Collection
+     */
+    public function getIncidents(): Collection
+    {
+        return $this->incidents;
+    }
+
+    /**
+     * @param Incident[]|Collection $incidents
+     * @return IncidentType
+     */
+    public function setIncidents(Collection $incidents): self
+    {
+        $this->incidents = $incidents;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUndefined(): bool
+    {
+        return $this->slug === 'undefined';
+    }
+
+    /**
+     * @return IncidentReport[]|Collection
+     */
+    public function getReports(): ?Collection
+    {
+        return $this->reports;
+    }
+
+    /**
+     * @param IncidentReport[]|Collection $reports
+     * @return IncidentType
+     */
+    public function setReports(Collection $reports): self
+    {
+        $this->reports = $reports;
+        return $this;
     }
 
     /**
@@ -195,10 +226,10 @@ class IncidentType extends Entity
     /**
      * Get report
      *
-     * @param string $lang
+     * @param string|null $lang
      * @return IncidentReport
      */
-    public function getReport(string $lang = null)
+    public function getReport(string $lang = null): ?IncidentReport
     {
         $reporte = $this->getReports()->filter(
             static function (IncidentReport $report) use ($lang) {
@@ -212,30 +243,14 @@ class IncidentType extends Entity
         if ($this->getTaxonomyValue()) {
             return $this->getTaxonomyValue()->getReport();
         }
-
-        return $this->getTaxonomyValue()->getPredicate()->getReport();
+        if ($this->getTaxonomyValue() && $this->getTaxonomyValue()->getPredicate()) {
+            return $this->getTaxonomyValue()->getReport();
+        }
+        return null;
     }
 
     /**
-     * @return IncidentReport[]|Collection
-     */
-    public function getReports(): ?Collection
-    {
-        return $this->reports;
-    }
-
-    /**
-     * @param IncidentReport[]|Collection $reports
-     * @return IncidentType
-     */
-    public function setReports(Collection $reports): self
-    {
-        $this->reports = $reports;
-        return $this;
-    }
-
-    /**
-     * @return mixed
+     * @return TaxonomyValue
      */
     public function getTaxonomyValue(): ?TaxonomyValue
     {
@@ -243,11 +258,46 @@ class IncidentType extends Entity
     }
 
     /**
-     * @param mixed $taxonomyValue
+     * @param TaxonomyValue $taxonomyValue
+     * @return IncidentType
      */
-    public function setTaxonomyValue($taxonomyValue = null): void
+    public function setTaxonomyValue(TaxonomyValue $taxonomyValue = null): IncidentType
     {
         $this->taxonomyValue = $taxonomyValue;
+        return $this;
+    }
+
+    /**
+     * @return string
+     * @JMS\Expose()
+     * @JMS\VirtualProperty()
+     * @JMS\Groups({"read","write"})
+     */
+    public function getTaxonomyValueName(): ?string
+    {
+        return $this->getTaxonomyValue() ? $this->getTaxonomyValue()->getValue() : '';
+    }
+
+    /**
+     * @return string
+     * @JMS\Expose()
+     * @JMS\VirtualProperty()
+     * @JMS\Groups({"read","write"})
+     */
+    public function getTaxonomyPredicateName(): ?string
+    {
+        return $this->getTaxonomyValue() ? $this->getTaxonomyValue()->getPredicate()->getValue() : '';
+    }
+
+    /**
+     * @return int
+     * @JMS\Expose()
+     * @JMS\VirtualProperty()
+     * @JMS\Groups({"read","write"})
+     */
+    public function getReportsCount(): int
+    {
+        return $this->getReports()->count();
     }
 
     /**
@@ -275,90 +325,6 @@ class IncidentType extends Entity
         });
     }
 
-    /**
-     * @return Incident[]|Collection
-     */
-    public function getIncidents(): Collection
-    {
-        return $this->incidents;
-    }
-
-    /**
-     * @param Incident[]|Collection $incidents
-     * @return IncidentType
-     */
-    public function setIncidents(Collection $incidents): self
-    {
-        $this->incidents = $incidents;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getIsActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     * @return IncidentType
-     */
-    public function setIsActive(bool $isActive): IncidentType
-    {
-        $this->isActive = $isActive;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     * @return IncidentType
-     */
-    public function setCreatedAt(DateTime $createdAt): IncidentType
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /*
-    * @param string|null $description
-    * @return IncidentType
-    */
-
-    /**
-     * @param DateTime $updatedAt
-     * @return IncidentType
-     */
-    public function setUpdatedAt(DateTime $updatedAt): IncidentType
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
 
     /**
      * @return string|null
@@ -390,5 +356,19 @@ class IncidentType extends Entity
         $this->isClassification = $isClassification;
     }
 
+    /**
+     * @return string
+     */
+    public function getIdentificationString(): string
+    {
+        return 'slug';
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['name' => $this->getName()];
+    }
 }

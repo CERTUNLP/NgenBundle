@@ -2,118 +2,144 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Entity;
-use DateTime;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * IncidentPriority
  *
- * @ORM\Table(name="incident_priority")
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IndicentPriorityRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Incident\IncidentPriorityRepository")
+ * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\IncidentPriorityListener"})
  * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity(
+ *     fields={"impact", "urgency"},
+ *     message="This priority already exist."
+ * )
  */
-class IncidentPriority extends Entity
+class IncidentPriority extends EntityApiFrontend
 {
     /**
-     * @var integer
+     * @var integer|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Expose
      */
     protected $id;
     /**
-     * @var IncidentImpact
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact",inversedBy="incidentsPriorities")
-     * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
-     * @JMS\Expose
+     * @var string
+     * @ORM\Column(name="slug", type="string", length=255, unique=true)
+     * @JMS\Expose()
+     * @JMS\Groups({"read"})
      */
-    protected $impact;
+    protected $slug;
+    /**
+     * @var IncidentImpact
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact")
+     * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write","fundamental"})
+     */
+    private $impact = null;
     /**
      *
      * @var IncidentUrgency
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency", inversedBy="incidentsPriorities")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency")
      * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write","fundamental"})
      */
-    protected $urgency;
+    private $urgency = null;
     /**
      * @var Incident[] | Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="priority",fetch="EXTRA_LAZY")
      */
-    protected $incidents;
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    private $isActive = true;
+    private $incidents = null;
     /**
      * @var int
      *
      * @ORM\Column(name="unresponse_time", type="integer")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $unresponseTime = 0;
     /**
      * @var integer|null
      * @ORM\Column(name="unresolution_time", type="integer")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $unresolutionTime;
     /**
      * @var int
      *
      * @ORM\Column(name="code", type="integer")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $code = 0;
     /**
      * @var string
-     * @ORM\Column(name="slug", type="string", length=255, unique=true)
-     * @JMS\Expose
-     */
-    private $slug = '';
-    /**
-     * @var string
      * @ORM\Column(name="name", type="string", length=255)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $name = '';
     /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-    /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
-    /**
      * @var integer|null
      * @ORM\Column(name="response_time", type="integer")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $responseTime;
     /**
      * @var integer|null
      * @ORM\Column(name="resolution_time", type="integer")
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $resolutionTime;
+
+    /**
+     * @return bool
+     */
+    public function canEditFundamentals(): bool
+    {
+        return $this->getDeadIncidents()->isEmpty();
+    }
+
+    /**
+     * Get incidents
+     *
+     * @return Collection
+     */
+    public function getDeadIncidents(): Collection
+    {
+        return $this->getIncidents()->filter(static function (Incident $incident) {
+            return $incident->isDead();
+        });
+    }
+
+    /**
+     * @return Incident[] | Collection
+     */
+    public function getIncidents(): ?Collection
+    {
+        return $this->incidents;
+    }
+
+    /**
+     * @param Incident[] | Collection $incidents
+     * @return IncidentPriority
+     */
+    public function setIncidents(Collection $incidents): IncidentPriority
+    {
+        $this->incidents = $incidents;
+        return $this;
+    }
 
     /**
      * @return string
@@ -189,96 +215,6 @@ class IncidentPriority extends Entity
     }
 
     /**
-     * @return int
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     * @return IncidentPriority
-     */
-    public function setId(int $id): ?IncidentPriority
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return IncidentImpact
-     */
-    public function getImpact(): ?IncidentImpact
-    {
-        return $this->impact;
-    }
-
-    /**
-     * @param IncidentImpact $impact
-     * @return IncidentPriority
-     */
-    public function setImpact(IncidentImpact $impact): IncidentPriority
-    {
-        $this->impact = $impact;
-        return $this;
-    }
-
-    /**
-     * @return IncidentUrgency
-     */
-    public function getUrgency(): ?IncidentUrgency
-    {
-        return $this->urgency;
-    }
-
-    /**
-     * @param IncidentUrgency $urgency
-     * @return IncidentPriority
-     */
-    public function setUrgency(IncidentUrgency $urgency): IncidentPriority
-    {
-        $this->urgency = $urgency;
-        return $this;
-    }
-
-    /**
-     * @return Incident[] | Collection
-     */
-    public function getIncidents(): ?Collection
-    {
-        return $this->incidents;
-    }
-
-    /**
-     * @param Incident[] | Collection $incidents
-     * @return IncidentPriority
-     */
-    public function setIncidents(Collection $incidents): IncidentPriority
-    {
-        $this->incidents = $incidents;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     * @return IncidentPriority
-     */
-    public function setIsActive(bool $isActive): IncidentPriority
-    {
-        $this->isActive = $isActive;
-        return $this;
-    }
-
-    /**
      * @return int|null
      */
     public function getUnresponseTime(): ?int
@@ -333,42 +269,6 @@ class IncidentPriority extends Entity
     }
 
     /**
-     * @return DateTime|null
-     */
-    public function getCreatedAt(): ?DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime|null $createdAt
-     * @return IncidentPriority
-     */
-    public function setCreatedAt(?DateTime $createdAt): IncidentPriority
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getUpdatedAt(): ?DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param DateTime|null $updatedAt
-     * @return IncidentPriority
-     */
-    public function setUpdatedAt(?DateTime $updatedAt): IncidentPriority
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
-    /**
      * @return int|null
      */
     public function getResponseTime(): ?int
@@ -404,5 +304,64 @@ class IncidentPriority extends Entity
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getIdentificationString(): string
+    {
+        return 'id';
+    }
+
+    /**
+     * @return string
+     */
+    public function getDataIdentificationString(): string
+    {
+        return 'code';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['impact' => $this->getImpact()->getId(), 'urgency' => $this->getUrgency()->getId()];
+    }
+
+    /**
+     * @return IncidentImpact
+     */
+    public function getImpact(): ?IncidentImpact
+    {
+        return $this->impact;
+    }
+
+    /**
+     * @param IncidentImpact $impact
+     * @return IncidentPriority
+     */
+    public function setImpact(IncidentImpact $impact): IncidentPriority
+    {
+        $this->impact = $impact;
+        return $this;
+    }
+
+    /**
+     * @return IncidentUrgency
+     */
+    public function getUrgency(): ?IncidentUrgency
+    {
+        return $this->urgency;
+    }
+
+    /**
+     * @param IncidentUrgency $urgency
+     * @return IncidentPriority
+     */
+    public function setUrgency(IncidentUrgency $urgency): IncidentPriority
+    {
+        $this->urgency = $urgency;
+        return $this;
+    }
 }
 

@@ -1,10 +1,10 @@
-{# 
- This file is part of the Ngen - CSIRT Incident Report System.
- 
- (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
- This source file is subject to the GPL v3.0 license that is bundled
- with this source code in the file LICENSE.
+{#
+This file is part of the Ngen - CSIRT Incident Report System.
+
+(c) CERT UNLP <support@cert.unlp.edu.ar>
+
+This source file is subject to the GPL v3.0 license that is bundled
+with this source code in the file LICENSE.
 #}
 
 {% extends 'CertUnlpNgenBundle::NetworkAdmin/Frontend/frontend.html.twig' %}
@@ -14,14 +14,14 @@
         {{ icon(object.icon ~' fa-fw text-'~object.color) }}
         {{ object }}
         {{ print.colorbox('primary','id-card',object.id,'#') }}
-        {{ print.statusdropbox(object) }}
+        {{ print.statusbox(object) }}
         {{ print.colorbox('primary','share-alt','networks '~object.networks.count,path('cert_unlp_ngen_network_search_network',{'term': '"'~object.name~'"'~ "&&" ~'"'~object.emails| join('"&&"') ~'"'})) }}
         {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_network_edit_network_admin',{'slug': object.slug})) }}
     </h1>
 {% endblock %}
 {% block content_body %}
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-12">
             <div class="card shadow mb-4">
                 <div class="card-header">
                     <h6 class="m-0 font-weight-bold text-primary">{{ 'Network Admin Information'|trans }}</h6>
@@ -50,7 +50,13 @@
                                     {{ 'Email'|trans }}
                                 </td>
                                 <td class="">
-                                    {{ object.emailsAsString }}
+                                    <ul class="list-group">
+                                        {% for email in object.emails %}
+                                            <li class="list-group-item">
+                                                {{ print.colordropbox(object.color,'envelope',email,'#',email) }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
                                 </td>
                             </tr>
                             <tr>

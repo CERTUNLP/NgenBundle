@@ -11,12 +11,11 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident\State;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentChangeState;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentStateChange;
 use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,26 +25,31 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Description of IncidentClosingType
- *
  * @author dam
- * @ORM\Table()
  * @UniqueEntity(
  *     fields={"name"},
  *     message="This State is already in use."
  * )
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentStateRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Incident\State\IncidentStateRepository")
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentState extends Entity implements Translatable
+class IncidentState extends EntityApiFrontend implements Translatable
 {
-
+    /**
+     * @var string
+     * @ORM\Id
+     * @Gedmo\Slug(fields={"name"}, separator="_")
+     * @ORM\Column(name="slug", type="string", length=100)
+     * @JMS\Expose
+     * @JMS\Groups({"read"})
+     */
+    protected $slug;
     /**
      * @var StateBehavior
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior", inversedBy="states")
      * @ORM\JoinColumn(name="behavior", referencedColumnName="slug")
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
      */
     private $behavior;
     /**
@@ -59,58 +63,28 @@ class IncidentState extends Entity implements Translatable
      *
      * @ORM\Column(name="name", type="string", length=100)
      * @JMS\Expose
-     * @JMS\Groups({"api_input"})
+     * @JMS\Groups({"read","write","fundamental"})
      * @Gedmo\Translatable
      */
     private $name = '';
     /**
      * @var string
-     * @ORM\Id
-     * @Gedmo\Slug(fields={"name"}, separator="_")
-     * @ORM\Column(name="slug", type="string", length=100)
-     * @JMS\Expose
-     * @JMS\Groups({"api_input"})
-     * */
-    private $slug = '';
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    private $isActive = true;
-    /**
-     * @var string
      *
      * @ORM\Column(name="description", type="string", length=250, nullable=true)
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $description = '';
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
     /**
      * @var StateEdge[]|Collection
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge",mappedBy="oldState",cascade={"persist"},orphanRemoval=true)
      * @ORM\OrderBy({"newState" = "ASC"})
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $edges;
     /**
      * @var Incident[]|Collection
-     *
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="state",fetch="EXTRA_LAZY")
      */
     private $incidents;
@@ -125,21 +99,23 @@ class IncidentState extends Entity implements Translatable
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function getLocale()
+    public function canEditFundamentals(): bool
     {
-        return $this->locale;
+        return $this->getDeadIncidents()->isEmpty() && !$this->isInitial() && !$this->isUndefined();
     }
 
     /**
-     * @param mixed $locale
-     * @return IncidentState
+     * Get incidents
+     *
+     * @return Collection
      */
-    public function setLocale($locale)
+    public function getDeadIncidents(): Collection
     {
-        $this->locale = $locale;
-        return $this;
+        return $this->getIncidents()->filter(static function (Incident $incident) {
+            return $incident->isDead();
+        });
     }
 
     /**
@@ -157,6 +133,63 @@ class IncidentState extends Entity implements Translatable
     public function setIncidents(Collection $incidents): self
     {
         $this->incidents = $incidents;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInitial(): bool
+    {
+        return $this->getSlug() === 'initial';
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return IncidentState
+     */
+    public function setSlug(string $slug): IncidentState
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUndefined(): bool
+    {
+        return $this->getSlug() === 'undefined';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @param mixed $locale
+     * @return IncidentState
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
         return $this;
     }
 
@@ -179,7 +212,7 @@ class IncidentState extends Entity implements Translatable
     /**
      * @return StateBehavior
      */
-    public function getBehavior(): StateBehavior
+    public function getBehavior(): ?StateBehavior
     {
         return $this->behavior;
     }
@@ -195,17 +228,28 @@ class IncidentState extends Entity implements Translatable
     }
 
     /**
+     * @return string
+     * @JMS\Expose()
+     * @JMS\VirtualProperty()
+     * @JMS\Groups({"read","write"})
+     */
+    public function getBehaviorSlug(): string
+    {
+        return $this->getBehavior()->getSlug();
+    }
+
+    /**
      * @param Incident $incident
-     * @param IncidentState $newState
+     * @param IncidentState|null $newState
      * @return Incident
      */
-    public function changeIncidentState(Incident $incident, IncidentState $newState = null): ?Incident
+    public function changeState(Incident $incident, IncidentState $newState = null): ?Incident
     {
         if ($newState) {
             $edge = $this->getNewStateEdge($newState);
             if ($edge) {
-                $edge->changeIncidentState($incident);
-                $incident->addChangeStateHistory(new IncidentChangeState($incident, $edge));
+                $edge->changeState($incident);
+                $incident->addStateChange(new IncidentStateChange($incident, $edge));
                 return $incident;
             }
         }
@@ -248,37 +292,6 @@ class IncidentState extends Entity implements Translatable
     public function isLive(): bool
     {
         return $this->getBehavior()->isLive();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isInitial(): bool
-    {
-        return $this->getSlug() === 'initial';
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return IncidentState
-     */
-    public function setSlug(string $slug): IncidentState
-    {
-        $this->slug = $slug;
-
-        return $this;
     }
 
     /**
@@ -333,6 +346,19 @@ class IncidentState extends Entity implements Translatable
     }
 
     /**
+     * @return Collection
+     * @JMS\Expose()
+     * @JMS\VirtualProperty()
+     * @JMS\Groups({"read","write"})
+     */
+    public function getNewStatesSlug(): Collection
+    {
+        return $this->getEdges()->map(static function (StateEdge $edge) {
+            return $edge->getNewState()->getSlug();
+        });
+    }
+
+    /**
      * @param StateEdge $edge
      * @return IncidentState
      */
@@ -343,16 +369,6 @@ class IncidentState extends Entity implements Translatable
         }
         $this->edges[$edge->getNewState()->getId()] = $edge;
         return $this;
-    }
-
-    /**
-     * Get id
-     *
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->getSlug();
     }
 
     /**
@@ -411,71 +427,18 @@ class IncidentState extends Entity implements Translatable
     }
 
     /**
-     * Get isActive
-     *
-     * @return boolean
+     * @return string
      */
-    public function getIsActive(): bool
+    public function getIdentificationString(): string
     {
-        return $this->isActive;
+        return 'slug';
     }
 
     /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return IncidentState
+     * {@inheritDoc}
      */
-    public function setIsActive(bool $isActive): IncidentState
+    public function getDataIdentificationArray(): array
     {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param DateTime $createdAt
-     * @return IncidentState
-     */
-    public function setCreatedAt(DateTime $createdAt): IncidentState
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param DateTime $updatedAt
-     * @return IncidentState
-     */
-    public function setUpdatedAt(DateTime $updatedAt): IncidentState
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
+        return ['name' => $this->getName()];
     }
 }

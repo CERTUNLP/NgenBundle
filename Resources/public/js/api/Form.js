@@ -39,12 +39,12 @@ var Form = Class.extend({
             // if (jqXHR.responseJSON.hasOwnProperty('message')) {
             //     ul.append($('<li>' + jqXHR.responseJSON.message + '</li>'));
             // }
-            if (jqXHR.responseJSON.errors.hasOwnProperty('global') && jqXHR.responseJSON.errors.global.length) {
+            if (jqXHR.responseJSON.hasOwnProperty('errors') &&jqXHR.responseJSON.errors.hasOwnProperty('global') && jqXHR.responseJSON.errors.global.length) {
                 ul = $('<ul></ul>');
                 $.each(jqXHR.responseJSON.errors.global, function (n, error) {
                     ul.append($('<li>' + error + '</li>'));
                 });
-                div = $('<div id="global-errors" class="alert alert-danger"></div>');
+                div = $('<div id="global-errors" class="alert alert-danger col-md-3 offset-10"></div>');
                 this.form.before(div.append(ul));
             }
             if (jqXHR.responseJSON.hasOwnProperty('errors')) {

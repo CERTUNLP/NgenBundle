@@ -18,28 +18,48 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Entity\Incident\IncidentDetected;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
-class IncidentDetectedFrontendController extends Controller
+class IncidentDetectedFrontendController extends AbstractController
 {
+    /**
+     * @var string
+     */
+    private $evidence_path;
+
+    public function __construct(string $evidence_path)
+    {
+        $this->evidence_path = $evidence_path;
+    }
 
     /**
      * @Route("{id}/evidence_detected", name="cert_unlp_ngen_incident_frontend_evidence_incident_detected_id", requirements={"id"="\d+"})
      * @Route("{slug}/evidence_detected", name="cert_unlp_ngen_incident_detected_frontend_evidence_incident_detected_slug")
-     * @param IncidentDetected $incident
-     * @return BinaryFileResponse
+     * @param IncidentDetected $detection
+     * @return Response
      */
-    public function evidenceIncidentDetectedAction(IncidentDetected $incident)
+    public function evidenceIncidentDetectedAction(IncidentDetected $detection): Response
     {
+        $evidence_file = $this->getEvidencePath() . '/' . $detection->getEvidenceFilePath();
+        if (file_exists($evidence_file)) {
+            $response = new Response(file_get_contents($evidence_file));
+            $response->headers->set('Content-Type', 'application/zip');
+            $response->headers->set('Content-Disposition', 'attachment;filename="' . $evidence_file . '"');
+            $response->headers->set('Content-length', filesize($evidence_file));
+        } else {
+            throw $this->createNotFoundException();
+        }
 
-        return $this->getFrontendController()->evidenceIncidentAction($incident);
+        return $response;
     }
 
-    public function getFrontendController()
+    /**
+     * @return string
+     */
+    public function getEvidencePath(): string
     {
-        return $this->get('cert_unlp.ngen.incident.detected.frontend.controller');
+        return $this->evidence_path;
     }
-
 }

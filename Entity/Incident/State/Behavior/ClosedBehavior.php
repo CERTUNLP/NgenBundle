@@ -29,6 +29,7 @@ class ClosedBehavior extends StateBehavior
     {
         return 'danger';
     }
+
     /**
      * @return bool
      */

@@ -36,24 +36,24 @@ cert_ngen_user_change_password:
     prefix:   /users/profile
 
 cert_ngen_network_entity:
-    resource: '@CertUnlpNgenBundle/Controller/Frontend/Network/NetworkEntityFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Constituency/NetworkEntityFrontendController.php'
     type:     annotation
-    prefix:   /community/entities
+    prefix:   /contituency/entities
 
 cert_ngen_network_admin:
-    resource: '@CertUnlpNgenBundle/Controller/Frontend/Network/NetworkAdminFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Constituency/NetworkAdminFrontendController.php'
     type:     annotation
-    prefix:   /community/admins
+    prefix:   /contituency/admins
 
 cert_ngen_network:
-    resource: '@CertUnlpNgenBundle/Controller/Frontend/Network/NetworkFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Constituency/NetworkElement/NetworkFrontendController.php'
     type:     annotation
-    prefix:   /community/networks
+    prefix:   /contituency/networks
 
 cert_ngen_host:
-    resource: '@CertUnlpNgenBundle/Controller/Frontend/HostFrontendController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Constituency/NetworkElement/HostFrontendController.php'
     type:   annotation
-    prefix:    /community/hosts
+    prefix:    /contituency/hosts
 
 cert_ngen_internal_incident:
     resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentFrontendController.php'
@@ -86,19 +86,19 @@ cert_ngen_administration_priority:
     prefix:   /administration/priorities
 
 cert_ngen_administration_taxonomy_values:
-  resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentTaxonomyValueFrontendController.php'
-  type:     annotation
-  prefix:   /administration/taxonomies/values
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentTaxonomyValueFrontendController.php'
+    type:     annotation
+    prefix:   /administration/taxonomies/values
 
 cert_ngen_administration_taxonomy_predicates:
-  resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentTaxonomyPredicateFrontendController.php'
-  type:     annotation
-  prefix:   /administration/taxonomies/predicates
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentTaxonomyPredicateFrontendController.php'
+    type:     annotation
+    prefix:   /administration/taxonomies/predicates
 
 cert_ngen_incident_detected:
-  resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentDetectedFrontendController.php'
-  type:   annotation
-  prefix:   /incidents_detected
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Incident/IncidentDetectedFrontendController.php'
+    type:   annotation
+    prefix:   /incidents_detected
 
 
 cert_ngen_administration_type_reports:
@@ -126,6 +126,12 @@ cert_ngen_api:
     prefix: /api
     resource: '@CertUnlpNgenBundle/Resources/config/routing_api.yml'
 
-NelmioApiDocBundle:
-    resource: '@NelmioApiDocBundle/Resources/config/routing.yml'
-    prefix:   /incidents/api/doc
+app.swagger_ui:
+    path: /api/doc
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
+
+app.swagger:
+    path: /api/doc.json
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger }

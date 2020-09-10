@@ -2,7 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -13,17 +13,26 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * IncidentTlp
  *
- * @ORM\Table(name="incident_tlp")
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentTlp extends Entity implements Translatable
+class IncidentTlp extends EntityApiFrontend implements Translatable
 {
+    /**
+     * @var string
+     * @ORM\Id
+     * @Gedmo\Slug(fields={"name"}, separator="_")
+     * @ORM\Column(name="slug", type="string", length=45)
+     * @JMS\Expose()
+     * @JMS\Groups({"read"})
+     * */
+    protected $slug;
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=45, nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      * @Gedmo\Translatable
      */
     private $name = '';
@@ -31,17 +40,10 @@ class IncidentTlp extends Entity implements Translatable
      * @var integer
      *
      * @ORM\Column(name="code", type="integer", nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $code = 0;
-    /**
-     * @var string
-     * @ORM\Id
-     * @Gedmo\Slug(fields={"name"}, separator="_")
-     * @ORM\Column(name="slug", type="string", length=45)
-     * @JMS\Expose
-     * */
-    private $slug = '';
     /**
      * @var string
      *
@@ -52,7 +54,8 @@ class IncidentTlp extends Entity implements Translatable
      * @var string
      *
      * @ORM\Column(name="when", type="string", length=500, nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $when = '';
     /**
@@ -65,26 +68,28 @@ class IncidentTlp extends Entity implements Translatable
      * @var string
      *
      * @ORM\Column(name="why", type="string", length=500, nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $why = '';
     /**
      * @var string
      *
      * @ORM\Column(name="information", type="string", length=10, nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $information = '';
     /**
      * @var string
-     *
      * @ORM\Column(name="description", type="string", length=150, nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $description = '';
 
-    /** @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="tlp",fetch="EXTRA_LAZY")
-     * @JMS\Exclude()
+    /**
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="tlp",fetch="EXTRA_LAZY")
      */
     private $incidents;
 
@@ -94,6 +99,30 @@ class IncidentTlp extends Entity implements Translatable
     public function __construct()
     {
         $this->incidents = new ArrayCollection();
+    }
+
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return IncidentTlp
+     */
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 
     /**
@@ -274,29 +303,6 @@ class IncidentTlp extends Entity implements Translatable
         return $this;
     }
 
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug(): string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return IncidentTlp
-     */
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
@@ -320,4 +326,19 @@ class IncidentTlp extends Entity implements Translatable
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getIdentificationString(): string
+    {
+        return 'slug';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['name' => $this->getName()];
+    }
 }

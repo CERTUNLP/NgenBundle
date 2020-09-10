@@ -11,7 +11,8 @@
 
 namespace CertUnlp\NgenBundle\Security;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use CertUnlp\NgenBundle\Entity\User\User;
+use CertUnlp\NgenBundle\Repository\User\UserRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -19,34 +20,59 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class ApiKeyUserProvider implements UserProviderInterface
 {
 
-    private $om;
+    /**
+     * @var UserRepository
+     */
     private $repository;
 
-    public function __construct(ObjectManager $om, $user_class)
+    /**
+     * ApiKeyUserProvider constructor.
+     * @param UserRepository $userRepository
+     */
+    public function __construct(UserRepository $userRepository)
     {
-        $this->om = $om;
-        $this->repository = $this->om->getRepository($user_class);
+        $this->repository = $userRepository;
     }
 
-    public function getUsernameForApiKey($apiKey)
+    /**
+     * @param $apiKey
+     * @return User
+     */
+    public function getUsernameForApiKey(string $apiKey): ?User
     {
-
-        return $this->repository->findOneByApiKey($apiKey);
+        return $this->getRepository()->findOneByApiKey($apiKey);
     }
 
+    /**
+     * @return UserRepository
+     */
+    public function getRepository(): UserRepository
+    {
+        return $this->repository;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function loadUserByUsername($user)
     {
         return $user;
     }
 
-    public function refreshUser(UserInterface $user)
+    /**
+     * {@inheritDoc}
+     */
+    public function refreshUser(UserInterface $user): UserInterface
     {
-        throw new UnsupportedUserException();
+        throw new UnsupportedUserException('Apikey user not found');
     }
 
-    public function supportsClass($class)
+    /**
+     * {@inheritDoc}
+     */
+    public function supportsClass($class): bool
     {
-        return 'CertUnlp\NgenBundle\Entity\User' === $class;
+        return User::class === $class;
     }
 
 }

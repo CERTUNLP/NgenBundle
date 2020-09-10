@@ -45,7 +45,7 @@ var ApiClient = Class.extend({
         this.doRequest(request, callback);
     },
     get: function (id, callback) {
-        var request = this.defaultChannel.read(id, {});
+        var request = this.defaultChannel.read(id);
         this.doRequest(request, callback);
     }
 

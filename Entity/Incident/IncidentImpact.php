@@ -2,8 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Entity;
-use Doctrine\Common\Collections\Collection;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
@@ -12,27 +11,44 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * IncidentImpact
  *
- * @ORM\Table(name="incident_impact")
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentImpact extends Entity implements Translatable
+class IncidentImpact extends EntityApiFrontend implements Translatable
 {
+    /**
+     * @var string
+     * @ORM\Id
+     * @Gedmo\Slug(fields={"name"}, separator="_")
+     * @ORM\Column(name="slug", type="string", length=45)
+     * @JMS\Expose()
+     * @JMS\Groups({"read"})
+     */
+    protected $slug;
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      * @Gedmo\Translatable
      */
     private $name = '';
-
     /**
      * @Gedmo\Locale
      * Used locale to override Translation listener`s locale
      * this is not a mapped field of entity metadata, just a simple property
      */
     private $locale;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=512, nullable=true)
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
+     */
+    private $description = '';
+
 
     /**
      * @return mixed
@@ -53,65 +69,16 @@ class IncidentImpact extends Entity implements Translatable
     }
 
     /**
-     * @var string
-     * @ORM\Id
-     * @Gedmo\Slug(fields={"name"}, separator="_")
-     * @ORM\Column(name="slug", type="string", length=45)
-     * @JMS\Expose()
-     * */
-    private $slug = '';
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=512, nullable=true)
-     * @JMS\Expose()
+     * @return bool
      */
-    private $description = '';
-    /**
-     * @var Collection|null
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority",mappedBy="impact"))
-     */
-    private $incidentsPriorities;
-
-    /**
-     * @return Collection
-     */
-    public function getIncidentsPriorities(): Collection
+    public function isUndefined(): bool
     {
-        return $this->incidentsPriorities;
-    }
-
-    /**
-     * @param Collection $incidentsPriorities
-     * @return IncidentImpact
-     */
-    public function setIncidentsPriorities(Collection $incidentsPriorities): IncidentImpact
-    {
-        $this->incidentsPriorities = $incidentsPriorities;
-        return $this;
+        return $this->slug === 'undefined';
     }
 
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     * @return IncidentImpact
-     */
-    public function setName(string $name): IncidentImpact
-    {
-        $this->name = $name;
-        return $this;
     }
 
     /**
@@ -188,4 +155,37 @@ class IncidentImpact extends Entity implements Translatable
         }
     }
 
+    /**
+     * @return string
+     */
+    public function getIdentificationString(): string
+    {
+        return 'slug';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['name' => $this->getName()];
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return IncidentImpact
+     */
+    public function setName(string $name): IncidentImpact
+    {
+        $this->name = $name;
+        return $this;
+    }
 }

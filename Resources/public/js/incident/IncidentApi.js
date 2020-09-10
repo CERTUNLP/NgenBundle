@@ -26,7 +26,7 @@ var IncidentApi = ApiClient.extend({
 
     },
     changeState: function (incidentId, state, callback) {
-        var request = this.defaultChannel.states.update(incidentId, state, {});
+        var request = this.defaultChannel.states.update(incidentId, state);
 
         this.doRequest(request, callback);
     },
@@ -36,12 +36,12 @@ var IncidentApi = ApiClient.extend({
     },
     searchPriority: function (priorityId, callback) {
 
-        var request = this.api.priorities.read(priorityId, {});
+        var request = this.api.priorities.read(priorityId);
         this.doRequest(request, callback);
     },
     searchIncident: function (data, callback) {
 
-        var request = this.api.incidentSearch.read(data, {});
+        var request = this.api.incidentSearch.read(data);
         this.doRequest(request, callback);
     }
 

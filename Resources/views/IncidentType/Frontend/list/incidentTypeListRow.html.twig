@@ -21,9 +21,6 @@
         </div>
     </td>
     <td class="text-center">
-        {{ incidentType.description | default('No description')| trans }}
-    </td>
-    <td class="text-center">
         {% if incidentType.taxonomyValue %}
             {{ print.colordropbox(incidentType.taxonomyValue.color,incidentType.taxonomyValue.icon,incidentType.taxonomyValue.name,path('cert_unlp_ngen_taxonomy_value_detail',{'slug': incidentType.taxonomyValue.slug})) }}
         {% endif %}
@@ -31,7 +28,7 @@
     <td class="text-center">
         <div class="d-flex  align-items-center justify-content-around">
             {% for report in  incidentType.reports %}
-                {{ print.colordropbox(report.color,report.icon,report.lang,path('cert_unlp_ngen_incident_type_report_detail',{'slug': incidentType.slug, 'lang':report.lang})) }}
+                {{ print.colordropbox(report.color,report.icon,report.lang,path('cert_unlp_ngen_incident_type_report_detail',{'type': incidentType.slug, 'lang':report.lang})) }}
             {% endfor %}
         </div>
     </td>

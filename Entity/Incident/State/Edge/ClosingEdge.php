@@ -15,8 +15,6 @@ use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
-//use Doctrine\Common\Collections\Collection;
-
 /**
  * IncidentType
  *
@@ -25,7 +23,7 @@ use JMS\Serializer\Annotation as JMS;
  */
 class ClosingEdge extends StateEdge
 {
-    public function changeIncidentStateAction(Incident $incident): Incident
+    public function changeStateAction(Incident $incident): Incident
     {
         $incident->setNeedToCommunicate(false);
         return $incident;

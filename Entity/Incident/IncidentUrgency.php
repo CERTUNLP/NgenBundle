@@ -2,7 +2,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -12,51 +12,42 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * IncidentUrgency
  *
- * @ORM\Table(name="incident_urgency")
  * @ORM\Entity
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentUrgency extends Entity implements Translatable
+class IncidentUrgency extends EntityApiFrontend implements Translatable
 {
     /**
-     * @var string|null
-     *
+     * @var string
+     * @ORM\Id
+     * @Gedmo\Slug(fields={"name"}, separator="_")
+     * @ORM\Column(name="slug", type="string", length=45)
+     * @JMS\Expose()
+     * @JMS\Groups({"read"})
+     */
+    protected $slug;
+    /**
+     * @var string
      * @ORM\Column(name="name", type="string", length=45, nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      * @Gedmo\Translatable
      */
-    private $name;
-
+    private $name = '';
     /**
      * @Gedmo\Locale
      * Used locale to override Translation listener`s locale
      * this is not a mapped field of entity metadata, just a simple property
      */
     private $locale;
-
     /**
-     * @var string|null
-     * @ORM\Id
-     * @Gedmo\Slug(fields={"name"}, separator="_")
-     * @ORM\Column(name="slug", type="string", length=45)
-     * @JMS\Expose
-     * */
-    private $slug;
-
-    /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
-     * @JMS\Expose
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
-    private $description;
-
-
-    /**
-     * @var Collection|null
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority",mappedBy="urgency"))
-     */
-    private $incidentsPriorities;
+    private $description = '';
 
     /**
      * @return mixed
@@ -74,6 +65,14 @@ class IncidentUrgency extends Entity implements Translatable
     {
         $this->locale = $locale;
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUndefined(): bool
+    {
+        return $this->slug === 'undefined';
     }
 
     /**
@@ -102,24 +101,6 @@ class IncidentUrgency extends Entity implements Translatable
     /**
      * @return string
      */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     * @return IncidentUrgency
-     */
-    public function setName(string $name): IncidentUrgency
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
@@ -135,7 +116,10 @@ class IncidentUrgency extends Entity implements Translatable
         return $this;
     }
 
-    public function __toString()
+    /**
+     * @return string
+     */
+    public function __toString(): string
     {
         return $this->getSlug();
     }
@@ -189,5 +173,39 @@ class IncidentUrgency extends Entity implements Translatable
             default:
                 return 'info';
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentificationString(): string
+    {
+        return 'slug';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['name' => $this->getName()];
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return IncidentUrgency
+     */
+    public function setName(string $name): IncidentUrgency
+    {
+        $this->name = $name;
+        return $this;
     }
 }

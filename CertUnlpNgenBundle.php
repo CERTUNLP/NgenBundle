@@ -12,8 +12,7 @@
 namespace CertUnlp\NgenBundle;
 
 use CertUnlp\NgenBundle\DependencyInjection\CertUnlpNgenExtension;
-use CertUnlp\NgenBundle\DependencyInjection\Compiler\DoctrineEntityListenerPass;
-use CertUnlp\NgenBundle\Services\Delegator\DelegatorCompilerPass;
+use CertUnlp\NgenBundle\Service\Delegator\DelegatorCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -24,7 +23,6 @@ class CertUnlpNgenBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new DoctrineEntityListenerPass());
         $container->addCompilerPass(new DelegatorCompilerPass());
     }
 

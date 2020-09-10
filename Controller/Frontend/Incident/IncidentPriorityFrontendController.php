@@ -17,75 +17,73 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
+use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use CertUnlp\NgenBundle\Form\Incident\IncidentPriorityType;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
-class IncidentPriorityFrontendController extends Controller
+class IncidentPriorityFrontendController extends FrontendController
 {
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentPriority:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_incident_priority_frontend_home")
      * @param Request $request
+     * @param PaginatedFinderInterface $elastica_finder_priority
      * @return array
      */
-    public function homeAction(Request $request)
+    public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_priority): array
     {
-        return $this->getFrontendController()->homeEntity($request,null, 10, 'code', 'asc');
+        return $this->homeEntity($request, $elastica_finder_priority, '', 10, 'code', 'asc');
     }
-
-
-    public function getFrontendController()
-    {
-        return $this->get('cert_unlp.ngen.incident.priority.frontend.controller');
-    }
-
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentPriority:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_incident_priority_search")
      * @param Request $request
+     * @param PaginatedFinderInterface $elastica_finder_priority
      * @return array
      */
-    public function searchIncidentPriorityAction(Request $request)
+    public function searchIncidentPriorityAction(Request $request, PaginatedFinderInterface $elastica_finder_priority): array
     {
-        return $this->getFrontendController()->searchEntity($request);
+        return $this->searchEntity($request, $elastica_finder_priority);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentPriority:Frontend/incidentPriorityForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_incident_priority_new")
-     * @param Request $request
+     * @param IncidentPriorityType $priority_type
      * @return array
      */
-    public function newIncidentPriorityAction(Request $request)
+    public function newIncidentPriorityAction(IncidentPriorityType $priority_type): array
     {
-        return $this->getFrontendController()->newEntity($request);
+        return $this->newEntity($priority_type);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentPriority:Frontend/incidentPriorityForm.html.twig")
-     * @Route("{id}/edit", name="cert_unlp_ngen_incident_priority_edit")
+     * @Route("{id}/edit", name="cert_unlp_ngen_incident_priority_edit",requirements={"id"="\d+"})
      * @param IncidentPriority $IncidentPriority
+     * @param IncidentPriorityType $priority_type
      * @return array
      */
-    public function editIncidentPriorityAction(IncidentPriority $IncidentPriority)
+    public function editIncidentPriorityAction(IncidentPriority $IncidentPriority, IncidentPriorityType $priority_type): array
     {
-        return $this->getFrontendController()->editEntity($IncidentPriority);
+        return $this->editEntity($IncidentPriority, $priority_type);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentPriority:Frontend/incidentPriorityDetail.html.twig")
-     * @Route("{id}/detail", name="cert_unlp_ngen_incident_priority_detail")
+     * @Route("{id}/detail", name="cert_unlp_ngen_incident_priority_detail",requirements={"id"="\d+"})
      * @param IncidentPriority $IncidentPriority
      * @return array
      */
-    public function detailIncidentPriorityAction(IncidentPriority $IncidentPriority)
+    public function detailIncidentPriorityAction(IncidentPriority $IncidentPriority): array
     {
-        return $this->getFrontendController()->detailEntity($IncidentPriority);
+        return $this->detailEntity($IncidentPriority);
     }
 
 }

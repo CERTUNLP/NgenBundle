@@ -2,22 +2,25 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
-use CertUnlp\NgenBundle\Entity\Network\Network;
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * IncidentDecision
- *
- * @ORM\Table(name="incident_decision")
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentDecisionRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Incident\IncidentDecisionRepository")
+ * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\IncidentDecisionListener"})
  * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity(
+ *     fields={"type","feed","network"},
+ *     errorPath="type",
+ *     ignoreNull=false,
+ *     message="This decision already in exists."
+ * )
  */
-class IncidentDecision extends Entity
+class IncidentDecision extends EntityApiFrontend
 {
     /**
      * @var int|null
@@ -25,150 +28,138 @@ class IncidentDecision extends Entity
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Expose()
      */
     protected $id;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose()
-     */
-    protected $createdAt;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose()
-     */
-    protected $updatedAt;
+
     /**
      * @var IncidentType|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write","fundamental"})
      */
-    protected $type;
+    private $type;
     /**
      * @var IncidentFeed|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed")
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write","fundamental"})
      */
-    protected $feed;
+    private $feed;
     /**
      * @var Network|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network")
      * @ORM\JoinColumn(name="network", referencedColumnName="id")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write","fundamental"})
      */
-    protected $network;
+    private $network;
+    /**
+     * @var IncidentPriority|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
+     */
+    private $priority;
     /**
      * @var IncidentImpact|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentImpact")
-     * @ORM\JoinColumn(name="impact", referencedColumnName="slug")
-     * @JMS\Expose()
      */
-    protected $impact;
+    private $impact;
     /**
      * @var IncidentUrgency|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentUrgency")
-     * @ORM\JoinColumn(name="urgency", referencedColumnName="slug")
-     * @JMS\Expose()
      */
-    protected $urgency;
+    private $urgency;
     /**
      * @var IncidentTlp|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp")
      * @ORM\JoinColumn(name="tlp", referencedColumnName="slug")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
-    protected $tlp;
+    private $tlp;
     /**
      * @var IncidentState|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
-    protected $state;
+    private $state;
     /**
      * @var IncidentState|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unattended_state", referencedColumnName="slug")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
-    protected $unattendedState;
+    private $unattendedState;
     /**
      * @var IncidentState|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unsolved_state", referencedColumnName="slug")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
-    protected $unsolvedState;
-    /**
-     * @var string
-     * @ORM\Column(name="slug", type="string", length=100)
-     * @Gedmo\Slug(handlers={
-     *      @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\RelativeSlugHandler", options={
-     *          @Gedmo\SlugHandlerOption(name="relationField", value="type"),
-     *          @Gedmo\SlugHandlerOption(name="relationSlugField", value="slug"),
-     *          @Gedmo\SlugHandlerOption(name="separator", value="_")
-     *      })
-     * }, fields={"id"})
-     *
-     */
-    protected $slug;
+    private $unsolvedState;
     /**
      * @var boolean
      *
      * @ORM\Column(name="auto_saved", type="boolean")
      * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $autoSaved = false;
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose()
-     */
-    private $isActive = true;
 
     /**
-     * @return string
+     * @return IncidentPriority|null
      */
-    public function getIcon(): string
+    public function getPriority(): ?IncidentPriority
     {
-        return 'question-circle';
+        return $this->priority;
     }
 
     /**
-     * @return string
-     */
-    public function getColor(): string
-    {
-        return 'info';
-    }
-
-    public function __toString(): string
-    {
-        return $this->getSlug();
-    }
-
-    /**
-     * @return string
-     */
-    public function getSlug(): string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $slug
+     * @param IncidentPriority|null $priority
      * @return IncidentDecision
      */
-    public function setSlug(string $slug): IncidentDecision
+    public function setPriority(?IncidentPriority $priority): IncidentDecision
     {
-        $this->slug = $slug;
+        $this->priority = $priority;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canEditFundamentals(): bool
+    {
+        return !$this->isUndefined() || $this->getNetwork() !== null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUndefined(): bool
+    {
+        return $this->getType()->isUndefined() && $this->getFeed()->isUndefined();
+    }
+
+    /**
+     * @return IncidentType|null
+     */
+    public function getType(): ?IncidentType
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param IncidentType|null $type
+     * @return IncidentDecision
+     */
+    public function setType(?IncidentType $type): IncidentDecision
+    {
+        $this->type = $type;
         return $this;
     }
 
@@ -191,6 +182,53 @@ class IncidentDecision extends Entity
     }
 
     /**
+     * @return Network|null
+     */
+    public function getNetwork(): ?Network
+    {
+        return $this->network;
+    }
+
+    /**
+     * @param Network|null $network
+     * @return IncidentDecision
+     */
+    public function setNetwork(?Network $network): IncidentDecision
+    {
+        $this->network = $network;
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['type' => $this->getType() ? $this->getType()->getSlug() : 'undefined', 'feed' => $this->getFeed() ? $this->getFeed()->getSlug() : 'undefined', 'network' => $this->getNetwork() ? $this->getNetwork()->getId() : null];
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'question-circle';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return 'info';
+    }
+
+    public function __toString(): string
+    {
+        return $this->getType()->getSlug() . '_' . $this->getFeed()->getSlug();
+    }
+
+    /**
      * @param Incident $incident
      * @return Incident
      */
@@ -199,15 +237,11 @@ class IncidentDecision extends Entity
         $incident->getTlp() ?: $incident->setTlp($this->getTlp());
         $incident->getImpact() ?: $incident->setImpact($this->getImpact());
         $incident->getUrgency() ?: $incident->setUrgency($this->getUrgency());
-        $incident->getState() ?: $incident->setStateAndReporter($this->getState(), $incident->getReporter());
+        $incident->getState() ?: $incident->setState($this->getState());
         $incident->getType() ?: $incident->setType($this->getType());
 
-        if ($incident->getState()) {
-            if ($incident->getState()->isInitial()) {
-                $incident->setStateAndReporter($this->getState(), $incident->getReporter());
-            }
-        } else {
-            $incident->setStateAndReporter($this->getState(), $incident->getReporter());
+        if ($incident->getState() && $incident->getState()->isInitial()) {
+            $incident->setState($this->getState());
         }
         return $incident;
     }
@@ -285,93 +319,11 @@ class IncidentDecision extends Entity
     }
 
     /**
-     * @return IncidentType|null
-     */
-    public function getType(): ?IncidentType
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param IncidentType|null $type
-     * @return IncidentDecision
-     */
-    public function setType(?IncidentType $type): IncidentDecision
-    {
-        $this->type = $type;
-        return $this;
-    }
-
-    /**
      * @return int|null
      */
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @param int|null $id
-     * @return IncidentDecision
-     */
-    public function setId(?int $id): IncidentDecision
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     * @return IncidentDecision
-     */
-    public function setCreatedAt(DateTime $createdAt): IncidentDecision
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param DateTime $updatedAt
-     * @return IncidentDecision
-     */
-    public function setUpdatedAt(DateTime $updatedAt): IncidentDecision
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
-    /**
-     * @return Network|null
-     */
-    public function getNetwork(): ?Network
-    {
-        return $this->network;
-    }
-
-    /**
-     * @param Network|null $network
-     * @return IncidentDecision
-     */
-    public function setNetwork(?Network $network): IncidentDecision
-    {
-        $this->network = $network;
-        return $this;
     }
 
     /**
@@ -429,23 +381,11 @@ class IncidentDecision extends Entity
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function isActive(): bool
+    public function getIdentificationString(): string
     {
-        return $this->isActive;
+        return 'id';
     }
-
-    /**
-     * @param bool $isActive
-     * @return IncidentDecision
-     */
-    public function setIsActive(bool $isActive): IncidentDecision
-    {
-        $this->isActive = $isActive;
-        return $this;
-    }
-
-
 }
 

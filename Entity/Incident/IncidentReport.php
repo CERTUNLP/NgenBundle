@@ -11,7 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use DateTime;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -20,8 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * IncidentReport
  *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentReportRepository")
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Incident\IncidentReportRepository")
  * @JMS\ExclusionPolicy("all")
  * @UniqueEntity(
  *     fields={"lang", "type"},
@@ -29,24 +28,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     message="This lang is already in use on that type."
  * )
  */
-class IncidentReport
+class IncidentReport extends EntityApiFrontend
 {
-
-    /**
-     * @var string
-     * @ORM\Column(name="lang", type="string", length=2)
-     * @JMS\Expose
-     */
-    private $lang = '';
-
-    /**
-     * @var IncidentType|null
-     *
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="reports")
-     * @ORM\JoinColumn(name="type", referencedColumnName="slug")
-     */
-    private $type;
-
     /**
      * @var string|null
      * @ORM\id
@@ -57,75 +40,85 @@ class IncidentReport
      *          @Gedmo\SlugHandlerOption(name="separator", value="-")
      *      })
      * }, fields={"lang"})
-     * @Doctrine\ORM\Mapping\Column(length=64, unique=true)
+     * @ORM\Column(length=64, unique=true)
+     * @JMS\Expose
+     * @JMS\Groups({"read"})
      */
-    private $slug;
-
+    protected $slug;
+    /**
+     * @var string
+     * @ORM\Column(name="lang", type="string", length=2)
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
+     */
+    private $lang = '';
+    /**
+     * @var IncidentType|null
+     *
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="reports")
+     * @ORM\JoinColumn(name="type", referencedColumnName="slug")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
+     */
+    private $type;
     /**
      * @var string
      *
      * @ORM\Column(name="problem", type="text")
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $problem = '';
-
     /**
      * @var string
      *
      * @ORM\Column(name="derivated_problem", type="text",nullable=true)
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $derivated_problem = '';
-
     /**
      * @var string
      *
      * @ORM\Column(name="verification", type="text",nullable=true)
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $verification = '';
-
     /**
      * @var string
      *
      * @ORM\Column(name="recomendations", type="text",nullable=true)
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $recomendations = '';
-
     /**
      * @var string
      *
      * @ORM\Column(name="more_information", type="text",nullable=true)
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $more_information = '';
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
+     * @return string|null
      */
-    private $isActive = true;
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
 
     /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @param string|null $slug
+     * @return IncidentReport
      */
-    private $createdAt;
-
-    /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
+    public function setSlug(?string $slug): IncidentReport
+    {
+        $this->slug = $slug;
+        return $this;
+    }
 
     public function __toString(): string
     {
@@ -182,34 +175,6 @@ class IncidentReport
     public function getColor(): string
     {
         return 'info';
-    }
-
-    /**
-     * Get id
-     *
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->getSlug();
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string|null $slug
-     * @return IncidentReport
-     */
-    public function setSlug(?string $slug): IncidentReport
-    {
-        $this->slug = $slug;
-        return $this;
     }
 
     /**
@@ -303,58 +268,18 @@ class IncidentReport
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function isActive(): bool
+    public function getIdentificationString(): string
     {
-        return $this->isActive;
+        return 'slug';
     }
 
     /**
-     * @param bool $isActive
-     * @return IncidentReport
+     * {@inheritDoc}
      */
-    public function setIsActive(bool $isActive): IncidentReport
+    public function getDataIdentificationArray(): array
     {
-        $this->isActive = $isActive;
-        return $this;
+        return ['lang' => $this->getLang(), 'type' => $this->getType()->getId()];
     }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getCreatedAt(): ?DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime|null $createdAt
-     * @return IncidentReport
-     */
-    public function setCreatedAt(?DateTime $createdAt): IncidentReport
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getUpdatedAt(): ?DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param DateTime|null $updatedAt
-     * @return IncidentReport
-     */
-    public function setUpdatedAt(?DateTime $updatedAt): IncidentReport
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
-
 }

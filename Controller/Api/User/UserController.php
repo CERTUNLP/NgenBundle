@@ -11,215 +11,317 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\User;
 
-use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Controller\Api\ApiController;
+use CertUnlp\NgenBundle\Entity\User\User;
+use CertUnlp\NgenBundle\Form\User\UserType;
+use CertUnlp\NgenBundle\Service\Api\Handler\User\UserHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Form\FormTypeInterface;
+use FOS\RestBundle\View\ViewHandlerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class UserController extends FOSRestController
+class UserController extends ApiController
 {
-    public function __construct()
-    {
-    }
-
     /**
-     * List all users.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
-     * )
-     *
-     *
-     * @param Request $request the request object
-     * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
-     * @return array
+     * UserController constructor.
+     * @param UserHandler $handler
+     * @param ViewHandlerInterface $viewHandler
      */
-    public function getAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function __construct(UserHandler $handler, ViewHandlerInterface $viewHandler)
     {
-
-        return null;
+        parent::__construct($handler, $viewHandler);
     }
 
     /**
-     * List all users.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
+     * @Operation(
+     *     tags={"Users"},
+     *     summary="List all users",
+     *     @SWG\Parameter(
+     *         name="offset",
+     *         in="query",
+     *         description="Offset from which to start listing",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         description="How many entities to return",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=User::class, groups={"api"}))
+     *          )
+     *     ),
      * )
-     *
-     * @FOS\RequestParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing users.")
-     * @FOS\RequestParam(name="limit", requirements="\d+", nullable=true, description="How many users to return.")
-     *
-     * @FOS\View(
-     *  templateVar="users"
-     * )
-     *
-     * @param Request $request the request object
+     * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident priorities.")
+     * @FOS\QueryParam(name="limit", requirements="\d+", strict=true, default="100", description="How many incident priorities to return.")
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
-     * @return array
+     * @return View
      */
-    public function getUsersAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getUsersAction(ParamFetcherInterface $paramFetcher): View
     {
-        return $this->getApiController()->getAll($request, $paramFetcher);
-    }
-
-    public function getApiController()
-    {
-
-        return $this->container->get('cert_unlp.ngen.user.api.controller');
+        return $this->getAll($paramFetcher);
     }
 
     /**
-     * Gets a User for a given id.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Gets a User for a given host address",
-     *   output = "CertUnlp\NgenBundle\Entity\User",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     404 = "Returned when the user is not found"
-     *   }
+     * @Operation(
+     *     tags={"Users"},
+     *     summary="Removes an user",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=User::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
-     *
+     * @FOS\Delete("/users/{username}")
      * @param User $user
-     * @return User
-     *
+     * @return View
+     */
+    public function deleteUserAction(User $user): View
+    {
+        return $this->delete($user);
+    }
+
+    /**
+     * @Operation(
+     *     tags={"Users"},
+     *     summary="Gets a User for a given id",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=User::class, groups={"api"}))
+     *          )
+     *     ),
+     *      @SWG\Response(
+     *         response="404",
+     *         description="Returned when the incident is not found",
+     *          @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *     )
+     * )
+     * @param User $user
+     * @return View
      * @FOS\Get("/users/{username}")
-     *
-     * @FOS\View(
-     *  templateVar="user"
-     * )
-     * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
      */
-    public function getUserAction(User $user)
+    public function getUserAction(User $user): View
     {
-        return $user;
+        return $this->response([$user], Response::HTTP_OK);
     }
 
     /**
-     * Create a User from the submitted data.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Creates a new user from the submitted data.",
-     *   input = "CertUnlp\NgenBundle\Form\UserType",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
-     * )
-     *
-     * @FOS\View(
-     *  templateVar = "user"
+     * @Operation(
+     *     tags={"Users"},
+     *     summary="Creates a new user from the submitted data.",
+     *     @SWG\Parameter(
+     *         name="form",
+     *         in="body",
+     *         description="creation parameters",
+     *         @Model(type=UserType::class, groups={"api"})
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=User::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
      * @param Request $request the request object
-     *
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function postUserAction(Request $request)
+    public function postUserAction(Request $request): View
     {
-        return $this->getApiController()->post($request);
+        return $this->post($request);
     }
 
     /**
-     * Update existing user from the submitted data or create a new user at a specific location.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\UserType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={"Users"},
+     *     summary="Update existing user from the submitted data",
+     *     @SWG\Parameter(
+     *         name="form",
+     *         in="body",
+     *         description="creation parameters",
+     *         @Model(type=UserType::class, groups={"api"})
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
-     *
-     * @FOS\View(
-     *  templateVar = "user"
-     * )
-     *
      * @param Request $request the request object
      * @param User $user
-     * @return FormTypeInterface|View
-     *
+     * @return View
      * @FOS\Patch("/users/{username}")
-     *
-     * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
      */
-    public function patchUserAction(Request $request, User $user)
+    public function patchUserAction(Request $request, User $user): View
     {
-        return $this->getApiController()->patch($request, $user);
+        return $this->patch($request, $user);
     }
 
     /**
-     * Update existing user from the submitted data or create a new user at a specific location.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\UserType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={"Users"},
+     *     summary="Activates an existing user",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=User::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
-     *
-     *
-     * @param Request $request the request object
      * @param User $user
-     * @return FormTypeInterface|View
-     *
+     * @return View
      * @FOS\Patch("/users/{username}/activate")
-     * @FOS\View(
-     *  templateVar = "user"
-     * )
-     * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
      */
-    public function patchUserActivateAction(Request $request, User $user)
+    public function patchUserActivateAction(User $user): View
     {
-
-        return $this->getApiController()->activate($request, $user);
+        return $this->activate($user);
     }
 
     /**
-     * Update existing user from the submitted data or create a new user at a specific location.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\UserType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={"Users"},
+     *     summary="Desactivates an existing user",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=User::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
-     *
-     *
-     * @param Request $request the request object
      * @param User $user
-     * @return FormTypeInterface|View
-     *
+     * @return View
      * @FOS\Patch("/users/{username}/desactivate")
-     * @FOS\View(
-     *  templateVar = "user"
-     * )
-     * @ParamConverter("user", class="CertUnlpNgenBundle:User", options={"repository_method" = "findOneBy"})
      */
-    public function patchUserDesactivateAction(Request $request, User $user)
+    public function patchUserDesactivateAction(User $user): View
     {
-
-        return $this->getApiController()->desactivate($request, $user);
+        return $this->desactivate($user);
     }
 
 }

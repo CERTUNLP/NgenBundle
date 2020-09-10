@@ -9,81 +9,75 @@
  * with this source code in the file LICENSE.
  */
 
-/**
- * Description of IncidentFeedFrontendController
- *
- * @author dam
- */
-
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
+use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use CertUnlp\NgenBundle\Form\Incident\IncidentFeedType;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
-class IncidentFeedFrontendController extends Controller
+class IncidentFeedFrontendController extends FrontendController
 {
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentFeed:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_administration_feed_frontend_home")
      * @param Request $request
+     * @param PaginatedFinderInterface $elastica_finder_feed
      * @return array
      */
-    public function homeAction(Request $request)
+    public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_feed): array
     {
-        return $this->getFrontendController()->homeEntity($request);
-    }
-
-    public function getFrontendController()
-    {
-        return $this->get('cert_unlp.ngen.incident.feed.frontend.controller');
+        return $this->homeEntity($request, $elastica_finder_feed);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentFeed:Frontend/home.html.twig")
      * @Route("search", name="cert_unlp_ngen_incident_feed_search")
      * @param Request $request
+     * @param PaginatedFinderInterface $elastica_finder_feed
      * @return array
      */
-    public function searchIncidentFeedAction(Request $request)
+    public function searchIncidentFeedAction(Request $request, PaginatedFinderInterface $elastica_finder_feed): array
     {
-        return $this->getFrontendController()->searchEntity($request);
+        return $this->searchEntity($request, $elastica_finder_feed);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentFeed:Frontend/incidentFeedForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_incident_feed_new")
-     * @param Request $request
+     * @param IncidentFeedType $type
      * @return array
      */
-    public function newIncidentFeedAction(Request $request)
+    public function newIncidentFeedAction(IncidentFeedType $type): array
     {
-        return $this->getFrontendController()->newEntity($request);
+        return $this->newEntity($type);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentFeed:Frontend/incidentFeedForm.html.twig")
      * @Route("{slug}/edit", name="cert_unlp_ngen_incident_feed_edit")
-     * @param IncidentFeed $incidentFeed
+     * @param IncidentFeed $incident_feed
+     * @param IncidentFeedType $type
      * @return array
      */
-    public function editIncidentFeedAction(IncidentFeed $incidentFeed)
+    public function editIncidentFeedAction(IncidentFeed $incident_feed, IncidentFeedType $type): array
     {
-        return $this->getFrontendController()->editEntity($incidentFeed);
+        return $this->editEntity($incident_feed, $type);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:IncidentFeed:Frontend/incidentFeedDetail.html.twig")
      * @Route("{slug}/detail", name="cert_unlp_ngen_incident_feed_detail")
-     * @param IncidentFeed $incidentFeed
+     * @param IncidentFeed $incident_feed
      * @return array
      */
-    public function detailIncidentFeedAction(IncidentFeed $incidentFeed)
+    public function detailIncidentFeedAction(IncidentFeed $incident_feed): array
     {
-        return $this->getFrontendController()->detailEntity($incidentFeed);
+        return $this->detailEntity($incident_feed);
     }
 
 }

@@ -11,8 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Entity;
-use DateTime;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,7 +23,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * Description of IncidentClosingType
  *
  * @author dam
- * @ORM\Table()
  * @ORM\Entity
  * @UniqueEntity(
  *     fields={"name"},
@@ -32,60 +30,34 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentFeed extends Entity
+class IncidentFeed extends EntityApiFrontend
 {
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100)
-     * @JMS\Expose
-     * @JMS\Groups({"api_input"})
-     */
-    private $name = '';
     /**
      * @var string
      * @ORM\Id
      * @Gedmo\Slug(fields={"name"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
      * @JMS\Expose
-     * @JMS\Groups({"api_input"})
-     * */
-    private $slug = '';
+     * @JMS\Groups({"read"})
+     **/
+    protected $slug;
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
+     * @var string
+     * @ORM\Column(name="name", type="string", length=100)
      * @JMS\Expose
+     * @JMS\Groups({"read","write","fundamental"})
      */
-    private $isActive = true;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
+    private $name = '';
     /**
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=250, nullable=true)
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $description = '';
-
     /**
      * @var Incident[]|Collection
-     *
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="feed",fetch="EXTRA_LAZY")
      */
     private $incidents;
@@ -96,6 +68,67 @@ class IncidentFeed extends Entity
     public function __construct()
     {
         $this->incidents = new ArrayCollection();
+    }
+
+    /**
+     * @return bool
+     */
+    public function canEditFundamentals(): bool
+    {
+        return $this->getDeadIncidents()->isEmpty() && !$this->isUndefined();
+    }
+
+    /**
+     * Get incidents
+     *
+     * @return Collection
+     */
+    public function getDeadIncidents(): Collection
+    {
+        return $this->getIncidents()->filter(static function (Incident $incident) {
+            return $incident->isDead();
+        });
+    }
+
+    /**
+     * Get incidents
+     *
+     * @return Collection
+     */
+    public function getIncidents(): Collection
+    {
+        return $this->incidents;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUndefined(): bool
+    {
+        return $this->getSlug() === 'undefined';
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return IncidentFeed
+     */
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 
     /**
@@ -159,118 +192,6 @@ class IncidentFeed extends Entity
     }
 
     /**
-     * Get id
-     *
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->getSlug();
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return IncidentFeed
-     */
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean
-     */
-    public function getIsActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return IncidentFeed
-     */
-    public function setIsActive($isActive)
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean
-     */
-    public function issActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param DateTime $createdAt
-     * @return IncidentFeed
-     */
-    public function setCreatedAt(DateTime $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param DateTime $updatedAt
-     * @return IncidentFeed
-     */
-    public function setUpdatedAt(DateTime $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
      * Add incident
      *
      * @param Incident $incident
@@ -296,12 +217,18 @@ class IncidentFeed extends Entity
     }
 
     /**
-     * Get incidents
-     *
-     * @return Collection
+     * @return string
      */
-    public function getIncidents(): Collection
+    public function getIdentificationString(): string
     {
-        return $this->incidents;
+        return 'slug';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['name' => $this->getName()];
     }
 }

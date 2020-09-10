@@ -11,62 +11,62 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend\User;
 
-use CertUnlp\NgenBundle\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
+use CertUnlp\NgenBundle\Entity\User\User;
+use CertUnlp\NgenBundle\Form\User\UserType;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
-class UserFrontendController extends Controller
+class UserFrontendController extends FrontendController
 {
 
     /**
      * @Template("CertUnlpNgenBundle:User:Frontend/home.html.twig")
      * @Route("/", name="cert_unlp_ngen_user_frontend_home")
      * @param Request $request
+     * @param PaginatedFinderInterface $elastica_finder_user
      * @return array
      */
-    public function homeAction(Request $request)
+    public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_user): array
     {
-        return $this->getFrontendController()->homeEntity($request);
-    }
-
-    public function getFrontendController()
-    {
-        return $this->get('cert_unlp.ngen.user.frontend.controller');
+        return $this->homeEntity($request, $elastica_finder_user);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:User:Frontend/home.html.twig")
      * @Route("/search", name="cert_unlp_ngen_user_search_user")
      * @param Request $request
+     * @param PaginatedFinderInterface $elastica_finder_user
      * @return array
      */
-    public function searchUserAction(Request $request)
+    public function searchUserAction(Request $request, PaginatedFinderInterface $elastica_finder_user): array
     {
-        return $this->getFrontendController()->searchEntity($request);
+        return $this->searchEntity($request, $elastica_finder_user);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:User:Frontend/userForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_user_new_user")
-     * @param Request $request
+     * @param UserType $user_type
      * @return array
      */
-    public function newUserAction(Request $request)
+    public function newUserAction(UserType $user_type): array
     {
-        return $this->getFrontendController()->newEntity($request);
+        return $this->newEntity($user_type);
     }
 
     /**
      * @Template("CertUnlpNgenBundle:User:Frontend/userForm.html.twig")
      * @Route("/edit/{username}", name="cert_unlp_ngen_user_edit_user")
      * @param User $user
+     * @param UserType $user_type
      * @return array
      */
-    public function editUserAction(User $user)
+    public function editUserAction(User $user, UserType $user_type): array
     {
-        return $this->getFrontendController()->editEntity($user);
+        return $this->editEntity($user, $user_type);
     }
 
     /**
@@ -75,9 +75,9 @@ class UserFrontendController extends Controller
      * @param User $user
      * @return array
      */
-    public function datailUserAction(User $user)
+    public function datailUserAction(User $user): array
     {
-        return $this->getFrontendController()->detailEntity($user);
+        return $this->detailEntity($user);
     }
 
 }

@@ -19,7 +19,7 @@ class InvalidFormException extends RuntimeException
 
     protected $form;
 
-    public function __construct($message, $form = null)
+    public function __construct($message = '', $form = null)
     {
         parent::__construct($message);
         $this->form = $form;
@@ -28,7 +28,7 @@ class InvalidFormException extends RuntimeException
     /**
      * @return Form
      */
-    public function getForm()
+    public function getForm(): ?Form
     {
         return $this->form;
     }

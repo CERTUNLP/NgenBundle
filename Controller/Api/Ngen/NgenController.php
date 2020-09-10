@@ -11,50 +11,76 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Ngen;
 
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\FOSRestController;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 
-class NgenController extends FOSRestController
+class NgenController extends AbstractFOSRestController
 {
 
     /**
-     * Get status.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     401 = "Returned when the apikey is not found"
-     *   }
+     * @Operation(
+     *     tags={"root"},
+     *     summary="Get status.",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when the apikey is not found"
+     *     )
      * )
-     *
      * @param Request $request
      * @return array
-     * @FOS\Get("/ngen/status")
+     * @FOS\Get("/status")
      */
-    public function getNgenAction(Request $request)
+    public function getNgenAction(Request $request): ?array
     {
         return null;
     }
 
     /**
-     * Get version.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     401 = "Returned when the apikey is not found"
-     *   }
+     * @Operation(
+     *     tags={"root"},
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when the apikey is not found"
+     *     )
      * )
-     *
+     * @param Request $request
+     * @return array
+     * @FOS\Get("/")
+     */
+    public function getAction(Request $request): ?array
+    {
+        return null;
+    }
+
+    /**
+     * @Operation(
+     *     tags={"root"},
+     *     summary="Get version",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when the apikey is not found"
+     *     )
+     * )
      * @param Request $request
      * @return string
-     * @FOS\Get("/ngen/version")
+     * @FOS\Get("/version")
      */
-    public function getVersionAction(Request $request)
+    public function getVersionAction(Request $request): string
     {
         return '0.0.2';
     }

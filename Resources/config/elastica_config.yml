@@ -40,6 +40,9 @@ fos_elastica:
                             type: integer
                         origin:
                             type: keyword
+                        address:
+                            type: keyword
+                            property_path: origin
                         network:
                             type: keyword
                         tlp:
@@ -56,12 +59,19 @@ fos_elastica:
                             type: keyword
                         priority:
                             type: keyword
-                        status:
+                        network_data:
                             property_path: network
                             type: "object"
                             properties:
                                 internal:
                                     type: keyword
+                                type:
+                                    type: keyword
+                                networkAdmin:
+                                    type: keyword
+                                networkEntity:
+                                    type: keyword
+
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
@@ -74,7 +84,7 @@ fos_elastica:
                             insert: true
                             update: true
                             delete: true
-        changeStateHistory:
+        state_changes:
             index_name: changestatehistory_%kernel.environment%
             settings:
                 index:
@@ -85,7 +95,7 @@ fos_elastica:
                                 type: custom
                                 tokenizer: uax_url_email
             types:
-                incidentStateAction:
+                state_change:
                     properties:
                         responsable:
                             type: keyword
@@ -102,7 +112,7 @@ fos_elastica:
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Incident\IncidentChangeState
+                        model: CertUnlp\NgenBundle\Entity\Incident\IncidentStateChange
                         provider: ~
                         finder: ~
                         listener:
@@ -131,7 +141,6 @@ fos_elastica:
                         address:
                             type: keyword
                             property_path: addressAndMask
-                            index: not_analyzed
                         ip_mask:
                             type: integer
                         domain:
@@ -146,11 +155,8 @@ fos_elastica:
                         updated:
                             type: date
                             property_path: updatedAt
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         admin:
                             fielddata: true
                             property_path: networkAdmin
@@ -164,16 +170,15 @@ fos_elastica:
                                     type: keyword
                                 name:
                                     type: keyword
-                                isActive:
+                                active:
                                     type: boolean
                                 contacts:
                                     type: "nested"
                                     properties:
                                         email:
-                                            type: string
-                                            analyzer: email_analyser
+                                            type: keyword
                                         telegram:
-                                            type: string
+                                            type: keyword
                         networkEntity:
                             type: "object"
                             properties:
@@ -186,7 +191,7 @@ fos_elastica:
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Network\Network
+                        model: CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network
                         provider: ~
                         finder: ~
                         listener:
@@ -209,11 +214,8 @@ fos_elastica:
                             type: keyword
                         address:
                             type: keyword
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         createdAt:
                             type: date
                         created:
@@ -231,7 +233,7 @@ fos_elastica:
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Network\Host\Host
+                        model: CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host
                         provider: ~
                         finder: ~
                         listener:
@@ -258,14 +260,10 @@ fos_elastica:
                         slug:
                             type: keyword
                         emails:
-                            type: string
-                            fielddata: true
+                            type: text
                             analyzer: email_analyser
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         createdAt:
                             type: date
                         created:
@@ -280,16 +278,16 @@ fos_elastica:
                             type: "nested"
                             properties:
                                 email:
-                                    type: string
+                                    type: text
                                     analyzer: email_analyser
                                 telegram:
-                                    type: string
+                                    type: text
                     persistence:
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Network\NetworkAdmin
+                        model: CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin
                         provider: ~
                         finder: ~
                         listener:
@@ -310,11 +308,8 @@ fos_elastica:
                             type: keyword
                         slug:
                             type: keyword
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         createdAt:
                             type: date
                         created:
@@ -330,7 +325,7 @@ fos_elastica:
                         # listener and finder: ~
                         # propel and should be removed
                         driver: orm
-                        model: CertUnlp\NgenBundle\Entity\Network\NetworkEntity
+                        model: CertUnlp\NgenBundle\Entity\Constituency\NetworkEntity
                         provider: ~
                         finder: ~
                         listener:
@@ -349,11 +344,8 @@ fos_elastica:
                             type: keyword
                         slug:
                             type: keyword
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         description:
                             type: keyword
                         createdAt:
@@ -391,11 +383,8 @@ fos_elastica:
                             type: keyword
                         slug:
                             type: keyword
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         behavior:
                             type: keyword
                         createdAt:
@@ -458,11 +447,8 @@ fos_elastica:
                         updated:
                             type: date
                             property_path: updatedAt
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         description:
                             property_path: name
                     persistence:
@@ -498,14 +484,9 @@ fos_elastica:
                         updated:
                             type: date
                             property_path: updatedAt
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
-                        impact:
-                            type: keyword
-                        urgency:
+                        priority:
                             type: keyword
                         state:
                             type: keyword
@@ -546,11 +527,8 @@ fos_elastica:
                             type: keyword
                         slug:
                             type: keyword
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         description:
                             type: keyword
                         createdAt:
@@ -575,7 +553,7 @@ fos_elastica:
                                     type: keyword
                                 expanded:
                                     type: keyword
-                                isActive:
+                                active:
                                     type: boolean
                                 predicate:
                                     type: "object"
@@ -584,7 +562,7 @@ fos_elastica:
                                             type: keyword
                                         expanded:
                                             type: keyword
-                                        isActive:
+                                        active:
                                             type: boolean
                     persistence:
                         identifier: slug
@@ -621,11 +599,8 @@ fos_elastica:
                             type: text
                         more_information:
                             type: text
-                        isActive:
-                            type: boolean
                         active:
                             type: boolean
-                            property_path: isActive
                         createdAt:
                             type: date
                         created:
@@ -677,7 +652,7 @@ fos_elastica:
                         slug:
                             type: keyword
                         email:
-                            type: string
+                            type: text
                             analyzer: email_analyser
                             fielddata: true
                         isEnabled:
@@ -694,25 +669,25 @@ fos_elastica:
                             type: "nested"
                             properties:
                                 email:
-                                    type: string
+                                    type: text
                                     analyzer: email_analyser
                                 telegram:
-                                    type: string
+                                    type: text
                     persistence:
                         identifier: slug
                         # the driver can be orm, mongodb or propel
                         # listener and finder are not supported by
                         # propel and should be removed
                         driver: orm
-                        model: CertUnlp\NgenBundle\Entity\User
+                        model: CertUnlp\NgenBundle\Entity\User\User
                         provider: ~
                         finder: ~
                         listener:
                             insert: true
                             update: true
                             delete: true
-        taxonomyvalues:
-            index_name: taxonomyvalues_%kernel.environment%
+        taxonomy_value:
+            index_name: taxonomy_value_%kernel.environment%
             settings:
                 index:
                     max_result_window: 50000
@@ -728,11 +703,8 @@ fos_elastica:
                         name:
                             type: keyword
                             property_path: expanded
-                        isActive:
-                            type: keyword
                         active:
                             type: boolean
-                            property_path: isActive
                         description:
                             type: keyword
                         predicate:
@@ -762,8 +734,8 @@ fos_elastica:
                             insert: true
                             update: true
                             delete: true
-        taxonomypredicates:
-            index_name: taxonomypredicates_%kernel.environment%
+        taxonomy_predicate:
+            index_name: taxonomy_predicate_%kernel.environment%
             settings:
                 index:
                     max_result_window: 50000
@@ -779,11 +751,8 @@ fos_elastica:
                         name:
                             type: keyword
                             property_path: expanded
-                        isActive:
-                            type: keyword
                         active:
                             type: boolean
-                            property_path: isActive
                         description:
                             type: keyword
                         createdAt:

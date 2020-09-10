@@ -2,22 +2,24 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
-use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Entity\User\User;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * IncidentDetected
  *
- * @ORM\Table(name="incident_detected")
- * @ORM\Entity
- * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Listener\IncidentDetectedListener" })
+ * @ORM\Entity()
+ * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\IncidentDetectedListener"})
  * @JMS\ExclusionPolicy("all")
  */
-class IncidentDetected
+class IncidentDetected extends EntityApiFrontend
 {
     /**
      * @var integer
@@ -30,79 +32,91 @@ class IncidentDetected
     /**
      * @var Incident
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident", inversedBy="incidentsDetected")
-     *
-     * */
-    protected $incident;
-    protected $reporter;
+     */
+    private $incident;
+
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="assignedIncidents")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User\User")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
-    protected $assigned;
+    private $reporter;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User\User", inversedBy="assignedIncidents")
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
+     */
+    private $assigned;
     /**
      * @var IncidentType
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="incidents")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
-    protected $type;
+    private $type;
     /**
      * @var IncidentFeed
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed", inversedBy="incidents")
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      * @Assert\NotNull
      */
-    protected $feed;
+    private $feed;
     /**
      * @var IncidentState
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
-    protected $state;
+    private $state;
     /**
      * @var IncidentTlp
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp", inversedBy="incidents")
      * @ORM\JoinColumn(name="tlp_state", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
-    protected $tlp;
+    private $tlp;
     /**
      * @var IncidentPriority
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority", inversedBy="incidents")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
-    protected $priority;
+    private $priority;
     /**
-     * @Assert\File(maxSize = "500k")
+     * @Assert\File(maxSize = "5M")
      */
-    protected $evidence_file;
+    private $evidence_file;
     /**
      * @ORM\Column(name="evidence_file_path", type="string",nullable=true)
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
-    protected $evidence_file_path;
+    private $evidence_file_path;
     /**
      * @var $evidence_file_temp
      */
-    protected $evidence_file_temp;
+    private $evidence_file_temp;
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
-    protected $notes;
+    private $notes;
     /**
      * @var DateTime
-     *
      * @ORM\Column(name="date", type="datetime",nullable=true)
-     * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
+     * @JMS\Expose()
+     * @JMS\Groups({"read","write"})
      */
     private $date;
 
@@ -113,12 +127,11 @@ class IncidentDetected
         $this->setType($incident->getType());
         $this->setAssigned($incident->getAssigned());
         $this->setDate(new DateTime('now'));
-        $this->setEvidenceFile($incident->getTemporalEvidenceFile());
-        $this->setEvidenceFileTemp($incident->getEvidenceFileTemp());
+        $this->setEvidenceFile($incident->getEvidenceFile());
         if ($incident->getEvidenceFilePath() && $incident->getEvidenceFile()) {
             $this->setEvidenceFilePath($incidentFather->getEvidenceSubDirectory() . $incident->getEvidenceFilePath());
         }
-        $this->setNotes($incident->getTemporalNotes());
+        $this->setNotes($incident->getNotes());
         $this->setReporter($incident->getReporter());
         $this->setState($incident->getState());
         $this->setTlp($incident->getTlp());
@@ -132,14 +145,6 @@ class IncidentDetected
     public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
     }
 
     public function __toString(): string
@@ -183,38 +188,33 @@ class IncidentDetected
      * @return Incident
      */
 
-    public function getIncident()
+    public function getIncident(): Incident
     {
         return $this->incident;
     }
 
     /**
      * @param Incident $incident
+     * @return IncidentDetected
      */
-    public function setIncident($incident)
+    public function setIncident(Incident $incident): IncidentDetected
     {
         $this->incident = $incident;
-    }
-
-    public function getCountDaysFromDetection()
-    {
-        $dStart = new DateTime('now');
-        $dDiff = $dStart->diff($this->getDate());
-        return $dDiff->days;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return User
      */
-    public function getReporter()
+    public function getReporter(): User
     {
         return $this->reporter;
     }
 
     /**
-     * @param mixed $reporter
+     * @param User $reporter
      */
-    public function setReporter($reporter): void
+    public function setReporter(User $reporter): void
     {
         $this->reporter = $reporter;
     }
@@ -253,22 +253,6 @@ class IncidentDetected
     }
 
     /**
-     * @return IncidentState
-     */
-    public function getState(): ?IncidentState
-    {
-        return $this->state;
-    }
-
-    /**
-     * @param IncidentState $state
-     */
-    public function setState(IncidentState $state): void
-    {
-        $this->state = $state;
-    }
-
-    /**
      * @return IncidentTlp
      */
     public function getTlp(): IncidentTlp
@@ -302,68 +286,120 @@ class IncidentDetected
     }
 
     /**
-     * @return mixed
+     * @return UploadedFile
      */
-    public function getEvidenceFile()
+    public function getEvidenceFile(): ?UploadedFile
     {
         return $this->evidence_file;
     }
 
     /**
-     * @param mixed $evidence_file
+     * @param UploadedFile|null $evidence_file
+     * @return IncidentDetected
      */
-    public function setEvidenceFile($evidence_file): void
+    public function setEvidenceFile(UploadedFile $evidence_file = null): IncidentDetected
     {
         $this->evidence_file = $evidence_file;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getEvidenceFilePath()
+    public function getEvidenceFilePath(): ?string
     {
         return $this->evidence_file_path;
     }
 
     /**
-     * @param mixed $evidence_file_path
+     * @param string $evidence_file_path
      */
-    public function setEvidenceFilePath($evidence_file_path): void
+    public function setEvidenceFilePath(string $evidence_file_path): void
     {
-
         $this->evidence_file_path = $evidence_file_path;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getEvidenceFileTemp()
+    public function getEvidenceFileTemp(): string
     {
         return $this->evidence_file_temp;
     }
 
     /**
-     * @param mixed $evidence_file_temp
+     * @param string|null $evidence_file_temp
+     * @return IncidentDetected
      */
-    public function setEvidenceFileTemp($evidence_file_temp): void
+    public function setEvidenceFileTemp(string $evidence_file_temp = null): IncidentDetected
     {
         $this->evidence_file_temp = $evidence_file_temp;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getNotes()
+    public function getNotes(): ?string
     {
         return $this->notes;
     }
 
     /**
-     * @param mixed $notes
+     * @param string|null $notes
+     * @return IncidentDetected
      */
-    public function setNotes($notes): void
+    public function setNotes(string $notes = null): IncidentDetected
     {
         $this->notes = $notes;
+        return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getIdentificationString(): string
+    {
+        return 'id';
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return 'exclamation-circle';
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return $this->getState()->getColor();
+    }
+
+    /**
+     * @return IncidentState
+     */
+    public function getState(): ?IncidentState
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param IncidentState $state
+     */
+    public function setState(IncidentState $state): void
+    {
+        $this->state = $state;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return [];
+    }
 }

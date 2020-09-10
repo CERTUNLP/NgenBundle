@@ -38,7 +38,7 @@ class IncidentCommentThread extends BaseThread
 
 //    /**
 //     * @var Incident
-//     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="comment_thread")
+//     * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host", inversedBy="comment_thread")
 //     *
 //     * */
 //    protected $host;
@@ -49,29 +49,25 @@ class IncidentCommentThread extends BaseThread
      * @param string $id
      * @return IncidentCommentThread
      */
-    public function setId($id)
+    public function setId($id): IncidentCommentThread
     {
         $this->id = $id;
         return $this;
     }
 
     /**
-     * Get incident
-     *
      * @return Incident
      */
-    public function getIncident()
+    public function getIncident(): Incident
     {
         return $this->incident;
     }
 
     /**
-     * Set incident
-     *
      * @param Incident $incident
      * @return IncidentCommentThread
      */
-    public function setIncident(Incident $incident = null)
+    public function setIncident(Incident $incident = null): IncidentCommentThread
     {
         $this->incident = $incident;
 

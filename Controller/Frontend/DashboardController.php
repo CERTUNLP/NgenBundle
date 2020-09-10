@@ -11,15 +11,33 @@
 
 namespace CertUnlp\NgenBundle\Controller\Frontend;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 
-class DashboardController extends Controller
+class DashboardController extends AbstractController
 {
+    /**
+     * @var string
+     */
+    private $grafana_internal_url;
+    /**
+     * @var string
+     */
+    private $grafana_external_url;
 
+    /**
+     * DashboardController constructor.
+     * @param string $grafana_internal_url
+     * @param string $grafana_external_url
+     */
+    public function __construct(string $grafana_internal_url, string $grafana_external_url)
+    {
+        $this->grafana_internal_url = $grafana_internal_url;
+        $this->grafana_external_url = $grafana_external_url;
+    }
 
     /**
      * @Template("CertUnlpNgenBundle:Dashboard:frontend.html.twig")
@@ -27,9 +45,17 @@ class DashboardController extends Controller
      * @param Request $request
      * @return array
      */
-    public function homeAction(Request $request)
+    public function homeAction(Request $request): array
     {
-        return array("dashboard"=>$this->container->getParameter('cert_unlp.ngen.grafana.internal.url'));
+        return array("dashboard" => $this->getGrafanaInternalUrl());
+    }
+
+    /**
+     * @return string
+     */
+    public function getGrafanaInternalUrl(): string
+    {
+        return $this->grafana_internal_url;
     }
 
     /**
@@ -38,9 +64,17 @@ class DashboardController extends Controller
      * @param Request $request
      * @return array
      */
-    public function externalAction(Request $request)
+    public function externalAction(Request $request): array
     {
-        return array("dashboard"=>$this->container->getParameter('cert_unlp.ngen.grafana.external.url'));
+        return array("dashboard" => $this->getGrafanaExternalUrl());
+    }
+
+    /**
+     * @return string
+     */
+    public function getGrafanaExternalUrl(): string
+    {
+        return $this->grafana_external_url;
     }
 
 }

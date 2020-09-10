@@ -1,10 +1,10 @@
-{# 
- This file is part of the Ngen - CSIRT Incident Report System.
- 
- (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
- This source file is subject to the GPL v3.0 license that is bundled
- with this source code in the file LICENSE.
+{#
+This file is part of the Ngen - CSIRT Incident Report System.
+
+(c) CERT UNLP <support@cert.unlp.edu.ar>
+
+This source file is subject to the GPL v3.0 license that is bundled
+with this source code in the file LICENSE.
 #}
 
 {% extends 'CertUnlpNgenBundle::IncidentType/Frontend/frontend.html.twig' %}
@@ -34,12 +34,12 @@
                                     {{ 'Name'|trans }}
                                 </td>
                                 <td class="">
-                                    {{ object.name  }}
+                                    {{ object.name }}
                                 </td>
                             </tr>
                             <tr>
                                 <td class="">
-                                    {{ "Description"|trans}}
+                                    {{ "Description"|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.description }}
@@ -47,7 +47,7 @@
                             </tr>
                             <tr>
                                 <td class="">
-                                    {{ "Taxonomy Reference"|trans}}
+                                    {{ "Taxonomy Reference"|trans }}
                                 </td>
                                 <td class="">
                                     {{ object.taxonomyValue }}
@@ -77,7 +77,9 @@
         </div>
 
     </div>
-    {{ render(controller('CertUnlpNgenBundle:Frontend/Incident/IncidentReportFrontend:home', {'term': object.slug, 'request': app.request})) }}
+    {# {{ render(controller('CertUnlpNgenBundle:Frontend/Incident/IncidentReportFrontend:home', {'term': object.slug, 'request': app.request})) }} #}
+    {% include "CertUnlpNgenBundle:IncidentReport:Frontend/list/incidentReportList.html.twig" with {'objects': object.reports,'type':object} %}
+
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

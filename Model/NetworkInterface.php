@@ -12,9 +12,9 @@
 namespace CertUnlp\NgenBundle\Model;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use CertUnlp\NgenBundle\Entity\Network\Network;
-use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
-use CertUnlp\NgenBundle\Entity\Network\NetworkEntity;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkEntity;
 use Doctrine\Common\Collections\Collection;
 
 /*
@@ -29,26 +29,6 @@ use Doctrine\Common\Collections\Collection;
  */
 interface NetworkInterface
 {
-
-    /**
-     * Constructor
-     */
-    public function __construct();
-
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return Network
-     */
-    public function setIsActive(bool $isActive);
-
-    /**
-     * Get isActive
-     *
-     * @return boolean
-     */
-    public function isActive();
 
     /**
      * Set networkAdmin

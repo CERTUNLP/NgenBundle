@@ -23,7 +23,7 @@ class TypeHasReport extends Constraint
 
     public function validatedBy()
     {
-        return 'type.has.report.validator';
+        return get_class($this).'Validator';
     }
 
 }

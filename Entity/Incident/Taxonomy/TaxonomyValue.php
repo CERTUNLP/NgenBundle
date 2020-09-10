@@ -11,19 +11,24 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident\Taxonomy;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * TaxonomyValue
  * @ORM\Entity()
- * @ORM\Table(name="taxonomy_value")
+ * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity(
+ *     fields={"value"},
+ *     errorPath="value",
+ *     message="A taxonomy with the same value: {{ value }} already exist, "
+ * )
  */
-class TaxonomyValue extends Entity
+class TaxonomyValue extends EntityApi
 {
     /**
      * @var string|null
@@ -31,76 +36,60 @@ class TaxonomyValue extends Entity
      * @Gedmo\Slug(fields={"value"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
      * @JMS\Expose
-     * @JMS\Groups({"api_input"})
+     * @JMS\Groups({"read"})
      * */
-    private $slug;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    private $isActive = true;
+    protected $slug;
     /**
      * @var string|null
      *
      * @ORM\Column(name="description", type="string", length=1024)
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
-    private $description;
+    private $description = '';
     /**
      * @var string|null
      *
      * @ORM\Column(name="expanded", type="string", length=255)
+     * @JMS\Expose
+     * @JMS\Groups({"read","write","fundamental"})
      */
-    private $expanded;
+    private $expanded = '';
     /**
      * @var string|null
      *
      * @ORM\Column(name="value", type="string", length=255, unique=true)
+     * @JMS\Expose
+     * @JMS\Groups({"read","write","fundamental"})
      */
-    private $value;
+    private $value = '';
     /**
      * @var TaxonomyPredicate|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate",inversedBy="values")
      * @ORM\JoinColumn(name="taxonomyPredicate", referencedColumnName="slug",nullable=true)
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
+     * @JMS\MaxDepth(depth=1)
      **/
+    private $predicate = null;
 
-    private $predicate;
-    /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-    /**
-     * @var DateTime|null
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
     /**
      * @var int|null
      *
      * @ORM\Column(name="version", type="integer")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $version;
 
     /**
-     * Get id
-     *
-     * @return int
+     * @return bool
      */
-    public function getId(): int
+    public function canEditFundamentals(): bool
     {
-        return $this->getSlug();
+        return false;
     }
+
 
     /**
      * @return string
@@ -128,7 +117,7 @@ class TaxonomyValue extends Entity
      *
      * @return TaxonomyPredicate
      */
-    public function getPredicate(): TaxonomyPredicate
+    public function getPredicate(): ?TaxonomyPredicate
     {
         return $this->predicate;
     }
@@ -219,59 +208,11 @@ class TaxonomyValue extends Entity
     }
 
     /**
-     * Get value
-     *
-     * @return string
-     */
-    public function getValue(): string
-    {
-        return $this->value;
-    }
-
-    /**
-     * Set value
-     *
-     * @param string $value
-     *
-     * @return TaxonomyValue
-     */
-    public function setValue(string $value): TaxonomyValue
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param DateTime $updatedAt
-     *
-     * @return TaxonomyValue
-     */
-    public function setUpdatedAt(DateTime $updatedAt): TaxonomyValue
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
      * Get version
      *
      * @return integer
      */
-    public function getVersion(): int
+    public function getVersion(): ?int
     {
         return $this->version;
     }
@@ -301,39 +242,6 @@ class TaxonomyValue extends Entity
     }
 
     /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     */
-    public function setIsActive(bool $isActive): void
-    {
-        $this->isActive = $isActive;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     */
-    public function setCreatedAt(DateTime $createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
-
-
-    /**
      * @return string
      */
     public function getIcon(): string
@@ -347,6 +255,46 @@ class TaxonomyValue extends Entity
     public function getColor(): string
     {
         return 'primary';
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentificationString(): string
+    {
+        return 'slug';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['value' => $this->getValue()];
+    }
+
+    /**
+     * Get value
+     *
+     * @return string
+     */
+    public function getValue(): string
+    {
+        return $this->value;
+    }
+
+    /**
+     * Set value
+     *
+     * @param string $value
+     *
+     * @return TaxonomyValue
+     */
+    public function setValue(string $value): TaxonomyValue
+    {
+        $this->value = $value;
+
+        return $this;
     }
 }
 

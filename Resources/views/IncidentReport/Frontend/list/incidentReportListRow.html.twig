@@ -6,6 +6,7 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 
 <tr data-id="{{ incidentReport.lang }}" data-parent_id="{{ incidentReport.type.slug }}">
     <td class="text-center">
@@ -13,10 +14,10 @@
     </td>
     <td id="state_label_holder" class="text-center">
         <div>
-            {% include "CertUnlpNgenBundle:IncidentReport:Frontend/list/stateLabel.html.twig" with {'incidentReport': incidentReport} %}
+            {{ print.statusdropbox(incidentReport) }}
         </div>
     </td>
     <td class="text-center">
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentReport , 'detail_link': path('cert_unlp_ngen_incident_type_report_detail',{'lang': incidentReport.lang , 'slug': incidentReport.type.slug}),'edit_link': path('cert_unlp_ngen_incident_type_report_edit',{'lang': incidentReport.lang , 'slug': incidentReport.type.slug})} %}
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentReport , 'detail_link': path('cert_unlp_ngen_incident_type_report_detail',{'lang': incidentReport.lang , 'type': incidentReport.type.slug}),'edit_link': path('cert_unlp_ngen_incident_type_report_edit',{'lang': incidentReport.lang , 'type': incidentReport.type.slug})} %}
     </td>
 </tr>

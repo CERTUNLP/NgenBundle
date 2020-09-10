@@ -19,7 +19,7 @@
 {% block content_body %}
     {% if (form is not null) %}
 
-        {{ form_start(form,{'attr': {'role':'form','id': 'add_update_form'},'method': method | default('post'),'style': 'horizontal'}) }}
+        {{ form_start(form,{'attr': {'role':'form','id': 'add_update_form'},'style': 'horizontal'}) }}
         {{ form_errors(form, { 'global_errors': true }) }}
         <fieldset class="form-group">
             <div class="row">
@@ -52,17 +52,23 @@
                 </div>
             </div>
         </fieldset>
-        <fieldset class="form-group">
-            <div class="row">
-                <legend class="col-form-label col-md-1 pt-0">
-                    {{ "Attachment"|trans }}</legend>
-                <div class="col-md-10">
+        {% if form.notes is defined  or form.evidence_file is defined %}
 
-                    {{ form_row(form.notes) }}
-                    {{ form_row(form.evidence_file) }}
+            <fieldset class="form-group">
+                <div class="row">
+                    <legend class="col-form-label col-md-1 pt-0">
+                        {{ "Attachment"|trans }}</legend>
+                    <div class="col-md-10">
+                        {% if form.notes is defined %}
+                            {{ form_row(form.notes) }}
+                        {% endif %}
+                        {% if form.evidence_file is defined %}
+                            {{ form_row(form.evidence_file) }}
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-        </fieldset>
+            </fieldset>
+        {% endif %}
         <fieldset class="form-group">
             <div class="row">
                 <legend class="col-form-label col-md-1 pt-0">

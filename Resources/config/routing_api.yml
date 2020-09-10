@@ -14,26 +14,12 @@
 
 cert_ngen_api_status:
     type: rest
-    prefix: /status
     resource: '@CertUnlpNgenBundle/Controller/Api/Ngen/NgenController.php'
     name_prefix:  api_
 
 cert_ngen_incident_api:
     type: rest
-    prefix: /
     resource: '@CertUnlpNgenBundle/Controller/Api/Incident/IncidentController.php'
-    name_prefix:  api_
-
-cert_ngen_internal_incident_api:
-    type: rest
-    prefix: /incidents
-    resource: '@CertUnlpNgenBundle/Controller/Api/Incident/InternalIncidentController.php'
-    name_prefix:  api_
-
-cert_ngen_external_incident_api:
-    type: rest
-    prefix: /incidents
-    resource: '@CertUnlpNgenBundle/Controller/Api/Incident/ExternalIncidentController.php'
     name_prefix:  api_
 
 cert_ngen_incident_feed_api:
@@ -67,7 +53,7 @@ cert_ngen_user_api:
 
 cert_ngen_network_entity_api:
     type: rest
-    resource: '@CertUnlpNgenBundle/Controller/Api/Network/NetworkEntityController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Api/Constituency/NetworkEntityController.php'
     name_prefix:  api_
 
 fos_comment_thread_api:
@@ -78,12 +64,12 @@ fos_comment_thread_api:
 
 cert_ngen_network_api:
     type: rest
-    resource: '@CertUnlpNgenBundle/Controller/Api/Network/NetworkController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Api/Constituency/NetworkElement/NetworkController.php'
     name_prefix:  api_
 
 cert_ngen_network_admin_api:
     type: rest
-    resource: '@CertUnlpNgenBundle/Controller/Api/Network/NetworkAdminController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Api/Constituency/NetworkAdminController.php'
     name_prefix:  api_
 
 cert_ngen_administration_decision_api:
@@ -99,18 +85,14 @@ cert_ngen_administration_priorities_api:
 cert_ngen_administration_taxonomy_value_api:
     type: rest
     prefix: /incidents
-    resource: '@CertUnlpNgenBundle/Controller/Api/Incident/IncidentTaxonomyValueController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Api/Incident/TaxonomyValueController.php'
     name_prefix:  api_
 cert_ngen_administration_taxonomy_predicate_api:
     type: rest
     prefix: /incidents
-    resource: '@CertUnlpNgenBundle/Controller/Api/Incident/IncidentTaxonomyPredicateController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Api/Incident/TaxonomyPredicateController.php'
     name_prefix:  api_
 cert_ngen_network_host_api:
     type: rest
-    resource: '@CertUnlpNgenBundle/Controller/Api/Network/HostController.php'
+    resource: '@CertUnlpNgenBundle/Controller/Api/Constituency/NetworkElement/HostController.php'
     name_prefix:  api_
-#
-#NelmioApiDocBundle:
-#    resource: '@NelmioApiDocBundle/Resources/config/routing.yml'
-#    prefix:   /incidents/api/doc

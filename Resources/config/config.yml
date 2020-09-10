@@ -7,16 +7,17 @@
 imports:
     - { resource: elastica_config.yml }
 
+parameters:
+    locale: "%ngen_lang%"
 framework:
     http_method_override: true
-    translator: ~
+    default_locale: "%ngen_lang%"
+    translator: { fallbacks: [ "%ngen_lang%" ] }
+    templating:
+        engines: [ 'twig' ]
 
 assetic:
     filters:
-        #        less:
-        #            node: /usr/bin/node
-        #            node_paths: [/usr/lib/node_modules]
-        #            apply_to: "\.less$"
         cssrewrite: ~
     bundles:
         - CertUnlpNgenBundle
@@ -52,35 +53,10 @@ assetic:
             inputs:
                 - "%kernel.root_dir%/../vendor/components/jquery/jquery.min.js"
 
-    #
-#        fontawesome_fonts:
-#            inputs:
-#                - %kernel.root_dir%/../vendor/fortawesome/font-awesome/webfonts/
-##            filters:
-##                    - less
-##                    - cssrewrite
-#            output: webfonts
-swiftmailer:
-    mailers:
-        cert_unlp.ngen.incident.mailer:
-            #            transport: "%cert_unlp.ngen.incident.mailer.transport%"
-            host:      "%cert_unlp.ngen.incident.mailer.host%"
-            sender_address: "%cert_unlp.ngen.incident.mailer.sender_address%"
-            username:  "%cert_unlp.ngen.incident.mailer.username%"
-            password:  "%cert_unlp.ngen.incident.mailer.password%"
-            encryption: "%cert_unlp.ngen.incident.mailer.encryption%"
-            port: "%cert_unlp.ngen.incident.mailer.port%"
-            spool:
-                type: file
-                path: "%kernel.root_dir%/Resources/incident/mails"
 doctrine:
     orm:
         auto_mapping: true
         auto_generate_proxy_classes: "%kernel.debug%"
-
-        #        query_cache_driver:    apc
-        #        metadata_cache_driver: apc
-        entity_listener_resolver: cert_unlp.ngen.doctrine.entity_listener_resolver
         dql:
             string_functions:
                 inet_aton: DoctrineExtensions\Query\Mysql\InetAton
@@ -95,7 +71,13 @@ doctrine:
                 prefix: Gedmo\Translatable\Entity
                 # make sure vendor library location is correct
                 dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
+        filters:
+            softdeleteable:
+                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+                enabled: true
     dbal:
+        mapping_types:
+            enum: string
         types:
             ip: Darsyn\IP\Doctrine\MultiType
 
@@ -107,39 +89,42 @@ sensio_framework_extra:
 fos_rest:
     param_fetcher_listener: true
     allowed_methods_listener: true
-    #    access_denied_listener:
-    #        json: true
-    body_listener: true
+    zone:
+        - { path: '^/api/*' }
+    disable_csrf_role: ROLE_API
     view:
         view_response_listener: force
         formats:
-            xml:  true
             json: true
-        #            html: true
-        #        templating_formats:
-        #            html: true
-
-    routing_loader:
-        default_format: json
-    #        include_format: true
+            html: true
     format_listener:
+        enabled: true
         rules:
-            - { path: ^/api/v2/incidents/internals/(.*)/report/html, priorities: [html], fallback_format: ~ ,prefer_extension: true}
-            - { path: ^/api/v2/incidents/externals/(.*)/report/html, priorities: [html], fallback_format: ~ ,prefer_extension: true}
-            - { path: ^/api/v2/, priorities: json, fallback_format: ~ , prefer_extension: true}
-            - { path: ^/api/v1/, priorities: json, fallback_format: ~ , prefer_extension: true}
+            - { path: '^/api/threads/*', priorities: [ 'html' ], fallback_format: html , prefer_extension: true }
+            - { path: '^/api/*', priorities: [ 'json','html' ], fallback_format: json , prefer_extension: true }
             - { path: '^/', stop: true }
-    exception:
-        codes:
-            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
-            'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
-        messages:
-            'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
-    disable_csrf_role: ROLE_API
-
 
 nelmio_api_doc:
-    name: Page API
+    models:
+        use_jms: true
+    areas:
+        path_patterns: # an array of regexps
+            - ^/api/(?!/doc$)
+    documentation:
+        info:
+            title: Ngen Api
+            description: Ngen Api Documentation
+            version: 1.0.0
+        securityDefinitions:
+            Bearer:
+                type: apiKey
+                description: Your api key
+                name: apiKey
+                in: header
+            security:
+                -   api_key: [ ]
+        security:
+            -   Bearer: [ ]
 
 imap:
     connections:
@@ -147,22 +132,6 @@ imap:
             mailbox: "{%imap_server%}INBOX"
             username: "%imap_username%"
             password: "%imap_password%"
-
-#braincrafted_bootstrap:
-#    assets_dir: "%kernel.root_dir%/../vendor/twbs/bootstrap"
-#    jquery_path: "%kernel.root_dir%/../vendor/components/jquery/jquery.min.js"
-#    fonts_dir: "%kernel.root_dir%/../web/fonts"
-#    icon_prefix: fa
-#    css_preprocessor: none
-#    auto_configure:
-#        assetic: true
-#        twig: true
-#        knp_menu: true
-#        knp_paginator: true
-
-#knp_markdown:
-#    parser:
-#        service: cert_unlp.ngen.incident.report.markdown.parser
 
 knp_paginator:
     page_range: 7                       # number of links showed in the pagination menu (e.g: you have 10 pages, a page_range of 3, on the 5th page you'll see links to page 4, 5, 6)
@@ -187,24 +156,7 @@ fos_comment:
             thread: CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread
     form:
         comment:
-            type: fos_comment_comment
-#    acl: false
-#    service:
-#        acl:
-#           thread:  fos_comment.acl.thread.roles
-#           comment: fos_comment.acl.comment.roles
-#           vote:    fos_comment.acl.vote.roles
-#       manager:
-#          thread:  fos_comment.manager.thread.acl
-#         comment: fos_comment.manager.comment.acl
-#         vote:    fos_comment.manager.vote.acl
-#    acl_roles:
-#        comment:
-#            create: ROLE_USER
-#            view: ROLE_USER
-#        thread:
-#            create: ROLE_USER
-#            view: ROLE_USER
+            type: CertUnlp\NgenBundle\Form\Incident\IncidentCommentType
 
 stfalcon_tinymce:
     theme:
@@ -218,27 +170,56 @@ stfalcon_tinymce:
 fos_user:
     db_driver: orm # other valid values are 'mongodb' and 'couchdb'
     firewall_name: frontend
-    user_class: CertUnlp\NgenBundle\Entity\User
+    user_class: CertUnlp\NgenBundle\Entity\User\User
     from_email:
-        address: "%cert_unlp.ngen.incident.mailer.sender_address%"
-        sender_name: "%cert_unlp.ngen.incident.mailer.sender_address%"
+        address: "%mailer_sender%"
+        sender_name: "%mailer_sender%"
     registration:
         confirmation:
             enabled: true
         form:
-            type: CertUnlp\NgenBundle\Form\UserRegistrationType
+            type: 'CertUnlp\NgenBundle\Form\UserRegistrationType'
 
-jms_serializer:
-    metadata:
-        directories:
-            FOSUB:
-                namespace_prefix: "FOS\\UserBundle"
-                path: "@CertUnlpNgenBundle/Resources/config/serializer"
 twig:
     globals:
         sign: '%ngen_sign%'
     form_themes:
         - 'TetranzSelect2EntityBundle:Form:fields.html.twig'
         - 'CertUnlpNgenBundle:Form:bootstrap_4_layout.html.twig'
-          #cmen_google_charts:
-          #language: "%ngen_lang%"
+        #cmen_google_charts:
+        #language: "%ngen_lang%"
+stof_doctrine_extensions:
+    default_locale: "%ngen_lang%"
+    orm:
+        default:
+            blameable: true
+
+doctrine_migrations:
+    dir_name: "%kernel.root_dir%/../src/NgenBundle/DoctrineMigrations"
+
+cert_unlp_ngen:
+    team:
+        mail: '%team_mail%'
+        abuse: '%team_abuse%'
+        url: '%team_url%'
+        name: '%team_name%'
+    global:
+        sign: true
+    grafana:
+        external: '%external_dashboard_grafana%'
+        internal: '%internal_dashboard_grafana%'
+
+swiftmailer:
+    mailers:
+        cert_unlp.ngen.incident.mailer:
+            #            transport: "%cert_unlp.ngen.incident.mailer.transport%"
+            transport: '%mailer_transport%'
+            host: '%mailer_host%'
+            username: '%mailer_user%'
+            password: '%mailer_password%'
+            sender_address: '%mailer_sender%'
+            port: '%mailer_port%'
+#            encryption: '%mailer_encryption%'
+            spool:
+                type: file
+                path: "%kernel.root_dir%/Resources/incident/mails"

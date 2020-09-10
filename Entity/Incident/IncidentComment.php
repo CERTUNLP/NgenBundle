@@ -11,6 +11,7 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
+use CertUnlp\NgenBundle\Entity\User\User;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\CommentBundle\Entity\Comment as BaseComment;
 use FOS\CommentBundle\Entity\Thread;
@@ -31,7 +32,6 @@ class IncidentComment extends BaseComment implements SignedCommentInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
     /**
      * Thread of this comment
      *
@@ -40,20 +40,23 @@ class IncidentComment extends BaseComment implements SignedCommentInterface
      */
     protected $thread;
 
-    /**
-     * @var boolean
-     */
-    protected $notify_to_admin;
 
     /**
      * Author of the comment
      *
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User")
      * @var User
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User\User")
      */
-    protected $author;
+    private $author = null;
+    /**
+     * @var boolean
+     */
+    private $notify_to_admin = false;
 
-    public function getAuthorName()
+    /**
+     * {@inheritDoc}
+     */
+    public function getAuthorName(): string
     {
         if (null === $this->getAuthor()) {
             return 'Anonymous';
@@ -62,14 +65,21 @@ class IncidentComment extends BaseComment implements SignedCommentInterface
         return $this->getAuthor()->getUsername();
     }
 
-    public function getAuthor()
+    /**
+     * @return User|UserInterface
+     */
+    public function getAuthor(): ?UserInterface
     {
         return $this->author;
     }
 
-    public function setAuthor(UserInterface $author)
+    /**
+     * {@inheritDoc}
+     */
+    public function setAuthor(UserInterface $author): IncidentComment
     {
         $this->author = $author;
+        return $this;
     }
 
     /**
@@ -78,7 +88,7 @@ class IncidentComment extends BaseComment implements SignedCommentInterface
      * @param ThreadInterface $thread
      * @return IncidentComment
      */
-    public function setThread(ThreadInterface $thread = null)
+    public function setThread(ThreadInterface $thread = null): IncidentComment
     {
         $this->thread = $thread;
 
@@ -86,26 +96,22 @@ class IncidentComment extends BaseComment implements SignedCommentInterface
     }
 
     /**
-     * Get notify_to_admin
-     *
-     * @return boolean
+     * @return bool
      */
-    public function getNotifyToAdmin()
+    public function getNotifyToAdmin(): bool
     {
         return $this->notify_to_admin;
     }
 
     /**
-     * Set notify_to_admin
-     *
-     * @param boolean $notifyToAdmin
-     * @return IncidentComment
+     * @param $notify_to_admin
+     * @return $this
      */
-    public function setNotifyToAdmin($notifyToAdmin)
+    public function setNotifyToAdmin(bool $notify_to_admin): IncidentComment
     {
-        $this->notify_to_admin = $notifyToAdmin;
-
+        $this->notify_to_admin = $notify_to_admin;
         return $this;
     }
+
 
 }

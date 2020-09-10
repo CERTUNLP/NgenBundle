@@ -11,15 +11,16 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident;
 
-use CertUnlp\NgenBundle\Entity\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Communication\Contact\Contact;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host;
+use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
 use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\State\Behavior\StateBehavior;
 use CertUnlp\NgenBundle\Entity\Incident\State\Edge\StateEdge;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
-use CertUnlp\NgenBundle\Entity\Network\Host\Host;
-use CertUnlp\NgenBundle\Entity\Network\Network;
-use CertUnlp\NgenBundle\Entity\Network\NetworkAdmin;
-use CertUnlp\NgenBundle\Entity\User;
+use CertUnlp\NgenBundle\Entity\User\User;
 use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
 use DateInterval;
 use DateTime;
@@ -35,44 +36,14 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\IncidentRepository")
- * @ORM\EntityListeners({ "CertUnlp\NgenBundle\Entity\Incident\Listener\InternalIncidentListener" })
+ * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Incident\IncidentRepository")
+ * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\IncidentListener"})
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
  */
-class Incident extends Entity
+class Incident extends EntityApiFrontend
 {
 
-    /**
-     * @var string
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    protected $temporalNotes;
-    /**
-     * @var File
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    protected $temporalEvidenceFile;
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="response_dead_line", type="datetime",nullable=true))
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
-     */
-    protected $responseDeadLine;
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="solve_dead_line", type="datetime",nullable=true))
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
-     */
-    protected $solveDeadLine;
     /**
      * @var integer
      *
@@ -80,18 +51,47 @@ class Incident extends Entity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @JMS\Expose
+     * @JMS\Groups({"read"})
      */
-    private $id;
+    protected $id;
+    /**
+     * @var string
+     *
+     * @Gedmo\Slug(fields={"id"},separator="_")
+     * @ORM\Column(name="slug", type="string", length=100,nullable=true)
+     * @JMS\Expose
+     * @JMS\Groups({"read"})
+     * */
+    protected $slug;
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="response_dead_line", type="datetime",nullable=true))
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"read","write"})
+     */
+    private $responseDeadLine;
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="solve_dead_line", type="datetime",nullable=true))
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Groups({"read","write"})
+     */
+    private $solveDeadLine;
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="incidents")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User\User", inversedBy="incidents")
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $reporter;
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User", inversedBy="assignedIncidents")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User\User", inversedBy="assignedIncidents")
      * @JMS\Expose
+     * @JMS\Groups({"read","write"})
      */
     private $assigned;
     /**
@@ -99,17 +99,17 @@ class Incident extends Entity
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="incidents")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      * @JMS\Expose
-     * @JMS\Groups({"api"})
-     * @CustomAssert\TypeHasReport
+     * @JMS\Groups({"read","write","fundamental"})
+     * @JMS\MaxDepth(depth=1)
      */
     private $type;
     /**
      * @var IncidentFeed
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed", inversedBy="incidents")
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
      * @Assert\NotNull
+     * @JMS\Expose
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $feed;
     /**
@@ -117,16 +117,17 @@ class Incident extends Entity
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState", inversedBy="incidents")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
+     * @JMS\MaxDepth(depth=1)
      */
     private $state;
-
     /**
      * @var IncidentState
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unattended_state", referencedColumnName="slug")
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
+     * @JMS\MaxDepth(depth=1)
      */
     private $unattendedState;
     /**
@@ -134,36 +135,34 @@ class Incident extends Entity
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unsolved_state", referencedColumnName="slug")
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
+     * @JMS\MaxDepth(depth=1)
      */
     private $unsolvedState;
-    /**
-     * @var User
-     */
-    private $reportReporter;
     /**
      * @var IncidentTlp
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentTlp", inversedBy="incidents")
      * @ORM\JoinColumn(name="tlp_state", referencedColumnName="slug")
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
      */
     private $tlp;
     /**
      * @var IncidentPriority
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority", inversedBy="incidents")
      * @JMS\Expose
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
+     * @JMS\MaxDepth(depth=1)
      */
     private $priority;
     /**
      * @var IncidentImpact
      */
-    private $impact;
+    private $impact = null;
     /**
      * @var IncidentUrgency
      */
-    private $urgency;
+    private $urgency = null;
     /**
      * @var IncidentCommentThread
      * @ORM\OneToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentCommentThread",mappedBy="incident",fetch="EXTRA_LAZY"))
@@ -175,23 +174,46 @@ class Incident extends Entity
      * @ORM\Column(name="date", type="datetime")
      * @JMS\Expose
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
      */
     private $date;
     /**
      * @var Collection
      * @JMS\Expose
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentDetected",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
+     * @JMS\MaxDepth(depth=2)
      */
     private $incidentsDetected;
     /**
      * @var Collection
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentStateChange",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
      * @JMS\Expose
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentChangeState",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
+     * @JMS\MaxDepth(depth=2)
      */
-    private $changeStateHistory;
+    private $state_changes;
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Message\Message",mappedBy="incident")
+     * @JMS\Expose
+     * @JMS\Groups({"read"})
+     */
+    private $messages;
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="renotification_date", type="datetime",nullable=true)
+     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     */
+    private $renotificationDate;
+    /**
+     * @var Host|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host", inversedBy="incidents")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
+     */
+    private $origin;
 
 //    /**
 //     * @var Collection
@@ -201,40 +223,19 @@ class Incident extends Entity
 //     */
 //
 //    private $communicationHistory;
-
     /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="renotification_date", type="datetime",nullable=true)
+     * @var Network|null
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network", inversedBy="incidents")
      * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
+     * @JMS\Groups({"read","write"})
      */
-    private $renotificationDate;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
-     */
-    private $createdAt;
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     * @JMS\Groups({"api"})
-     */
-    private $updatedAt;
+    private $network;
     /**
      * @var boolean
      */
     private $needToCommunicate = false;
     /**
-     * @Assert\File(maxSize = "500k")
+     * @Assert\File(maxSize = "5M")
      */
     private $evidence_file;
     /**
@@ -247,22 +248,9 @@ class Incident extends Entity
      */
     private $report_message_id;
     /**
-     * @var $evidence_file_temp
-     */
-    private $evidence_file_temp;
-    /**
      * @var bool
      */
     private $notSendReport = false;
-    /**
-     * @var string
-     *
-     * @Gedmo\Slug(fields={"id"},separator="_")
-     * @ORM\Column(name="slug", type="string", length=100,nullable=true)
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     * */
-    private $slug;
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
@@ -273,30 +261,15 @@ class Incident extends Entity
      */
     private $ltdCount = 0;
     /**
-     * @var Host|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_origin")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    private $origin;
-    /**
-     * @var Host|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Host\Host", inversedBy="incidents_as_destination")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    private $destination;
-    /**
-     * @var Network|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Network\Network", inversedBy="incidents")
-     * @JMS\Expose
-     * @JMS\Groups({"api"})
-     */
-    private $network;
-    /**
      * @CustomAssert\ValidAddress()
+     * @JMS\Expose
+     * @JMS\Groups({"read","write","fundamental"})
      */
     private $address;
+    /**
+     * @var User
+     */
+    private $responsable;
 
     /**
      * Incident constructor.
@@ -308,7 +281,43 @@ class Incident extends Entity
             $this->setAddress($term);
         }
         $this->incidentsDetected = new ArrayCollection();
-        $this->changeStateHistory = new ArrayCollection();
+        $this->state_changes = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    /**
+     * @param Collection $messages
+     * @return Incident
+     */
+    public function setMessages(Collection $messages): Incident
+    {
+        $this->messages = $messages;
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getResponsable(): ?User
+    {
+        return $this->responsable;
+    }
+
+    /**
+     * @param User|null $responsable
+     * @return Incident
+     */
+    public function setResponsable(?User $responsable): Incident
+    {
+        $this->responsable = $responsable;
+        return $this;
     }
 
     /**
@@ -345,7 +354,7 @@ class Incident extends Entity
     public function setState(IncidentState $state = null): ?Incident
     {
         if ($this->getState()) {
-            return $this->getState()->changeIncidentState($this, $state);
+            return $this->getState()->changeState($this, $state);
         }
         return $this->changeState($state);
     }
@@ -362,20 +371,20 @@ class Incident extends Entity
     }
 
     /**
-     * @return string
+     * @return DateTime
      */
-    public function getTemporalNotes(): ?string
+    public function getResponseDeadLine(): ?DateTime
     {
-        return $this->temporalNotes;
+        return $this->responseDeadLine;
     }
 
     /**
-     * @param string $temporalNotes
+     * @param DateTime $responseDeadLine
      * @return Incident
      */
-    public function setTemporalNotes(string $temporalNotes): self
+    public function setResponseDeadLine(DateTime $responseDeadLine = null): self
     {
-        $this->setter($this->temporalNotes, $temporalNotes);
+        $this->setter($this->responseDeadLine, $responseDeadLine);
         return $this;
     }
 
@@ -400,42 +409,6 @@ class Incident extends Entity
     public function getBehavior(): ?StateBehavior
     {
         return $this->getState() ? $this->getState()->getBehavior() : null;
-    }
-
-    /**
-     * @return File
-     */
-    public function getTemporalEvidenceFile(): ?File
-    {
-        return $this->temporalEvidenceFile;
-    }
-
-    /**
-     * @param string $temporalEvidenceFile
-     * @return Incident
-     */
-    public function setTemporalEvidenceFile(string $temporalEvidenceFile): self
-    {
-        $this->setter($this->temporalEvidenceFile, $temporalEvidenceFile);
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getResponseDeadLine(): ?DateTime
-    {
-        return $this->responseDeadLine;
-    }
-
-    /**
-     * @param DateTime $responseDeadLine
-     * @return Incident
-     */
-    public function setResponseDeadLine(DateTime $responseDeadLine = null): self
-    {
-        $this->setter($this->responseDeadLine, $responseDeadLine);
-        return $this;
     }
 
     /**
@@ -498,7 +471,7 @@ class Incident extends Entity
      */
     public function canEdit(): bool
     {
-        return $this->getBehavior()->canEdit();
+        return $this->getBehavior() ? $this->getBehavior()->canEdit() : false;
     }
 
     /**
@@ -506,34 +479,16 @@ class Incident extends Entity
      */
     public function canEditFundamentals(): bool
     {
-        return $this->getBehavior()->canEditFundamentals();
+        return $this->getBehavior() ? $this->getBehavior()->canEditFundamentals() : false;
     }
 
     /**
-     * @return mixed
-     */
-    public function getReportReporter(): ?User
-    {
-        return $this->reportReporter;
-    }
-
-    /**
-     * @param mixed $reportReporter
+     * @param IncidentStateChange $changeState
      * @return Incident
      */
-    public function setReportReporter(User $reportReporter): Incident
+    public function addStateChange(IncidentStateChange $changeState): Incident
     {
-        $this->setter($this->reportReporter, $reportReporter);
-        return $this;
-    }
-
-    /**
-     * @param IncidentChangeState $changeState
-     * @return Incident
-     */
-    public function addChangeStateHistory(IncidentChangeState $changeState): Incident
-    {
-        return $this->getBehavior()->addChangeStateHistory($this, $changeState);
+        return $this->getBehavior()->addStateChange($this, $changeState);
     }
 
     /**
@@ -567,12 +522,21 @@ class Incident extends Entity
 
     /**
      * @param int $id
-     * @return Incident
+     * @return Entity|Incident
      */
-    public function setId(int $id): Incident
+    public function setId($id): Entity
     {
-        $this->setter($this->id, $id);
+        $identificator_string = $this->getIdentificationString();
+        $this->setter($this->$identificator_string, $id);
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentificationString(): string
+    {
+        return 'id';
     }
 
     /**
@@ -620,10 +584,10 @@ class Incident extends Entity
     }
 
     /**
-     * @param IncidentUrgency $urgency
+     * @param IncidentUrgency|null $urgency
      * @return Incident
      */
-    public function setUrgency(IncidentUrgency $urgency): Incident
+    public function setUrgency(?IncidentUrgency $urgency): Incident
     {
         $this->setter($this->urgency, $urgency);
         return $this;
@@ -641,7 +605,7 @@ class Incident extends Entity
      * @param IncidentImpact $impact
      * @return Incident
      */
-    public function setImpact(IncidentImpact $impact): Incident
+    public function setImpact(?IncidentImpact $impact): Incident
     {
         $this->setter($this->impact, $impact);
         return $this;
@@ -650,7 +614,7 @@ class Incident extends Entity
     /**
      * @return string
      */
-    public function getReportMessageId(): string
+    public function getReportMessageId(): ?string
     {
         return $this->report_message_id;
     }
@@ -666,27 +630,9 @@ class Incident extends Entity
     }
 
     /**
-     * @return string
-     */
-    public function getEvidenceFileTemp(): ?string
-    {
-        return $this->evidence_file_temp;
-    }
-
-    /**
-     * @param string $evidence_file_temp
-     * @return Incident
-     */
-    public function setEvidenceFileTemp(string $evidence_file_temp = null): Incident
-    {
-        $this->setter($this->evidence_file_temp, $evidence_file_temp);
-        return $this;
-    }
-
-    /**
      * @return IncidentCommentThread
      */
-    public function getCommentThread(): IncidentCommentThread
+    public function getCommentThread(): ?IncidentCommentThread
     {
         return $this->comment_thread;
     }
@@ -715,7 +661,7 @@ class Incident extends Entity
      */
     public function setNotes(string $notes): Incident
     {
-        $this->setter($this->temporalNotes, $notes);
+        $this->setter($this->notes, $notes);
         return $this;
     }
 
@@ -745,18 +691,10 @@ class Incident extends Entity
     }
 
     /**
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
      * @param DateTime $updatedAt
-     * @return Incident
+     * @return Entity
      */
-    public function setUpdatedAt(DateTime $updatedAt): Incident
+    public function setUpdatedAt(DateTime $updatedAt): Entity
     {
         $this->setter($this->updatedAt, $updatedAt);
         return $this;
@@ -860,8 +798,8 @@ class Incident extends Entity
      */
     public function getStateEdge(): ?StateEdge
     {
-        if ($this->getChangeStateHistory()) {
-            return $this->getChangeStateHistory()->last() ? $this->getChangeStateHistory()->last()->getStateEdge() : null;
+        if ($this->getStatechanges()) {
+            return $this->getStatechanges()->last() ? $this->getStatechanges()->last()->getStateEdge() : null;
 
         }
         return null;
@@ -870,17 +808,17 @@ class Incident extends Entity
     /**
      * @return Collection
      */
-    public function getChangeStateHistory(): Collection
+    public function getStatechanges(): Collection
     {
-        return $this->changeStateHistory;
+        return $this->state_changes;
     }
 
     /**
-     * @param ArrayCollection $changeStateHistory
+     * @param ArrayCollection $state_changes
      */
-    public function setChangeStateHistory(ArrayCollection $changeStateHistory): void
+    public function setStatechanges(ArrayCollection $state_changes): void
     {
-        $this->setter($this->changeStateHistory, $changeStateHistory);
+        $this->setter($this->state_changes, $state_changes);
     }
 
     /**
@@ -958,12 +896,16 @@ class Incident extends Entity
     }
 
     /**
-     * @param Network $network
+     * @param Network|null $network
      * @return Incident
      */
     public function setNetwork(Network $network = null): Incident
     {
-        $this->setter($this->network, $network);
+        if ($this->getNetwork() && $this->getNetwork()->isDefault()) {
+            $this->network = $network;
+        } else {
+            $this->setter($this->network, $network);
+        }
         return $this;
     }
 
@@ -1028,12 +970,12 @@ class Incident extends Entity
     }
 
     /**
-     * @return IncidentChangeState[] | Collection
+     * @return IncidentStateChange[] | Collection
      */
     public function getAttendedChangeStates(): Collection
     {
-        if ($this->getChangeStateHistory()) {
-            return $this->getChangeStateHistory()->filter(static function (IncidentChangeState $changeState) {
+        if ($this->getStatechanges()) {
+            return $this->getStatechanges()->filter(static function (IncidentStateChange $changeState) {
                 return $changeState->getNewState()->isAttended();
             });
         }
@@ -1041,18 +983,10 @@ class Incident extends Entity
     }
 
     /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
      * @param DateTime $createdAt
-     * @return Incident
+     * @return Entity
      */
-    public function setCreatedAt(DateTime $createdAt): Incident
+    public function setCreatedAt(DateTime $createdAt): Entity
     {
         $this->setter($this->createdAt, $createdAt);
         return $this;
@@ -1118,12 +1052,12 @@ class Incident extends Entity
 
     /**
      *
-     * @return IncidentChangeState[] | Collection
+     * @return IncidentStateChange[] | Collection
      */
     public function getResolvedChangeStates(): Collection
     {
-        if ($this->getChangeStateHistory()) {
-            return $this->getChangeStateHistory()->filter(static function (IncidentChangeState $changeState) {
+        if ($this->getStatechanges()) {
+            return $this->getStatechanges()->filter(static function (IncidentStateChange $changeState) {
                 return $changeState->getNewState()->isResolved();
             });
         }
@@ -1204,7 +1138,6 @@ class Incident extends Entity
         });
     }
 
-
     /**
      * @return Collection| IncidentDetected[]
      */
@@ -1231,14 +1164,14 @@ class Incident extends Entity
         $states = [];
         $suffix = '';
 
-        $states_changes = $this->getChangeStateHistory()->filter(static function (IncidentChangeState $changeState) {
+        $states_changes = $this->getStatechanges()->filter(static function (IncidentStateChange $changeState) {
             return $changeState->getOldState()->getSlug() !== $changeState->getNewState()->getSlug();
         });
-        if (!$states_changes->contains($this->getChangeStateHistory()->first())) {
-            $states_changes->set(0, $this->getChangeStateHistory()->first());
+        if (!$states_changes->contains($this->getStatechanges()->first())) {
+            $states_changes->set(0, $this->getStatechanges()->first());
         }
-        if (!$states_changes->contains($this->getChangeStateHistory()->last())) {
-            $states_changes->add($this->getChangeStateHistory()->last());
+        if (!$states_changes->contains($this->getStatechanges()->last())) {
+            $states_changes->add($this->getStatechanges()->last());
         }
 
         foreach ($states_changes as $detected) {
@@ -1296,9 +1229,8 @@ class Incident extends Entity
      * @return bool
      */
     public function canCommunicate(): bool
-
     {
-        return !$this->isNotSendReport() && $this->getBehavior()->canComunicate() && $this->isNeedToCommunicate();
+        return !$this->isNotSendReport() && $this->getBehavior()->canComunicate() && $this->isNeedToCommunicate() && !$this->getType()->isUndefined();
     }
 
     /**
@@ -1338,6 +1270,23 @@ class Incident extends Entity
     }
 
     /**
+     */
+    public function getType(): ?IncidentType
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param IncidentType|null $type
+     * @return Incident
+     */
+    public function setType(IncidentType $type = null): Incident
+    {
+        $this->setter($this->type, $type, true);
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getTelegrams(): array
@@ -1372,12 +1321,12 @@ class Incident extends Entity
     /**
      * Set evidence_file
      *
-     * @param File $evidenceFile
+     * @param File|null $evidenceFile
      * @return Incident
      */
     public function setEvidenceFile(File $evidenceFile = null): Incident
     {
-        $this->setter($this->temporalEvidenceFile, $evidenceFile);
+        $this->setter($this->evidence_file, $evidenceFile);
 //        $this->setEvidenceFilePath($evidenceFile->getFilename());
         return $this;
     }
@@ -1385,7 +1334,7 @@ class Incident extends Entity
     /**
      * Get evidence_file_path
      *
-     * @param string $fullPath
+     * @param string|null $fullPath
      * @return string
      */
     public function getEvidenceFilePath(string $fullPath = null): string
@@ -1421,7 +1370,6 @@ class Incident extends Entity
      */
     public function getEvidenceSubDirectory(): ?string
     {
-        //return '/'.$this->getId().$this->getSlug();//sha1(sha1($this->getId()).sha1($this->getSlug()));
         return '/' . $this->getSlug() . '/' . sha1($this->getDate()->format('Y-m-d-h-i'));
     }
 
@@ -1434,30 +1382,12 @@ class Incident extends Entity
     }
 
     /**
-     * @param DateTime $date
+     * @param DateTime|null $date
      * @return Incident
      */
     public function setDate(DateTime $date = null): Incident
     {
         $this->setter($this->date, $date);
-        return $this;
-    }
-
-    /**
-     * @return Host
-     */
-    public function getDestination(): ?Host
-    {
-        return $this->destination;
-    }
-
-    /**
-     * @param Host $destination
-     * @return Incident
-     */
-    public function setDestination(Host $destination): Incident
-    {
-        $this->setter($this->destination, $destination);
         return $this;
     }
 
@@ -1507,7 +1437,7 @@ class Incident extends Entity
     }
 
     /**
-     * @param Host $origin
+     * @param Host|null $origin
      * @return Incident
      */
     public function setOrigin(Host $origin = null): Incident
@@ -1517,38 +1447,17 @@ class Incident extends Entity
     }
 
     /**
-     * @return string
-     */
-    public function getIp(): ?string
-    {
-        return $this->getAddress();
-    }
-
-    /**
-     * @param Incident $incident
+     * @param Incident $incident_detected
      * @return Incident
      */
-    public function updateVariables(Incident $incident): Incident
+    public function updateFromDetection(Incident $incident_detected): Incident
     {
-        $this->setStateAndReporter($incident->getState(), $incident->getReporter());
-        $this->updateTlp($incident);
-        $this->updatePriority($incident);
+        $this->setState($incident_detected->getState());
+        $this->updateTlp($incident_detected);
+        $this->updatePriority($incident_detected);
 
         return $this;
 
-    }
-
-    /**
-     * Set state
-     * @param IncidentState $state
-     * @param User $reporter
-     * @return Incident
-     */
-    public function setStateAndReporter(IncidentState $state, User $reporter): Incident
-    {
-        $this->setReportReporter($reporter);
-        $this->setState($state);
-        return $this;
     }
 
     /**
@@ -1588,14 +1497,6 @@ class Incident extends Entity
         return $this;
     }
 
-    public function patchStateAndReporter(User $reporter): Incident
-    {
-        if ($this->getLastState() && ($this->getState() !== $this->getLastState())) {
-            $this->setStateAndReporter($this->getState(), $reporter);
-        }
-        return $this;
-    }
-
     /**
      * @return mixed
      */
@@ -1610,21 +1511,10 @@ class Incident extends Entity
     }
 
     /**
-     * @return IncidentType
+     * @return array
      */
-    public function getType(): ?IncidentType
+    public function getDataIdentificationArray(): array
     {
-        return $this->type;
+        return ['type' => $this->getType()->getId(), 'origin' => $this->getOrigin() ? $this->getOrigin()->getId() : null];
     }
-
-    /**
-     * @param IncidentType $type
-     * @return Incident
-     */
-    public function setType(IncidentType $type = null): Incident
-    {
-        $this->setter($this->type, $type, true);
-        return $this;
-    }
-
 }

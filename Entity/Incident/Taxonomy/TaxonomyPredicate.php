@@ -10,101 +10,88 @@
 
 namespace CertUnlp\NgenBundle\Entity\Incident\Taxonomy;
 
-use CertUnlp\NgenBundle\Entity\Entity;
+use CertUnlp\NgenBundle\Entity\EntityApi;
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
-use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * TaxonomyPredicate
- *
- * @author einar
  * @ORM\Entity()
- * @ORM\Table(name="taxonomy_predicate")
+ * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity(
+ *     fields={"value"},
+ *     errorPath="value",
+ *     message="A taxonomy with the same value: {{ value }} already exist, "
+ * )
  */
-class TaxonomyPredicate extends Entity
+class TaxonomyPredicate extends EntityApi
 {
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=1024)
-     */
-    private $description;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="expanded", type="string", length=255)
-     */
-    private $expanded;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="version", type="integer")
-     */
-    private $version;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="value", type="string", length=255, unique=true)
-     */
-    private $value;
-
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $createdAt;
-
-    /**
-     * @var DateTime
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
-     */
-    private $updatedAt;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean")
-     * @JMS\Expose
-     */
-    private $isActive = true;
-
-
-    /**
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue",mappedBy="predicate")
-     * @JMS\Exclude()
-     */
-
-    private $values;
     /**
      * @var string
      * @ORM\Id
      * @Gedmo\Slug(fields={"value"}, separator="_")
      * @ORM\Column(name="slug", type="string", length=100)
      * @JMS\Expose
-     * @JMS\Groups({"api_input"})
+     * @JMS\Groups({"read","write"})
      * */
-    private $slug;
+    protected $slug;
+    /**
+     * @var string
+     * @ORM\Column(name="description", type="string", length=1024)
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
+     */
+    private $description;
+    /**
+     * @var string
+     * @ORM\Column(name="expanded", type="string", length=255)
+     * @JMS\Expose
+     * @JMS\Groups({"read","write","fundamental"})
+     */
+    private $expanded;
+    /**
+     * @var int
+     * @ORM\Column(name="version", type="integer")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
+     */
+    private $version;
+    /**
+     * @var string
+     * @ORM\Column(name="value", type="string", length=255, unique=true)
+     * @JMS\Expose
+     * @JMS\Groups({"read","write","fundamental"})
+     */
+    private $value;
+    /**
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue",mappedBy="predicate")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
+     */
+    private $values;
 
     /**
-     * Constructor
+     * @return bool
      */
-    public function __construct()
+    public function canEditFundamentals(): bool
     {
-        $this->values = new ArrayCollection();
+        return false;
+    }
+
+    /**
+     * Get incidents
+     *
+     * @return Collection
+     */
+    public function getDeadIncidents(): Collection
+    {
+        return $this->getIncidents()->filter(static function (Incident $incident) {
+            return $incident->isDead();
+        });
     }
 
     /**
@@ -145,64 +132,6 @@ class TaxonomyPredicate extends Entity
         $this->version = $version;
 
         return $this;
-    }
-
-    /**
-     * Get value
-     *
-     * @return string
-     */
-    public function getValue(): string
-    {
-        return $this->value;
-    }
-
-    /**
-     * Set value
-     *
-     * @param string $value
-     *
-     * @return taxonomyPredicate
-     */
-    public function setValue(string $value): self
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param DateTime $updatedAt
-     *
-     * @return taxonomyPredicate
-     */
-    public function setUpdatedAt(DateTime $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     *
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function timestampsUpdate(): self
-    {
-        return $this->setUpdatedAt(new DateTime('now'));
     }
 
     public function __toString(): string
@@ -271,38 +200,6 @@ class TaxonomyPredicate extends Entity
     }
 
     /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     */
-    public function setIsActive(bool $isActive): void
-    {
-        $this->isActive = $isActive;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     */
-    public function setCreatedAt(DateTime $createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    /**
      * @return Collection
      */
     public function getValues(): Collection
@@ -317,7 +214,6 @@ class TaxonomyPredicate extends Entity
     {
         $this->values = $values;
     }
-
 
     /**
      * @return string
@@ -343,6 +239,46 @@ class TaxonomyPredicate extends Entity
     public function getName(): string
     {
         return $this->getExpanded();
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentificationString(): string
+    {
+        return 'slug';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDataIdentificationArray(): array
+    {
+        return ['value' => $this->getValue()];
+    }
+
+    /**
+     * Get value
+     *
+     * @return string
+     */
+    public function getValue(): string
+    {
+        return $this->value;
+    }
+
+    /**
+     * Set value
+     *
+     * @param string $value
+     *
+     * @return taxonomyPredicate
+     */
+    public function setValue(string $value): self
+    {
+        $this->value = $value;
+
+        return $this;
     }
 }
 

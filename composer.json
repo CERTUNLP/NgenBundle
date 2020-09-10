@@ -25,52 +25,55 @@
   },
   "autoload": {
     "psr-4": {
-      "CertUnlp\\NgenBundle\\": ""
-    }
+      "CertUnlp\\NgenBundle\\": "src/NgenBundle/"
+    },
+    "classmap": [
+      "app/AppKernel.php",
+      "app/AppCache.php"
+    ]
   },
   "require": {
     "php": ">=7.2",
-    "doctrine/doctrine-fixtures-bundle": "^2.3",
-    "twig/extensions": "~1.2",
-    "gedmo/doctrine-extensions": "~2.4",
-    "components/jquery": "~2.1",
-    "friendsofsymfony/elastica-bundle": "4.*",
-    "friendsofsymfony/comment-bundle": "^2.2",
-    "friendsofsymfony/user-bundle": "=2.0.1",
-    "ninsuo/symfony-collection": "2.1.30",
-    "knplabs/knp-markdown-bundle": "~1.4",
-    "knplabs/knp-menu-bundle": "~2.0",
-    "knplabs/knp-paginator-bundle": "^2.8",
-    "twbs/bootstrap": "~4.3.1",
-    "fortawesome/font-awesome": "~5.9.0",
-    "kbsali/redmine-api": "~1.5",
-    "nelmio/api-doc-bundle": "2.13.3",
-    "fabpot/goutte": "~2.0",
-    "ddeboer/data-import": "~0.18.0",
-    "ddeboer/data-import-bundle": "~0.1.0",
-    "stfalcon/tinymce-bundle": "~0.3.8",
-    "doctrine/doctrine-migrations-bundle": "^1.1",
-    "symfony/assetic-bundle": "^2.7",
-    "symfony/security-acl": "^3.0",
-    "beberlei/doctrineextensions": "^1.1",
-    "darsyn/ip": "^4.0",
-    "tetranz/select2entity-bundle": "^2.9",
-    "ext-json": "*",
     "ext-curl": "*",
-    "secit-pl/imap-bundle": "*",
-    "rollerworks/password-strength-bundle": "^1.7",
-    "cmen/google-charts-bundle": "^3.1"
-
+    "ext-json": "*",
+    "ext-zip": "^1.15",
+    "beberlei/doctrineextensions": "~1.2",
+    "certunlp/rdap-client": "~1.1",
+    "cmen/google-charts-bundle": "^3.2",
+    "components/jquery": "~3.4",
+    "darsyn/ip": "^4.0",
+    "doctrine/doctrine-bundle": "^1.6",
+    "doctrine/doctrine-migrations-bundle": "^2.1",
+    "doctrine/orm": "^2.5",
+    "fortawesome/font-awesome": "~5.13.0",
+    "friendsofsymfony/comment-bundle": "^3.0",
+    "friendsofsymfony/elastica-bundle": "^5.1",
+    "friendsofsymfony/user-bundle": "^2.1",
+    "gedmo/doctrine-extensions": "^2.4",
+    "incenteev/composer-parameter-handler": "^2.0",
+    "knplabs/knp-components": "v2.3.3",
+    "knplabs/knp-paginator-bundle": "^4.1",
+    "nelmio/api-doc-bundle": "^3.6",
+    "ninsuo/symfony-collection": "^2.1",
+    "rollerworks/password-strength-bundle": "^2.2",
+    "secit-pl/imap-bundle": "^1.3",
+    "sensio/distribution-bundle": "^5.0.19",
+    "sensio/framework-extra-bundle": "^5.0.0",
+    "stfalcon/tinymce-bundle": "^2.4",
+    "stof/doctrine-extensions-bundle": "v1.3",
+    "symfony/assetic-bundle": "^2.8",
+    "symfony/monolog-bundle": "^3.1.0",
+    "symfony/swiftmailer-bundle": "^2.6.4",
+    "symfony/symfony": "3.4.*",
+    "tetranz/select2entity-bundle": "^2.10",
+    "twbs/bootstrap": "~4.4.1",
+    "twig/extensions": "~1.5",
+    "twig/twig": "^1.0||^2.0"
   },
   "require-dev": {
-    "symfony/assetic-bundle": "^2.7",
-    "symfony/browser-kit": "~2.3",
-    "symfony/css-selector": "~2.3"
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "0.2.x-dev"
-    }
+    "roave/security-advisories": "dev-master",
+    "sensio/generator-bundle": "^3.0",
+    "symfony/phpunit-bridge": "^3.0"
   },
   "scripts": {
     "post-install-cmd": [
@@ -79,5 +82,9 @@
     "post-update-cmd": [
       "Fuz\\Symfony\\Collection\\ScriptHandler::postUpdate"
     ]
-  }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "branch-alias": null
 }

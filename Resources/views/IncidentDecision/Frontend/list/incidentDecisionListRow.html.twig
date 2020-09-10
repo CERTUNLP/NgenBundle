@@ -1,10 +1,10 @@
-{# 
- This file is part of the Ngen - CSIRT Incident Report System.
- 
- (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
- This source file is subject to the GPL v3.0 license that is bundled
- with this source code in the file LICENSE.
+{#
+This file is part of the Ngen - CSIRT Incident Report System.
+
+(c) CERT UNLP <support@cert.unlp.edu.ar>
+
+This source file is subject to the GPL v3.0 license that is bundled
+with this source code in the file LICENSE.
 #}
 {% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 
@@ -34,7 +34,7 @@
                 {{ print.colordropbox(IncidentDecision.network.color,IncidentDecision.network.icon,IncidentDecision.network,detail_link,IncidentDecision.network) }}
             </div>
         {% else %}
-            {{ "Do nothing" | trans }}
+            {{ print.colorbox('info','share-alt',"Any" | trans,'#') }}
         {% endif %}
     </td>
     <td class="text-center">
@@ -46,21 +46,12 @@
         {{ print.colordropbox(IncidentDecision.tlp.color,IncidentDecision.tlp.icon,IncidentDecision.tlp.name,'#',IncidentDecision.tlp) }}
     </td>
     <td class="text-center">
-        {% if IncidentDecision.impact %}
+        {% if IncidentDecision.priority %}
             <div class="float-left">
-                {{ print.colordropbox(IncidentDecision.impact.color,IncidentDecision.impact.icon,IncidentDecision.impact,'#',IncidentDecision.impact) }}
+                {{ print.colordropbox(IncidentDecision.priority.color,IncidentDecision.priority.icon,IncidentDecision.priority,'#',IncidentDecision.priority) }}
             </div>
         {% else %}
-            {{ "Do nothing" | trans }}
-        {% endif %}
-    </td>
-    <td class="text-center">
-        {% if IncidentDecision.urgency %}
-            <div class="float-left">
-                {{ print.colordropbox(IncidentDecision.urgency.color,IncidentDecision.urgency.icon,IncidentDecision.urgency,'#',IncidentDecision.urgency) }}
-            </div>
-        {% else %}
-            {{ "Do nothing" | trans }}
+            {{ "Null" | trans }}
         {% endif %}
     </td>
     <td class="text-center">

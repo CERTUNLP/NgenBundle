@@ -10,10 +10,6 @@ var IncidentReportForm = Form.extend({
     config: function (params) {
         this.setIncidentReportId();
         this.setParentObjectId();
-        if (params["term"]) {
-            $('#type').val(params["term"]);
-            $('#type').attr('readOnly', true);
-        }
     },
     getObjectBrief: function () {
         return 'incident/type/report';

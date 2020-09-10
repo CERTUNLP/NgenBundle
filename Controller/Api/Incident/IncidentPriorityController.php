@@ -11,169 +11,336 @@
 
 namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 
+use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentPriority;
+use CertUnlp\NgenBundle\Exception\InvalidFormException;
+use CertUnlp\NgenBundle\Form\Incident\IncidentPriorityType;
+use CertUnlp\NgenBundle\Service\Api\Handler\Incident\IncidentPriorityHandler;
 use FOS\RestBundle\Controller\Annotations as FOS;
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Form\FormTypeInterface;
+use FOS\RestBundle\View\ViewHandlerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class IncidentPriorityController extends FOSRestController
+class IncidentPriorityController extends ApiController
 {
     /**
-     * List all incident priorities.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful"
-     *   }
+     * IncidentPriorityController constructor.
+     * @param IncidentPriorityHandler $handler
+     * @param ViewHandlerInterface $viewHandler
+     */
+    public function __construct(IncidentPriorityHandler $handler, ViewHandlerInterface $viewHandler)
+    {
+        parent::__construct($handler, $viewHandler);
+    }
+
+    /**
+     * @Operation(
+     *     tags={"Incident priorities"},
+     *     summary="List all incident priorities.",
+     *     @SWG\Parameter(
+     *         name="offset",
+     *         in="query",
+     *         description="Offset from which to start listing",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         description="How many entities to return",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentPriority::class, groups={"api"}))
+     *          )
+     *     ),
      * )
-     *
      * @FOS\Get("/priorities")
      * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing incident priorities.")
-     * @FOS\QueryParam(name="limit", requirements="\d+", nullable=true, description="How many incident priorities to return.")
-     *
-     * @FOS\View(
-     *  templateVar="incident_priorities"
-     * )
-     *
-     * @param Request $request the request object
+     * @FOS\QueryParam(name="limit", requirements="\d+", strict=true, default="100", description="How many incident priorities to return.")
      * @param ParamFetcherInterface $paramFetcher param fetcher service
-     *
-     * @return array
+     * @return View
      */
-    public function getIncidentPrioritiesAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function getIncidentPrioritiesAction(ParamFetcherInterface $paramFetcher): View
     {
-        return $this->getApiController()->getAll($request, $paramFetcher);
-    }
-
-    public function getApiController()
-    {
-
-        return $this->container->get('cert_unlp.ngen.incident.priority.api.controller');
+        return $this->getAll($paramFetcher);
     }
 
     /**
-     * Gets a Network for a given id.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Gets a network admin for a given id",
-     *   output = "CertUnlp\NgenBundle\Entity\Incident\IncidentPriority",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     404 = "Returned when the network is not found"
-     *   }
+     * @Operation(
+     *     tags={"Incident priorities"},
+     *     summary="Gets a priority admin for a given id",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentPriority::class, groups={"api"}))
+     *          )
+     *     ),
+     *      @SWG\Response(
+     *         response="404",
+     *         description="Returned when the incident is not found",
+     *          @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *     )
      * )
-     *
+     * @FOS\Get("/priorities/{id}", name="_id",requirements={"id"="\d+"})
+     * @FOS\Get("/priorities/{urgency}/{impact}")
      * @param IncidentPriority $incident_priority
-     * @return IncidentPriority
-     * @FOS\View(
-     *  templateVar="incident_priority"
-     * )
-     * @ParamConverter("incident_priority", class="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority")
-     * @FOS\Get("/priorities/{id}")
+     * @return View
      */
-    public function getIncidentPriorityAction(IncidentPriority $incident_priority)
+    public function getIncidentPriorityAction(IncidentPriority $incident_priority): View
     {
-        return $incident_priority;
+        try {
+            return $this->response([$incident_priority], Response::HTTP_OK);
+        } catch (InvalidFormException $exception) {
+            return $this->responseError($exception);
+        }
     }
 
     /**
-     * Create a Network from the submitted data.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Creates a new network from the submitted data.",
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={"Incident priorities"},
+     *     summary="Removes a priority",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentPriority::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
-     *
+     * @FOS\Delete("/priorities/{id}", name="_id", requirements={"id"="\d+"})
+     * @FOS\Delete("/priorities/{urgency}/{impact}")
+     * @param IncidentPriority $incident_priority
+     * @return View
+     */
+    public function deletePriorityAction(IncidentPriority $incident_priority): View
+    {
+        return $this->delete($incident_priority);
+    }
+
+    /**
+     * @Operation(
+     *     tags={"Incident priorities"},
+     *     summary="Creates a new priority from the submitted data.",
+     *     @SWG\Parameter(
+     *         name="form",
+     *         in="body",
+     *         description="creation parameters",
+     *         @Model(type=IncidentPriorityType::class, groups={"api"})
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentPriority::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
+     * )
      * @FOS\Post("/priorities")
      * @param Request $request the request object
-     *
-     * @return FormTypeInterface|View
+     * @return View
      */
-    public function postIncidentPriorityAction(Request $request)
+    public function postIncidentPriorityAction(Request $request): View
     {
-        return $this->getApiController()->post($request);
+        return $this->post($request);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={"Incident priorities"},
+     *     summary="Activates an existing priority",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentPriority::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
-     * @FOS\Patch("/priorities/{id}")
-     * @param Request $request the request object
+     * @FOS\Patch("/priorities/{urgency}/{impact}/activate")
+     * @FOS\Patch("/priorities/{id}/activate", name="_id",requirements={"id"="\d+"})
      * @param IncidentPriority $incident_priority
-     * @return FormTypeInterface|View
-     *
+     * @return View
      */
-    public function patchIncidentPriorityBySlugAction(Request $request, IncidentPriority $incident_priority)
+    public function patchIncidentPriorityActivateAction(IncidentPriority $incident_priority): View
     {
-        return $this->getApiController()->patch($request, $incident_priority);
+        return $this->activate($incident_priority);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={"Incident priorities"},
+     *     summary="Desactivates an existing priority",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentPriority::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
-     *
-     *
-     * @param Request $request the request object
+     * @FOS\Patch("/priorities/{urgency}/{impact}/desactivate")
+     * @FOS\Patch("/priorities/{id}/desactivate", name="_id",requirements={"id"="\d+"})
      * @param IncidentPriority $incident_priority
-     * @return FormTypeInterface|View
-     *
-     * @FOS\Patch("/priorities/{id}/activate")
+     * @return View
      */
-    public function patchIncidentPriorityActivateAction(Request $request, IncidentPriority $incident_priority)
+    public function patchIncidentPriorityDesactivateAction(IncidentPriority $incident_priority): View
     {
-        return $this->getApiController()->activate($request, $incident_priority);
+        return $this->desactivate($incident_priority);
     }
 
     /**
-     * Update existing network from the submitted data or create a new network at a specific location.
-     *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "CertUnlp\NgenBundle\Form\NetworkType",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
-     *   }
+     * @Operation(
+     *     tags={"Incident priorities"},
+     *     summary="Update existing priority from the submitted data",
+     *     @SWG\Parameter(
+     *         name="form",
+     *         in="body",
+     *         description="creation parameters",
+     *         @Model(type=IncidentPriorityType::class, groups={"api"})
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=IncidentPriority::class, groups={"api"}))
+     *          )
+     *     ),
+     *    @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors",
+     *         @SWG\schema(
+     *              type="array",
+     *              @SWG\items(
+     *                  type="object",
+     *                  @SWG\Property(property="code", type="string"),
+     *                  @SWG\Property(property="message", type="string"),
+     *                  @SWG\Property(property="errors", type="array",
+     *                      @SWG\items(
+     *                          type="object",
+     *                          @SWG\Property(property="global", type="string"),
+     *                          @SWG\Property(property="fields", type="string"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *      )
      * )
-     *
-     *
+     * @FOS\Patch("/priorities/{id}", name="_id",requirements={"id"="\d+"})
+     * @FOS\Patch("/priorities/{urgency}/{impact}")
      * @param Request $request the request object
      * @param IncidentPriority $incident_priority
-     * @return FormTypeInterface|View
-     *
-     * @FOS\Patch("/priorities/{id}/desactivate")
+     * @return View
      */
-    public function patchIncidentPriorityDesactivateAction(Request $request, IncidentPriority $incident_priority)
+    public function patchIncidentPriorityAction(Request $request, IncidentPriority $incident_priority): View
     {
-        return $this->getApiController()->desactivate($request, $incident_priority);
+        return $this->patch($request, $incident_priority);
     }
-
 }

@@ -9,5 +9,14 @@
 var IncidentReport = Frontend.extend({
     getObjectBrief: function () {
         return 'incident/type/report';
+    },
+    doChangeState: function (event) {
+        if (this.eventTarget.data('action') == 'reactivate') {
+            $.publish('/cert_unlp/incident/type/report/activate', [this.eventTarget.parents('tr').data('parent_id'), this.eventTarget.parents('tr').data('id'), $.proxy(this.stateChanged, this)]);
+        } else {
+            if (this.eventTarget.data('action') == 'desactivate') {
+                $.publish('/cert_unlp/incident/type/report/desactivate', [this.eventTarget.parents('tr').data('parent_id'), this.eventTarget.parents('tr').data('id'), $.proxy(this.stateChanged, this)]);
+            }
+        }
     }
 });

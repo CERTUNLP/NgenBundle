@@ -1,10 +1,10 @@
-{# 
- This file is part of the Ngen - CSIRT Incident Report System.
- 
- (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
- This source file is subject to the GPL v3.0 license that is bundled
- with this source code in the file LICENSE.
+{#
+This file is part of the Ngen - CSIRT Incident Report System.
+
+(c) CERT UNLP <support@cert.unlp.edu.ar>
+
+This source file is subject to the GPL v3.0 license that is bundled
+with this source code in the file LICENSE.
 #}
 
 {% extends 'CertUnlpNgenBundle::Host/Frontend/frontend.html.twig' %}
@@ -22,7 +22,7 @@
             {% endset %}
             {{ print.colorbox(object.network.color,object.network.icon,object.network,detail_link) }}
         {% endif %}
-        {{ print.colorbox('primary','arrow-circle-down','incidents '~object.incidentsAsOrigin.count,path('cert_unlp_ngen_internal_incident_search_incident',{'term': '"'~object.address~'"'})) }}
+        {{ print.colorbox('primary','arrow-circle-down','incidents '~object.incidents.count,path('cert_unlp_ngen_internal_incident_search_incident',{'term': '"'~object.address~'"'})) }}
         {{ print.colorbox('primary','edit','Edit',hostlink.link(object,'edit')) }}
     </h1>
 {% endblock %}
@@ -39,104 +39,160 @@
         </li>
     </ul>
     <div class="tab-content pt-2" id="myTabContent">
-    <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
-        <div class="row">
-            <div class="col-lg-12 mb-4">
-                <div class="card border-left-info shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Incidents
-                            </div>
-                            <div id="column_chart" class="chart">
+        <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+            <div class="row">
+                <div class="col-lg-12 mb-4">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Incidents
+                                </div>
+                                <div id="column_chart" class="chart">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card border-left-info shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Incident Types
+                <div class="col-md-4 mb-4">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Incident Types
+                                </div>
+                                <div id="piechart_feed" class="chart"></div>
                             </div>
-                            <div id="piechart_feed" class="chart"></div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card border-left-info shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Incident States
+                <div class="col-md-4 mb-4">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Incident States
+                                </div>
+                                <div id="piechart_priority" class="chart"></div>
                             </div>
-                            <div id="piechart_priority" class="chart"></div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card border-left-info shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Incident Feeds
+                <div class="col-md-4 mb-4">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Incident Feeds
+                                </div>
+                                <div id="piechart_tlp" class="chart"></div>
                             </div>
-                            <div id="piechart_tlp" class="chart"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="tab-pane fade" id="detail" role="tabpanel" aria-labelledby="detail-tab">
-        <div class="row">
-            <div class="col-lg-6">
+        <div class="tab-pane fade" id="detail" role="tabpanel" aria-labelledby="detail-tab">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">{{ 'Host Information'|trans }}</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td class="">
+                                            {{ "System Id"|trans }}
+                                        </td>
+                                        <td class="">
+                                            {{ object.id }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="">
+                                            {{ 'Name'|trans }}
+                                        </td>
+                                        <td class="">
+                                            {{ object }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="">
+                                            {{ 'Created at'|trans }}
+                                        </td>
+                                        <td class="">
+                                            {{ object.createdAt|date('Y-m-d') }}
+                                        </td>
+                                    </tr>
 
-                <div class="card shadow mb-4">
-                    <div class="card-header">
-                        <h6 class="m-0 font-weight-bold text-primary">{{ 'Host Information'|trans }}</h6>
+                                    <tr>
+                                        <td class="">
+                                            {{ 'Last Update'|trans }}
+                                        </td>
+                                        <td class="">
+                                            {{ object.updatedAt|date('Y-m-d') }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <td class="">
-                                        {{ "System Id"|trans }}
-                                    </td>
-                                    <td class="">
-                                        {{ object.id }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="">
-                                        {{ 'Name'|trans }}
-                                    </td>
-                                    <td class="">
-                                        {{ object }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="">
-                                        {{ 'Created at'|trans }}
-                                    </td>
-                                    <td class="">
-                                        {{ object.createdAt|date('Y-m-d') }}
-                                    </td>
-                                </tr>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">
+                                {{ "Network Information"|trans }}
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                {% if object.network %}
+                                    <table class="table table-bordered">
+                                        <div class="row">
+                                            <div class="col-6 col-sm-6 border">
+                                                {{ 'IP/mask'|trans }}
+                                            </div>
+                                            <div class="col-6 col-sm-6 border">
+                                                {{ object.network }}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 col-sm-6 border">
+                                                {{ 'Active'|trans }}
+                                            </div>
+                                            <div class="col-6 col-sm-6 border">
+                                                {{ object.network.isActive ? 'Yes'|trans:'No'|trans }}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 col-sm-6 border">
+                                                {{ 'Network Entity'|trans }}
+                                            </div>
+                                            <div class="col-6 col-sm-6 border">
+                                                {{ object.network.networkEntity }}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 col-sm-6 border">
+                                                {{ 'Network Admin'|trans }}
+                                            </div>
+                                            <div class="col-6 col-sm-6 border">
+                                                {{ object.network.networkAdmin }}
 
-                                <tr>
-                                    <td class="">
-                                        {{ 'Last Update'|trans }}
-                                    </td>
-                                    <td class="">
-                                        {{ object.updatedAt|date('Y-m-d') }}
-                                    </td>
-                                </tr>
-                            </table>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 col-sm-6 border">
+                                            </div>
+                                            <div class="col-6 col-sm-6 border">
+                                                {{ object.network.networkAdmin? object.network.networkAdmin.emailsAsString: '' }}
+                                            </div>
+                                        </div>
+                                    </table>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>

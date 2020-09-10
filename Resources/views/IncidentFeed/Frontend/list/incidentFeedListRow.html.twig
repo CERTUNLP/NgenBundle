@@ -21,9 +21,6 @@
         </div>
     </td>
     <td class="text-center">
-        {{ incidentFeed.description | default('No description')| trans }}
-    </td>
-    <td class="text-center">
         <small>
             {{ print.colordropbox('primary','calendar-alt',incidentFeed.createdAt|date('Y-m-d'),'#',incidentFeed.createdAt|date('Y-m-d')) }}
         </small>

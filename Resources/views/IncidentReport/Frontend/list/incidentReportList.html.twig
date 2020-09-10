@@ -1,19 +1,19 @@
-{# 
- This file is part of the Ngen - CSIRT Incident Report System.
- 
- (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
- This source file is subject to the GPL v3.0 license that is bundled
- with this source code in the file LICENSE.
+{#
+This file is part of the Ngen - CSIRT Incident Report System.
+
+(c) CERT UNLP <support@cert.unlp.edu.ar>
+
+This source file is subject to the GPL v3.0 license that is bundled
+with this source code in the file LICENSE.
 #}
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-sm-flex align-items-center justify-content-between mb-4">
         <h6 class="m-0 font-weight-bold text-primary">
-            <strong>{{ 'Showing'|trans }}</strong>
-            <strong>({{ objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount }})</strong>
+{#            <strong>{{ 'Showing'|trans }}</strong>#}
+{#            <strong>({{ objects.getPaginationData.lastItemNumber~"/"~objects.getTotalItemCount }})</strong>#}
         </h6>
         <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-           href="{{ path('cert_unlp_ngen_incident_type_report_new',{'term': term}) }}">
+           href="{{ path('cert_unlp_ngen_incident_type_report_new',{'type': type.slug}) }}">
             {{ icon('plus-circle fa-fw') }}add incident report
         </a>
     </div>
@@ -22,8 +22,8 @@
             <table id="tabla_hosts" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                 <tr role="row">
-                    <th>{{ knp_pagination_sortable(objects, 'Lang'|trans, 'lang') }}</th>
-                    <th>{{ knp_pagination_sortable(objects, 'Active'|trans, 'active') }}</th>
+                    <th>{{ 'Lang'|trans }}</th>
+                    <th>{{ 'Active'|trans }}</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -35,7 +35,4 @@
             </table>
         </div>
     </div>
-</div>
-<div class="pagination justify-content-center">
-    {{ knp_pagination_render(objects, null, {}, { "prev_label": "Previous"|trans, "next_label": "Next"|trans, "first_label": "First"|trans, "last_label": "Last"|trans}) }}
 </div>

@@ -26,9 +26,6 @@
         </div>
     </td>
     <td class="text-center">
-        {{ incidentState.description | default('No description')| trans }}
-    </td>
-    <td class="text-center">
         <small>
             {{ print.colordropbox('primary','calendar-alt',incidentState.createdAt|date('Y-m-d'),'#',incidentState.createdAt|date('Y-m-d')) }}
         </small>
