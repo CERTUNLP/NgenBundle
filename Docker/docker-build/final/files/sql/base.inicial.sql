@@ -24,19 +24,19 @@ DROP TABLE IF EXISTS `contact`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `contact`
 (
-    `id`               int                                  NOT NULL AUTO_INCREMENT,
-    `name`             varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-    `username`         varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-    `encryption_key`   varchar(4000) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `network_admin_id` int                                   DEFAULT NULL,
-    `contact_type`     varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-    `contact_case`     varchar(45) COLLATE utf8_unicode_ci   DEFAULT NULL,
-    `discr`            varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-    `user_id`          int                                   DEFAULT NULL,
-    `created_by_id`    int                                   DEFAULT NULL,
-    `created_at`       datetime                              DEFAULT NULL,
-    `updated_at`       datetime                              DEFAULT NULL,
-    `deletedAt`        datetime                              DEFAULT NULL,
+    `id`               int                                                     NOT NULL AUTO_INCREMENT,
+    `name`             varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `username`         varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `encryption_key`   varchar(4000) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `network_admin_id` int                                                      DEFAULT NULL,
+    `contact_type`     varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `contact_case`     varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci   DEFAULT NULL,
+    `discr`            varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `user_id`          int                                                      DEFAULT NULL,
+    `created_by_id`    int                                                      DEFAULT NULL,
+    `created_at`       datetime                                                 DEFAULT NULL,
+    `updated_at`       datetime                                                 DEFAULT NULL,
+    `deletedAt`        datetime                                                 DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `IDX_4C62E638C9E8B981` (`network_admin_id`),
     KEY `IDX_4C62E63850F71BFB` (`contact_case`),
@@ -47,7 +47,7 @@ CREATE TABLE `contact`
     CONSTRAINT `FK_4C62E638B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`),
     CONSTRAINT `FK_4C62E638C9E8B981` FOREIGN KEY (`network_admin_id`) REFERENCES `network_admin` (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2
+  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -61,7 +61,9 @@ LOCK TABLES `contact` WRITE;
     DISABLE KEYS */;
 INSERT INTO `contact`
 VALUES (1, 'email', 'admin@cert.com', NULL, NULL, 'mail', 'all', 'email', 1, 1, '2020-08-31 23:04:29',
-        '2020-08-31 23:04:29', NULL);
+        '2020-08-31 23:04:29', NULL),
+       (2, 'Undefined', 'Undefined', NULL, 2, 'mail', 'all', 'email', NULL, 1, '2020-09-09 22:16:07',
+        '2020-09-09 22:16:07', NULL);
 /*!40000 ALTER TABLE `contact`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -75,14 +77,14 @@ DROP TABLE IF EXISTS `contact_case`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `contact_case`
 (
-    `slug`          varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-    `name`          varchar(45) COLLATE utf8_unicode_ci  DEFAULT NULL,
-    `description`   varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `level`         int                                 NOT NULL,
-    `created_by_id` int                                  DEFAULT NULL,
-    `created_at`    datetime                             DEFAULT NULL,
-    `updated_at`    datetime                             DEFAULT NULL,
-    `deletedAt`     datetime                             DEFAULT NULL,
+    `slug`          varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `name`          varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT NULL,
+    `description`   varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `level`         int                                                    NOT NULL,
+    `created_by_id` int                                                     DEFAULT NULL,
+    `created_at`    datetime                                                DEFAULT NULL,
+    `updated_at`    datetime                                                DEFAULT NULL,
+    `deletedAt`     datetime                                                DEFAULT NULL,
     PRIMARY KEY (`slug`),
     KEY `IDX_50F71BFBB03A8386` (`created_by_id`),
     CONSTRAINT `FK_50F71BFBB03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`)
@@ -118,12 +120,12 @@ DROP TABLE IF EXISTS `ext_translations`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ext_translations`
 (
-    `id`           int                                  NOT NULL AUTO_INCREMENT,
-    `locale`       varchar(8) COLLATE utf8_unicode_ci   NOT NULL,
-    `object_class` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-    `field`        varchar(32) COLLATE utf8_unicode_ci  NOT NULL,
-    `foreign_key`  varchar(64) COLLATE utf8_unicode_ci  NOT NULL,
-    `content`      longtext COLLATE utf8_unicode_ci,
+    `id`           int                                                     NOT NULL AUTO_INCREMENT,
+    `locale`       varchar(8) CHARACTER SET utf8 COLLATE utf8_unicode_ci   NOT NULL,
+    `object_class` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `field`        varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
+    `foreign_key`  varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
+    `content`      longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
     PRIMARY KEY (`id`),
     UNIQUE KEY `lookup_unique_idx` (`locale`, `object_class`, `field`, `foreign_key`),
     KEY `translations_lookup_idx` (`locale`, `object_class`, `foreign_key`)
@@ -188,15 +190,15 @@ DROP TABLE IF EXISTS `host`;
 CREATE TABLE `host`
 (
     `id`            int        NOT NULL AUTO_INCREMENT,
-    `network_id`    int                                  DEFAULT NULL,
-    `ip`            varchar(39) COLLATE utf8_unicode_ci  DEFAULT NULL,
-    `domain`        varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `created_at`    datetime                             DEFAULT NULL,
-    `updated_at`    datetime                             DEFAULT NULL,
-    `slug`          varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+    `network_id`    int                                                     DEFAULT NULL,
+    `ip`            varchar(39) CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT NULL,
+    `domain`        varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `created_at`    datetime                                                DEFAULT NULL,
+    `updated_at`    datetime                                                DEFAULT NULL,
+    `slug`          varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
     `active`        tinyint(1) NOT NULL,
-    `created_by_id` int                                  DEFAULT NULL,
-    `deletedAt`     datetime                             DEFAULT NULL,
+    `created_by_id` int                                                     DEFAULT NULL,
+    `deletedAt`     datetime                                                DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `IDX_CF2713FD34128B91` (`network_id`),
     KEY `IDX_CF2713FDB03A8386` (`created_by_id`),
@@ -241,14 +243,14 @@ CREATE TABLE `incident`
     `evidence_file_path`  varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
     `report_message_id`   varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
     `slug`                varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-    `notes`               longtext COLLATE utf8_unicode_ci,
-    `tlp_state`           varchar(45) COLLATE utf8_unicode_ci                     DEFAULT NULL,
+    `notes`               longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+    `tlp_state`           varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT NULL,
     `assigned_id`         int                                                     DEFAULT NULL,
     `origin_id`           int                                                     DEFAULT NULL,
     `destination_id`      int                                                     DEFAULT NULL,
     `ltd_count`           int        NOT NULL,
-    `unattended_state`    varchar(100) COLLATE utf8_unicode_ci                    DEFAULT NULL,
-    `unsolved_state`      varchar(100) COLLATE utf8_unicode_ci                    DEFAULT NULL,
+    `unattended_state`    varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `unsolved_state`      varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
     `response_dead_line`  datetime                                                DEFAULT NULL,
     `solve_dead_line`     datetime                                                DEFAULT NULL,
     `priority_id`         int                                                     DEFAULT NULL,
@@ -381,20 +383,20 @@ DROP TABLE IF EXISTS `incident_decision`;
 CREATE TABLE `incident_decision`
 (
     `id`               int        NOT NULL AUTO_INCREMENT,
-    `type`             varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `feed`             varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `tlp`              varchar(45) COLLATE utf8_unicode_ci  DEFAULT NULL,
-    `state`            varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `network`          int                                  DEFAULT NULL,
-    `created_at`       datetime                             DEFAULT NULL,
-    `updated_at`       datetime                             DEFAULT NULL,
+    `type`             varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `feed`             varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `tlp`              varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT NULL,
+    `state`            varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `network`          int                                                     DEFAULT NULL,
+    `created_at`       datetime                                                DEFAULT NULL,
+    `updated_at`       datetime                                                DEFAULT NULL,
     `auto_saved`       tinyint(1) NOT NULL,
     `active`           tinyint(1) NOT NULL,
-    `unattended_state` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `unsolved_state`   varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `created_by_id`    int                                  DEFAULT NULL,
-    `deletedAt`        datetime                             DEFAULT NULL,
-    `priority_id`      int                                  DEFAULT NULL,
+    `unattended_state` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `unsolved_state`   varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `created_by_id`    int                                                     DEFAULT NULL,
+    `deletedAt`        datetime                                                DEFAULT NULL,
+    `priority_id`      int                                                     DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `IDX_7C69DA3B8CDE5729` (`type`),
     KEY `IDX_7C69DA3B234044AB` (`feed`),
@@ -444,22 +446,22 @@ DROP TABLE IF EXISTS `incident_detected`;
 CREATE TABLE `incident_detected`
 (
     `id`                 int        NOT NULL AUTO_INCREMENT,
-    `incident_id`        int                                  DEFAULT NULL,
-    `assigned_id`        int                                  DEFAULT NULL,
-    `type`               varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `feed`               varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `state`              varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `tlp_state`          varchar(45) COLLATE utf8_unicode_ci  DEFAULT NULL,
-    `date`               datetime                             DEFAULT NULL,
-    `evidence_file_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `notes`              longtext COLLATE utf8_unicode_ci,
-    `priority_id`        int                                  DEFAULT NULL,
-    `created_by_id`      int                                  DEFAULT NULL,
+    `incident_id`        int                                                     DEFAULT NULL,
+    `assigned_id`        int                                                     DEFAULT NULL,
+    `type`               varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `feed`               varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `state`              varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `tlp_state`          varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT NULL,
+    `date`               datetime                                                DEFAULT NULL,
+    `evidence_file_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `notes`              longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+    `priority_id`        int                                                     DEFAULT NULL,
+    `created_by_id`      int                                                     DEFAULT NULL,
     `active`             tinyint(1) NOT NULL,
-    `created_at`         datetime                             DEFAULT NULL,
-    `updated_at`         datetime                             DEFAULT NULL,
-    `reporter_id`        int                                  DEFAULT NULL,
-    `deletedAt`          datetime                             DEFAULT NULL,
+    `created_at`         datetime                                                DEFAULT NULL,
+    `updated_at`         datetime                                                DEFAULT NULL,
+    `reporter_id`        int                                                     DEFAULT NULL,
+    `deletedAt`          datetime                                                DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `IDX_F997633159E53FB9` (`incident_id`),
     KEY `IDX_F9976331E1501A05` (`assigned_id`),
@@ -507,11 +509,11 @@ CREATE TABLE `incident_feed`
     `slug`          varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     `name`          varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     `active`        tinyint(1)                                              NOT NULL,
-    `created_at`    datetime                             DEFAULT NULL,
-    `updated_at`    datetime                             DEFAULT NULL,
-    `description`   varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `created_by_id` int                                  DEFAULT NULL,
-    `deletedAt`     datetime                             DEFAULT NULL,
+    `created_at`    datetime                                                DEFAULT NULL,
+    `updated_at`    datetime                                                DEFAULT NULL,
+    `description`   varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `created_by_id` int                                                     DEFAULT NULL,
+    `deletedAt`     datetime                                                DEFAULT NULL,
     PRIMARY KEY (`slug`),
     KEY `IDX_C94C3314B03A8386` (`created_by_id`),
     CONSTRAINT `FK_C94C3314B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`)
@@ -548,14 +550,14 @@ DROP TABLE IF EXISTS `incident_impact`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `incident_impact`
 (
-    `slug`          varchar(45) COLLATE utf8_unicode_ci  NOT NULL,
-    `name`          varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-    `description`   varchar(512) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `created_by_id` int                                  DEFAULT NULL,
-    `active`        tinyint(1)                           NOT NULL,
-    `created_at`    datetime                             DEFAULT NULL,
-    `updated_at`    datetime                             DEFAULT NULL,
-    `deletedAt`     datetime                             DEFAULT NULL,
+    `slug`          varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
+    `name`          varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `description`   varchar(512) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `created_by_id` int                                                     DEFAULT NULL,
+    `active`        tinyint(1)                                              NOT NULL,
+    `created_at`    datetime                                                DEFAULT NULL,
+    `updated_at`    datetime                                                DEFAULT NULL,
+    `deletedAt`     datetime                                                DEFAULT NULL,
     PRIMARY KEY (`slug`),
     KEY `IDX_69357CE3B03A8386` (`created_by_id`),
     CONSTRAINT `FK_69357CE3B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`)
@@ -595,21 +597,21 @@ DROP TABLE IF EXISTS `incident_priority`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `incident_priority`
 (
-    `slug`              varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-    `name`              varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-    `response_time`     int                                  NOT NULL,
-    `resolution_time`   int                                  NOT NULL,
-    `code`              int                                  NOT NULL,
-    `impact`            varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `urgency`           varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `created_at`        datetime                            DEFAULT NULL,
-    `updated_at`        datetime                            DEFAULT NULL,
-    `unresponse_time`   int                                  NOT NULL,
-    `unresolution_time` int                                  NOT NULL,
-    `active`            tinyint(1)                           NOT NULL,
-    `id`                int                                  NOT NULL AUTO_INCREMENT,
-    `created_by_id`     int                                 DEFAULT NULL,
-    `deletedAt`         datetime                            DEFAULT NULL,
+    `slug`              varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `name`              varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `response_time`     int                                                     NOT NULL,
+    `resolution_time`   int                                                     NOT NULL,
+    `code`              int                                                     NOT NULL,
+    `impact`            varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `urgency`           varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `created_at`        datetime                                               DEFAULT NULL,
+    `updated_at`        datetime                                               DEFAULT NULL,
+    `unresponse_time`   int                                                     NOT NULL,
+    `unresolution_time` int                                                     NOT NULL,
+    `active`            tinyint(1)                                              NOT NULL,
+    `id`                int                                                     NOT NULL AUTO_INCREMENT,
+    `created_by_id`     int                                                    DEFAULT NULL,
+    `deletedAt`         datetime                                               DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `UNIQ_9A63B854989D9B62` (`slug`),
     KEY `IDX_9A63B854C409C007` (`impact`),
@@ -1276,12 +1278,12 @@ CREATE TABLE `incident_state`
     `slug`          varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     `name`          varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     `active`        tinyint(1)                                              NOT NULL,
-    `created_at`    datetime                             DEFAULT NULL,
-    `updated_at`    datetime                             DEFAULT NULL,
-    `behavior`      varchar(45) COLLATE utf8_unicode_ci  DEFAULT NULL,
-    `description`   varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `created_by_id` int                                  DEFAULT NULL,
-    `deletedAt`     datetime                             DEFAULT NULL,
+    `created_at`    datetime                                                DEFAULT NULL,
+    `updated_at`    datetime                                                DEFAULT NULL,
+    `behavior`      varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT NULL,
+    `description`   varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `created_by_id` int                                                     DEFAULT NULL,
+    `deletedAt`     datetime                                                DEFAULT NULL,
     PRIMARY KEY (`slug`),
     KEY `IDX_F8A770913BABA0B0` (`behavior`),
     KEY `IDX_F8A77091B03A8386` (`created_by_id`),
@@ -1330,11 +1332,11 @@ DROP TABLE IF EXISTS `incident_state_change`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `incident_state_change`
 (
-    `id`             int                                 NOT NULL AUTO_INCREMENT,
+    `id`             int                                                    NOT NULL AUTO_INCREMENT,
     `incident_id`    int      DEFAULT NULL,
     `responsable_id` int      DEFAULT NULL,
     `date`           datetime DEFAULT NULL,
-    `method`         varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+    `method`         varchar(25) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     `state_edge_id`  int      DEFAULT NULL,
     `created_by_id`  int      DEFAULT NULL,
     `created_at`     datetime DEFAULT NULL,
@@ -1375,20 +1377,20 @@ DROP TABLE IF EXISTS `incident_tlp`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `incident_tlp`
 (
-    `slug`          varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-    `rgb`           varchar(45) COLLATE utf8_unicode_ci  DEFAULT NULL,
-    `when`          varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `encrypt`       tinyint(1)                           DEFAULT NULL,
-    `why`           varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `information`   varchar(10) COLLATE utf8_unicode_ci  DEFAULT NULL,
-    `description`   varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `name`          varchar(45) COLLATE utf8_unicode_ci  DEFAULT NULL,
-    `code`          int                                  DEFAULT NULL,
-    `created_by_id` int                                  DEFAULT NULL,
-    `active`        tinyint(1)                          NOT NULL,
-    `created_at`    datetime                             DEFAULT NULL,
-    `updated_at`    datetime                             DEFAULT NULL,
-    `deletedAt`     datetime                             DEFAULT NULL,
+    `slug`          varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `rgb`           varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT NULL,
+    `when`          varchar(500) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `encrypt`       tinyint(1)                                              DEFAULT NULL,
+    `why`           varchar(500) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `information`   varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT NULL,
+    `description`   varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `name`          varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT NULL,
+    `code`          int                                                     DEFAULT NULL,
+    `created_by_id` int                                                     DEFAULT NULL,
+    `active`        tinyint(1)                                             NOT NULL,
+    `created_at`    datetime                                                DEFAULT NULL,
+    `updated_at`    datetime                                                DEFAULT NULL,
+    `deletedAt`     datetime                                                DEFAULT NULL,
     PRIMARY KEY (`slug`),
     KEY `IDX_ECC4CA8DB03A8386` (`created_by_id`),
     CONSTRAINT `FK_ECC4CA8DB03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`)
@@ -1441,13 +1443,13 @@ CREATE TABLE `incident_type`
     `slug`              varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     `name`              varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     `active`            tinyint(1)                                              NOT NULL,
-    `created_at`        datetime                             DEFAULT NULL,
-    `updated_at`        datetime                             DEFAULT NULL,
-    `description`       varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+    `created_at`        datetime                                                DEFAULT NULL,
+    `updated_at`        datetime                                                DEFAULT NULL,
+    `description`       varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
     `is_Classification` tinyint(1)                                              NOT NULL,
-    `taxonomyValue`     varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `created_by_id`     int                                  DEFAULT NULL,
-    `deletedAt`         datetime                             DEFAULT NULL,
+    `taxonomyValue`     varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `created_by_id`     int                                                     DEFAULT NULL,
+    `deletedAt`         datetime                                                DEFAULT NULL,
     PRIMARY KEY (`slug`),
     KEY `IDX_66D22096E371859C` (`taxonomyValue`),
     KEY `IDX_66D22096B03A8386` (`created_by_id`),
@@ -1541,14 +1543,14 @@ DROP TABLE IF EXISTS `incident_urgency`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `incident_urgency`
 (
-    `slug`          varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-    `name`          varchar(45) COLLATE utf8_unicode_ci  DEFAULT NULL,
-    `description`   varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `created_by_id` int                                  DEFAULT NULL,
-    `active`        tinyint(1)                          NOT NULL,
-    `created_at`    datetime                             DEFAULT NULL,
-    `updated_at`    datetime                             DEFAULT NULL,
-    `deletedAt`     datetime                             DEFAULT NULL,
+    `slug`          varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `name`          varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT NULL,
+    `description`   varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `created_by_id` int                                                     DEFAULT NULL,
+    `active`        tinyint(1)                                             NOT NULL,
+    `created_at`    datetime                                                DEFAULT NULL,
+    `updated_at`    datetime                                                DEFAULT NULL,
+    `deletedAt`     datetime                                                DEFAULT NULL,
     PRIMARY KEY (`slug`),
     KEY `IDX_C0B62D5FB03A8386` (`created_by_id`),
     CONSTRAINT `FK_C0B62D5FB03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`)
@@ -1588,14 +1590,14 @@ DROP TABLE IF EXISTS `message`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `message`
 (
-    `id`            int                                  NOT NULL AUTO_INCREMENT,
-    `data`          json                                 NOT NULL,
+    `id`            int                                                     NOT NULL AUTO_INCREMENT,
+    `data`          json                                                    NOT NULL,
     `updated_at`    datetime DEFAULT NULL,
     `created_at`    datetime DEFAULT NULL,
     `response`      json     DEFAULT NULL,
-    `pending`       tinyint(1)                           NOT NULL,
+    `pending`       tinyint(1)                                              NOT NULL,
     `incident_id`   int      DEFAULT NULL,
-    `discr`         varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+    `discr`         varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     `created_by_id` int      DEFAULT NULL,
     `deletedAt`     datetime DEFAULT NULL,
     PRIMARY KEY (`id`),
@@ -1629,7 +1631,7 @@ DROP TABLE IF EXISTS `migration_versions`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `migration_versions`
 (
-    `version`     varchar(14) COLLATE utf8_unicode_ci NOT NULL,
+    `version`     varchar(14) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     `executed_at` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
     PRIMARY KEY (`version`)
 ) ENGINE = InnoDB
@@ -1772,21 +1774,21 @@ DROP TABLE IF EXISTS `network`;
 CREATE TABLE `network`
 (
     `id`                int        NOT NULL AUTO_INCREMENT,
-    `network_admin_id`  int                                                         DEFAULT NULL,
-    `network_entity_id` int                                                         DEFAULT NULL,
-    `ip_mask`           int                                                         DEFAULT NULL,
-    `ip`                varchar(39) COLLATE utf8_unicode_ci                         DEFAULT NULL,
+    `network_admin_id`  int                                                                            DEFAULT NULL,
+    `network_entity_id` int                                                                            DEFAULT NULL,
+    `ip_mask`           int                                                                            DEFAULT NULL,
+    `ip`                varchar(39) CHARACTER SET utf8 COLLATE utf8_unicode_ci                         DEFAULT NULL,
     `active`            tinyint(1) NOT NULL,
-    `created_at`        datetime                                                    DEFAULT NULL,
-    `updated_at`        datetime                                                    DEFAULT NULL,
-    `domain`            varchar(255) COLLATE utf8_unicode_ci                        DEFAULT NULL,
-    `type`              enum ('internal','external','rdap') COLLATE utf8_unicode_ci DEFAULT NULL,
-    `country_code`      varchar(2) COLLATE utf8_unicode_ci                          DEFAULT NULL,
-    `ip_start_address`  varchar(255) COLLATE utf8_unicode_ci                        DEFAULT NULL,
-    `ip_end_address`    varchar(255) COLLATE utf8_unicode_ci                        DEFAULT NULL,
-    `asn`               varchar(255) COLLATE utf8_unicode_ci                        DEFAULT NULL,
-    `created_by_id`     int                                                         DEFAULT NULL,
-    `deletedAt`         datetime                                                    DEFAULT NULL,
+    `created_at`        datetime                                                                       DEFAULT NULL,
+    `updated_at`        datetime                                                                       DEFAULT NULL,
+    `domain`            varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci                        DEFAULT NULL,
+    `type`              enum ('internal','external','rdap') CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `country_code`      varchar(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci                          DEFAULT NULL,
+    `ip_start_address`  varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci                        DEFAULT NULL,
+    `ip_end_address`    varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci                        DEFAULT NULL,
+    `asn`               varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci                        DEFAULT NULL,
+    `created_by_id`     int                                                                            DEFAULT NULL,
+    `deletedAt`         datetime                                                                       DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `IDX_608487BCC9E8B981` (`network_admin_id`),
     KEY `IDX_608487BC6801DB4` (`network_entity_id`),
@@ -1810,8 +1812,8 @@ LOCK TABLES `network` WRITE;
 INSERT INTO `network`
 VALUES (1, 1, 1, 16, '192.168.0.0', 1, '2020-08-31 22:55:11', '2020-08-31 22:55:11', NULL, 'internal', NULL,
         '192.168.0.0', '192.168.255.255', NULL, 1, NULL),
-       (1, 1, 1, 0, '0.0.0.0', 1, '2020-08-31 22:55:11', '2020-08-31 22:55:11', '0', 'internal', NULL,
-        '0.0.0.0', '0.0.0.0', NULL, 1, NULL);
+       (2, 2, 2, 0, '0.0.0.0', 1, '2020-08-31 22:55:11', '2020-08-31 22:55:11', '0', 'internal', NULL, '0.0.0.0',
+        '0.0.0.0', NULL, 1, NULL);
 /*!40000 ALTER TABLE `network`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -1825,10 +1827,10 @@ DROP TABLE IF EXISTS `network_admin`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `network_admin`
 (
-    `id`            int                                  NOT NULL AUTO_INCREMENT,
-    `name`          varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+    `id`            int                                                     NOT NULL AUTO_INCREMENT,
+    `name`          varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     `slug`          varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-    `active`        tinyint(1)                           NOT NULL,
+    `active`        tinyint(1)                                              NOT NULL,
     `created_at`    datetime                                                DEFAULT NULL,
     `updated_at`    datetime                                                DEFAULT NULL,
     `created_by_id` int                                                     DEFAULT NULL,
@@ -1838,7 +1840,7 @@ CREATE TABLE `network_admin`
     KEY `IDX_4614B42AB03A8386` (`created_by_id`),
     CONSTRAINT `FK_4614B42AB03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2
+  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1852,7 +1854,8 @@ LOCK TABLES `network_admin` WRITE;
     DISABLE KEYS */;
 INSERT INTO `network_admin`
 VALUES (1, 'Support Test', 'support_test_support_organization_test', 1, '2018-11-02 14:49:41', '2018-11-02 14:49:41',
-        NULL, NULL);
+        NULL, NULL),
+       (2, 'Undefined', 'undefined', 1, '2020-09-09 22:16:07', '2020-09-09 22:16:07', 1, NULL);
 /*!40000 ALTER TABLE `network_admin`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -1866,19 +1869,19 @@ DROP TABLE IF EXISTS `network_entity`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `network_entity`
 (
-    `id`            int                                  NOT NULL AUTO_INCREMENT,
-    `name`          varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-    `slug`          varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `created_at`    datetime                             DEFAULT NULL,
-    `updated_at`    datetime                             DEFAULT NULL,
-    `active`        tinyint(1)                           NOT NULL,
-    `created_by_id` int                                  DEFAULT NULL,
-    `deletedAt`     datetime                             DEFAULT NULL,
+    `id`            int                                                     NOT NULL AUTO_INCREMENT,
+    `name`          varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `slug`          varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `created_at`    datetime                                                DEFAULT NULL,
+    `updated_at`    datetime                                                DEFAULT NULL,
+    `active`        tinyint(1)                                              NOT NULL,
+    `created_by_id` int                                                     DEFAULT NULL,
+    `deletedAt`     datetime                                                DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `IDX_6C3B430EB03A8386` (`created_by_id`),
     CONSTRAINT `FK_6C3B430EB03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2
+  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1891,7 +1894,8 @@ LOCK TABLES `network_entity` WRITE;
 /*!40000 ALTER TABLE `network_entity`
     DISABLE KEYS */;
 INSERT INTO `network_entity`
-VALUES (1, 'Test', 'test', '2018-11-02 14:49:41', '2018-11-02 14:49:41', 1, NULL, NULL);
+VALUES (1, 'Test', 'test', '2018-11-02 14:49:41', '2018-11-02 14:49:41', 1, NULL, NULL),
+       (2, 'Undefined', 'undefined', '2020-09-09 22:16:18', '2020-09-09 22:16:18', 1, 1, NULL);
 /*!40000 ALTER TABLE `network_entity`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -1905,19 +1909,19 @@ DROP TABLE IF EXISTS `state_behavior`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `state_behavior`
 (
-    `slug`                  varchar(45) COLLATE utf8_unicode_ci  NOT NULL,
-    `name`                  varchar(45) COLLATE utf8_unicode_ci  DEFAULT NULL,
-    `description`           varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `can_edit_fundamentals` tinyint(1)                           NOT NULL,
-    `created_at`            datetime                             DEFAULT NULL,
-    `updated_at`            datetime                             DEFAULT NULL,
-    `can_edit`              tinyint(1)                           NOT NULL,
-    `can_enrich`            tinyint(1)                           NOT NULL,
-    `can_add_history`       tinyint(1)                           NOT NULL,
-    `can_comunicate`        tinyint(1)                           NOT NULL,
-    `discr`                 varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-    `created_by_id`         int                                  DEFAULT NULL,
-    `deletedAt`             datetime                             DEFAULT NULL,
+    `slug`                  varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
+    `name`                  varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT NULL,
+    `description`           varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `can_edit_fundamentals` tinyint(1)                                              NOT NULL,
+    `created_at`            datetime                                                DEFAULT NULL,
+    `updated_at`            datetime                                                DEFAULT NULL,
+    `can_edit`              tinyint(1)                                              NOT NULL,
+    `can_enrich`            tinyint(1)                                              NOT NULL,
+    `can_add_history`       tinyint(1)                                              NOT NULL,
+    `can_comunicate`        tinyint(1)                                              NOT NULL,
+    `discr`                 varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `created_by_id`         int                                                     DEFAULT NULL,
+    `deletedAt`             datetime                                                DEFAULT NULL,
     PRIMARY KEY (`slug`),
     KEY `IDX_458C617B03A8386` (`created_by_id`),
     CONSTRAINT `FK_458C617B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`)
@@ -1954,18 +1958,18 @@ DROP TABLE IF EXISTS `state_edge`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `state_edge`
 (
-    `id`            int                                  NOT NULL AUTO_INCREMENT,
-    `mail_assigned` varchar(45) COLLATE utf8_unicode_ci  DEFAULT NULL,
-    `mail_team`     varchar(45) COLLATE utf8_unicode_ci  DEFAULT NULL,
-    `mail_admin`    varchar(45) COLLATE utf8_unicode_ci  DEFAULT NULL,
-    `mail_reporter` varchar(45) COLLATE utf8_unicode_ci  DEFAULT NULL,
-    `created_at`    datetime                             DEFAULT NULL,
-    `updated_at`    datetime                             DEFAULT NULL,
-    `oldState`      varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `newState`      varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `discr`         varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-    `created_by_id` int                                  DEFAULT NULL,
-    `deletedAt`     datetime                             DEFAULT NULL,
+    `id`            int                                                     NOT NULL AUTO_INCREMENT,
+    `mail_assigned` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT NULL,
+    `mail_team`     varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT NULL,
+    `mail_admin`    varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT NULL,
+    `mail_reporter` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci  DEFAULT NULL,
+    `created_at`    datetime                                                DEFAULT NULL,
+    `updated_at`    datetime                                                DEFAULT NULL,
+    `oldState`      varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `newState`      varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `discr`         varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `created_by_id` int                                                     DEFAULT NULL,
+    `deletedAt`     datetime                                                DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `IDX_E1E55AA017EA0C41` (`oldState`),
     KEY `IDX_E1E55AA0CB9A3939` (`newState`),
@@ -2094,13 +2098,13 @@ DROP TABLE IF EXISTS `taxonomy_predicate`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `taxonomy_predicate`
 (
-    `slug`          varchar(100) COLLATE utf8_unicode_ci  NOT NULL,
-    `description`   varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
-    `expanded`      varchar(255) COLLATE utf8_unicode_ci  NOT NULL,
-    `version`       int                                   NOT NULL,
-    `value`         varchar(255) COLLATE utf8_unicode_ci  NOT NULL,
+    `slug`          varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
+    `description`   varchar(1024) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `expanded`      varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
+    `version`       int                                                      NOT NULL,
+    `value`         varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
     `updated_at`    datetime DEFAULT NULL,
-    `active`        tinyint(1)                            NOT NULL,
+    `active`        tinyint(1)                                               NOT NULL,
     `created_at`    datetime DEFAULT NULL,
     `created_by_id` int      DEFAULT NULL,
     `deletedAt`     datetime DEFAULT NULL,
@@ -2162,17 +2166,17 @@ DROP TABLE IF EXISTS `taxonomy_value`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `taxonomy_value`
 (
-    `slug`              varchar(100) COLLATE utf8_unicode_ci  NOT NULL,
-    `description`       varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
-    `expanded`          varchar(255) COLLATE utf8_unicode_ci  NOT NULL,
-    `value`             varchar(255) COLLATE utf8_unicode_ci  NOT NULL,
-    `updated_at`        datetime                             DEFAULT NULL,
-    `version`           int                                   NOT NULL,
-    `taxonomyPredicate` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `active`            tinyint(1)                            NOT NULL,
-    `created_at`        datetime                             DEFAULT NULL,
-    `created_by_id`     int                                  DEFAULT NULL,
-    `deletedAt`         datetime                             DEFAULT NULL,
+    `slug`              varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
+    `description`       varchar(1024) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `expanded`          varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
+    `value`             varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
+    `updated_at`        datetime                                                DEFAULT NULL,
+    `version`           int                                                      NOT NULL,
+    `taxonomyPredicate` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+    `active`            tinyint(1)                                               NOT NULL,
+    `created_at`        datetime                                                DEFAULT NULL,
+    `created_by_id`     int                                                     DEFAULT NULL,
+    `deletedAt`         datetime                                                DEFAULT NULL,
     PRIMARY KEY (`slug`),
     UNIQUE KEY `UNIQ_48109C991D775834` (`value`),
     KEY `IDX_48109C9931CA456F` (`taxonomyPredicate`),
@@ -2343,7 +2347,7 @@ CREATE TABLE `user`
     `password_requested_at` datetime                                                DEFAULT NULL,
     `roles`                 longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci     NOT NULL COMMENT '(DC2Type:array)',
     `api_key`               varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-    `firstname`             varchar(50) COLLATE utf8_unicode_ci                     NOT NULL,
+    `firstname`             varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
     `lastname`              varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
     `created_at`            datetime                                                NOT NULL,
     `updated_at`            datetime                                                NOT NULL,
@@ -2370,9 +2374,9 @@ LOCK TABLES `user` WRITE;
     DISABLE KEYS */;
 INSERT INTO `user`
 VALUES (1, 'admin', 'admin', 'admin@cert.com', 'admin@cert.com', 1, NULL,
-        '$2y$13$bCXhBy3fqnVndwQNmY4xx.NfcWRInLD5WMU.WUlK6Q/8zMFRapXBe', '2020-08-31 23:04:28', NULL, NULL,
+        '$2y$13$bCXhBy3fqnVndwQNmY4xx.NfcWRInLD5WMU.WUlK6Q/8zMFRapXBe', '2020-09-09 22:16:18', NULL, NULL,
         'a:1:{i:0;s:8:\"ROLE_API\";}', '648c0082e893290d263a3c33b2ad7dbf05ab769e', 'admin', 'admin',
-        '2018-11-02 14:49:40', '2020-08-31 23:04:29', 'admin_admin', NULL);
+        '2018-11-02 14:49:40', '2020-09-09 22:16:18', 'admin_admin', NULL);
 /*!40000 ALTER TABLE `user`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -2386,4 +2390,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-31 23:36:35
+-- Dump completed on 2020-09-09 22:19:09
