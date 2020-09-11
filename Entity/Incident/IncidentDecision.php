@@ -235,8 +235,7 @@ class IncidentDecision extends EntityApiFrontend
     public function doDecision(Incident $incident): Incident
     {
         $incident->getTlp() ?: $incident->setTlp($this->getTlp());
-        $incident->getImpact() ?: $incident->setImpact($this->getImpact());
-        $incident->getUrgency() ?: $incident->setUrgency($this->getUrgency());
+        $incident->getPriority() ?: $incident->setPriority($this->getPriority());
         $incident->getState() ?: $incident->setState($this->getState());
         $incident->getType() ?: $incident->setType($this->getType());
 
