@@ -14,6 +14,7 @@ namespace CertUnlp\NgenBundle\Controller\Api\Incident;
 use CertUnlp\NgenBundle\Controller\Api\ApiController;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
+use CertUnlp\NgenBundle\Form\Incident\IncidentType as IncidentForm;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
 use CertUnlp\NgenBundle\Model\EntityApiInterface;
@@ -90,7 +91,7 @@ class IncidentController extends ApiController
      *         name="form",
      *         in="body",
      *         description="creation parameters",
-     *         @Model(type=IncidentType::class, groups={"api"})
+     *         @Model(type=IncidentForm::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="201",
@@ -231,7 +232,7 @@ class IncidentController extends ApiController
      *         name="form",
      *         in="body",
      *         description="creation parameters",
-     *         @Model(type=IncidentType::class, groups={"api"})
+     *         @Model(type=IncidentForm::class, groups={"api"})
      *     ),
      *     @SWG\Response(
      *         response="204",
