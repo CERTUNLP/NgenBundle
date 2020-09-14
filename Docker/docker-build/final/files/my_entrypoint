@@ -21,7 +21,7 @@ function clean_cache_and_logs {
   for val in $folders; do
       rm -fr $PATH_WEB/ngen_basic/var/$val
       mkdir $PATH_WEB/ngen_basic/var/$val
-      chown www-data -R $PATH_WEB/ngen_basic/var/$val
+      chown www-data.www-data -R $PATH_WEB/ngen_basic/var/$val
   done
 }
 
@@ -41,7 +41,7 @@ function update_database_and_index {
      #Estos 10 segundos son porque el elastic demora
      sleep 10
      php bin/console fos:elastica:populate --no-reset --env prod
-  	 chown www-data -R $PATH_WEB/ngen_basic/app/Resources/app/Resources/feed/ $PATH_WEB/ngen_basic/app/Resources/incident
+     chown www-data -R $PATH_WEB/ngen_basic/app/Resources/app/Resources/feed/ $PATH_WEB/ngen_basic/app/Resources/incident
    fi
   else
    # La base no existe inserto la primer version
