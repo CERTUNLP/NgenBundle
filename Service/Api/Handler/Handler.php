@@ -99,10 +99,10 @@ abstract class Handler
         $parameters = $this->cleanParameters($parameters);
         $form->submit($parameters, Request::METHOD_PATCH !== $method);
         if ($form->isValid()) {
-            $this->postValidationForm($entity, $method);
+            $entity = $this->postValidationForm($entity, $method);
             $this->getEntityManager()->persist($entity);
             $this->getEntityManager()->flush();
-            $this->postProcessForm($entity);
+            $entity = $this->postProcessForm($entity);
             return $entity;
         }
         throw new InvalidFormException
