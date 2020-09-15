@@ -7,15 +7,14 @@
  * with this source code in the file LICENSE.
  */
 var Incident = Frontend.extend({
-    init: function () {
+    init: function (base_url) {
+        this.base_url = base_url;
         this.eventTarget = null;
         this.search_terms = new SearchTerm();
         $(document).on("click", 'a.state-label', $.proxy(this.changeState, this));
-        // $('.form-check-input').on('change', $.proxy(this.filterListHeaders, this));
         $('.select-filter').on('change', $.proxy(this.filterListHeaders, this));
         $('.multiple-select-filter').on('blur', $.proxy(this.filterListHeaders, this));
         $('.data-filter').on('submit', $.proxy(this.filterListHeaders, this));
-        $('.message-set-pending').on('click', $.proxy(this.messagePending, this));
         $('#generalSearch').on('submit', $.proxy(this.search, this));
         $(document).on("click", 'a.colorbox-filter', $.proxy(this.filterListDropdown, this));
         this.search();
@@ -37,20 +36,10 @@ var Incident = Frontend.extend({
 
         id = this.eventTarget.parents('tr').data('id');
         tr = this.eventTarget.parents('tr');
-        $.get(id + "/getListRow", function (data) {
+        $.get(this.base_url + id + "/getListRow", function (data) {
             tr.html($(data).html());
             $.publish('/cert_unlp/notify/success', ["The state has been changed successfully"]);
             tr.focus();
-        });
-    },
-    messagePending: function (event) {
-        id = $(event.currentTarget).data('id');
-        $.post("/messages/" + id + '/pending', function () {
-            $(event.currentTarget).siblings('.d-none').removeClass('d-none')
-            $(event.currentTarget).toggle()
-            $(event.currentTarget).parents('.card').first().children('h6').removeClass('border-left-success')
-            $(event.currentTarget).parents('.card').first().children('h6').addClass('border-left-warning')
-            $.publish('/cert_unlp/notify/success', ["Message scheduled"]);
         });
     },
     filterListDropdown: function (event) {
@@ -71,7 +60,7 @@ var Incident = Frontend.extend({
         event.preventDefault();
         if ($(event.currentTarget).val()) {
             $(event.currentTarget).data('id', $(event.currentTarget).val());
-        }else{
+        } else {
             $(event.currentTarget).data('id', '');
             $(event.currentTarget).data('action', 'delete');
         }
@@ -79,7 +68,7 @@ var Incident = Frontend.extend({
 
     },
     filterListComplete: function (query) {
-        $.get("getFilterList", {"term": query}, function (data) {
+        $.get(this.base_url + "getFilterList", {"term": query}, function (data) {
             $('#tabla_incidentes > tbody:last').html(data.tabla);
             $('#incidentcount').html(data.indice.lastItemNumber + "/" + data.indice.totalCount);
             $('#filters').html(data.filters);
