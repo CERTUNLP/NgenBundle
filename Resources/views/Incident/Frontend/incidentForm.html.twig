@@ -144,7 +144,7 @@
         var incidentForm = new IncidentForm();
         var IncidentApi = new IncidentApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
         var incident_decision_api = new IncidentDecisionApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
-        var Incident = new Incident();
+        var Incident = new Incident("{{ path("cert_unlp_ngen_internal_incident_frontend_home") }}");
 
     </script>
 {% endblock %}

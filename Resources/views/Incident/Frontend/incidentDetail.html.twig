@@ -631,11 +631,15 @@ with this source code in the file LICENSE.
             {{ gc_draw([timeline], ['timeline']) }}
             {% endif %}
         </script>
+        {% javascripts
+            '@CertUnlpNgenBundle/Resources/public/js/incident/IncidentDetail.js' %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
         <script>
             $(document).ready(function () {
                 window.api_key = '{{ app.user.apikey }}';
             });
-            var Incident = new Incident();
+            var IncidentDetail = new IncidentDetail("{{ path("cert_unlp_ngen_internal_incident_frontend_home") }}");
 
         </script>
         {% javascripts '@CertUnlpNgenBundle/Resources/public/js/incident/comments.js' %}
