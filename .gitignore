@@ -75,6 +75,7 @@ $RECYCLE.BIN/
 !.gitignore
 !.htaccess
 !.travis.*
+!.github
 *~
 
 # Mac OS X
