@@ -57,3 +57,18 @@ docker-compose -f docker-compose-dev.yml up
 ``` 
 docker-compose -f docker-compose.yml up
 ```
+## Imagen para el workflow de github
+
+Se utiliza un build multistage para la autoconstrucción y subida de la imgaen a dockerhub.
+
+```
+Docker/docker-build/mutistageDockerfile
+```
+
+Para ello sólo se precisa tagger con 1.X.X y github hace el resto.
+
+```
+git commit -m "Este commit es de build" -a
+git tag 1.X.X 
+git push && git push --tags
+```
