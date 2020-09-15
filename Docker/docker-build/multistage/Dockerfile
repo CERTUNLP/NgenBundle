@@ -1,5 +1,5 @@
-FROM php:7.4-apache as ngen-basic
-MAINTAINER CERTunlp
+FROM php:7.4-apache as ngen-base
+MAINTAINER CERTUNLP
 WORKDIR "/application"
 ENV APACHE_DOCUMENT_ROOT /application/ngen_basic/web
 # Install Composer
@@ -27,4 +27,23 @@ RUN rm -fr /root/.composer/cache && cd /application/ngen_basic/src && git clone 
 RUN cd /application/ngen_basic  \
 && cp src/NgenBundle/composer.json .  \
 && COMPOSER_MEMORY_LIMIT=-1  composer -vvvv update
+CMD ["/usr/local/bin/apache2-foreground"]
+
+FROM ngen-base
+MAINTAINER CERTUNLP
+WORKDIR "/application"
+ENV APACHE_DOCUMENT_ROOT /application/ngen_basic/web
+
+RUN rm -fr  /application/ngen_basic/src/NgenBundle && cd /application/ngen_basic/src && git clone https://github.com/CERTUNLP/NgenBundle.git
+RUN sed -i '/- { resource: security.yml }/c\'  /application/ngen_basic/app/config/config.yml
+RUN sed -i '/- { resource: services.yml }/c\    - { resource: "@CertUnlpNgenBundle/Resources/config/config.yml" }\n    - { resource: "@CertUnlpNgenBundle/Resources/config/security.yml" }'  /application/ngen_basic/app/config/config.yml
+
+ADD ../final/files/AppKernel.php /application/ngen_basic/app/AppKernel.php
+ADD ../final/files/000-default.conf /etc/apache2/sites-available/000-default.conf
+ADD ../final/files/routing.yml /application/ngen_basic/app/config/routing.yml
+ADD ../final/files/sql/base.inicial.sql /root/
+ADD ../final/files/my_entrypoint /usr/local/bin/my_entrypoint
+ADD ../final/files/mailer_entrypoint /usr/local/bin/mailer_entrypoint
+
+ENTRYPOINT ["my_entrypoint"]
 CMD ["/usr/local/bin/apache2-foreground"]

@@ -1,0 +1,75 @@
+#!/bin/bash
+
+PATH_WEB="/application";
+
+function update_parameters_yml {
+        echo "Checking for configuration files"
+        cp /application/ngen_basic/src/NgenBundle/Docker/docker-build/final/files/parameters.yml /application/ngen_basic/app/config/parameters.yml
+        sed  -i 's/$DB_SECRET/'"$(echo $RANDOM -d|sha256sum| awk '{print $1}')"'/'  /application/ngen_basic/app/config/parameters.yml
+ }
+
+function update_php_ini {
+          echo "date.timezone=${DATE_TZ}" > /usr/local/etc/php/php.ini
+          echo "upload_max_filesize =${UPLOAD_MAX}" >> /usr/local/etc/php/php.ini
+          echo "post_max_size = ${POST_MAX}" >> /usr/local/etc/php/php.ini
+          echo "memory_limit = ${MEMORY_LIMIT}" >> /usr/local/etc/php/php.ini
+}
+
+function clean_cache_and_logs {
+  php bin/console cache:clear --env=prod --no-debug
+  folders="sessions logs cache"
+  for val in $folders; do
+      rm -fr $PATH_WEB/ngen_basic/var/$val
+      mkdir $PATH_WEB/ngen_basic/var/$val
+      chown www-data.www-data -R $PATH_WEB/ngen_basic/var/$val
+  done
+}
+
+function wait_for_database {
+  until x=$(php bin/console doctrine:schema:validate 2>/dev/null|grep "[OK]");do
+  echo "Base no disponible esperando para comenzar la app"
+  sleep 1
+done;
+}
+
+function update_database_and_index {
+  if php bin/console doctrine:query:sql "SELECT * FROM INFORMATION_SCHEMA.TABLES"|grep incident
+  then
+   echo "base existente, revisamos las migraciones"
+   php bin/console doctrine:migrations:migrate --no-interaction
+   if [[ ! -z "${POPULATE}" ]]; then
+     #Estos 10 segundos son porque el elastic demora
+     sleep 10
+     php bin/console fos:elastica:populate --no-reset --env prod
+     chown www-data -R $PATH_WEB/ngen_basic/app/Resources/app/Resources/feed/ $PATH_WEB/ngen_basic/app/Resources/incident
+   fi
+  else
+   # La base no existe inserto la primer version
+   echo "Instalando base inicial"
+   php bin/console doctrine:database:import /root/base.inicial.sql
+   php bin/console doctrine:migrations:migrate --no-interaction
+   php bin/console fos:elastica:populate --no-reset --env prod
+   chown www-data -R $PATH_WEB/ngen_basic/app/Resources/app/Resources/feed/ $PATH_WEB/ngen_basic/app/Resources/incident
+   chmod +x $PATH_WEB/ngen_basic/src/NgenBundle/Utils/validateApiKey.php
+   PASSVIEWER=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
+   curl -XPOST -H "Content-Type: application/json" -d '{"name":"Viewer","email":"viewer@localhost","login":"viewer","password":"$PASSVIEWER"}' -u $USER_GRAFANA:$PASS_GRAFANA $GRAFANA_HOST/api/admin/users
+  fi
+}
+
+function symfony_stuff {
+  echo "por hacer assets:dump"
+  php bin/console assetic:dump --env=prod --no-debug
+  echo "por hacer assets:install"
+  php bin/console assets:install --symlink --env=prod
+  ln -s $PATH_WEB/ngen_basic/vendor/fortawesome/font-awesome/webfonts web/webfonts
+}
+
+cd $PATH_WEB/ngen_basic
+update_parameters_yml
+update_php_ini
+wait_for_database
+update_database_and_index
+symfony_stuff
+clean_cache_and_logs
+
+exec "$@"
