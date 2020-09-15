@@ -1,2 +1,0 @@
-cert_unlp_ngen:
-    resource: "@CertUnlpNgenBundle/Resources/config/routing.yml"
