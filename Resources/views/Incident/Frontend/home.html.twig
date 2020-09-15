@@ -85,7 +85,7 @@ with this source code in the file LICENSE.
 
     <script>
         var IncidentApi = new IncidentApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
-        var Incident = new Incident();
+        var Incident = new Incident("{{ path("cert_unlp_ngen_internal_incident_frontend_home") }}");
         $('#btnFilter').on('click', function (e) {
             e.preventDefault();
             var elem = $('#filtrosMostrar');
