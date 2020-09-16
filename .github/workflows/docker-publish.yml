@@ -58,4 +58,6 @@ jobs:
           echo IMAGE_NAME=$IMAGE_NAME
           docker tag $IMAGE_NAME certunlp/$IMAGE_NAME:$VERSION
           docker tag $IMAGE_NAME certunlp/$IMAGE_NAME:latest
-          docker push $IMAGE_NAME:$VERSION $IMAGE_NAME:latest
+          docker images
+          docker push certunlp/$IMAGE_NAME:$VERSION
+          docker push certunlp/$IMAGE_NAME:latest
