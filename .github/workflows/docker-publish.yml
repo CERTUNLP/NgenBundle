@@ -7,7 +7,7 @@ on:
       - 1.*
 env:
   # TODO: Change variable to your image's name.
-  IMAGE_NAME: certunlp/ngen
+  IMAGE_NAME: ngen
 
 jobs:
   # Run tests.
@@ -56,6 +56,6 @@ jobs:
 
           echo VERSION=$VERSION
           echo IMAGE_NAME=$IMAGE_NAME
-          docker tag $IMAGE_NAME $IMAGE_NAME:$VERSION
-          docker tag $IMAGE_NAME $IMAGE_NAME:latest
+          docker tag $IMAGE_NAME certunlp/$IMAGE_NAME:$VERSION
+          docker tag $IMAGE_NAME certunlp/$IMAGE_NAME:latest
           docker push $IMAGE_NAME:$VERSION $IMAGE_NAME:latest
