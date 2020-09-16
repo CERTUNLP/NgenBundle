@@ -1,8 +1,8 @@
-{# 
+{#
  This file is part of the Ngen - CSIRT Incident Report System.
- 
+
  (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
+
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
@@ -14,9 +14,9 @@
     <h1 class="h3 mb-0 text-gray-800">
         {{ icon(object.icon~' fa-fw text-'~object.color) }}
         {{ object.name }}
-        {{ print.colorbox('primary','id-card',object.id,'#') }}
+        {{ print.colorboxbutton('primary','id-card',object.id,'#') }}
         {{ print.statusbox(object) }}
-        {{ print.colorbox(object.predicate.color,object.predicate.icon,object.predicate,path('cert_unlp_ngen_taxonomy_predicate_detail',{'slug': object.predicate.slug})) }}
+        {{ print.colordropbox(object.predicate.color,object.predicate.icon,object.predicate,path('cert_unlp_ngen_taxonomy_predicate_detail',{'slug': object.predicate.slug}),'','d-inline') }}
     </h1>
 {% endblock %}
 {% block content_body %}

@@ -10,13 +10,7 @@
 
 <tr data-id="{{ network.addressAndMask }}">
     <td class="text-center">
-        {% set detail_link %}
-            {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail'} %}
-        {% endset %}
-        {% set edit_link %}
-            {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'edit'} %}
-        {% endset %}
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':network , 'detail_link':detail_link ,'edit_link': edit_link} %}
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':network , 'detail_link':path('cert_unlp_ngen_network_detail_network_id',{'id':network.id}) ,'edit_link': path('cert_unlp_ngen_network_edit_network_id',{'id':network.id})} %}
     </td>
     <td id="state_label_holder" class="text-center">
         {{ print.statusdropbox(network) }}
@@ -31,12 +25,12 @@
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colordropbox(network.networkEntity.color,network.networkEntity.icon,network.networkEntity.name,path('cert_unlp_ngen_network_entity_detail',{'slug': network.networkEntity.slug}),network.networkEntity) }}
+            {{ print.colordropbox(network.networkEntity.color,network.networkEntity.icon,network.networkEntity.name,path('cert_unlp_ngen_network_entity_detail_id',{'id': network.networkEntity.id}),network.networkEntity) }}
         </div>
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colordropbox(network.networkAdmin.color,network.networkAdmin.icon,network.networkAdmin.name,path('cert_unlp_ngen_network_detail_network_admin',{'slug': network.networkAdmin.slug}),network.networkAdmin.name  ) }}
+            {{ print.colordropbox(network.networkAdmin.color,network.networkAdmin.icon,network.networkAdmin.name,path('cert_unlp_ngen_network_detail_network_admin_id',{'id': network.networkAdmin.id}),network.networkAdmin.name  ) }}
         </div>
     </td>
     <td class="text-center">

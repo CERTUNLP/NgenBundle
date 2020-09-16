@@ -14,10 +14,10 @@
     <h1 class="h3 mb-0 text-gray-800">
         {{ icon(object.icon ~' fa-fw text-'~object.color) }}
         {{ object }}
-        {{ print.colorbox('primary','id-card',object.id,'#') }}
+        {{ print.colorboxbutton('primary','id-card',object.id,'#') }}
         {{ print.statusbox(object) }}
-        {{ print.colorbox('primary','share-alt','networks '~object.networks.count, path('cert_unlp_ngen_network_search_network',{'term': '"'~object.name~'"'})) }}
-        {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_network_entity_edit',{'slug': object.slug})) }}
+        {{ print.colordropbox('primary','share-alt','networks '~object.networks.count, path('cert_unlp_ngen_network_search_network',{'term': 'entity: "'~object.name~'"'}),'','d-inline') }}
+        {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_network_entity_edit_id',{'id': object.id})) }}
     </h1>
 {% endblock %}
 {% block content_body %}

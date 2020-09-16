@@ -78,7 +78,8 @@ class NetworkEntityFrontendController extends FrontendController
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkEntity:Frontend/networkEntityForm.html.twig")
-     * @Route("{slug}/edit", name="cert_unlp_ngen_network_entity_edit")
+     * @Route("{id}/edit", name="cert_unlp_ngen_network_entity_edit_id",requirements={"id"="\d+"})
+     * @Route("{slug}/edit", name="cert_unlp_ngen_network_entity_edit_slug")
      * @param NetworkEntity $network_entity
      * @param NetworkEntityType $entity_type
      * @return array
@@ -90,7 +91,8 @@ class NetworkEntityFrontendController extends FrontendController
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkEntity:Frontend/networkEntityDetail.html.twig")
-     * @Route("{slug}/detail", name="cert_unlp_ngen_network_entity_detail")
+     * @Route("{id}/detail", name="cert_unlp_ngen_network_entity_detail_id",requirements={"id"="\d+"})
+     * @Route("{slug}/detail", name="cert_unlp_ngen_network_entity_detail_slug")
      * @param NetworkEntity $network_entity
      * @return array
      */

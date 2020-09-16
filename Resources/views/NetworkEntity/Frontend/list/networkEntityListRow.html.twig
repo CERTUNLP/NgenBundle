@@ -9,7 +9,7 @@
 {% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 <tr data-id="{{ networkEntity.slug }}">
     <td class="text-center">
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':networkEntity , 'detail_link': path('cert_unlp_ngen_network_entity_detail',{ 'slug': networkEntity.slug}),'edit_link': path('cert_unlp_ngen_network_entity_edit',{'slug': networkEntity.slug})} %}
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':networkEntity , 'detail_link': path('cert_unlp_ngen_network_entity_detail_id',{ 'id': networkEntity.id}),'edit_link': path('cert_unlp_ngen_network_entity_edit_id',{'id': networkEntity.id})} %}
     </td>
     <td id="state_label_holder" class="text-center">
         {{ print.statusdropbox(networkEntity) }}

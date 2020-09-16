@@ -57,7 +57,7 @@ with this source code in the file LICENSE.
                                 <ul class="list-group">
                                     {% for incidentTaxonomyValue in incidentTaxonomyPredicate.values %}
                                         <li class="list-group-item">
-                                            {{ print.colorbox(incidentTaxonomyValue.color,incidentTaxonomyValue.icon,incidentTaxonomyValue.name,path('cert_unlp_ngen_taxonomy_value_detail',{'slug': incidentTaxonomyValue.slug})) }}
+                                            {{ print.colordropbox(incidentTaxonomyValue.color,incidentTaxonomyValue.icon,incidentTaxonomyValue.name,path('cert_unlp_ngen_taxonomy_value_detail',{'slug': incidentTaxonomyValue.slug}),'','d-inline') }}
                                         </li>
                                     {% endfor %}
                                 </ul>

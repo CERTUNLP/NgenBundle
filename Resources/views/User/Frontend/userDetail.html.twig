@@ -13,10 +13,10 @@
     <h1 class="h3 mb-0 text-gray-800">
         {{ icon(object.icon ~' fa-fw text-'~object.color) }}
         {{ object }}
-        {{ print.colorbox('primary','id-card',object.id,'#') }}
+        {{ print.colorboxbutton('primary','id-card',object.id,'#') }}
         {{ print.statusbox(object) }}
-        {{ print.colorbox('primary','arrow-circle-down','incidents '~object.incidents.count,path('cert_unlp_ngen_internal_incident_search_incident',{'term':'"'~object.email~'"'})) }}
-        {{ print.colorbox('primary','arrow-circle-down','assigned incidents '~object.assignedIncidents.count,path('cert_unlp_ngen_internal_incident_search_incident',{'term':'"'~object.email~'"'})) }}
+        {{ print.colordropbox('primary','arrow-circle-down','incidents '~object.incidents.count,path('cert_unlp_ngen_internal_incident_search_incident',{'term':'reporter: "'~object~'"'}),'','d-inline') }}
+        {{ print.colordropbox('primary','arrow-circle-down','assigned incidents '~object.assignedIncidents.count,path('cert_unlp_ngen_internal_incident_search_incident',{'term':'assigned: "'~object~'"'}),'','d-inline') }}
         {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_user_edit_user',{'username': object.username})) }}
     </h1>
 {% endblock %}

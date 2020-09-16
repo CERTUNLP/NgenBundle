@@ -24,8 +24,8 @@
             </span>
     </button>
 {% endmacro %}
-{% macro colordropbox(color,icon,text,href,id) %}
-    <div class="dropdown">
+{% macro colordropbox(color,icon,text,href,id, class) %}
+    <div class="dropdown {{ class }}">
         <button id="dropdownMenuButton"
                 class="btn dropdown-toggle-split btn-icon-split btn-sm btn-{{ color }} shadow-sm" type="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -70,8 +70,8 @@
             </span>
     </a>
 {% endmacro %}
-{% macro statusdropbox(object) %}
-    <div class="dropdown">
+{% macro statusdropbox(object, class) %}
+    <div class="dropdown {{ class }}">
         <button id="dropdownMenuButton"
                 class="btn dropdown-toggle-split btn-icon-split btn-sm btn-{{ object.isactive?'success':'danger' }} ladda-button shadow-sm"
                 type="button" data-style="slide-down"

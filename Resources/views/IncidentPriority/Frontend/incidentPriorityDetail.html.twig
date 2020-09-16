@@ -13,9 +13,9 @@
     <h1 class="h3 mb-0 text-gray-800">
         {{ icon(object.icon ~' fa-fw text-'~object.color) }}
         {{ object }}
-        {{ print.colorbox('primary','id-card',object.id,'#') }}
+        {{ print.colorboxbutton('primary','id-card',object.id,'#') }}
         {{ print.statusbox(object) }}
-        {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_network_edit_network_admin',{'slug': object.slug})) }}
+        {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_incident_priority_edit',{'id': object.id})) }}
     </h1>
 {% endblock %}
 {% block content_body %}

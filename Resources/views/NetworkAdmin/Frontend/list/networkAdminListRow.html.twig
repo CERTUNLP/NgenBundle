@@ -10,7 +10,7 @@ with this source code in the file LICENSE.
 
 <tr data-id="{{ networkAdmin.id }}">
     <td class="text-center">
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':networkAdmin , 'detail_link': path('cert_unlp_ngen_network_detail_network_admin',{ 'slug': networkAdmin.slug}),'edit_link': path('cert_unlp_ngen_network_edit_network_admin',{'slug': networkAdmin.slug})} %}
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':networkAdmin , 'detail_link': path('cert_unlp_ngen_network_detail_network_admin_id',{ 'id': networkAdmin.id}),'edit_link': path('cert_unlp_ngen_network_edit_network_admin_id',{'id': networkAdmin.id})} %}
     </td>
     <td id="state_label_holder" class="text-center">
         {{ print.statusdropbox(networkAdmin) }}

@@ -108,9 +108,15 @@ class IncidentPriority extends EntityApiFrontend
      */
     public function canEditFundamentals(): bool
     {
-        return $this->getDeadIncidents()->isEmpty();
+        return $this->getDeadIncidents()->isEmpty() && !$this->isUndefined();
     }
-
+    /**
+     * @return bool
+     */
+    public function isUndefined(): bool
+    {
+        return $this->getUrgency()->getSlug() === 'undefined' && $this->getImpact()->getSlug() === 'undefined';
+    }
     /**
      * Get incidents
      *

@@ -125,14 +125,6 @@ class Network extends NetworkElement implements NetworkInterface
     }
 
     /**
-     * @return bool
-     */
-    public function isDefault(): bool
-    {
-        return $this->getAddressMask() === '0';
-    }
-
-    /**
      * Set startAddress
      *
      * @param string $startAddress
@@ -252,7 +244,6 @@ class Network extends NetworkElement implements NetworkInterface
 
     }
 
-
     /**
      * Add incidents
      *
@@ -343,6 +334,14 @@ class Network extends NetworkElement implements NetworkInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isDefault(): bool
+    {
+        return $this->getAddressMask() === '0';
+    }
+
+    /**
      * @return string
      */
     public function getCountryCode(): string
@@ -388,7 +387,22 @@ class Network extends NetworkElement implements NetworkInterface
 
     public function __toString(): string
     {
-        return $this->getAddressAndMask() . ' (' . strtolower($this->getType()) . ')';
+        return $this->getAddressAndMask();
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        switch ($this->getType()) {
+            case'rdap':
+                return 'project-diagram';
+            case'external':
+                return 'share-alt';
+            default:
+                return 'share-alt-square';
+        }
     }
 
     /**
@@ -407,21 +421,6 @@ class Network extends NetworkElement implements NetworkInterface
     {
         $this->type = $type;
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIcon(): string
-    {
-        switch ($this->getType()) {
-            case'rdap':
-                return 'project-diagram';
-            case'external':
-                return 'share-alt';
-            default:
-                return 'share-alt-square';
-        }
     }
 
     /**

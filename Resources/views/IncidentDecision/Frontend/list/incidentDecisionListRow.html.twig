@@ -27,11 +27,8 @@ with this source code in the file LICENSE.
     </td>
     <td class="text-center">
         {% if IncidentDecision.network %}
-            {% set detail_link %}
-                {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':IncidentDecision.network} %}
-            {% endset %}
             <div class="float-left">
-                {{ print.colordropbox(IncidentDecision.network.color,IncidentDecision.network.icon,IncidentDecision.network,detail_link,IncidentDecision.network) }}
+                {{ print.colordropbox(IncidentDecision.network.color,IncidentDecision.network.icon,IncidentDecision.network,path('cert_unlp_ngen_network_detail_network_id',{'id':IncidentDecision.network.id}),IncidentDecision.network) }}
             </div>
         {% else %}
             {{ print.colorbox('info','share-alt',"Any" | trans,'#') }}

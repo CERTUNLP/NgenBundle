@@ -1,17 +1,16 @@
-{# 
- This file is part of the Ngen - CSIRT Incident Report System.
- 
- (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
- This source file is subject to the GPL v3.0 license that is bundled
- with this source code in the file LICENSE.
+{#
+This file is part of the Ngen - CSIRT Incident Report System.
+
+(c) CERT UNLP <support@cert.unlp.edu.ar>
+
+This source file is subject to the GPL v3.0 license that is bundled
+with this source code in the file LICENSE.
 #}
 {% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
-{% import '@CertUnlpNgen/Host/Frontend/list/hostLink.html.twig' as hostlink %}
 
 <tr data-id="{{ host.address }}">
     <td>
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':host , 'detail_link':hostlink.link(host,'detail'),'edit_link':hostlink.link(host,'edit')} %}
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':host , 'detail_link':path('cert_unlp_ngen_host_detail_host_id',{'id': host.id}),'edit_link':path('cert_unlp_ngen_host_edit_host_id',{'id': host.id})} %}
     </td>
     <td id="state_label_holder" class="text-center">
         {{ print.statusdropbox(host) }}
@@ -24,10 +23,7 @@
     <td id="host_label_holder" class="text-center">
         <div class="float-left">
             {% if host.network %}
-                {% set detail_link %}
-                    {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':host.network} %}
-                {% endset %}
-                {{ print.colordropbox(host.network.color,host.network.icon,host.network,detail_link,host.network.addressAndMask) }}
+                {{ print.colordropbox(host.network.color,host.network.icon,host.network,path('cert_unlp_ngen_network_detail_network_id',{'id':host.network.id}),host.network.addressAndMask) }}
             {% else %}
                 {{ "Empty" | trans }}
             {% endif %}

@@ -14,9 +14,8 @@
     <h1 class="h3 mb-0 text-gray-800">
         {{ icon(object.icon~' fa-fw text-'~object.color) }}
         {{ object }}
-        {{ print.colorbox('primary','id-card',object.slug,'#') }}
+        {{ print.colorboxbutton('primary','id-card',object.slug,'#') }}
         {{ print.statusbox(object) }}
-        {{ print.colorbox('primary','th','values '~ object.values.count,path('cert_unlp_ngen_incident_taxonomy_value_search',{'term': '"'~object.slug~'"'})) }}
     </h1>
 {% endblock %}
 {% block content_body %}

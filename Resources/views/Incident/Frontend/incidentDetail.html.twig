@@ -9,26 +9,22 @@ with this source code in the file LICENSE.
 
 {% extends 'CertUnlpNgenBundle::Incident/Frontend/frontend.html.twig' %}
 {% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
-{% import '@CertUnlpNgen/Host/Frontend/list/hostLink.html.twig' as hostlink %}
 
 {% block content_header %}
     <h1 class="h3 mb-0 text-gray-800">
         {{ icon('arrow-circle-down fa-fw text-'~object.color) }}
         {{ 'Incident'|trans }}
-        {{ print.colorbox('primary','id-card',object.id,'#') }}
-        {{ print.colorbox(object.type.color,object.type.icon,object.type,path('cert_unlp_ngen_incident_type_detail',{'slug': object.type.slug})) }}
-        {{ print.colorbox(object.state.color,object.state.icon,object.state,path('cert_unlp_ngen_incident_state_detail',{'slug': object.state.slug})) }}
-        {{ print.colorbox(object.priority.color,object.priority.icon,object.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': object.priority.id})) }}
-        {{ print.colorbox(object.tlp.color,object.tlp.icon,object.tlp,'#') }}
-        {{ print.colorbox(object.reporter.color,object.reporter.icon,object.reporter,path('cert_unlp_ngen_user_detail_user',{'username': object.reporter.username})) }}
+        {{ print.colorboxbutton('primary','id-card',object.id,'#') }}
+        {{ print.colordropbox(object.type.color,object.type.icon,object.type,path('cert_unlp_ngen_incident_type_detail',{'slug': object.type.slug}),'','d-inline') }}
+        {{ print.colordropbox(object.state.color,object.state.icon,object.state,path('cert_unlp_ngen_incident_state_detail',{'slug': object.state.slug}),'','d-inline') }}
+        {{ print.colordropbox(object.priority.color,object.priority.icon,object.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': object.priority.id}),'','d-inline') }}
+        {{ print.colorboxbutton(object.tlp.color,object.tlp.icon,object.tlp,'#') }}
+        {{ print.colordropbox(object.reporter.color,object.reporter.icon,object.reporter,path('cert_unlp_ngen_user_detail_user',{'username': object.reporter.username}),'','d-inline') }}
         {% if object.origin %}
-            {{ print.colorbox(object.origin.color,object.origin.icon,object.address,hostlink.link(object.origin,'detail')) }}
+            {{ print.colordropbox(object.origin.color,object.origin.icon,object.address,path('cert_unlp_ngen_host_detail_host_id',{'id': object.origin.id}),'','d-inline') }}
         {% endif %}
         {% if object.network %}
-            {% set detail_link %}
-                {% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':object.network} %}
-            {% endset %}
-            {{ print.colorbox(object.network.color,object.network.icon,object.network,detail_link) }}
+            {{ print.colordropbox(object.network.color,object.network.icon,object.network,path('cert_unlp_ngen_network_detail_network_id',{'id': object.network.id}),'','d-inline') }}
         {% endif %}
         {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_internal_incident_frontend_edit_incident_id',{'id': object.id})) }}
     </h1>
@@ -87,7 +83,7 @@ with this source code in the file LICENSE.
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                                     <a class="text-xs font-weight-bold text-info text-uppercase mb-1"
-                                                       href="{{ hostlink.link(object.origin,'detail') }}">Host {{ object.origin }}
+                                                       href="{{ path('cert_unlp_ngen_host_detail_host_id',{'id':object.origin.id}) }}">Host {{ object.origin }}
                                                     </a>
                                                 </div>
                                                 <div class="h6 mb-0 font-weight-bold text-gray-800">
@@ -138,7 +134,7 @@ with this source code in the file LICENSE.
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                     <a class="text-xs font-weight-bold text-success text-uppercase mb-1"
-                                                       href="{% include '@CertUnlpNgen/Network/Frontend/list/networkLink.html.twig' with {'action':'detail','network':object.network} %}">Network {{ object.network }}
+                                                       href="{{ path('cert_unlp_ngen_network_detail_network_id',{'id':object.network.id}) }}">Network {{ object.network }}
                                                     </a>
                                                 </div>
                                                 <div class="h6 mb-0 font-weight-bold text-gray-800">

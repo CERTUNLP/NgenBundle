@@ -7,7 +7,6 @@ This source file is subject to the GPL v3.0 license that is bundled
 with this source code in the file LICENSE.
 #}
 {% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
-{% import '@CertUnlpNgen/Host/Frontend/list/hostLink.html.twig' as hostlink %}
 
 <tr data-id="{{ incident.id }}" role="row">
 
@@ -26,7 +25,7 @@ with this source code in the file LICENSE.
     <td class="text-center">
         {% if incident.origin %}
             <div class="float-left">
-                {{ print.colordropbox(incident.origin.color,incident.origin.icon,incident.address,hostlink.link(incident.origin,'detail'),incident.origin.address) }}
+                {{ print.colordropbox(incident.origin.color,incident.origin.icon,incident.address,path('cert_unlp_ngen_host_detail_host_id',{'id': incident.origin.id}),incident.origin.address) }}
             </div>
         {% endif %}
     </td>
@@ -41,9 +40,9 @@ with this source code in the file LICENSE.
         </small>
     </td>
 
-{#    <td id="tlp_label_holder" class="text-center">#}
-{#        {{ print.colordropbox(incident.tlp.color,incident.tlp.icon,incident.tlp.name,'#',incident.tlp) }}#}
-{#    </td>#}
+    {# <td id="tlp_label_holder" class="text-center"> #}
+    {# {{ print.colordropbox(incident.tlp.color,incident.tlp.icon,incident.tlp.name,'#',incident.tlp) }} #}
+    {# </td> #}
     <td class="text-center">
         {{ print.colordropbox(incident.priority.color,incident.priority.icon,incident.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': incident.priority.id}),incident.priority) }}
     </td>
@@ -59,10 +58,10 @@ with this source code in the file LICENSE.
             {{ print.colordropbox('primary','calendar-alt',incident.updatedAt|date('Y-m-d'),'#',incident.updatedAt|date('Y-m-d')) }}
         </small>
     </td>
-{#    <td class="text-center">#}
-{#        {{ print.colordropbox('primary','hashtag',incident.ltdCount,'#',incident.ltdCount) }}#}
+    {# <td class="text-center"> #}
+    {# {{ print.colordropbox('primary','hashtag',incident.ltdCount,'#',incident.ltdCount) }} #}
 
-{#    </td>#}
+    {# </td> #}
     <td class="text-center">
         {{ print.colordropbox(incident.reporter.color,incident.reporter.icon,incident.reporter,path('cert_unlp_ngen_user_detail_user',{'username': incident.reporter.username}),incident.reporter) }}
     </td>

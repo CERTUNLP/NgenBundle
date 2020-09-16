@@ -79,7 +79,8 @@ class NetworkAdminFrontendController extends FrontendController
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/networkAdminForm.html.twig")
-     * @Route("{slug}/edit", name="cert_unlp_ngen_network_edit_network_admin")
+     * @Route("{id}/edit", name="cert_unlp_ngen_network_edit_network_admin_id",requirements={"id"="\d+"})
+     * @Route("{slug}/edit", name="cert_unlp_ngen_network_edit_network_admin_slug")
      * @param NetworkAdmin $network_admin
      * @param NetworkAdminType $admin_type
      * @return array
@@ -91,7 +92,8 @@ class NetworkAdminFrontendController extends FrontendController
 
     /**
      * @Template("CertUnlpNgenBundle:NetworkAdmin:Frontend/networkAdminDetail.html.twig")
-     * @Route("{slug}/detail", name="cert_unlp_ngen_network_detail_network_admin")
+     * @Route("{id}/detail", name="cert_unlp_ngen_network_detail_network_admin_id",requirements={"id"="\d+"})
+     * @Route("{slug}/detail", name="cert_unlp_ngen_network_detail_network_admin_slug")
      * @param NetworkAdmin $network_admin
      * @return array
      */
