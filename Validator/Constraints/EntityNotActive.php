@@ -16,10 +16,10 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class TypeHasReport extends Constraint
+class EntityNotActive extends Constraint
 {
 
-    public $message = 'This type does\'n have a report for this language ("%string%")';
+    public $message = 'The {{ entity }} "{{ string }}" is desactivated';
 
     public function validatedBy()
     {

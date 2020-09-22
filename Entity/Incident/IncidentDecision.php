@@ -33,6 +33,7 @@ class IncidentDecision extends EntityApiFrontend
 
     /**
      * @var IncidentType|null
+     * @CustomAssert\EntityNotActive()
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
      * @JMS\Expose()
@@ -41,6 +42,7 @@ class IncidentDecision extends EntityApiFrontend
     private $type;
     /**
      * @var IncidentFeed|null
+     * @CustomAssert\EntityNotActive()
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed")
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
      * @JMS\Expose()
@@ -49,6 +51,7 @@ class IncidentDecision extends EntityApiFrontend
     private $feed;
     /**
      * @var Network|null
+     * @CustomAssert\EntityNotActive()
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network")
      * @ORM\JoinColumn(name="network", referencedColumnName="id")
      * @JMS\Expose()
@@ -57,6 +60,7 @@ class IncidentDecision extends EntityApiFrontend
     private $network;
     /**
      * @var IncidentPriority|null
+     * @CustomAssert\EntityNotActive()
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority")
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
@@ -64,10 +68,12 @@ class IncidentDecision extends EntityApiFrontend
     private $priority;
     /**
      * @var IncidentImpact|null
+     * @CustomAssert\EntityNotActive()
      */
     private $impact;
     /**
      * @var IncidentUrgency|null
+     * @CustomAssert\EntityNotActive()
      */
     private $urgency;
     /**
@@ -80,6 +86,7 @@ class IncidentDecision extends EntityApiFrontend
     private $tlp;
     /**
      * @var IncidentState|null
+     * @CustomAssert\EntityNotActive()
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose()
@@ -88,6 +95,7 @@ class IncidentDecision extends EntityApiFrontend
     private $state;
     /**
      * @var IncidentState|null
+     * @CustomAssert\EntityNotActive()
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unattended_state", referencedColumnName="slug")
      * @JMS\Expose()
@@ -96,6 +104,7 @@ class IncidentDecision extends EntityApiFrontend
     private $unattendedState;
     /**
      * @var IncidentState|null
+     * @CustomAssert\EntityNotActive()
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unsolved_state", referencedColumnName="slug")
      * @JMS\Expose()

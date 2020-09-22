@@ -29,7 +29,6 @@ use CertUnlp\NgenBundle\Form\EntityType as EntityForm;
 use CertUnlp\NgenBundle\Service\Listener\Form\EntityTypeListener;
 use CertUnlp\NgenBundle\Service\Listener\Form\IncidentTypeListener;
 use DateTime;
-use Doctrine\ORM\EntityRepository;
 use Exception;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -70,10 +69,6 @@ class IncidentType extends EntityForm
                 'class' => IncidentTypeEntity::class,
                 'placeholder' => 'Choose an incident type',
                 'required' => true,
-                'query_builder' => static function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.active = TRUE');
-                },
                 'attr' => array('class' => 'incidentFilter'),
             ))
             ->add('address', TextType::class, array(
@@ -84,10 +79,6 @@ class IncidentType extends EntityForm
             ->add('feed', EntityType::class, array(
                 'class' => IncidentFeed::class,
                 'required' => true,
-                'query_builder' => static function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.active = TRUE');
-                },
                 'attr' => array('class' => 'ltdFilter'),
             ))
             ->add('notes', TextareaType::class, array(
@@ -117,27 +108,19 @@ class IncidentType extends EntityForm
                 'class' => User::class,
                 'placeholder' => 'Choose a reporter',
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, the reporter will be the logged user.'),
-                'query_builder' => static function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.enabled = TRUE');
-                }))
+
+            ))
             ->add('assigned', EntityType::class, array(
                 'class' => User::class,
                 'required' => false,
                 'placeholder' => 'Choose a responsable',
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, the assigned will be empty.'),
-                'query_builder' => static function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.enabled = TRUE');
-                }))
+            ))
             ->add('state', EntityType::class, array(
                 'class' => IncidentState::class,
                 'placeholder' => 'Choose an incident state',
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, it may be selected by incident decisions.'),
-                'query_builder' => static function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.active = TRUE');
-                }))
+            ))
             ->add('impact', EntityType::class, array(
                 'class' => IncidentImpact::class,
                 'placeholder' => 'Choose an impact level',
@@ -161,10 +144,7 @@ class IncidentType extends EntityForm
                 'class' => IncidentState::class,
                 'placeholder' => 'Choose an incident state',
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, it may be selected by incident decisions.'),
-                'query_builder' => static function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.active = TRUE');
-                }))
+            ))
             ->add('responseDeadLine', DateTimeType::class, array(
                 'required' => false,
                 'html5' => true,
@@ -177,10 +157,7 @@ class IncidentType extends EntityForm
                 'class' => IncidentState::class,
                 'placeholder' => 'Choose an incident state',
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, it may be selected by incident decisions.'),
-                'query_builder' => static function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.active = TRUE');
-                }))
+            ))
             ->add('solveDeadLine', DateTimeType::class, array(
                 'required' => false,
                 'html5' => true,

@@ -15,7 +15,8 @@ framework:
     translator: { fallbacks: [ "%ngen_lang%" ] }
     templating:
         engines: [ 'twig' ]
-
+    validation:
+        enable_annotations: true
 assetic:
     filters:
         cssrewrite: ~
@@ -219,7 +220,7 @@ swiftmailer:
             password: '%mailer_password%'
             sender_address: '%mailer_sender%'
             port: '%mailer_port%'
-#            encryption: '%mailer_encryption%'
+            #            encryption: '%mailer_encryption%'
             spool:
                 type: file
                 path: "%kernel.root_dir%/Resources/incident/mails"

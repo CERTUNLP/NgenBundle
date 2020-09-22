@@ -58,17 +58,11 @@ class IncidentDecisionType extends EntityForm
             ->add('type', EntityType::class, [
                 'class' => IncidentType::class,
                 'required' => true,
-                'query_builder' => static function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.active = TRUE');
-                }])
+               ])
             ->add('feed', EntityType::class, array(
                 'class' => IncidentFeed::class,
                 'required' => true,
-                'query_builder' => static function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.active = TRUE');
-                }))
+                ))
             ->add('network', Select2EntityType::class, [
                 'remote_route' => 'cert_unlp_ngen_network_search_autocomplete',
                 'class' => Network::class,
@@ -97,17 +91,11 @@ class IncidentDecisionType extends EntityForm
             ->add('unattendedState', EntityType::class, array(
                 'class' => IncidentState::class,
                 'placeholder' => 'Choose an incident state',
-                'query_builder' => static function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.active = TRUE');
-                }))
+              ))
             ->add('unsolvedState', EntityType::class, array(
                 'class' => IncidentState::class,
                 'placeholder' => 'Choose an incident state',
-                'query_builder' => static function (EntityRepository $er) {
-                    return $er->createQueryBuilder('it')
-                        ->where('it.active = TRUE');
-                }))
+               ))
             ->add('id', HiddenType::class)
             ->addEventSubscriber($this->getDecisionTypeListener());
         $options['add_event_subscriber'] = false;

@@ -82,6 +82,7 @@ class Incident extends EntityApiFrontend
     private $solveDeadLine;
     /**
      * @var User
+     * @CustomAssert\EntityNotActive()
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User\User", inversedBy="incidents")
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
@@ -89,6 +90,7 @@ class Incident extends EntityApiFrontend
     private $reporter;
     /**
      * @var User
+     * @CustomAssert\EntityNotActive()
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\User\User", inversedBy="assignedIncidents")
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
@@ -96,24 +98,27 @@ class Incident extends EntityApiFrontend
     private $assigned;
     /**
      * @var IncidentType
+     * @CustomAssert\EntityNotActive()
+     * @JMS\Expose
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="incidents")
      * @ORM\JoinColumn(name="type", referencedColumnName="slug")
-     * @JMS\Expose
      * @JMS\Groups({"read","write","fundamental"})
      * @JMS\MaxDepth(depth=1)
      */
     private $type;
     /**
      * @var IncidentFeed
+     * @CustomAssert\EntityNotActive()
+     * @Assert\NotNull
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentFeed", inversedBy="incidents")
      * @ORM\JoinColumn(name="feed", referencedColumnName="slug")
-     * @Assert\NotNull
      * @JMS\Expose
      * @JMS\Groups({"read","write","fundamental"})
      */
     private $feed;
     /**
      * @var IncidentState
+     * @CustomAssert\EntityNotActive()
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState", inversedBy="incidents")
      * @ORM\JoinColumn(name="state", referencedColumnName="slug")
      * @JMS\Expose
@@ -123,6 +128,7 @@ class Incident extends EntityApiFrontend
     private $state;
     /**
      * @var IncidentState
+     * @CustomAssert\EntityNotActive()
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unattended_state", referencedColumnName="slug")
      * @JMS\Expose
@@ -132,6 +138,7 @@ class Incident extends EntityApiFrontend
     private $unattendedState;
     /**
      * @var IncidentState
+     * @CustomAssert\EntityNotActive()
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
      * @ORM\JoinColumn(name="unsolved_state", referencedColumnName="slug")
      * @JMS\Expose
@@ -149,6 +156,7 @@ class Incident extends EntityApiFrontend
     private $tlp;
     /**
      * @var IncidentPriority
+     * @CustomAssert\EntityNotActive()
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentPriority", inversedBy="incidents")
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
@@ -157,10 +165,12 @@ class Incident extends EntityApiFrontend
     private $priority;
     /**
      * @var IncidentImpact
+     * @CustomAssert\EntityNotActive()
      */
     private $impact = null;
     /**
      * @var IncidentUrgency
+     * @CustomAssert\EntityNotActive()
      */
     private $urgency = null;
     /**
@@ -214,15 +224,6 @@ class Incident extends EntityApiFrontend
      * @JMS\Groups({"read","write"})
      */
     private $origin;
-
-//    /**
-//     * @var Collection
-//     * @JMS\Expose
-//     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Communication\Message",mappedBy="incident",cascade={"persist"},orphanRemoval=true)
-//     * @JMS\Groups({"api"})
-//     */
-//
-//    private $communicationHistory;
     /**
      * @var Network|null
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network", inversedBy="incidents")
@@ -268,6 +269,7 @@ class Incident extends EntityApiFrontend
     private $address;
     /**
      * @var User
+     * @CustomAssert\EntityNotActive()
      */
     private $responsable;
 
