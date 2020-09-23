@@ -12,7 +12,7 @@ var IncidentPriorityApi = ApiClient.extend({
 //        this.api.add("networks", {stripTrailingSlash: true});
 //        this.api.networks.add("report", {stripTrailingSlash: true});
         $.subscribe('/cert_unlp/incident/priority/activate', $.proxy(this.activate, this));
-        $.subscribe('/cert_unlp/incident/priority/desactivate', $.proxy(this.desactivate, this));
+        $.subscribe('/cert_unlp/incident/priority/deactivate', $.proxy(this.deactivate, this));
         $.subscribe('/cert_unlp/incident/priority/new', $.proxy(this.create, this));
         $.subscribe('/cert_unlp/incident/priority/update', $.proxy(this.update, this));
     },
@@ -22,14 +22,14 @@ var IncidentPriorityApi = ApiClient.extend({
     },
     changeState: function (priorityId, isActive, callback) {
 
-        var request = this.defaultChannel.update(priorityId + "/" + (isActive ? "activate" : "desactivate"), {}, {apikey: this.apiKey});
+        var request = this.defaultChannel.update(priorityId + "/" + (isActive ? "activate" : "deactivate"), {}, {apikey: this.apiKey});
         this.doRequest(request, callback);
 
     },
     activate: function (priorityId, callback) {
         this.changeState(priorityId, true, callback);
     },
-    desactivate: function (priorityId, callback) {
+    deactivate: function (priorityId, callback) {
         this.changeState(priorityId, false, callback);
 
     },

@@ -525,7 +525,7 @@ class User extends BaseUser implements EntityApiFrontendInterface
     /**
      * @return User
      */
-    public function desactivate(): EntityApiInterface
+    public function deactivate(): EntityApiInterface
     {
         $this->setEnabled(false);
         return $this;

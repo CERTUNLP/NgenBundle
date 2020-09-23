@@ -300,7 +300,7 @@ class NetworkAdminController extends ApiController
     /**
      * @Operation(
      *     tags={"Network admin"},
-     *     summary="Desactivates an existing admin",
+     *     summary="Deactivates an existing admin",
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -329,14 +329,14 @@ class NetworkAdminController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Patch("/networks/admins/{id}/desactivate", requirements={"id" = "\d+"}))
-     * @FOS\Patch("/networks/admins/{slug}/desactivate",name="slug")
+     * @FOS\Patch("/networks/admins/{id}/deactivate", requirements={"id" = "\d+"}))
+     * @FOS\Patch("/networks/admins/{slug}/deactivate",name="slug")
      * @param NetworkAdmin $network_admin
      * @return View
      */
-    public function patchNetworkAdminDesactivateAction(NetworkAdmin $network_admin): View
+    public function patchNetworkAdminDeactivateAction(NetworkAdmin $network_admin): View
     {
-        return $this->desactivate($network_admin);
+        return $this->deactivate($network_admin);
     }
 
 }

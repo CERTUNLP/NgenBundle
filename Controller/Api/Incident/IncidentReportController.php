@@ -337,7 +337,7 @@ class IncidentReportController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident reports"},
-     *     summary="Desactivates an existing report",
+     *     summary="Deactivates an existing report",
      *     @SWG\Parameter(
      *         name="lang",
      *         in="path",
@@ -374,13 +374,13 @@ class IncidentReportController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Patch("/incidents/types/{type}/reports/{lang}/desactivate")
+     * @FOS\Patch("/incidents/types/{type}/reports/{lang}/deactivate")
      * @param IncidentReport $incident_report
      * @return View
      */
-    public function patchReportDesactivateAction(IncidentReport $incident_report): View
+    public function patchReportDeactivateAction(IncidentReport $incident_report): View
     {
-        return $this->desactivate($incident_report);
+        return $this->deactivate($incident_report);
     }
 
 }

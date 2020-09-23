@@ -12,7 +12,7 @@ var HostApi = ApiClient.extend({
 //        this.api.add("networks", {stripTrailingSlash: true});
 //        this.api.networks.add("report", {stripTrailingSlash: true});
         $.subscribe('/cert_unlp/network/host/activate', $.proxy(this.activate, this));
-        $.subscribe('/cert_unlp/network/host/desactivate', $.proxy(this.desactivate, this));
+        $.subscribe('/cert_unlp/network/host/deactivate', $.proxy(this.deactivate, this));
         $.subscribe('/cert_unlp/network/host/new', $.proxy(this.create, this));
         $.subscribe('/cert_unlp/network/host/update', $.proxy(this.update, this));
     },
@@ -22,14 +22,14 @@ var HostApi = ApiClient.extend({
     },
     changeState: function (networkId, isActive, callback) {
 
-        var request = this.defaultChannel.update(networkId + "/" + (isActive ? "activate" : "desactivate"), {}, {apikey: this.apiKey});
+        var request = this.defaultChannel.update(networkId + "/" + (isActive ? "activate" : "deactivate"), {}, {apikey: this.apiKey});
         this.doRequest(request, callback);
 
     },
     activate: function (networkId, callback) {
         this.changeState(networkId, true, callback);
     },
-    desactivate: function (networkId, callback) {
+    deactivate: function (networkId, callback) {
         this.changeState(networkId, false, callback);
 
     },

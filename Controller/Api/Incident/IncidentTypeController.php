@@ -296,7 +296,7 @@ class IncidentTypeController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident types"},
-     *     summary="Desactivates an existing type",
+     *     summary="Deactivates an existing type",
      *      @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -325,13 +325,13 @@ class IncidentTypeController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Patch("/types/{slug}/desactivate")
+     * @FOS\Patch("/types/{slug}/deactivate")
      * @param IncidentType $incident_type
      * @return View
      */
-    public function patchIncidentTypeDesactivateAction(IncidentType $incident_type): View
+    public function patchIncidentTypeDeactivateAction(IncidentType $incident_type): View
     {
-        return $this->desactivate($incident_type);
+        return $this->deactivate($incident_type);
     }
 
 }

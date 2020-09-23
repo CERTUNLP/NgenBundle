@@ -303,7 +303,7 @@ class IncidentFeedController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident feeds"},
-     *     summary="Desactivates an existing feed",
+     *     summary="Deactivates an existing feed",
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -332,13 +332,13 @@ class IncidentFeedController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Patch("/feeds/{slug}/desactivate")
+     * @FOS\Patch("/feeds/{slug}/deactivate")
      * @param IncidentFeed $incident_feed
      * @return View
      */
-    public function patchIncidentFeedDesactivateAction(IncidentFeed $incident_feed): View
+    public function patchIncidentFeedDeactivateAction(IncidentFeed $incident_feed): View
     {
-        return $this->desactivate($incident_feed);
+        return $this->deactivate($incident_feed);
     }
 
 }

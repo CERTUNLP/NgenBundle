@@ -297,7 +297,7 @@ class TaxonomyPredicateController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident taxonomy predicates"},
-     *     summary="Desactivates an existing predicate",
+     *     summary="Deactivates an existing predicate",
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -328,11 +328,11 @@ class TaxonomyPredicateController extends ApiController
      * )
      * @param TaxonomyPredicate $taxonomyPredicate
      * @return View
-     * @FOS\Patch("/taxonomies/predicates/{slug}/desactivate")
+     * @FOS\Patch("/taxonomies/predicates/{slug}/deactivate")
      */
-    public function patchTaxonomyPredicateDesactivateAction(TaxonomyPredicate $taxonomyPredicate): View
+    public function patchTaxonomyPredicateDeactivateAction(TaxonomyPredicate $taxonomyPredicate): View
     {
-        return $this->desactivate($taxonomyPredicate);
+        return $this->deactivate($taxonomyPredicate);
     }
 
 }

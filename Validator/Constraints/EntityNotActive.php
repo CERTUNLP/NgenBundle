@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraint;
 class EntityNotActive extends Constraint
 {
 
-    public $message = 'The {{ entity }} "{{ string }}" is desactivated';
+    public $message = 'The {{ entity }} "{{ string }}" is deactivated';
 
     public function validatedBy()
     {

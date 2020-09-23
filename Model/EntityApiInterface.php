@@ -27,7 +27,7 @@ interface  EntityApiInterface extends EntityInterface
     /**
      * @return EntityApiInterface
      */
-    public function desactivate(): EntityApiInterface;
+    public function deactivate(): EntityApiInterface;
 
     /**
      * @return string

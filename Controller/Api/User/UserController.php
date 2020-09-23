@@ -286,7 +286,7 @@ class UserController extends ApiController
     /**
      * @Operation(
      *     tags={"Users"},
-     *     summary="Desactivates an existing user",
+     *     summary="Deactivates an existing user",
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -317,11 +317,11 @@ class UserController extends ApiController
      * )
      * @param User $user
      * @return View
-     * @FOS\Patch("/users/{username}/desactivate")
+     * @FOS\Patch("/users/{username}/deactivate")
      */
-    public function patchUserDesactivateAction(User $user): View
+    public function patchUserDeactivateAction(User $user): View
     {
-        return $this->desactivate($user);
+        return $this->deactivate($user);
     }
 
 }

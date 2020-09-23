@@ -286,7 +286,7 @@ class NetworkEntityController extends ApiController
     /**
      * @Operation(
      *     tags={"Network entities"},
-     *     summary="Desactivates an existing entity",
+     *     summary="Deactivates an existing entity",
      *    @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -317,12 +317,12 @@ class NetworkEntityController extends ApiController
      * )
      * @param NetworkEntity $network_entity
      * @return View
-     * @FOS\Patch("/networks/entities/{id}/desactivate",requirements={"id" = "\d+"})
-     * @FOS\Patch("/networks/entities/{slug}/desactivate", name="_slug")
+     * @FOS\Patch("/networks/entities/{id}/deactivate",requirements={"id" = "\d+"})
+     * @FOS\Patch("/networks/entities/{slug}/deactivate", name="_slug")
      */
-    public function patchNetworkEntityDesactivateAction(NetworkEntity $network_entity): View
+    public function patchNetworkEntityDeactivateAction(NetworkEntity $network_entity): View
     {
-        return $this->desactivate($network_entity);
+        return $this->deactivate($network_entity);
     }
 
 }

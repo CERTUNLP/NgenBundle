@@ -352,7 +352,7 @@ class IncidentDecisionController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident decisions"},
-     *     summary="Desactivates an existing decision",
+     *     summary="Deactivates an existing decision",
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -383,10 +383,10 @@ class IncidentDecisionController extends ApiController
      * )
      * @param IncidentDecision $incident_decision
      * @return View
-     * @FOS\Patch("/decisions/{id}/desactivate",requirements={"id"="\d+"})
+     * @FOS\Patch("/decisions/{id}/deactivate",requirements={"id"="\d+"})
      */
-    public function patchIncidentDecisionDesactivateAction(IncidentDecision $incident_decision): View
+    public function patchIncidentDecisionDeactivateAction(IncidentDecision $incident_decision): View
     {
-        return $this->desactivate($incident_decision);
+        return $this->deactivate($incident_decision);
     }
 }

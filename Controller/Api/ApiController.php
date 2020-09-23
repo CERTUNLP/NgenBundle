@@ -211,10 +211,10 @@ abstract class ApiController extends AbstractFOSRestController
      * @param EntityApiInterface $entity
      * @return View
      */
-    public function desactivate(EntityApiInterface $entity): View
+    public function deactivate(EntityApiInterface $entity): View
     {
         try {
-            $entity = $this->getHandler()->desactivate($entity);
+            $entity = $this->getHandler()->deactivate($entity);
             return $this->response([$entity], Response::HTTP_NO_CONTENT);
         } catch (InvalidFormException $exception) {
             return $this->responseError($exception);

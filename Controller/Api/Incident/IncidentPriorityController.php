@@ -256,7 +256,7 @@ class IncidentPriorityController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident priorities"},
-     *     summary="Desactivates an existing priority",
+     *     summary="Deactivates an existing priority",
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -285,14 +285,14 @@ class IncidentPriorityController extends ApiController
      *          )
      *      )
      * )
-     * @FOS\Patch("/priorities/{urgency}/{impact}/desactivate")
-     * @FOS\Patch("/priorities/{id}/desactivate", name="_id",requirements={"id"="\d+"})
+     * @FOS\Patch("/priorities/{urgency}/{impact}/deactivate")
+     * @FOS\Patch("/priorities/{id}/deactivate", name="_id",requirements={"id"="\d+"})
      * @param IncidentPriority $incident_priority
      * @return View
      */
-    public function patchIncidentPriorityDesactivateAction(IncidentPriority $incident_priority): View
+    public function patchIncidentPriorityDeactivateAction(IncidentPriority $incident_priority): View
     {
-        return $this->desactivate($incident_priority);
+        return $this->deactivate($incident_priority);
     }
 
     /**

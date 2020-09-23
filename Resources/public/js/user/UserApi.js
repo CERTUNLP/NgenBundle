@@ -12,7 +12,7 @@ var UserApi = ApiClient.extend({
 //        this.api.add("users", {stripTrailingSlash: true});
 //        this.api.users.add("report", {stripTrailingSlash: true});
         $.subscribe('/cert_unlp/user/activate', $.proxy(this.activate, this));
-        $.subscribe('/cert_unlp/user/desactivate', $.proxy(this.desactivate, this));
+        $.subscribe('/cert_unlp/user/deactivate', $.proxy(this.deactivate, this));
         $.subscribe('/cert_unlp/user/new', $.proxy(this.create, this));
         $.subscribe('/cert_unlp/user/update', $.proxy(this.update, this));
     },
@@ -22,14 +22,14 @@ var UserApi = ApiClient.extend({
     },
     changeState: function (userId, isActive, callback) {
 
-        var request = this.defaultChannel.update(userId + "/" + (isActive ? "activate" : "desactivate"), {}, {apikey: this.apiKey});
+        var request = this.defaultChannel.update(userId + "/" + (isActive ? "activate" : "deactivate"), {}, {apikey: this.apiKey});
         this.doRequest(request, callback);
 
     },
     activate: function (userId, callback) {
         this.changeState(userId, true, callback);
     },
-    desactivate: function (userId, callback) {
+    deactivate: function (userId, callback) {
         this.changeState(userId, false, callback);
 
     },

@@ -304,7 +304,7 @@ class IncidentStateController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident states"},
-     *     summary="Desactivates an existing state",
+     *     summary="Deactivates an existing state",
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -336,11 +336,11 @@ class IncidentStateController extends ApiController
      * @param IncidentState $incident_state
      * @return View
      *
-     * @FOS\Patch("/states/{slug}/desactivate")
+     * @FOS\Patch("/states/{slug}/deactivate")
      */
-    public function patchIncidentStateDesactivateAction(IncidentState $incident_state): View
+    public function patchIncidentStateDeactivateAction(IncidentState $incident_state): View
     {
-        return $this->desactivate($incident_state);
+        return $this->deactivate($incident_state);
     }
 
 }

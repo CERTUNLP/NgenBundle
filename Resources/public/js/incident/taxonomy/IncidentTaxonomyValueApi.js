@@ -11,7 +11,7 @@ var IncidentTaxonomyValueApi = ApiClient.extend({
     config: function () {
         $.subscribe('/cert_unlp/incident/taxonomy/value/update', $.proxy(this.update, this));
         $.subscribe('/cert_unlp/incident/taxonomy/value/activate', $.proxy(this.activate, this));
-        $.subscribe('/cert_unlp/incident/taxonomy/value/desactivate', $.proxy(this.desactivate, this));
+        $.subscribe('/cert_unlp/incident/taxonomy/value/deactivate', $.proxy(this.deactivate, this));
     },
     addDefaultChannel: function () {
         this.api.add("values", {stripTrailingSlash: true, url: 'incidents/taxonomies/values'});
@@ -19,14 +19,14 @@ var IncidentTaxonomyValueApi = ApiClient.extend({
     },
     changeState: function (networkId, isActive, callback) {
 
-        var request = this.defaultChannel.update(networkId + "/" + (isActive ? "activate" : "desactivate"), {}, {apikey: this.apiKey});
+        var request = this.defaultChannel.update(networkId + "/" + (isActive ? "activate" : "deactivate"), {}, {apikey: this.apiKey});
         this.doRequest(request, callback);
 
     },
     activate: function (networkId, callback) {
         this.changeState(networkId, true, callback);
     },
-    desactivate: function (networkId, callback) {
+    deactivate: function (networkId, callback) {
         this.changeState(networkId, false, callback);
 
     },

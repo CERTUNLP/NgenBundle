@@ -31,8 +31,8 @@ var Frontend = Class.extend({
         if (this.eventTarget.data('action') === 'reactivate') {
             $.publish('/cert_unlp/' + this.getObjectBrief() + '/activate', [this.eventTarget.parents('tr').data('id'), $.proxy(this.stateChanged, this)]);
         } else {
-            if (this.eventTarget.data('action') === 'desactivate') {
-                $.publish('/cert_unlp/' + this.getObjectBrief() + '/desactivate', [this.eventTarget.parents('tr').data('id'), $.proxy(this.stateChanged, this)]);
+            if (this.eventTarget.data('action') === 'deactivate') {
+                $.publish('/cert_unlp/' + this.getObjectBrief() + '/deactivate', [this.eventTarget.parents('tr').data('id'), $.proxy(this.stateChanged, this)]);
             }
         }
 
@@ -51,7 +51,7 @@ var Frontend = Class.extend({
         let label = this.eventTarget.parents('tr').find('td#state_label_holder').find('button');
         label.find('span.icon').find('span').toggleClass('fa fa-toggle-on').toggleClass('fa fa-toggle-off');
         label.find('span.text').text().trim() === 'active' ? label.find('span.text').text('not active') : label.find('span.text').text('active');
-        this.eventTarget.data('action').trim() === 'reactivate' ? label.data('action', 'desactivate') : label.data('action', 'reactivate');
+        this.eventTarget.data('action').trim() === 'reactivate' ? label.data('action', 'deactivate') : label.data('action', 'reactivate');
         label.toggleClass("btn btn-icon-split btn-sm btn-success").toggleClass("btn btn-icon-split btn-sm btn-danger");
         this.eventTarget.parent().find('i').parent().toggleClass("text-success").toggleClass("text-danger");
         $.publish('/cert_unlp/notify/success', ["The state has been changed successfully"]);

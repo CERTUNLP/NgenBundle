@@ -12,7 +12,7 @@ var IncidentReportApi = ApiClient.extend({
 //        this.api.add("networks", {stripTrailingSlash: true});
 //        this.api.networks.add("report", {stripTrailingSlash: true});
         $.subscribe('/cert_unlp/incident/type/report/activate', $.proxy(this.activate, this));
-        $.subscribe('/cert_unlp/incident/type/report/desactivate', $.proxy(this.desactivate, this));
+        $.subscribe('/cert_unlp/incident/type/report/deactivate', $.proxy(this.deactivate, this));
         $.subscribe('/cert_unlp/incident/type/report/new', $.proxy(this.create, this));
         $.subscribe('/cert_unlp/incident/type/report/update', $.proxy(this.update, this));
     },
@@ -23,14 +23,14 @@ var IncidentReportApi = ApiClient.extend({
     },
     changeState: function (parent_id, id, isActive, callback) {
 
-        var request = this.defaultChannel.update(parent_id, id + "/" + (isActive ? "activate" : "desactivate"), {}, {apikey: this.apiKey});
+        var request = this.defaultChannel.update(parent_id, id + "/" + (isActive ? "activate" : "deactivate"), {}, {apikey: this.apiKey});
         this.doRequest(request, callback);
 
     },
     activate: function (parent_id, id, callback) {
         this.changeState(parent_id, id, true, callback);
     },
-    desactivate: function (parent_id, id, callback) {
+    deactivate: function (parent_id, id, callback) {
         this.changeState(parent_id, id, false, callback);
     },
     create: function (parent_id, data, callback) {

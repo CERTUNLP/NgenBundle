@@ -248,9 +248,9 @@ abstract class Handler
      * @param array $parameters
      * @return EntityApiInterface
      */
-    public function desactivate(EntityApiInterface $entity, array $parameters = []): EntityApiInterface
+    public function deactivate(EntityApiInterface $entity, array $parameters = []): EntityApiInterface
     {
-        return $this->patch($entity->desactivate(), $parameters);
+        return $this->patch($entity->deactivate(), $parameters);
     }
 
     /**
@@ -281,7 +281,7 @@ abstract class Handler
      */
     public function prepareToDeletion(EntityApiInterface $entity): EntityApiInterface
     {
-        return $entity->desactivate();
+        return $entity->deactivate();
     }
 
     /**

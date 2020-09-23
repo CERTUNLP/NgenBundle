@@ -70,7 +70,7 @@ abstract class EntityApi extends Entity implements EntityApiInterface
     /**
      * @return EntityApiInterface
      */
-    public function desactivate(): EntityApiInterface
+    public function deactivate(): EntityApiInterface
     {
         $this->setActive(false);
         return $this;

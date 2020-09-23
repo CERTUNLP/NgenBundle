@@ -297,7 +297,7 @@ class TaxonomyValueController extends ApiController
     /**
      * @Operation(
      *     tags={"Incident taxonomy values"},
-     *     summary="Desactivates an existing value",
+     *     summary="Deactivates an existing value",
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful",
@@ -328,11 +328,11 @@ class TaxonomyValueController extends ApiController
      * )
      * @param TaxonomyValue $taxonomyValue
      * @return View
-     * @FOS\Patch("/taxonomies/values/{slug}/desactivate")
+     * @FOS\Patch("/taxonomies/values/{slug}/deactivate")
      */
-    public function patchTaxonomyValueDesactivateAction(TaxonomyValue $taxonomyValue): View
+    public function patchTaxonomyValueDeactivateAction(TaxonomyValue $taxonomyValue): View
     {
-        return $this->desactivate($taxonomyValue);
+        return $this->deactivate($taxonomyValue);
     }
 
 }
