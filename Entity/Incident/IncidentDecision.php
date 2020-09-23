@@ -8,6 +8,7 @@ use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
 
 /**
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Incident\IncidentDecisionRepository")
