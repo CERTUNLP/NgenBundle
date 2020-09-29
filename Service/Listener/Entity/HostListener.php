@@ -32,7 +32,6 @@ class HostListener
     public function postLoadHandler(Host $host): void
     {
         $host->guessAddress($host->getIp() ?? $host->getDomain());
-//        $this->networkUpdate($host);
     }
 
     /**
@@ -67,7 +66,7 @@ class HostListener
      */
     public function networkUpdate(Host $host): void
     {
-        $network = $this->getNetworkHandler()->findOneInRange($host->getAddress());
+        $network = $this->getNetworkHandler()->getDefaultNetwork();
         $host->setNetwork($network);
     }
 

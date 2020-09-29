@@ -45,9 +45,11 @@ class NetworkListener
      */
     public function prePersistHandler(Network $network): void
     {
-        $hosts = $this->getHostRepository()->findInRange($network->getAddressAndMask(), true);
-        foreach ($hosts as $host) {
-            $network->addHost($host);
+        if (!$network->isDefault()) {
+             $hosts = $this->getHostRepository()->findInRange($network->getAddressAndMask(), true);
+            foreach ($hosts as $host) {
+                $network->addHost($host);
+            }
         }
     }
 
