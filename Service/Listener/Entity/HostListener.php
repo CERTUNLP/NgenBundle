@@ -66,7 +66,7 @@ class HostListener
      */
     public function networkUpdate(Host $host): void
     {
-        $network = $this->getNetworkHandler()->getDefaultNetwork();
+        $network = $this->getNetworkHandler()->findOneInRange($host->getAddress());
         $host->setNetwork($network);
     }
 
