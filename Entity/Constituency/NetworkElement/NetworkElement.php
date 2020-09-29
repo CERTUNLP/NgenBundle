@@ -184,9 +184,9 @@ abstract class NetworkElement extends EntityApiFrontend
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getAddressMask(): string
+    public function getAddressMask(): int
     {
         return $this->address ? $this->address->getAddressMask() : '';
     }

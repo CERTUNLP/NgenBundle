@@ -42,16 +42,16 @@ class IpV6Address extends IpAddress
     /**
      * {@inheritDoc}
      */
-    public function getCustomNumericAddressMask(): string
+    public function getCustomNumericAddressMask(): int
     {
         return $this->maskTobits($this->getCustomAddress());
     }
 
     /**
-     * @param string $mask
+     * @param int $mask
      * @return false|string
      */
-    private function maskTobits(string $mask)
+    private function maskTobits(int $mask)
     {
         $addr = str_repeat('f', $mask / 4);
         switch ($mask % 4) {

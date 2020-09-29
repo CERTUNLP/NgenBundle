@@ -53,7 +53,7 @@ class DomainAddress extends Address
     /**
      * {@inheritDoc}
      */
-    public function getCustomAddressMask(): string
+    public function getCustomAddressMask(): int
     {
         return substr_count($this->getCustomAddress(), '.') + 1;
     }
@@ -70,7 +70,7 @@ class DomainAddress extends Address
     /**
      * {@inheritDoc}
      */
-    public function setCustomAddressMask(string $address): NetworkElement
+    public function setCustomAddressMask(int $address): NetworkElement
     {
         $this->getNetwork()->setDomain($address);
         return $this->getNetwork();
@@ -95,7 +95,7 @@ class DomainAddress extends Address
     /**
      * {@inheritDoc}
      */
-    public function getCustomNumericAddressMask(): string
+    public function getCustomNumericAddressMask(): int
     {
         return '';
     }

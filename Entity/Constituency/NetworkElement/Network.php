@@ -37,7 +37,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Network extends NetworkElement implements NetworkInterface
 {
     /**
-     * @var string
+     * @var int
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\Range(
      *      min = 1,
@@ -177,9 +177,9 @@ class Network extends NetworkElement implements NetworkInterface
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getIpMask(): ?string
+    public function getIpMask(): ?int
     {
         return $this->ip_mask;
     }
@@ -187,10 +187,10 @@ class Network extends NetworkElement implements NetworkInterface
     /**
      * Set ipMask
      *
-     * @param string $ip_mask
+     * @param int $ip_mask
      * @return NetworkElement
      */
-    public function setIpMask(string $ip_mask): NetworkElement
+    public function setIpMask(int $ip_mask): NetworkElement
     {
         $this->ip_mask = $ip_mask;
         return $this;
@@ -338,7 +338,7 @@ class Network extends NetworkElement implements NetworkInterface
      */
     public function isDefault(): bool
     {
-        return $this->getAddressMask() === '0';
+        return $this->getAddressMask() === 0;
     }
 
     /**

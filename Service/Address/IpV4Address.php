@@ -31,7 +31,7 @@ class IpV4Address extends IpAddress
     /**
      * {@inheritDoc}
      */
-    public function getCustomNumericAddressMask(): string
+    public function getCustomNumericAddressMask(): int
     {
         return 0xffffffff << (32 - $this->getCustomAddress());
     }

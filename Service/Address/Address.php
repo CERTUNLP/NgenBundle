@@ -96,9 +96,9 @@ abstract class Address
     abstract public function getCustomNumericAddress(): string;
 
     /**
-     * @return string
+     * @return int
      */
-    abstract public function getCustomNumericAddressMask(): string;
+    abstract public function getCustomNumericAddressMask(): int;
 
     /**
      * @param Address|null $other
@@ -122,32 +122,32 @@ abstract class Address
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getAddressMask(): string
+    public function getAddressMask(): int
     {
         return $this->getCustomAddressMask();
     }
 
     /**
-     * @return string
+     * @return int
      */
-    abstract public function getCustomAddressMask(): string;
+    abstract public function getCustomAddressMask(): int;
 
     /**
-     * @param string $address
+     * @param int $address
      * @return NetworkElement
      */
-    public function setAddressMask(string $address): NetworkElement
+    public function setAddressMask(int $address): NetworkElement
     {
         return $this->setCustomAddressMask($address);
     }
 
     /**
-     * @param string $address
+     * @param int $address
      * @return NetworkElement
      */
-    abstract public function setCustomAddressMask(string $address): NetworkElement;
+    abstract public function setCustomAddressMask(int $address): NetworkElement;
 
 
 }

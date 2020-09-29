@@ -97,7 +97,7 @@ abstract class IpAddress extends Address
     /**
      * {@inheritDoc}
      */
-    public function setCustomAddressMask(string $mask): NetworkElement
+    public function setCustomAddressMask(int $mask): NetworkElement
     {
         if (is_callable([$this->getNetwork(), 'setIpMask'])) {
             return $this->getNetwork()->setIpMask($mask);
@@ -123,9 +123,9 @@ abstract class IpAddress extends Address
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getCustomAddressMask(): string
+    public function getCustomAddressMask(): int
     {
         if (is_callable([$this->getNetwork(), 'getIpMask'])) {
             return $this->getNetwork()->getIpMask();
@@ -140,10 +140,10 @@ abstract class IpAddress extends Address
     public function setCustomEndAddress(): IpAddress
     {
         if (is_callable([$this->getNetwork(), 'setEndAddress'])) {
-            if ($this->getCustomAddressMask() === "0") {
-                $this->getNetwork()->setEndAddress($this->getIp()->getNetworkIp((int)$this->getCustomAddressMask())->getProtocolAppropriateAddress());
+            if ($this->getCustomAddressMask() === 0) {
+                $this->getNetwork()->setEndAddress($this->getIp()->getNetworkIp($this->getCustomAddressMask())->getProtocolAppropriateAddress());
             } else {
-                $this->getNetwork()->setEndAddress($this->getIp()->getBroadcastIp((int)$this->getCustomAddressMask())->getProtocolAppropriateAddress());
+                $this->getNetwork()->setEndAddress($this->getIp()->getBroadcastIp($this->getCustomAddressMask())->getProtocolAppropriateAddress());
             }
         }
         return $this;
@@ -155,7 +155,7 @@ abstract class IpAddress extends Address
     public function inRange(Address $other = null): bool
     {
         if ($other && get_class($other) === get_class($this)) {
-            return $this->getIp()->inRange($other->getIp(), (int)$other->getCustomAddressMask());
+            return $this->getIp()->inRange($other->getIp(), $other->getCustomAddressMask());
         }
         return false;
 
