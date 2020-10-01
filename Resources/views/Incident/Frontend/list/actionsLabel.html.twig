@@ -1,10 +1,10 @@
-{# 
- This file is part of the Ngen - CSIRT Incident Report System.
- 
- (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
- This source file is subject to the GPL v3.0 license that is bundled
- with this source code in the file LICENSE.
+{#
+This file is part of the Ngen - CSIRT Incident Report System.
+
+(c) CERT UNLP <support@cert.unlp.edu.ar>
+
+This source file is subject to the GPL v3.0 license that is bundled
+with this source code in the file LICENSE.
 #}
 <div class="btn-group inline pull-left dropdown action-dropdown">
     <a class="btn btn-sm btn-primary"
@@ -25,12 +25,13 @@
     </button>
 
     <div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-        {% for change in findPosibleStates(incident) %}
-            {% if change.slug != incident.state.slug %}
-                <a class="state-label dropdown-item" data-state-slug="{{ change.slug }}"
-                   data-state-name="{{ change.name }}" tabindex="-1"
-                   href="#">{{ getIconForStateAction(change.behavior.slug)|raw }}
-                    <span class="action-text">{{ change.name |trans }}</span>
+        {% for state in incident.state.newStates %}
+            {% if state.slug != incident.state.slug %}
+                <a class="state-label dropdown-item" data-state-slug="{{ state.slug }}"
+                   data-state-name="{{ state.name }}" tabindex="-1"
+                   href="#">
+                    {{ icon('fas fa-'~state.behavior.icon~' text-'~state.behavior.color) }}
+                    <span class="action-text">{{ state.name |trans }}</span>
                 </a>
             {% endif %}
         {% endfor %}
