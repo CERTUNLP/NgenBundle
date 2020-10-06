@@ -114,7 +114,7 @@ services:
             - ./grafana/dashboard:/etc/grafana/provisioning/dashboards/
             - ./grafana/datasources:/etc/grafana/provisioning/datasources/
         environment:
-            - GF_SERVER_ROOT_URL=http://ngen-testing-elastic/grafana/
+            - GF_SERVER_ROOT_URL=http://ngen-testing-grafana/grafana/
             - GF_SERVER_SERVE_FROM_SUB_PATH=true
             - GF_USERS_ALLOW_SIGN_UP=false
             - GF_USERS_AUTO_ASSIGN_ORG=true
