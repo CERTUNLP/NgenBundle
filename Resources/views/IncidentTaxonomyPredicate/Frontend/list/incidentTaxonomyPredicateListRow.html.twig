@@ -10,7 +10,7 @@
 
 <tr data-id="{{ incidentTaxonomyPredicate.slug }}">
     <td class="text-center">
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentTaxonomyPredicate , 'detail_link': path('cert_unlp_ngen_taxonomy_predicate_detail',{ 'slug': incidentTaxonomyPredicate.slug})} %}
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentTaxonomyPredicate , 'detail_link': path('cert_unlp_ngen_taxonomy_predicate_detail',{ 'slug': incidentTaxonomyPredicate.slug}),'edit_link': path('cert_unlp_ngen_taxonomy_predicate_edit',{ 'slug': incidentTaxonomyPredicate.slug})} %}
     </td>
     <td id="state_label_holder" class="text-center">
         {{ print.statusdropbox(incidentTaxonomyPredicate) }}

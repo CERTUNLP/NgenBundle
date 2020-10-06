@@ -10,6 +10,7 @@
 var IncidentTaxonomyValueApi = ApiClient.extend({
     config: function () {
         $.subscribe('/cert_unlp/incident/taxonomy/value/update', $.proxy(this.update, this));
+        $.subscribe('/cert_unlp/incident/taxonomy/value/new', $.proxy(this.create, this));
         $.subscribe('/cert_unlp/incident/taxonomy/value/activate', $.proxy(this.activate, this));
         $.subscribe('/cert_unlp/incident/taxonomy/value/deactivate', $.proxy(this.deactivate, this));
     },

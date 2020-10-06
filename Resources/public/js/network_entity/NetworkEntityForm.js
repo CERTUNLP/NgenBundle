@@ -21,21 +21,6 @@ var NetworkEntityForm = Form.extend({
     },
     getNetworkEntityId: function () {
         return this.network_entity_id;
-    },
-    slugify: function (string) {
-        const a = 'àáäâãåăæçèéëêǵḧìíïîḿńǹñòóöôœṕŕßśșțùúüûǘẃẍÿź·/_,:;';
-        const b = 'aaaaaaaaceeeeghiiiimnnnoooooprssstuuuuuwxyz------';
-        const p = new RegExp(a.split('').join('|'), 'g');
-        return string.toString().toLowerCase()
-            .replace(/\s+/g, '_') // Replace spaces with -
-            .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters
-            .replace(/&/g, '-and-') // Replace & with ‘and’
-            .replace(/[^\w\-]+/g, '') // Remove all non-word characters
-            .replace(/\-\-+/g, '_') // Replace multiple - with single -
-            .replace(/^-+/, '') // Trim - from start of text
-            .replace(/-+$/, '')
-            .replace(/\-/g, '_')
-            ; // Trim - from end of text
     }
 
 });

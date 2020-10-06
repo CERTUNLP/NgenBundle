@@ -8,19 +8,19 @@
  */
 var IncidentTaxonomyPredicateForm = Form.extend({
     config: function () {
-        this.setIncidentTypeId();
+        this.setIncidentTaxonomyPredicateId();
     },
     getObjectBrief: function () {
-        return 'incident/taxonomies/predicates';
+        return 'incident/taxonomy/predicate';
     },
     getObjectId: function () {
-        return this.getIncidentTypeId();
+        return this.getIncidentTaxonomyPredicateId();
     },
-    setIncidentTypeId: function () {
-        this.incident_type_id = (($('#name').val().replace(' ', '_'))).toLowerCase();
+    setIncidentTaxonomyPredicateId: function () {
+        this.incident_predicate_id = this.slugify($('#value').val());
     },
-    getIncidentTypeId: function () {
-        return this.incident_type_id;
+    getIncidentTaxonomyPredicateId: function () {
+        return this.incident_predicate_id;
     }
 });
 

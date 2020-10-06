@@ -66,7 +66,7 @@ class TaxonomyPredicate extends EntityApi
      * @JMS\Expose
      * @JMS\Groups({"read","write","fundamental"})
      */
-    private $value;
+    private $value = null;
     /**
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue",mappedBy="predicate")
      * @JMS\Expose
@@ -79,7 +79,23 @@ class TaxonomyPredicate extends EntityApi
      */
     public function canEditFundamentals(): bool
     {
-        return false;
+        return $this->getValues()->isEmpty();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getValues(): Collection
+    {
+        return $this->values;
+    }
+
+    /**
+     * @param Collection $values
+     */
+    public function setValues(Collection $values): void
+    {
+        $this->values = $values;
     }
 
     /**
@@ -115,7 +131,7 @@ class TaxonomyPredicate extends EntityApi
      *
      * @return int
      */
-    public function getVersion(): int
+    public function getVersion(): ?int
     {
         return $this->version;
     }
@@ -144,7 +160,7 @@ class TaxonomyPredicate extends EntityApi
      *
      * @return string
      */
-    public function getExpanded(): string
+    public function getExpanded(): ?string
     {
         return $this->expanded;
     }
@@ -180,7 +196,7 @@ class TaxonomyPredicate extends EntityApi
      *
      * @return string
      */
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -197,22 +213,6 @@ class TaxonomyPredicate extends EntityApi
         $this->description = $description;
 
         return $this;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getValues(): Collection
-    {
-        return $this->values;
-    }
-
-    /**
-     * @param Collection $values
-     */
-    public function setValues(Collection $values): void
-    {
-        $this->values = $values;
     }
 
     /**
@@ -236,7 +236,7 @@ class TaxonomyPredicate extends EntityApi
      *
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->getExpanded();
     }
@@ -262,7 +262,7 @@ class TaxonomyPredicate extends EntityApi
      *
      * @return string
      */
-    public function getValue(): string
+    public function getValue(): ?string
     {
         return $this->value;
     }
