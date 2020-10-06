@@ -18,7 +18,9 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentFeed;
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate;
+use CertUnlp\NgenBundle\Form\Incident\Taxonomy\TaxonomyPredicateType;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,4 +64,26 @@ class IncidentTaxonomyPredicateFrontendController extends FrontendController
         return $this->searchEntity($request, $elastica_finder_taxonomy_predicate);
     }
 
+    /**
+     * @Template("CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend:incidentTaxonomyPredicateForm.html.twig")
+     * @Route("/new", name="cert_unlp_ngen_taxonomy_predicate_new")
+     * @param TaxonomyPredicateType $type
+     * @return array
+     */
+    public function newIncidentTaxonomyPredicateAction(TaxonomyPredicateType $type): array
+    {
+        return $this->newEntity($type);
+    }
+
+    /**
+     * @Template("CertUnlpNgenBundle:IncidentTaxonomyPredicate/Frontend:incidentTaxonomyPredicateForm.html.twig")
+     * @Route("{slug}/edit", name="cert_unlp_ngen_taxonomy_predicate_edit")
+     * @param TaxonomyPredicate$incident_feed
+     * @param TaxonomyPredicateType $type
+     * @return array
+     */
+    public function editIncidentTaxonomyPredicateAction(TaxonomyPredicate$incident_feed, TaxonomyPredicateType $type): array
+    {
+        return $this->editEntity($incident_feed, $type);
+    }
 }

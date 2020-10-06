@@ -8,19 +8,19 @@
  */
 var IncidentTaxonomyValueForm = Form.extend({
     config: function () {
-        this.setIncidentTypeId();
+        this.setIncidentTaxonomyValueId();
     },
     getObjectBrief: function () {
         return 'incident/taxonomy/value';
     },
     getObjectId: function () {
-        return this.getIncidentTypeId();
+        return this.getIncidentTaxonomyValueId();
     },
-    setIncidentTypeId: function () {
-        this.incident_type_id = (($('#name').val().replace(' ', '_'))).toLowerCase();
+    setIncidentTaxonomyValueId: function () {
+        this.incident_value_id = this.slugify($('#value').val());
     },
-    getIncidentTypeId: function () {
-        return this.incident_type_id;
+    getIncidentTaxonomyValueId: function () {
+        return this.incident_value_id;
     }
 });
 

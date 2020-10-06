@@ -1,10 +1,10 @@
-{# 
- This file is part of the Ngen - CSIRT Network Report System.
- 
- (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
- This source file is subject to the GPL v3.0 license that is bundled
- with this source code in the file LICENSE.
+{#
+This file is part of the Ngen - CSIRT Network Report System.
+
+(c) CERT UNLP <support@cert.unlp.edu.ar>
+
+This source file is subject to the GPL v3.0 license that is bundled
+with this source code in the file LICENSE.
 #}
 {% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
 
@@ -12,6 +12,9 @@
 
 {% block content_header %}
     <h1 class="h3 mb-0 text-gray-800">{{ icon('fa fa-fas fa-cubes') }} {{ 'Incident Taxonomy Predicates'|trans }}</h1>
+    <a href="{{ path('cert_unlp_ngen_taxonomy_predicate_new') }}"
+       class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                class="fas fa-plus-circle fa-sm text-white-50"></i>{{ 'add Predicate'|trans }} </a>
 
 {% endblock %}
 

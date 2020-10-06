@@ -10,6 +10,7 @@
 var IncidentTaxonomyPredicateApi = ApiClient.extend({
     config: function () {
         $.subscribe('/cert_unlp/incident/taxonomy/predicate/update', $.proxy(this.update, this));
+        $.subscribe('/cert_unlp/incident/taxonomy/predicate/new', $.proxy(this.create, this));
         $.subscribe('/cert_unlp/incident/taxonomy/predicate/activate', $.proxy(this.activate, this));
         $.subscribe('/cert_unlp/incident/taxonomy/predicate/deactivate', $.proxy(this.deactivate, this));
     },

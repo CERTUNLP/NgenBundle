@@ -76,7 +76,7 @@ class IncidentType extends EntityApiFrontend
     private $reports;
     /**
      * @var TaxonomyValue|null
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue", inversedBy="types")
      * @ORM\JoinColumn(name="taxonomyValue", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"read","write"})

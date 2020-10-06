@@ -19,6 +19,7 @@ namespace CertUnlp\NgenBundle\Controller\Frontend\Incident;
 
 use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue;
+use CertUnlp\NgenBundle\Form\Incident\Taxonomy\TaxonomyValueType;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,5 +61,28 @@ class IncidentTaxonomyValueFrontendController extends FrontendController
     public function searchIncidentTaxonomyValueAction(Request $request, PaginatedFinderInterface $elastica_finder_taxonomy_value): array
     {
         return $this->searchEntity($request, $elastica_finder_taxonomy_value);
+    }
+
+    /**
+     * @Template("CertUnlpNgenBundle:IncidentTaxonomyValue/Frontend:incidentTaxonomyValueForm.html.twig")
+     * @Route("/new", name="cert_unlp_ngen_taxonomy_value_new")
+     * @param TaxonomyValueType $type
+     * @return array
+     */
+    public function newIncidentTaxonomyValueAction(TaxonomyValueType $type): array
+    {
+        return $this->newEntity($type);
+    }
+
+    /**
+     * @Template("CertUnlpNgenBundle:IncidentTaxonomyValue/Frontend:incidentTaxonomyValueForm.html.twig")
+     * @Route("{slug}/edit", name="cert_unlp_ngen_taxonomy_value_edit")
+     * @param TaxonomyValue $incident_feed
+     * @param TaxonomyValueType $type
+     * @return array
+     */
+    public function editIncidentTaxonomyValueAction(TaxonomyValue $incident_feed, TaxonomyValueType $type): array
+    {
+        return $this->editEntity($incident_feed, $type);
     }
 }

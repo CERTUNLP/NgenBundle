@@ -41,7 +41,8 @@ class TaxonomyValueType extends EntityForm
             ))
             ->add('predicate', EntityType::class, array(
                 'class' => TaxonomyPredicate::class,
-                'required' => true,
+                'placeholder' => 'Select a predicate',
+                'required' => false,
             ))
             ->add('version', NumberType::class, array(
                 'required' => true,

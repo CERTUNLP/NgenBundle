@@ -112,7 +112,7 @@ class TaxonomyValueController extends ApiController
      * @param TaxonomyValue $taxonomy_value
      * @return View
      */
-    public function deleteIncidentStateAction(TaxonomyValue $taxonomy_value): View
+    public function deleteTaxonomyValueAction(TaxonomyValue $taxonomy_value): View
     {
         return $this->delete($taxonomy_value);
     }

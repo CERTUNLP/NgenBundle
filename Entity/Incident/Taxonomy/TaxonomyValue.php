@@ -13,7 +13,9 @@ namespace CertUnlp\NgenBundle\Entity\Incident\Taxonomy;
 
 use CertUnlp\NgenBundle\Entity\EntityApi;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentReport;
+use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
 use DateTime;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -72,7 +74,13 @@ class TaxonomyValue extends EntityApi
      * @JMS\MaxDepth(depth=1)
      **/
     private $predicate = null;
-
+    /**
+     * @var IncidentType[]|Collection
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",mappedBy="taxonomyValue")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
+     */
+    private $types;
     /**
      * @var int|null
      *
@@ -87,9 +95,26 @@ class TaxonomyValue extends EntityApi
      */
     public function canEditFundamentals(): bool
     {
-        return false;
+        return $this->getTypes()->isEmpty();
     }
 
+    /**
+     * @return IncidentType[]|Collection
+     */
+    public function getTypes(): Collection
+    {
+        return $this->types;
+    }
+
+    /**
+     * @param IncidentType[]|Collection $types
+     * @return TaxonomyValue
+     */
+    public function setTypes(Collection $types): self
+    {
+        $this->types = $types;
+        return $this;
+    }
 
     /**
      * @return string

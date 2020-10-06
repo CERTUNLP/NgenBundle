@@ -1,16 +1,16 @@
-{# 
- This file is part of the Ngen - CSIRT Incident Report System.
- 
- (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
- This source file is subject to the GPL v3.0 license that is bundled
- with this source code in the file LICENSE.
+{#
+This file is part of the Ngen - CSIRT Incident Report System.
+
+(c) CERT UNLP <support@cert.unlp.edu.ar>
+
+This source file is subject to the GPL v3.0 license that is bundled
+with this source code in the file LICENSE.
 #}
 {% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 
 <tr data-id="{{ incidentTaxonomyValue.slug }}">
     <td class="text-center">
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentTaxonomyValue , 'detail_link': path('cert_unlp_ngen_taxonomy_value_detail',{ 'slug': incidentTaxonomyValue.slug})} %}
+        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':incidentTaxonomyValue , 'detail_link': path('cert_unlp_ngen_taxonomy_value_detail',{ 'slug': incidentTaxonomyValue.slug}),'edit_link': path('cert_unlp_ngen_taxonomy_value_edit',{ 'slug': incidentTaxonomyValue.slug})} %}
     </td>
     <td id="state_label_holder" class="text-center">
         {{ print.statusdropbox(incidentTaxonomyValue) }}
@@ -21,9 +21,11 @@
         </div>
     </td>
     <td class="text-center">
-        <div class="float-left">
-            {{ print.colordropbox(incidentTaxonomyValue.predicate.color,incidentTaxonomyValue.predicate.icon,incidentTaxonomyValue.predicate| trans,path('cert_unlp_ngen_taxonomy_predicate_detail',{'slug': incidentTaxonomyValue.predicate.slug}),incidentTaxonomyValue.predicate) }}
-        </div>
+        {% if incidentTaxonomyValue.predicate %}
+            <div class="float-left">
+                {{ print.colordropbox(incidentTaxonomyValue.predicate.color,incidentTaxonomyValue.predicate.icon,incidentTaxonomyValue.predicate| trans,path('cert_unlp_ngen_taxonomy_predicate_detail',{'slug': incidentTaxonomyValue.predicate.slug}),incidentTaxonomyValue.predicate) }}
+            </div>
+        {% endif %}
     </td>
     <td class="text-center">
         {{ print.colordropbox('primary','code-branch',incidentTaxonomyValue.version,'#',incidentTaxonomyValue.version) }}

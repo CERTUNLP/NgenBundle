@@ -12,7 +12,9 @@
 
 {% block content_header %}
     <h1 class="h3 mb-0 text-gray-800">{{ icon('fa fa-fas fa-cubes') }} {{ 'Incident Taxonomy Values'|trans }}</h1>
-
+    <a href="{{ path('cert_unlp_ngen_taxonomy_value_new') }}"
+       class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                class="fas fa-plus-circle fa-sm text-white-50"></i>{{ 'add Value'|trans }} </a>
 {% endblock %}
 
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_incident_taxonomy_value_search') }}{% endblock %}

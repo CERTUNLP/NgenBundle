@@ -16,6 +16,7 @@
         {{ object }}
         {{ print.colorboxbutton('primary','id-card',object.slug,'#') }}
         {{ print.statusbox(object) }}
+        {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_taxonomy_predicate_edit',{'slug': object.slug})) }}
     </h1>
 {% endblock %}
 {% block content_body %}

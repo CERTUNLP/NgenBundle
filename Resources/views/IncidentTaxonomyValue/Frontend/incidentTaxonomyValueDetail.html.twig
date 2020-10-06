@@ -1,10 +1,10 @@
 {#
- This file is part of the Ngen - CSIRT Incident Report System.
+This file is part of the Ngen - CSIRT Incident Report System.
 
- (c) CERT UNLP <support@cert.unlp.edu.ar>
+(c) CERT UNLP <support@cert.unlp.edu.ar>
 
- This source file is subject to the GPL v3.0 license that is bundled
- with this source code in the file LICENSE.
+This source file is subject to the GPL v3.0 license that is bundled
+with this source code in the file LICENSE.
 #}
 
 {% extends 'CertUnlpNgenBundle:IncidentTaxonomyValue/Frontend:frontend.html.twig' %}
@@ -17,6 +17,7 @@
         {{ print.colorboxbutton('primary','id-card',object.id,'#') }}
         {{ print.statusbox(object) }}
         {{ print.colordropbox(object.predicate.color,object.predicate.icon,object.predicate,path('cert_unlp_ngen_taxonomy_predicate_detail',{'slug': object.predicate.slug}),'','d-inline') }}
+        {{ print.colorbox('primary','edit','Edit',path('cert_unlp_ngen_taxonomy_value_edit',{'slug': object.slug})) }}
     </h1>
 {% endblock %}
 {% block content_body %}
@@ -91,9 +92,9 @@
                                     {{ 'Incidents'|trans }}
                                 </td>
                                 <td class="">
-                                    {#                                    <a target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~object.name~'"'~ "&&" ~'"'~object.email~'"'})}}">#}
+                                    {# <a target="_blank" class="btn btn-sm btn-primary" role="button" href="{{path('cert_unlp_ngen_incident_search_incident',{'term': '"'~object.name~'"'~ "&&" ~'"'~object.email~'"'})}}"> #}
                                     <span>Aca estaria bueno poner el contador de incidentes </span>
-                                    {#                                    </a>#}
+                                    {# </a> #}
                                 </td>
                             </tr>
                         </table>
