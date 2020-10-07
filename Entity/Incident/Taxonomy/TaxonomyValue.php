@@ -134,7 +134,7 @@ class TaxonomyValue extends EntityApi
 
     public function __toString(): string
     {
-        return $this->getPredicate()->getExpanded() . ' -> ' . $this->getExpanded();
+        return $this->getPredicate() ? $this->getPredicate()->getExpanded() . ' -> ' . $this->getExpanded() : $this->getExpanded();
     }
 
     /**
