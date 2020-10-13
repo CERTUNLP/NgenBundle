@@ -45,6 +45,7 @@ services:
             - PATH_WEB=/application
             - DATE_TZ=America/Argentina/Buenos_Aires
             - MEMORY_LIMIT=1024M
+            - COMPOSER_MEMORY_LIMIT=-1
             - POST_MAX=20M
             - UPLOAD_MAX=20M
             - DB_HOST=ngen-db
@@ -54,7 +55,7 @@ services:
             - DB_PASSWORD=ngenpass
             - MAILER_TRANSPORT=smtp
             - MAILER_PORT=1025
-            - MAILER_ENCRYPTION=null
+#            - MAILER_ENCRYPTION=~
             - MAILER_HOST=ngen-mail
             - MAILER_USER=null
             - MAILER_PASSWORD=null
