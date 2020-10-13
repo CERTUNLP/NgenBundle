@@ -73,9 +73,8 @@ fos_elastica:
                                     type: keyword
 
                     persistence:
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Incident\Incident
                         provider: ~
@@ -108,9 +107,8 @@ fos_elastica:
                         actionApplied:
                             type: keyword
                     persistence:
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Incident\IncidentStateChange
                         provider: ~
@@ -187,9 +185,8 @@ fos_elastica:
                                 name:
                                     type: keyword
                     persistence:
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network
                         provider: ~
@@ -229,9 +226,8 @@ fos_elastica:
                         network:
                             type: keyword
                     persistence:
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Host
                         provider: ~
@@ -283,9 +279,8 @@ fos_elastica:
                                 telegram:
                                     type: text
                     persistence:
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Constituency\NetworkAdmin
                         provider: ~
@@ -321,9 +316,8 @@ fos_elastica:
                             type: date
                             property_path: updatedAt
                     persistence:
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder: ~
-                        # propel and should be removed
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Constituency\NetworkEntity
                         provider: ~
@@ -360,9 +354,8 @@ fos_elastica:
                             property_path: updatedAt
                     persistence:
                         identifier: slug
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Incident\IncidentFeed
                         provider: ~
@@ -400,9 +393,8 @@ fos_elastica:
 
                     persistence:
                         identifier: slug
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Incident\State\IncidentState
                         provider: ~
@@ -453,9 +445,8 @@ fos_elastica:
                             property_path: name
                     persistence:
                         identifier: slug
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Incident\IncidentPriority
                         provider: ~
@@ -504,9 +495,8 @@ fos_elastica:
                             type: keyword
                     persistence:
                         identifier: id
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Incident\IncidentDecision
                         provider: ~
@@ -566,9 +556,8 @@ fos_elastica:
                                             type: boolean
                     persistence:
                         identifier: slug
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Incident\IncidentType
                         provider: ~
@@ -614,9 +603,8 @@ fos_elastica:
 
                     persistence:
                         identifier: slug
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Incident\IncidentReport
                         provider: ~
@@ -675,9 +663,8 @@ fos_elastica:
                                     type: text
                     persistence:
                         identifier: slug
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\User\User
                         provider: ~
@@ -723,9 +710,8 @@ fos_elastica:
                             type: keyword
                     persistence:
                         identifier: slug
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyValue
                         provider: ~
@@ -769,9 +755,8 @@ fos_elastica:
                             type: keyword
                     persistence:
                         identifier: slug
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                         driver: orm
                         model: CertUnlp\NgenBundle\Entity\Incident\Taxonomy\TaxonomyPredicate
                         provider: ~
