@@ -53,7 +53,7 @@ class DomainAddress extends Address
     /**
      * {@inheritDoc}
      */
-    public function getCustomAddressMask(): int
+    public function getCustomAddressMask(): ?int
     {
         return substr_count($this->getCustomAddress(), '.') + 1;
     }

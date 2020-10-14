@@ -117,7 +117,7 @@ abstract class IpAddress extends Address
     public function setCustomStartAddress(): IpAddress
     {
         if (is_callable([$this->getNetwork(), 'setStartAddress'])) {
-            $this->getNetwork()->setStartAddress($this->getIp()->getNetworkIp((int)$this->getCustomAddressMask())->getProtocolAppropriateAddress());
+            $this->getNetwork()->setStartAddress($this->getIp()->getNetworkIp($this->getCustomAddressMask())->getProtocolAppropriateAddress());
         }
         return $this;
     }
@@ -125,12 +125,12 @@ abstract class IpAddress extends Address
     /**
      * @return int
      */
-    public function getCustomAddressMask(): int
+    public function getCustomAddressMask(): ?int
     {
         if (is_callable([$this->getNetwork(), 'getIpMask'])) {
             return $this->getNetwork()->getIpMask();
         }
-        return '';
+        return null;
     }
 
     /**

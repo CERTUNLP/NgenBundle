@@ -124,7 +124,7 @@ abstract class Address
     /**
      * @return int
      */
-    public function getAddressMask(): int
+    public function getAddressMask(): ?int
     {
         return $this->getCustomAddressMask();
     }
@@ -132,7 +132,7 @@ abstract class Address
     /**
      * @return int
      */
-    abstract public function getCustomAddressMask(): int;
+    abstract public function getCustomAddressMask(): ?int;
 
     /**
      * @param int $address
