@@ -160,7 +160,7 @@ abstract class NetworkElement extends EntityApiFrontend
 
     public function getAddressAndMask(): string
     {
-        return $this->getAddress() . ($this->getAddressMask() ? '/' . $this->getAddressMask() : '');
+        return $this->getAddress() . ($this->getAddressMask() !== null ? '/' . $this->getAddressMask() : '');
     }
 
     /**
