@@ -19,12 +19,21 @@ var Notify = Class.extend({
         }, 5000);
     },
     getNotificationTemplate: function (text, type) {
-        var alert = $('<div class="alert alert-' + type + ' alert-dismissible col-md-3 offset-10"><button type="button" class="close" data-dismiss="alert">×</button>' + text + '</div>');
-        window.setTimeout(function () {
-            alert.fadeTo(500, 0).slideUp(500, function () {
-            });
-        }, 5000);
-        return alert;
+
+        let toast = $(' <div class="toast ml-auto alert-' + type + '" role="alert" aria-live="assertive" aria-atomic="true">\n' +
+            '                <div class="toast-header">\n' +
+            '                   <strong class="mr-auto"> <i class="fa fa-exclamation-circle text-' + type + '"></i> Notification</strong>\n' +
+            '                    <small class="text-muted">just now</small>\n' +
+            '                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">\n' +
+            '                        <span aria-hidden="true">&times;</span>\n' +
+            '                    </button>\n' +
+            '                </div>\n' +
+            '                <div class="toast-body">\n' +
+            '                   ' + text + '\n' +
+            '                </div>\n' +
+            '            </div>');
+        $(toast).toast({autohide: true, delay: 3500})
+        return toast;
     },
     getDangerAlert: function (text) {
         return this.getNotificationTemplate(text, 'danger');
@@ -35,14 +44,18 @@ var Notify = Class.extend({
     getInfoAlert: function (text) {
         return this.getNotificationTemplate(text, 'info');
     },
+    notify: function (toast) {
+        this.notificationsDiv.append(toast);
+        $(toast).toast('show');
+    },
     notifyError: function (text) {
-        this.notificationsDiv.append(this.getDangerAlert(text));
+        this.notify(this.getDangerAlert(text))
     },
     notifySuccess: function (text) {
-        this.notificationsDiv.append(this.getSuccessAlert(text));
+        this.notify(this.getSuccessAlert(text))
     },
     notifyInfo: function (text) {
-        this.notificationsDiv.append(this.getInfoAlert(text));
+        this.notify(this.getInfoAlert(text))
     }
 
 });
@@ -53,8 +66,8 @@ var CertUnlp = Class.extend({
     },
 });
 
-$(document).ready(function() {
-    $("#menu-toggle").click(function(e) {
+$(document).ready(function () {
+    $("#menu-toggle").click(function (e) {
         e.preventDefault();
 
         $("#wrapper").toggleClass("toggled");

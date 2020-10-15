@@ -2,8 +2,6 @@
 {% block body %}
 
     <div id="wrapper">
-        <div id="notifications" class="notifications">
-        </div>
         {% block navigation_block %}
             {% block navigation_sidebar %}
                 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -12,15 +10,14 @@
             {% endblock %}
             <!-- Content Wrapper -->
             <div id="content-wrapper" class="d-flex flex-column">
-
                 <!-- Main Content -->
                 <div id="content">
+                    <div id="notifications" class="p-4" style="position: absolute; top: 0; right: 0; min-width: 300px;z-index: 1000000">
+                    </div>
                     {% block page_wrapper %}
-
                         {% if app.user %}
                             {% include 'CertUnlpNgenBundle:navBar:navRight.html.twig' %}
                         {% endif %}
-
                     {% endblock %}
                     <div class="container-fluid">
                         {% block content %}
