@@ -912,6 +912,14 @@ class Incident extends EntityApiFrontend
     }
 
     /**
+     * @return bool
+     */
+    public function isInternal(): bool
+    {
+        return $this->getNetwork()->isInternal();
+    }
+
+    /**
      * @return DateInterval|false
      * @throws Exception
      * @example if int positive incident is on time, if int is negative incident is delayed

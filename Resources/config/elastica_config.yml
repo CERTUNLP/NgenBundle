@@ -59,6 +59,8 @@ fos_elastica:
                             type: keyword
                         priority:
                             type: keyword
+                        internal:
+                            type: keyword
                         network_data:
                             property_path: network
                             type: "object"
