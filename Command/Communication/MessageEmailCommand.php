@@ -107,7 +107,7 @@ class MessageEmailCommand extends ContainerAwareCommand
             $message = (new Swift_Message())
                 ->setSubject($message_email->getSubject())
                 ->setFrom($this->getNgenTeamMail())
-                ->setSender($this->getNgenTeamMail())
+//                ->setSender($this->getNgenTeamMail())
                 ->addPart($html, 'text/html');
 
             if ($admin_emails && $message_email->isNotifyToAdmin()) {
