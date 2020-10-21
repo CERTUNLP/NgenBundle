@@ -340,6 +340,15 @@ class IncidentHandler extends Handler
     }
 
     /**
+     * @param EntityApiInterface $entity
+     * @return EntityApiInterface
+     */
+    public function getByDataIdentification(EntityApiInterface $entity): ?EntityApiInterface
+    {
+        return $this->getRepository()->findOneLiveBy($entity->getDataIdentificationArray());
+    }
+
+    /**
      * @param EntityApiInterface|Incident $entity
      * @return EntityApiInterface|Incident
      */
