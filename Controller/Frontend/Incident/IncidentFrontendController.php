@@ -54,7 +54,7 @@ class IncidentFrontendController extends FrontendController
      */
     public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_incident): array
     {
-        $term = $request->get('term') ?: '*';
+        $term = $request->get('term') ?: 'internal: true';
         $quickSearchForm = $this->getFormFactory()->createBuilder(IncidentSearchType::class, (new Incident), array('csrf_protection' => true));
 
         return array('objects' => [], 'term' => $term, 'search_form' => $quickSearchForm->getForm()->createView());
