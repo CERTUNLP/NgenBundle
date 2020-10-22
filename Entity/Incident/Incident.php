@@ -64,6 +64,11 @@ class Incident extends EntityApiFrontend
      * */
     protected $slug;
     /**
+     * @var array
+     * @ORM\Column(type="text",nullable=true)
+     */
+    protected $raw = null;
+    /**
      * @var DateTime
      *
      * @ORM\Column(name="response_dead_line", type="datetime",nullable=true))
