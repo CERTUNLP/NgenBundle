@@ -64,7 +64,7 @@ class Incident extends EntityApiFrontend
      * */
     protected $slug;
     /**
-     * @var array
+     * @var string
      * @ORM\Column(type="text",nullable=true)
      */
     protected $raw = null;
@@ -289,6 +289,24 @@ class Incident extends EntityApiFrontend
         }
         $this->incidentsDetected = new ArrayCollection();
         $this->state_changes = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getRaw(): ?string
+    {
+        return $this->raw;
+    }
+
+    /**
+     * @param string $raw
+     * @return Incident
+     */
+    public function setRaw(string $raw): Incident
+    {
+        $this->raw = $raw;
+        return $this;
     }
 
     /**

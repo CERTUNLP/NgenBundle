@@ -86,11 +86,6 @@ class IncidentType extends EntityForm
                 'label' => 'Notes',
                 'attr' => array('class' => 'ltdFilter', 'data-theme' => 'simple', 'help_text' => 'Add some notes/evidence in text format, it will be attached to the mail report.'),
             ))
-            ->add('raw', TextareaType::class, array(
-                'required' => false,
-                'label' => 'Raw content',
-                'attr' => array('class' => 'ltdFilter', 'data-theme' => 'simple', 'help_text' => 'Raw extra information decoded in base64'),
-            ))
             ->add('evidence_file', FileType::class, array(
                 'label' => 'Report attachment',
                 'required' => false,
@@ -173,8 +168,17 @@ class IncidentType extends EntityForm
             ))
             ->add('id', HiddenType::class, array(
                 'required' => false,
-            ))
-            ->addEventSubscriber($this->getIncidentTypeListener());
+            ));
+
+        if (!$options['frontend']) {
+            $builder->add('raw', TextareaType::class, array(
+                'required' => false,
+                'label' => 'Raw content',
+                'attr' => array('class' => 'ltdFilter', 'data-theme' => 'simple', 'help_text' => 'Raw extra information decoded in base64'),
+            ));
+        }
+        
+        $builder->addEventSubscriber($this->getIncidentTypeListener());
 
 
     }
