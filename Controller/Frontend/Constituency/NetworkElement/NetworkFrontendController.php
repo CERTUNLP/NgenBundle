@@ -47,7 +47,7 @@ class NetworkFrontendController extends FrontendController
         preg_match('/host:([\S]*)/', str_replace(': ', ':', $this->parseTerm($request)), $host);
         $results = [$network_handler->findOneInRange($host[1], true)];
         $pagination = $this->paginateEntities($results, $request);
-        return array('objects' => $pagination, 'term' => $term);
+        return array('objects' => $pagination, 'term' => $this->parseTerm($request));
     }
 
     /**

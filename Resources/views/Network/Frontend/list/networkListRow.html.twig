@@ -32,7 +32,7 @@ with this source code in the file LICENSE.
     <td class="text-center">
         <div class="float-left">
             {% if network.networkEntity.id %}
-                {{ print.colordropbox(network.networkEntity.color,network.networkEntity.icon,network.networkEntity.name,network.networkEntity) }}
+                {{ print.colordropbox(network.networkEntity.color,network.networkEntity.icon,network.networkEntity.name,path('cert_unlp_ngen_network_entity_detail_id',{'id': network.networkEntity.id}),network.networkEntity) }}
             {% else %}
                 {{ print.colordropbox(network.networkEntity.color,network.networkEntity.icon,network.networkEntity.name,'#',network.networkEntity) }}
             {% endif %}
