@@ -31,7 +31,7 @@ abstract class Entity implements EntityInterface
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
      * @JMS\Expose()
-     * @JMS\Groups({"read"})
+     * @JMS\Groups({"read","list"})
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     protected $createdAt = null;
@@ -40,7 +40,7 @@ abstract class Entity implements EntityInterface
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      * @JMS\Expose()
-     * @JMS\Groups({"read"})
+     * @JMS\Groups({"read","list"})
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
      */
     protected $updatedAt = null;

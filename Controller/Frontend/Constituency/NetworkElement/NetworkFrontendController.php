@@ -11,6 +11,7 @@ namespace CertUnlp\NgenBundle\Controller\Frontend\Constituency\NetworkElement;
 use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
 use CertUnlp\NgenBundle\Form\Constituency\NetworkElement\NetworkType;
+use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\Network\NetworkHandler;
 use Doctrine\Common\Collections\ArrayCollection;
 use Elastica\Query;
 use Elastica\Query\BoolQuery;
@@ -30,11 +31,23 @@ class NetworkFrontendController extends FrontendController
      * @Route("/", name="cert_unlp_ngen_network_frontend_home")
      * @param Request $request
      * @param PaginatedFinderInterface $elastica_finder_network
+     * @param NetworkHandler $network_handler
      * @return array
      */
-    public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_network): array
+    public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_network, NetworkHandler $network_handler): array
     {
+        if (strpos($this->parseTerm($request), 'host') !== false) {
+            return $this->hostInRange($request, $network_handler);
+        }
         return $this->homeEntity($request, $elastica_finder_network);
+    }
+
+    public function hostInRange(Request $request, NetworkHandler $network_handler): array
+    {
+        preg_match('/host:([\S]*)/', str_replace(': ', ':', $this->parseTerm($request)), $host);
+        $results = [$network_handler->findOneInRange($host[1], true)];
+        $pagination = $this->paginateEntities($results, $request);
+        return array('objects' => $pagination, 'term' => $term);
     }
 
     /**

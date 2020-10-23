@@ -17,6 +17,8 @@ use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\Timeline;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
+use FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\AbstractType;
@@ -34,6 +36,22 @@ abstract class FrontendController extends AbstractController
      * @var FormFactoryInterface
      */
     private $form_factory;
+    /**
+     * @var int
+     */
+    private $limit;
+    /**
+     * @var string
+     */
+    private $defaultSortFieldName;
+    /**
+     * @var string
+     */
+    private $defaultSortDirection;
+    /**
+     * @var string
+     */
+    private $page;
 
     /**
      * FrontendControllerService constructor.
@@ -44,7 +62,19 @@ abstract class FrontendController extends AbstractController
     {
         $this->paginator = $paginator;
         $this->form_factory = $formFactory;
+        $this->limit = 7;
+        $this->defaultSortFieldName = 'createdAt';
+        $this->defaultSortDirection = 'desc';
+        $this->page = 'page';
 
+    }
+
+    /**
+     * @return string
+     */
+    public function getPage(): string
+    {
+        return $this->page;
     }
 
     /**
@@ -109,47 +139,64 @@ abstract class FrontendController extends AbstractController
     /**
      * @param Request $request
      * @param PaginatedFinderInterface $finder
-     * @param string $term
-     * @param int $limit
-     * @param string $defaultSortFieldName
-     * @param string $defaultSortDirection
      * @return array
      */
-    public function homeEntity(Request $request, PaginatedFinderInterface $finder, string $term = '', int $limit = 7, string $defaultSortFieldName = 'createdAt', string $defaultSortDirection = 'desc'): array
+    public function homeEntity(Request $request, PaginatedFinderInterface $finder): array
     {
-        return $this->searchEntity($request, $finder, $term, $limit, $defaultSortFieldName, $defaultSortDirection);
+        return $this->searchEntity($request, $finder);
     }
 
     /**
      * @param Request $request
      * @param PaginatedFinderInterface $finder
-     * @param string $term
-     * @param int $limit
-     * @param string $defaultSortFieldName
-     * @param string $defaultSortDirection
-     * @param string $page
-     * @param string $field
      * @return array
      */
-    public function searchEntity(Request $request, PaginatedFinderInterface $finder, string $term = '', int $limit = 7, string $defaultSortFieldName = 'createdAt', string $defaultSortDirection = 'desc', string $page = 'page', string $field = ''): array
+    public function searchEntity(Request $request, PaginatedFinderInterface $finder): array
     {
-        if (!$term) {
-            $term = $request->get('term') ?: '*';
-        }
-        $results = $finder->createPaginatorAdapter($term);
-        $pagination = $this->getPaginator()->paginate(
-            $results, $request->query->get($page, 1), $limit
-            , array('pageParameterName' => 'page' . $field, 'sortFieldParameterName' => 'sort' . $field, 'sortDirectionParameterName' => 'direction' . $field, 'defaultSortFieldName' => $defaultSortFieldName, 'defaultSortDirection' => $defaultSortDirection)
-        );
-
-        $pagination->setParam('term', $term);
-        $pagination->setCustomParameters([
-            'align' => 'center', # center|right (for template: twitter_bootstrap_v4_pagination)
-            'style' => 'bottom',
-        ]);
+        $term = $this->parseTerm($request);
+        $results = $this->getResults($finder, $this->parseTerm($request));
+        $pagination = $this->paginateEntities($results, $request);
         return array('objects' => $pagination, 'term' => $term);
     }
 
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function parseTerm(Request $request): string
+    {
+        return $request->get('term') ?: '*';
+    }
+
+    /**
+     * @param PaginatedFinderInterface $finder
+     * @param string|null $term
+     * @return PaginatorAdapterInterface
+     */
+    public function getResults(PaginatedFinderInterface $finder, ?string $term): PaginatorAdapterInterface
+    {
+        return $finder->createPaginatorAdapter($term);
+    }
+
+    /**
+     * @param PaginatorAdapterInterface | array $results
+     * @param Request $request
+     * @return PaginationInterface
+     */
+    public function paginateEntities($results, Request $request): PaginationInterface
+    {
+        $pagination = $this->getPaginator()->paginate(
+            $results, $request->query->get('page', 1), $this->getLimit()
+            , array('pageParameterName' => 'page', 'sortFieldParameterName' => 'sort', 'sortDirectionParameterName' => 'direction', 'defaultSortFieldName' => $this->getDefaultSortFieldName(), 'defaultSortDirection' => $this->getDefaultSortDirection())
+        );
+
+        $pagination->setParam('term', $this->parseTerm($request));
+        $pagination->setCustomParameters([
+            'align' => 'center',
+            'style' => 'bottom',
+        ]);
+        return $pagination;
+    }
 
     /**
      * @return PaginatorInterface
@@ -157,6 +204,60 @@ abstract class FrontendController extends AbstractController
     public function getPaginator(): PaginatorInterface
     {
         return $this->paginator;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLimit(): int
+    {
+        return $this->limit;
+    }
+
+    /**
+     * @param int $limit
+     * @return FrontendController
+     */
+    public function setLimit(int $limit): FrontendController
+    {
+        $this->limit = $limit;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultSortFieldName(): string
+    {
+        return $this->defaultSortFieldName;
+    }
+
+    /**
+     * @param string $defaultSortFieldName
+     * @return FrontendController
+     */
+    public function setDefaultSortFieldName(string $defaultSortFieldName): FrontendController
+    {
+        $this->defaultSortFieldName = $defaultSortFieldName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultSortDirection(): string
+    {
+        return $this->defaultSortDirection;
+    }
+
+    /**
+     * @param string $defaultSortDirection
+     * @return FrontendController
+     */
+    public function setDefaultSortDirection(string $defaultSortDirection): FrontendController
+    {
+        $this->defaultSortDirection = $defaultSortDirection;
+        return $this;
     }
 
     /**
@@ -203,7 +304,7 @@ abstract class FrontendController extends AbstractController
      */
     public function editEntity(EntityApiInterface $object, AbstractType $form): array
     {
-        return array('form' => $this->getFormFactory()->create(get_class($form), $object, ['frontend' => true,'method' => Request::METHOD_PATCH])->createView());
+        return array('form' => $this->getFormFactory()->create(get_class($form), $object, ['frontend' => true, 'method' => Request::METHOD_PATCH])->createView());
     }
 
     /**

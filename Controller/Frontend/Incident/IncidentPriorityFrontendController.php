@@ -37,7 +37,10 @@ class IncidentPriorityFrontendController extends FrontendController
      */
     public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_priority): array
     {
-        return $this->homeEntity($request, $elastica_finder_priority, '', 10, 'code', 'asc');
+        $this->setLimit(10);
+        $this->setDefaultSortFieldName('code');
+        $this->setDefaultSortDirection('asc');
+        return $this->homeEntity($request, $elastica_finder_priority);
     }
 
     /**

@@ -36,7 +36,7 @@ abstract class EntityApi extends Entity implements EntityApiInterface
      *
      * @ORM\Column(type="boolean")
      * @JMS\Expose()
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","list"})
      */
     protected $active = true;
 

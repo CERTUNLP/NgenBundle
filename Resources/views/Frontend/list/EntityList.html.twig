@@ -1,0 +1,50 @@
+{#
+This file is part of the Ngen - CSIRT Incident Report System.
+
+(c) CERT UNLP <support@cert.unlp.edu.ar>
+
+This source file is subject to the GPL v3.0 license that is bundled
+with this source code in the file LICENSE.
+#}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">
+            <strong>{{ 'Showing'|trans }}</strong>
+            <strong>({{ entities.getPaginationData.lastItemNumber~"/"~entities.getTotalItemCount }})</strong>
+        </h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="entity_table" class="table table-bordered">
+                <thead>
+                <tr role="row">
+                    <th>
+                        {{ 'Action'|trans }}
+                    </th>
+                    {% block list_header %}
+                        {% if entities %}
+                            {% for header in list_headers(entities.first) %}
+                                <th>
+                                    {{ knp_pagination_sortable(entities, header | capitalize | trans, header) }}
+                                </th>
+                            {% endfor %}
+                        {% endif %}
+                    {% endblock list_header %}
+                </tr>
+                </thead>
+                <tbody>
+                {% block list_row %}
+                    {% for entity in entities %}
+                        {% include 'CertUnlpNgenBundle:IncidentFeed:Frontend/list/EntityListRow.html.twig' with {'entity': entity} %}
+                    {% endfor %}
+                {% endblock list_row %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+<div class="pagination justify-content-center">
+    {{ knp_pagination_render(entities, null, {}, { "prev_label": "Previous"|trans, "next_label": "Next"|trans, "first_label": "First"|trans, "last_label": "Last"|trans}) }}
+</div>

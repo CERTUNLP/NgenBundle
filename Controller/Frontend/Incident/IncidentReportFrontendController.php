@@ -33,12 +33,11 @@ class IncidentReportFrontendController extends FrontendController
      * @Template("CertUnlpNgenBundle:IncidentReport:Frontend/list/incidentReportList.html.twig")
      * @param Request $request
      * @param PaginatedFinderInterface $elastica_finder_report
-     * @param string $term
      * @return array
      */
-    public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_report, string $term = ''): array
+    public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_report): array
     {
-        return $this->homeEntity($request, $elastica_finder_report, 'slug:' . $term . '-*');
+        return $this->homeEntity($request, $elastica_finder_report);
     }
 
     /**

@@ -1,10 +1,10 @@
-{# 
- This file is part of the Ngen - CSIRT Network Report System.
+{#
+This file is part of the Ngen - CSIRT Network Report System.
 
- (c) CERT UNLP <support@cert.unlp.edu.ar>
+(c) CERT UNLP <support@cert.unlp.edu.ar>
 
- This source file is subject to the GPL v3.0 license that is bundled
- with this source code in the file LICENSE.
+This source file is subject to the GPL v3.0 license that is bundled
+with this source code in the file LICENSE.
 #}
 {% extends 'CertUnlpNgenBundle::frontend.html.twig' %}
 
@@ -19,7 +19,7 @@
 {% block sideBar_search_path %}{{ path('cert_unlp_ngen_host_search') }}{% endblock %}
 
 {% block content_body %}
-    {% include 'CertUnlpNgenBundle:Host:Frontend/list/hostList.html.twig' with {'Hosts': objects  } %}
+    {% include 'CertUnlpNgenBundle:Host:Frontend/list/hostList.html.twig' %}
 {% endblock %}
 
 

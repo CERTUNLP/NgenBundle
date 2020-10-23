@@ -55,7 +55,7 @@ abstract class NetworkElement extends EntityApiFrontend
      * @var Address
      * @Assert\NotNull(message="not a valid address")
      * @JMS\Expose()
-     * @JMS\Groups({"read","write","fundamental"})
+     * @JMS\Groups({"read","write","fundamental","list"})
      */
     private $address;
 

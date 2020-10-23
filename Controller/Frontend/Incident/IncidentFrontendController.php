@@ -161,13 +161,10 @@ class IncidentFrontendController extends FrontendController
     /**
      * {@inheritDoc}
      */
-    public function homeEntity(Request $request, PaginatedFinderInterface $finder, string $term = '', int $limit = 7, string $defaultSortFieldName = 'createdAt', string $defaultSortDirection = 'desc'): array
+    public function homeEntity(Request $request, PaginatedFinderInterface $finder): array
     {
-        if (!$term) {
-            $term = $request->get('term') ?: '*';
-        }
         $quickSearchForm = $this->getFormFactory()->createBuilder(IncidentSearchType::class, (new Incident), array('csrf_protection' => true));
-        $search = $this->searchEntity($request, $finder, $term, $limit, $defaultSortFieldName, $defaultSortDirection, 'pageobject', 'object');
+        $search = $this->searchEntity($request, $finder);
         return array('objects' => $search['objects'], 'term' => $search['term'], 'search_form' => $quickSearchForm->getForm()->createView());
 
     }

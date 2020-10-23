@@ -1,10 +1,10 @@
-{# 
- This file is part of the Ngen - CSIRT Incident Report System.
- 
- (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
- This source file is subject to the GPL v3.0 license that is bundled
- with this source code in the file LICENSE.
+{#
+This file is part of the Ngen - CSIRT Incident Report System.
+
+(c) CERT UNLP <support@cert.unlp.edu.ar>
+
+This source file is subject to the GPL v3.0 license that is bundled
+with this source code in the file LICENSE.
 #}
 
 <div class="card shadow mb-4">
@@ -16,19 +16,19 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table id="tabla_hosts" class="table table-bordered">
+            <table id="tabla_objects" class="table table-bordered">
                 <thead>
                 <tr role="row">
                     <th>{{ 'Action'|trans }}</th>
-                    <th>{{ knp_pagination_sortable(hosts, 'Active'|trans, 'active') }}</th>
-                    <th>{{ knp_pagination_sortable(hosts, 'Address'|trans , 'address') }}</th>
-                    <th>{{ knp_pagination_sortable(hosts, 'Network'|trans, 'network') }}</th>
-                    <th>{{ knp_pagination_sortable(hosts, 'Created'|trans, 'created') }}</th>
-                    <th>{{ knp_pagination_sortable(hosts, 'Updated'|trans, 'updated') }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'Active'|trans, 'active') }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'Address'|trans , 'address') }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'Network'|trans, 'network') }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'Created'|trans, 'created') }}</th>
+                    <th>{{ knp_pagination_sortable(objects, 'Updated'|trans, 'updated') }}</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for host in hosts %}
+                {% for host in objects %}
                     {% include 'CertUnlpNgenBundle:Host:Frontend/list/hostListRow.html.twig' with {'host': host} %}
                 {% endfor %}
                 </tbody>
@@ -37,6 +37,6 @@
     </div>
 </div>
 <div class="pagination justify-content-center">
-    {{ knp_pagination_render(hosts, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}
+    {{ knp_pagination_render(objects, null, {}, { "prev_label": "Previous", "next_label": "Next", "first_label": "First", "last_label": "Last"}) }}
 </div>
 

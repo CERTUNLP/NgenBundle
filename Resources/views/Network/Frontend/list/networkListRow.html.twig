@@ -1,19 +1,25 @@
-{# 
- This file is part of the Ngen - CSIRT network Report System.
- 
- (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
- This source file is subject to the GPL v3.0 license that is bundled
- with this source code in the file LICENSE.
+{#
+This file is part of the Ngen - CSIRT network Report System.
+
+(c) CERT UNLP <support@cert.unlp.edu.ar>
+
+This source file is subject to the GPL v3.0 license that is bundled
+with this source code in the file LICENSE.
 #}
 {% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 
 <tr data-id="{{ network.addressAndMask }}">
     <td class="text-center">
-        {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':network , 'detail_link':path('cert_unlp_ngen_network_detail_network_id',{'id':network.id}) ,'edit_link': path('cert_unlp_ngen_network_edit_network_id',{'id':network.id})} %}
+        {% if network.id %}
+            {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':network , 'detail_link':path('cert_unlp_ngen_network_detail_network_id',{'id':network.id}) ,'edit_link': path('cert_unlp_ngen_network_edit_network_id',{'id':network.id})} %}
+        {% endif %}
     </td>
     <td id="state_label_holder" class="text-center">
-        {{ print.statusdropbox(network) }}
+        {% if network.id %}
+            {{ print.statusdropbox(network) }}
+        {% else %}
+            {{ print.statusbox(network) }}
+        {% endif %}
     </td>
     <td class="text-center">
         <div class="float-left">
@@ -25,12 +31,20 @@
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colordropbox(network.networkEntity.color,network.networkEntity.icon,network.networkEntity.name,path('cert_unlp_ngen_network_entity_detail_id',{'id': network.networkEntity.id}),network.networkEntity) }}
+            {% if network.networkEntity.id %}
+                {{ print.colordropbox(network.networkEntity.color,network.networkEntity.icon,network.networkEntity.name,network.networkEntity) }}
+            {% else %}
+                {{ print.colordropbox(network.networkEntity.color,network.networkEntity.icon,network.networkEntity.name,'#',network.networkEntity) }}
+            {% endif %}
         </div>
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colordropbox(network.networkAdmin.color,network.networkAdmin.icon,network.networkAdmin.name,path('cert_unlp_ngen_network_detail_network_admin_id',{'id': network.networkAdmin.id}),network.networkAdmin.name  ) }}
+            {% if network.networkAdmin.id %}
+                {{ print.colordropbox(network.networkAdmin.color,network.networkAdmin.icon,network.networkAdmin.name,path('cert_unlp_ngen_network_detail_network_admin_id',{'id': network.networkAdmin.id}),network.networkAdmin.name  ) }}
+            {% else %}
+                {{ print.colordropbox(network.networkAdmin.color,network.networkAdmin.icon,network.networkAdmin.name,'#',network.networkAdmin.name  ) }}
+            {% endif %}
         </div>
     </td>
     <td class="text-center">

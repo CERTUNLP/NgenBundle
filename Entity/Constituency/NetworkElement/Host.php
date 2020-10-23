@@ -24,6 +24,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Constituency\NetworkElement\HostRepository")
  * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\HostListener"})
  * @JMS\ExclusionPolicy("all")
+ * @JMS\AccessorOrder("custom", custom = {"active", "address" ,"network","created_at","updated_at"})
  * @UniqueEntity(
  *     fields={"domain"},
  *     errorPath="address",
@@ -50,7 +51,7 @@ class Host extends NetworkElement
      * @var Network
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network", inversedBy="hosts", cascade={"persist"}))
      * @JMS\Expose()
-     * @JMS\Groups({"read","write"})
+     * @JMS\Groups({"read","write","list"})
      */
     private $network;
     /**
