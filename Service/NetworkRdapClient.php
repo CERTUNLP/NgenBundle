@@ -49,12 +49,12 @@ class NetworkRdapClient
     private $response;
 
 
-    public function __construct(NetworkEntityRepository $network_entity_repository, NetworkAdminRepository $network_admin_repository, ContactCaseRepository $contact_case_repository)
+    public function __construct(NetworkEntityRepository $network_entity_repository, NetworkAdminRepository $network_admin_repository, ContactCaseRepository $contact_case_repository, string $evidence_path)
     {
         $this->network_entity_repository = $network_entity_repository;
         $this->network_admin_repository = $network_admin_repository;
         $this->contact_case_repository = $contact_case_repository;
-        $this->rdap = new Rdap();
+        $this->rdap = new Rdap(true, $evidence_path . '../rdap-cache');
     }
 
     /**
@@ -235,7 +235,7 @@ class NetworkRdapClient
             if (!isset($contact[$id]['name'])) {
                 $contact[$id]['name'] = false;
             }
-            if (!isset($contact[$id]['email']) ||(isset($contact[$id]['email']) && !$contact[$id]['email']) ) {
+            if (!isset($contact[$id]['email']) || (isset($contact[$id]['email']) && !$contact[$id]['email'])) {
                 unset($contact[$id]);
             }
         }
