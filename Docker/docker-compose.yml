@@ -51,7 +51,7 @@ services:
             - DB_PASSWORD=ngenpass
             - MAILER_TRANSPORT=smtp
             - MAILER_PORT=1025
-#            - MAILER_ENCRYPTION=null
+            - MAILER_ENCRYPTION=null
             - MAILER_HOST=ngen-testing-mail
             - MAILER_USER=null
             - MAILER_PASSWORD=null
