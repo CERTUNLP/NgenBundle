@@ -46,7 +46,7 @@ function update_database_and_index {
   else
    # La base no existe inserto la primer version
    echo "Instalando base inicial"
-   php bin/console doctrine:database:import /root/base.inicial.sq
+   php bin/console doctrine:database:import /root/base.inicial.sql
    sleep 10
    php bin/console doctrine:migrations:migrate --no-interaction
    php bin/console fos:elastica:populate --no-reset --env prod

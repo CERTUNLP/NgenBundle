@@ -37,9 +37,9 @@ services:
         volumes:
             - '../:/application/ngen_basic/src/NgenBundle'
             - '../composer.json:/application/ngen_basic/composer.json'
-            - '../composer.lock:/application/ngen_basic/composer.lock'
-            - '../../../vendor:/application/ngen_basic/vendor' #recomended for local debug after docker cp vendor
-            - '../../../web/app_dev.php:/application/ngen_basic/web/app_dev.php' #recomended for local debug after docker cp vendor
+              #- '../composer.lock/:/application/ngen_basic/composer.lock'
+              #- '../../../vendor:/application/ngen_basic/vendor' #recomended for local debug after docker cp vendor
+              #- '../../../web/app_dev.php:/application/ngen_basic/web/app_dev.php' #recomended for local debug after docker cp vendor
             - './docker-build/final/files/AppKernel.php:/application/ngen_basic/app/AppKernel.php'
             - ngen34-incidentes:/application/ngen_basic/app/Resources/incident
             - ngen34-feeds:/application/ngen_basic/app/Resources/app/Resources/feed/
