@@ -3,7 +3,7 @@ MAINTAINER CERTunlp
 WORKDIR "/application"
 ENV APACHE_DOCUMENT_ROOT /application/ngen_basic/web
 
-RUN rm -fr  /application/ngen_basic/src/NgenBundle && cd /application/ngen_basic/src && git clone -b master-docker-3.4 https://github.com/CERTUNLP/NgenBundle.git
+#RUN rm -fr  /application/ngen_basic/src/NgenBundle && cd /application/ngen_basic/src && git clone -b master-docker-3.4 https://github.com/CERTUNLP/NgenBundle.git
 
 RUN sed -i '/- { resource: security.yml }/c\'  /application/ngen_basic/app/config/config.yml
 RUN sed -i '/- { resource: services.yml }/c\    - { resource: "@CertUnlpNgenBundle/Resources/config/config.yml" }\n    - { resource: "@CertUnlpNgenBundle/Resources/config/security.yml" }'  /application/ngen_basic/app/config/config.yml

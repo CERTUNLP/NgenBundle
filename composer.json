@@ -26,7 +26,11 @@
   "autoload": {
     "psr-4": {
       "CertUnlp\\NgenBundle\\": "src/NgenBundle/"
-    }
+    },
+    "classmap": [
+      "app/AppKernel.php",
+      "app/AppCache.php"
+    ]
   },
   "require": {
     "php": ">=7.2",
