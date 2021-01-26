@@ -248,6 +248,8 @@ class IncidentDecision extends EntityApiFrontend
         $incident->getPriority() ?: $incident->setPriority($this->getPriority());
         $incident->getState() ?: $incident->setState($this->getState());
         $incident->getType() ?: $incident->setType($this->getType());
+        $incident->getUnattendedState() ?: $incident->setUnattendedState($this->getUnattendedState());
+        $incident->getUnsolvedState() ?: $incident->setUnsolvedState($this->getUnsolvedState());
 
         if ($incident->getState() && $incident->getState()->isInitial()) {
             $incident->setState($this->getState());

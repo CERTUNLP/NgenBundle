@@ -464,7 +464,7 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-     * @param IncidentState $unattendedState
+     * @param IncidentState|null $unattendedState
      * @return Incident
      */
     public function setUnattendedState(IncidentState $unattendedState = null): self
@@ -482,7 +482,7 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-     * @param IncidentState $unsolvedState
+     * @param IncidentState|null $unsolvedState
      * @return Incident
      */
     public function setUnsolvedState(IncidentState $unsolvedState = null): self
