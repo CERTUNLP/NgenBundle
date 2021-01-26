@@ -118,23 +118,10 @@ class IncidentHandler extends Handler
         $unClosedIncidents = [];
         foreach ($incidents as $incident) {
             if ($incident->setState($incident->getUnsolvedState())) {
-                //$this->entity_manager->persist($incident);
-                $closedIncidents[$incident->getId()] = [
-                    'id' => $incident->getSlug(),
-                    'type' => $incident->getType()->getSlug(),
-                    'date' => $incident->getDate()->format('Y-m-d H:i:s'),
-                    'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
-                    'newState' => $incident->getState()->getSlug()
-                ];
+                $this->getEntityManager()->persist($incident);
+                $closedIncidents[] = $incident;
             } else {
-                $unClosedIncidents[$incident->getId()] = [
-                    'id' => $incident->getSlug(),
-                    'type' => $incident->getType()->getSlug(),
-                    'date' => $incident->getDate()->format('Y-m-d H:i:s'),
-                    'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
-                    'actualState' => $incident->getState()->getSlug(),
-                    'requiredState' => $incident->getUnsolvedState()->getSlug()
-                ];
+                $unClosedIncidents[] = $incident;
             }
         }
         $this->getEntityManager()->flush();
@@ -159,23 +146,11 @@ class IncidentHandler extends Handler
         $unClosedIncidents = [];
         foreach ($incidents as $incident) {
             if ($incident->setState($incident->getUnattendedState())) {
-                //$this->entity_manager->persist($incident);
-                $closedIncidents[$incident->getId()] = ['id' => $incident->getSlug(),
-                    'type' => $incident->getType()->getSlug(),
-                    'date' => $incident->getDate()->format('Y-m-d H:i:s'),
-                    'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
-                    'newState' => $incident->getState()->getSlug()];
+                $this->getEntityManager()->persist($incident);
+                $closedIncidents[] = $incident;
             } else {
-                $unClosedIncidents[$incident->getId()] = [
-                    'id' => $incident->getSlug(),
-                    'type' => $incident->getType()->getSlug(),
-                    'date' => $incident->getDate()->format('Y-m-d H:i:s'),
-                    'updated' => $incident->getUpdatedAt()->format('Y-m-d H:i:s'),
-                    'actualState' => $incident->getState()->getSlug(),
-                    'requiredState' => $incident->getUnattendedState()
-                ];
+                $unClosedIncidents[] = $incident;
             }
-
         }
         $this->getEntityManager()->flush();
         return array($closedIncidents, $unClosedIncidents);

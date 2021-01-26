@@ -11,12 +11,24 @@
 
 namespace CertUnlp\NgenBundle\Command;
 
+use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Service\Api\Handler\Incident\IncidentHandler;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ChangeDueToInactivityCommand extends ContainerAwareCommand
 {
+    /**
+     * @var IncidentHandler
+     */
+    private $incident_handler;
+
+    public function __construct(IncidentHandler $incident_handler)
+    {
+        parent::__construct(null);
+        $this->incident_handler = $incident_handler;
+    }
 
     public function configure()
     {
@@ -27,29 +39,55 @@ class ChangeDueToInactivityCommand extends ContainerAwareCommand
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('[incidents]: Starting.');
-        $output->writeln('[incidents]: Change state of old incidents...');
+        $output->writeln('[incidents]: <info>Starting.</info>');
+        $output->writeln('[incidents]: <info>Changing states of old incidents...</info>');
 
-        $unattended = $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->closeUnattendedIncidents();
-        $output->writeln('[incidents]: Changed unattended incidents: ' . count($unattended[0]));
-        foreach ($unattended[0] as $incident) {
-            $output->writeln('[incidents]: Changed incident id: ' . $incident['id'] . ' to state' . $incident['newState']);
+        [$unattended_changed, $unattended_not_changed] = $this->getIncidentHandler()->closeUnattendedIncidents();
+        $output->writeln('[incidents]: <info>Changed unattended incidents: ' . count($unattended_changed) . '</info>');
+        foreach ($unattended_changed as $incident) {
+            $output->writeln($this->printChanged($incident));
         }
-        $output->writeln('[incidents]: Could NOT change unattended incidents: ' . count($unattended[1]));
-        foreach ($unattended[1] as $incident) {
-            $output->writeln('[incidents]: Not Changed incident id: ' . $incident['id'] . ' form state ' . $incident['actualState'] . ' to state' . $incident['requiredState']);
+        $output->writeln('[incidents]: <comment>Could NOT change unattended incidents: ' . count($unattended_not_changed) . '</comment>');
+        foreach ($unattended_not_changed as $incident) {
+            $output->writeln($this->printUnchanged($incident));
         }
-        $unsolved = $this->getContainer()->get('cert_unlp.ngen.incident.internal.handler')->closeUnsolvedIncidents();
+        [$unsolved_changed, $unsolved_not_changed] = $this->getIncidentHandler()->closeUnsolvedIncidents();
 
-        $output->writeln('[incidents]: Changed unsolved incidents: ' . count($unsolved[0]));
-        foreach ($unsolved[0] as $incident) {
-            $output->writeln('[incidents]: Changed incident id: ' . $incident['id'] . ' to state' . $incident['newState']);
+        $output->writeln('[incidents]: <info>Changed unsolved incidents: ' . count($unsolved_changed) . '</info>');
+        foreach ($unsolved_changed as $incident) {
+            $output->writeln($this->printChanged($incident));
         }
-        $output->writeln('[incidents]: Could NOT change unsolved incidents: ' . count($unsolved[1]));
-        foreach ($unsolved[1] as $incident) {
-            $output->writeln('[incidents]: Not Changed incident id: ' . $incident['id'] . ' form state ' . $incident['actualState'] . ' to state' . $incident['requiredState']);
+        $output->writeln('[incidents]: <comment>Could NOT change unsolved incidents: ' . count($unsolved_not_changed) . '</comment>');
+        foreach ($unsolved_not_changed as $incident) {
+            $output->writeln($this->printUnchanged($incident));
         }
-        $output->writeln('[incidents]: Done.');
+        $output->writeln('[incidents]:<info> Done.</info>');
+    }
+
+    /**
+     * @return IncidentHandler
+     */
+    public function getIncidentHandler(): IncidentHandler
+    {
+        return $this->incident_handler;
+    }
+
+    /**
+     * @param Incident $incident
+     * @return string
+     */
+    private function printChanged(Incident $incident): string
+    {
+        return '[incidents]:<info>Changed incident id: ' . $incident->getId() . ' form state "' . $incident->getStateEdge()->getOldState()->getSlug() . '" to "' . $incident->getStateEdge()->getNewState()->getSlug() . '"</info>';
+    }
+
+    /**
+     * @param $incident
+     * @return string
+     */
+    private function printUnchanged(Incident $incident): string
+    {
+        return '[incidents]:<comment> Not Changed incident id: ' . $incident->getId() . ' form state "' . $incident->getState()->getSlug() . '" to "' . $incident->getUnattendedState()->getSlug() . '"</comment>';
     }
 
 }
