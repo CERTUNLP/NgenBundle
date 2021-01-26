@@ -73,6 +73,7 @@ class Incident extends EntityApiFrontend
      *
      * @ORM\Column(name="response_dead_line", type="datetime",nullable=true))
      * @JMS\Type("DateTime<'Y-m-d h:m:s'>")
+     * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */
     private $responseDeadLine;

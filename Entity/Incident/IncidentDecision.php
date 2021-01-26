@@ -5,10 +5,10 @@ namespace CertUnlp\NgenBundle\Entity\Incident;
 use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
 use CertUnlp\NgenBundle\Entity\EntityApiFrontend;
 use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
+use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
 
 /**
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Incident\IncidentDecisionRepository")
@@ -122,24 +122,6 @@ class IncidentDecision extends EntityApiFrontend
     private $autoSaved = false;
 
     /**
-     * @return IncidentPriority|null
-     */
-    public function getPriority(): ?IncidentPriority
-    {
-        return $this->priority;
-    }
-
-    /**
-     * @param IncidentPriority|null $priority
-     * @return IncidentDecision
-     */
-    public function setPriority(?IncidentPriority $priority): IncidentDecision
-    {
-        $this->priority = $priority;
-        return $this;
-    }
-
-    /**
      * @return bool
      */
     public function canEditFundamentals(): bool
@@ -251,6 +233,9 @@ class IncidentDecision extends EntityApiFrontend
         $incident->getUnattendedState() ?: $incident->setUnattendedState($this->getUnattendedState());
         $incident->getUnsolvedState() ?: $incident->setUnsolvedState($this->getUnsolvedState());
 
+        $incident->getResponseDeadLine() ?: $incident->setResponseDeadLine((new \DateTime())->modify('+' . $incident->getPriority()->getUnresolutionTime() . 'minutes'));
+        $incident->getSolveDeadLine() ?: $incident->setSolveDeadLine((new \DateTime())->modify('+' . $incident->getPriority()->getUnresponseTime()  . 'minutes'));
+
         if ($incident->getState() && $incident->getState()->isInitial()) {
             $incident->setState($this->getState());
         }
@@ -272,6 +257,78 @@ class IncidentDecision extends EntityApiFrontend
     public function setTlp(?IncidentTlp $tlp): IncidentDecision
     {
         $this->tlp = $tlp;
+        return $this;
+    }
+
+    /**
+     * @return IncidentPriority|null
+     */
+    public function getPriority(): ?IncidentPriority
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param IncidentPriority|null $priority
+     * @return IncidentDecision
+     */
+    public function setPriority(?IncidentPriority $priority): IncidentDecision
+    {
+        $this->priority = $priority;
+        return $this;
+    }
+
+    /**
+     * @return IncidentState|null
+     */
+    public function getState(): ?IncidentState
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param IncidentState|null $state
+     * @return IncidentDecision
+     */
+    public function setState(?IncidentState $state): IncidentDecision
+    {
+        $this->state = $state;
+        return $this;
+    }
+
+    /**
+     * @return IncidentState|null
+     */
+    public function getUnattendedState(): ?IncidentState
+    {
+        return $this->unattendedState;
+    }
+
+    /**
+     * @param IncidentState|null $unattendedState
+     * @return IncidentDecision
+     */
+    public function setUnattendedState(?IncidentState $unattendedState): IncidentDecision
+    {
+        $this->unattendedState = $unattendedState;
+        return $this;
+    }
+
+    /**
+     * @return IncidentState|null
+     */
+    public function getUnsolvedState(): ?IncidentState
+    {
+        return $this->unsolvedState;
+    }
+
+    /**
+     * @param IncidentState|null $unsolvedState
+     * @return IncidentDecision
+     */
+    public function setUnsolvedState(?IncidentState $unsolvedState): IncidentDecision
+    {
+        $this->unsolvedState = $unsolvedState;
         return $this;
     }
 
@@ -312,65 +369,11 @@ class IncidentDecision extends EntityApiFrontend
     }
 
     /**
-     * @return IncidentState|null
-     */
-    public function getState(): ?IncidentState
-    {
-        return $this->state;
-    }
-
-    /**
-     * @param IncidentState|null $state
-     * @return IncidentDecision
-     */
-    public function setState(?IncidentState $state): IncidentDecision
-    {
-        $this->state = $state;
-        return $this;
-    }
-
-    /**
      * @return int|null
      */
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return IncidentState|null
-     */
-    public function getUnattendedState(): ?IncidentState
-    {
-        return $this->unattendedState;
-    }
-
-    /**
-     * @param IncidentState|null $unattendedState
-     * @return IncidentDecision
-     */
-    public function setUnattendedState(?IncidentState $unattendedState): IncidentDecision
-    {
-        $this->unattendedState = $unattendedState;
-        return $this;
-    }
-
-    /**
-     * @return IncidentState|null
-     */
-    public function getUnsolvedState(): ?IncidentState
-    {
-        return $this->unsolvedState;
-    }
-
-    /**
-     * @param IncidentState|null $unsolvedState
-     * @return IncidentDecision
-     */
-    public function setUnsolvedState(?IncidentState $unsolvedState): IncidentDecision
-    {
-        $this->unsolvedState = $unsolvedState;
-        return $this;
     }
 
     /**
