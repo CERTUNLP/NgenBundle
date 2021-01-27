@@ -306,8 +306,54 @@ class Incident extends EntityApiFrontend
      */
     public function setRaw(string $raw): Incident
     {
-        $this->raw = $raw;
+        $this->setter($this->raw, $raw);
         return $this;
+    }
+
+    /**
+     * @param mixed $property
+     * @param mixed $value
+     * @param bool $fundamental
+     * @return bool
+     */
+    public function setter(&$property, $value, bool $fundamental = false): bool
+    {
+        if ($this->getBehavior()) {
+            return $this->getBehavior()->setter($property, $value, $fundamental);
+        }
+        $property = $value;
+        return true;
+    }
+
+    /**
+     * @return StateBehavior
+     */
+    public function getBehavior(): ?StateBehavior
+    {
+        return $this->getState() ? $this->getState()->getBehavior() : null;
+    }
+
+    /**
+     * Get $state
+     *
+     * @return IncidentState
+     */
+    public function getState(): ?IncidentState
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set state
+     * @param IncidentState $state
+     * @return Incident
+     */
+    public function setState(IncidentState $state = null): ?Incident
+    {
+        if ($this->getState()) {
+            return $this->getState()->changeState($this, $state);
+        }
+        return $this->changeState($state);
     }
 
     /**
@@ -363,29 +409,6 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-     * Get $state
-     *
-     * @return IncidentState
-     */
-    public function getState(): ?IncidentState
-    {
-        return $this->state;
-    }
-
-    /**
-     * Set state
-     * @param IncidentState $state
-     * @return Incident
-     */
-    public function setState(IncidentState $state = null): ?Incident
-    {
-        if ($this->getState()) {
-            return $this->getState()->changeState($this, $state);
-        }
-        return $this->changeState($state);
-    }
-
-    /**
      * Set state
      * @param IncidentState $state
      * @return Incident
@@ -412,29 +435,6 @@ class Incident extends EntityApiFrontend
     {
         $this->setter($this->responseDeadLine, $responseDeadLine);
         return $this;
-    }
-
-    /**
-     * @param mixed $property
-     * @param mixed $value
-     * @param bool $fundamental
-     * @return bool
-     */
-    public function setter(&$property, $value, bool $fundamental = false): bool
-    {
-        if ($this->getBehavior()) {
-            return $this->getBehavior()->setter($property, $value, $fundamental);
-        }
-        $property = $value;
-        return true;
-    }
-
-    /**
-     * @return StateBehavior
-     */
-    public function getBehavior(): ?StateBehavior
-    {
-        return $this->getState() ? $this->getState()->getBehavior() : null;
     }
 
     /**
