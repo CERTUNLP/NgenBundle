@@ -57,7 +57,7 @@ services:
             - DB_PASSWORD=ngenpass
             - MAILER_TRANSPORT=smtp
             - MAILER_PORT=1025
-#            - MAILER_ENCRYPTION=~
+            - MAILER_ENCRYPTION=~
             - MAILER_HOST=ngen-mail
             - MAILER_USER=null
             - MAILER_PASSWORD=null
@@ -83,6 +83,7 @@ services:
             - PASS_GRAFANA=admin
             - GRAFANA_HOST=http://ngen-grafana:3000
             - PHP_IDE_CONFIG=serverName=docker-server
+            - XDEBUG_SESSION=docker
         links:
             - ngen-elastic:ngen-elastic
             - ngen-grafana:ngen-grafana
@@ -98,8 +99,8 @@ services:
             - 443:443
             - 1443:1443
         links:
-            - ngen-app:ngen-app
-            - ngen-grafana:ngen-grafana
+            - ngen-app:ngen-testing-app
+            - ngen-grafana:ngen-testing-grafana
         networks: [ 'ngen' ]
     ngen-elastic:
         image: docker.elastic.co/elasticsearch/elasticsearch:6.8.12
