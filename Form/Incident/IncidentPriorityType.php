@@ -54,10 +54,10 @@ class IncidentPriorityType extends EntityForm
             ->add('code', IntegerType::class, array(
                 'required' => true,
             ))
-            ->add('resolution_time', IntegerType::class, array(
+            ->add('solveTime', IntegerType::class, array(
                 'required' => true,
             ))
-            ->add('unresolution_time', IntegerType::class, array(
+            ->add('unsolveTime', IntegerType::class, array(
                 'required' => true,
             ))
             ->add('response_time', IntegerType::class, array(

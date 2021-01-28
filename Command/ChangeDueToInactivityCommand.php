@@ -42,13 +42,13 @@ class ChangeDueToInactivityCommand extends ContainerAwareCommand
         $output->writeln('[incidents]: <info>Starting.</info>');
         $output->writeln('[incidents]: <info>Changing states of old incidents...</info>');
 
-        [$unattended_changed, $unattended_not_changed] = $this->getIncidentHandler()->closeUnattendedIncidents();
-        $output->writeln('[incidents]: <info>Changed unattended incidents: ' . count($unattended_changed) . '</info>');
-        foreach ($unattended_changed as $incident) {
+        [$unresponded_changed, $unresponded_not_changed] = $this->getIncidentHandler()->closeUnrespondedIncidents();
+        $output->writeln('[incidents]: <info>Changed unresponded incidents: ' . count($unresponded_changed) . '</info>');
+        foreach ($unresponded_changed as $incident) {
             $output->writeln($this->printChanged($incident));
         }
-        $output->writeln('[incidents]: <comment>Could NOT change unattended incidents: ' . count($unattended_not_changed) . '</comment>');
-        foreach ($unattended_not_changed as $incident) {
+        $output->writeln('[incidents]: <comment>Could NOT change unresponded incidents: ' . count($unresponded_not_changed) . '</comment>');
+        foreach ($unresponded_not_changed as $incident) {
             $output->writeln($this->printUnchanged($incident));
         }
         [$unsolved_changed, $unsolved_not_changed] = $this->getIncidentHandler()->closeUnsolvedIncidents();
@@ -87,7 +87,7 @@ class ChangeDueToInactivityCommand extends ContainerAwareCommand
      */
     private function printUnchanged(Incident $incident): string
     {
-        return '[incidents]:<comment> Not Changed incident id: ' . $incident->getId() . ' form state "' . $incident->getState()->getSlug() . '" to "' . $incident->getUnattendedState()->getSlug() . '"</comment>';
+        return '[incidents]:<comment> Not Changed incident id: ' . $incident->getId() . ' form state "' . $incident->getState()->getSlug() . '" to "' . $incident->getUnrespondedState()->getSlug() . '"</comment>';
     }
 
 }

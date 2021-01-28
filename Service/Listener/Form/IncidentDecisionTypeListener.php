@@ -43,7 +43,7 @@ class IncidentDecisionTypeListener extends EntityTypeListener
             $form->get('type')->setData($this->getEntitymanager()->getReference(IncidentType::class, 'undefined'));
             $form->get('feed')->setData($this->getEntitymanager()->getReference(IncidentFeed::class, 'undefined'));
             $form->get('state')->setData($this->getEntitymanager()->getReference(IncidentState::class, 'undefined'));
-            $form->get('unattendedState')->setData($this->getEntitymanager()->getReference(IncidentState::class, 'undefined'));
+            $form->get('unrespondedState')->setData($this->getEntitymanager()->getReference(IncidentState::class, 'undefined'));
             $form->get('unsolvedState')->setData($this->getEntitymanager()->getReference(IncidentState::class, 'undefined'));
             $form->get('impact')->setData($this->getEntitymanager()->getReference(IncidentImpact::class, 'undefined'));
             $form->get('urgency')->setData($this->getEntitymanager()->getReference(IncidentUrgency::class, 'undefined'));

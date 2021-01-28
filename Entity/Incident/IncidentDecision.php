@@ -98,11 +98,11 @@ class IncidentDecision extends EntityApiFrontend
      * @var IncidentState|null
      * @CustomAssert\EntityNotActive()
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
-     * @ORM\JoinColumn(name="unattended_state", referencedColumnName="slug")
+     * @ORM\JoinColumn(name="unresponded_state", referencedColumnName="slug")
      * @JMS\Expose()
      * @JMS\Groups({"read","write"})
      */
-    private $unattendedState;
+    private $unrespondedState;
     /**
      * @var IncidentState|null
      * @CustomAssert\EntityNotActive()
@@ -230,11 +230,12 @@ class IncidentDecision extends EntityApiFrontend
         $incident->getPriority() ?: $incident->setPriority($this->getPriority());
         $incident->getState() ?: $incident->setState($this->getState());
         $incident->getType() ?: $incident->setType($this->getType());
-        $incident->getUnattendedState() ?: $incident->setUnattendedState($this->getUnattendedState());
+
+        $incident->getUnrespondedState() ?: $incident->setUnrespondedState($this->getUnrespondedState());
         $incident->getUnsolvedState() ?: $incident->setUnsolvedState($this->getUnsolvedState());
 
-        $incident->getResponseDeadLine() ?: $incident->setResponseDeadLine((new \DateTime())->modify('+' . $incident->getPriority()->getUnresolutionTime() . 'minutes'));
-        $incident->getSolveDeadLine() ?: $incident->setSolveDeadLine((new \DateTime())->modify('+' . $incident->getPriority()->getUnresponseTime()  . 'minutes'));
+        $incident->getResponseDeadLine() ?: $incident->setResponseDeadLine((new \DateTime())->modify('+' . $incident->getPriority()->getUnresponseTime() . 'minutes'));
+        $incident->getSolveDeadLine() ?: $incident->setSolveDeadLine((new \DateTime())->modify('+' . $incident->getPriority()->getUnsolveTime()  . 'minutes'));
 
         if ($incident->getState() && $incident->getState()->isInitial()) {
             $incident->setState($this->getState());
@@ -299,18 +300,18 @@ class IncidentDecision extends EntityApiFrontend
     /**
      * @return IncidentState|null
      */
-    public function getUnattendedState(): ?IncidentState
+    public function getUnrespondedState(): ?IncidentState
     {
-        return $this->unattendedState;
+        return $this->unrespondedState;
     }
 
     /**
-     * @param IncidentState|null $unattendedState
+     * @param IncidentState|null $unrespondedState
      * @return IncidentDecision
      */
-    public function setUnattendedState(?IncidentState $unattendedState): IncidentDecision
+    public function setUnrespondedState(?IncidentState $unrespondedState): IncidentDecision
     {
-        $this->unattendedState = $unattendedState;
+        $this->unrespondedState = $unrespondedState;
         return $this;
     }
 

@@ -39,16 +39,16 @@ var IncidentForm = Form.extend({
             $("#state").val(response.responseJSON[0].state.slug).trigger('change');
             $("#impact").val(response.responseJSON[0].priority.impact.slug).trigger('change');
             $("#urgency").val(response.responseJSON[0].priority.urgency.slug).trigger('change');
-            $("#unattendedState").val(response.responseJSON[0].unattended_state.slug).trigger('change');
+            $("#unrespondedState").val(response.responseJSON[0].unresponded_state.slug).trigger('change');
             $("#unsolvedState").val(response.responseJSON[0].unsolved_state.slug).trigger('change');
-           this.changePriorityTimes(response.responseJSON[0].priority);
+            this.changePriorityTimes(response.responseJSON[0].priority);
         }
     },
     changePriorityTimes: function (priority) {
         if (priority) {
-            var $calculo = new Date(new Date($("#solveDeadLine").val()).getTime() + priority.unresponse_time * 60000);
+            var $calculo = new Date(new Date($("#solveDeadLine").val()).getTime() + priority.unsolve_time * 60000);
             $("#solveDeadLine").val($calculo.toISOString().substring(0, 19));
-            var $calculo2 = new Date(new Date($("#responseDeadLine").val()).getTime() + priority.unresolution_time * 60000);
+            var $calculo2 = new Date(new Date($("#responseDeadLine").val()).getTime() + priority.unresponse_time * 60000);
             $("#responseDeadLine").val($calculo2.toISOString().substring(0, 19));
         }
     },

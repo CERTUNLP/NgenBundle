@@ -140,7 +140,7 @@ class IncidentType extends EntityForm
                 'required' => false,
                 'label' => 'Do not send report',
             ))
-            ->add('unattendedState', EntityType::class, array(
+            ->add('unrespondedState', EntityType::class, array(
                 'class' => IncidentState::class,
                 'placeholder' => 'Choose an incident state',
                 'attr' => array('class' => 'incidentDataFilter', 'help_text' => 'If none is selected, it may be selected by incident decisions.'),

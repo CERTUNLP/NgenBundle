@@ -139,13 +139,13 @@ class IncidentHandler extends Handler
     /**
      * @return array|array[]
      */
-    public function closeUnattendedIncidents(): array
+    public function closeUnrespondedIncidents(): array
     {
-        $incidents = $this->findAllUnattended();
+        $incidents = $this->findAllUnresponded();
         $closedIncidents = [];
         $unClosedIncidents = [];
         foreach ($incidents as $incident) {
-            if ($incident->setState($incident->getUnattendedState())) {
+            if ($incident->setState($incident->getUnrespondedState())) {
                 $this->getEntityManager()->persist($incident);
                 $closedIncidents[] = $incident;
             } else {
@@ -159,9 +159,9 @@ class IncidentHandler extends Handler
     /**
      * @return array| Incident[]
      */
-    public function findAllUnattended(): array
+    public function findAllUnresponded(): array
     {
-        return $this->getRepository()->findAllUnattended();
+        return $this->getRepository()->findAllUnresponded();
     }
 
     /**

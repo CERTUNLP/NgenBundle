@@ -55,7 +55,7 @@ Login: Login
 Code: Codigo
 Description: Descripción
 'Response Time': 'Tiempo de Respuesta'
-'Resolution Time': 'Tiempo de Resolución'
+'Solve Time': 'Tiempo de Resolución'
 active: activo
 'Priority Information': 'Información de la Prioridad'
 Priority: Prioridad
@@ -72,7 +72,7 @@ Decision: Decisión
 'Response delayed for': 'Respuesta atrasada por'
 minutes: minutos
 'Waiting for resolution': 'Esperando por resolución,'
-'Resolution delayed for': 'Resolución atrasada por'
+'Solve delayed for': 'Resolución atrasada por'
 'Resolved on time': 'Resuelto a tiempo'
 Detected: Detectado
 times: veces
@@ -112,7 +112,7 @@ Download: Descargar
 'My Incidents': 'Mis Incidentes'
 Status: Estado
 Assigned: Asignado
-'Response Time/Resolution Time': ' Tiempo respuesta/Tiempo de resolución'
+'Response Time/Solve Time': ' Tiempo respuesta/Tiempo de resolución'
 LTD: LTD
 'Unassigned Incidents': 'Incidentes no Asignados'
 'All Incidents': 'Todos los Incidentes'

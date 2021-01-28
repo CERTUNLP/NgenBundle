@@ -68,11 +68,11 @@ class IncidentPriority extends EntityApiFrontend
     private $unresponseTime = 0;
     /**
      * @var integer|null
-     * @ORM\Column(name="unresolution_time", type="integer")
+     * @ORM\Column(name="unsolve_time", type="integer")
      * @JMS\Expose()
      * @JMS\Groups({"read","write"})
      */
-    private $unresolutionTime;
+    private $unsolveTime;
     /**
      * @var int
      *
@@ -97,11 +97,11 @@ class IncidentPriority extends EntityApiFrontend
     private $responseTime;
     /**
      * @var integer|null
-     * @ORM\Column(name="resolution_time", type="integer")
+     * @ORM\Column(name="solve_time", type="integer")
      * @JMS\Expose()
      * @JMS\Groups({"read","write"})
      */
-    private $resolutionTime;
+    private $solveTime;
 
     /**
      * @return bool
@@ -110,13 +110,7 @@ class IncidentPriority extends EntityApiFrontend
     {
         return $this->getDeadIncidents()->isEmpty() && !$this->isUndefined();
     }
-    /**
-     * @return bool
-     */
-    public function isUndefined(): bool
-    {
-        return $this->getUrgency()->getSlug() === 'undefined' && $this->getImpact()->getSlug() === 'undefined';
-    }
+
     /**
      * Get incidents
      *
@@ -144,6 +138,50 @@ class IncidentPriority extends EntityApiFrontend
     public function setIncidents(Collection $incidents): IncidentPriority
     {
         $this->incidents = $incidents;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUndefined(): bool
+    {
+        return $this->getUrgency()->getSlug() === 'undefined' && $this->getImpact()->getSlug() === 'undefined';
+    }
+
+    /**
+     * @return IncidentUrgency
+     */
+    public function getUrgency(): ?IncidentUrgency
+    {
+        return $this->urgency;
+    }
+
+    /**
+     * @param IncidentUrgency $urgency
+     * @return IncidentPriority
+     */
+    public function setUrgency(IncidentUrgency $urgency): IncidentPriority
+    {
+        $this->urgency = $urgency;
+        return $this;
+    }
+
+    /**
+     * @return IncidentImpact
+     */
+    public function getImpact(): ?IncidentImpact
+    {
+        return $this->impact;
+    }
+
+    /**
+     * @param IncidentImpact $impact
+     * @return IncidentPriority
+     */
+    public function setImpact(IncidentImpact $impact): IncidentPriority
+    {
+        $this->impact = $impact;
         return $this;
     }
 
@@ -241,18 +279,18 @@ class IncidentPriority extends EntityApiFrontend
     /**
      * @return int|null
      */
-    public function getUnresolutionTime(): ?int
+    public function getUnsolveTime(): ?int
     {
-        return $this->unresolutionTime;
+        return $this->unsolveTime;
     }
 
     /**
-     * @param int|null $unresolutionTime
+     * @param int|null $unsolveTime
      * @return IncidentPriority
      */
-    public function setUnresolutionTime(?int $unresolutionTime): IncidentPriority
+    public function setUnsolveTime(?int $unsolveTime): IncidentPriority
     {
-        $this->unresolutionTime = $unresolutionTime;
+        $this->unsolveTime = $unsolveTime;
         return $this;
     }
 
@@ -295,18 +333,18 @@ class IncidentPriority extends EntityApiFrontend
     /**
      * @return int|null
      */
-    public function getResolutionTime(): ?int
+    public function getSolveTime(): ?int
     {
-        return $this->resolutionTime ?: 1;
+        return $this->solveTime ?: 1;
     }
 
     /**
-     * @param int|null $resolutionTime
+     * @param int|null $solveTime
      * @return IncidentPriority
      */
-    public function setResolutionTime(?int $resolutionTime): IncidentPriority
+    public function setSolveTime(?int $solveTime): IncidentPriority
     {
-        $this->resolutionTime = $resolutionTime;
+        $this->solveTime = $solveTime;
         return $this;
     }
 
@@ -332,42 +370,6 @@ class IncidentPriority extends EntityApiFrontend
     public function getDataIdentificationArray(): array
     {
         return ['impact' => $this->getImpact()->getId(), 'urgency' => $this->getUrgency()->getId()];
-    }
-
-    /**
-     * @return IncidentImpact
-     */
-    public function getImpact(): ?IncidentImpact
-    {
-        return $this->impact;
-    }
-
-    /**
-     * @param IncidentImpact $impact
-     * @return IncidentPriority
-     */
-    public function setImpact(IncidentImpact $impact): IncidentPriority
-    {
-        $this->impact = $impact;
-        return $this;
-    }
-
-    /**
-     * @return IncidentUrgency
-     */
-    public function getUrgency(): ?IncidentUrgency
-    {
-        return $this->urgency;
-    }
-
-    /**
-     * @param IncidentUrgency $urgency
-     * @return IncidentPriority
-     */
-    public function setUrgency(IncidentUrgency $urgency): IncidentPriority
-    {
-        $this->urgency = $urgency;
-        return $this;
     }
 }
 

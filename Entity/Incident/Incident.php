@@ -136,12 +136,12 @@ class Incident extends EntityApiFrontend
      * @var IncidentState
      * @CustomAssert\EntityNotActive()
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\State\IncidentState")
-     * @ORM\JoinColumn(name="unattended_state", referencedColumnName="slug")
+     * @ORM\JoinColumn(name="unresponded_state", referencedColumnName="slug")
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      * @JMS\MaxDepth(depth=1)
      */
-    private $unattendedState;
+    private $unrespondedState;
     /**
      * @var IncidentState
      * @CustomAssert\EntityNotActive()
@@ -459,18 +459,18 @@ class Incident extends EntityApiFrontend
     /**
      * @return IncidentState
      */
-    public function getUnattendedState(): ?IncidentState
+    public function getUnrespondedState(): ?IncidentState
     {
-        return $this->unattendedState;
+        return $this->unrespondedState;
     }
 
     /**
-     * @param IncidentState|null $unattendedState
+     * @param IncidentState|null $unrespondedState
      * @return Incident
      */
-    public function setUnattendedState(IncidentState $unattendedState = null): self
+    public function setUnrespondedState(IncidentState $unrespondedState = null): self
     {
-        $this->setter($this->unattendedState, $unattendedState);
+        $this->setter($this->unrespondedState, $unrespondedState);
         return $this;
     }
 
@@ -1031,10 +1031,10 @@ class Incident extends EntityApiFrontend
      * @throws Exception
      * @example if int positive incident is on time, if int is negative incident is delayed
      */
-    public function getResolutionDelayedDate()
+    public function getSolveDelayedDate()
     {
         $fecha = new DateTime();
-        $minutes = $this->getResolutionDelayedMinutes();
+        $minutes = $this->getSolveDelayedMinutes();
 
         $intervalo = 'PT' . ($minutes >= 0 ? $minutes : $minutes * -1) . 'M';
         $date_interval = new DateInterval($intervalo);
@@ -1047,28 +1047,28 @@ class Incident extends EntityApiFrontend
      * @return int
      * @throws Exception
      */
-    public function getResolutionDelayedMinutes(): int
+    public function getSolveDelayedMinutes(): int
     {
-        return $this->getPriority()->getResolutionTime() - $this->getResolutionMinutes();
+        return $this->getPriority()->getSolveTime() - $this->getSolveMinutes();
     }
 
     /**
      * @return int
      * @throws Exception
      */
-    public function getResolutionMinutes(): int
+    public function getSolveMinutes(): int
     {
-        return $this->getResolutionTime() / 60;
+        return $this->getSolveTime() / 60;
     }
 
     /**
      * @return int
      * @throws Exception
      */
-    public function getResolutionTime(): int
+    public function getSolveTime(): int
     {
-        if ($this->getResolutionDate()) {
-            return abs($this->getCreatedAt()->getTimestamp() - $this->getResolutionDate()->getTimestamp());
+        if ($this->getSolveDate()) {
+            return abs($this->getCreatedAt()->getTimestamp() - $this->getSolveDate()->getTimestamp());
         }
         return abs($this->getCreatedAt()->getTimestamp() - (new DateTime())->getTimestamp());
     }
@@ -1076,7 +1076,7 @@ class Incident extends EntityApiFrontend
     /**
      * @return DateTime|null
      */
-    public function getResolutionDate(): ?DateTime
+    public function getSolveDate(): ?DateTime
     {
         if (!$this->getResolvedChangeStates()->isEmpty()) {
             return $this->getResolvedChangeStates()->last()->getDate();
@@ -1102,9 +1102,9 @@ class Incident extends EntityApiFrontend
      * @return int
      * @throws Exception
      */
-    public function getResolutionPercentage(): int
+    public function getSolvePercentage(): int
     {
-        $minutes = ($this->getResolutionMinutes() * 100) / $this->getPriority()->getResolutionTime();
+        $minutes = ($this->getSolveMinutes() * 100) / $this->getPriority()->getSolveTime();
 
         return $minutes < 100 ? $minutes : 100;
     }

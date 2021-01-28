@@ -336,7 +336,7 @@ with this source code in the file LICENSE.
                                 </div>
                                 <div class="row">
                                     <div class="col-6 col-sm-6 border">
-                                        {{ 'Resolution Time' |trans }}
+                                        {{ 'Solve Time' |trans }}
                                     </div>
                                     <div class="col-6 col-sm-6 border">
                                         {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'label', 'response': false} %}
@@ -347,7 +347,7 @@ with this source code in the file LICENSE.
                                         {{ 'Unresponse State' |trans }}
                                     </div>
                                     <div class="col-6 col-sm-6 border">
-                                        {{ object.unattendedState }}
+                                        {{ object.unrespondedState }}
                                     </div>
                                 </div>
                                 <div class="row">

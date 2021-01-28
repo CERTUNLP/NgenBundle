@@ -419,11 +419,11 @@ fos_elastica:
                             type: keyword
                         responseTime:
                             type: keyword
-                        resolutionTime:
+                        solveTime:
                             type: keyword
                         unresponseTime:
                             type: keyword
-                        unresolutionTime:
+                        unsolveTime:
                             type: keyword
                         code:
                             type: integer
@@ -483,7 +483,7 @@ fos_elastica:
                             type: keyword
                         state:
                             type: keyword
-                        unattendedState:
+                        unrespondedState:
                             type: keyword
                         unsolvedState:
                             type: keyword

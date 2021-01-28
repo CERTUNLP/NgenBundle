@@ -176,19 +176,19 @@ class IncidentRepository extends ServiceEntityRepository
     }
 
 
-    public function findAllUnattended(): array
+    public function findAllUnresponded(): array
     {
-        return $this->queryAllUnattended()->getQuery()->getResult();
+        return $this->queryAllUnresponded()->getQuery()->getResult();
     }
 
     /**
      * @return QueryBuilder
      */
-    public function queryAllUnattended(): QueryBuilder
+    public function queryAllUnresponded(): QueryBuilder
     {
         return $this->queryAllNew()
-            ->andWhere('i.unattendedState != :undefined_state')
-            ->andWhere('i.unattendedState != i.state')
+            ->andWhere('i.unrespondedState != :undefined_state')
+            ->andWhere('i.unrespondedState != i.state')
             ->andWhere('i.responseDeadLine <=  CURRENT_TIMESTAMP()')
             ->setParameter('undefined_state', 'undefined');
     }

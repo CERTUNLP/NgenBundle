@@ -88,7 +88,7 @@ class IncidentDecisionType extends EntityForm
                 'class' => IncidentUrgency::class,
                 'placeholder' => 'Choose an urgency level.',
             ))
-            ->add('unattendedState', EntityType::class, array(
+            ->add('unrespondedState', EntityType::class, array(
                 'class' => IncidentState::class,
                 'placeholder' => 'Choose an incident state',
               ))
