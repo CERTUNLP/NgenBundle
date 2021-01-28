@@ -68,7 +68,7 @@ class IncidentReport extends EntityApiFrontend
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */
-    private $problem = '';
+    private $problem = null;
     /**
      * @var string
      *
@@ -76,7 +76,7 @@ class IncidentReport extends EntityApiFrontend
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */
-    private $derivated_problem = '';
+    private $derivated_problem = null;
     /**
      * @var string
      *
@@ -84,7 +84,7 @@ class IncidentReport extends EntityApiFrontend
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */
-    private $verification = '';
+    private $verification = null;
     /**
      * @var string
      *
@@ -92,7 +92,7 @@ class IncidentReport extends EntityApiFrontend
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */
-    private $recomendations = '';
+    private $recomendations = null;
     /**
      * @var string
      *
@@ -100,7 +100,7 @@ class IncidentReport extends EntityApiFrontend
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */
-    private $more_information = '';
+    private $more_information = null;
 
     /**
      * @return string|null
