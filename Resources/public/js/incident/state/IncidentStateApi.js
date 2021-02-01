@@ -15,6 +15,8 @@ var IncidentStateApi = ApiClient.extend({
         $.subscribe('/cert_unlp/incident/state/deactivate', $.proxy(this.deactivate, this));
         $.subscribe('/cert_unlp/incident/state/new', $.proxy(this.create, this));
         $.subscribe('/cert_unlp/incident/state/update', $.proxy(this.update, this));
+        $.subscribe('/cert_unlp/incident/state/read', $.proxy(this.get, this));
+
     },
     addDefaultChannel: function () {
         this.api.add("states", {stripTrailingSlash: true, url: 'incidents/states'});

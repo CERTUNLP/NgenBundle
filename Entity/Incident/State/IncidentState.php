@@ -354,8 +354,30 @@ class IncidentState extends EntityApiFrontend implements Translatable
     public function getNewStatesSlug(): Collection
     {
         return $this->getEdges()->map(static function (StateEdge $edge) {
-            return $edge->getNewState()->getSlug();
+            return ['slug' => $edge->getNewState()->getSlug(), 'name' => $edge->getNewState()->getName()];
         });
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return IncidentState
+     */
+    public function setName(string $name): IncidentState
+    {
+        $this->name = $name;
+        return $this;
     }
 
     /**
@@ -402,28 +424,6 @@ class IncidentState extends EntityApiFrontend implements Translatable
     public function __toString(): ?string
     {
         return $this->getName();
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return IncidentState
-     */
-    public function setName(string $name): IncidentState
-    {
-        $this->name = $name;
-        return $this;
     }
 
     /**

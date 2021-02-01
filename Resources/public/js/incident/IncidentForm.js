@@ -10,11 +10,13 @@ var IncidentForm = Form.extend({
     config: function (params) {
         this.setIncidentId();
         $("#tlp").on("change", $.proxy(this.changeTLP, this));
+        $("#state").on("change", $.proxy(this.getNextStates, this));
         $("#type").on("change", $.proxy(this.getIncidentDecision, this));
         $("#address").on("change", $.proxy(this.getIncidentDecision, this));
         $("#feed").on("change", $.proxy(this.getIncidentDecision, this));
         $(".incidentFilter").on("change", $.proxy(this.getIncident, this));
         this.changeTLP();
+        this.lastDecision = null;
     },
     changeTLP: function () {
         $("#tlp_label").first().html("TLP:" + $("#tlp option:selected").text());
@@ -28,21 +30,55 @@ var IncidentForm = Form.extend({
         $.publish('/cert_unlp/incident/decision/read', [$id, $.proxy(this.changeDefaults, this)]);
         this.laddaButton.stop();
     },
+    changeDefaults: function (response) {
+        if (response.responseJSON && response.responseJSON.length) {
+            this.lastDecision = response.responseJSON[0];
+            $("#state").val(response.responseJSON[0].state.slug).trigger('change', response.responseJSON[0]);
+            $("#tlp").val(response.responseJSON[0].tlp.slug).trigger('change.select2');
+            $("#impact").val(response.responseJSON[0].priority.impact.slug).trigger('change.select2');
+            $("#urgency").val(response.responseJSON[0].priority.urgency.slug).trigger('change.select2');
+            this.changePriorityTimes(response.responseJSON[0].priority);
+        }
+    },
+    getNextStates: function (event, args) {
+        if (!this.lastDecision) {
+            this.getIncidentDecision();
+        } else {
+            var $id = $("#state option:selected").val();
+            this.laddaButton = Ladda.create(this.getSubmitButton().get(0));
+            this.laddaButton.start();
+            $.publish('/cert_unlp/incident/state/read', [$id, $.proxy(this.changeDeadlineStates, this)]);
+            this.laddaButton.stop();
+        }
+    },
+    changeDeadlineStates: function (response) {
+        if (response.responseJSON && response.responseJSON.length) {
+            if (response.responseJSON[0].hasOwnProperty('new_states_slug')) {
+                // $prev_unrespondedState = $("#unrespondedState option:selected").val()
+                // $prev_unsolvedState = $("#unsolvedState option:selected").val()
+                $("#unrespondedState").empty()
+                $("#unsolvedState").empty()
+                response.responseJSON[0].new_states_slug.forEach(function ($state) {
+                    $("#unrespondedState").append('<option value=' + $state['slug'] + '>' + $state['name'] + '</option>');
+                    $("#unsolvedState").append('<option value=' + $state['slug'] + '>' + $state['name'] + '</option>');
+                })
+
+            }
+
+            if ($("#unsolvedState option[value='" + this.lastDecision.unresponded_state.slug + "']").length) {
+                $("#unrespondedState").val(this.lastDecision.unresponded_state.slug);
+            }
+            if ($("#unsolvedState option[value='" + this.lastDecision.unsolved_state.slug + "']").length) {
+                $("#unsolvedState").val(this.lastDecision.unsolved_state.slug);
+            }
+            $("#unrespondedState").trigger('change.select2')
+            $("#unsolvedState").trigger('change.select2')
+        }
+    },
     getIncident: function () {
         let $ip = $("#address").val();
         var $data = $("#type option:selected").val() + ($ip ? '/' + $ip : '');
         $.publish('/cert_unlp/incident/search', [$data, $.proxy(this.changeIncidentInfo, this)]);
-    },
-    changeDefaults: function (response) {
-        if (response.responseJSON && response.responseJSON.length) {
-            $("#tlp").val(response.responseJSON[0].tlp.slug).trigger('change');
-            $("#state").val(response.responseJSON[0].state.slug).trigger('change');
-            $("#impact").val(response.responseJSON[0].priority.impact.slug).trigger('change');
-            $("#urgency").val(response.responseJSON[0].priority.urgency.slug).trigger('change');
-            $("#unrespondedState").val(response.responseJSON[0].unresponded_state.slug).trigger('change');
-            $("#unsolvedState").val(response.responseJSON[0].unsolved_state.slug).trigger('change');
-            this.changePriorityTimes(response.responseJSON[0].priority);
-        }
     },
     changePriorityTimes: function (priority) {
         if (priority) {
