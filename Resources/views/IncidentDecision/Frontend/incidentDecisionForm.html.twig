@@ -58,10 +58,13 @@
     {{ parent() }}
 
     {% javascripts
-        '@CertUnlpNgenBundle/Resources/public/js/incident/decision/IncidentDecisionForm.js' %}
+        '@CertUnlpNgenBundle/Resources/public/js/incident/decision/IncidentDecisionForm.js'
+        '@CertUnlpNgenBundle/Resources/public/js/incident/state/IncidentStateApi.js'
+    %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
+        var incident_state_api = new IncidentStateApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
         var incident_decision_form = new IncidentDecisionForm();
     </script>
 {% endblock %}
