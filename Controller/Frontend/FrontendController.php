@@ -272,7 +272,7 @@ abstract class FrontendController extends AbstractController
             $term = $request->get('term') ?? $request->get('q') ?? '*';
         }
 
-        $results = $finder->find($term . ' && active:"true"');
+        $results = $finder->find('*' . $term . '* && active:"true"');
 
         $array = (new ArrayCollection($results))->map(static function ($element) {
             return ['id' => $element->getId(), 'text' => (string)$element];

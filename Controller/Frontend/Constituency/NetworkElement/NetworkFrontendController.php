@@ -91,8 +91,8 @@ class NetworkFrontendController extends FrontendController
         $bool->addShould($prefix)->addMust($prefix2);
         $results = $finder->find(Query::create($bool));
 
-        $array = (new ArrayCollection($results))->map(static function ($element) {
-            return ['id' => $element->getId(), 'text' => (string)$element];
+        $array = (new ArrayCollection($results))->map(static function (Network $element) {
+            return ['id' => $element->getId(), 'text' => $element->__toString() . ' (' . $element->getNetworkEntity()->__toString() . ')'];
         });
         return new JsonResponse($array->toArray());
     }
