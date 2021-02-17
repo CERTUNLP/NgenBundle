@@ -12,7 +12,11 @@
 namespace CertUnlp\NgenBundle\Command;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
+use CertUnlp\NgenBundle\Entity\Incident\State\IncidentState;
 use CertUnlp\NgenBundle\Service\Api\Handler\Incident\IncidentHandler;
+use Closure;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -40,28 +44,40 @@ class ChangeDueToInactivityCommand extends ContainerAwareCommand
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('[incidents]: <info>Starting.</info>');
-        $output->writeln('[incidents]: <info>Changing states of old incidents...</info>');
+        $output->writeln('[incidents]: <question>Changing unresponded incidents...</question>');
 
-        [$unresponded_changed, $unresponded_not_changed] = $this->getIncidentHandler()->closeUnrespondedIncidents();
-        $output->writeln('[incidents]: <info>Changed unresponded incidents: ' . count($unresponded_changed) . '</info>');
-        foreach ($unresponded_changed as $incident) {
-            $output->writeln($this->printChanged($incident));
-        }
-        $output->writeln('[incidents]: <comment>Could NOT change unresponded incidents: ' . count($unresponded_not_changed) . '</comment>');
-        foreach ($unresponded_not_changed as $incident) {
-            $output->writeln($this->printUnchanged($incident));
-        }
-        [$unsolved_changed, $unsolved_not_changed] = $this->getIncidentHandler()->closeUnsolvedIncidents();
+        $this->paginateQuery($this->getIncidentHandler()->getRepository()->queryAllUnresponded()->setFirstResult(0)->setMaxResults(100), $output, function (Incident $incident): ?IncidentState {
+            return $incident->getUnrespondedState();
+        });
+        $output->writeln('[incidents]: <question>Changing unsolved incidents...</question>');
 
-        $output->writeln('[incidents]: <info>Changed unsolved incidents: ' . count($unsolved_changed) . '</info>');
-        foreach ($unsolved_changed as $incident) {
-            $output->writeln($this->printChanged($incident));
-        }
-        $output->writeln('[incidents]: <comment>Could NOT change unsolved incidents: ' . count($unsolved_not_changed) . '</comment>');
-        foreach ($unsolved_not_changed as $incident) {
-            $output->writeln($this->printUnchanged($incident));
-        }
+        $this->paginateQuery($this->getIncidentHandler()->getRepository()->queryAllUnsolved()->setFirstResult(0)->setMaxResults(100), $output, function (Incident $incident): ?IncidentState {
+            return $incident->getUnsolvedState();
+        });
+
         $output->writeln('[incidents]:<info> Done.</info>');
+    }
+
+    /**
+     * @param QueryBuilder $query
+     * @param OutputInterface $output
+     * @param Closure $clousure
+     * @return Paginator
+     */
+    private function paginateQuery(QueryBuilder $query, OutputInterface $output, Closure $clousure): Paginator
+    {
+        $paginator = new Paginator($query, $fetchJoinCollection = true);
+
+        foreach ($paginator as $incident) {
+            if ($incident->setState($clousure($incident))) {
+                $this->getIncidentHandler()->getEntityManager()->persist($incident);
+                $output->writeln($this->printChanged($incident));
+            } else {
+                $output->writeln($this->printUnchanged($incident));
+            }
+        }
+        $this->getIncidentHandler()->getEntityManager()->flush();
+        return $paginator;
     }
 
     /**
