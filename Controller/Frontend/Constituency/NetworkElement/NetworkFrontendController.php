@@ -13,10 +13,6 @@ use CertUnlp\NgenBundle\Entity\Constituency\NetworkElement\Network;
 use CertUnlp\NgenBundle\Form\Constituency\NetworkElement\NetworkType;
 use CertUnlp\NgenBundle\Service\Api\Handler\Constituency\NetworkElement\Network\NetworkHandler;
 use Doctrine\Common\Collections\ArrayCollection;
-use Elastica\Query;
-use Elastica\Query\BoolQuery;
-use Elastica\Query\Prefix;
-use Elastica\Query\Term;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -74,30 +70,6 @@ class NetworkFrontendController extends FrontendController
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function searchAutocompleteEntity(Request $request, PaginatedFinderInterface $finder, string $term = ''): JsonResponse
-    {
-        if (!$term) {
-            $term = $request->get('term') ?? $request->get('q') ?? '*';
-        }
-
-        $prefix = new Prefix();
-        $prefix->setPrefix('address', $term);
-        $prefix2 = new Term();
-        $prefix2->setTerm('active', true);
-
-        $bool = new BoolQuery();
-        $bool->addShould($prefix)->addMust($prefix2);
-        $results = $finder->find(Query::create($bool));
-
-        $array = (new ArrayCollection($results))->map(static function (Network $element) {
-            return ['id' => $element->getId(), 'text' => $element->__toString() . ' (' . $element->getNetworkEntity()->__toString() . ')'];
-        });
-        return new JsonResponse($array->toArray());
-    }
-
-    /**
      * @Template("CertUnlpNgenBundle:Network:Frontend/networkForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_network_new_network")
      * @param NetworkType $network_type
@@ -142,5 +114,17 @@ class NetworkFrontendController extends FrontendController
         $response['piechart_tlp'] = $this->makePieChart($network->getIncidentFeedRatio(), 300);
         $response['column_chart'] = $this->makeColumnChart($network->getIncidentDateRatio(), 'Incidents');
         return $response;
+    }
+
+    /**
+     * @param array $results
+     * @return JsonResponse
+     */
+    protected function searchAutocompleteResponse(array $results): JsonResponse
+    {
+        $array = (new ArrayCollection($results))->map(static function (Network $element) {
+            return ['id' => $element->getId(), 'text' => $element->__toString() . ' (' . $element->getNetworkEntity()->__toString() . ')'];
+        });
+        return new JsonResponse($array->toArray());
     }
 }

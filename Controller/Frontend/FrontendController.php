@@ -274,6 +274,15 @@ abstract class FrontendController extends AbstractController
 
         $results = $finder->find('*' . $term . '* && active:"true"');
 
+        return $this->searchAutocompleteResponse($results);
+    }
+
+    /**
+     * @param array $results
+     * @return JsonResponse
+     */
+    protected function searchAutocompleteResponse(array $results): JsonResponse
+    {
         $array = (new ArrayCollection($results))->map(static function ($element) {
             return ['id' => $element->getId(), 'text' => (string)$element];
         });
