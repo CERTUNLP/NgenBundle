@@ -170,7 +170,7 @@ class IncidentFrontendController extends FrontendController
     }
 
     /**
-     * @Template("CertUnlpNgenBundle:Incident:Frontend/incidentComments.html.twig")
+     * @Template("CertUnlpNgenBundle:Incident:Frontend/comments/incidentComments.html.twig")
      * @param Incident $incident
      * @param Request $request
      * @param ThreadManagerInterface $thread_manager
