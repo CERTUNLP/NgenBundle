@@ -68,7 +68,7 @@ class IncidentDecisionType extends EntityForm
                 'class' => Network::class,
                 'minimum_input_length' => 3,
                 'page_limit' => 10,
-                'placeholder' => 'Select a network',
+                'placeholder' => 'Select a network by address',
             ])
             ->add('state', EntityType::class, array(
                 'class' => IncidentState::class,
