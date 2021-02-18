@@ -23,5 +23,5 @@ php bin/console cert_unlp:message:telegram:send
 php bin/console cert_unlp:message:email:send
 php bin/console swiftmailer:spool:send
 php bin/console swiftmailer:spool:send
-php bin/console cert_unlp:network:update:host --max 100
-php bin/console cert_unlp:incidents:change-due-to-inactivity
+php bin/console cert_unlp:network:update:host --max 500
+php bin/console cert_unlp:incidents:change-due-to-inactivity --max 100
