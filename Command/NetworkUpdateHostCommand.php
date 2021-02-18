@@ -70,7 +70,13 @@ class NetworkUpdateHostCommand extends ContainerAwareCommand
                     if (!$network->getId()) {
                         $output->write('<info> (NEW) </info>');
                     }
+                    if (!$network->getNetworkAdmin()->getId()) {
+                        $output->write('<info> (NEW) </info>');
+                    }
                     $output->write('<comment> Admin: ' . $network->getNetworkAdmin() . '</comment>');
+                    if (!$network->getNetworkEntity()->getId()) {
+                        $output->write('<info> (NEW) </info>');
+                    }
                     $output->writeln('<comment> Entity: ' . $network->getNetworkEntity() . '</comment>');
                     $host->setNetwork($network);
                     try {

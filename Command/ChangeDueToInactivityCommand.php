@@ -19,6 +19,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ChangeDueToInactivityCommand extends ContainerAwareCommand
@@ -38,23 +39,41 @@ class ChangeDueToInactivityCommand extends ContainerAwareCommand
     {
         $this
             ->setName('cert_unlp:incidents:change-due-to-inactivity')
-            ->setDescription('Walk through incidents to make an automatic close.');
+            ->setDescription('Walk through incidents to make an automatic close.')
+            ->addOption('max', '--max', InputOption::VALUE_OPTIONAL, 'limit the update to first $max', -1);
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('[incidents]: <info>Starting.</info>');
-        $output->writeln('[incidents]: <question>Changing unresponded incidents...</question>');
+        $limit = 50;
+        $offset = 0;
+        $max = (int)$input->getOption('max');
+        $paginated_unresponded = true;
+        $paginated_unsolved = true;
 
-        $this->paginateQuery($this->getIncidentHandler()->getRepository()->queryAllUnresponded()->setFirstResult(0)->setMaxResults(100), $output, function (Incident $incident): ?IncidentState {
-            return $incident->getUnrespondedState();
-        });
-        $output->writeln('[incidents]: <question>Changing unsolved incidents...</question>');
+        while ($paginated_unresponded && $offset !== $max) {
+            $output->writeln('[incidents]: <question>Changing unresponded incidents...</question>');
 
-        $this->paginateQuery($this->getIncidentHandler()->getRepository()->queryAllUnsolved()->setFirstResult(0)->setMaxResults(100), $output, function (Incident $incident): ?IncidentState {
-            return $incident->getUnsolvedState();
-        });
+            $paginated_unresponded = count($this->paginateQuery($this->getIncidentHandler()->getRepository()->queryAllUnresponded()->setFirstResult($offset)->setMaxResults($limit), $output, function (Incident $incident): ?IncidentState {
+                return $incident->getUnrespondedState();
+            }));
+            $offset += $limit;
+        }
 
+        $offset = 0;
+        while ($paginated_unsolved && $offset !== $max) {
+            $output->writeln('[incidents]: <question>Changing unsolved incidents...</question>');
+
+            $paginated_unsolved = count($this->paginateQuery($this->getIncidentHandler()->getRepository()->queryAllUnsolved()->setFirstResult($offset)->setMaxResults($limit), $output, function (Incident $incident): ?IncidentState {
+                return $incident->getUnsolvedState();
+            }));
+            $offset += $limit;
+        }
+
+        if ($offset === $max) {
+            $output->writeln('[incidents]: Reached Max parameter.');
+        }
         $output->writeln('[incidents]:<info> Done.</info>');
     }
 
@@ -70,13 +89,12 @@ class ChangeDueToInactivityCommand extends ContainerAwareCommand
 
         foreach ($paginator as $incident) {
             if ($incident->setState($clousure($incident))) {
-                $this->getIncidentHandler()->getEntityManager()->persist($incident);
+                $this->getIncidentHandler()->patch($incident);
                 $output->writeln($this->printChanged($incident));
             } else {
                 $output->writeln($this->printUnchanged($incident));
             }
         }
-        $this->getIncidentHandler()->getEntityManager()->flush();
         return $paginator;
     }
 
