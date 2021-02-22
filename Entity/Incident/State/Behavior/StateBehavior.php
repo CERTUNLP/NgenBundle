@@ -359,7 +359,7 @@ abstract class StateBehavior extends Entity
 
     abstract public function isAttended(): bool;
 
-    abstract public function isResolved(): bool;
+    abstract public function isSolved(): bool;
 
     abstract public function isAddressed(): bool;
 

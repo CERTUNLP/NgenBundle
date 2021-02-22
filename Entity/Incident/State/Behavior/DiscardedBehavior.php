@@ -39,7 +39,7 @@ class DiscardedBehavior extends StateBehavior
     /**
      * @return bool
      */
-    public function isResolved(): bool
+    public function isSolved(): bool
     {
         return true;
     }

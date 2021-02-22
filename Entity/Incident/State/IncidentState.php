@@ -313,9 +313,9 @@ class IncidentState extends EntityApiFrontend implements Translatable
     /**
      * @return bool
      */
-    public function isResolved(): bool
+    public function isSolved(): bool
     {
-        return $this->getBehavior()->isResolved();
+        return $this->getBehavior()->isSolved();
     }
 
     /**

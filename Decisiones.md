@@ -14,7 +14,7 @@ Estos dos atributos tienen la función de enviar mensajes al operador del sistem
 
 ![image](images/states-changes.png)
 
-* **unresponse time**: es el tiempo expresado en minutos que el sistema sugerirá como máximo para comenzar a atender un caso, es decir que deja ser de ser nuevo. Al pasar este tiempo el sistema cambiará el estdo del incidente al indicado en **Unresponsed state**.
+* **unresponse time**: es el tiempo expresado en minutos que el sistema sugerirá como máximo para comenzar a atender un caso, es decir que deja ser de ser nuevo. Al pasar este tiempo el sistema cambiará el estdo del incidente al indicado en **Unresponded state**.
 
 * **unsolve time**: es el tiempo expresado en minutos que el sistema tomará como límite para cambiar de estado el incidente desde que se comenzó a atender, es decir que dejo ser nuevo. Una vez que se cumpla este tiempo el caso indicado si el incidente sigue sin estar resuelto o cerrado automáticamente cambiara al estado indicado en el atributo **Unsolved State**.
 
@@ -25,7 +25,7 @@ Estos dos atributos tienen la función de enviar mensajes al operador del sistem
 
 ## Aplicados en las decisiones
 
-* En las decisiones se pueden setear los estados a cambiar una vez que se cumplen los tiempos, estos son **Unresponsed state** y **Unsolved State**
+* En las decisiones se pueden setear los estados a cambiar una vez que se cumplen los tiempos, estos son **Unresponded state** y **Unsolved State**
 
 ![image](images/config-decision.png)
 

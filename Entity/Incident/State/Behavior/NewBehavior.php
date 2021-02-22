@@ -70,7 +70,7 @@ class NewBehavior extends StateBehavior
     /**
      * @return bool
      */
-    public function isResolved(): bool
+    public function isSolved(): bool
     {
         return false;
     }
