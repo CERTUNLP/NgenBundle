@@ -66,10 +66,11 @@ class NetworkUpdateHostCommand extends ContainerAwareCommand
                 $output->write('[network update]: Searching: ' . $host);
                 $network = $this->getNetworkHandler()->findOneInRange($host->getAddress(), true);
                 if ($network && !$network->isDefault()) {
-                    $output->write('<info> Found: ' . $network . '</info>');
+                    $output->write('<info> Found: </info>');
                     if (!$network->getId()) {
                         $output->write('<info> (NEW) </info>');
                     }
+                    $output->write('<comment>' . $network . '</comment>');
                     if (!$network->getNetworkAdmin()->getId()) {
                         $output->write('<info> (NEW) </info>');
                     }
