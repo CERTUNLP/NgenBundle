@@ -74,7 +74,6 @@ class IncidentHandler extends Handler
         return $this->patch($incident, []);
     }
 
-
     /**
      * {@inheritDoc}
      */
