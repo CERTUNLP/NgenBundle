@@ -337,34 +337,62 @@ abstract class StateBehavior extends Entity
         return $this->canEditFundamentals;
     }
 
+    /**
+     * @param Incident $incident
+     * @param Incident $incidentDetected
+     * @return Incident
+     */
     public function updateTlp(Incident $incident, Incident $incidentDetected): Incident
-    {
-        return $incident;
-    }
-
-    public function updatePriority(Incident $incident, Incident $incidentDetected): Incident
     {
         return $incident;
     }
 
     /**
      * @param Incident $incident
-     * @return int
+     * @param Incident $incidentDetected
+     * @return Incident
      * @throws Exception
      */
-    public function getNewMinutes(Incident $incident): int
+    public function updateDeadlines(Incident $incident, Incident $incidentDetected): Incident
     {
-        return 0;
+        $incident->setResponseDeadLine($incidentDetected->getResponseDeadLine());
+        $incident->setSolveDeadLine($incidentDetected->getSolveDeadLine());
+        return $incident;
     }
 
+    /**
+     * @param Incident $incident
+     * @param Incident $incidentDetected
+     * @return Incident
+     */
+    public function updatePriority(Incident $incident, Incident $incidentDetected): Incident
+    {
+        return $incident;
+    }
+
+    /**
+     * @return bool
+     */
     abstract public function isAttended(): bool;
 
+    /**
+     * @return bool
+     */
     abstract public function isSolved(): bool;
 
+    /**
+     * @return bool
+     */
     abstract public function isAddressed(): bool;
 
+    /**
+     * @return bool
+     */
     abstract public function isLive(): bool;
 
+    /**
+     * @return bool
+     */
     abstract public function isDead(): bool;
 
     /**
@@ -387,13 +415,4 @@ abstract class StateBehavior extends Entity
 
         return $this;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getIdentificationString(): string
-    {
-        return 'slug';
-    }
-
 }

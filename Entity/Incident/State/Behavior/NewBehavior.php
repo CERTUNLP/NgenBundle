@@ -50,16 +50,6 @@ class NewBehavior extends StateBehavior
     }
 
     /**
-     * @param Incident $incident
-     * @return int
-     * @throws Exception
-     */
-    public function getNewMinutes(Incident $incident): int
-    {
-        return $incident->getDate()->diff(new DateTime())->i; //lo devuelvo en minutos eso es el i
-    }
-
-    /**
      * @return bool
      */
     public function isAttended(): bool
