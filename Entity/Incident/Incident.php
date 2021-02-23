@@ -1489,7 +1489,7 @@ class Incident extends EntityApiFrontend
         $this->setState($incident_detected->getState());
         $this->updateTlp($incident_detected);
         $this->updatePriority($incident_detected);
-
+        $this->updateDeadlines($incident_detected);
         return $this;
 
     }
@@ -1511,6 +1511,17 @@ class Incident extends EntityApiFrontend
     public function updatePriority(Incident $incidentDetected): Incident
     {
         return $this->getBehavior()->updatePriority($this, $incidentDetected);
+    }
+
+    /**
+     * @param Incident $incidentDetected
+     * @return Incident
+     * @throws Exception
+     */
+    public function updateDeadlines(Incident $incidentDetected): Incident
+    {
+        return $this->getBehavior()->updateDeadlines($this, $incidentDetected);
+
     }
 
     /**
