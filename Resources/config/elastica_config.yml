@@ -61,6 +61,10 @@ fos_elastica:
                             type: keyword
                         internal:
                             type: keyword
+                        responded:
+                            type: date
+                        solve:
+                            type: date
                         network_data:
                             property_path: network
                             type: "object"
