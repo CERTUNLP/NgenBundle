@@ -13,7 +13,7 @@ namespace CertUnlp\NgenBundle\Service\Api\Handler;
 
 use CertUnlp\NgenBundle\Exception\InvalidFormException;
 use CertUnlp\NgenBundle\Model\EntityApiInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -26,7 +26,7 @@ abstract class Handler
      */
     private $entity_manager;
     /**
-     * @var ObjectRepository
+     * @var ServiceEntityRepository
      */
     private $repository;
     /**
@@ -41,11 +41,11 @@ abstract class Handler
     /**
      * Handler constructor.
      * @param EntityManagerInterface $entity_manager
-     * @param ObjectRepository $repository
+     * @param ServiceEntityRepository $repository
      * @param AbstractType $entity_type
      * @param FormFactoryInterface $form_factory
      */
-    public function __construct(EntityManagerInterface $entity_manager, ObjectRepository $repository, AbstractType $entity_type, FormFactoryInterface $form_factory)
+    public function __construct(EntityManagerInterface $entity_manager, ServiceEntityRepository $repository, AbstractType $entity_type, FormFactoryInterface $form_factory)
     {
         $this->entity_manager = $entity_manager;
         $this->repository = $repository;
@@ -67,9 +67,9 @@ abstract class Handler
     }
 
     /**
-     * @return ObjectRepository
+     * @return ServiceEntityRepository
      */
-    public function getRepository(): ObjectRepository
+    public function getRepository(): ServiceEntityRepository
     {
         return $this->repository;
     }
