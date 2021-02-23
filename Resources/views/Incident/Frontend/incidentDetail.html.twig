@@ -73,7 +73,9 @@ with this source code in the file LICENSE.
                 <div class="col-lg-6">
                     <div class="row col-md-12 ml-0 ">
                         {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'card', 'response': true} %}
-                        {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'card', 'response': false} %}
+                        {% if object.respondedDate %}
+                            {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': object,'type':'card', 'response': false} %}
+                        {% endif %}
                         {% if object.origin %}
                             <div class="col-md-6 mb-4">
                                 <div class="card border-left-info shadow h-100 py-2">

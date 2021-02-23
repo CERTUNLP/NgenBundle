@@ -727,15 +727,6 @@ class Incident extends EntityApiFrontend
     }
 
     /**
-     * @return int
-     * @throws Exception
-     */
-    public function getNewMinutes(): int
-    {
-        return $this->getBehavior()->getNewMinutes($this);
-    }
-
-    /**
      * @param ArrayCollection $incidentDetectedCollection
      */
 
@@ -985,8 +976,8 @@ class Incident extends EntityApiFrontend
      */
     public function getResponseTime(): int
     {
-        if ($this->getResponsedDate()) {
-            return abs($this->getCreatedAt()->getTimestamp() - $this->getResponsedDate()->getTimestamp());
+        if ($this->getRespondedDate()) {
+            return abs($this->getCreatedAt()->getTimestamp() - $this->getRespondedDate()->getTimestamp());
         }
         return abs($this->getCreatedAt()->getTimestamp() - (new DateTime())->getTimestamp());
     }
@@ -995,10 +986,10 @@ class Incident extends EntityApiFrontend
      * @return DateTime
      * @throws Exception
      */
-    public function getResponsedDate(): ?DateTime
+    public function getRespondedDate(): ?DateTime
     {
-        if (!$this->getAttendedChangeStates()->isEmpty()) {
-            return $this->getAttendedChangeStates()->last()->getDate();
+        if (!$this->getRespondedChangeStates()->isEmpty()) {
+            return $this->getRespondedChangeStates()->last()->getDate();
         }
         return null;
     }
@@ -1006,7 +997,7 @@ class Incident extends EntityApiFrontend
     /**
      * @return IncidentStateChange[] | Collection
      */
-    public function getAttendedChangeStates(): Collection
+    public function getRespondedChangeStates(): Collection
     {
         if ($this->getStatechanges()) {
             return $this->getStatechanges()->filter(static function (IncidentStateChange $changeState) {
@@ -1067,10 +1058,13 @@ class Incident extends EntityApiFrontend
      */
     public function getSolveTime(): int
     {
-        if ($this->getSolveDate()) {
-            return abs($this->getCreatedAt()->getTimestamp() - $this->getSolveDate()->getTimestamp());
+        if ($this->getRespondedDate()) {
+            if ($this->getSolveDate()) {
+                return abs($this->getRespondedDate()->getTimestamp() - $this->getSolveDate()->getTimestamp());
+            }
+            return abs($this->getRespondedDate()->getTimestamp() - (new DateTime())->getTimestamp());
         }
-        return abs($this->getCreatedAt()->getTimestamp() - (new DateTime())->getTimestamp());
+        return 0;
     }
 
     /**
@@ -1078,8 +1072,8 @@ class Incident extends EntityApiFrontend
      */
     public function getSolveDate(): ?DateTime
     {
-        if (!$this->getResolvedChangeStates()->isEmpty()) {
-            return $this->getResolvedChangeStates()->last()->getDate();
+        if (!$this->getSolvedChangeStates()->isEmpty()) {
+            return $this->getSolvedChangeStates()->last()->getDate();
         }
         return null;
     }
@@ -1088,14 +1082,23 @@ class Incident extends EntityApiFrontend
      *
      * @return IncidentStateChange[] | Collection
      */
-    public function getResolvedChangeStates(): Collection
+    public function getSolvedChangeStates(): Collection
     {
         if ($this->getStatechanges()) {
             return $this->getStatechanges()->filter(static function (IncidentStateChange $changeState) {
-                return $changeState->getNewState()->isResolved();
+                return $changeState->getNewState()->isSolved();
             });
         }
         return new ArrayCollection();
+    }
+
+    /**
+     * @return int
+     * @throws Exception
+     */
+    public function getEstimatedLifeSpan(): int
+    {
+        return $this->getPriority()->getResponseTime() + $this->getPriority()->getSolveTime();
     }
 
     /**
@@ -1130,9 +1133,9 @@ class Incident extends EntityApiFrontend
         return $this->getState()->isAttended();
     }
 
-    public function isResolved(): bool
+    public function isSolved(): bool
     {
-        return $this->getState()->isResolved();
+        return $this->getState()->isSolved();
     }
 
     public function statusToString(): string
@@ -1148,7 +1151,7 @@ class Incident extends EntityApiFrontend
         return array_filter($this->getEmailContacts()->map(static function (Contact $contact) {
             return $contact->getEmail();
         })->toArray(), static function ($value) {
-            return $value !== '';
+            return $value !== '' && $value !== 'Undefined';
         });
     }
 
@@ -1483,6 +1486,7 @@ class Incident extends EntityApiFrontend
     /**
      * @param Incident $incident_detected
      * @return Incident
+     * @throws Exception
      */
     public function updateFromDetection(Incident $incident_detected): Incident
     {

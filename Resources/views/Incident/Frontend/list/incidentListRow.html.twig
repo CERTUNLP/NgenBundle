@@ -15,7 +15,9 @@ with this source code in the file LICENSE.
     </td>
     <td id="state_label_holder" class="text-center">
         {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': incident,'type':'label_list', 'response': true} %}
-        {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': incident,'type':'label_list', 'response': false} %}
+        {% if incident.respondedDate %}
+            {% include "CertUnlpNgenBundle:Incident/Frontend:incidentTimeMacro.html.twig" with {'incident': incident,'type':'label_list', 'response': false} %}
+        {% endif %}
     </td>
     <td class="text-center">
         <small>

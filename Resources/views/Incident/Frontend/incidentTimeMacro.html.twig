@@ -1,8 +1,8 @@
-{# 
+{#
  This file is part of the Ngen - CSIRT Incident Report System.
- 
+
  (c) CERT UNLP <support@cert.unlp.edu.ar>
- 
+
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
@@ -22,11 +22,11 @@
     {% set percentaje = incident.solvePercentage %}
     {% set delayedMinutes = incident.solveDelayedMinutes %}
     {% set delayedDate = incident.solveDelayedDate %}
-    {% set bool = incident.isResolved %}
+    {% set bool = incident.isSolved %}
     {% set prefix_true = 'Solved' %}
     {% set prefix_false = 'Unsolved' %}
-    {% set icon_true = 'fa-check-double' %}
-    {% set icon_false = 'fa-hourglass-half' %}
+    {% set icon_true = 'fa-hourglass' %}
+    {% set icon_false = 'fa-hourglass-empty' %}
 {% endif %}
 
 {% if bool %}
@@ -34,11 +34,11 @@
         {% set color = "success" %}
         {% set suffix = ' left'|trans %}
     {% else %}
-        {% set color = "info" %}
+        {% set color = "danger" %}
         {% set suffix = ' late'|trans %}
     {% endif %}
     {% set icon = icon_true %}
-    {% set text = prefix_true|trans ~' '~ (delayedDate.d?  delayedDate| date("%ddays %hmin %isec"): delayedDate | date("%hmin %isec")) ~ suffix|trans %}
+    {% set text = prefix_true|trans ~' '~ (delayedDate.d?  delayedDate| date("%ddays %hhs %imin"): delayedDate | date("%hhs %imin")) ~ suffix|trans %}
 {% else %}
     {% if (delayedMinutes > 0) %}
         {% set color = "warning" %}
@@ -48,7 +48,7 @@
         {% set suffix = ' late'|trans %}
     {% endif %}
     {% set icon = icon_false %}
-    {% set text = prefix_false|trans ~' '~ ( delayedDate.d?  delayedDate| date("%ddays %hmin %isec"): delayedDate | date("%hmin %isec") )~ suffix|trans %}
+    {% set text = prefix_false|trans ~' '~ ( delayedDate.d?  delayedDate| date("%ddays %hhs %imin"): delayedDate | date("%hhs %imin") )~ suffix|trans %}
 {% endif %}
 
 {% import _self as print %}

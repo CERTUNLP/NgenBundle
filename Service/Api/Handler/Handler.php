@@ -92,9 +92,9 @@ abstract class Handler
      * @return EntityApiInterface
      * @throws InvalidFormException
      */
-    public function processForm(EntityApiInterface $entity, array $parameters = [], string $method = '', bool $csrf_protection = true)
+    public function processForm(EntityApiInterface $entity, array $parameters = [], string $method = '', bool $csrf_protection = true): EntityApiInterface
     {
-        $this->preProcessForm($entity);
+        $entity = $this->preProcessForm($entity);
         $form = $this->getFormFactory()->create($this->getEntityTypeClass(), $entity, array('csrf_protection' => $csrf_protection, 'method' => $method));
         $parameters = $this->cleanParameters($parameters);
         $form->submit($parameters, Request::METHOD_PATCH !== $method);
