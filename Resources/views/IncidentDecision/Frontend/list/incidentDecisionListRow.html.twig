@@ -17,7 +17,7 @@ with this source code in the file LICENSE.
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colordropbox(IncidentDecision.type.color,IncidentDecision.type.icon,IncidentDecision.type,path('cert_unlp_ngen_incident_type_detail',{'slug': IncidentDecision.type.slug}),IncidentDecision.type) }}
+            {{ print.colordropbox(IncidentDecision.type.color(lang),IncidentDecision.type.icon,IncidentDecision.type,path('cert_unlp_ngen_incident_type_detail',{'slug': IncidentDecision.type.slug}),IncidentDecision.type) }}
         </div>
     </td>
     <td class="text-center">

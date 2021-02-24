@@ -36,12 +36,12 @@ class IncidentFrontendController extends FrontendController
     /**
      * @var string
      */
-    private $evidence_path;
+    private string $evidence_path;
 
 
-    public function __construct(FormFactoryInterface $formFactory, PaginatorInterface $paginator, string $evidence_path)
+    public function __construct(FormFactoryInterface $formFactory, PaginatorInterface $paginator, string $ngen_lang, string $evidence_path)
     {
-        parent::__construct($formFactory, $paginator);
+        parent::__construct($formFactory, $paginator, $ngen_lang);
         $this->evidence_path = $evidence_path;
     }
 
@@ -57,7 +57,7 @@ class IncidentFrontendController extends FrontendController
         $term = $request->get('term') ?: 'internal: true';
         $quickSearchForm = $this->getFormFactory()->createBuilder(IncidentSearchType::class, (new Incident), array('csrf_protection' => true));
 
-        return array('objects' => [], 'term' => $term, 'search_form' => $quickSearchForm->getForm()->createView());
+        return array('objects' => [], 'term' => $term, 'search_form' => $quickSearchForm->getForm()->createView(), 'lang' => $this->getNgenLang());
     }
 
     /**
@@ -165,7 +165,7 @@ class IncidentFrontendController extends FrontendController
     {
         $quickSearchForm = $this->getFormFactory()->createBuilder(IncidentSearchType::class, (new Incident), array('csrf_protection' => true));
         $search = $this->searchEntity($request, $finder);
-        return array('objects' => $search['objects'], 'term' => $search['term'], 'search_form' => $quickSearchForm->getForm()->createView());
+        return array('objects' => $search['objects'], 'term' => $search['term'], 'search_form' => $quickSearchForm->getForm()->createView(), 'lang' => $search['lang']);
 
     }
 
@@ -205,7 +205,7 @@ class IncidentFrontendController extends FrontendController
      */
     public function getListRow(Incident $incident): array
     {
-        return array('incident' => $incident);
+        return array('incident' => $incident, 'lang' => $this->getNgenLang());
     }
 
     /**

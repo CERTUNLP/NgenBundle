@@ -11,7 +11,7 @@ with this source code in the file LICENSE.
 {% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 {% block content_header %}
     <h1 class="h3 mb-0 text-gray-800">
-        {{ icon(object.icon ~' fa-fw text-'~object.color) }}
+        {{ icon(object.icon ~' fa-fw text-'~object.color(lang)) }}
         {{ object }}
         {{ print.colorboxbutton('primary','id-card',object.id,'#') }}
         {{ print.statusbox(object) }}

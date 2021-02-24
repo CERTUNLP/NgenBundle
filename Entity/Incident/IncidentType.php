@@ -193,11 +193,38 @@ class IncidentType extends EntityApiFrontend
     }
 
     /**
+     * @param string|null $lang
      * @return string
      */
-    public function getColor(): string
+    public function getColor(string $lang = null): string
     {
-        return 'info';
+        return $this->getReport($lang) ? 'info' : 'danger';
+    }
+
+    /**
+     * Get report
+     *
+     * @param string|null $lang
+     * @return IncidentReport
+     */
+    public function getReport(string $lang): ?IncidentReport
+    {
+        $reporte = $this->getReports()->filter(
+            static function (IncidentReport $report) use ($lang) {
+                return $report->getLang() === $lang;
+            }
+        )->first();
+        if ($reporte) {
+            return $reporte;
+        }
+
+//        if ($this->getTaxonomyValue()) {
+//            return $this->getTaxonomyValue()->getReport();
+//        }
+//        if ($this->getTaxonomyValue() && $this->getTaxonomyValue()->getPredicate()) {
+//            return $this->getTaxonomyValue()->getReport();
+//        }
+        return null;
     }
 
     public function __toString(): ?string
@@ -224,29 +251,14 @@ class IncidentType extends EntityApiFrontend
     }
 
     /**
-     * Get report
-     *
-     * @param string|null $lang
-     * @return IncidentReport
+     * @return string
+     * @JMS\Expose()
+     * @JMS\VirtualProperty()
+     * @JMS\Groups({"read","write"})
      */
-    public function getReport(string $lang = null): ?IncidentReport
+    public function getTaxonomyValueName(): ?string
     {
-        $reporte = $this->getReports()->filter(
-            static function (IncidentReport $report) use ($lang) {
-                return $report->getLang() === $lang;
-            }
-        )->first();
-        if ($reporte) {
-            return $reporte;
-        }
-
-        if ($this->getTaxonomyValue()) {
-            return $this->getTaxonomyValue()->getReport();
-        }
-        if ($this->getTaxonomyValue() && $this->getTaxonomyValue()->getPredicate()) {
-            return $this->getTaxonomyValue()->getReport();
-        }
-        return null;
+        return $this->getTaxonomyValue() ? $this->getTaxonomyValue()->getValue() : '';
     }
 
     /**
@@ -265,17 +277,6 @@ class IncidentType extends EntityApiFrontend
     {
         $this->taxonomyValue = $taxonomyValue;
         return $this;
-    }
-
-    /**
-     * @return string
-     * @JMS\Expose()
-     * @JMS\VirtualProperty()
-     * @JMS\Groups({"read","write"})
-     */
-    public function getTaxonomyValueName(): ?string
-    {
-        return $this->getTaxonomyValue() ? $this->getTaxonomyValue()->getValue() : '';
     }
 
     /**

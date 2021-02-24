@@ -33,7 +33,7 @@ with this source code in the file LICENSE.
     </td>
     <td class="text-center">
         <div class="float-left">
-            {{ print.colordropbox(incident.type.color,incident.type.icon,incident.type,path('cert_unlp_ngen_incident_type_detail',{'slug': incident.type.slug}),incident.type) }}
+            {{ print.colordropbox(incident.type.color(lang),incident.type.icon,incident.type,path('cert_unlp_ngen_incident_type_detail',{'slug': incident.type.slug}),incident.type) }}
         </div>
     </td>
     <td id="state_label_holder" class="text-center">

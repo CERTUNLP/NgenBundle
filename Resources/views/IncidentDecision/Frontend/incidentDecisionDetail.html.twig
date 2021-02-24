@@ -15,7 +15,7 @@ with this source code in the file LICENSE.
         {{ object }}
         {{ print.colorboxbutton('primary','id-card',object.id,'#') }}
         {{ print.statusbox(object) }}
-        {{ print.colordropbox(object.type.color,object.type.icon,object.type,path('cert_unlp_ngen_incident_type_detail',{'slug': object.type.slug}),'','d-inline')  }}
+        {{ print.colordropbox(object.type.color(lang),object.type.icon,object.type,path('cert_unlp_ngen_incident_type_detail',{'slug': object.type.slug}),'','d-inline')  }}
         {{ print.colordropbox(object.state.color,object.state.icon,object.state,path('cert_unlp_ngen_incident_state_detail',{'slug': object.state.slug}),'','d-inline')  }}
         {{ print.colordropbox(object.priority.color,object.priority.icon,object.priority,path('cert_unlp_ngen_incident_priority_detail',{'id': object.priority.id}),'','d-inline')  }}
         {{ print.colordropbox(object.feed.color,object.feed.icon,object.feed,path('cert_unlp_ngen_incident_feed_detail',{'slug': object.feed.slug}),'','d-inline')  }}

@@ -54,11 +54,17 @@ abstract class FrontendController extends AbstractController
     private $page;
 
     /**
+     * @var string
+     */
+    private string $ngen_lang;
+
+    /**
      * FrontendControllerService constructor.
      * @param FormFactoryInterface $formFactory
      * @param PaginatorInterface $paginator
+     * @param string $ngen_lang
      */
-    public function __construct(FormFactoryInterface $formFactory, PaginatorInterface $paginator)
+    public function __construct(FormFactoryInterface $formFactory, PaginatorInterface $paginator, string $ngen_lang)
     {
         $this->paginator = $paginator;
         $this->form_factory = $formFactory;
@@ -66,7 +72,16 @@ abstract class FrontendController extends AbstractController
         $this->defaultSortFieldName = 'createdAt';
         $this->defaultSortDirection = 'desc';
         $this->page = 'page';
+        $this->ngen_lang = $ngen_lang;
 
+    }
+
+    /**
+     * @return string
+     */
+    public function getNgenLang(): string
+    {
+        return $this->ngen_lang;
     }
 
     /**
@@ -156,7 +171,7 @@ abstract class FrontendController extends AbstractController
         $term = $this->parseTerm($request);
         $results = $this->getResults($finder, $this->parseTerm($request));
         $pagination = $this->paginateEntities($results, $request);
-        return array('objects' => $pagination, 'term' => $term);
+        return array('objects' => $pagination, 'term' => $term, 'lang' => $this->ngen_lang);
     }
 
     /**
@@ -322,7 +337,7 @@ abstract class FrontendController extends AbstractController
      */
     public function detailEntity(EntityApiInterface $object): array
     {
-        return array('object' => $object);
+        return array('object' => $object,'lang' => $this->getNgenLang());
     }
 
 
