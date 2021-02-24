@@ -55,11 +55,8 @@ class  IncidentTypeListener extends EntityTypeListener
 
         $form = $event->getForm();
         $initial_states = $this->getStates($incident ? $incident->getState()->getSlug() : 'initial');
-        $undefined_states = $this->getStates($incident ? $incident->getState()->getSlug() : 'undefined');
 
         $form->add('state', EntityType::class, $initial_states);
-        $form->add('unrespondedState', EntityType::class, $undefined_states);
-        $form->add('unsolvedState', EntityType::class, $undefined_states);
 
         if (!$incident) {
             $form->get('type')->setData($this->getEntitymanager()->getReference(IncidentType::class, 'undefined'));
@@ -81,8 +78,6 @@ class  IncidentTypeListener extends EntityTypeListener
                 $form->get('urgency')->setData($this->getEntitymanager()->getReference(IncidentUrgency::class, $incident->getPriority()->getUrgency()->getSlug()));
             }
         }
-
-
     }
 
     /**
@@ -92,20 +87,6 @@ class  IncidentTypeListener extends EntityTypeListener
     public function getIncident(FormEvent $event): ?Incident
     {
         return $event->getData();
-    }
-
-    /**
-     * @param Incident|null $incident
-     * @return array
-     */
-    public function getInitialStates(Incident $incident = null): array
-    {
-        return array(
-            'class' => IncidentState::class,
-            'query_builder' => static function (IncidentStateRepository $repository) use ($incident) {
-                return $repository->queryNewStates($incident ? $incident->getState()->getSlug() : 'initial');
-            },
-        );
     }
 
     /**

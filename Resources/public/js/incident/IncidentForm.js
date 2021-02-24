@@ -17,6 +17,7 @@ var IncidentForm = Form.extend({
         $(".incidentFilter").on("change", $.proxy(this.getIncident, this));
         this.changeTLP();
         this.lastDecision = null;
+        this.getNextStates(false);
     },
     changeTLP: function () {
         $("#tlp_label").first().html("TLP:" + $("#tlp option:selected").text());
@@ -40,8 +41,9 @@ var IncidentForm = Form.extend({
             this.changePriorityTimes(response.responseJSON[0].priority);
         }
     },
-    getNextStates: function (event, args) {
-        if (!this.lastDecision) {
+    getNextStates: function ($decision_first = true) {
+        this.decision_first = $decision_first;
+        if (!this.lastDecision && this.decision_first) {
             this.getIncidentDecision();
         } else {
             var $id = $("#state option:selected").val();
@@ -64,12 +66,13 @@ var IncidentForm = Form.extend({
                 })
 
             }
-
-            if ($("#unsolvedState option[value='" + this.lastDecision.unresponded_state.slug + "']").length) {
-                $("#unrespondedState").val(this.lastDecision.unresponded_state.slug);
-            }
-            if ($("#unsolvedState option[value='" + this.lastDecision.unsolved_state.slug + "']").length) {
-                $("#unsolvedState").val(this.lastDecision.unsolved_state.slug);
+            if (this.decision_first) {
+                if ($("#unsolvedState option[value='" + this.lastDecision.unresponded_state.slug + "']").length) {
+                    $("#unrespondedState").val(this.lastDecision.unresponded_state.slug);
+                }
+                if ($("#unsolvedState option[value='" + this.lastDecision.unsolved_state.slug + "']").length) {
+                    $("#unsolvedState").val(this.lastDecision.unsolved_state.slug);
+                }
             }
             $("#unrespondedState").trigger('change.select2')
             $("#unsolvedState").trigger('change.select2')
