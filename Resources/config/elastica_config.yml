@@ -63,8 +63,10 @@ fos_elastica:
                             type: keyword
                         responded:
                             type: date
+                            property_path: respondedDate
                         solve:
                             type: date
+                            property_path: solveDate
                         network_data:
                             property_path: network
                             type: "object"
