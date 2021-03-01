@@ -95,6 +95,7 @@ class IncidentFrontendController extends FrontendController
     {
         $response['object'] = $incident;
         $response['timeline'] = null;
+        $response['lang'] = $this->getNgenLang();
 //        $response['piechart_state'] = $this->makePieChart($incident->getStateRatio());
         $response['piechart_feed'] = $this->makePieChart($incident->getFeedRatio());
         $response['piechart_priority'] = $this->makePieChart($incident->getPriorityRatio());
