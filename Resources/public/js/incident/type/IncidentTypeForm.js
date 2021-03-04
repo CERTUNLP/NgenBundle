@@ -17,7 +17,7 @@ var IncidentTypeForm = Form.extend({
         return this.getIncidentTypeId();
     },
     setIncidentTypeId: function () {
-        this.incident_type_id = (($('#name').val().replace(/ /g, '_'))).toLowerCase();
+        this.incident_type_id = this.slugify($('#name').val());
     },
     getIncidentTypeId: function () {
         return this.incident_type_id;

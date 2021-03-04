@@ -17,7 +17,7 @@ var IncidentFeedForm = Form.extend({
         return this.getIncidentFeedId();
     },
     setIncidentFeedId: function () {
-        this.incident_feed_id = (($('#name').val().replace(' ', '_'))).toLowerCase();
+        this.incident_feed_id = this.slugify($('#name').val());
     },
     getIncidentFeedId: function () {
         return this.incident_feed_id;
