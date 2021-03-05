@@ -135,3 +135,8 @@ app.swagger:
     path: /api/doc.json
     methods: GET
     defaults: { _controller: nelmio_api_doc.controller.swagger }
+
+cert_ngen_playbook:
+    resource: '@CertUnlpNgenBundle/Controller/Frontend/Playbook/PlaybookFrontendController.php'
+    type:     annotation
+    prefix:   /playbooks

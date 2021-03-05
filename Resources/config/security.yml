@@ -38,6 +38,7 @@ security:
         - { path: '^/users/*', roles: ROLE_USER }
         - { path: '^/incidents/*', roles: ROLE_USER }
         - { path: '^/networks/*', roles: ROLE_USER }
+        - { path: '^/playbooks/*', roles: ROLE_USER }
         - { path: '^/api/doc.html', roles: ROLE_USER }
         - { path: '^/api/*', roles: ROLE_API }
         - { path: '^/*', roles: ROLE_USER }

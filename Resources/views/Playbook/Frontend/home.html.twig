@@ -1,0 +1,27 @@
+{# 
+ This file is part of the Ngen - CSIRT IncidentType Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% extends 'CertUnlpNgenBundle::Playbook/Frontend/frontend.html.twig' %}
+
+{% block content_body %}
+   
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+        '@CertUnlpNgenBundle/Resources/public/js/playbook/Playbook.js'
+        '@CertUnlpNgenBundle/Resources/public/js/playbook/PlaybookApi.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        var playbook = new Playbook();
+        var playbook_api = new PlaybookApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
+    </script>
+{% endblock %}

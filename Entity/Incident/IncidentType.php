@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use CertUnlp\NgenBundle\Entity\Playbook\Playbook;
 
 /**
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Incident\IncidentTypeRepository")
@@ -59,6 +60,12 @@ class IncidentType extends EntityApiFrontend
      * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Incident\Incident",mappedBy="type",fetch="EXTRA_LAZY")
      */
     private $incidents;
+    /**
+     * @var Collection | Playbook[]
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Playbook\Playbook", mappedBy="type",fetch="EXTRA_LAZY")
+     */
+    private $playbooks;
+    
     /**
      * @var string|null
      *
@@ -127,6 +134,24 @@ class IncidentType extends EntityApiFrontend
     public function setIncidents(Collection $incidents): self
     {
         $this->incidents = $incidents;
+        return $this;
+    }
+
+    /**
+     * @return Playbook[]|Collection
+     */
+    public function getPlaybooks(): Collection
+    {
+        return $this->playbooks;
+    }
+
+    /**
+     * @param Playbook[]|Collection $playbooks
+     * @return IncidentType
+     */
+    public function setPlaybooks(Collection $playbooks): self
+    {
+        $this->playbooks = $playbooks;
         return $this;
     }
 

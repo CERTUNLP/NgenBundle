@@ -96,3 +96,7 @@ cert_ngen_network_host_api:
     type: rest
     resource: '@CertUnlpNgenBundle/Controller/Api/Constituency/NetworkElement/HostController.php'
     name_prefix:  api_
+cert_ngen_playbook_api:
+    type: rest
+    resource: '@CertUnlpNgenBundle/Controller/Api/Playbook/PlaybookController.php'
+    name_prefix:  api_
