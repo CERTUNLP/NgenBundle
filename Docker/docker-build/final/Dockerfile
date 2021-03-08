@@ -1,4 +1,4 @@
-FROM ngen-base
+FROM ngen-basic
 MAINTAINER CERTunlp
 WORKDIR "/application"
 ENV APACHE_DOCUMENT_ROOT /application/ngen_basic/web
