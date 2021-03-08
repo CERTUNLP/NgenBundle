@@ -10,7 +10,7 @@
  */
 
 /**
- * Description of Playbook
+ * Description of PlaybookElement
  *
  * @author asanchezg
  */
@@ -19,25 +19,20 @@ namespace CertUnlp\NgenBundle\Entity\Playbook;
 
 use CertUnlp\NgenBundle\Entity\Entity;
 use CertUnlp\NgenBundle\Entity\EntityApi;
-use CertUnlp\NgenBundle\Entity\User\User;
-use DateInterval;
-use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
-use CertUnlp\NgenBundle\Validator\Constraints as CustomAssert;
-use CertUnlp\NgenBundle\Entity\Incident\IncidentType;
-use Symfony\Component\Validator\Constraints as Assert;
 use CertUnlp\NgenBundle\Entity\Playbook\Phase;
 
-/**
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Playbook\PlaybookRepository")
+ /**
+ * @ORM\Entity()
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"playbook-element" = "PlaybookElement", "phase"="Phase","task" = "Task"})
  * @JMS\ExclusionPolicy("all")
  */
-class Playbook extends EntityApi
+
+class PlaybookElement extends EntityApi
 {
     /**
      * @var integer
@@ -76,29 +71,29 @@ class Playbook extends EntityApi
     private $description='';
 
     /**
-     * @var IncidentType
-     * @CustomAssert\EntityNotActive()
-     * @JMS\Expose
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Incident\IncidentType",inversedBy="playbooks")
-     * @ORM\JoinColumn(name="type", referencedColumnName="slug")
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Playbook\Phase", inversedBy="children")
+     * @ORM\JoinColumn(name="parent", referencedColumnName="id")
      * @JMS\Groups({"read","write","fundamental"})
-     * @JMS\MaxDepth(depth=1)
+     * @JMS\Expose
      */
-    private $type;
+    private $parent;
 
     /**
-     * @var Collection | Phase[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Playbook\Phase", mappedBy="playbook",fetch="EXTRA_LAZY")
-     * @JMS\Expose
+     * @return Phase
      */
-    private $phases;
-    
-    /**
-     * @return bool
-     */
-    public function canEditFundamentals(): bool
+    public function getParent(): ?PlaybookElement 
     {
-        return true;
+        return $this->parent;
+    }
+
+    /**
+     * @param PlaybookElement|null $parent
+     * @return Task
+     */
+    public function setParent(PlaybookElement $parent =null): Task
+    {
+        $this->parent = $parent;
+        return $this;
     }
 
     /**
@@ -139,14 +134,14 @@ class Playbook extends EntityApi
      */
     public function getSlug(): string
     {
-        return $this->slug ?: $this->name;
+        return $this->slug ?: 'ss';
     }
 
     /**
      * @param string $slug
-     * @return Playbook
+     * @return PlaybookElement
      */
-    public function setSlug(?string $slug): Playbook
+    public function setSlug(?string $slug): PlaybookElement
     {
         $this->slug = $slug;
         return $this;
@@ -194,45 +189,10 @@ class Playbook extends EntityApi
     }
 
     /**
-     */
-    public function getType(): ?IncidentType 
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param IncidentType|null $type
-     * @return Playbook
-     */
-    public function setType(IncidentType $type = null): Playbook
-    {
-        $this->type = $type;
-        return $this;
-    }
-
-    /**
-     * @return Phase[]|Collection
-     */
-    public function getPhases(): Collection
-    {
-        return $this->phases;
-    }
-
-    /**
-     * @param Phase[]|Collection $phases
-     * @return Playbook
-     */
-    public function setPhases(Collection $phases): self
-    {
-        $this->phases = $phases;
-        return $this;
-    }
-
-    /**
-     * @return array
+     * {@inheritDoc}
      */
     public function getDataIdentificationArray(): array
     {
-        return ['type' => $this->getType()->getId()];
+        return ['name' => $this->getName()];
     }
 }

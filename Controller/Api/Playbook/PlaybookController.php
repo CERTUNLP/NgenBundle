@@ -77,13 +77,14 @@ class PlaybookController extends ApiController
      * @param Playbook $playbook
      * @return View
      * @FOS\Get("/playbooks/{id}", name="_id",requirements={"id"="\d+"}))
+     * @FOS\Get("/playbooks/{slug}", name="_slug")
      */
     public function getPlaybookAction(Playbook $playbook): View
     {
         return $this->response([$playbook], Response::HTTP_OK);
     }
 
-        /**
+    /**
      * @Operation(
      *     tags={"playbooks"},
      *     summary="Creates a new playbook from the submitted data.",

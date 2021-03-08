@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use CertUnlp\NgenBundle\Entity\Playbook\Playbook;
 
 class PlaybookFrontendController extends FrontendController
 {
@@ -40,5 +41,17 @@ class PlaybookFrontendController extends FrontendController
     public function newPlaybookAction(PlaybookType $playbook): array
     {
         return $this->newEntity($playbook);
+    }
+
+    /**
+     * @Template("CertUnlpNgenBundle:Playbook:Frontend/playbookDetail.html.twig")
+     * @Route("{id}/detail", name="cert_unlp_ngen_playbook_detail_id",requirements={"id"="\d+"})
+     * @Route("{slug}/detail", name="cert_unlp_ngen_playbook_detail_slug")
+     * @param Playbook $playbook
+     * @return array
+     */
+    public function detailPlaybookAction(Playbook $playbook): array
+    {
+        return $this->detailEntity($playbook);
     }
 }

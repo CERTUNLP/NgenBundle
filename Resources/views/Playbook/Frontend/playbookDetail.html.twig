@@ -1,0 +1,63 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+
+{% extends 'CertUnlpNgenBundle::Playbook/Frontend/frontend.html.twig' %}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
+
+{% block content_header %}
+    <h1 class="h3 mb-0 text-gray-800">
+        {{ object }}
+        {{ print.colorboxbutton('primary','id-card',object.id,'#') }}
+    </h1>
+{% endblock %}
+{% block content_body %}
+            <div class="shadow mb-4">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Playbook Information'|trans }}</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td class="font-weight-bold"> {{ "System Id"|trans }}</td>
+                                <td> {{ object.id }} </td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold"> {{ 'Name'|trans }} </td>
+                                <td> {{ object.name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">{{ 'Description'|trans }}</td>
+                                <td>{{ object.description }}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">{{ 'Created at'|trans }}</td>
+                                <td>{{ object.createdAt|date('Y-m-d') }}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">{{ 'Last Update'|trans }}</td>
+                                <td>{{ object.updatedAt|date('Y-m-d') }}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">{{ 'Incident Type'|trans }}</td>
+                                <td>{{ object.type}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="shadow mb-4">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Playbook Content'|trans }}</h6>
+                </div>
+                <div class="card-body">
+                    {% include "@CertUnlpNgen/Playbook/Frontend/PlaybookViews/phaseTable.html.twig" with {'phases': object.phases} %}
+                </div>
+            </div>
+{% endblock %}
