@@ -345,13 +345,14 @@ class Incident extends EntityApiFrontend
 
     /**
      * Set state
-     * @param IncidentState $state
+     * @param IncidentState|null $state
+     * @param string $lang
      * @return Incident
      */
-    public function setState(IncidentState $state = null): ?Incident
+    public function setState(IncidentState $state, string $lang): ?Incident
     {
-        if ($this->getState()) {
-            return $this->getState()->changeState($this, $state);
+        if ($state && $this->getState()) {
+            return $this->getState()->changeState($this, $lang, $state);
         }
         return $this->changeState($state);
     }
@@ -1485,12 +1486,13 @@ class Incident extends EntityApiFrontend
 
     /**
      * @param Incident $incident_detected
+     * @param string $lang
      * @return Incident
      * @throws Exception
      */
-    public function updateFromDetection(Incident $incident_detected): Incident
+    public function updateFromDetection(Incident $incident_detected, string $lang): Incident
     {
-        $this->setState($incident_detected->getState());
+        $this->setState($incident_detected->getState(),$lang);
         $this->updateTlp($incident_detected);
         $this->updatePriority($incident_detected);
         $this->updateDeadlines($incident_detected);

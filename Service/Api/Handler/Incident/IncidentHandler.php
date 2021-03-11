@@ -33,26 +33,29 @@ class IncidentHandler extends Handler
     /**
      * @var HostHandler
      */
-    private $host_handler;
-
+    private HostHandler $host_handler;
     /**
      * @var IncidentDecisionHandler
      */
-    private $decision_handler;
+    private IncidentDecisionHandler $decision_handler;
     /**
      * @var IncidentStateHandler
      */
-    private $incident_state_handler;
+    private IncidentStateHandler $incident_state_handler;
     /**
      * @var TokenStorageInterface
      */
-    private $token_storage;
+    private TokenStorageInterface $token_storage;
     /**
      * @var IncidentPriorityHandler
      */
-    private $incident_priority_handler;
+    private IncidentPriorityHandler $incident_priority_handler;
+    /**
+     * @var string
+     */
+    private string $lang;
 
-    public function __construct(EntityManagerInterface $entity_manager, IncidentRepository $repository, IncidentType $entity_type, FormFactoryInterface $form_factory, TokenStorageInterface $token_storage, UserHandler $user_handler, HostHandler $host_handler, IncidentDecisionHandler $decision_handler, IncidentStateHandler $incident_state_handler, IncidentPriorityHandler $incident_priority_handler)
+    public function __construct(EntityManagerInterface $entity_manager, IncidentRepository $repository, IncidentType $entity_type, FormFactoryInterface $form_factory, TokenStorageInterface $token_storage, UserHandler $user_handler, HostHandler $host_handler, IncidentDecisionHandler $decision_handler, IncidentStateHandler $incident_state_handler, IncidentPriorityHandler $incident_priority_handler, string $ngen_lang)
     {
         parent::__construct($entity_manager, $repository, $entity_type, $form_factory);
         $this->host_handler = $host_handler;
@@ -60,8 +63,8 @@ class IncidentHandler extends Handler
         $this->incident_state_handler = $incident_state_handler;
         $this->token_storage = $token_storage;
         $this->incident_priority_handler = $incident_priority_handler;
+        $this->lang = $ngen_lang;
     }
-
 
     /**
      * @param Incident|EntityApiInterface $incident
@@ -70,8 +73,16 @@ class IncidentHandler extends Handler
      */
     public function changeState(Incident $incident, IncidentState $state): EntityApiInterface
     {
-        $incident->setState($state);
+        $incident->setState($state, $this->getLang());
         return $this->patch($incident, []);
+    }
+
+    /**
+     * @return string
+     */
+    public function getLang(): string
+    {
+        return $this->lang;
     }
 
     /**
@@ -116,7 +127,7 @@ class IncidentHandler extends Handler
         $closedIncidents = [];
         $unClosedIncidents = [];
         foreach ($incidents as $incident) {
-            if ($incident->setState($incident->getUnsolvedState())) {
+            if ($incident->setState($incident->getUnsolvedState(), $this->getLang())) {
                 $this->getEntityManager()->persist($incident);
                 $closedIncidents[] = $incident;
             } else {
@@ -144,7 +155,7 @@ class IncidentHandler extends Handler
         $closedIncidents = [];
         $unClosedIncidents = [];
         foreach ($incidents as $incident) {
-            if ($incident->setState($incident->getUnrespondedState())) {
+            if ($incident->setState($incident->getUnrespondedState(), $this->getLang())) {
                 $this->getEntityManager()->persist($incident);
                 $closedIncidents[] = $incident;
             } else {
@@ -175,7 +186,7 @@ class IncidentHandler extends Handler
         if ($method === Request::METHOD_POST) {
             $entity_db = $this->getByDataIdentification($entity_api);
             if ($entity_db) {
-                $entity_db->updateFromDetection($entity_api);
+                $entity_db->updateFromDetection($entity_api, $this->getLang());
                 $entity_db->addIncidentDetected($entity_api);
                 return $entity_db;
             }
@@ -257,7 +268,7 @@ class IncidentHandler extends Handler
      */
     public function decisionUpdate(Incident $incident): ?Incident
     {
-        return $this->getDecisionHandler()->getByIncident($incident)->doDecision($incident);
+        return $this->getDecisionHandler()->getByIncident($incident)->doDecision($incident, $this->getLang());
     }
 
     /**
@@ -386,8 +397,9 @@ class IncidentHandler extends Handler
     public function createEntityInstance(array $parameters = []): EntityApiInterface
     {
         $class_name = $this->getRepository()->getClassName();
+        /** @var Incident $incident */
         $incident = new $class_name($params['address'] ?? null);
-        $incident->setState($this->getInitialState());
+        $incident->setState($this->getInitialState(), $this->getLang());
         return $incident;
     }
 

@@ -222,23 +222,24 @@ class IncidentDecision extends EntityApiFrontend
 
     /**
      * @param Incident $incident
+     * @param string $lang
      * @return Incident
      */
-    public function doDecision(Incident $incident): Incident
+    public function doDecision(Incident $incident, string $lang): Incident
     {
         $incident->getTlp() ?: $incident->setTlp($this->getTlp());
         $incident->getPriority() ?: $incident->setPriority($this->getPriority());
-        $incident->getState() ?: $incident->setState($this->getState());
+        $incident->getState() ?: $incident->setState($this->getState(), $lang);
         $incident->getType() ?: $incident->setType($this->getType());
 
         $incident->getUnrespondedState() ?: $incident->setUnrespondedState($this->getUnrespondedState());
         $incident->getUnsolvedState() ?: $incident->setUnsolvedState($this->getUnsolvedState());
 
         $incident->getResponseDeadLine() ?: $incident->setResponseDeadLine((new \DateTime())->modify('+' . $incident->getPriority()->getUnresponseTime() . 'minutes'));
-        $incident->getSolveDeadLine() ?: $incident->setSolveDeadLine((new \DateTime())->modify('+' . $incident->getPriority()->getUnsolveTime()  . 'minutes'));
+        $incident->getSolveDeadLine() ?: $incident->setSolveDeadLine((new \DateTime())->modify('+' . $incident->getPriority()->getUnsolveTime() . 'minutes'));
 
         if ($incident->getState() && $incident->getState()->isInitial()) {
-            $incident->setState($this->getState());
+            $incident->setState($this->getState(), $lang);
         }
         return $incident;
     }

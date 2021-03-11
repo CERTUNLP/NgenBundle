@@ -204,7 +204,7 @@ class IncidentType extends EntityApiFrontend
     /**
      * Get report
      *
-     * @param string|null $lang
+     * @param string $lang
      * @return IncidentReport
      */
     public function getReport(string $lang): ?IncidentReport

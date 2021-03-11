@@ -30,4 +30,16 @@ class OpeningEdge extends StateEdge
         return $incident;
     }
 
+    /**
+     * @param Incident $incident
+     * @param string $lang
+     * @return bool
+     */
+    public function changeStateCondition(Incident $incident, string $lang): bool
+    {
+        if ($incident->getType()->getReport($lang)) {
+            return true;
+        }
+        return false;
+    }
 }
