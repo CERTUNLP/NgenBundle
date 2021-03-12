@@ -12,10 +12,26 @@
    <h1 class="h3 mb-0 text-gray-800">{{ icon('plus-circle fa-fw') }} {{ 'Playbook'|trans }}</h1>
 {% endblock %}
 {% block content_body %}
-    {% if (form is not null) %}
-        {{ form_errors(form, { 'global_errors': true }) }}
-        {{ form(form, {'attr': {'role':'form','id': 'add_update_form'},'style': 'horizontal', 'col_size': 'sm' }) }}
-    {% endif %}
+   
+<div class="container">
+    <h1>Add playbook</h1>
+    {{ form_start(form, {'attr': {'role':'form','id': 'add_update_form'},'style': 'horizontal'})}}
+        {{ form_errors(form) }}
+        {{ form_row(form.type)}}
+        {{ form_row(form.name) }}
+        {{ form_row(form.description) }}
+
+        <div>
+            <h3 class="mb-2">Phases</h3>
+            {{ include('CertUnlpNgenBundle:Playbook/Frontend:playbookPhase.html.twig') }}
+        <div>
+
+        <div class="row mt-2 p-2">
+            {{ form_row(form.save) }}
+        </div>
+
+    {{ form_end(form, {'render_rest': false}) }}
+</div>
 {% endblock %}
 
 {% block javascripts %}
@@ -26,7 +42,9 @@
     {% javascripts
         '@CertUnlpNgenBundle/Resources/public/js/playbook/Playbook.js'
         '@CertUnlpNgenBundle/Resources/public/js/playbook/PlaybookApi.js'
-        '@CertUnlpNgenBundle/Resources/public/js/playbook/PlaybookForm.js' %}
+        '@CertUnlpNgenBundle/Resources/public/js/playbook/PlaybookForm.js'
+        '@CertUnlpNgenBundle/Resources/public/js/playbook/Phase.js'
+        %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 

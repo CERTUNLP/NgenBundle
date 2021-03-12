@@ -12,17 +12,17 @@ var PlaybookApi = ApiClient.extend({
         $.subscribe('/cert_unlp/playbook/new', $.proxy(this.create, this));
     },
     addDefaultChannel: function () {
-        this.api.add("predicates", { stripTrailingSlash: true, url: 'playbooks' });
+        this.api.add("predicates", {stripTrailingSlash: true, url: 'playbooks'});
         this.defaultChannel = this.api.predicates;
     },
-    changeState: function (networkId, isActive, callback) {
-        var request = this.defaultChannel.update(networkId + "/" + (isActive ? "activate" : "deactivate"), {}, { apikey: this.apiKey });
+    changeState: function (PlaybookId, isActive, callback) {
+        var request = this.defaultChannel.update(PlaybookId + "/" + (isActive ? "activate" : "deactivate"), {}, {apikey: this.apiKey});
         this.doRequest(request, callback);
     },
-    activate: function (networkId, callback) {
-        this.changeState(networkId, true, callback);
+    activate: function (PlaybookId, callback) {
+        this.changeState(PlaybookId, true, callback);
     },
-    deactivate: function (networkId, callback) {
-        this.changeState(networkId, false, callback);
+    deactivate: function (PlaybookId, callback) {
+        this.changeState(PlaybookId, false, callback);
     },
 });

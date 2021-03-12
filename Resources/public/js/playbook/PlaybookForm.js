@@ -7,17 +7,20 @@
  * with this source code in the file LICENSE.
  */
 var PlaybookForm = Form.extend({
-    config: function (params) {
-        this.setIncidentId();
-    },
-    setIncidentId: function () {
-        this.incidentId = $('#id').val();
+    config: function () {
+        this.setPlaybookId();
     },
     getObjectBrief: function () {
         return 'playbook';
     },
     getObjectId: function () {
-        return this.incidentId;
+        return this.getPlaybookId();
+    },
+    setPlaybookId: function () {
+        this.playbook_id = $('#id').val();
+    },
+    getPlaybookId: function () {
+        return this.playbook_id;
     },
 });
 

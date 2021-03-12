@@ -40,6 +40,14 @@ use CertUnlp\NgenBundle\Entity\Playbook\Phase;
 class Playbook extends EntityApi
 {
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->phases = new ArrayCollection();
+    }
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
@@ -88,7 +96,7 @@ class Playbook extends EntityApi
 
     /**
      * @var Collection | Phase[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Playbook\Phase", mappedBy="playbook",fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Playbook\Phase", mappedBy="playbook",cascade={"persist"},fetch="EXTRA_LAZY")
      * @JMS\Expose
      */
     private $phases;
@@ -225,6 +233,26 @@ class Playbook extends EntityApi
     public function setPhases(Collection $phases): self
     {
         $this->phases = $phases;
+        return $this;
+    }
+
+    /**
+     * @param Phase $phase
+     * @return $this
+     */
+    public function addPhase(Phase $phase): self
+    {
+        if ($phase && !$this->phases->contains($phase)) {
+            $phase->setPlaybook($this);
+            $this->phases->add($phase);
+        }
+        return $this;
+    }
+
+    public function removePhase(Phase $phase): self
+    {
+        $this->phases->removeElement($phase);
+
         return $this;
     }
 

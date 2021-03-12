@@ -28,6 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use CertUnlp\NgenBundle\Entity\Playbook\PlaybookElement;
 use CertUnlp\NgenBundle\Entity\Playbook\Playbook;
+use CertUnlp\NgenBundle\Entity\Playbook\Task;
 
 /**
  * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Playbook\PhaseRepository")
@@ -35,6 +36,14 @@ use CertUnlp\NgenBundle\Entity\Playbook\Playbook;
  */
 class Phase extends PlaybookElement
 {
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tasks = new ArrayCollection();
+    }
+
     /**
      * @var Playbook
      * @CustomAssert\EntityNotActive()
@@ -46,11 +55,11 @@ class Phase extends PlaybookElement
     private $playbook;
 
     /**
-     * @var Collection | PlaybookElement[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Playbook\PlaybookElement", mappedBy="parent", fetch="EXTRA_LAZY")
+     * @var Collection | Task[]
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Playbook\Task", mappedBy="phase", fetch="EXTRA_LAZY")
      * @JMS\Expose
      */
-    private $children;
+    private $tasks;
     
     /**
      */
@@ -63,27 +72,47 @@ class Phase extends PlaybookElement
      * @param Playbook|null $playbook
      * @return Phase
      */
-    public function setPlaybook(Playbook $playbook = null): Phase
+    public function setPlaybook(Playbook $playbook): Phase
     {
         $this->playbook = $playbook;
         return $this;
     }
 
     /**
-     * @return Phase[]|Collection
+     * @return Task[]|Collection
      */
-    public function getChildren(): Collection
+    public function getTasks(): Collection
     {
-        return $this->children;
+        return $this->tasks;
     }
 
     /**
-     * @param Phase[]|Collection $children
-     * @return Playbook
+     * @param Task[]|Collection $tasks
+     * @return Phase
      */
-    public function setPhase(Collection $children): self
+    public function setTasks(Collection $tasks): self
     {
-        $this->children = $children;
+        $this->tasks = $tasks;
+        return $this;
+    }
+
+    /**
+     * @param Task $task
+     * @return $this
+    */
+    public function addTask(Task $task): self
+    {
+        if ($task && !$this->tasks->contains($task)) {
+            $task->setPhase($this);
+            $this->tasks->add($phase);
+        }
+        return $this;
+    }
+
+    public function removeTask (Task $task): self
+    {
+        $this->task->removeElement($task);
+
         return $this;
     }
 

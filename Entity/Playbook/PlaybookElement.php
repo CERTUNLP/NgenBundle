@@ -24,15 +24,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use CertUnlp\NgenBundle\Entity\Playbook\Phase;
 
- /**
- * @ORM\Entity()
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"playbook-element" = "PlaybookElement", "phase"="Phase","task" = "Task"})
- * @JMS\ExclusionPolicy("all")
- */
-
-class PlaybookElement extends EntityApi
+abstract class PlaybookElement extends EntityApi
 {
     /**
      * @var integer
@@ -71,32 +63,6 @@ class PlaybookElement extends EntityApi
     private $description='';
 
     /**
-     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Playbook\Phase", inversedBy="children")
-     * @ORM\JoinColumn(name="parent", referencedColumnName="id")
-     * @JMS\Groups({"read","write","fundamental"})
-     * @JMS\Expose
-     */
-    private $parent;
-
-    /**
-     * @return Phase
-     */
-    public function getParent(): ?PlaybookElement 
-    {
-        return $this->parent;
-    }
-
-    /**
-     * @param PlaybookElement|null $parent
-     * @return Task
-     */
-    public function setParent(PlaybookElement $parent =null): Task
-    {
-        $this->parent = $parent;
-        return $this;
-    }
-
-    /**
      * @return int
      */
     public function getId(): ?int
@@ -106,7 +72,7 @@ class PlaybookElement extends EntityApi
 
     /**
      * @param int $id
-     * @return Entity|Playbook
+     * @return Entity
      */
     public function setId($id): Entity
     {
@@ -161,9 +127,9 @@ class PlaybookElement extends EntityApi
      * Set name
      *
      * @param string|null $name
-     * @return Playbook
+     * @return self
      */
-    public function setName(string $name = null): Playbook
+    public function setName(string $name = null): self
     {
         $this->name = $name;
 
@@ -180,9 +146,9 @@ class PlaybookElement extends EntityApi
 
     /**
      * @param string $description
-     * @return Playbook
+     * @return self
      */
-    public function setDescription(string $description = null): Playbook
+    public function setDescription(string $description = null): self
     {
         $this->description = $description;
         return $this;

@@ -46,6 +46,33 @@ class Task extends PlaybookElement
     protected $suggested_time;
 
     /**
+     * @var Phase
+     * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Playbook\Phase", inversedBy="tasks")
+     * @ORM\JoinColumn(name="phase", referencedColumnName="id")
+     * @JMS\Groups({"read","write","fundamental"})
+     * @JMS\Expose
+     */
+    private $phase;
+
+    /**
+     * @return Phase
+     */
+    public function getPhase(): ?Object 
+    {
+        return $this->phase;
+    }
+
+    /**
+     * @param Phase $phase
+     * @return Task
+     */
+    public function setPhase(Object $phase): Task
+    {
+        $this->phase = $phase;
+        return $this;
+    }
+
+    /**
      */
     public function getSuggestedTime(): ?DateTime 
     {
