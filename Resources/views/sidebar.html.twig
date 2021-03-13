@@ -96,7 +96,7 @@
             <h6 class="collapse-header">NGEN</h6>
             <a href="{{ path('cert_unlp_ngen_administration_feed_frontend_home') }}"
                class="collapse-item {{ 'feeds' in (app.request.requestUri | split('/')) ? 'active':'' }}">{{ icon('fas fa-rss') }} {{ 'Feeds'| trans }}</a>
-            <a href="{{ path('cert_unlp_ngen_playbook_new') }}"
+            <a href="{{ path('cert_unlp_ngen_playbook_home') }}"
                class="collapse-item {{ 'playbooks' in (app.request.requestUri | split('/')) ? 'active':'' }}">{{ icon('fas fa-project-diagram') }} {{ 'Playbooks'| trans }}</a>
             <a href="{{ path('cert_unlp_ngen_administration_state_frontend_home') }}"
                class="collapse-item {{ 'states' in (app.request.requestUri | split('/')) ? 'active':'' }}">{{ icon('fas fa-thermometer-half') }} {{ 'States'| trans }}</a>

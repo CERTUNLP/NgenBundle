@@ -8,20 +8,10 @@
 #}
 {% extends 'CertUnlpNgenBundle::Playbook/Frontend/frontend.html.twig' %}
 
+{% block sideBar_search_path %}{{ path('cert_unlp_ngen_playbook_search') }}{% endblock %}
+
 {% block content_body %}
-   
+    {% include 'CertUnlpNgenBundle:Playbook:Frontend/list/playbookList.html.twig' with {'playbooks': objects} %}
 {% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
 
-    {% javascripts
-        '@CertUnlpNgenBundle/Resources/public/js/playbook/Playbook.js'
-        '@CertUnlpNgenBundle/Resources/public/js/playbook/PlaybookApi.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-    <script>
-        var playbook = new Playbook();
-        var playbook_api = new PlaybookApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
-    </script>
-{% endblock %}

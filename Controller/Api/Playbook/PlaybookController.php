@@ -44,6 +44,44 @@ class PlaybookController extends ApiController
 
     /**
      * @Operation(
+     *     tags={"Playbooks"},
+     *     summary="List all Playbooks",
+     *     @SWG\Parameter(
+     *         name="offset",
+     *         in="query",
+     *         description="Offset from which to start listing",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         description="How many entities to return",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref=@Model(type=Playbook::class, groups={"api"}))
+     *          )
+     *     )
+     * )
+     * @FOS\Get("/playbooks")
+     * @FOS\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing Playbooks.")
+     * @FOS\QueryParam(name="limit", requirements="\d+", strict=true, default="100", description="How many Playbooks to return.")
+     * @param ParamFetcherInterface $paramFetcher param fetcher service
+     * @return View
+     */
+    public function getIncidentFeedsAction(ParamFetcherInterface $paramFetcher): View
+    {
+        return $this->getAll($paramFetcher);
+    }
+
+    /**
+     * @Operation(
      *     tags={"playbooks"},
      *     summary="Gets a playbook for a given id",
      *      @SWG\Response(

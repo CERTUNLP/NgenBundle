@@ -1,0 +1,34 @@
+{# 
+ This file is part of the Ngen - CSIRT Incident Report System.
+ 
+ (c) CERT UNLP <support@cert.unlp.edu.ar>
+ 
+ This source file is subject to the GPL v3.0 license that is bundled
+ with this source code in the file LICENSE.
+#}
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
+
+<tr data-id="{{ playbook.id }}">
+    <td class="text-center">
+        {{ playbook.id }} &nbsp;&nbsp; {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':playbook , 'detail_link': path('cert_unlp_ngen_playbook_detail_id',{'id': playbook.id})} %}
+    </td>
+    <td id="state_label_holder" class="text-center">
+        {{ playbook.name }}
+    </td>
+    <td id="state_label_holder" class="text-center">
+        {{ playbook.type }}
+    </td>
+    <td class="text-center">
+        {{ playbook.description }}
+    </td>
+    <td class="text-center">
+        <small>
+            {{ print.colordropbox('primary','calendar-alt',playbook.createdAt|date('Y-m-d'),'#',playbook.createdAt|date('Y-m-d')) }}
+        </small>
+    </td>
+    <td class="text-center">
+        <small>
+            {{ print.colordropbox('primary','calendar-alt',playbook.updatedAt|date('Y-m-d'),'#',playbook.updatedAt|date('Y-m-d')) }}
+        </small>
+    </td>
+</tr>

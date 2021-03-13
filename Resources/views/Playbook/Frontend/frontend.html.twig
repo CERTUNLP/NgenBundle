@@ -11,10 +11,26 @@
 {% block title %}{{ 'Playbooks'|trans }}{% endblock %}
 
 {% block content_header %}
-    <h1 class="h3 mb-0 text-gray-800">{{ icon('fa fa-fas fa-cubes') }} {{ 'Playbooks'|trans }}</h1>
+    <h1 class="h3 mb-0 text-gray-800">{{ icon('fas fa-project-diagram') }} {{ 'Playbooks'|trans }}</h1>
     <a href="{{ path('cert_unlp_ngen_playbook_new') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus-circle fa-sm text-white-50"></i>{{ 'Add Playbook'|trans }} </a>
 {% endblock %}
 
+{% block sideBar_search_path %}{{ path('cert_unlp_ngen_playbook_search') }}{% endblock %}
+
 {% block content_body %}
-    
+    {% include 'CertUnlpNgenBundle:Playbook:Frontend/list/playbookList.html.twig' with {'playbooks': objects} %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+        '@CertUnlpNgenBundle/Resources/public/js/playbook/Playbook.js'
+        '@CertUnlpNgenBundle/Resources/public/js/playbook/PlaybookApi.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        var playbook = new Playbook();
+        var playbook_api = new PlaybookApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
+    </script>
 {% endblock %}

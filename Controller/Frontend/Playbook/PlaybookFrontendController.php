@@ -17,6 +17,7 @@
 namespace CertUnlp\NgenBundle\Controller\Frontend\Playbook;
 
 use CertUnlp\NgenBundle\Controller\Frontend\FrontendController;
+use CertUnlp\NgenBundle\Form\Incident\IncidentSearchType;
 use CertUnlp\NgenBundle\Form\Playbook\PlaybookType;
 
 
@@ -31,7 +32,35 @@ use CertUnlp\NgenBundle\Entity\Playbook\Playbook;
 
 class PlaybookFrontendController extends FrontendController
 {
-    
+
+    /**
+     * @Template("CertUnlpNgenBundle:Playbook:Frontend/home.html.twig")
+     * @Route("/", name="cert_unlp_ngen_playbook_home")
+     * @param Request $request
+     * @param PaginatedFinderInterface $elastica_finder_playbook
+     * @return array
+     */
+    public function homeAction(Request $request, PaginatedFinderInterface $elastica_finder_playbook): array
+    {
+        return $this->homeEntity($request,$elastica_finder_playbook);
+//        $search = $this->searchEntity($request, $elastica_finder_playbook);
+//        return array('objects' => $search['objects'], 'term' => $search['term'], 'lang' => $search['lang']);
+
+    }
+
+    /**
+     * @Template("CertUnlpNgenBundle:Playbook:Frontend/home.html.twig")
+     * @Route("search", name="cert_unlp_ngen_playbook_search")
+     * @param Request $request
+     * @param PaginatedFinderInterface $elastica_finder_playbook
+     * @return array
+     */
+    public function searchPlaybookAction(Request $request, PaginatedFinderInterface $elastica_finder_playbook): array
+    {
+        return $this->searchEntity($request, $elastica_finder_playbook);
+    }
+
+
     /**
      * @Template("CertUnlpNgenBundle:Playbook:Frontend/newPlaybookForm.html.twig")
      * @Route("/new", name="cert_unlp_ngen_playbook_new")

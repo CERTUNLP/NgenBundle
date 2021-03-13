@@ -773,3 +773,43 @@ fos_elastica:
                             insert: true
                             update: true
                             delete: true
+        playbooks:
+            index_name: playbooks_%kernel.environment%
+            settings:
+                index:
+                    max_result_window: 50000
+            types:
+                playbook:
+                    properties:
+                        id:
+                            type: integer
+                        type:
+                            type: keyword
+                        created_by_id:
+                            type: integer
+                        slug:
+                            type: keyword
+                        name:
+                            type: keyword
+                        description:
+                            type: keyword
+                        active:
+                            type: boolean
+                        createdAt:
+                            type: date
+                        updatedAt:
+                            type: date
+                        deletedAt:
+                            type: date
+                    persistence:
+                        identifier: id
+                        elastica_to_model_transformer:
+                            ignore_missing: true
+                        driver: orm
+                        model: CertUnlp\NgenBundle\Entity\Playbook\Playbook
+                        provider: ~
+                        finder: ~
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true

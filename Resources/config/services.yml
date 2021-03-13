@@ -23,6 +23,7 @@ services:
             $elastica_finder_incident: "@fos_elastica.finder.incidents.incident"
             $elastica_finder_decision: "@fos_elastica.finder.decisions.decision"
             $elastica_finder_feed: "@fos_elastica.finder.feeds.feed"
+            $elastica_finder_playbook: "@fos_elastica.finder.playbooks.playbook"
             $elastica_finder_host: "@fos_elastica.finder.hosts.host"
             $elastica_finder_network_admin: "@fos_elastica.finder.network_admins.network_admin"
             $elastica_finder_network_entity: "@fos_elastica.finder.network_entities.network_entity"

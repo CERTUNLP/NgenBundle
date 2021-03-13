@@ -100,7 +100,31 @@ class Playbook extends EntityApi
      * @JMS\Expose
      */
     private $phases;
-    
+    /**
+     * @var integer
+     * @ORM\Column(name="created_by_id", type="integer")
+     * @JMS\Expose
+     * @JMS\Groups({"read","write"})
+     */
+    private $created_by_id;
+
+    /**
+     * @return int
+     */
+    public function getCreatedById(): int
+    {
+        return $this->created_by_id;
+    }
+
+    /**
+     * @param int $created_by_id
+     */
+    public function setCreatedById(int $created_by_id): void
+    {
+        $this->created_by_id = $created_by_id;
+    }
+
+
     /**
      * @return bool
      */
