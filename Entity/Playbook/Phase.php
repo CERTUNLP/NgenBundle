@@ -31,7 +31,7 @@ use CertUnlp\NgenBundle\Entity\Playbook\Playbook;
 use CertUnlp\NgenBundle\Entity\Playbook\Task;
 
 /**
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Playbook\PhaseRepository")
+ * @ORM\Entity()
  * @JMS\ExclusionPolicy("all")
  */
 class Phase extends PlaybookElement
@@ -47,16 +47,16 @@ class Phase extends PlaybookElement
     /**
      * @var Playbook
      * @CustomAssert\EntityNotActive()
-     * @JMS\Expose
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Playbook\Playbook",inversedBy="phases")
      * @ORM\JoinColumn(name="playbook", referencedColumnName="id")
      * @JMS\Groups({"read","write","fundamental"})
+     * @JMS\Expose
      */
     private $playbook;
 
     /**
      * @var Collection | Task[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Playbook\Task", mappedBy="phase", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Playbook\Task", mappedBy="phase", cascade={"persist"}, fetch="EXTRA_LAZY")
      * @JMS\Expose
      */
     private $tasks;
@@ -104,14 +104,14 @@ class Phase extends PlaybookElement
     {
         if ($task && !$this->tasks->contains($task)) {
             $task->setPhase($this);
-            $this->tasks->add($phase);
+            $this->tasks->add($task);
         }
         return $this;
     }
 
-    public function removeTask (Task $task): self
+    public function removeTask(Task $task): self
     {
-        $this->task->removeElement($task);
+        $this->tasks->removeElement($task);
 
         return $this;
     }

@@ -9,10 +9,9 @@
 
 <div class="mx-2 my-3">
 {% for phase in phases %}
-    {% if phase.children is defined %}
-        <div>
+        <div class="my-3">
             <a class="btn btn-primary font-weight-bold font-italic ml-1" data-toggle="collapse" href="#collapse_{{phase.id}}">
-                <i class="fas fa-list-alt font-weight-bold text-white"></i> {{ phase.name}}
+                <i class="fas fa-list-alt font-weight-bold text-white"></i> {{ phase.name | trans}}
             </a>
         <div>
         <div class="collapse border my-3 ml-1" id="collapse_{{phase.id}}">
@@ -20,11 +19,12 @@
                 <span class="font-weight-bold font-italic mr-1">{{ 'Description'|trans }}</span>
                 <span>{{ phase.description}}</span>
             </div>
-                {% include "@CertUnlpNgen/Playbook/Frontend/PlaybookViews/phaseTable.html.twig" with {'phases': phase.children} %}
+                {% if phase.tasks is defined %}
+                    {% for task in phase.tasks %}
+                        <div class="m-2"> <i class="fas fa-arrow-right font-weight-bold mr-2"></i>{{ task.name}}</div>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
-    {% else %}
-        <div class="m-2"> <i class="fas fa-arrow-right font-weight-bold mr-2"></i>{{ phase.name}}</div>
-    {% endif %}
 {% endfor %}
 </div>

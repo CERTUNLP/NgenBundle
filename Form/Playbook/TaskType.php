@@ -37,12 +37,14 @@ class TaskType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, array(
+                'label' => 'Task name',
                 'required' => true,
                 'attr' => array('placeholder' => 'Task name'),
             ))
             ->add('description', TextType::class, array(
+                'label' => 'Task details',
                 'required' => true,
-                'attr' => array('placeholder' => 'Task description')
+                'attr' => array('placeholder' => 'Task details')
             ))
             ->add('suggested_time', TimeType::class, array(
                 'required' => true

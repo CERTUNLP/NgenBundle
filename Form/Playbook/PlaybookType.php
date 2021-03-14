@@ -47,9 +47,12 @@ class PlaybookType extends EntityForm
         ))
         ->add('name', TextType::class, array(
             'required' => true,
+            'attr' => array('placeholder' => 'Enter the name of the playbook'),
+            
         ))
         ->add('description', TextType::class, array(
            'required' => true,
+           'attr' => array('placeholder' => 'Enter the description of the playbook'),
         ))
         ->add('phases', CollectionType::class,
                 array(
@@ -59,14 +62,13 @@ class PlaybookType extends EntityForm
                     'allow_add' => true,
                     'allow_delete' => true,
                     'prototype' => true,
+                    'prototype_name' => '__phase__',
                     'required' => false,
                     'by_reference' => false,
                     'delete_empty' => true,
-                    'attr' => array(
-                        'class' => 'playbook-phases',
-                    ),
-                ))
-        ->add('save', SubmitType::class, ['label' => 'Save Playbook']);
+                )
+        );
+        
         parent::buildForm($builder, $options);
     }
 

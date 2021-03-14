@@ -30,7 +30,7 @@ use CertUnlp\NgenBundle\Entity\Playboook\Phase;
 use CertUnlp\NgenBundle\Entity\Playbook\PlaybookElement;
 
 /**
- * @ORM\Entity(repositoryClass="CertUnlp\NgenBundle\Repository\Playbook\TaskRepository")
+ * @ORM\Entity()
  * @JMS\ExclusionPolicy("all")
  */
 class Task extends PlaybookElement
@@ -47,6 +47,7 @@ class Task extends PlaybookElement
 
     /**
      * @var Phase
+     * @CustomAssert\EntityNotActive()
      * @ORM\ManyToOne(targetEntity="CertUnlp\NgenBundle\Entity\Playbook\Phase", inversedBy="tasks")
      * @ORM\JoinColumn(name="phase", referencedColumnName="id")
      * @JMS\Groups({"read","write","fundamental"})

@@ -49,7 +49,6 @@ class Playbook extends EntityApi
 
     /**
      * @var integer
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -69,7 +68,7 @@ class Playbook extends EntityApi
     /**
      * @var string|null
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="name", type="string", length=255)
      * @JMS\Expose
      * @JMS\Groups({"read","write","fundamental"})
      */
@@ -96,35 +95,11 @@ class Playbook extends EntityApi
 
     /**
      * @var Collection | Phase[]
-     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Playbook\Phase", mappedBy="playbook",cascade={"persist"},fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="CertUnlp\NgenBundle\Entity\Playbook\Phase", mappedBy="playbook",cascade={"persist"})
      * @JMS\Expose
      */
     private $phases;
-    /**
-     * @var integer
-     * @ORM\Column(name="created_by_id", type="integer")
-     * @JMS\Expose
-     * @JMS\Groups({"read","write"})
-     */
-    private $created_by_id;
-
-    /**
-     * @return int
-     */
-    public function getCreatedById(): int
-    {
-        return $this->created_by_id;
-    }
-
-    /**
-     * @param int $created_by_id
-     */
-    public function setCreatedById(int $created_by_id): void
-    {
-        $this->created_by_id = $created_by_id;
-    }
-
-
+   
     /**
      * @return bool
      */

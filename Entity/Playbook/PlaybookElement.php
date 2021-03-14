@@ -24,6 +24,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use CertUnlp\NgenBundle\Entity\Playbook\Phase;
 
+/**
+ * @ORM\MappedSuperclass()
+ * @JMS\ExclusionPolicy("all")
+ */
 abstract class PlaybookElement extends EntityApi
 {
     /**
@@ -48,19 +52,19 @@ abstract class PlaybookElement extends EntityApi
     /**
      * @var string|null
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="name", type="string", length=255)
      * @JMS\Expose
      * @JMS\Groups({"read","write","fundamental"})
      */
     
-    private $name = '';
+    protected $name = '';
     /**
      * @var string
      * @ORM\Column(name="description", type="string", length=1024)
      * @JMS\Expose
      * @JMS\Groups({"read","write"})
      */
-    private $description='';
+    protected $description='';
 
     /**
      * @return int

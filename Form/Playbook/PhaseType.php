@@ -37,12 +37,14 @@ class PhaseType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, array(
+                'label' => 'Phase name',
                 'required' => true,
-                'attr' => array('placeholder' => 'Name'),
+                'attr' => array('placeholder' => 'Phase name'),
             ))
             ->add('description', TextType::class, array(
+                'label' => 'Phase description',
                 'required' => true,
-                'attr' => array('placeholder' => 'Description'),
+                'attr' => array('placeholder' => 'Phase description'),
             ))
             ->add('tasks',CollectionType::class,
                 array(
@@ -52,6 +54,7 @@ class PhaseType extends AbstractType
                     'allow_add' => true,
                     'allow_delete' => true,
                     'prototype' => true,
+                    'prototype_name' => '__task__',
                     'required' => false,
                     'by_reference' => false,
                     'delete_empty' => true,
@@ -69,6 +72,7 @@ class PhaseType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => Phase::class,
         ));
+     
     }
 
     /**

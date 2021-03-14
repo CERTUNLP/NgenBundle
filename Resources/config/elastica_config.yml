@@ -785,10 +785,6 @@ fos_elastica:
                             type: integer
                         type:
                             type: keyword
-                        created_by_id:
-                            type: integer
-                        slug:
-                            type: keyword
                         name:
                             type: keyword
                         description:

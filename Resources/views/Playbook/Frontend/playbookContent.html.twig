@@ -1,0 +1,54 @@
+{% import _self as formMacros %}
+
+{% block form_content %}
+    {% macro printPhaseRow(phaseForm) %}
+        <div class="js-phase-item p-2 mb-2">
+            {{ form_errors(phaseForm) }}
+            <div class="row ml-2">
+                <div class="col font-weight-bold">
+                    {{ form_row(phaseForm.name) }}
+                </div>
+                <div class="col font-weight-bold">
+                    {{ form_row(phaseForm.description) }}
+                </div>
+                <div class="col">
+                    <a href="#" class="btn btn-danger text-white mt-4 js-remove-phase font-weight-bold">
+                        <i class="fas fa-minus-circle"></i> Remove phase
+                    </a>
+                </div>
+            </div>
+            <h4 class="mb-0 font-weight-bold text-info">Tasks</h4>
+            <div>
+        </div>
+    {% endmacro %}
+
+    {% macro printTaskRow(taskForm) %}
+        <div class="js-task-item p-2 mb-2 border" style="background-color:#ebebff">
+            {{ form_errors(taskForm) }}
+            <div class="row ml-2">
+                <div class="col-md font-weight-bold">
+                    {{ form_row(taskForm.name) }}
+                </div>
+                <div class="col-md font-weight-bold">
+                    {{ form_row(taskForm.description) }}
+                </div>
+                <div class="col-lg font-weight-bold">
+                    <label>Suggested time frame</label>
+                    {{ form_widget(taskForm.suggested_time) }}
+                </div>
+                <div class="col-md">
+                    <a href="#" class="js-remove-task pull-right btn btn-danger mt-4 font-weight-bold">
+                        <i class="fas fa-trash-alt text-white"></i> Delete task
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endmacro %}
+
+    <ul id="taskgroups-field-list" data-prototype-task = "{{ formMacros.printTaskRow(form.phases.vars.prototype.children['tasks'].vars.prototype)|e }}"
+                        data-prototype="{{ formMacros.printPhaseRow(form.phases.vars.prototype)|e}}"
+                        data-widget-tasks="{{'<li class="list-element my-1 list-group-item mt-1 border-1"></li>'|e}}" data-task-list = "{{ '<ul class="task-list mb-1 list-group border-1"></ul>' |e}}"
+                        class="list-group">
+    </ul>
+    <a href="#" class="add-taskgroup btn btn-success font-weight-bold" data-target="#taskgroups-field-list"><i class="fas fa-plus-circle mr-2"></i>Add phase</a>
+{% endblock %}

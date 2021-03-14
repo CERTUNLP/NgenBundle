@@ -8,43 +8,42 @@
 #}
 
 {% extends 'CertUnlpNgenBundle::Playbook/Frontend/frontend.html.twig' %}
+
 {% block content_header %}
    <h1 class="h3 mb-0 text-gray-800">{{ icon('plus-circle fa-fw') }} {{ 'Playbook'|trans }}</h1>
 {% endblock %}
+
 {% block content_body %}
-   
-<div class="container">
-    <h1>Add playbook</h1>
+<fieldset class="form-group">
     {{ form_start(form, {'attr': {'role':'form','id': 'add_update_form'},'style': 'horizontal'})}}
-        {{ form_errors(form) }}
-        {{ form_row(form.type)}}
-        {{ form_row(form.name) }}
-        {{ form_row(form.description) }}
-
-        <div>
-            <h3 class="mb-2">Phases</h3>
-            {{ include('CertUnlpNgenBundle:Playbook/Frontend:playbookPhase.html.twig') }}
-        <div>
-
-        <div class="row mt-2 p-2">
-            {{ form_row(form.save) }}
+        <div class="font-weight-bold">
+            {{ form_errors(form) }}
+            {{ form_row(form.type)}}
+            {{ form_row(form.name) }}
+            {{ form_row(form.description) }}
         </div>
 
+        <div class="p-1">
+            <h3 class="mb-2 font-weight-bold text-success">Phases</h3>
+            {% include "CertUnlpNgenBundle:Playbook/Frontend:playbookContent.html.twig" with {'form': form} %}
+        <div>
+        <div class="py-3 font-weight-bold">        
+            {{ form_row(form.save) }}
+        </div>      
     {{ form_end(form, {'render_rest': false}) }}
-</div>
+</fieldset>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-
     {{ tinymce_init({theme: {'simple': {'language': app.request.locale , 'height': 350 } } } ) }}
-    
+
     {% javascripts
         '@CertUnlpNgenBundle/Resources/public/js/playbook/Playbook.js'
         '@CertUnlpNgenBundle/Resources/public/js/playbook/PlaybookApi.js'
         '@CertUnlpNgenBundle/Resources/public/js/playbook/PlaybookForm.js'
-        '@CertUnlpNgenBundle/Resources/public/js/playbook/Phase.js'
-        %}
+        '@CertUnlpNgenBundle/Resources/public/js/playbook/PlaybookContent.js'
+    %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
