@@ -6,7 +6,7 @@
  This source file is subject to the GPL v3.0 license that is bundled
  with this source code in the file LICENSE.
 #}
-
+{% import '@CertUnlpNgen/Frontend/detailMacros.html.twig' as print %}
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">
@@ -19,7 +19,7 @@
             <table id="tabla_playbooks" class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                 <tr role="row">
-                    <th>{{ 'ID'|trans }}  </th>
+                    <th>{{ 'Details'|trans }}  </th>
                     <th>{{ knp_pagination_sortable(playbooks, 'Name'|trans, 'name') }}</th>
                     <th>{{ knp_pagination_sortable(playbooks, 'Incident Type'|trans, 'incident Type') }}</th>
                     <th>{{ knp_pagination_sortable(playbooks, 'Description'|trans, 'Description') }}</th>

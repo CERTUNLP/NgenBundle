@@ -48,8 +48,6 @@
     {% endjavascripts %}
 
     <script>
-        var playbook = new Playbook();
-        var playbook_api = new PlaybookApi("{{ path("api_get") }}", "{{ app.user.apiKey }}");
         var playbook_form = new PlaybookForm();
     </script>
 {% endblock %}

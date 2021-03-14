@@ -10,7 +10,9 @@
 
 <tr data-id="{{ playbook.id }}">
     <td class="text-center">
-        {{ playbook.id }} &nbsp;&nbsp; {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':playbook , 'detail_link': path('cert_unlp_ngen_playbook_detail_id',{'id': playbook.id})} %}
+    {{ print.colorboxbutton('primary','id-card',playbook.id,'#') }}
+       &nbsp;&nbsp; 
+       {% include '@CertUnlpNgen/Frontend/list/listDropdown.html.twig' with {'object':playbook , 'detail_link': path('cert_unlp_ngen_playbook_detail_id',{'id': playbook.id})} %}
     </td>
     <td id="state_label_holder" class="text-center">
         {{ playbook.name }}

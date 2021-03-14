@@ -12,7 +12,7 @@
 
 {% block content_header %}
     <h1 class="h3 mb-0 text-gray-800">
-        {{ object }}
+        - Playbook: {{ object }}
         {{ print.colorboxbutton('primary','id-card',object.id,'#') }}
     </h1>
 {% endblock %}
@@ -37,16 +37,16 @@
                                 <td>{{ object.description }}</td>
                             </tr>
                             <tr>
+                                <td class="font-weight-bold">{{ 'Incident Type'|trans }}</td>
+                                <td>{{ object.type}}</td>
+                            </tr>
+                            <tr>
                                 <td class="font-weight-bold">{{ 'Created at'|trans }}</td>
                                 <td>{{ object.createdAt|date('Y-m-d') }}</td>
                             </tr>
                             <tr>
                                 <td class="font-weight-bold">{{ 'Last Update'|trans }}</td>
                                 <td>{{ object.updatedAt|date('Y-m-d') }}</td>
-                            </tr>
-                            <tr>
-                                <td class="font-weight-bold">{{ 'Incident Type'|trans }}</td>
-                                <td>{{ object.type}}</td>
                             </tr>
                         </table>
                     </div>
