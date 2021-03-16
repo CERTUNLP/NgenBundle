@@ -32,6 +32,16 @@ var Incident = Frontend.extend({
     stateLabelChange: function (response, jqXHR) {
         this.updateListRow(jqXHR);
     },
+    stateChanged: function (response, jqXHR) {
+
+        if (jqXHR.status > '300') {
+            $.publish('/cert_unlp/notify/error', [jqXHR.responseJSON.errors.fields.type]);
+        } else {
+            this.stateLabelChange();
+            this.dropDownChangeLinks();
+        }
+        this.laddaButton.stop();
+    },
     updateListRow: function (jqXHR) {
 
         id = this.eventTarget.parents('tr').data('id');

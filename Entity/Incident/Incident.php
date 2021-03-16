@@ -40,6 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\EntityListeners({"CertUnlp\NgenBundle\Service\Listener\Entity\IncidentListener"})
  * @ORM\HasLifecycleCallbacks
  * @JMS\ExclusionPolicy("all")
+ * @CustomAssert\HasReport()
  */
 class Incident extends EntityApiFrontend
 {
@@ -345,14 +346,13 @@ class Incident extends EntityApiFrontend
 
     /**
      * Set state
-     * @param IncidentState|null $state
-     * @param string $lang
+     * @param IncidentState $state
      * @return Incident
      */
-    public function setState(IncidentState $state, string $lang): ?Incident
+    public function setState(IncidentState $state): ?Incident
     {
         if ($state && $this->getState()) {
-            return $this->getState()->changeState($this, $lang, $state);
+            return $this->getState()->changeState($this, $state);
         }
         return $this->changeState($state);
     }
@@ -1486,13 +1486,12 @@ class Incident extends EntityApiFrontend
 
     /**
      * @param Incident $incident_detected
-     * @param string $lang
      * @return Incident
      * @throws Exception
      */
-    public function updateFromDetection(Incident $incident_detected, string $lang): Incident
+    public function updateFromDetection(Incident $incident_detected): Incident
     {
-        $this->setState($incident_detected->getState(),$lang);
+        $this->setState($incident_detected->getState());
         $this->updateTlp($incident_detected);
         $this->updatePriority($incident_detected);
         $this->updateDeadlines($incident_detected);

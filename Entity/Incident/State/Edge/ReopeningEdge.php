@@ -25,7 +25,6 @@ class ReopeningEdge extends StateEdge
 {
     public function changeStateAction(Incident $incident): Incident
     {
-        $incident->setNeedToCommunicate(true);
         return $incident;
     }
 

@@ -16,13 +16,13 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class EntityNotActiveValidator extends ConstraintValidator
 {
-    public function validate($entity, Constraint $constraint)
+    public function validate($value, Constraint $constraint)
     {
 
-        if ($entity && !empty($constraint->message) && !$entity->isActive() && $entity->getSlug() !== 'undefined') {
-            $name = explode('\\', get_class($entity));
+        if ($value && !empty($constraint->message) && !$value->isActive() && $value->getSlug() !== 'undefined') {
+            $name = explode('\\', get_class($value));
             $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ string }}', $entity)
+                ->setParameter('{{ string }}', $value)
                 ->setParameter('{{ entity }}', end($name))
                 ->addViolation();
         }

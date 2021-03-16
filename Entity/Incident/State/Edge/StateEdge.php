@@ -213,33 +213,15 @@ abstract class StateEdge extends Entity
 
     /**
      * @param Incident $incident
-     * @param string $lang
      * @return Incident
      */
-    public function changeState(Incident $incident, string $lang): Incident
+    public function changeState(Incident $incident): Incident
     {
-        if ($this->changeStateCondition($incident, $lang)) {
-            $this->changeStateAction($incident);
-            $incident->changeState($this->getNewState());
-        }
+        $this->changeStateAction($incident);
+        $incident->changeState($this->getNewState());
         return $incident;
-
     }
 
-    /**
-     * @param Incident $incident
-     * @param string $lang
-     * @return bool
-     */
-    public function changeStateCondition(Incident $incident, string $lang): bool
-    {
-        return true;
-    }
-
-    /**
-     * @param Incident $incident
-     * @return Incident
-     */
     abstract public function changeStateAction(Incident $incident): Incident;
 
     /**

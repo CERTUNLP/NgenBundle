@@ -240,16 +240,15 @@ class IncidentState extends EntityApiFrontend implements Translatable
 
     /**
      * @param Incident $incident
-     * @param string $lang
      * @param IncidentState|null $newState
      * @return Incident
      */
-    public function changeState(Incident $incident, string $lang, IncidentState $newState): ?Incident
+    public function changeState(Incident $incident, IncidentState $newState = null): ?Incident
     {
         if ($newState) {
             $edge = $this->getNewStateEdge($newState);
             if ($edge) {
-                $edge->changeState($incident, $lang);
+                $edge->changeState($incident);
                 $incident->addStateChange(new IncidentStateChange($incident, $edge));
                 return $incident;
             }

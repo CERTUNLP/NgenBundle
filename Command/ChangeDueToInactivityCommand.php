@@ -28,16 +28,11 @@ class ChangeDueToInactivityCommand extends ContainerAwareCommand
      * @var IncidentHandler
      */
     private $incident_handler;
-    /**
-     * @var string
-     */
-    private string $lang;
 
-    public function __construct(IncidentHandler $incident_handler, string $ngen_lang)
+    public function __construct(IncidentHandler $incident_handler)
     {
         parent::__construct(null);
         $this->incident_handler = $incident_handler;
-        $this->lang = $ngen_lang;
     }
 
     public function configure()
@@ -93,7 +88,7 @@ class ChangeDueToInactivityCommand extends ContainerAwareCommand
         $paginator = new Paginator($query, $fetchJoinCollection = true);
 
         foreach ($paginator as $incident) {
-            if ($incident->setState($clousure($incident), $this->getLang())) {
+            if ($incident->setState($clousure($incident))) {
                 $this->getIncidentHandler()->patch($incident);
                 $output->writeln($this->printChanged($incident));
             } else {
@@ -101,14 +96,6 @@ class ChangeDueToInactivityCommand extends ContainerAwareCommand
             }
         }
         return $paginator;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLang(): string
-    {
-        return $this->lang;
     }
 
     /**
