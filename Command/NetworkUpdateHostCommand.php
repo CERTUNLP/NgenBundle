@@ -42,6 +42,7 @@ class NetworkUpdateHostCommand extends ContainerAwareCommand
         $this
             ->setName('cert_unlp:network:update:host')
             ->setDescription('search networks for hosts that doesn\'t have one.')
+            ->addOption('address', '--address', InputOption::VALUE_OPTIONAL, 'update a specific host by address if exists')
             ->addOption('max', '--max', InputOption::VALUE_OPTIONAL, 'limit the update to first $max host', -1);
 //            ->addOption('enrichment', '-en', InputOption::VALUE_OPTIONAL, 'execute the enrichment given');
     }
@@ -57,8 +58,16 @@ class NetworkUpdateHostCommand extends ContainerAwareCommand
         $limit = 50;
         $offset = 0;
         $max = (int)$input->getOption('max');
+        $address = $input->getOption('address');
         $default_network = $this->getNetworkHandler()->getDefaultNetwork()->getId();
-        $hosts = $this->getHostHandler()->all(['network' => $default_network], ['id' => 'desc'], $limit, $offset);
+        if ($address) {
+            $host = $this->getHostHandler()->get(['address' => $address]);
+            $hosts = $host ? [$host] : [];
+            $max = 1;
+            $limit = 1;
+        } else {
+            $hosts = $this->getHostHandler()->all(['network' => $default_network], ['id' => 'desc'], $limit, $offset);
+        }
         while ($hosts && $offset !== $max) {
             $output->write('[network update]:<info> Found ' . count($hosts) . ' hosts to update.</info>');
             $output->writeln('<info>Total analyzed ' . $offset . '</info>');
