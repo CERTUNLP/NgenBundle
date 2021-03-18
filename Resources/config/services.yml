@@ -13,6 +13,7 @@ services:
         public: false
         bind:
             $ngen_lang: '%ngen_lang%'
+            $ngen_lang_external: '%ngen_lang_external%'
             $ngen_team: '%cert_unlp.ngen.team%'
             $environment: '%kernel.environment%'
             $ngen_team_mail: '%cert_unlp.ngen.team.mail%'

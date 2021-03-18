@@ -17,6 +17,7 @@ use CertUnlp\NgenBundle\Entity\Communication\Message\Message;
 use CertUnlp\NgenBundle\Entity\Communication\Message\MessageEmail;
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
 use CertUnlp\NgenBundle\Entity\Incident\IncidentComment;
+use CertUnlp\NgenBundle\Service\IncidentLangFactory;
 use CertUnlp\NgenBundle\Service\IncidentReportFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,32 +29,32 @@ class IncidentCommunicationMailer extends IncidentCommunication
     /**
      * @var string
      */
-    private $environment;
+    private string $environment;
     /**
      * @var string
      */
-    private $lang;
+    private string $team_name;
     /**
      * @var string
      */
-    private $team_name;
-    /**
-     * @var string
-     */
-    private $evidence_path;
+    private string $evidence_path;
     /**
      * @var IncidentReportFactory
      */
-    private $report_factory;
+    private IncidentReportFactory $report_factory;
+    /**
+     * @var IncidentLangFactory
+     */
+    private IncidentLangFactory $incident_lang_factory;
 
-    public function __construct(EntityManagerInterface $doctrine, CommentManagerInterface $commentManager, TranslatorInterface $translator, string $environment, string $ngen_lang, string $ngen_team_name, string $evidence_path, IncidentReportFactory $report_factory)
+    public function __construct(EntityManagerInterface $doctrine, CommentManagerInterface $commentManager, TranslatorInterface $translator, string $environment, string $ngen_team_name, string $evidence_path, IncidentReportFactory $report_factory, IncidentLangFactory $incident_lang_factory)
     {
         parent::__construct($doctrine, $commentManager, $translator);
         $this->evidence_path = $evidence_path;
         $this->report_factory = $report_factory;
         $this->environment = in_array($environment, ['dev', 'test']) ? '[dev]' : '';
-        $this->lang = $ngen_lang;
         $this->team_name = $ngen_team_name;
+        $this->incident_lang_factory = $incident_lang_factory;
     }
 
     /**
@@ -101,7 +102,7 @@ class IncidentCommunicationMailer extends IncidentCommunication
     {
         $data = parent::createDataJson($incident, $contact);
         $data['body'] = $this->getBody($incident);
-        $data['subject'] = sprintf($this->mailSubject(false), $incident->getTlp(), $this->getTeamName(), $incident->getType()->getName(), $incident->getAddress(), $incident->getId());
+        $data['subject'] = sprintf($this->mailSubject($this->getIncidentLangFactory()->getLangByIncident($incident)), $incident->getTlp(), $this->getTeamName(), $incident->getType()->getName(), $incident->getAddress(), $incident->getId());
         $data['evidence_files'] = $this->getEvidenceFiles($incident);
         $data['notify_admin'] = true;
 
@@ -114,7 +115,7 @@ class IncidentCommunicationMailer extends IncidentCommunication
      */
     public function getBody(Incident $incident): ?string
     {
-        return $this->getReportFactory()->getReport($incident, $this->getLang());
+        return $this->getReportFactory()->getReport($incident);
     }
 
     /**
@@ -126,20 +127,13 @@ class IncidentCommunicationMailer extends IncidentCommunication
     }
 
     /**
-     * @return string
-     */
-    public function getLang(): string
-    {
-        return $this->lang;
-    }
-
-    /**
+     * @param string $lang
      * @param bool $renotification
      * @return string
      */
-    public function mailSubject(bool $renotification = false): string
+    public function mailSubject(string $lang, bool $renotification = false): string
     {
-        return $this->getEnvironment() . $this->getMailSubject($renotification);
+        return $this->getEnvironment() . $this->getMailSubject($lang, $renotification);
     }
 
     /**
@@ -151,13 +145,22 @@ class IncidentCommunicationMailer extends IncidentCommunication
     }
 
     /**
+     * @param string $lang
      * @param bool $renotification
      * @return string
      */
-    public function getMailSubject(bool $renotification = false): string
+    public function getMailSubject(string $lang, bool $renotification = false): string
     {
-        $renotification_text = $renotification ? '[' . $this->getTranslator()->trans('subject_mail_renotificacion') . ']' : '';
-        return $renotification_text . '[TLP:%s][%s] ' . $this->getTranslator()->trans('subject_mail_incidente') . ' [ID:%s]';
+        $renotification_text = $renotification ? '[' . $this->getTranslator()->trans('subject_mail_renotificacion', [], null, $lang) . ']' : '';
+        return $renotification_text . '[TLP:%s][%s] ' . $this->getTranslator()->trans('subject_mail_incidente', [], null, $lang) . ' [ID:%s]';
+    }
+
+    /**
+     * @return IncidentLangFactory
+     */
+    public function getIncidentLangFactory(): IncidentLangFactory
+    {
+        return $this->incident_lang_factory;
     }
 
     /**
@@ -231,7 +234,7 @@ class IncidentCommunicationMailer extends IncidentCommunication
      */
     public function getReplyBody(IncidentComment $comment): ?string
     {
-        return $this->getReportFactory()->getReportReply($comment->getThread()->getIncident(), $comment->getBody(), $this->getLang());
+        return $this->getReportFactory()->getReportReply($comment->getThread()->getIncident(), $comment->getBody());
 
     }
 

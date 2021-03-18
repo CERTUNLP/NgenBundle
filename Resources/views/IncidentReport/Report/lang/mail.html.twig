@@ -1,27 +1,27 @@
 {% extends  'CertUnlpNgenBundle:IncidentReport:Report/base/baseReport.html.twig' %}
 {% block greeting %}
-    {{ 'greeting'|trans}} {{ incident.network.networkAdmin }},
+    {{ 'greeting'|trans({},null,lang)}} {{ incident.network.networkAdmin }},
 {% endblock %}
 {% block incident_notes_title %}
-    {{ 'incident_notes_title'|trans}}
+    {{ 'incident_notes_title'|trans({},null,lang)}}
 {% endblock %}
 {% block derivated_problem_title %}
-    {{ 'derivated_problem_title'|trans}}
+    {{ 'derivated_problem_title'|trans({},null,lang)}}
 {% endblock %}
 {% block verification_title %}
-    {{ 'verification_title'|trans}}
+    {{ 'verification_title'|trans({},null,lang)}}
 {% endblock %}
 {% block recomendations_title %}
-    {{ 'recomendations_title'|trans}}
+    {{ 'recomendations_title'|trans({},null,lang)}}
 {% endblock %}
 {% block more_information_title %}
-    {{ 'more_information_title'|trans}}
+    {{ 'more_information_title'|trans({},null,lang)}}
 {% endblock %}
 {% block footer_content %}
-    {{ 'thanks'|trans}}{{ 'farewell'|trans }}, {{  team.name }} - {{  team.url }}
+    {{ 'thanks'|trans({},null,lang)}}{{ 'farewell'|trans({},null,lang) }}, {{  team.name }} - {{  team.url }}
 {% endblock %}
 {% block footer_generated_by %}
 
-    {{ 'firma_ngen'|trans |raw}}
+    {{ 'firma_ngen'|trans({},null,lang) |raw}}
 
 {% endblock %}

@@ -12,9 +12,6 @@
 namespace CertUnlp\NgenBundle\Service;
 
 use CertUnlp\NgenBundle\Entity\Incident\Incident;
-use FOS\RestBundle\View\View;
-use FOS\RestBundle\View\ViewHandlerInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 use Twig\Error\Error;
 
@@ -23,43 +20,35 @@ class IncidentReportFactory
     /**
      * @var Environment
      */
-    private $templating;
-    /**
-     * @var ViewHandlerInterface
-     */
-    private $viewHandler;
-    /**
-     * @var View
-     */
-    private $view;
+    private Environment $templating;
     /**
      * @var array
      */
-    private $team;
+    private array $team;
+    /**
+     * @var IncidentLangFactory
+     */
+    private IncidentLangFactory $incident_lang_factory;
 
-    public function __construct(Environment $templating, ViewHandlerInterface $viewHandler, array $ngen_team)
+    public function __construct(Environment $templating, array $ngen_team, IncidentLangFactory $incident_lang_factory)
     {
         $this->templating = $templating;
-        $this->viewHandler = $viewHandler;
         $this->team = $ngen_team;
+        $this->incident_lang_factory = $incident_lang_factory;
     }
 
     /**
      * @param Incident $incident
-     * @param string $lang
      * @return string
      */
-    public function getReport(Incident $incident, string $lang): ?string
+    public function getReport(Incident $incident): ?string
     {
-        $report = $incident->getType()->getReport($lang);
+        $report = $incident->getType()->getReport($this->getIncidentLangFactory()->getLangByIncident($incident));
         if ($report) {
-            $data = array('report' => $report, 'incident' => $incident, 'team' => $this->getTeam());
-            $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/mail.html.twig');
-            $this->getView()->setTemplateData($data);
-            $html = $this->getViewHandler()->renderTemplate($this->getView(), 'html');
+            $data = array('report' => $report, 'incident' => $incident, 'team' => $this->getTeam(), 'lang' => $this->getIncidentLangFactory()->getLangByIncident($incident));
             $parameters = array('incident' => $incident);
             try {
-                return $this->getTemplating()->createTemplate($html)->render($parameters);
+                return $this->getTemplating()->createTemplate($this->getTemplating()->render('CertUnlpNgenBundle:IncidentReport:Report/lang/mail.html.twig', $data))->render($parameters);
             } catch (Error $e) {
                 return null;
             }
@@ -68,30 +57,19 @@ class IncidentReportFactory
     }
 
     /**
+     * @return IncidentLangFactory
+     */
+    public function getIncidentLangFactory(): IncidentLangFactory
+    {
+        return $this->incident_lang_factory;
+    }
+
+    /**
      * @return array
      */
     public function getTeam(): array
     {
         return $this->team;
-    }
-
-    /**
-     * @return View
-     */
-    public function getView(): View
-    {
-        if (!$this->view) {
-            $this->view = View::create();
-        }
-        return $this->view;
-    }
-
-    /**
-     * @return ViewHandlerInterface
-     */
-    public function getViewHandler(): ViewHandlerInterface
-    {
-        return $this->viewHandler;
     }
 
     /**
@@ -105,67 +83,20 @@ class IncidentReportFactory
     /**
      * @param Incident $incident
      * @param string $body
-     * @param string $lang
      * @return string|null
      */
-    public function getReportReply(Incident $incident, string $body, string $lang): ?string
+    public function getReportReply(Incident $incident, string $body): ?string
     {
-        $report = $incident->getType()->getReport($lang);
+        $report = $incident->getType()->getReport($this->getIncidentLangFactory()->getLangByIncident($incident));
         if ($report) {
-
-            $data = array('report' => $report, 'incident' => $incident, 'body' => $body, 'team' => $this->getTeam());
-            $this->getView()->setTemplate('CertUnlpNgenBundle:IncidentReport:Report/lang/mailReply.html.twig');
-            $this->getView()->setTemplateData($data);
-            $html = $this->getViewHandler()->renderTemplate($this->getView(), 'html');
+            $data = array('report' => $report, 'incident' => $incident, 'body' => $body, 'team' => $this->getTeam(), 'lang' => $this->getLangByIncident($incident));
             $parameters = array('incident' => $incident);
             try {
-                return $this->getTemplating()->createTemplate($html)->render($parameters);
+                return $this->getTemplating()->createTemplate($this->getTemplating()->render('CertUnlpNgenBundle:IncidentReport:Report/lang/mailReply.html.twig', $data))->render($parameters);
             } catch (Error $e) {
                 return null;
             }
         }
         return null;
     }
-
-    /**
-     * @param View|null $view
-     * @return Response
-     */
-    public function handle(View $view = null): Response
-    {
-        $view = $view ?: $this->getView();
-        return $this->getViewHandler()->handle($view);
-    }
-
-    /**
-     * @param array $parameters
-     * @param $statusCode
-     * @param array $headers
-     * @return View
-     */
-    public function response(array $parameters = array(), int $statusCode = Response::HTTP_CREATED, array $headers = array()): View
-    {
-        $this->setData($parameters);
-        $this->setStatusCode($statusCode);
-        return $this->getView();
-    }
-
-    /**
-     * @param array $data
-     * @return View
-     */
-    public function setData(array $data): View
-    {
-        return $this->getView()->setData($data);
-    }
-
-    /**
-     * @param $statusCode
-     * @return View
-     */
-    public function setStatusCode(int $statusCode): View
-    {
-        return $this->getView()->setStatusCode($statusCode);
-    }
-
 }

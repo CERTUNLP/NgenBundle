@@ -22,6 +22,7 @@ parameters:
     team_logo: "%env(TEAM_LOGO)%"
     ngen_sign: "%env(NGEN_SIGN)%"
     ngen_lang: "%env(NGEN_LANG)%"
+    ngen_lang_external: "%env(NGEN_LANG_EXTERNAL)%"
     session_max_idle_time: "%env(SESSION_TIMEOUT)%"
     elastic_host: "%env(ELASTIC_HOST)%"
     elastic_port: "%env(ELASTIC_PORT)%"

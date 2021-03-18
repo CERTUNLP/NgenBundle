@@ -1,6 +1,6 @@
 {% extends  'CertUnlpNgenBundle:IncidentReport:Report/base/baseReport.html.twig' %}
 {% block greeting %}
-    {{ 'greeting'|trans}}  {{ incident.network.networkAdmin }},
+    {{ 'greeting'|trans({},null,lang)}}  {{ incident.network.networkAdmin }},
 {% endblock %}
 {% block report_content %}
     <tr>
@@ -13,10 +13,10 @@
     </tr>
 {% endblock %}
 {% block footer_content %}
-    {{ 'thanks'|trans}}{{ 'farewell'|trans }}, {{  team.name }} - {{  team.url }}
+    {{ 'thanks'|trans({},null,lang)}}{{ 'farewell'|trans({},null,lang) }}, {{  team.name }} - {{  team.url }}
 {% endblock %}
 {% block footer_generated_by %}
 
-    {{ 'firma_ngen'|trans |raw}}
+    {{ 'firma_ngen'|trans({},null,lang) |raw}}
 
 {% endblock %}
