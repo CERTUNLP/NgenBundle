@@ -27,7 +27,7 @@ Estos dos atributos tienen la función de enviar mensajes al operador del sistem
 
 * En las decisiones se pueden setear los estados a cambiar una vez que se cumplen los tiempos, estos son **Unresponded state** y **Unsolved State**
 
-![image](images/config-decision.png)
+![image](images/config-decisions.png)
 
 ## Configurados desde las prioridades
 
