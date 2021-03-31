@@ -346,12 +346,12 @@ class Incident extends EntityApiFrontend
 
     /**
      * Set state
-     * @param IncidentState $state
+     * @param IncidentState|null $state
      * @return Incident
      */
-    public function setState(IncidentState $state): ?Incident
+    public function setState(IncidentState $state = null): ?Incident
     {
-        if ($state && $this->getState()) {
+        if ($this->getState()) {
             return $this->getState()->changeState($this, $state);
         }
         return $this->changeState($state);
