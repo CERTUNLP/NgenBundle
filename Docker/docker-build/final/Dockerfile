@@ -16,7 +16,7 @@ ADD files/routing.yml /application/ngen_basic/app/config/routing.yml
 ADD files/sql/base.inicial.sql /root/
 ADD files/my_entrypoint /usr/local/bin/my_entrypoint
 ADD files/mailer_entrypoint /usr/local/bin/mailer_entrypoint
-ADD files/mailer_entrypoint /usr/local/bin/update_entrypoint
+ADD files/update_entrypoint /usr/local/bin/update_entrypoint
 
 ENTRYPOINT ["my_entrypoint"]
 CMD ["/usr/local/bin/apache2-foreground"]
